@@ -1,0 +1,47 @@
+#SYSTEM
+MudName	     (Name Not Set)~
+Highplayers    0
+Highplayertime ~
+CheckImmHost   1
+Nameresolving  1
+Waitforauth    0
+Readallmail    58
+Readmailfree   51
+Writemailfree  51
+Takeothersmail 58
+IMCMailVnum    0
+Muse           56
+Think          60
+Build          53
+Log            53
+Protoflag      56
+Overridepriv   61
+Msetplayer     56
+Stunplrvsplr   80
+Stunregular    15
+Gougepvp       40
+Gougenontank   80
+Bashpvp        40
+Bashnontank    80
+Dodgemod       2
+Parrymod       2
+Tumblemod      4
+Damplrvsplr    100
+Damplrvsmob    100
+Dammobvsplr    100
+Dammobvsmob    100
+Forcepc        56
+Guildoverseer  ~
+Guildadvisor   ~
+Saveflags      1445
+Savefreq       20
+Bestowdif      10
+BanSiteLevel   61
+BanRaceLevel   61
+BanClassLevel  61
+MorphOpt       1
+PetSave	     1
+IdentTries     20
+End
+
+#END
