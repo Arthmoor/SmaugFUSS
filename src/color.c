@@ -71,26 +71,30 @@ char *const pc_displays[MAX_COLORS] = {
    "dblue", "purple", "cyan", "grey",
    "dgrey", "red", "green", "yellow",
    "blue", "pink", "lblue", "white",
-   "blink", "plain", "action", "say",
-   "chat", "yells", "tell", "hit",
-   "hitme", "immortal", "hurt", "falling",
-   "danger", "magic", "consider", "report",
-   "poison", "social", "dying", "dead",
-   "skill", "carnage", "damage", "fleeing",
-   "rmname", "rmdesc", "objects", "people",
-   "list", "bye", "gold", "gtells",
-   "note", "hungry", "thirsty", "fire",
-   "sober", "wearoff", "exits", "score",
-   "reset", "log", "die_msg", "wartalk",
-   "arena", "muse", "think", "aflags",
-   "who", "racetalk", "ignore", "whisper",
-   "divider", "morph", "shout", "rflags",
-   "stype", "aname", "auction", "score2",
-   "score3", "score4", "who2", "who3",
-   "who4", "intermud", "helpfiles", "who5",
-   "score5", "who6", "who7", "prac",
-   "prac2", "prac3", "prac4", "mxpprompt",
-   "guildtalk", "board", "board2", "board3"
+   "blink", "bdred", "bdgreen", "bdorange",
+   "bdblue", "bpurple", "bcyan", "bgrey",
+   "bdgrey", "bred", "bgreen", "byellow",
+   "bblue", "bpink", "blblue", "bwhite",
+   "plain", "action", "say", "chat",
+   "yells", "tell", "hit", "hitme",
+   "immortal", "hurt", "falling", "danger",
+   "magic", "consider", "report", "poison",
+   "social", "dying", "dead", "skill",
+   "carnage", "damage", "fleeing", "rmname",
+   "rmdesc", "objects", "people", "list",
+   "bye", "gold", "gtells", "note",
+   "hungry", "thirsty", "fire", "sober",
+   "wearoff", "exits", "score", "reset",
+   "log", "die_msg", "wartalk", "arena",
+   "muse", "think", "aflags", "who",
+   "racetalk", "ignore", "whisper", "divider",
+   "morph", "shout", "rflags", "stype",
+   "aname", "auction", "score2", "score3",
+   "score4", "who2", "who3", "who4",
+   "intermud", "helpfiles", "who5", "score5",
+   "who6", "who7", "prac", "prac2",
+   "prac3", "prac4", "mxpprompt", "guildtalk",
+   "board", "board2", "board3"
 };
 
 /* All defaults are set to Alsherok default scheme, if you don't 
@@ -100,27 +104,30 @@ const short default_set[MAX_COLORS] = {
    AT_DBLUE, AT_PURPLE, AT_CYAN, AT_GREY, /*  7 */
    AT_DGREY, AT_RED, AT_GREEN, AT_YELLOW, /* 11 */
    AT_BLUE, AT_PINK, AT_LBLUE, AT_WHITE,  /* 15 */
-
-   AT_RED + AT_BLINK, AT_GREY, AT_GREY, AT_BLUE,   /* 19 */
-   AT_GREEN, AT_LBLUE, AT_WHITE, AT_GREY, /* 23 */
-   AT_GREY, AT_YELLOW, AT_GREY, AT_GREY,  /* 27 */
-   AT_GREY, AT_BLUE, AT_GREY, AT_GREY, /* 31 */
-   AT_DGREEN, AT_CYAN, AT_GREY, AT_GREY,  /* 35 */
-   AT_BLUE, AT_GREY, AT_GREY, AT_GREY, /* 39 */
-   AT_RED, AT_GREY, AT_BLUE, AT_PINK,  /* 43 */
-   AT_GREY, AT_GREY, AT_YELLOW, AT_GREY,  /* 47 */
-   AT_GREY, AT_ORANGE, AT_BLUE, AT_RED,   /* 51 */
-   AT_GREY, AT_GREY, AT_GREEN, AT_DGREEN, /* 55 */
-   AT_DGREEN, AT_ORANGE, AT_GREY, AT_RED, /* 59 */
-   AT_GREY, AT_DGREEN, AT_RED, AT_BLUE,   /* 63 */
-   AT_RED, AT_CYAN, AT_YELLOW, AT_PINK,   /* 67 */
-   AT_DGREEN, AT_PINK, AT_WHITE, AT_BLUE, /* 71 */
-   AT_BLUE, AT_BLUE, AT_GREEN, AT_GREY,   /* 75 */
-   AT_GREEN, AT_GREEN, AT_YELLOW, AT_DGREY,  /* 79 */
-   AT_GREEN, AT_PINK, AT_DGREEN, AT_CYAN, /* 83 */
-   AT_RED, AT_WHITE, AT_BLUE, AT_DGREEN,  /* 87 */
-   AT_CYAN, AT_BLOOD, AT_RED, AT_DGREEN,  /* 91 */
-   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE  /* 95 */
+   AT_BLACK_BLINK, AT_BLOOD_BLINK, AT_DGREEN_BLINK, AT_ORANGE_BLINK, /* 19 */
+   AT_DBLUE_BLINK, AT_PURPLE_BLINK, AT_CYAN_BLINK, AT_GREY_BLINK, /* 23 */
+   AT_DGREY_BLINK, AT_RED_BLINK, AT_GREEN_BLINK, AT_YELLOW_BLINK, /* 27 */
+   AT_BLUE_BLINK, AT_PINK_BLINK, AT_LBLUE_BLINK, AT_WHITE_BLINK,  /* 31 */
+   AT_GREY, AT_GREY, AT_BLUE, /* 34 */
+   AT_GREEN, AT_LBLUE, AT_WHITE, AT_GREY, /* 38 */
+   AT_GREY, AT_YELLOW, AT_GREY, AT_GREY,  /* 42 */
+   AT_GREY, AT_BLUE, AT_GREY, AT_GREY, /* 46 */
+   AT_DGREEN, AT_CYAN, AT_GREY, AT_GREY,  /* 50 */
+   AT_BLUE, AT_GREY, AT_GREY, AT_GREY, /* 54 */
+   AT_RED, AT_GREY, AT_BLUE, AT_PINK,  /* 58 */
+   AT_GREY, AT_GREY, AT_YELLOW, AT_GREY,  /* 62 */
+   AT_GREY, AT_ORANGE, AT_BLUE, AT_RED,   /* 66 */
+   AT_GREY, AT_GREY, AT_GREEN, AT_DGREEN, /* 70 */
+   AT_DGREEN, AT_ORANGE, AT_GREY, AT_RED, /* 74 */
+   AT_GREY, AT_DGREEN, AT_RED, AT_BLUE,   /* 78 */
+   AT_RED, AT_CYAN, AT_YELLOW, AT_PINK,   /* 82 */
+   AT_DGREEN, AT_PINK, AT_WHITE, AT_BLUE, /* 86 */
+   AT_BLUE, AT_BLUE, AT_GREEN, AT_GREY,   /* 90 */
+   AT_GREEN, AT_GREEN, AT_YELLOW, AT_DGREY,  /* 94 */
+   AT_GREEN, AT_PINK, AT_DGREEN, AT_CYAN, /* 98 */
+   AT_RED, AT_WHITE, AT_BLUE, AT_DGREEN,  /* 102 */
+   AT_CYAN, AT_BLOOD, AT_RED, AT_DGREEN,  /* 106 */
+   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE  /* 110 */
 };
 
 char *const valid_color[] = {
@@ -149,7 +156,7 @@ void show_colorthemes( CHAR_DATA * ch )
    struct dirent *dentry;
    int count = 0, col = 0;
 
-   send_to_pager( "&YThe following themes are available:\n\r", ch );
+   send_to_pager( "&YThe following themes are available:\r\n", ch );
 
    dp = opendir( COLOR_DIR );
    dentry = readdir( dp );
@@ -168,17 +175,17 @@ void show_colorthemes( CHAR_DATA * ch )
          ++count;
          pager_printf( ch, "%s%-15.15s", color_str( AT_PLAIN, ch ), dentry->d_name );
          if( ++col % 6 == 0 )
-            send_to_pager( "\n\r", ch );
+            send_to_pager( "\r\n", ch );
       }
       dentry = readdir( dp );
    }
    closedir( dp );
 
    if( count == 0 )
-      send_to_pager( "No themes defined yet.\n\r", ch );
+      send_to_pager( "No themes defined yet.\r\n", ch );
 
    if( col % 6 != 0 )
-      send_to_pager( "\n\r", ch );
+      send_to_pager( "\r\n", ch );
    return;
 }
 
@@ -186,43 +193,43 @@ void show_colors( CHAR_DATA * ch )
 {
    short count;
 
-   send_to_pager( "&BSyntax: color [color type] [color] | default\n\r", ch );
-   send_to_pager( "&BSyntax: color _reset_ (Resets all colors to default set)\n\r", ch );
-   send_to_pager( "&BSyntax: color _all_ [color] (Sets all color types to [color])\n\r\n\r", ch );
-   send_to_pager( "&BSyntax: color theme [name] (Sets all color types to a defined theme)\n\r\n\r", ch );
+   send_to_pager( "&BSyntax: color [color type] [color] | default\r\n", ch );
+   send_to_pager( "&BSyntax: color _reset_ (Resets all colors to default set)\r\n", ch );
+   send_to_pager( "&BSyntax: color _all_ [color] (Sets all color types to [color])\r\n\r\n", ch );
+   send_to_pager( "&BSyntax: color theme [name] (Sets all color types to a defined theme)\r\n\r\n", ch );
 
-   send_to_pager( "&W********************************[ COLORS ]*********************************\n\r", ch );
+   send_to_pager( "&W********************************[ COLORS ]*********************************\r\n", ch );
 
    for( count = 0; count < 16; ++count )
    {
       if( ( count % 8 ) == 0 && count != 0 )
       {
-         send_to_pager( "\n\r", ch );
+         send_to_pager( "\r\n", ch );
       }
       pager_printf( ch, "%s%-10s", color_str( count, ch ), pc_displays[count] );
    }
 
-   send_to_pager( "\n\r\n\r&W******************************[ COLOR TYPES ]******************************\n\r", ch );
+   send_to_pager( "\r\n\r\n&W******************************[ COLOR TYPES ]******************************\r\n", ch );
 
-   for( count = 16; count < MAX_COLORS; ++count )
+   for( count = 32; count < MAX_COLORS; ++count )
    {
-      if( ( count % 8 ) == 0 && count != 16 )
+      if( ( count % 8 ) == 0 && count != 32 )
       {
-         send_to_pager( "\n\r", ch );
+         send_to_pager( "\r\n", ch );
       }
       pager_printf( ch, "%s%-10s%s", color_str( count, ch ), pc_displays[count], ANSI_RESET );
    }
-   send_to_pager( "\n\r\n\r", ch );
-   send_to_pager( "&YAvailable colors are:\n\r", ch );
+   send_to_pager( "\r\n\r\n", ch );
+   send_to_pager( "&YAvailable colors are:\r\n", ch );
 
    for( count = 0; valid_color[count][0] != '\0'; ++count )
    {
       if( ( count % 8 ) == 0 && count != 0 )
-         send_to_pager( "\n\r", ch );
+         send_to_pager( "\r\n", ch );
 
       pager_printf( ch, "%s%-10s", color_str( AT_PLAIN, ch ), valid_color[count] );
    }
-   send_to_pager( "\n\r", ch );
+   send_to_pager( "\r\n", ch );
    show_colorthemes( ch );
    return;
 }
@@ -248,13 +255,15 @@ void reset_colors( CHAR_DATA * ch )
          char *word = fread_word( fp );
          if( !str_cmp( word, "MaxColors" ) )
          {
-            max_colors = fread_number( fp );
+            int temp = fread_number( fp );
+            max_colors = UMIN( temp, MAX_COLORS );
             continue;
          }
          if( !str_cmp( word, "Colors" ) )
          {
             for( x = 0; x < max_colors; ++x )
                ch->colors[x] = fread_number( fp );
+            fread_to_eol( fp );
             continue;
          }
          if( !str_cmp( word, "End" ) )
@@ -285,7 +294,7 @@ void do_color( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_pager( "Only PC's can change colors.\n\r", ch );
+      send_to_pager( "Only PC's can change colors.\r\n", ch );
       return;
    }
 
@@ -304,14 +313,20 @@ void do_color( CHAR_DATA * ch, char *argument )
 
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "You must specify a name for this theme to save it.\n\r", ch );
+         send_to_char( "You must specify a name for this theme to save it.\r\n", ch );
          return;
       }
 
-      snprintf( filename, 256, "%s%s", COLOR_DIR, argument );
+      if( strstr( argument, "." ) || strstr( argument, "/" ) || strstr( argument, "\\" ) )
+      {
+         send_to_char( "Invalid theme name.\r\n", ch );
+         return;
+      }
+
+      snprintf( filename, sizeof( filename ), "%s%s", COLOR_DIR, argument );
       if( !( fp = fopen( filename, "w" ) ) )
       {
-         ch_printf( ch, "Unable to write to color file %s\n\r", filename );
+         ch_printf( ch, "Unable to write to color file %s\r\n", filename );
          return;
       }
       fprintf( fp, "%s", "#COLORTHEME\n" );
@@ -323,7 +338,7 @@ void do_color( CHAR_DATA * ch, char *argument )
       fprintf( fp, "%s", "\nEnd\n" );
       fclose( fp );
       fp = NULL;
-      ch_printf( ch, "Color theme %s saved.\n\r", argument );
+      ch_printf( ch, "Color theme %s saved.\r\n", argument );
       return;
    }
 
@@ -339,10 +354,16 @@ void do_color( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      snprintf( filename, 256, "%s%s", COLOR_DIR, argument );
+      if( strstr( argument, "." ) || strstr( argument, "/" ) || strstr( argument, "\\" ) )
+      {
+         send_to_char( "Invalid theme.\r\n", ch );
+         return;
+      }
+
+      snprintf( filename, sizeof( filename ), "%s%s", COLOR_DIR, argument );
       if( !( fp = fopen( filename, "r" ) ) )
       {
-         ch_printf( ch, "There is no theme called %s.\n\r", argument );
+         ch_printf( ch, "There is no theme called %s.\r\n", argument );
          return;
       }
 
@@ -351,134 +372,136 @@ void do_color( CHAR_DATA * ch, char *argument )
          char *word = fread_word( fp );
          if( !str_cmp( word, "MaxColors" ) )
          {
-            max_colors = fread_number( fp );
+            int temp = fread_number( fp );
+            max_colors = UMIN( temp, MAX_COLORS );
             continue;
          }
          if( !str_cmp( word, "Colors" ) )
          {
             for( x = 0; x < max_colors; ++x )
                ch->colors[x] = fread_number( fp );
+            fread_to_eol( fp );
             continue;
          }
          if( !str_cmp( word, "End" ) )
          {
             fclose( fp );
             fp = NULL;
-            ch_printf( ch, "Color theme has been changed to %s.\n\r", argument );
+            ch_printf( ch, "Color theme has been changed to %s.\r\n", argument );
             save_char_obj( ch );
             return;
          }
       }
       fclose( fp );
       fp = NULL;
-      ch_printf( ch, "An error occured while trying to set color theme %s.\n\r", argument );
+      ch_printf( ch, "An error occured while trying to set color theme %s.\r\n", argument );
       return;
    }
 
    if( !str_cmp( arg, "ansitest" ) )
    {
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlack\n\r", ANSI_BLACK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlack\r\n", ANSI_BLACK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Red\n\r", ANSI_DRED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Red\r\n", ANSI_DRED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Green\n\r", ANSI_DGREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Green\r\n", ANSI_DGREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sOrange/Brown\n\r", ANSI_ORANGE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sOrange/Brown\r\n", ANSI_ORANGE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Blue\n\r", ANSI_DBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Blue\r\n", ANSI_DBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sPurple\n\r", ANSI_PURPLE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sPurple\r\n", ANSI_PURPLE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sCyan\n\r", ANSI_CYAN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sCyan\r\n", ANSI_CYAN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sGrey\n\r", ANSI_GREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sGrey\r\n", ANSI_GREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Grey\n\r", ANSI_DGREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Grey\r\n", ANSI_DGREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sRed\n\r", ANSI_RED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sRed\r\n", ANSI_RED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sGreen\n\r", ANSI_GREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sGreen\r\n", ANSI_GREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sYellow\n\r", ANSI_YELLOW );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sYellow\r\n", ANSI_YELLOW );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlue\n\r", ANSI_BLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlue\r\n", ANSI_BLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sPink\n\r", ANSI_PINK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sPink\r\n", ANSI_PINK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sLight Blue\n\r", ANSI_LBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sLight Blue\r\n", ANSI_LBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sWhite\n\r", ANSI_WHITE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sWhite\r\n", ANSI_WHITE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlack\n\r", BLINK_BLACK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlack\r\n", BLINK_BLACK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Red\n\r", BLINK_DRED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Red\r\n", BLINK_DRED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Green\n\r", BLINK_DGREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Green\r\n", BLINK_DGREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sOrange/Brown\n\r", BLINK_ORANGE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sOrange/Brown\r\n", BLINK_ORANGE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Blue\n\r", BLINK_DBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Blue\r\n", BLINK_DBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sPurple\n\r", BLINK_PURPLE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sPurple\r\n", BLINK_PURPLE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sCyan\n\r", BLINK_CYAN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sCyan\r\n", BLINK_CYAN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sGrey\n\r", BLINK_GREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sGrey\r\n", BLINK_GREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Grey\n\r", BLINK_DGREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sDark Grey\r\n", BLINK_DGREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sRed\n\r", BLINK_RED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sRed\r\n", BLINK_RED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sGreen\n\r", BLINK_GREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sGreen\r\n", BLINK_GREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sYellow\n\r", BLINK_YELLOW );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sYellow\r\n", BLINK_YELLOW );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlue\n\r", BLINK_BLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sBlue\r\n", BLINK_BLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sPink\n\r", BLINK_PINK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sPink\r\n", BLINK_PINK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sLight Blue\n\r", BLINK_LBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sLight Blue\r\n", BLINK_LBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sWhite\n\r", BLINK_WHITE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sWhite\r\n", BLINK_WHITE );
       write_to_buffer( ch->desc, log_buf, 0 );
       write_to_buffer( ch->desc, ANSI_RESET, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sBlack\n\r", ANSI_WHITE, BACK_BLACK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sBlack\r\n", ANSI_WHITE, BACK_BLACK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Red\n\r", ANSI_BLACK, BACK_DRED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Red\r\n", ANSI_BLACK, BACK_DRED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Green\n\r", ANSI_BLACK, BACK_DGREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Green\r\n", ANSI_BLACK, BACK_DGREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sOrange/Brown\n\r", ANSI_BLACK, BACK_ORANGE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sOrange/Brown\r\n", ANSI_BLACK, BACK_ORANGE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Blue\n\r", ANSI_BLACK, BACK_DBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Blue\r\n", ANSI_BLACK, BACK_DBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sPurple\n\r", ANSI_BLACK, BACK_PURPLE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sPurple\r\n", ANSI_BLACK, BACK_PURPLE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sCyan\n\r", ANSI_BLACK, BACK_CYAN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sCyan\r\n", ANSI_BLACK, BACK_CYAN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sGrey\n\r", ANSI_BLACK, BACK_GREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sGrey\r\n", ANSI_BLACK, BACK_GREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Grey Background\n\r", ANSI_BLACK, BACK_DGREY );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sDark Grey Background\r\n", ANSI_BLACK, BACK_DGREY );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sRed Background\n\r", ANSI_BLACK, BACK_RED );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sRed Background\r\n", ANSI_BLACK, BACK_RED );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sGreen Background\n\r", ANSI_BLACK, BACK_GREEN );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sGreen Background\r\n", ANSI_BLACK, BACK_GREEN );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sYellow Background\n\r", ANSI_BLACK, BACK_YELLOW );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sYellow Background\r\n", ANSI_BLACK, BACK_YELLOW );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sBlue Background\n\r", ANSI_BLACK, BACK_BLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sBlue Background\r\n", ANSI_BLACK, BACK_BLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sPink Background\n\r", ANSI_BLACK, BACK_PINK );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sPink Background\r\n", ANSI_BLACK, BACK_PINK );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sLight Blue Background\n\r", ANSI_BLACK, BACK_LBLUE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sLight Blue Background\r\n", ANSI_BLACK, BACK_LBLUE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sWhite Background\n\r", ANSI_BLACK, BACK_WHITE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sWhite Background\r\n", ANSI_BLACK, BACK_WHITE );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sItalics%s\n\r", ANSI_GREY, ANSI_ITALIC, ANSI_RESET );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%s%sItalics%s\r\n", ANSI_GREY, ANSI_ITALIC, ANSI_RESET );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sStrikeout%s\n\r", ANSI_STRIKEOUT, ANSI_RESET );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sStrikeout%s\r\n", ANSI_STRIKEOUT, ANSI_RESET );
       write_to_buffer( ch->desc, log_buf, 0 );
-      snprintf( log_buf, MAX_STRING_LENGTH, "%sUnderline\n\r", ANSI_UNDERLINE );
+      snprintf( log_buf, MAX_STRING_LENGTH, "%sUnderline\r\n", ANSI_UNDERLINE );
       write_to_buffer( ch->desc, log_buf, 0 );
       write_to_buffer( ch->desc, ANSI_RESET, 0 );
       return;
@@ -487,7 +510,7 @@ void do_color( CHAR_DATA * ch, char *argument )
    if( !str_prefix( arg, "_reset_" ) )
    {
       reset_colors( ch );
-      send_to_pager( "All color types reset to default colors.\n\r", ch );
+      send_to_pager( "All color types reset to default colors.\r\n", ch );
       return;
    }
 
@@ -534,15 +557,15 @@ void do_color( CHAR_DATA * ch, char *argument )
 
       if( !dMatch )
       {
-         ch_printf( ch, "%s is an invalid color type.\n\r", arg );
-         send_to_char( "Type color with no arguments to see available options.\n\r", ch );
+         ch_printf( ch, "%s is an invalid color type.\r\n", arg );
+         send_to_char( "Type color with no arguments to see available options.\r\n", ch );
          return;
       }
 
       if( !str_cmp( arg2, "default" ) )
       {
          ch->colors[count] = default_set[count];
-         ch_printf( ch, "Display %s set back to default.\n\r", pc_displays[count] );
+         ch_printf( ch, "Display %s set back to default.\r\n", pc_displays[count] );
          return;
       }
 
@@ -564,9 +587,9 @@ void do_color( CHAR_DATA * ch, char *argument )
       if( arg[0] )
          ch_printf( ch, "Invalid color for type %s.\n", arg );
       else
-         send_to_pager( "Invalid color.\n\r", ch );
+         send_to_pager( "Invalid color.\r\n", ch );
 
-      send_to_pager( "Choices are:\n\r", ch );
+      send_to_pager( "Choices are:\r\n", ch );
 
       for( count = 0; count < 16; count++ )
       {
@@ -579,7 +602,7 @@ void do_color( CHAR_DATA * ch, char *argument )
       return;
    }
    else
-      pager_printf( ch, "Color type %s set to color %s.\n\r", count == -1 ? "_all_" : pc_displays[count], valid_color[y] );
+      pager_printf( ch, "Color type %s set to color %s.\r\n", count == -1 ? "_all_" : pc_displays[count], valid_color[y] );
 
    if( !str_cmp( argument, "blink" ) )
       y += AT_BLINK;
@@ -593,7 +616,7 @@ void do_color( CHAR_DATA * ch, char *argument )
 
       set_pager_color( y, ch );
 
-      pager_printf( ch, "All color types set to color %s%s.%s\n\r",
+      pager_printf( ch, "All color types set to color %s%s.%s\r\n",
                     valid_color[y > AT_BLINK ? y - AT_BLINK : y], y > AT_BLINK ? " [BLINKING]" : "", ANSI_RESET );
    }
    else
@@ -603,10 +626,10 @@ void do_color( CHAR_DATA * ch, char *argument )
       set_pager_color( count, ch );
 
       if( !str_cmp( argument, "blink" ) )
-         ch_printf( ch, "Display %s set to color %s [BLINKING]%s\n\r",
+         ch_printf( ch, "Display %s set to color %s [BLINKING]%s\r\n",
                     pc_displays[count], valid_color[y - AT_BLINK], ANSI_RESET );
       else
-         ch_printf( ch, "Display %s set to color %s.\n\r", pc_displays[count], valid_color[y] );
+         ch_printf( ch, "Display %s set to color %s.\r\n", pc_displays[count], valid_color[y] );
    }
    return;
 }
@@ -953,7 +976,7 @@ int colorcode( const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int 
                    * Yes, this reset here is quite necessary to cancel out other things 
                    */
                   mudstrlcpy( dst, ANSI_RESET, dstlen );
-                  if( ch )
+                  if( ch && ch->desc )
                      mudstrlcat( dst, color_str( ch->desc->pagecolor, ch ), dstlen );
                }
                break;
@@ -1352,7 +1375,7 @@ char *colorize( const char *txt, DESCRIPTOR_DATA * d )
       char colbuf[20];
       int ln;
 
-      while( ( colstr = strpbrk( prevstr, "&^}" ) ) != NULL )
+      while( ( colstr = strpbrk( prevstr, "&^}hH" ) ) != NULL )
       {
          register int reslen = 0;
 
@@ -1366,6 +1389,21 @@ char *colorize( const char *txt, DESCRIPTOR_DATA * d )
             strncat( result, prevstr, ( colstr - prevstr ) );  /* Leave this one alone! BAD THINGS(TM) will happen if you don't! */
             result[reslen + ( colstr - prevstr )] = '\0';   /* strncat will NOT NULL terminate this! */
          }
+
+         if( colstr[0] == 'h' || colstr[0] == 'H' )
+            if( colstr[1] == 't' || colstr[1] == 'T' )
+               if( colstr[2] == 't' || colstr[2] == 'T' )
+                  if( colstr[3] == 'p' || colstr[3] == 'P' )
+                  {
+                     char http[MAX_INPUT_LENGTH];
+
+                     one_argument( colstr, http );
+                     mudstrlcat( result, http, sizeof( result ) );
+                     ln = strlen( http );
+                     prevstr = colstr + ln;
+                     continue;
+                  }
+
          ln = colorcode( colstr, colbuf, d, 20, NULL );
          if( ln > 0 )
          {
@@ -1422,8 +1460,8 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, unsigned int length )
    }
    if( d->pagetop == 0 && !d->fcommand )
    {
-      d->pagebuf[0] = '\n';
-      d->pagebuf[1] = '\r';
+      d->pagebuf[0] = '\r';
+      d->pagebuf[1] = '\n';
       d->pagetop = 2;
    }
    pageroffset = d->pagepoint - d->pagebuf;  /* pager fix (goofup fixed 08/21/97) */
@@ -1431,7 +1469,7 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, unsigned int length )
    {
       if( d->pagesize > MAX_STRING_LENGTH * 16 )
       {
-         bug( "%s", "Pager overflow.  Ignoring.\n\r" );
+         bug( "%s", "Pager overflow.  Ignoring.\r\n" );
          d->pagetop = 0;
          d->pagepoint = NULL;
          DISPOSE( d->pagebuf );
@@ -1524,7 +1562,7 @@ void send_to_pager( const char *txt, CHAR_DATA * ch )
    return;
 }
 
-void ch_printf( CHAR_DATA *ch, char *fmt, ... )
+void ch_printf( CHAR_DATA * ch, char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1536,7 +1574,7 @@ void ch_printf( CHAR_DATA *ch, char *fmt, ... )
    send_to_char( buf, ch );
 }
 
-void pager_printf( CHAR_DATA *ch, char *fmt, ... )
+void pager_printf( CHAR_DATA * ch, char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1552,7 +1590,7 @@ void pager_printf( CHAR_DATA *ch, char *fmt, ... )
  * The primary output interface for formatted output.
  */
 /* Major overhaul. -- Alty */
-void ch_printf_color( CHAR_DATA *ch, char *fmt, ... )
+void ch_printf_color( CHAR_DATA * ch, char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1564,7 +1602,7 @@ void ch_printf_color( CHAR_DATA *ch, char *fmt, ... )
    send_to_char( buf, ch );
 }
 
-void pager_printf_color( CHAR_DATA *ch, char *fmt, ... )
+void pager_printf_color( CHAR_DATA * ch, char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1576,9 +1614,9 @@ void pager_printf_color( CHAR_DATA *ch, char *fmt, ... )
    send_to_pager( buf, ch );
 }
 
-void paint( short AType, CHAR_DATA *ch, const char *fmt, ... )
+void paint( short AType, CHAR_DATA * ch, const char *fmt, ... )
 {
-   char buf[MAX_STRING_LENGTH * 2];   /* better safe than sorry */
+   char buf[MAX_STRING_LENGTH * 2]; /* better safe than sorry */
    va_list args;
 
    va_start( args, fmt );

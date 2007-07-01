@@ -42,7 +42,7 @@ OBJ_DATA *get_obj_type( OBJ_INDEX_DATA * pObjIndex )
 }
 
 /* Find an object in a room so we can check it's dependents. Used by 'O' resets. */
-OBJ_DATA *get_obj_room( OBJ_INDEX_DATA *pObjIndex, ROOM_INDEX_DATA *pRoomIndex )
+OBJ_DATA *get_obj_room( OBJ_INDEX_DATA * pObjIndex, ROOM_INDEX_DATA * pRoomIndex )
 {
    OBJ_DATA *obj;
 
@@ -66,7 +66,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
    switch ( pReset->command )
    {
       default:
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) *** BAD RESET: %c %d %d %d %d ***\n\r",
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) *** BAD RESET: %c %d %d %d %d ***\r\n",
                    *num, pReset->command, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3 );
          break;
 
@@ -81,7 +81,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
          else
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d]\n\r", *num, mobname, pReset->arg1,
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d]\r\n", *num, mobname, pReset->arg1,
                    roomname, pReset->arg3, pReset->arg2 );
 
          for( tReset = pReset->first_reset; tReset; tReset = tReset->next_reset )
@@ -97,7 +97,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                   else
                      strncpy( objname, obj->name, MAX_STRING_LENGTH );
                   snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ),
-                            "%2d) (equip) %s (%d) -> %s (%s) [%d]\n\r", *num, objname, tReset->arg1, mobname,
+                            "%2d) (equip) %s (%d) -> %s (%s) [%d]\r\n", *num, objname, tReset->arg1, mobname,
                             wear_locs[tReset->arg3], tReset->arg2 );
                   break;
 
@@ -108,7 +108,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                      strncpy( objname, "Object: *BAD VNUM*", MAX_STRING_LENGTH );
                   else
                      strncpy( objname, obj->name, MAX_STRING_LENGTH );
-                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (carry) %s (%d) -> %s [%d]\n\r",
+                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (carry) %s (%d) -> %s [%d]\r\n",
                             *num, objname, tReset->arg1, mobname, tReset->arg2 );
                   break;
             }
@@ -131,7 +131,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                         else
                            strncpy( roomname, obj->name, MAX_STRING_LENGTH );
                         snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ),
-                                  "%2d) (put) %s (%d) -> %s (%d) [%d]\n\r", *num, objname, gReset->arg1, roomname,
+                                  "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n", *num, objname, gReset->arg1, roomname,
                                   obj ? obj->vnum : gReset->arg3, gReset->arg2 );
                         break;
                   }
@@ -150,7 +150,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
          else
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) (object) %s (%d) -> %s Room: %d [%d]\n\r",
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) (object) %s (%d) -> %s Room: %d [%d]\r\n",
                    *num, objname, pReset->arg1, roomname, pReset->arg3, pReset->arg2 );
 
          for( tReset = pReset->first_reset; tReset; tReset = tReset->next_reset )
@@ -169,18 +169,18 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                      strncpy( roomname, "Object2: *NULL obj*", MAX_STRING_LENGTH );
                   else
                      strncpy( roomname, obj->name, MAX_STRING_LENGTH );
-                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (put) %s (%d) -> %s (%d) [%d]\n\r",
+                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n",
                             *num, objname, tReset->arg1, roomname, obj ? obj->vnum : tReset->arg3, tReset->arg2 );
                   break;
 
                case 'T':
                   snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ),
-                            "%2d) (trap) %d %d %d %d (%s) -> %s (%d)\n\r", *num, tReset->extra, tReset->arg1, tReset->arg2,
+                            "%2d) (trap) %d %d %d %d (%s) -> %s (%d)\r\n", *num, tReset->extra, tReset->arg1, tReset->arg2,
                             tReset->arg3, flag_string( tReset->extra, trap_flags ), objname, obj ? obj->vnum : 0 );
                   break;
 
                case 'H':
-                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (hide) -> %s\n\r", *num, objname );
+                  snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (hide) -> %s\r\n", *num, objname );
                   break;
             }
          }
@@ -215,7 +215,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                strncpy( mobname, "Close and lock", MAX_STRING_LENGTH );
                break;
          }
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s [%d] the %s [%d] door %s (%d)\n\r",
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s [%d] the %s [%d] door %s (%d)\r\n",
                    *num, mobname, pReset->arg3, objname, pReset->arg2, roomname, pReset->arg1 );
          break;
 
@@ -224,7 +224,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
          else
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) Randomize exits 0 to %d -> %s (%d)\n\r", *num, pReset->arg2, roomname,
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) Randomize exits 0 to %d -> %s (%d)\r\n", *num, pReset->arg2, roomname,
                    pReset->arg1 );
          break;
 
@@ -233,7 +233,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
          else
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) Trap: %d %d %d %d (%s) -> %s (%d)\n\r",
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) Trap: %d %d %d %d (%s) -> %s (%d)\r\n",
                    *num, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3, flag_string( pReset->extra, trap_flags ),
                    roomname, room ? room->vnum : 0 );
          break;
@@ -382,7 +382,7 @@ void do_instaroom( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_SAVIOR || !ch->pcdata->area )
    {
-      send_to_char( "You don't have an assigned area to create resets for.\n\r", ch );
+      send_to_char( "You don't have an assigned area to create resets for.\r\n", ch );
       return;
    }
 
@@ -395,13 +395,13 @@ void do_instaroom( CHAR_DATA * ch, char *argument )
       return;
    if( ch->in_room->area != ch->pcdata->area && get_trust( ch ) < LEVEL_GREATER )
    {
-      send_to_char( "You cannot reset this room.\n\r", ch );
+      send_to_char( "You cannot reset this room.\r\n", ch );
       return;
    }
    if( ch->in_room->first_reset )
       wipe_resets( ch->in_room );
    instaroom( ch->in_room, dodoors );
-   send_to_char( "Room resets installed.\n\r", ch );
+   send_to_char( "Room resets installed.\r\n", ch );
 }
 
 /* Function modified from original form - Samson */
@@ -413,7 +413,7 @@ void do_instazone( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_SAVIOR || !ch->pcdata->area )
    {
-      send_to_char( "You don't have an assigned area to create resets for.\n\r", ch );
+      send_to_char( "You don't have an assigned area to create resets for.\r\n", ch );
       return;
    }
    if( !str_cmp( argument, "nodoors" ) )
@@ -424,7 +424,7 @@ void do_instazone( CHAR_DATA * ch, char *argument )
    wipe_area_resets( pArea );
    for( pRoom = pArea->first_room; pRoom; pRoom = pRoom->next_aroom )
       instaroom( pRoom, dodoors );
-   send_to_char( "Area resets installed.\n\r", ch );
+   send_to_char( "Area resets installed.\r\n", ch );
    return;
 }
 
@@ -655,7 +655,9 @@ void reset_room( ROOM_INDEX_DATA * room )
                                        lastnest = iNest;
                                     }
                                     lastobj = obj;
-                                    /* Hackish fix for nested puts */
+                                    /*
+                                     * Hackish fix for nested puts 
+                                     */
                                     if( gReset->arg3 == OBJ_VNUM_MONEY_ONE )
                                        gReset->arg3 = to_obj->pIndexData->vnum;
                                     break;
@@ -810,7 +812,9 @@ void reset_room( ROOM_INDEX_DATA * room )
                            lastnest = iNest;
                         }
                         lastobj = obj;
-                        /* Hackish fix for nested puts */
+                        /*
+                         * Hackish fix for nested puts 
+                         */
                         if( tReset->arg3 == OBJ_VNUM_MONEY_ONE )
                            tReset->arg3 = to_obj->pIndexData->vnum;
                         break;
@@ -1014,7 +1018,9 @@ RESET_DATA *find_oreset( ROOM_INDEX_DATA * room, char *oname )
 
    for( pReset = room->first_reset; pReset; pReset = pReset->next )
    {
-      /* Only going to allow traps/hides on room reset objects. Unless someone can come up with a better way to do this. */
+      /*
+       * Only going to allow traps/hides on room reset objects. Unless someone can come up with a better way to do this. 
+       */
       if( pReset->command != 'O' )
          continue;
 
@@ -1033,13 +1039,13 @@ void do_reset( CHAR_DATA * ch, char *argument )
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Usage: reset area\n\r", ch );
-      send_to_char( "Usage: reset list\n\r", ch );
-      send_to_char( "Usage: reset randomize <direction>\n\r", ch );
-      send_to_char( "Usage: reset delete <number>\n\r", ch );
-      send_to_char( "Usage: reset hide <objname>\n\r", ch );
-      send_to_char( "Usage: reset trap room <type> <charges> [flags]\n\r", ch );
-      send_to_char( "Usage: reset trap obj <name> <type> <charges> [flags]\n\r", ch );
+      send_to_char( "Usage: reset area\r\n", ch );
+      send_to_char( "Usage: reset list\r\n", ch );
+      send_to_char( "Usage: reset randomize <direction>\r\n", ch );
+      send_to_char( "Usage: reset delete <number>\r\n", ch );
+      send_to_char( "Usage: reset hide <objname>\r\n", ch );
+      send_to_char( "Usage: reset trap room <type> <charges> [flags]\r\n", ch );
+      send_to_char( "Usage: reset trap obj <name> <type> <charges> [flags]\r\n", ch );
       return;
    }
 
@@ -1047,7 +1053,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "area" ) )
    {
       reset_area( ch->in_room->area );
-      send_to_char( "Area has been reset.\n\r", ch );
+      send_to_char( "Area has been reset.\r\n", ch );
       return;
    }
 
@@ -1070,18 +1076,20 @@ void do_reset( CHAR_DATA * ch, char *argument )
             num++;
             found = TRUE;
             if( num == 1 )
-               ch_printf( ch, "Room:[%d]\n\r", room->vnum );
+               ch_printf( ch, "Room:[%d]\r\n", room->vnum );
             if( !( rbuf = sprint_reset( pReset, &num ) ) )
                continue;
             send_to_char( rbuf, ch );
          }
       }
       if( !found )
-         send_to_char( "The area your in has no resets.\n\r", ch );
+         send_to_char( "The area your in has no resets.\r\n", ch );
       return;
    }
 
-   /* Yeah, I know, this function is mucho ugly... but... */
+   /*
+    * Yeah, I know, this function is mucho ugly... but... 
+    */
    if( !str_cmp( arg, "delete" ) )
    {
       RESET_DATA *pReset, *tReset, *pReset_next, *tReset_next, *gReset, *gReset_next;
@@ -1089,13 +1097,13 @@ void do_reset( CHAR_DATA * ch, char *argument )
 
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "You must specify a reset # in this room to delete one.\n\r", ch );
+         send_to_char( "You must specify a reset # in this room to delete one.\r\n", ch );
          return;
       }
 
       if( !is_number( argument ) )
       {
-         send_to_char( "Specified reset must be designated by number. See &Wredit rlist&D.\n\r", ch );
+         send_to_char( "Specified reset must be designated by number. See &Wredit rlist&D.\r\n", ch );
          return;
       }
       num = atoi( argument );
@@ -1109,7 +1117,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
          {
             UNLINK( pReset, ch->in_room->first_reset, ch->in_room->last_reset, next, prev );
             delete_reset( pReset );
-            send_to_char( "Reset deleted.\n\r", ch );
+            send_to_char( "Reset deleted.\r\n", ch );
             return;
          }
 
@@ -1122,7 +1130,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
             {
                UNLINK( tReset, pReset->first_reset, pReset->last_reset, next_reset, prev_reset );
                delete_reset( tReset );
-               send_to_char( "Reset deleted.\n\r", ch );
+               send_to_char( "Reset deleted.\r\n", ch );
                return;
             }
 
@@ -1135,13 +1143,13 @@ void do_reset( CHAR_DATA * ch, char *argument )
                {
                   UNLINK( gReset, tReset->first_reset, tReset->last_reset, next_reset, prev_reset );
                   delete_reset( gReset );
-                  send_to_char( "Reset deleted.\n\r", ch );
+                  send_to_char( "Reset deleted.\r\n", ch );
                   return;
                }
             }
          }
       }
-      send_to_char( "No reset matching that number was found in this room.\n\r", ch );
+      send_to_char( "No reset matching that number was found in this room.\r\n", ch );
       return;
    }
 
@@ -1154,31 +1162,31 @@ void do_reset( CHAR_DATA * ch, char *argument )
 
       if( vnum < 0 || vnum > 9 )
       {
-         send_to_char( "Reset which random doors?\n\r", ch );
+         send_to_char( "Reset which random doors?\r\n", ch );
          return;
       }
 
       if( vnum == 0 )
       {
-         send_to_char( "There is no point in randomizing one door.\n\r", ch );
+         send_to_char( "There is no point in randomizing one door.\r\n", ch );
          return;
       }
 
       if( !get_room_index( vnum ) )
       {
-         send_to_char( "Target room does not exist.\n\r", ch );
+         send_to_char( "Target room does not exist.\r\n", ch );
          return;
       }
 
       pReset = make_reset( 'R', 0, ch->in_room->vnum, vnum, 0 );
       pReset->prev = NULL;
       pReset->next = ch->in_room->first_reset;
-      if( ch->in_room->first_reset->prev )
+      if( ch->in_room->first_reset )
          ch->in_room->first_reset->prev = pReset;
       ch->in_room->first_reset = pReset;
       if( !ch->in_room->last_reset )
          ch->in_room->last_reset = pReset;
-      send_to_char( "Reset random doors created.\n\r", ch );
+      send_to_char( "Reset random doors created.\r\n", ch );
       return;
    }
 
@@ -1206,7 +1214,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, oname );
          if( !( pReset = find_oreset( ch->in_room, oname ) ) )
          {
-            send_to_char( "No matching reset found to set a trap on.\n\r", ch );
+            send_to_char( "No matching reset found to set a trap on.\r\n", ch );
             return;
          }
          vnum = 0;
@@ -1219,19 +1227,19 @@ void do_reset( CHAR_DATA * ch, char *argument )
       }
       else
       {
-         send_to_char( "Trap reset must be on 'room' or 'obj'\n\r", ch );
+         send_to_char( "Trap reset must be on 'room' or 'obj'\r\n", ch );
          return;
       }
 
       if( num < 1 || num > MAX_TRAPTYPE )
       {
-         send_to_char( "Invalid trap type.\n\r", ch );
+         send_to_char( "Invalid trap type.\r\n", ch );
          return;
       }
 
       if( chrg < 0 || chrg > 10000 )
       {
-         send_to_char( "Invalid trap charges. Must be between 1 and 10000.\n\r", ch );
+         send_to_char( "Invalid trap charges. Must be between 1 and 10000.\r\n", ch );
          return;
       }
 
@@ -1241,7 +1249,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
          value = get_trapflag( arg );
          if( value < 0 || value > 31 )
          {
-            ch_printf( ch, "Bad trap flag: %s\n\r", arg );
+            ch_printf( ch, "Bad trap flag: %s\r\n", arg );
             continue;
          }
          SET_BIT( extra, 1 << value );
@@ -1251,7 +1259,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
       {
          tReset->prev_reset = NULL;
          tReset->next_reset = pReset->first_reset;
-         if( pReset->first_reset->prev_reset )
+         if( pReset->first_reset )
             pReset->first_reset->prev_reset = tReset;
          pReset->first_reset = tReset;
          if( !pReset->last_reset )
@@ -1261,13 +1269,13 @@ void do_reset( CHAR_DATA * ch, char *argument )
       {
          tReset->prev = NULL;
          tReset->next = ch->in_room->first_reset;
-         if( ch->in_room->first_reset->prev )
+         if( ch->in_room->first_reset )
             ch->in_room->first_reset->prev = tReset;
          ch->in_room->first_reset = tReset;
          if( !ch->in_room->last_reset )
             ch->in_room->last_reset = tReset;
       }
-      send_to_char( "Trap created.\n\r", ch );
+      send_to_char( "Trap created.\r\n", ch );
       return;
    }
 
@@ -1278,7 +1286,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
 
       if( !( pReset = find_oreset( ch->in_room, argument ) ) )
       {
-         send_to_char( "No such object to hide in this room.\n\r", ch );
+         send_to_char( "No such object to hide in this room.\r\n", ch );
          return;
       }
       tReset = make_reset( 'H', 1, 0, 0, 0 );
@@ -1286,7 +1294,7 @@ void do_reset( CHAR_DATA * ch, char *argument )
       {
          tReset->prev_reset = NULL;
          tReset->next_reset = pReset->first_reset;
-         if( pReset->first_reset->prev_reset )
+         if( pReset->first_reset )
             pReset->first_reset->prev_reset = tReset;
          pReset->first_reset = tReset;
          if( !pReset->last_reset )
@@ -1296,13 +1304,13 @@ void do_reset( CHAR_DATA * ch, char *argument )
       {
          tReset->prev = NULL;
          tReset->next = ch->in_room->first_reset;
-         if( ch->in_room->first_reset->prev )
+         if( ch->in_room->first_reset )
             ch->in_room->first_reset->prev = tReset;
          ch->in_room->first_reset = tReset;
          if( !ch->in_room->last_reset )
             ch->in_room->last_reset = tReset;
       }
-      send_to_char( "Hide reset created.\n\r", ch );
+      send_to_char( "Hide reset created.\r\n", ch );
       return;
    }
    do_reset( ch, "" );

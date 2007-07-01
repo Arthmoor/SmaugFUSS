@@ -26,14 +26,56 @@ OBJ_DATA *used_weapon;  /* Used to figure out which weapon later */
 /*
  * Local functions.
  */
-void new_dam_message args( ( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int dt, OBJ_DATA * obj ) );
-void group_gain args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
-int xp_compute args( ( CHAR_DATA * gch, CHAR_DATA * victim ) );
-int align_compute args( ( CHAR_DATA * gch, CHAR_DATA * victim ) );
-ch_ret one_hit args( ( CHAR_DATA * ch, CHAR_DATA * victim, int dt ) );
-int obj_hitroll args( ( OBJ_DATA * obj ) );
-void show_condition args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
+void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int dt, OBJ_DATA * obj );
+void group_gain( CHAR_DATA * ch, CHAR_DATA * victim );
+int xp_compute( CHAR_DATA * gch, CHAR_DATA * victim );
+int align_compute( CHAR_DATA * gch, CHAR_DATA * victim );
+ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt );
+int obj_hitroll( OBJ_DATA * obj );
+void show_condition( CHAR_DATA * ch, CHAR_DATA * victim );
 
+bool loot_coins_from_corpse( CHAR_DATA * ch, OBJ_DATA * corpse )
+{
+   OBJ_DATA *content, *content_next;
+   int oldgold = ch->gold;
+
+   for( content = corpse->first_content; content; content = content_next )
+   {
+      content_next = content->next_content;
+
+      if( content->item_type != ITEM_MONEY )
+         continue;
+      if( !can_see_obj( ch, content ) )
+         continue;
+      if( !CAN_WEAR( content, ITEM_TAKE ) && ch->level < sysdata.level_getobjnotake )
+         continue;
+      if( IS_OBJ_STAT( content, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
+         continue;
+
+      act( AT_ACTION, "You get $p from $P", ch, content, corpse, TO_CHAR );
+      act( AT_ACTION, "$n gets $p from $P", ch, content, corpse, TO_ROOM );
+      obj_from_obj( content );
+      check_for_trap( ch, content, TRAP_GET );
+      if( char_died( ch ) )
+         return FALSE;
+
+      oprog_get_trigger( ch, content );
+      if( char_died( ch ) )
+         return FALSE;
+
+      ch->gold += content->value[0] * content->count;
+      extract_obj( content );
+   }
+
+   if( ch->gold - oldgold > 1 && ch->position > POS_SLEEPING )
+   {
+      char buf[MAX_INPUT_LENGTH];
+
+      snprintf( buf, MAX_INPUT_LENGTH, "%d", ch->gold - oldgold );
+      do_split( ch, buf );
+   }
+   return TRUE;
+}
 
 /*
  * Check to see if player's attacks are (still?) suppressed
@@ -340,7 +382,7 @@ void violence_update( void )
                {
                   set_char_color( AT_WEAROFF, ch );
                   send_to_char( skill->msg_off, ch );
-                  send_to_char( "\n\r", ch );
+                  send_to_char( "\r\n", ch );
                }
             }
             if( paf->type == gsn_possess )
@@ -1748,13 +1790,11 @@ short ris_damage( CHAR_DATA * ch, short dam, int ris )
    return ( dam * modifier ) / 10;
 }
 
-
 /*
  * Inflict damage from a hit.   This is one damn big function.
  */
 ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 {
-   char buf1[MAX_STRING_LENGTH];
    char log_buf[MAX_STRING_LENGTH];
    char filename[256];
    short dameq;
@@ -1766,7 +1806,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
    ch_ret retcode;
    short dampmod;
    CHAR_DATA *gch /*, *lch */ ;
-   int init_gold, new_gold, gold_diff;
    short anopc = 0;  /* # of (non-pkill) pc in a (ch) */
    short bnopc = 0;  /* # of (non-pkill) pc in b (victim) */
 
@@ -1979,7 +2018,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
        * the right way to do it.
        */
 
-
       /*
        * count the # of non-pkill pc in a ( not including == ch ) 
        */
@@ -1993,7 +2031,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
       for( gch = victim->in_room->first_person; gch; gch = gch->next_in_room )
          if( is_same_group( victim, gch ) && !IS_NPC( gch ) && !IS_PKILL( gch ) && ( victim != gch ) )
             bnopc++;
-
 
       /*
        * only consider disbanding if both groups have 1(+) non-pk pc,
@@ -2082,7 +2119,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
       if( dam < 0 )
          dam = 0;
 
-
       /*
        * Check for disarm, trip, parry, dodge and tumble.
        */
@@ -2121,8 +2157,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
       }
       if( dampmod > 0 )
          dam = ( dam * dampmod ) / 100;
-
-      dam_message( ch, victim, dam, dt );
    }
 
    /*
@@ -2148,6 +2182,9 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
       else
          dam += 5;   /* add penalty for bare skin! */
    }
+
+   if( ch != victim )
+      dam_message( ch, victim, dam, dt );
 
    /*
     * Hurt the victim.
@@ -2175,7 +2212,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
    /*
     * Make sure newbies dont die 
     */
-
    if( !IS_NPC( victim ) && NOT_AUTHED( victim ) && victim->hit < 1 )
       victim->hit = 1;
 
@@ -2206,7 +2242,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
          gain_condition( victim, COND_BLOODTHIRST, -URANGE( 3, victim->level / 10, 8 ) );
          victim->hit += URANGE( 4, ( victim->max_hit / 30 ), 15 );
          set_char_color( AT_BLOOD, victim );
-         send_to_char( "You howl with rage as the beast within stirs!\n\r", victim );
+         send_to_char( "You howl with rage as the beast within stirs!\r\n", victim );
       }
    }
 
@@ -2247,7 +2283,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
                act( AT_DEAD, skill->die_room, ch, NULL, victim, TO_NOTVICT );
          }
          act( AT_DEAD, "$n is DEAD!!", victim, 0, 0, TO_ROOM );
-         act( AT_DEAD, "You have been KILLED!!\n\r", victim, 0, 0, TO_CHAR );
+         act( AT_DEAD, "You have been KILLED!!\r\n", victim, 0, 0, TO_CHAR );
          break;
 
       default:
@@ -2294,6 +2330,8 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
     */
    if( victim->position == POS_DEAD )
    {
+      OBJ_DATA *new_corpse;
+
       group_gain( ch, victim );
 
       if( !npcvict )
@@ -2352,33 +2390,29 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
          loot = FALSE;
 
       set_cur_char( victim );
-      raw_kill( ch, victim );
+      new_corpse = raw_kill( ch, victim );
       victim = NULL;
 
-      if( !IS_NPC( ch ) && loot )
+      if( !IS_NPC( ch ) && loot && new_corpse && new_corpse->item_type == ITEM_CORPSE_NPC
+          && new_corpse->in_room == ch->in_room && can_see_obj( ch, new_corpse ) && ch->position > POS_SLEEPING )
       {
          /*
           * Autogold by Scryn 8/12 
           */
-         if( xIS_SET( ch->act, PLR_AUTOGOLD ) )
-         {
-            init_gold = ch->gold;
-            do_get( ch, "coins corpse" );
-            new_gold = ch->gold;
-            gold_diff = ( new_gold - init_gold );
-            if( gold_diff > 0 )
-            {
-               snprintf( buf1, MAX_STRING_LENGTH, "%d", gold_diff );
-               do_split( ch, buf1 );
-            }
-         }
-         if( xIS_SET( ch->act, PLR_AUTOLOOT ) && victim != ch )   /* prevent nasty obj problems -- Blodkai */
-            do_get( ch, "all corpse" );
-         else
-            do_look( ch, "in corpse" );
+         if( xIS_SET( ch->act, PLR_AUTOGOLD ) && !loot_coins_from_corpse( ch, new_corpse ) )
+            return rBOTH_DIED;
 
-         if( xIS_SET( ch->act, PLR_AUTOSAC ) )
-            do_sacrifice( ch, "corpse" );
+         if( new_corpse && !obj_extracted( new_corpse ) && new_corpse->in_room == ch->in_room
+             && ch->position > POS_SLEEPING && can_see_obj( ch, new_corpse ) )
+         {
+            if( xIS_SET( ch->act, PLR_AUTOLOOT ) )
+               do_get( ch, "all corpse" );
+            else
+               do_look( ch, "in corpse" );
+            if( !char_died( ch ) && xIS_SET( ch->act, PLR_AUTOSAC ) && !obj_extracted( new_corpse )
+                && new_corpse->in_room == ch->in_room && ch->position > POS_SLEEPING && can_see_obj( ch, new_corpse ) )
+               do_sacrifice( ch, "corpse" );
+         }
       }
 
       if( IS_SET( sysdata.save_flags, SV_KILL ) )
@@ -2459,7 +2493,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_MAGIC, ch );
-         send_to_char( "A magical force prevents you from attacking.\n\r", ch );
+         send_to_char( "A magical force prevents you from attacking.\r\n", ch );
       }
       return TRUE;
    }
@@ -2469,7 +2503,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_MAGIC, ch );
-         ch_printf( ch, "You are a pacifist and will not fight.\n\r" );
+         ch_printf( ch, "You are a pacifist and will not fight.\r\n" );
       }
       return TRUE;
    }
@@ -2479,7 +2513,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       char buf[MAX_STRING_LENGTH];
       if( show_messg )
       {
-         snprintf( buf, MAX_STRING_LENGTH, "%s is a pacifist and will not fight.\n\r", capitalize( victim->short_descr ) );
+         snprintf( buf, MAX_STRING_LENGTH, "%s is a pacifist and will not fight.\r\n", capitalize( victim->short_descr ) );
          set_char_color( AT_MAGIC, ch );
          send_to_char( buf, ch );
       }
@@ -2494,7 +2528,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_IMMORT, ch );
-         send_to_char( "The gods have forbidden player killing in this area.\n\r", ch );
+         send_to_char( "The gods have forbidden player killing in this area.\r\n", ch );
       }
       return TRUE;
    }
@@ -2507,7 +2541,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_WHITE, ch );
-         send_to_char( "You are not yet ready, needing age or experience, if not both. \n\r", ch );
+         send_to_char( "You are not yet ready, needing age or experience, if not both. \r\n", ch );
       }
       return TRUE;
    }
@@ -2517,7 +2551,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_WHITE, ch );
-         send_to_char( "They are yet too young to die.\n\r", ch );
+         send_to_char( "They are yet too young to die.\r\n", ch );
       }
       return TRUE;
    }
@@ -2527,7 +2561,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_IMMORT, ch );
-         send_to_char( "The gods do not allow murder when there is such a difference in level.\n\r", ch );
+         send_to_char( "The gods do not allow murder when there is such a difference in level.\r\n", ch );
       }
       return TRUE;
    }
@@ -2537,7 +2571,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_GREEN, ch );
-         send_to_char( "That character has died within the last 5 minutes.\n\r", ch );
+         send_to_char( "That character has died within the last 5 minutes.\r\n", ch );
       }
       return TRUE;
    }
@@ -2547,7 +2581,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       if( show_messg )
       {
          set_char_color( AT_GREEN, ch );
-         send_to_char( "You have been killed within the last 5 minutes.\n\r", ch );
+         send_to_char( "You have been killed within the last 5 minutes.\r\n", ch );
       }
       return TRUE;
    }
@@ -2828,11 +2862,11 @@ void check_killer( CHAR_DATA * ch, CHAR_DATA * victim )
       return;
 
    set_char_color( AT_WHITE, ch );
-   send_to_char( "A strange feeling grows deep inside you, and a tingle goes up your spine...\n\r", ch );
+   send_to_char( "A strange feeling grows deep inside you, and a tingle goes up your spine...\r\n", ch );
    set_char_color( AT_IMMORT, ch );
-   send_to_char( "A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'\n\r", ch );
+   send_to_char( "A deep voice booms inside your head, 'Thou shall now be known as a deadly murderer!!!'\r\n", ch );
    set_char_color( AT_WHITE, ch );
-   send_to_char( "You feel as if your soul has been revealed for all to see.\n\r", ch );
+   send_to_char( "You feel as if your soul has been revealed for all to see.\r\n", ch );
    xSET_BIT( ch->act, PLR_KILLER );
    if( xIS_SET( ch->act, PLR_ATTACKER ) )
       xREMOVE_BIT( ch->act, PLR_ATTACKER );
@@ -2984,7 +3018,7 @@ void set_fighting( CHAR_DATA * ch, CHAR_DATA * victim )
     */
    if( victim->num_fighting > MAX_FIGHT )
    {
-      send_to_char( "There are too many people fighting for you to join in.\n\r", ch );
+      send_to_char( "There are too many people fighting for you to join in.\r\n", ch );
       return;
    }
 
@@ -3022,7 +3056,7 @@ void set_fighting( CHAR_DATA * ch, CHAR_DATA * victim )
    victim->num_fighting++;
    if( victim->switched && IS_AFFECTED( victim->switched, AFF_POSSESS ) )
    {
-      send_to_char( "You are disturbed!\n\r", victim->switched );
+      send_to_char( "You are disturbed!\r\n", victim->switched );
       do_return( victim->switched, "" );
    }
    return;
@@ -3067,7 +3101,7 @@ void free_fight( CHAR_DATA * ch )
       affect_strip( ch, gsn_berserk );
       set_char_color( AT_WEAROFF, ch );
       send_to_char( skill_table[gsn_berserk]->msg_off, ch );
-      send_to_char( "\n\r", ch );
+      send_to_char( "\r\n", ch );
    }
    return;
 }
@@ -3283,21 +3317,23 @@ void death_cry( CHAR_DATA * ch )
    return;
 }
 
-
-
-void raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
+OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
 {
+   OBJ_DATA *corpse_to_return = NULL;
 
    if( !victim )
    {
-      bug( "%s", "raw_kill: null victim!" );
-      return;
+      bug( "%s: null victim!", __FUNCTION__ );
+      return NULL;
    }
-/* backup in case hp goes below 1 */
+
+   /*
+    * backup in case hp goes below 1 
+    */
    if( NOT_AUTHED( victim ) )
    {
-      bug( "%s", "raw_kill: killing unauthed" );
-      return;
+      bug( "%s: killing unauthed", __FUNCTION__ );
+      return NULL;
    }
 
    stop_fighting( victim, TRUE );
@@ -3308,22 +3344,22 @@ void raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
    if( victim->morph )
    {
       do_unmorph_char( victim );
-      raw_kill( ch, victim );
-      return;
+      return raw_kill( ch, victim );
    }
 
    mprog_death_trigger( ch, victim );
    if( char_died( victim ) )
-      return;
+      return NULL;
+
    /*
     * death_cry( victim ); 
     */
 
    rprog_death_trigger( victim );
    if( char_died( victim ) )
-      return;
+      return NULL;
 
-   make_corpse( victim, ch );
+   corpse_to_return = make_corpse( victim, ch );
    if( victim->in_room->sector_type == SECT_OCEANFLOOR
        || victim->in_room->sector_type == SECT_UNDERWATER
        || victim->in_room->sector_type == SECT_WATER_SWIM || victim->in_room->sector_type == SECT_WATER_NOSWIM )
@@ -3338,7 +3374,7 @@ void raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
       victim->pIndexData->killed++;
       extract_char( victim, TRUE );
       victim = NULL;
-      return;
+      return corpse_to_return;
    }
 
    set_char_color( AT_DIEMSG, victim );
@@ -3350,8 +3386,8 @@ void raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
    extract_char( victim, FALSE );
    if( !victim )
    {
-      bug( "%s", "oops! raw_kill: extract_char destroyed pc char" );
-      return;
+      bug( "%s: oops! extract_char destroyed pc char", __FUNCTION__ );
+      return NULL;
    }
    while( victim->first_affect )
       affect_remove( victim, victim->first_affect );
@@ -3402,12 +3438,12 @@ neutral when they die given the difficulting of changing align */
    if( xIS_SET( victim->act, PLR_KILLER ) )
    {
       xREMOVE_BIT( victim->act, PLR_KILLER );
-      send_to_char( "The gods have pardoned you for your murderous acts.\n\r", victim );
+      send_to_char( "The gods have pardoned you for your murderous acts.\r\n", victim );
    }
    if( xIS_SET( victim->act, PLR_THIEF ) )
    {
       xREMOVE_BIT( victim->act, PLR_THIEF );
-      send_to_char( "The gods have pardoned you for your thievery.\n\r", victim );
+      send_to_char( "The gods have pardoned you for your thievery.\r\n", victim );
    }
    victim->pcdata->condition[COND_FULL] = 12;
    victim->pcdata->condition[COND_THIRST] = 12;
@@ -3416,7 +3452,7 @@ neutral when they die given the difficulting of changing align */
 
    if( IS_SET( sysdata.save_flags, SV_DEATH ) )
       save_char_obj( victim );
-   return;
+   return corpse_to_return;
 }
 
 void group_gain( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -3460,13 +3496,13 @@ void group_gain( CHAR_DATA * ch, CHAR_DATA * victim )
 
       if( gch->level - lch->level > 8 )
       {
-         send_to_char( "You are too high for this group.\n\r", gch );
+         send_to_char( "You are too high for this group.\r\n", gch );
          continue;
       }
 
       if( gch->level - lch->level < -8 )
       {
-         send_to_char( "You are too low for this group.\n\r", gch );
+         send_to_char( "You are too low for this group.\r\n", gch );
          continue;
       }
 
@@ -3474,7 +3510,7 @@ void group_gain( CHAR_DATA * ch, CHAR_DATA * victim )
       if( !gch->fighting )
          xp /= 2;
       gch->alignment = align_compute( gch, victim );
-      ch_printf( gch, "You receive %d experience points.\n\r", xp );
+      ch_printf( gch, "You receive %d experience points.\r\n", xp );
       gain_exp( gch, xp );
 
       for( obj = gch->first_carrying; obj; obj = obj_next )
@@ -3816,13 +3852,13 @@ void do_kill( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Kill whom?\n\r", ch );
+      send_to_char( "Kill whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
@@ -3836,7 +3872,7 @@ void do_kill( CHAR_DATA * ch, char *argument )
    {
       if( !xIS_SET( victim->act, PLR_KILLER ) && !xIS_SET( victim->act, PLR_THIEF ) )
       {
-         send_to_char( "You must MURDER a player.\n\r", ch );
+         send_to_char( "You must MURDER a player.\r\n", ch );
          return;
       }
    }
@@ -3847,7 +3883,7 @@ void do_kill( CHAR_DATA * ch, char *argument )
     {
     if ( IS_AFFECTED(victim, AFF_CHARM) && victim->master != NULL )
     {
-    send_to_char( "You must MURDER a charmed creature.\n\r", ch );
+    send_to_char( "You must MURDER a charmed creature.\r\n", ch );
     return;
     }
     }
@@ -3856,7 +3892,7 @@ void do_kill( CHAR_DATA * ch, char *argument )
 
    if( victim == ch )
    {
-      send_to_char( "You hit yourself.  Ouch!\n\r", ch );
+      send_to_char( "You hit yourself.  Ouch!\r\n", ch );
       multi_hit( ch, ch, TYPE_UNDEFINED );
       return;
    }
@@ -3874,7 +3910,7 @@ void do_kill( CHAR_DATA * ch, char *argument )
        || ch->position == POS_EVASIVE
        || ch->position == POS_DEFENSIVE || ch->position == POS_AGGRESSIVE || ch->position == POS_BERSERK )
    {
-      send_to_char( "You do the best you can!\n\r", ch );
+      send_to_char( "You do the best you can!\r\n", ch );
       return;
    }
 
@@ -3886,7 +3922,7 @@ void do_kill( CHAR_DATA * ch, char *argument )
 
 void do_murde( CHAR_DATA * ch, char *argument )
 {
-   send_to_char( "If you want to MURDER, spell it out.\n\r", ch );
+   send_to_char( "If you want to MURDER, spell it out.\r\n", ch );
    return;
 }
 
@@ -3900,19 +3936,19 @@ void do_murder( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Murder whom?\n\r", ch );
+      send_to_char( "Murder whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( victim == ch )
    {
-      send_to_char( "Suicide is a mortal sin.\n\r", ch );
+      send_to_char( "Suicide is a mortal sin.\r\n", ch );
       return;
    }
 
@@ -3937,13 +3973,13 @@ void do_murder( CHAR_DATA * ch, char *argument )
        || ch->position == POS_EVASIVE
        || ch->position == POS_DEFENSIVE || ch->position == POS_AGGRESSIVE || ch->position == POS_BERSERK )
    {
-      send_to_char( "You do the best you can!\n\r", ch );
+      send_to_char( "You do the best you can!\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && xIS_SET( ch->act, PLR_NICE ) )
    {
-      send_to_char( "You feel too nice to do that!\n\r", ch );
+      send_to_char( "You feel too nice to do that!\r\n", ch );
       return;
    }
 /*
@@ -4035,17 +4071,17 @@ void do_flee( CHAR_DATA * ch, char *argument )
          else
             ch->position = POS_STANDING;
       }
-      send_to_char( "You aren't fighting anyone.\n\r", ch );
+      send_to_char( "You aren't fighting anyone.\r\n", ch );
       return;
    }
    if( IS_AFFECTED( ch, AFF_BERSERK ) )
    {
-      send_to_char( "Flee while berserking?  You aren't thinking very clearly...\n\r", ch );
+      send_to_char( "Flee while berserking?  You aren't thinking very clearly...\r\n", ch );
       return;
    }
    if( ch->move <= 0 )
    {
-      send_to_char( "You're too exhausted to flee from combat!\n\r", ch );
+      send_to_char( "You're too exhausted to flee from combat!\r\n", ch );
       return;
    }
    /*
@@ -4053,7 +4089,7 @@ void do_flee( CHAR_DATA * ch, char *argument )
     */
    if( !IS_NPC( ch ) && ch->position < POS_FIGHTING )
    {
-      send_to_char( "You can't flee in an aggressive stance...\n\r", ch );
+      send_to_char( "You can't flee in an aggressive stance...\r\n", ch );
       return;
    }
    if( IS_NPC( ch ) && ch->position <= POS_SLEEPING )
@@ -4110,7 +4146,7 @@ void do_flee( CHAR_DATA * ch, char *argument )
    act( AT_FLEE, "You attempt to flee from combat but can't escape!", ch, NULL, NULL, TO_CHAR );
    if( ch->level < LEVEL_AVATAR && number_bits( 3 ) == 1 )
    {
-      snprintf( buf, MAX_STRING_LENGTH, "Curse the gods, you've lost %d experience!\n\r", los );
+      snprintf( buf, MAX_STRING_LENGTH, "Curse the gods, you've lost %d experience!\r\n", los );
       act( AT_FLEE, buf, ch, NULL, NULL, TO_CHAR );
       gain_exp( ch, 0 - los );
    }
@@ -4119,7 +4155,7 @@ void do_flee( CHAR_DATA * ch, char *argument )
 
 void do_sla( CHAR_DATA * ch, char *argument )
 {
-   send_to_char( "If you want to SLAY, spell it out.\n\r", ch );
+   send_to_char( "If you want to SLAY, spell it out.\r\n", ch );
    return;
 }
 
@@ -4133,25 +4169,25 @@ void do_slay( CHAR_DATA * ch, char *argument )
    one_argument( argument, arg2 );
    if( arg[0] == '\0' )
    {
-      send_to_char( "Slay whom?\n\r", ch );
+      send_to_char( "Slay whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( ch == victim )
    {
-      send_to_char( "Suicide is a mortal sin.\n\r", ch );
+      send_to_char( "Suicide is a mortal sin.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && get_trust( victim ) >= get_trust( ch ) )
    {
-      send_to_char( "You failed.\n\r", ch );
+      send_to_char( "You failed.\r\n", ch );
       return;
    }
 

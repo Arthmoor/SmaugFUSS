@@ -94,7 +94,7 @@ char *const w_flags[] = {
 };
 
 char *const item_w_flags[] = {
-   "take", "finger", "neck", "neck", "neck", "body", "head", "legs", "feet",
+   "take", "finger", "finger", "neck", "neck", "body", "head", "legs", "feet",
    "hands", "arms", "shield", "about", "waist", "wrist", "wrist", "wield",
    "hold", "dual", "ears", "eyes", "missile", "back", "face", "ankle", "ankle",
    "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13"
@@ -169,9 +169,9 @@ char *const plr_flags[] = {
 
 char *const trap_flags[] = {
    "room", "obj", "enter", "leave", "open", "close", "get", "put", "pick",
-   "unlock", "north", "south", "east", "r1", "west", "up", "down", "examine",
-   "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13",
-   "r14", "r15"
+   "unlock", "north", "south", "east", "west", "up", "down", "examine",
+   "northeast", "northwest", "southeast", "southwest", "r6", "r7", "r8",
+   "r9", "r10", "r11", "r12", "r13", "r14", "r15"
 };
 
 char *const cmd_flags[] = {
@@ -298,18 +298,18 @@ bool can_rmodify( CHAR_DATA * ch, ROOM_INDEX_DATA * room )
       return TRUE;
    if( !IS_SET( room->room_flags, ROOM_PROTOTYPE ) )
    {
-      send_to_char( "You cannot modify this room.\n\r", ch );
+      send_to_char( "You cannot modify this room.\r\n", ch );
       return FALSE;
    }
    if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
    {
-      send_to_char( "You must have an assigned area to modify this room.\n\r", ch );
+      send_to_char( "You must have an assigned area to modify this room.\r\n", ch );
       return FALSE;
    }
    if( vnum >= pArea->low_r_vnum && vnum <= pArea->hi_r_vnum )
       return TRUE;
 
-   send_to_char( "That room is not in your allocated range.\n\r", ch );
+   send_to_char( "That room is not in your allocated range.\r\n", ch );
    return FALSE;
 }
 
@@ -324,18 +324,18 @@ bool can_omodify( CHAR_DATA * ch, OBJ_DATA * obj )
       return TRUE;
    if( !IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
    {
-      send_to_char( "You cannot modify this object.\n\r", ch );
+      send_to_char( "You cannot modify this object.\r\n", ch );
       return FALSE;
    }
    if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
    {
-      send_to_char( "You must have an assigned area to modify this object.\n\r", ch );
+      send_to_char( "You must have an assigned area to modify this object.\r\n", ch );
       return FALSE;
    }
    if( vnum >= pArea->low_o_vnum && vnum <= pArea->hi_o_vnum )
       return TRUE;
 
-   send_to_char( "That object is not in your allocated range.\n\r", ch );
+   send_to_char( "That object is not in your allocated range.\r\n", ch );
    return FALSE;
 }
 
@@ -350,18 +350,18 @@ bool can_oedit( CHAR_DATA * ch, OBJ_INDEX_DATA * obj )
       return TRUE;
    if( !IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
    {
-      send_to_char( "You cannot modify this object.\n\r", ch );
+      send_to_char( "You cannot modify this object.\r\n", ch );
       return FALSE;
    }
    if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
    {
-      send_to_char( "You must have an assigned area to modify this object.\n\r", ch );
+      send_to_char( "You must have an assigned area to modify this object.\r\n", ch );
       return FALSE;
    }
    if( vnum >= pArea->low_o_vnum && vnum <= pArea->hi_o_vnum )
       return TRUE;
 
-   send_to_char( "That object is not in your allocated range.\n\r", ch );
+   send_to_char( "That object is not in your allocated range.\r\n", ch );
    return FALSE;
 }
 
@@ -379,7 +379,7 @@ bool can_mmodify( CHAR_DATA * ch, CHAR_DATA * mob )
       if( get_trust( ch ) >= sysdata.level_modify_proto && get_trust( ch ) > get_trust( mob ) )
          return TRUE;
       else
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
       return FALSE;
    }
 
@@ -391,18 +391,18 @@ bool can_mmodify( CHAR_DATA * ch, CHAR_DATA * mob )
       return TRUE;
    if( !xIS_SET( mob->act, ACT_PROTOTYPE ) )
    {
-      send_to_char( "You cannot modify this mobile.\n\r", ch );
+      send_to_char( "You cannot modify this mobile.\r\n", ch );
       return FALSE;
    }
    if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
    {
-      send_to_char( "You must have an assigned area to modify this mobile.\n\r", ch );
+      send_to_char( "You must have an assigned area to modify this mobile.\r\n", ch );
       return FALSE;
    }
    if( vnum >= pArea->low_m_vnum && vnum <= pArea->hi_m_vnum )
       return TRUE;
 
-   send_to_char( "That mobile is not in your allocated range.\n\r", ch );
+   send_to_char( "That mobile is not in your allocated range.\r\n", ch );
    return FALSE;
 }
 
@@ -417,18 +417,18 @@ bool can_medit( CHAR_DATA * ch, MOB_INDEX_DATA * mob )
       return TRUE;
    if( !xIS_SET( mob->act, ACT_PROTOTYPE ) )
    {
-      send_to_char( "You cannot modify this mobile.\n\r", ch );
+      send_to_char( "You cannot modify this mobile.\r\n", ch );
       return FALSE;
    }
    if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
    {
-      send_to_char( "You must have an assigned area to modify this mobile.\n\r", ch );
+      send_to_char( "You must have an assigned area to modify this mobile.\r\n", ch );
       return FALSE;
    }
    if( vnum >= pArea->low_m_vnum && vnum <= pArea->hi_m_vnum )
       return TRUE;
 
-   send_to_char( "That mobile is not in your allocated range.\n\r", ch );
+   send_to_char( "That mobile is not in your allocated range.\r\n", ch );
    return FALSE;
 }
 
@@ -785,8 +785,8 @@ void start_editing( CHAR_DATA * ch, char *data )
       bug( "%s", "NOT GOOD: start_editing: ch->substate == SUB_RESTRICTED" );
 
    set_char_color( AT_GREEN, ch );
-   send_to_char( "Begin entering your text now (/? = help /s = save /c = clear /l = list)\n\r", ch );
-   send_to_char( "-----------------------------------------------------------------------\n\r> ", ch );
+   send_to_char( "Begin entering your text now (/? = help /s = save /c = clear /l = list)\r\n", ch );
+   send_to_char( "-----------------------------------------------------------------------\r\n> ", ch );
    if( ch->editor )
       stop_editing( ch );
 
@@ -798,7 +798,7 @@ void start_editing( CHAR_DATA * ch, char *data )
    lpos = 0;
    lines = 0;
    if( !data )
-      bug( "%s", "editor: data is NULL!\n\r" );
+      bug( "%s", "editor: data is NULL!\r\n" );
    else
       for( ;; )
       {
@@ -845,13 +845,13 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s", "copy_buffer_nohash: null ch" );
+      bug( "%s: null ch", __FUNCTION__ );
       return str_dup( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s", "copy_buffer_nohash: null editor" );
+      bug( "%s: null editor", __FUNCTION__ );
       return str_dup( "" );
    }
 
@@ -863,7 +863,7 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
       if( tmp && tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
-         mudstrlcat( tmp, "\n\r", 100 );
+         mudstrlcat( tmp, "\n", 100 );
       smash_tilde( tmp );
       mudstrlcat( buf, tmp, MAX_STRING_LENGTH );
    }
@@ -878,13 +878,13 @@ char *copy_buffer( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s", "copy_buffer: null ch" );
+      bug( "%s: null ch", __FUNCTION__ );
       return STRALLOC( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s", "copy_buffer: null editor" );
+      bug( "%s: null editor", __FUNCTION__ );
       return STRALLOC( "" );
    }
 
@@ -896,7 +896,7 @@ char *copy_buffer( CHAR_DATA * ch )
       if( tmp && tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
-         mudstrlcat( tmp, "\n\r", 100 );
+         mudstrlcat( tmp, "\n", 100 );
       smash_tilde( tmp );
       mudstrlcat( buf, tmp, MAX_STRING_LENGTH );
    }
@@ -908,7 +908,7 @@ void stop_editing( CHAR_DATA * ch )
    set_char_color( AT_PLAIN, ch );
    DISPOSE( ch->editor );
    ch->editor = NULL;
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
    ch->dest_buf = NULL;
    ch->spare_ptr = NULL;
    ch->substate = SUB_NONE;
@@ -931,7 +931,7 @@ void do_goto( CHAR_DATA * ch, char *argument )
    one_argument( argument, arg );
    if( arg[0] == '\0' )
    {
-      send_to_char( "Goto where?\n\r", ch );
+      send_to_char( "Goto where?\r\n", ch );
       return;
    }
 
@@ -939,8 +939,8 @@ void do_goto( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( fch ) && get_trust( ch ) < get_trust( fch ) && IS_SET( fch->pcdata->flags, PCFLAG_DND ) )
       {
-         pager_printf( ch, "Sorry. %s does not wish to be disturbed.\n\r", fch->name );
-         pager_printf( fch, "Your DND flag just foiled %s's goto command.\n\r", ch->name );
+         pager_printf( ch, "Sorry. %s does not wish to be disturbed.\r\n", fch->name );
+         pager_printf( fch, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
          return;
       }
    }
@@ -950,24 +950,24 @@ void do_goto( CHAR_DATA * ch, char *argument )
       vnum = atoi( arg );
       if( vnum < 0 || get_room_index( vnum ) )
       {
-         send_to_char( "You cannot find that...\n\r", ch );
+         send_to_char( "You cannot find that...\r\n", ch );
          return;
       }
       if( get_trust( ch ) < LEVEL_CREATOR || vnum < 1 || IS_NPC( ch ) || !ch->pcdata->area )
       {
-         send_to_char( "No such location.\n\r", ch );
+         send_to_char( "No such location.\r\n", ch );
          return;
       }
       if( get_trust( ch ) < sysdata.level_modify_proto )
       {
          if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
          {
-            send_to_char( "You must have an assigned area to create rooms.\n\r", ch );
+            send_to_char( "You must have an assigned area to create rooms.\r\n", ch );
             return;
          }
          if( vnum < pArea->low_r_vnum || vnum > pArea->hi_r_vnum )
          {
-            send_to_char( "That room is not within your assigned range.\n\r", ch );
+            send_to_char( "That room is not within your assigned range.\r\n", ch );
             return;
          }
       }
@@ -978,13 +978,13 @@ void do_goto( CHAR_DATA * ch, char *argument )
          return;
       }
       set_char_color( AT_WHITE, ch );
-      send_to_char( "Waving your hand, you form order from swirling chaos,\n\rand step into a new reality...\n\r", ch );
+      send_to_char( "Waving your hand, you form order from swirling chaos,\r\nand step into a new reality...\r\n", ch );
    }
 
    if( ( victim = room_is_dnd( ch, location ) ) )
    {
-      pager_printf( ch, "That room is \"do not disturb\" right now.\n\r" );
-      pager_printf( victim, "Your DND flag just foiled %s's goto command.\n\r", ch->name );
+      pager_printf( ch, "That room is \"do not disturb\" right now.\r\n" );
+      pager_printf( victim, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
       return;
    }
 
@@ -992,11 +992,11 @@ void do_goto( CHAR_DATA * ch, char *argument )
    {
       if( get_trust( ch ) < sysdata.level_override_private )
       {
-         send_to_char( "That room is private right now.\n\r", ch );
+         send_to_char( "That room is private right now.\r\n", ch );
          return;
       }
       else
-         send_to_char( "Overriding private flag!\n\r", ch );
+         send_to_char( "Overriding private flag!\r\n", ch );
    }
 
    in_room = ch->in_room;
@@ -1064,13 +1064,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't mset\n\r", ch );
+      send_to_char( "Mob's can't mset\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -1081,7 +1081,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       case SUB_MOB_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_mset: sub_mob_desc: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -1089,7 +1089,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          victim = ( CHAR_DATA * ) ch->dest_buf;
          if( char_died( victim ) )
          {
-            send_to_char( "Your victim died!\n\r", ch );
+            send_to_char( "Your victim died!\r\n", ch );
             stop_editing( ch );
             return;
          }
@@ -1115,7 +1115,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( !victim )
       {
-         send_to_char( "Your victim died!\n\r", ch );
+         send_to_char( "Your victim died!\r\n", ch );
          argument = "done";
       }
 
@@ -1124,14 +1124,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
          if( victim )
             do_mstat( ch, victim->name );
          else
-            send_to_char( "No victim selected.  Type '?' for help.\n\r", ch );
+            send_to_char( "No victim selected.  Type '?' for help.\r\n", ch );
          return;
       }
       if( !str_cmp( argument, "done" ) || !str_cmp( argument, "off" ) )
       {
          if( ch->dest_buf )
             RelDestroy( relMSET_ON, ch, ch->dest_buf );
-         send_to_char( "Mset mode off.\n\r", ch );
+         send_to_char( "Mset mode off.\r\n", ch );
          ch->substate = SUB_NONE;
          ch->dest_buf = NULL;
          if( ch->pcdata && ch->pcdata->subprompt )
@@ -1159,7 +1159,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg1, "on" ) )
    {
-      send_to_char( "Syntax: mset <victim|vnum> on.\n\r", ch );
+      send_to_char( "Syntax: mset <victim|vnum> on.\r\n", ch );
       return;
    }
 
@@ -1168,31 +1168,31 @@ void do_mset( CHAR_DATA * ch, char *argument )
       if( ch->substate == SUB_REPEATCMD )
       {
          if( victim )
-            send_to_char( "Syntax: <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <field>  <value>\r\n", ch );
          else
-            send_to_char( "Syntax: <victim> <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <victim> <field>  <value>\r\n", ch );
       }
       else
-         send_to_char( "Syntax: mset <victim> <field>  <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Field being one of:\n\r", ch );
-      send_to_char( "  str int wis dex con cha lck sex class\n\r", ch );
-      send_to_char( "  gold hp mana move practice align race\n\r", ch );
-      send_to_char( "  hitroll damroll armor affected level\n\r", ch );
-      send_to_char( "  thirst drunk full blood flags\n\r", ch );
-      send_to_char( "  pos defpos part (see BODYPARTS)\n\r", ch );
-      send_to_char( "  sav1 sav2 sav4 sav4 sav5 (see SAVINGTHROWS)\n\r", ch );
-      send_to_char( "  resistant immune susceptible (see RIS)\n\r", ch );
-      send_to_char( "  attack defense numattacks\n\r", ch );
-      send_to_char( "  speaking speaks (see LANGUAGES)\n\r", ch );
-      send_to_char( "  name short long description title spec clan\n\r", ch );
-      send_to_char( "  council quest qp qpa favor deity\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "For editing index/prototype mobiles:\n\r", ch );
-      send_to_char( "  hitnumdie hitsizedie hitplus (hit points)\n\r", ch );
-      send_to_char( "  damnumdie damsizedie damplus (damage roll)\n\r", ch );
-      send_to_char( "To toggle area flag: aloaded\n\r", ch );
-      send_to_char( "To toggle pkill flag: pkill\n\r", ch );
+         send_to_char( "Syntax: mset <victim> <field>  <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Field being one of:\r\n", ch );
+      send_to_char( "  str int wis dex con cha lck sex class\r\n", ch );
+      send_to_char( "  gold hp mana move practice align race\r\n", ch );
+      send_to_char( "  hitroll damroll armor affected level\r\n", ch );
+      send_to_char( "  thirst drunk full blood flags\r\n", ch );
+      send_to_char( "  pos defpos part (see BODYPARTS)\r\n", ch );
+      send_to_char( "  sav1 sav2 sav4 sav4 sav5 (see SAVINGTHROWS)\r\n", ch );
+      send_to_char( "  resistant immune susceptible (see RIS)\r\n", ch );
+      send_to_char( "  attack defense numattacks\r\n", ch );
+      send_to_char( "  speaking speaks (see LANGUAGES)\r\n", ch );
+      send_to_char( "  name short long description title spec clan\r\n", ch );
+      send_to_char( "  council quest qp qpa favor deity\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "For editing index/prototype mobiles:\r\n", ch );
+      send_to_char( "  hitnumdie hitsizedie hitplus (hit points)\r\n", ch );
+      send_to_char( "  damnumdie damsizedie damplus (damage roll)\r\n", ch );
+      send_to_char( "To toggle area flag: aloaded\r\n", ch );
+      send_to_char( "To toggle pkill flag: pkill\r\n", ch );
       return;
    }
 
@@ -1200,7 +1200,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "They aren't here.\n\r", ch );
+         send_to_char( "They aren't here.\r\n", ch );
          return;
       }
    }
@@ -1208,20 +1208,20 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( ( victim = get_char_world( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "No one like that in all the realms.\n\r", ch );
+         send_to_char( "No one like that in all the realms.\r\n", ch );
          return;
       }
    }
 
    if( get_trust( ch ) < get_trust( victim ) && !IS_NPC( victim ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       ch->dest_buf = NULL;
       return;
    }
    if( get_trust( ch ) < LEVEL_GREATER && IS_NPC( victim ) && xIS_SET( victim->act, ACT_STATSHIELD ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       ch->dest_buf = NULL;
       return;
    }
@@ -1242,7 +1242,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "on" ) )
    {
       CHECK_SUBRESTRICTED( ch );
-      ch_printf( ch, "Mset mode on. (Editing %s).\n\r", victim->name );
+      ch_printf( ch, "Mset mode on. (Editing %s).\r\n", victim->name );
       ch->substate = SUB_REPEATCMD;
       ch->dest_buf = victim;
       if( ch->pcdata )
@@ -1269,7 +1269,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Strength range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Strength range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_str = value;
@@ -1284,7 +1284,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Intelligence range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Intelligence range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_int = value;
@@ -1299,7 +1299,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Wisdom range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Wisdom range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_wis = value;
@@ -1314,7 +1314,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Dexterity range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Dexterity range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_dex = value;
@@ -1329,7 +1329,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Constitution range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Constitution range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_con = value;
@@ -1344,7 +1344,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Charisma range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Charisma range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_cha = value;
@@ -1359,7 +1359,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < minattr || value > maxattr )
       {
-         ch_printf( ch, "Luck range is %d to %d.\n\r", minattr, maxattr );
+         ch_printf( ch, "Luck range is %d to %d.\r\n", minattr, maxattr );
          return;
       }
       victim->perm_lck = value;
@@ -1374,7 +1374,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       victim->saving_poison_death = value;
@@ -1389,7 +1389,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       victim->saving_wand = value;
@@ -1404,7 +1404,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       victim->saving_para_petri = value;
@@ -1419,7 +1419,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       victim->saving_breath = value;
@@ -1434,7 +1434,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       victim->saving_spell_staff = value;
@@ -1449,7 +1449,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < 0 || value > 2 )
       {
-         send_to_char( "Sex range is 0 to 2.\n\r", ch );
+         send_to_char( "Sex range is 0 to 2.\r\n", ch );
          return;
       }
       victim->sex = value;
@@ -1520,7 +1520,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -300 || value > 300 )
       {
-         send_to_char( "AC range is -300 to 300.\n\r", ch );
+         send_to_char( "AC range is -300 to 300.\r\n", ch );
          return;
       }
       victim->armor = value;
@@ -1535,13 +1535,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Not on PC's.\n\r", ch );
+         send_to_char( "Not on PC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > LEVEL_AVATAR + 5 )
       {
-         ch_printf( ch, "Level range is 0 to %d.\n\r", LEVEL_AVATAR + 5 );
+         ch_printf( ch, "Level range is 0 to %d.\r\n", LEVEL_AVATAR + 5 );
          return;
       }
       victim->level = value;
@@ -1556,13 +1556,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Not on PC's.\n\r", ch );
+         send_to_char( "Not on PC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 20 )
       {
-         send_to_char( "Attacks range is 0 to 20.\n\r", ch );
+         send_to_char( "Attacks range is 0 to 20.\r\n", ch );
          return;
       }
       victim->numattacks = value;
@@ -1607,7 +1607,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < 1 || value > 32700 )
       {
-         send_to_char( "Hp range is 1 to 32,700 hit points.\n\r", ch );
+         send_to_char( "Hp range is 1 to 32,700 hit points.\r\n", ch );
          return;
       }
       victim->max_hit = value;
@@ -1620,7 +1620,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < 0 || value > 30000 )
       {
-         send_to_char( "Mana range is 0 to 30,000 mana points.\n\r", ch );
+         send_to_char( "Mana range is 0 to 30,000 mana points.\r\n", ch );
          return;
       }
       victim->max_mana = value;
@@ -1633,7 +1633,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < 0 || value > 30000 )
       {
-         send_to_char( "Move range is 0 to 30,000 move points.\n\r", ch );
+         send_to_char( "Move range is 0 to 30,000 move points.\r\n", ch );
          return;
       }
       victim->max_move = value;
@@ -1646,7 +1646,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Practice range is 0 to 100 sessions.\n\r", ch );
+         send_to_char( "Practice range is 0 to 100 sessions.\r\n", ch );
          return;
       }
       victim->practice = value;
@@ -1659,7 +1659,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( value < -1000 || value > 1000 )
       {
-         send_to_char( "Alignment range is -1000 to 1000.\n\r", ch );
+         send_to_char( "Alignment range is -1000 to 1000.\r\n", ch );
          return;
       }
       victim->alignment = value;
@@ -1674,18 +1674,18 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < LEVEL_SUB_IMPLEM )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Mobs don't have passwords.\n\r", ch );
+         send_to_char( "Mobs don't have passwords.\r\n", ch );
          return;
       }
 
       if( strlen( arg3 ) < 5 )
       {
-         send_to_char( "New password must be at least five characters long.\n\r", ch );
+         send_to_char( "New password must be at least five characters long.\r\n", ch );
          return;
       }
 
@@ -1701,8 +1701,8 @@ void do_mset( CHAR_DATA * ch, char *argument )
       victim->pcdata->pwd = str_dup( pwdnew );
       if( IS_SET( sysdata.save_flags, SV_PASSCHG ) )
          save_char_obj( victim );
-      send_to_char( "Ok.\n\r", ch );
-      ch_printf( victim, "Your password has been changed by %s.\n\r", ch->name );
+      send_to_char( "Ok.\r\n", ch );
+      ch_printf( victim, "Your password has been changed by %s.\r\n", ch->name );
       return;
    }
 
@@ -1710,12 +1710,12 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( get_trust( ch ) < LEVEL_GOD )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
       smash_tilde( argument );
@@ -1724,7 +1724,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          victim->pcdata->rank = str_dup( "" );
       else
          victim->pcdata->rank = str_dup( argument );
-      send_to_char( "Ok.\n\r", ch );
+      send_to_char( "Ok.\r\n", ch );
       return;
    }
 
@@ -1732,13 +1732,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 500 )
       {
-         send_to_char( "The current quest range is 0 to 500.\n\r", ch );
+         send_to_char( "The current quest range is 0 to 500.\r\n", ch );
          return;
       }
 
@@ -1750,7 +1750,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
@@ -1762,13 +1762,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 5000 )
       {
-         send_to_char( "The current quest point range is 0 to 5000.\n\r", ch );
+         send_to_char( "The current quest point range is 0 to 5000.\r\n", ch );
          return;
       }
 
@@ -1780,13 +1780,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < -2500 || value > 2500 )
       {
-         send_to_char( "Range is from -2500 to 2500.\n\r", ch );
+         send_to_char( "Range is from -2500 to 2500.\r\n", ch );
          return;
       }
 
@@ -1798,7 +1798,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( value < -100 || value > 100 )
       {
-         send_to_char( "Value must be in range -100 to +100.\n\r", ch );
+         send_to_char( "Value must be in range -100 to +100.\r\n", ch );
          return;
       }
       victim->mental_state = value;
@@ -1809,7 +1809,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( value < -100 || value > 100 )
       {
-         send_to_char( "Value must be in range -100 to +100.\n\r", ch );
+         send_to_char( "Value must be in range -100 to +100.\r\n", ch );
          return;
       }
       victim->emotional_state = value;
@@ -1820,13 +1820,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Thirst range is 0 to 100.\n\r", ch );
+         send_to_char( "Thirst range is 0 to 100.\r\n", ch );
          return;
       }
 
@@ -1838,13 +1838,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Drunk range is 0 to 100.\n\r", ch );
+         send_to_char( "Drunk range is 0 to 100.\r\n", ch );
          return;
       }
 
@@ -1856,13 +1856,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Full range is 0 to 100.\n\r", ch );
+         send_to_char( "Full range is 0 to 100.\r\n", ch );
          return;
       }
 
@@ -1874,13 +1874,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
       if( value < 0 || value > MAX_LEVEL + 10 )
       {
-         ch_printf( ch, "Blood range is 0 to %d.\n\r", MAX_LEVEL + 10 );
+         ch_printf( ch, "Blood range is 0 to %d.\r\n", MAX_LEVEL + 10 );
          return;
       }
 
@@ -1894,13 +1894,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Not on PC's.\n\r", ch );
+         send_to_char( "Not on PC's.\r\n", ch );
          return;
       }
 
       if( !arg3 || arg3[0] == '\0' )
       {
-         send_to_char( "Names can not be set to an empty string.\n\r", ch );
+         send_to_char( "Names can not be set to an empty string.\r\n", ch );
          return;
       }
 
@@ -1918,12 +1918,12 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( get_trust( ch ) < LEVEL_SUB_IMPLEM )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
       if( victim->pcdata )
@@ -1939,12 +1939,12 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < LEVEL_GOD )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
@@ -1996,7 +1996,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       clan = get_clan( arg3 );
       if( !clan )
       {
-         send_to_char( "No such clan.\n\r", ch );
+         send_to_char( "No such clan.\r\n", ch );
          return;
       }
       if( victim->pcdata->clan != NULL && !IS_IMMORTAL( victim ) )
@@ -2044,7 +2044,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
@@ -2059,14 +2059,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
          }
          STRFREE( victim->pcdata->deity_name );
          victim->pcdata->deity = NULL;
-         send_to_char( "Deity removed.\n\r", ch );
+         send_to_char( "Deity removed.\r\n", ch );
          return;
       }
 
       deity = get_deity( arg3 );
       if( !deity )
       {
-         send_to_char( "No such deity.\n\r", ch );
+         send_to_char( "No such deity.\r\n", ch );
          return;
       }
       if( victim->pcdata->deity )
@@ -2081,7 +2081,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       victim->pcdata->deity = deity;
       ++deity->worshippers;
       save_deity( deity );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2091,12 +2091,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < LEVEL_SUB_IMPLEM )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
+
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
@@ -2123,14 +2124,15 @@ void do_mset( CHAR_DATA * ch, char *argument )
          STRFREE( victim->pcdata->council_name );
          victim->pcdata->council_name = STRALLOC( "" );
          victim->pcdata->council = NULL;
-         send_to_char( "Removed from council.\n\r", ch );
+         check_switch( victim, FALSE );
+         send_to_char( "Removed from council.\r\n", ch );
          return;
       }
 
       council = get_council( arg3 );
       if( !council )
       {
-         send_to_char( "No such council.\n\r", ch );
+         send_to_char( "No such council.\r\n", ch );
          return;
       }
 
@@ -2158,7 +2160,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       victim->pcdata->council = council;
       ++council->members;
       save_council( council );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2178,7 +2180,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       STRFREE( victim->long_descr );
       mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\n\r", MAX_STRING_LENGTH );
+      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
       victim->long_descr = STRALLOC( buf );
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
       {
@@ -2216,7 +2218,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Not on NPC's.\n\r", ch );
+         send_to_char( "Not on NPC's.\r\n", ch );
          return;
       }
 
@@ -2224,55 +2226,55 @@ void do_mset( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if ( !str_cmp( arg2, "spec" ) || !str_cmp( arg2, "spec_fun" ) )
+   if( !str_cmp( arg2, "spec" ) || !str_cmp( arg2, "spec_fun" ) )
    {
-	SPEC_FUN *specfun;
+      SPEC_FUN *specfun;
 
-	if( !can_mmodify( ch, victim ) )
-	   return;
+      if( !can_mmodify( ch, victim ) )
+         return;
 
-	if( !IS_NPC(victim) )
-	{
-	   send_to_char( "Not on PC's.\r\n", ch );
-	   return;
-	}
+      if( !IS_NPC( victim ) )
+      {
+         send_to_char( "Not on PC's.\r\n", ch );
+         return;
+      }
 
       if( !str_cmp( arg3, "none" ) )
       {
          victim->spec_fun = NULL;
-	   STRFREE( victim->spec_funname );
-	   send_to_char( "Special function removed.\r\n", ch );
-	   if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
-	   {
-	      victim->pIndexData->spec_fun = NULL;
-		STRFREE( victim->pIndexData->spec_funname );
-	   }
-	   return;
+         STRFREE( victim->spec_funname );
+         send_to_char( "Special function removed.\r\n", ch );
+         if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
+         {
+            victim->pIndexData->spec_fun = NULL;
+            STRFREE( victim->pIndexData->spec_funname );
+         }
+         return;
       }
 
-	if( ( specfun = spec_lookup( arg3 ) ) == NULL )
-	{
-	   send_to_char( "No such function.\r\n", ch );
-	   return;
-	}
+      if( ( specfun = spec_lookup( arg3 ) ) == NULL )
+      {
+         send_to_char( "No such function.\r\n", ch );
+         return;
+      }
 
-	if( !validate_spec_fun( arg3 ) )
-	{
-	   ch_printf( ch, "%s is not a valid spec_fun for mobiles.\r\n", arg3 );
-	   return;
-	}
+      if( !validate_spec_fun( arg3 ) )
+      {
+         ch_printf( ch, "%s is not a valid spec_fun for mobiles.\r\n", arg3 );
+         return;
+      }
 
-	victim->spec_fun = specfun;
-	STRFREE( victim->spec_funname );
-	victim->spec_funname = STRALLOC( arg3 );
+      victim->spec_fun = specfun;
+      STRFREE( victim->spec_funname );
+      victim->spec_funname = STRALLOC( arg3 );
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
-	{
+      {
          victim->pIndexData->spec_fun = victim->spec_fun;
-	   STRFREE( victim->pIndexData->spec_funname );
-	   victim->pIndexData->spec_funname = STRALLOC( arg3 );
-	}
-	send_to_char( "Victim special function set.\r\n", ch );
-	return;
+         STRFREE( victim->pIndexData->spec_funname );
+         victim->pIndexData->spec_funname = STRALLOC( arg3 );
+      }
+      send_to_char( "Victim special function set.\r\n", ch );
+      return;
    }
 
    if( !str_cmp( arg2, "flags" ) )
@@ -2281,13 +2283,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
 
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_GREATER )
       {
-         send_to_char( "You can only modify a mobile's flags.\n\r", ch );
+         send_to_char( "You can only modify a mobile's flags.\r\n", ch );
          return;
       }
 
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <vic> flags <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <vic> flags <flag> [flag]...\r\n", ch );
          return;
       }
 
@@ -2303,11 +2305,11 @@ void do_mset( CHAR_DATA * ch, char *argument )
             value = get_actflag( arg3 );
 
             if( value < 0 || value >= MAX_BITS )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else if( value == ACT_PROTOTYPE && ch->level < sysdata.level_modify_proto )
-               send_to_char( "You cannot change the prototype flag.\n\r", ch );
+               send_to_char( "You cannot change the prototype flag.\r\n", ch );
             else if( value == ACT_IS_NPC )
-               send_to_char( "If the NPC flag could be changed, it would cause many problems.\n\r", ch );
+               send_to_char( "If the NPC flag could be changed, it would cause many problems.\r\n", ch );
             else
             {
                ftoggle = TRUE;
@@ -2319,9 +2321,9 @@ void do_mset( CHAR_DATA * ch, char *argument )
             value = get_plrflag( arg3 );
 
             if( value < 0 || value >= MAX_BITS )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else if( value == ACT_IS_NPC )
-               send_to_char( "If the NPC flag could be changed, it would cause many problems.\n\r", ch );
+               send_to_char( "If the NPC flag could be changed, it would cause many problems.\r\n", ch );
             else
             {
                ftoggle = TRUE;
@@ -2330,7 +2332,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          }
       }
       if( ftoggle )
-         send_to_char( "Flags set.\n\r", ch );
+         send_to_char( "Flags set.\r\n", ch );
       if( IS_NPC( victim ) && ( xIS_SET( victim->act, ACT_PROTOTYPE ) || ( value == ACT_PROTOTYPE && protoflag ) ) )
          victim->pIndexData->act = victim->act;
       return;
@@ -2340,7 +2342,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's flags.\n\r", ch );
+         send_to_char( "You can only modify a mobile's flags.\r\n", ch );
          return;
       }
 
@@ -2348,7 +2350,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> affected <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> affected <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2356,7 +2358,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( victim->affected_by, value );
       }
@@ -2372,7 +2374,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2386,7 +2388,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2401,7 +2403,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2415,7 +2417,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2432,7 +2434,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2448,7 +2450,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2464,7 +2466,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's ris.\n\r", ch );
+         send_to_char( "You can only modify a mobile's ris.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2482,14 +2484,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's resistancies.\n\r", ch );
+         send_to_char( "You can only modify a mobile's resistancies.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> resistant <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> resistant <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2497,7 +2499,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( victim->resistant, 1 << value );
       }
@@ -2510,14 +2512,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's immunities.\n\r", ch );
+         send_to_char( "You can only modify a mobile's immunities.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> immune <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> immune <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2525,7 +2527,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( victim->immune, 1 << value );
       }
@@ -2538,14 +2540,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's susceptibilities.\n\r", ch );
+         send_to_char( "You can only modify a mobile's susceptibilities.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> susceptible <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> susceptible <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2553,7 +2555,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( victim->susceptible, 1 << value );
       }
@@ -2562,19 +2564,18 @@ void do_mset( CHAR_DATA * ch, char *argument )
       return;
    }
 
-
    if( !str_cmp( arg2, "part" ) )
    {
       if( !IS_NPC( victim ) && get_trust( ch ) < LEVEL_LESSER )
       {
-         send_to_char( "You can only modify a mobile's parts.\n\r", ch );
+         send_to_char( "You can only modify a mobile's parts.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> part <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> part <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2582,7 +2583,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_partflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( victim->xflags, 1 << value );
       }
@@ -2595,14 +2596,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "You can only modify a mobile's attacks.\n\r", ch );
+         send_to_char( "You can only modify a mobile's attacks.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> attack <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> attack <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2610,7 +2611,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_attackflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( victim->attacks, value );
       }
@@ -2623,14 +2624,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "You can only modify a mobile's defenses.\n\r", ch );
+         send_to_char( "You can only modify a mobile's defenses.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> defense <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> defense <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2638,7 +2639,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_defenseflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( victim->defenses, value );
       }
@@ -2651,20 +2652,20 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > POS_STANDING )
       {
-         ch_printf( ch, "Position range is 0 to %d.\n\r", POS_STANDING );
+         ch_printf( ch, "Position range is 0 to %d.\r\n", POS_STANDING );
          return;
       }
       victim->position = value;
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->position = victim->position;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2672,20 +2673,20 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > POS_STANDING )
       {
-         ch_printf( ch, "Position range is 0 to %d.\n\r", POS_STANDING );
+         ch_printf( ch, "Position range is 0 to %d.\r\n", POS_STANDING );
          return;
       }
       victim->defposition = value;
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->defposition = victim->defposition;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2696,7 +2697,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2713,6 +2714,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       do_mset( ch, outbuf );
       return;
    }
+
    /*
     * save some more finger-leather
     */
@@ -2720,7 +2722,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
@@ -2740,19 +2742,19 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 30000 )
       {
-         send_to_char( "Number of hitpoint dice range is 0 to 30000.\n\r", ch );
+         send_to_char( "Number of hitpoint dice range is 0 to 30000.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->hitnodice = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2760,19 +2762,19 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 30000 )
       {
-         send_to_char( "Hitpoint dice size range is 0 to 30000.\n\r", ch );
+         send_to_char( "Hitpoint dice size range is 0 to 30000.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->hitsizedice = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2780,19 +2782,19 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 30000 )
       {
-         send_to_char( "Hitpoint bonus range is 0 to 30000.\n\r", ch );
+         send_to_char( "Hitpoint bonus range is 0 to 30000.\r\n", ch );
          return;
       }
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->hitplus = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2800,20 +2802,20 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Number of damage dice range is 0 to 100.\n\r", ch );
+         send_to_char( "Number of damage dice range is 0 to 100.\r\n", ch );
          return;
       }
       victim->barenumdie = value;
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->damnodice = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2821,20 +2823,20 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 100 )
       {
-         send_to_char( "Damage dice size range is 0 to 100.\n\r", ch );
+         send_to_char( "Damage dice size range is 0 to 100.\r\n", ch );
          return;
       }
       victim->baresizedie = value;
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->damsizedice = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -2842,30 +2844,29 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Mobiles only.\n\r", ch );
+         send_to_char( "Mobiles only.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( value < 0 || value > 1000 )
       {
-         send_to_char( "Damage bonus range is 0 to 1000.\n\r", ch );
+         send_to_char( "Damage bonus range is 0 to 1000.\r\n", ch );
          return;
       }
       victim->damplus = value;
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->damplus = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
 
    }
-
 
    if( !str_cmp( arg2, "aloaded" ) )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Player Characters only.\n\r", ch );
+         send_to_char( "Player Characters only.\r\n", ch );
          return;
       }
 
@@ -2874,7 +2875,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
        */
       if( !victim->pcdata->area )
       {
-         send_to_char( "Player does not have an area assigned to them.\n\r", ch );
+         send_to_char( "Player does not have an area assigned to them.\r\n", ch );
          return;
       }
 
@@ -2884,17 +2885,17 @@ void do_mset( CHAR_DATA * ch, char *argument )
       if( !IS_SET( victim->pcdata->area->status, AREA_LOADED ) )
       {
          SET_BIT( victim->pcdata->area->status, AREA_LOADED );
-         send_to_char( "Your area set to LOADED!\n\r", victim );
+         send_to_char( "Your area set to LOADED!\r\n", victim );
          if( ch != victim )
-            send_to_char( "Area set to LOADED!\n\r", ch );
+            send_to_char( "Area set to LOADED!\r\n", ch );
          return;
       }
       else
       {
          REMOVE_BIT( victim->pcdata->area->status, AREA_LOADED );
-         send_to_char( "Your area set to NOT-LOADED!\n\r", victim );
+         send_to_char( "Your area set to NOT-LOADED!\r\n", victim );
          if( ch != victim )
-            send_to_char( "Area set to NON-LOADED!\n\r", ch );
+            send_to_char( "Area set to NON-LOADED!\r\n", ch );
          return;
       }
    }
@@ -2903,13 +2904,13 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( IS_NPC( victim ) )
       {
-         send_to_char( "Player Characters only.\n\r", ch );
+         send_to_char( "Player Characters only.\r\n", ch );
          return;
       }
 
       if( !can_mmodify( ch, victim ) )
       {
-         send_to_char( "You can't do that.\n\r", ch );
+         send_to_char( "You can't do that.\r\n", ch );
          return;
       }
 
@@ -2917,17 +2918,17 @@ void do_mset( CHAR_DATA * ch, char *argument )
       {
          REMOVE_BIT( victim->pcdata->flags, PCFLAG_DEADLY );
          xSET_BIT( victim->act, PLR_NICE );
-         send_to_char( "You are now a NON-PKILL player.\n\r", victim );
+         send_to_char( "You are now a NON-PKILL player.\r\n", victim );
          if( ch != victim )
-            send_to_char( "That player is now non-pkill.\n\r", ch );
+            send_to_char( "That player is now non-pkill.\r\n", ch );
       }
       else
       {
          SET_BIT( victim->pcdata->flags, PCFLAG_DEADLY );
          xREMOVE_BIT( victim->act, PLR_NICE );
-         send_to_char( "You are now a PKILL player.\n\r", victim );
+         send_to_char( "You are now a PKILL player.\r\n", victim );
          if( ch != victim )
-            send_to_char( "That player is now pkill.\n\r", ch );
+            send_to_char( "That player is now pkill.\r\n", ch );
       }
       if( victim->pcdata->clan && !IS_IMMORTAL( victim ) )
       {
@@ -2973,7 +2974,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> speaks <language> [language] ...\n\r", ch );
+         send_to_char( "Usage: mset <victim> speaks <language> [language] ...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -2981,19 +2982,19 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_langflag( arg3 );
          if( value == LANG_UNKNOWN )
-            ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown language: %s\r\n", arg3 );
          else if( !IS_NPC( victim ) )
          {
             if( !( value &= VALID_LANGS ) )
             {
-               ch_printf( ch, "Players may not know %s.\n\r", arg3 );
+               ch_printf( ch, "Players may not know %s.\r\n", arg3 );
                continue;
             }
          }
 
          v2 = get_langnum( arg3 );
          if( v2 == -1 )
-            ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown language: %s\r\n", arg3 );
          else
             TOGGLE_BIT( victim->speaks, 1 << v2 );
       }
@@ -3005,7 +3006,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       }
       else if( xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->speaks = victim->speaks;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -3013,14 +3014,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    {
       if( !IS_NPC( victim ) )
       {
-         send_to_char( "Players must choose the language they speak themselves.\n\r", ch );
+         send_to_char( "Players must choose the language they speak themselves.\r\n", ch );
          return;
       }
       if( !can_mmodify( ch, victim ) )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: mset <victim> speaking <language> [language]...\n\r", ch );
+         send_to_char( "Usage: mset <victim> speaking <language> [language]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -3028,19 +3029,19 @@ void do_mset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_langflag( arg3 );
          if( value == LANG_UNKNOWN )
-            ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown language: %s\r\n", arg3 );
          else
          {
             v2 = get_langnum( arg3 );
             if( v2 == -1 )
-               ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown language: %s\r\n", arg3 );
             else
                TOGGLE_BIT( victim->speaking, 1 << v2 );
          }
       }
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
          victim->pIndexData->speaking = victim->speaking;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -3059,14 +3060,10 @@ void do_mset( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 void do_oset( CHAR_DATA * ch, char *argument )
 {
-   char arg1[MAX_INPUT_LENGTH];
-   char arg2[MAX_INPUT_LENGTH];
-   char arg3[MAX_INPUT_LENGTH];
-   char buf[MAX_STRING_LENGTH];
-   char outbuf[MAX_STRING_LENGTH];
+   char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
+   char buf[MAX_STRING_LENGTH], outbuf[MAX_STRING_LENGTH];
    OBJ_DATA *obj, *tmpobj;
    EXTRA_DESCR_DATA *ed;
    bool lockobj;
@@ -3078,13 +3075,13 @@ void do_oset( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't oset\n\r", ch );
+      send_to_char( "Mob's can't oset\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -3096,8 +3093,8 @@ void do_oset( CHAR_DATA * ch, char *argument )
       case SUB_OBJ_EXTRA:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
-            bug( "%s", "do_oset: sub_obj_extra: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
+            bug( "%s: sub_obj_extra: NULL ch->dest_buf", __FUNCTION__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -3119,15 +3116,15 @@ void do_oset( CHAR_DATA * ch, char *argument )
       case SUB_OBJ_LONG:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
-            bug( "%s", "do_oset: sub_obj_long: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
+            bug( "%s: sub_obj_long: NULL ch->dest_buf", __FUNCTION__ );
             ch->substate = SUB_NONE;
             return;
          }
          obj = ( OBJ_DATA * ) ch->dest_buf;
          if( obj && obj_extracted( obj ) )
          {
-            send_to_char( "Your object was extracted!\n\r", ch );
+            send_to_char( "Your object was extracted!\r\n", ch );
             stop_editing( ch );
             return;
          }
@@ -3156,7 +3153,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       obj = ( OBJ_DATA * ) ch->dest_buf;
       if( !obj )
       {
-         send_to_char( "Your object was extracted!\n\r", ch );
+         send_to_char( "Your object was extracted!\r\n", ch );
          argument = "done";
       }
 
@@ -3165,7 +3162,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          if( obj )
             do_ostat( ch, obj->name );
          else
-            send_to_char( "No object selected.  Type '?' for help.\n\r", ch );
+            send_to_char( "No object selected.  Type '?' for help.\r\n", ch );
          return;
       }
       if( !str_cmp( argument, "done" ) || !str_cmp( argument, "off" ) )
@@ -3173,7 +3170,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
 
          if( ch->dest_buf )
             RelDestroy( relOSET_ON, ch, ch->dest_buf );
-         send_to_char( "Oset mode off.\n\r", ch );
+         send_to_char( "Oset mode off.\r\n", ch );
          ch->substate = SUB_NONE;
          ch->dest_buf = NULL;
          if( ch->pcdata && ch->pcdata->subprompt )
@@ -3184,6 +3181,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       }
    }
+
    if( obj )
    {
       lockobj = TRUE;
@@ -3201,7 +3199,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg1, "on" ) )
    {
-      send_to_char( "Syntax: oset <object|vnum> on.\n\r", ch );
+      send_to_char( "Syntax: oset <object|vnum> on.\r\n", ch );
       return;
    }
 
@@ -3210,26 +3208,26 @@ void do_oset( CHAR_DATA * ch, char *argument )
       if( ch->substate == SUB_REPEATCMD )
       {
          if( obj )
-            send_to_char( "Syntax: <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <field>  <value>\r\n", ch );
          else
-            send_to_char( "Syntax: <object> <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <object> <field>  <value>\r\n", ch );
       }
       else
-         send_to_char( "Syntax: oset <object> <field>  <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Field being one of:\n\r", ch );
-      send_to_char( "  flags wear level weight cost rent timer\n\r", ch );
-      send_to_char( "  name short long ed rmed actiondesc\n\r", ch );
-      send_to_char( "  type value0 value1 value2 value3 value4 value5\n\r", ch );
-      send_to_char( "  affect rmaffect layers\n\r", ch );
-      send_to_char( "For weapons:             For armor:\n\r", ch );
-      send_to_char( "  weapontype condition     ac condition\n\r", ch );
-      send_to_char( "For scrolls, potions and pills:\n\r", ch );
-      send_to_char( "  slevel spell1 spell2 spell3\n\r", ch );
-      send_to_char( "For wands and staves:\n\r", ch );
-      send_to_char( "  slevel spell maxcharges charges\n\r", ch );
-      send_to_char( "For containers:          For levers and switches:\n\r", ch );
-      send_to_char( "  cflags key capacity      tflags\n\r", ch );
+         send_to_char( "Syntax: oset <object> <field>  <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Field being one of:\r\n", ch );
+      send_to_char( "  flags wear level weight cost rent timer\r\n", ch );
+      send_to_char( "  name short long ed rmed actiondesc\r\n", ch );
+      send_to_char( "  type value0 value1 value2 value3 value4 value5\r\n", ch );
+      send_to_char( "  affect rmaffect layers\r\n", ch );
+      send_to_char( "For weapons:             For armor:\r\n", ch );
+      send_to_char( "  weapontype condition     ac condition\r\n", ch );
+      send_to_char( "For scrolls, potions and pills:\r\n", ch );
+      send_to_char( "  slevel spell1 spell2 spell3\r\n", ch );
+      send_to_char( "For wands and staves:\r\n", ch );
+      send_to_char( "  slevel spell maxcharges charges\r\n", ch );
+      send_to_char( "For containers:          For levers and switches:\r\n", ch );
+      send_to_char( "  cflags key capacity      tflags\r\n", ch );
       return;
    }
 
@@ -3237,7 +3235,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
    {
       if( ( obj = get_obj_here( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "You can't find that here.\n\r", ch );
+         send_to_char( "You can't find that here.\r\n", ch );
          return;
       }
    }
@@ -3245,7 +3243,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
    {
       if( ( obj = get_obj_world( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "There is nothing like that in all the realms.\n\r", ch );
+         send_to_char( "There is nothing like that in all the realms.\r\n", ch );
          return;
       }
    }
@@ -3258,7 +3256,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "on" ) )
    {
       CHECK_SUBRESTRICTED( ch );
-      ch_printf( ch, "Oset mode on. (Editing '%s' vnum %d).\n\r", obj->name, obj->pIndexData->vnum );
+      ch_printf( ch, "Oset mode on. (Editing '%s' vnum %d).\r\n", obj->name, obj->pIndexData->vnum );
       ch->substate = SUB_REPEATCMD;
       ch->dest_buf = obj;
       if( ch->pcdata )
@@ -3357,19 +3355,19 @@ void do_oset( CHAR_DATA * ch, char *argument )
    {
       if( !arg3 || arg3[0] == '\0' )
       {
-         send_to_char( "Syntax: oset <object> ed <keywords>\n\r", ch );
+         send_to_char( "Syntax: oset <object> ed <keywords>\r\n", ch );
          return;
       }
       CHECK_SUBRESTRICTED( ch );
       if( obj->timer )
       {
-         send_to_char( "It's not safe to edit an extra description on an object with a timer.\n\rTurn it off first.\n\r",
+         send_to_char( "It's not safe to edit an extra description on an object with a timer.\r\nTurn it off first.\r\n",
                        ch );
          return;
       }
       if( obj->item_type == ITEM_PAPER && get_trust( ch ) < LEVEL_IMPLEMENTOR )
       {
-         send_to_char( "You can not add an extra description to a note paper at the moment.\n\r", ch );
+         send_to_char( "You can not add an extra description to a note paper at the moment.\r\n", ch );
          return;
       }
       if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
@@ -3394,27 +3392,27 @@ void do_oset( CHAR_DATA * ch, char *argument )
    {
       if( !arg3 || arg3[0] == '\0' )
       {
-         send_to_char( "Syntax: oset <object> rmed <keywords>\n\r", ch );
+         send_to_char( "Syntax: oset <object> rmed <keywords>\r\n", ch );
          return;
       }
       if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
       {
          if( DelOExtraProto( obj->pIndexData, arg3 ) )
-            send_to_char( "Deleted.\n\r", ch );
+            send_to_char( "Deleted.\r\n", ch );
          else
-            send_to_char( "Not found.\n\r", ch );
+            send_to_char( "Not found.\r\n", ch );
          return;
       }
       if( DelOExtra( obj, arg3 ) )
-         send_to_char( "Deleted.\n\r", ch );
+         send_to_char( "Deleted.\r\n", ch );
       else
-         send_to_char( "Not found.\n\r", ch );
+         send_to_char( "Not found.\r\n", ch );
       return;
    }
 
    if( get_trust( ch ) < LEVEL_DEMI )
    {
-      send_to_char( "You can only oset the name, short and long right now.\n\r", ch );
+      send_to_char( "You can only oset the name, short and long right now.\r\n", ch );
       return;
    }
 
@@ -3488,13 +3486,13 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: oset <object> type <type>\n\r", ch );
+         send_to_char( "Usage: oset <object> type <type>\r\n", ch );
          return;
       }
       value = get_otype( argument );
       if( value < 1 )
       {
-         ch_printf( ch, "Unknown type: %s\n\r", arg3 );
+         ch_printf( ch, "Unknown type: %s\r\n", argument );
          return;
       }
       obj->item_type = ( short )value;
@@ -3509,7 +3507,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: oset <object> flags <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: oset <object> flags <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -3517,12 +3515,12 @@ void do_oset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_oflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
          {
             if( value == ITEM_PROTOTYPE
                 && get_trust( ch ) < LEVEL_GREATER && !is_name( "protoflag", ch->pcdata->bestowments ) )
-               send_to_char( "You cannot change the prototype flag.\n\r", ch );
+               send_to_char( "You cannot change the prototype flag.\r\n", ch );
             else
             {
                xTOGGLE_BIT( obj->extra_flags, value );
@@ -3542,7 +3540,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: oset <object> wear <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: oset <object> wear <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -3550,7 +3548,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_wflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( obj->wear_flags, 1 << value );
       }
@@ -3595,7 +3593,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
          obj->pIndexData->rent = value;
       else
-         send_to_char( "Item must have prototype flag to set this value.\n\r", ch );
+         send_to_char( "Item must have prototype flag to set this value.\r\n", ch );
       return;
    }
 
@@ -3606,7 +3604,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
          obj->pIndexData->layers = value;
       else
-         send_to_char( "Item must have prototype flag to set this value.\n\r", ch );
+         send_to_char( "Item must have prototype flag to set this value.\r\n", ch );
       return;
    }
 
@@ -3624,7 +3622,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       if( strstr( arg3, "%n" ) || strstr( arg3, "%d" ) || strstr( arg3, "%l" ) )
       {
-         send_to_char( "Illegal characters!\n\r", ch );
+         send_to_char( "Illegal characters!\r\n", ch );
          return;
       }
       STRFREE( obj->action_desc );
@@ -3636,7 +3634,6 @@ void do_oset( CHAR_DATA * ch, char *argument )
       }
       return;
    }
-
 
    /*
     * Crash fix and name support by Shaddai 
@@ -3652,13 +3649,13 @@ void do_oset( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' || !argument || argument[0] == 0 )
       {
-         send_to_char( "Usage: oset <object> affect <field> <value>\n\r", ch );
+         send_to_char( "Usage: oset <object> affect <field> <value>\r\n", ch );
          return;
       }
       loc = get_atype( arg2 );
       if( loc < 1 )
       {
-         ch_printf( ch, "Unknown field: %s\n\r", arg2 );
+         ch_printf( ch, "Unknown field: %s\r\n", arg2 );
          return;
       }
       if( loc >= APPLY_AFFECT && loc < APPLY_WEAPONSPELL )
@@ -3672,7 +3669,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
             else
                value = get_risflag( arg3 );
             if( value < 0 || value > 31 )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
                SET_BIT( bitv, 1 << value );
          }
@@ -3688,8 +3685,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
             value = bsearch_skill_exact( arg3, gsn_first_spell, gsn_first_skill - 1 );
             if( value == -1 )
             {
-/*		    printf("%s\n\r", arg3);	*/
-               send_to_char( "Unknown spell name.\n\r", ch );
+               send_to_char( "Unknown spell name.\r\n", ch );
                return;
             }
          }
@@ -3704,11 +3700,27 @@ void do_oset( CHAR_DATA * ch, char *argument )
       xCLEAR_BITS( paf->bitvector );
       paf->next = NULL;
       if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
+      {
+         if( loc != APPLY_WEARSPELL && loc != APPLY_REMOVESPELL && loc != APPLY_STRIPSN && loc != APPLY_WEAPONSPELL )
+         {
+            CHAR_DATA *vch;
+            OBJ_DATA *eq;
+
+            for( vch = first_char; vch; vch = vch->next )
+            {
+               for( eq = vch->first_carrying; eq; eq = eq->next_content )
+               {
+                  if( eq->pIndexData == obj->pIndexData && eq->wear_loc != WEAR_NONE )
+                     affect_modify( vch, paf, TRUE );
+               }
+            }
+         }
          LINK( paf, obj->pIndexData->first_affect, obj->pIndexData->last_affect, next, prev );
+      }
       else
          LINK( paf, obj->first_affect, obj->last_affect, next, prev );
       ++top_affect;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -3721,13 +3733,13 @@ void do_oset( CHAR_DATA * ch, char *argument )
          return;
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: oset <object> rmaffect <affect#>\n\r", ch );
+         send_to_char( "Usage: oset <object> rmaffect <affect#>\r\n", ch );
          return;
       }
       loc = atoi( argument );
       if( loc < 1 )
       {
-         send_to_char( "Invalid number.\n\r", ch );
+         send_to_char( "Invalid number.\r\n", ch );
          return;
       }
 
@@ -3743,14 +3755,27 @@ void do_oset( CHAR_DATA * ch, char *argument )
             if( ++count == loc )
             {
                UNLINK( paf, pObjIndex->first_affect, pObjIndex->last_affect, next, prev );
+               if( paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL && paf->location != APPLY_STRIPSN
+                   && paf->location != APPLY_WEAPONSPELL )
+               {
+                  CHAR_DATA *vch;
+                  OBJ_DATA *eq;
+
+                  for( vch = first_char; vch; vch = vch->next )
+                  {
+                     for( eq = vch->first_carrying; eq; eq = eq->next_content )
+                     {
+                        if( eq->pIndexData == pObjIndex && eq->wear_loc != WEAR_NONE )
+                           affect_modify( vch, paf, FALSE );
+                     }
+                  }
+               }
                DISPOSE( paf );
                send_to_char( "Removed.\n\r", ch );
                --top_affect;
                return;
             }
          }
-         send_to_char( "Not found.\n\r", ch );
-         return;
       }
       else
       {
@@ -3760,12 +3785,12 @@ void do_oset( CHAR_DATA * ch, char *argument )
             {
                UNLINK( paf, obj->first_affect, obj->last_affect, next, prev );
                DISPOSE( paf );
-               send_to_char( "Removed.\n\r", ch );
+               send_to_char( "Removed.\r\n", ch );
                --top_affect;
                return;
             }
          }
-         send_to_char( "Not found.\n\r", ch );
+         send_to_char( "Not found.\r\n", ch );
          return;
       }
    }
@@ -3863,7 +3888,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
                   value = x;
             if( value < 0 )
             {
-               send_to_char( "Unknown weapon type.\n\r", ch );
+               send_to_char( "Unknown weapon type.\r\n", ch );
                return;
             }
             tmp = 3;
@@ -3936,8 +3961,20 @@ void do_oset( CHAR_DATA * ch, char *argument )
       case ITEM_BUTTON:
          if( !str_cmp( arg2, "tflags" ) )
          {
+            int tmpval = 0;
+
             tmp = 0;
-            value = get_trigflag( arg3 );
+            argument = arg3;
+            while( argument && argument[0] != '\0' )
+            {
+               argument = one_argument( argument, arg3 );
+               value = get_trigflag( arg3 );
+               if( value < 0 || value > 31 )
+                  ch_printf( ch, "Invalid tflag %s\r\n", arg3 );
+               else
+                  tmpval += ( 1 << value );
+            }
+            value = tmpval;
          }
          break;
    }
@@ -4069,7 +4106,6 @@ void do_redit( CHAR_DATA * ch, char *argument )
    char buf[MAX_STRING_LENGTH];
    ROOM_INDEX_DATA *location, *tmp;
    EXTRA_DESCR_DATA *ed;
-   char dir = 0;
    EXIT_DATA *xit, *texit;
    int value;
    int edir = 0, ekey, evnum;
@@ -4078,7 +4114,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    set_char_color( AT_PLAIN, ch );
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor.\n\r", ch );
+      send_to_char( "You have no descriptor.\r\n", ch );
       return;
    }
 
@@ -4126,7 +4162,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
       }
       if( !str_cmp( arg, "done" ) || !str_cmp( arg, "off" ) )
       {
-         send_to_char( "Redit mode off.\n\r", ch );
+         send_to_char( "Redit mode off.\r\n", ch );
          if( ch->pcdata && ch->pcdata->subprompt )
          {
             STRFREE( ch->pcdata->subprompt );
@@ -4139,15 +4175,15 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( arg[0] == '\0' || !str_cmp( arg, "?" ) )
    {
       if( ch->substate == SUB_REPEATCMD )
-         send_to_char( "Syntax: <field> value\n\r", ch );
+         send_to_char( "Syntax: <field> value\r\n", ch );
       else
-         send_to_char( "Syntax: redit <field> value\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Field being one of:\n\r", ch );
-      send_to_char( "  name desc ed rmed\n\r", ch );
-      send_to_char( "  exit bexit exdesc exflags exname exkey\n\r", ch );
-      send_to_char( "  flags sector teledelay televnum tunnel\n\r", ch );
-      send_to_char( "  rlist exdistance pulltype pull push\n\r", ch );
+         send_to_char( "Syntax: redit <field> value\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Field being one of:\r\n", ch );
+      send_to_char( "  name desc ed rmed\r\n", ch );
+      send_to_char( "  exit bexit exdesc exflags exname exkey\r\n", ch );
+      send_to_char( "  flags sector teledelay televnum tunnel\r\n", ch );
+      send_to_char( "  rlist exdistance pulltype pull push\r\n", ch );
       return;
    }
 
@@ -4157,7 +4193,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "on" ) )
    {
       CHECK_SUBRESTRICTED( ch );
-      send_to_char( "Redit mode on.\n\r", ch );
+      send_to_char( "Redit mode on.\r\n", ch );
       ch->substate = SUB_REPEATCMD;
       if( ch->pcdata )
       {
@@ -4172,8 +4208,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( argument[0] == '\0' )
       {
-         send_to_char( "Set the room name.  A very brief single line room description.\n\r", ch );
-         send_to_char( "Usage: redit name <Room summary>\n\r", ch );
+         send_to_char( "Set the room name.  A very brief single line room description.\r\n", ch );
+         send_to_char( "Usage: redit name <Room summary>\r\n", ch );
          return;
       }
       STRFREE( location->name );
@@ -4197,12 +4233,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Set the maximum characters allowed in the room at one time. (0 = unlimited).\n\r", ch );
-         send_to_char( "Usage: redit tunnel <value>\n\r", ch );
+         send_to_char( "Set the maximum characters allowed in the room at one time. (0 = unlimited).\r\n", ch );
+         send_to_char( "Usage: redit tunnel <value>\r\n", ch );
          return;
       }
       location->tunnel = URANGE( 0, atoi( argument ), 1000 );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4218,13 +4254,13 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' || !argument || argument[0] == 0 )
       {
-         send_to_char( "Usage: redit affect <field> <value>\n\r", ch );
+         send_to_char( "Usage: redit affect <field> <value>\r\n", ch );
          return;
       }
       loc = get_atype( arg2 );
       if( loc < 1 )
       {
-         ch_printf( ch, "Unknown field: %s\n\r", arg2 );
+         ch_printf( ch, "Unknown field: %s\r\n", arg2 );
          return;
       }
       if( loc >= APPLY_AFFECT && loc < APPLY_WEAPONSPELL )
@@ -4238,7 +4274,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
             else
                value = get_risflag( arg3 );
             if( value < 0 || value > 31 )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
                SET_BIT( bitv, 1 << value );
          }
@@ -4254,8 +4290,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
             value = bsearch_skill_exact( arg3, gsn_first_spell, gsn_first_skill - 1 );
             if( value == -1 )
             {
-/*		    printf("%s\n\r", arg3);	*/
-               send_to_char( "Unknown spell name.\n\r", ch );
+/*		    printf("%s\r\n", arg3);	*/
+               send_to_char( "Unknown spell name.\r\n", ch );
                return;
             }
          }
@@ -4271,7 +4307,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
       paf->next = NULL;
       LINK( paf, location->first_affect, location->last_affect, next, prev );
       ++top_affect;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4282,13 +4318,13 @@ void do_redit( CHAR_DATA * ch, char *argument )
 
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: redit rmaffect <affect#>\n\r", ch );
+         send_to_char( "Usage: redit rmaffect <affect#>\r\n", ch );
          return;
       }
       loc = atoi( argument );
       if( loc < 1 )
       {
-         send_to_char( "Invalid number.\n\r", ch );
+         send_to_char( "Invalid number.\r\n", ch );
          return;
       }
 
@@ -4300,12 +4336,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
          {
             UNLINK( paf, location->first_affect, location->last_affect, next, prev );
             DISPOSE( paf );
-            send_to_char( "Removed.\n\r", ch );
+            send_to_char( "Removed.\r\n", ch );
             --top_affect;
             return;
          }
       }
-      send_to_char( "Not found.\n\r", ch );
+      send_to_char( "Not found.\r\n", ch );
       return;
    }
 
@@ -4313,8 +4349,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Create an extra description.\n\r", ch );
-         send_to_char( "You must supply keyword(s).\n\r", ch );
+         send_to_char( "Create an extra description.\r\n", ch );
+         send_to_char( "You must supply keyword(s).\r\n", ch );
          return;
       }
       CHECK_SUBRESTRICTED( ch );
@@ -4333,14 +4369,14 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Remove an extra description.\n\r", ch );
-         send_to_char( "You must supply keyword(s).\n\r", ch );
+         send_to_char( "Remove an extra description.\r\n", ch );
+         send_to_char( "You must supply keyword(s).\r\n", ch );
          return;
       }
       if( DelRExtra( location, argument ) )
-         send_to_char( "Deleted.\n\r", ch );
+         send_to_char( "Deleted.\r\n", ch );
       else
-         send_to_char( "Not found.\n\r", ch );
+         send_to_char( "Not found.\r\n", ch );
       return;
    }
 
@@ -4352,7 +4388,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
 
       if( !location->first_reset )
       {
-         send_to_char( "This room has no resets to list.\n\r", ch );
+         send_to_char( "This room has no resets to list.\r\n", ch );
          return;
       }
       num = 0;
@@ -4370,8 +4406,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Toggle the room flags.\n\r", ch );
-         send_to_char( "Usage: redit flags <flag> [flag]...\n\r", ch );
+         send_to_char( "Toggle the room flags.\r\n", ch );
+         send_to_char( "Usage: redit flags <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -4379,11 +4415,11 @@ void do_redit( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg2 );
          value = get_rflag( arg2 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg2 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg2 );
          else
          {
             if( 1 << value == ROOM_PROTOTYPE && get_trust( ch ) < LEVEL_GREATER )
-               send_to_char( "You cannot change the prototype flag.\n\r", ch );
+               send_to_char( "You cannot change the prototype flag.\r\n", ch );
             else
                TOGGLE_BIT( location->room_flags, 1 << value );
          }
@@ -4395,12 +4431,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Set the delay of the teleport. (0 = off).\n\r", ch );
-         send_to_char( "Usage: redit teledelay <value>\n\r", ch );
+         send_to_char( "Set the delay of the teleport. (0 = off).\r\n", ch );
+         send_to_char( "Usage: redit teledelay <value>\r\n", ch );
          return;
       }
       location->tele_delay = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4408,12 +4444,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Set the vnum of the room to teleport to.\n\r", ch );
-         send_to_char( "Usage: redit televnum <vnum>\n\r", ch );
+         send_to_char( "Set the vnum of the room to teleport to.\r\n", ch );
+         send_to_char( "Usage: redit televnum <vnum>\r\n", ch );
          return;
       }
       location->tele_vnum = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4421,18 +4457,18 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Set the sector type.\n\r", ch );
-         send_to_char( "Usage: redit sector <value>\n\r", ch );
+         send_to_char( "Set the sector type.\r\n", ch );
+         send_to_char( "Usage: redit sector <value>\r\n", ch );
          return;
       }
       location->sector_type = atoi( argument );
       if( location->sector_type < 0 || location->sector_type >= SECT_MAX )
       {
          location->sector_type = 1;
-         send_to_char( "Out of range.\n\r", ch );
+         send_to_char( "Out of range.\r\n", ch );
       }
       else
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4442,7 +4478,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg3 );
       if( arg2[0] == '\0' || arg3[0] == '\0' )
       {
-         send_to_char( "Usage: redit exkey <dir> <key vnum>\n\r", ch );
+         send_to_char( "Usage: redit exkey <dir> <key vnum>\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4458,11 +4494,11 @@ void do_redit( CHAR_DATA * ch, char *argument )
       value = atoi( arg3 );
       if( !xit )
       {
-         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
          return;
       }
       xit->key = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4471,8 +4507,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( arg2[0] == '\0' )
       {
-         send_to_char( "Change or clear exit keywords.\n\r", ch );
-         send_to_char( "Usage: redit exname <dir> [keywords]\n\r", ch );
+         send_to_char( "Change or clear exit keywords.\r\n", ch );
+         send_to_char( "Usage: redit exname <dir> [keywords]\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4487,12 +4523,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
       }
       if( !xit )
       {
-         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
          return;
       }
       STRFREE( xit->keyword );
       xit->keyword = STRALLOC( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4500,8 +4536,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Toggle or display exit flags.\n\r", ch );
-         send_to_char( "Usage: redit exflags <dir> <flag> [flag]...\n\r", ch );
+         send_to_char( "Toggle or display exit flags.\r\n", ch );
+         send_to_char( "Usage: redit exflags <dir> <flag> [flag]...\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg2 );
@@ -4517,12 +4553,12 @@ void do_redit( CHAR_DATA * ch, char *argument )
       }
       if( !xit )
       {
-         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+         send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
          return;
       }
       if( argument[0] == '\0' )
       {
-         snprintf( buf, MAX_STRING_LENGTH, "Flags for exit direction: %d  Keywords: %s  Key: %d\n\r[ ", xit->vdir,
+         snprintf( buf, MAX_STRING_LENGTH, "Flags for exit direction: %d  Keywords: %s  Key: %d\r\n[ ", xit->vdir,
                    xit->keyword, xit->key );
          for( value = 0; value <= MAX_EXFLAG; value++ )
          {
@@ -4532,7 +4568,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
                mudstrlcat( buf, " ", MAX_STRING_LENGTH );
             }
          }
-         mudstrlcat( buf, "]\n\r", MAX_STRING_LENGTH );
+         mudstrlcat( buf, "]\r\n", MAX_STRING_LENGTH );
          send_to_char( buf, ch );
          return;
       }
@@ -4541,97 +4577,10 @@ void do_redit( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg2 );
          value = get_exflag( arg2 );
          if( value < 0 || value > MAX_EXFLAG )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg2 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg2 );
          else
             TOGGLE_BIT( xit->exit_info, 1 << value );
       }
-      return;
-   }
-
-
-
-   if( !str_cmp( arg, "ex_flags" ) )
-   {
-      argument = one_argument( argument, arg2 );
-
-      value = get_exflag( arg2 );
-      if( value < 0 )
-      {
-         send_to_char( "Bad exit flag. \n\r", ch );
-         return;
-      }
-      if( ( xit = get_exit( location, edir ) ) == NULL )
-      {
-         snprintf( buf, MAX_STRING_LENGTH, "exit %c 1", dir );
-         do_redit( ch, buf );
-         xit = get_exit( location, edir );
-      }
-      TOGGLE_BIT( xit->exit_info, 1 << value );
-      return;
-   }
-
-
-   if( !str_cmp( arg, "ex_to_room" ) )
-   {
-      argument = one_argument( argument, arg2 );
-      evnum = atoi( arg2 );
-      if( evnum < 1 || evnum > 2147483647 )
-      {
-         send_to_char( "Invalid room number.\n\r", ch );
-         return;
-      }
-      if( ( tmp = get_room_index( evnum ) ) == NULL )
-      {
-         send_to_char( "Non-existant room.\n\r", ch );
-         return;
-      }
-      if( ( xit = get_exit( location, edir ) ) == NULL )
-      {
-         snprintf( buf, MAX_STRING_LENGTH, "exit %c 1", dir );
-         do_redit( ch, buf );
-         xit = get_exit( location, edir );
-      }
-      xit->vnum = evnum;
-      return;
-   }
-
-   if( !str_cmp( arg, "ex_key" ) )
-   {
-      argument = one_argument( argument, arg2 );
-      if( ( xit = get_exit( location, edir ) ) == NULL )
-      {
-         snprintf( buf, MAX_STRING_LENGTH, "exit %c 1", dir );
-         do_redit( ch, buf );
-         xit = get_exit( location, edir );
-      }
-      xit->key = atoi( arg2 );
-      return;
-   }
-
-   if( !str_cmp( arg, "ex_exdesc" ) )
-   {
-      if( ( xit = get_exit( location, edir ) ) == NULL )
-      {
-         snprintf( buf, MAX_STRING_LENGTH, "exit %c 1", dir );
-         do_redit( ch, buf );
-      }
-      snprintf( buf, MAX_STRING_LENGTH, "exdesc %c %s", dir, argument );
-      do_redit( ch, buf );
-      return;
-   }
-
-   if( !str_cmp( arg, "ex_keywords" ) )   /* not called yet */
-   {
-      if( ( xit = get_exit( location, edir ) ) == NULL )
-      {
-         snprintf( buf, MAX_STRING_LENGTH, "exit %c 1", dir );
-         do_redit( ch, buf );
-         if( ( xit = get_exit( location, edir ) ) == NULL )
-            return;
-      }
-      snprintf( buf, MAX_STRING_LENGTH, "%s %s", xit->keyword, argument );
-      STRFREE( xit->keyword );
-      xit->keyword = STRALLOC( buf );
       return;
    }
 
@@ -4643,8 +4592,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg3 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Create, change or remove an exit.\n\r", ch );
-         send_to_char( "Usage: redit exit <dir> [room] [flags] [key] [keywords]\n\r", ch );
+         send_to_char( "Create, change or remove an exit.\r\n", ch );
+         send_to_char( "Usage: redit exit <dir> [room] [flags] [key] [keywords]\r\n", ch );
          return;
       }
       addexit = numnotdir = FALSE;
@@ -4678,32 +4627,32 @@ void do_redit( CHAR_DATA * ch, char *argument )
          if( xit )
          {
             extract_exit( location, xit );
-            send_to_char( "Exit removed.\n\r", ch );
+            send_to_char( "Exit removed.\r\n", ch );
             return;
          }
-         send_to_char( "No exit in that direction.\n\r", ch );
+         send_to_char( "No exit in that direction.\r\n", ch );
          return;
       }
-      if( evnum < 1 || evnum > 2147483647 )
+      if( evnum < 1 || evnum > MAX_VNUM )
       {
-         send_to_char( "Invalid room number.\n\r", ch );
+         send_to_char( "Invalid room number.\r\n", ch );
          return;
       }
       if( ( tmp = get_room_index( evnum ) ) == NULL )
       {
-         send_to_char( "Non-existant room.\n\r", ch );
+         send_to_char( "Non-existant room.\r\n", ch );
          return;
       }
       if( addexit || !xit )
       {
          if( numnotdir )
          {
-            send_to_char( "Cannot add an exit by number, sorry.\n\r", ch );
+            send_to_char( "Cannot add an exit by number, sorry.\r\n", ch );
             return;
          }
          if( addexit && xit && get_exit_to( location, edir, tmp->vnum ) )
          {
-            send_to_char( "There is already an exit in that direction leading to that location.\n\r", ch );
+            send_to_char( "There is already an exit in that direction leading to that location.\r\n", ch );
             return;
          }
          xit = make_exit( location, tmp, edir );
@@ -4744,7 +4693,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
             xit->keyword = STRALLOC( argument );
          }
       }
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -4765,8 +4714,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg3 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Create, change or remove a two-way exit.\n\r", ch );
-         send_to_char( "Usage: redit bexit <dir> [room] [flags] [key] [keywords]\n\r", ch );
+         send_to_char( "Create, change or remove a two-way exit.\r\n", ch );
+         send_to_char( "Usage: redit bexit <dir> [room] [flags] [key] [keywords]\r\n", ch );
          return;
       }
       numnotdir = FALSE;
@@ -4836,8 +4785,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         ch_printf( ch, "Set the %s between this room, and the destination room.\n\r", arg );
-         ch_printf( ch, "Usage: redit %s <dir> <type>\n\r", arg );
+         ch_printf( ch, "Set the %s between this room, and the destination room.\r\n", arg );
+         ch_printf( ch, "Usage: redit %s <dir> <type>\r\n", arg );
          return;
       }
       if( arg2[0] == '#' )
@@ -4853,15 +4802,15 @@ void do_redit( CHAR_DATA * ch, char *argument )
       if( xit )
       {
          if( ( pt = get_pulltype( argument ) ) == -1 )
-            ch_printf( ch, "Unknown pulltype: %s.  (See help PULLTYPES)\n\r", argument );
+            ch_printf( ch, "Unknown pulltype: %s.  (See help PULLTYPES)\r\n", argument );
          else
          {
             xit->pulltype = pt;
-            send_to_char( "Done.\n\r", ch );
+            send_to_char( "Done.\r\n", ch );
             return;
          }
       }
-      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
       return;
    }
 
@@ -4870,8 +4819,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Set the 'pull' between this room, and the destination room.\n\r", ch );
-         send_to_char( "Usage: redit pull <dir> <force (0 to 100)>\n\r", ch );
+         send_to_char( "Set the 'pull' between this room, and the destination room.\r\n", ch );
+         send_to_char( "Usage: redit pull <dir> <force (0 to 100)>\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4887,10 +4836,10 @@ void do_redit( CHAR_DATA * ch, char *argument )
       if( xit )
       {
          xit->pull = URANGE( -100, atoi( argument ), 100 );
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
-      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
       return;
    }
 
@@ -4899,8 +4848,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Set the 'push' away from the destination room in the opposite direction.\n\r", ch );
-         send_to_char( "Usage: redit push <dir> <force (0 to 100)>\n\r", ch );
+         send_to_char( "Set the 'push' away from the destination room in the opposite direction.\r\n", ch );
+         send_to_char( "Usage: redit push <dir> <force (0 to 100)>\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4916,10 +4865,10 @@ void do_redit( CHAR_DATA * ch, char *argument )
       if( xit )
       {
          xit->pull = URANGE( -100, -( atoi( argument ) ), 100 );
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
-      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
       return;
    }
 
@@ -4928,8 +4877,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Set the distance (in rooms) between this room, and the destination room.\n\r", ch );
-         send_to_char( "Usage: redit exdistance <dir> [distance]\n\r", ch );
+         send_to_char( "Set the distance (in rooms) between this room, and the destination room.\r\n", ch );
+         send_to_char( "Usage: redit exdistance <dir> [distance]\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4945,10 +4894,10 @@ void do_redit( CHAR_DATA * ch, char *argument )
       if( xit )
       {
          xit->distance = URANGE( 1, atoi( argument ), 50 );
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
-      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
       return;
    }
 
@@ -4957,8 +4906,8 @@ void do_redit( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( !arg2 || arg2[0] == '\0' )
       {
-         send_to_char( "Create or clear a description for an exit.\n\r", ch );
-         send_to_char( "Usage: redit exdesc <dir> [description]\n\r", ch );
+         send_to_char( "Create or clear a description for an exit.\r\n", ch );
+         send_to_char( "Usage: redit exdesc <dir> [description]\r\n", ch );
          return;
       }
       if( arg2[0] == '#' )
@@ -4978,13 +4927,13 @@ void do_redit( CHAR_DATA * ch, char *argument )
             xit->description = STRALLOC( "" );
          else
          {
-            snprintf( buf, MAX_STRING_LENGTH, "%s\n\r", argument );
+            snprintf( buf, MAX_STRING_LENGTH, "%s\r\n", argument );
             xit->description = STRALLOC( buf );
          }
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
-      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\n\r", ch );
+      send_to_char( "No exit in that direction.  Use 'redit exit ...' first.\r\n", ch );
       return;
    }
 
@@ -5013,7 +4962,7 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mobiles cannot create.\n\r", ch );
+      send_to_char( "Mobiles cannot create.\r\n", ch );
       return;
    }
 
@@ -5023,13 +4972,13 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
 
    if( vnum == -1 || !argument || argument[0] == '\0' )
    {
-      send_to_char( "Usage:  ocreate <vnum> [copy vnum] <item name>\n\r", ch );
+      send_to_char( "Usage:  ocreate <vnum> [copy vnum] <item name>\r\n", ch );
       return;
    }
 
-   if( vnum < 1 || vnum > 2147483647 )
+   if( vnum < 1 || vnum > MAX_VNUM )
    {
-      send_to_char( "Vnum out of range.\n\r", ch );
+      send_to_char( "Vnum out of range.\r\n", ch );
       return;
    }
 
@@ -5042,7 +4991,7 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
 
    if( get_obj_index( vnum ) )
    {
-      send_to_char( "An object with that number already exists.\n\r", ch );
+      send_to_char( "An object with that number already exists.\r\n", ch );
       return;
    }
 
@@ -5054,12 +5003,12 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
 
       if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
       {
-         send_to_char( "You must have an assigned area to create objects.\n\r", ch );
+         send_to_char( "You must have an assigned area to create objects.\r\n", ch );
          return;
       }
       if( vnum < pArea->low_o_vnum || vnum > pArea->hi_o_vnum )
       {
-         send_to_char( "That number is not in your allocated range.\n\r", ch );
+         send_to_char( "That number is not in your allocated range.\r\n", ch );
          return;
       }
    }
@@ -5067,7 +5016,7 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
    pObjIndex = make_object( vnum, cvnum, argument );
    if( !pObjIndex )
    {
-      send_to_char( "Error.\n\r", ch );
+      send_to_char( "Error.\r\n", ch );
       log_string( "do_ocreate: make_object failed." );
       return;
    }
@@ -5075,7 +5024,7 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
    obj_to_char( obj, ch );
    act( AT_IMMORT, "$n makes arcane gestures, and opens $s hands to reveal $p!", ch, obj, NULL, TO_ROOM );
    ch_printf_color( ch,
-                    "&YYou make arcane gestures, and open your hands to reveal %s!\n\rObjVnum:  &W%d   &YKeywords:  &W%s\n\r",
+                    "&YYou make arcane gestures, and open your hands to reveal %s!\r\nObjVnum:  &W%d   &YKeywords:  &W%s\r\n",
                     pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name );
 }
 
@@ -5089,7 +5038,7 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mobiles cannot create.\n\r", ch );
+      send_to_char( "Mobiles cannot create.\r\n", ch );
       return;
    }
 
@@ -5099,13 +5048,13 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
 
    if( vnum == -1 || !argument || argument[0] == '\0' )
    {
-      send_to_char( "Usage:  mcreate <vnum> [cvnum] <mobile name>\n\r", ch );
+      send_to_char( "Usage:  mcreate <vnum> [cvnum] <mobile name>\r\n", ch );
       return;
    }
 
-   if( vnum < 1 || vnum > 2147483647 )
+   if( vnum < 1 || vnum > MAX_VNUM )
    {
-      send_to_char( "Vnum out of range.\n\r", ch );
+      send_to_char( "Vnum out of range.\r\n", ch );
       return;
    }
 
@@ -5118,7 +5067,7 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
 
    if( get_mob_index( vnum ) )
    {
-      send_to_char( "A mobile with that number already exists.\n\r", ch );
+      send_to_char( "A mobile with that number already exists.\r\n", ch );
       return;
    }
 
@@ -5130,12 +5079,12 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
 
       if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
       {
-         send_to_char( "You must have an assigned area to create mobiles.\n\r", ch );
+         send_to_char( "You must have an assigned area to create mobiles.\r\n", ch );
          return;
       }
       if( vnum < pArea->low_m_vnum || vnum > pArea->hi_m_vnum )
       {
-         send_to_char( "That number is not in your allocated range.\n\r", ch );
+         send_to_char( "That number is not in your allocated range.\r\n", ch );
          return;
       }
    }
@@ -5143,7 +5092,7 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
    pMobIndex = make_mobile( vnum, cvnum, argument );
    if( !pMobIndex )
    {
-      send_to_char( "Error.\n\r", ch );
+      send_to_char( "Error.\r\n", ch );
       log_string( "do_mcreate: make_mobile failed." );
       return;
    }
@@ -5151,7 +5100,7 @@ void do_mcreate( CHAR_DATA * ch, char *argument )
    char_to_room( mob, ch->in_room );
    act( AT_IMMORT, "$n waves $s arms about, and $N appears at $s command!", ch, NULL, mob, TO_ROOM );
    ch_printf_color( ch,
-                    "&YYou wave your arms about, and %s appears at your command!\n\rMobVnum:  &W%d   &YKeywords:  &W%s\n\r",
+                    "&YYou wave your arms about, and %s appears at your command!\r\nMobVnum:  &W%d   &YKeywords:  &W%s\r\n",
                     pMobIndex->short_descr, pMobIndex->vnum, pMobIndex->player_name );
 }
 
@@ -5169,29 +5118,29 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
 
    if( ( d = ch->desc ) == NULL )
    {
-      send_to_char( "You have no descriptor.\n\r", ch );
+      send_to_char( "You have no descriptor.\r\n", ch );
       return;
    }
 
    if( d->connected != CON_EDITING )
    {
-      send_to_char( "You can't do that!\n\r", ch );
-      bug( "%s", "Edit_buffer: d->connected != CON_EDITING" );
+      send_to_char( "You can't do that!\r\n", ch );
+      bug( "%s: d->connected != CON_EDITING", __FUNCTION__ );
       return;
    }
 
    if( ch->substate <= SUB_PAUSE )
    {
-      send_to_char( "You can't do that!\n\r", ch );
-      bug( "Edit_buffer: illegal ch->substate (%d)", ch->substate );
+      send_to_char( "You can't do that!\r\n", ch );
+      bug( "%s: illegal ch->substate (%d)", __FUNCTION__, ch->substate );
       d->connected = CON_PLAYING;
       return;
    }
 
    if( !ch->editor )
    {
-      send_to_char( "You can't do that!\n\r", ch );
-      bug( "%s", "Edit_buffer: null editor" );
+      send_to_char( "You can't do that!\r\n", ch );
+      bug( "%s: null editor", __FUNCTION__ );
       d->connected = CON_PLAYING;
       return;
    }
@@ -5208,17 +5157,17 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       one_argument( argument, cmd );
       if( !str_cmp( cmd + 1, "?" ) )
       {
-         send_to_char( "Editing commands\n\r---------------------------------\n\r", ch );
-         send_to_char( "/l              list buffer\n\r", ch );
-         send_to_char( "/c              clear buffer\n\r", ch );
-         send_to_char( "/d [line]       delete line\n\r", ch );
-         send_to_char( "/g <line>       goto line\n\r", ch );
-         send_to_char( "/i <line>       insert line\n\r", ch );
-         send_to_char( "/r <old> <new>  global replace\n\r", ch );
-         send_to_char( "/a              abort editing\n\r", ch );
+         send_to_char( "Editing commands\r\n---------------------------------\r\n", ch );
+         send_to_char( "/l              list buffer\r\n", ch );
+         send_to_char( "/c              clear buffer\r\n", ch );
+         send_to_char( "/d [line]       delete line\r\n", ch );
+         send_to_char( "/g <line>       goto line\r\n", ch );
+         send_to_char( "/i <line>       insert line\r\n", ch );
+         send_to_char( "/r <old> <new>  global replace\r\n", ch );
+         send_to_char( "/a              abort editing\r\n", ch );
          if( get_trust( ch ) > LEVEL_IMMORTAL )
-            send_to_char( "/! <command>    execute command (do not use another editing command)\n\r", ch );
-         send_to_char( "/s              save buffer\n\r\n\r> ", ch );
+            send_to_char( "/! <command>    execute command (do not use another editing command)\r\n", ch );
+         send_to_char( "/s              save buffer\r\n\r\n> ", ch );
          return;
       }
       if( !str_cmp( cmd + 1, "c" ) )
@@ -5226,7 +5175,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
          memset( edit, '\0', sizeof( EDITOR_DATA ) );
          edit->numlines = 0;
          edit->on_line = 0;
-         send_to_char( "Buffer cleared.\n\r> ", ch );
+         send_to_char( "Buffer cleared.\r\n> ", ch );
          return;
       }
       if( !str_cmp( cmd + 1, "r" ) )
@@ -5241,39 +5190,39 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
          sptr = one_argument( sptr, word2 );
          if( word1[0] == '\0' || word2[0] == '\0' )
          {
-            send_to_char( "Need word to replace, and replacement.\n\r> ", ch );
+            send_to_char( "Need word to replace, and replacement.\r\n> ", ch );
             return;
          }
          if( strcmp( word1, word2 ) == 0 )
          {
-            send_to_char( "Done.\n\r> ", ch );
+            send_to_char( "Done.\r\n> ", ch );
             return;
          }
          count = 0;
          wordln = strlen( word1 );
          word2ln = strlen( word2 );
-         ch_printf( ch, "Replacing all occurrences of %s with %s...\n\r", word1, word2 );
+         ch_printf( ch, "Replacing all occurrences of %s with %s...\r\n", word1, word2 );
          for( x = 0; x < edit->numlines; x++ )
          {
             lwptr = edit->line[x];
             while( ( wptr = strstr( lwptr, word1 ) ) != NULL )
             {
                ++count;
-               lineln = snprintf( buf, MAX_STRING_LENGTH, "%s%s", word2, wptr + wordln );
+               lineln = snprintf( buf, MAX_INPUT_LENGTH, "%s%s", word2, wptr + wordln );
                if( lineln + wptr - edit->line[x] > 79 )
                   buf[lineln] = '\0';
                mudstrlcpy( wptr, buf, MAX_STRING_LENGTH );
                lwptr = wptr + word2ln;
             }
          }
-         ch_printf( ch, "Found and replaced %d occurrence(s).\n\r> ", count );
+         ch_printf( ch, "Found and replaced %d occurrence(s).\r\n> ", count );
          return;
       }
 
       if( !str_cmp( cmd + 1, "i" ) )
       {
          if( edit->numlines >= max_buf_lines )
-            send_to_char( "Buffer is full.\n\r> ", ch );
+            send_to_char( "Buffer is full.\r\n> ", ch );
          else
          {
             if( argument[2] == ' ' )
@@ -5283,13 +5232,13 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
             if( line < 0 )
                line = edit->on_line;
             if( line < 0 || line > edit->numlines )
-               send_to_char( "Out of range.\n\r> ", ch );
+               send_to_char( "Out of range.\r\n> ", ch );
             else
             {
                for( x = ++edit->numlines; x > line; x-- )
                   mudstrlcpy( edit->line[x], edit->line[x - 1], MAX_STRING_LENGTH );
                mudstrlcpy( edit->line[line], "", MAX_STRING_LENGTH );
-               send_to_char( "Line inserted.\n\r> ", ch );
+               send_to_char( "Line inserted.\r\n> ", ch );
             }
          }
          return;
@@ -5297,7 +5246,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       if( !str_cmp( cmd + 1, "d" ) )
       {
          if( edit->numlines == 0 )
-            send_to_char( "Buffer is empty.\n\r> ", ch );
+            send_to_char( "Buffer is empty.\r\n> ", ch );
          else
          {
             if( argument[2] == ' ' )
@@ -5307,7 +5256,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
             if( line < 0 )
                line = edit->on_line;
             if( line < 0 || line > edit->numlines )
-               send_to_char( "Out of range.\n\r> ", ch );
+               send_to_char( "Out of range.\r\n> ", ch );
             else
             {
                if( line == 0 && edit->numlines == 1 )
@@ -5315,7 +5264,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
                   memset( edit, '\0', sizeof( EDITOR_DATA ) );
                   edit->numlines = 0;
                   edit->on_line = 0;
-                  send_to_char( "Line deleted.\n\r> ", ch );
+                  send_to_char( "Line deleted.\r\n> ", ch );
                   return;
                }
                for( x = line; x < ( edit->numlines - 1 ); x++ )
@@ -5323,7 +5272,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
                mudstrlcpy( edit->line[edit->numlines--], "", MAX_STRING_LENGTH );
                if( edit->on_line > edit->numlines )
                   edit->on_line = edit->numlines;
-               send_to_char( "Line deleted.\n\r> ", ch );
+               send_to_char( "Line deleted.\r\n> ", ch );
             }
          }
          return;
@@ -5331,24 +5280,24 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       if( !str_cmp( cmd + 1, "g" ) )
       {
          if( edit->numlines == 0 )
-            send_to_char( "Buffer is empty.\n\r> ", ch );
+            send_to_char( "Buffer is empty.\r\n> ", ch );
          else
          {
             if( argument[2] == ' ' )
                line = atoi( argument + 2 ) - 1;
             else
             {
-               send_to_char( "Goto what line?\n\r> ", ch );
+               send_to_char( "Goto what line?\r\n> ", ch );
                return;
             }
             if( line < 0 )
                line = edit->on_line;
             if( line < 0 || line > edit->numlines )
-               send_to_char( "Out of range.\n\r> ", ch );
+               send_to_char( "Out of range.\r\n> ", ch );
             else
             {
                edit->on_line = line;
-               ch_printf( ch, "(On line %d)\n\r> ", line + 1 );
+               ch_printf( ch, "(On line %d)\r\n> ", line + 1 );
             }
          }
          return;
@@ -5356,19 +5305,19 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       if( !str_cmp( cmd + 1, "l" ) )
       {
          if( edit->numlines == 0 )
-            send_to_char( "Buffer is empty.\n\r> ", ch );
+            send_to_char( "Buffer is empty.\r\n> ", ch );
          else
          {
-            send_to_char( "------------------\n\r", ch );
+            send_to_char( "------------------\r\n", ch );
             for( x = 0; x < edit->numlines; x++ )
-               ch_printf( ch, "%2d> %s\n\r", x + 1, edit->line[x] );
-            send_to_char( "------------------\n\r> ", ch );
+               ch_printf( ch, "%2d> %s\r\n", x + 1, edit->line[x] );
+            send_to_char( "------------------\r\n> ", ch );
          }
          return;
       }
       if( !str_cmp( cmd + 1, "a" ) )
       {
-         send_to_char( "\n\rAborting... ", ch );
+         send_to_char( "\r\nAborting... ", ch );
          stop_editing( ch );
          return;
       }
@@ -5383,7 +5332,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
          ch->substate = substate;
          ch->last_cmd = last_cmd;
          set_char_color( AT_GREEN, ch );
-         send_to_char( "\n\r> ", ch );
+         send_to_char( "\r\n> ", ch );
          return;
       }
       if( !str_cmp( cmd + 1, "s" ) )
@@ -5397,24 +5346,24 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    }
 
    if( edit->size + strlen( argument ) + 1 >= MAX_STRING_LENGTH - 1 )
-      send_to_char( "You buffer is full.\n\r", ch );
+      send_to_char( "You buffer is full.\r\n", ch );
    else
    {
       if( strlen( argument ) > 79 )
       {
          strncpy( buf, argument, 79 );
          buf[79] = 0;
-         send_to_char( "(Long line trimmed)\n\r> ", ch );
+         send_to_char( "(Long line trimmed)\r\n> ", ch );
       }
       else
-         mudstrlcpy( buf, argument, MAX_STRING_LENGTH );
+         mudstrlcpy( buf, argument, MAX_INPUT_LENGTH );
       mudstrlcpy( edit->line[edit->on_line++], buf, MAX_STRING_LENGTH );
       if( edit->on_line > edit->numlines )
          edit->numlines++;
       if( edit->numlines > max_buf_lines )
       {
          edit->numlines = max_buf_lines;
-         send_to_char( "Buffer full.\n\r", ch );
+         send_to_char( "Buffer full.\r\n", ch );
          save = TRUE;
       }
    }
@@ -5512,7 +5461,7 @@ void do_aassign( CHAR_DATA * ch, char *argument )
 
    if( argument[0] == '\0' )
    {
-      send_to_char( "Syntax: aassign <filename.are>\n\r", ch );
+      send_to_char( "Syntax: aassign <filename.are>\r\n", ch );
       return;
    }
 
@@ -5521,9 +5470,9 @@ void do_aassign( CHAR_DATA * ch, char *argument )
       ch->pcdata->area = NULL;
       assign_area( ch );
       if( !ch->pcdata->area )
-         send_to_char( "Area pointer cleared.\n\r", ch );
+         send_to_char( "Area pointer cleared.\r\n", ch );
       else
-         send_to_char( "Originally assigned area restored.\n\r", ch );
+         send_to_char( "Originally assigned area restored.\r\n", ch );
       return;
    }
 
@@ -5555,7 +5504,7 @@ void do_aassign( CHAR_DATA * ch, char *argument )
             }
             else
             {
-               send_to_char( "You do not have permission to use that area.\n\r", ch );
+               send_to_char( "You do not have permission to use that area.\r\n", ch );
                return;
             }
          }
@@ -5563,13 +5512,13 @@ void do_aassign( CHAR_DATA * ch, char *argument )
    if( !tarea )
    {
       if( get_trust( ch ) >= sysdata.level_modify_proto )
-         send_to_char( "No such area.  Use 'zones'.\n\r", ch );
+         send_to_char( "No such area.  Use 'zones'.\r\n", ch );
       else
-         send_to_char( "No such area.  Use 'newzones'.\n\r", ch );
+         send_to_char( "No such area.  Use 'newzones'.\r\n", ch );
       return;
    }
    ch->pcdata->area = tarea;
-   ch_printf( ch, "Assigning you: %s\n\r", tarea->name );
+   ch_printf( ch, "Assigning you: %s\r\n", tarea->name );
    return;
 }
 
@@ -5823,7 +5772,9 @@ void fold_area( AREA_DATA * tarea, char *filename, bool install )
                   fprintf( fpout, "> %s %s~\n", mprog_type_to_name( mprog->type ), mprog->arglist );
                   count++;
                }
-               /* Don't let it save progs which came from files. That would be silly. */
+               /*
+                * Don't let it save progs which came from files. That would be silly. 
+                */
                else if( mprog->comlist && mprog->comlist[0] != '\0' && !mprog->fileprog )
                {
                   fprintf( fpout, "> %s %s~\n%s~\n", mprog_type_to_name( mprog->type ),
@@ -5962,7 +5913,9 @@ void fold_area( AREA_DATA * tarea, char *filename, bool install )
                   fprintf( fpout, "> %s %s~\n", mprog_type_to_name( mprog->type ), mprog->arglist );
                   count++;
                }
-               /* Don't let it save progs which came from files. That would be silly. */
+               /*
+                * Don't let it save progs which came from files. That would be silly. 
+                */
                else if( mprog->comlist && mprog->comlist[0] != '\0' && !mprog->fileprog )
                {
                   fprintf( fpout, "> %s %s~\n%s~\n", mprog_type_to_name( mprog->type ),
@@ -6131,7 +6084,9 @@ void fold_area( AREA_DATA * tarea, char *filename, bool install )
                   fprintf( fpout, "> %s %s~\n", mprog_type_to_name( mprog->type ), mprog->arglist );
                   count++;
                }
-               /* Don't let it save progs which came from files. That would be silly. */
+               /*
+                * Don't let it save progs which came from files. That would be silly. 
+                */
                else if( mprog->comlist && mprog->comlist[0] != '\0' && !mprog->fileprog )
                {
                   fprintf( fpout, "> %s %s~\n%s~\n", mprog_type_to_name( mprog->type ),
@@ -6185,13 +6140,15 @@ void fold_area( AREA_DATA * tarea, char *filename, bool install )
    }
    fprintf( fpout, "0\n\n\n" );
 
-   /* save specials */
+   /*
+    * save specials 
+    */
    fprintf( fpout, "%s", "#SPECIALS\n" );
    for( vnum = tarea->low_m_vnum; vnum <= tarea->hi_m_vnum; vnum++ )
    {
       if( ( pMobIndex = get_mob_index( vnum ) ) != NULL )
          if( pMobIndex->spec_fun )
-	      fprintf( fpout, "M  %d %s\n", pMobIndex->vnum, pMobIndex->spec_funname );
+            fprintf( fpout, "M  %d %s\n", pMobIndex->vnum, pMobIndex->spec_funname );
    }
    fprintf( fpout, "S\n\n\n" );
 
@@ -6212,7 +6169,7 @@ void do_savearea( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_CREATOR || !ch->pcdata || ( argument[0] == '\0' && !ch->pcdata->area ) )
    {
-      send_to_char( "You don't have an assigned area to save.\n\r", ch );
+      send_to_char( "You don't have an assigned area to save.\r\n", ch );
       return;
    }
 
@@ -6224,7 +6181,7 @@ void do_savearea( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < LEVEL_GOD )
       {
-         send_to_char( "You can only save your own area.\n\r", ch );
+         send_to_char( "You can only save your own area.\r\n", ch );
          return;
       }
       for( found = FALSE, tarea = first_build; tarea; tarea = tarea->next )
@@ -6235,14 +6192,14 @@ void do_savearea( CHAR_DATA * ch, char *argument )
          }
       if( !found )
       {
-         send_to_char( "Area not found.\n\r", ch );
+         send_to_char( "Area not found.\r\n", ch );
          return;
       }
    }
 
    if( !tarea )
    {
-      send_to_char( "No area to save.\n\r", ch );
+      send_to_char( "No area to save.\r\n", ch );
       return;
    }
 
@@ -6251,20 +6208,20 @@ void do_savearea( CHAR_DATA * ch, char *argument )
     */
    if( !IS_SET( tarea->status, AREA_LOADED ) )
    {
-      send_to_char( "Your area is not loaded!\n\r", ch );
+      send_to_char( "Your area is not loaded!\r\n", ch );
       return;
    }
 
    if( !IS_SET( tarea->flags, AFLAG_PROTOTYPE ) )
    {
-      ch_printf( ch, "Cannot savearea %s, use foldarea instead.\n\r", tarea->filename );
+      ch_printf( ch, "Cannot savearea %s, use foldarea instead.\r\n", tarea->filename );
       return;
    }
    snprintf( filename, 256, "%s%s", BUILD_DIR, tarea->filename );
-   send_to_char( "Saving area...\n\r", ch );
+   send_to_char( "Saving area...\r\n", ch );
    fold_area( tarea, filename, FALSE );
    set_char_color( AT_IMMORT, ch );
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
 }
 
 void do_loadarea( CHAR_DATA * ch, char *argument )
@@ -6277,7 +6234,7 @@ void do_loadarea( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_CREATOR || !ch->pcdata || ( argument[0] == '\0' && !ch->pcdata->area ) )
    {
-      send_to_char( "You don't have an assigned area to load.\n\r", ch );
+      send_to_char( "You don't have an assigned area to load.\r\n", ch );
       return;
    }
 
@@ -6289,7 +6246,7 @@ void do_loadarea( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < LEVEL_GOD )
       {
-         send_to_char( "You can only load your own area.\n\r", ch );
+         send_to_char( "You can only load your own area.\r\n", ch );
          return;
       }
       for( found = FALSE, tarea = first_build; tarea; tarea = tarea->next )
@@ -6300,47 +6257,47 @@ void do_loadarea( CHAR_DATA * ch, char *argument )
          }
       if( !found )
       {
-         send_to_char( "Area not found.\n\r", ch );
+         send_to_char( "Area not found.\r\n", ch );
          return;
       }
    }
 
    if( !tarea )
    {
-      send_to_char( "No area to load.\n\r", ch );
+      send_to_char( "No area to load.\r\n", ch );
       return;
    }
 
 /* Stops char from loading when already loaded - Scryn 8/11 */
    if( IS_SET( tarea->status, AREA_LOADED ) )
    {
-      send_to_char( "Your area is already loaded.\n\r", ch );
+      send_to_char( "Your area is already loaded.\r\n", ch );
       return;
    }
    snprintf( filename, 256, "%s%s", BUILD_DIR, tarea->filename );
-   send_to_char( "Loading...\n\r", ch );
+   send_to_char( "Loading...\r\n", ch );
    load_area_file( tarea, filename );
    /*
     * Couldnt load the area? 
     */
    if( !IS_SET( tarea->status, AREA_LOADED ) )
    {
-      send_to_char( "Your area couldn't be loaded.\n\r", ch );
+      send_to_char( "Your area couldn't be loaded.\r\n", ch );
       return;
    }
-   send_to_char( "Planing...\n\r", ch );
+   send_to_char( "Planing...\r\n", ch );
    check_planes( NULL );
-   send_to_char( "Linking exits...\n\r", ch );
+   send_to_char( "Linking exits...\r\n", ch );
    fix_area_exits( tarea );
    if( tarea->first_room )
    {
       tmp = tarea->nplayer;
       tarea->nplayer = 0;
-      send_to_char( "Resetting area...\n\r", ch );
+      send_to_char( "Resetting area...\r\n", ch );
       reset_area( tarea );
       tarea->nplayer = tmp;
    }
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
 }
 
 /*
@@ -6361,7 +6318,7 @@ void do_unfoldarea( CHAR_DATA * ch, char *argument )
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Unfold what?\n\r", ch );
+      send_to_char( "Unfold what?\r\n", ch );
       return;
    }
 
@@ -6381,7 +6338,7 @@ void do_foldarea( CHAR_DATA * ch, char *argument )
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Fold what?\n\r", ch );
+      send_to_char( "Fold what?\r\n", ch );
       return;
    }
 
@@ -6389,7 +6346,7 @@ void do_foldarea( CHAR_DATA * ch, char *argument )
    {
       for( tarea = first_area; tarea; tarea = tarea->next )
          fold_area( tarea, tarea->filename, FALSE );
-      send_to_char( "All installed areas have been folded.\n\r", ch );
+      send_to_char( "All installed areas have been folded.\r\n", ch );
       return;
    }
 
@@ -6397,14 +6354,14 @@ void do_foldarea( CHAR_DATA * ch, char *argument )
    {
       if( !str_cmp( tarea->filename, argument ) )
       {
-         send_to_char( "Folding area...\n\r", ch );
+         send_to_char( "Folding area...\r\n", ch );
          fold_area( tarea, tarea->filename, FALSE );
          set_char_color( AT_IMMORT, ch );
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
    }
-   send_to_char( "No such area exists.\n\r", ch );
+   send_to_char( "No such area exists.\r\n", ch );
    return;
 }
 
@@ -6445,7 +6402,7 @@ void do_installarea( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg );
    if( arg[0] == '\0' )
    {
-      send_to_char( "Syntax: installarea <filename> [Area title]\n\r", ch );
+      send_to_char( "Syntax: installarea <filename> [Area title]\r\n", ch );
       return;
    }
 
@@ -6463,7 +6420,7 @@ void do_installarea( CHAR_DATA * ch, char *argument )
           * Fold area with install flag -- auto-removes prototype flags 
           */
          REMOVE_BIT( tarea->flags, AFLAG_PROTOTYPE );
-         send_to_char( "Saving and installing file...\n\r", ch );
+         send_to_char( "Saving and installing file...\r\n", ch );
          fold_area( tarea, tarea->filename, TRUE );
 
          /*
@@ -6485,6 +6442,7 @@ void do_installarea( CHAR_DATA * ch, char *argument )
           * Sort the area into it's proper sort list. BUGFIX: Samson 4-15-03 
           */
          sort_area( tarea, FALSE );
+         sort_area_by_name( tarea );
 
          /*
           * Fix up author if online 
@@ -6509,24 +6467,24 @@ void do_installarea( CHAR_DATA * ch, char *argument )
             }
 
          top_area++;
-         send_to_char( "Writing area.lst...\n\r", ch );
+         send_to_char( "Writing area.lst...\r\n", ch );
          write_area_list(  );
-         send_to_char( "Resetting new area.\n\r", ch );
+         send_to_char( "Resetting new area.\r\n", ch );
          num = tarea->nplayer;
          tarea->nplayer = 0;
          reset_area( tarea );
          tarea->nplayer = num;
-         send_to_char( "Renaming author's building file.\n\r", ch );
+         send_to_char( "Renaming author's building file.\r\n", ch );
          snprintf( buf, MAX_STRING_LENGTH, "%s%s.installed", BUILD_DIR, tarea->filename );
          snprintf( arg, MAX_INPUT_LENGTH, "%s%s", BUILD_DIR, tarea->filename );
          rename( arg, buf );
          snprintf( buf, MAX_STRING_LENGTH, "%s%s.bak", BUILD_DIR, tarea->filename );
          unlink( buf );
-         send_to_char( "Done.\n\r", ch );
+         send_to_char( "Done.\r\n", ch );
          return;
       }
    }
-   send_to_char( "No such area exists.\n\r", ch );
+   send_to_char( "No such area exists.\r\n", ch );
    return;
 }
 
@@ -6549,10 +6507,10 @@ void do_astat( CHAR_DATA * ch, char *argument )
          pkills += tarea->pkills;
          mkills += tarea->mkills;
       }
-      ch_printf_color( ch, "&WTotal pdeaths:      &w%d\n\r", pdeaths );
-      ch_printf_color( ch, "&WTotal pkills:       &w%d\n\r", pkills );
-      ch_printf_color( ch, "&WTotal mdeaths:      &w%d\n\r", mdeaths );
-      ch_printf_color( ch, "&WTotal mkills:       &w%d\n\r", mkills );
+      ch_printf_color( ch, "&WTotal pdeaths:      &w%d\r\n", pdeaths );
+      ch_printf_color( ch, "&WTotal pkills:       &w%d\r\n", pkills );
+      ch_printf_color( ch, "&WTotal mdeaths:      &w%d\r\n", mdeaths );
+      ch_printf_color( ch, "&WTotal mkills:       &w%d\r\n", mkills );
       return;
    }
 
@@ -6576,7 +6534,7 @@ void do_astat( CHAR_DATA * ch, char *argument )
    {
       if( argument && argument[0] != '\0' )
       {
-         send_to_char( "Area not found.  Check 'zones'.\n\r", ch );
+         send_to_char( "Area not found.  Check 'zones'.\r\n", ch );
          return;
       }
       else
@@ -6585,29 +6543,29 @@ void do_astat( CHAR_DATA * ch, char *argument )
       }
    }
 
-   ch_printf_color( ch, "\n\r&wName:     &W%s\n\r&wFilename: &W%-20s  &wPrototype: &W%s\n\r&wAuthor:   &W%s\n\r",
+   ch_printf_color( ch, "\r\n&wName:     &W%s\r\n&wFilename: &W%-20s  &wPrototype: &W%s\r\n&wAuthor:   &W%s\r\n",
                     tarea->name, tarea->filename, proto ? "yes" : "no", tarea->author );
-   ch_printf_color( ch, "&wAge: &W%-3d  &wCurrent number of players: &W%-3d  &wMax players: &W%d\n\r",
+   ch_printf_color( ch, "&wAge: &W%-3d  &wCurrent number of players: &W%-3d  &wMax players: &W%d\r\n",
                     tarea->age, tarea->nplayer, tarea->max_players );
    if( !proto )
    {
       if( tarea->high_economy )
-         ch_printf_color( ch, "&wArea economy: &W%d &wbillion and &W%d gold coins.\n\r",
+         ch_printf_color( ch, "&wArea economy: &W%d &wbillion and &W%d gold coins.\r\n",
                           tarea->high_economy, tarea->low_economy );
       else
-         ch_printf_color( ch, "&wArea economy: &W%d &wgold coins.\n\r", tarea->low_economy );
-      ch_printf_color( ch, "&wGold Looted:  &W%d\n\r", tarea->gold_looted );
-      ch_printf_color( ch, "&wMdeaths: &W%d   &wMkills: &W%d   &wPdeaths: &W%d   &wPkills: &W%d   &wIllegalPK: &W%d\n\r",
+         ch_printf_color( ch, "&wArea economy: &W%d &wgold coins.\r\n", tarea->low_economy );
+      ch_printf_color( ch, "&wGold Looted:  &W%d\r\n", tarea->gold_looted );
+      ch_printf_color( ch, "&wMdeaths: &W%d   &wMkills: &W%d   &wPdeaths: &W%d   &wPkills: &W%d   &wIllegalPK: &W%d\r\n",
                        tarea->mdeaths, tarea->mkills, tarea->pdeaths, tarea->pkills, tarea->illegal_pk );
    }
-   ch_printf_color( ch, "&wlow_room: &W%5d    &whi_room: &W%5d\n\r", tarea->low_r_vnum, tarea->hi_r_vnum );
-   ch_printf_color( ch, "&wlow_obj : &W%5d    &whi_obj : &W%5d\n\r", tarea->low_o_vnum, tarea->hi_o_vnum );
-   ch_printf_color( ch, "&wlow_mob : &W%5d    &whi_mob : &W%5d\n\r", tarea->low_m_vnum, tarea->hi_m_vnum );
-   ch_printf_color( ch, "&wsoft range: &W%d - %d    &whard range: &W%d - %d\n\r",
+   ch_printf_color( ch, "&wlow_room: &W%5d    &whi_room: &W%5d\r\n", tarea->low_r_vnum, tarea->hi_r_vnum );
+   ch_printf_color( ch, "&wlow_obj : &W%5d    &whi_obj : &W%5d\r\n", tarea->low_o_vnum, tarea->hi_o_vnum );
+   ch_printf_color( ch, "&wlow_mob : &W%5d    &whi_mob : &W%5d\r\n", tarea->low_m_vnum, tarea->hi_m_vnum );
+   ch_printf_color( ch, "&wsoft range: &W%d - %d    &whard range: &W%d - %d\r\n",
                     tarea->low_soft_range, tarea->hi_soft_range, tarea->low_hard_range, tarea->hi_hard_range );
-   ch_printf_color( ch, "&wArea flags: &W%s\n\r", flag_string( tarea->flags, area_flags ) );
-   ch_printf_color( ch, "&wResetmsg: &W%s\n\r", tarea->resetmsg ? tarea->resetmsg : "(default)" ); /* Rennard */
-   ch_printf_color( ch, "&wReset frequency: &W%d &wminutes.\n\r", tarea->reset_frequency ? tarea->reset_frequency : 15 );
+   ch_printf_color( ch, "&wArea flags: &W%s\r\n", flag_string( tarea->flags, area_flags ) );
+   ch_printf_color( ch, "&wResetmsg: &W%s\r\n", tarea->resetmsg ? tarea->resetmsg : "(default)" ); /* Rennard */
+   ch_printf_color( ch, "&wReset frequency: &W%d &wminutes.\r\n", tarea->reset_frequency ? tarea->reset_frequency : 15 );
 }
 
 /* check other areas for a conflict while ignoring the current area */
@@ -6641,11 +6599,11 @@ void do_aset( CHAR_DATA * ch, char *argument )
    vnum = atoi( argument );
    if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
-      send_to_char( "Usage: aset <area filename> <field> <value>\n\r", ch );
-      send_to_char( "\n\rField being one of:\n\r", ch );
-      send_to_char( "  low_room hi_room low_obj hi_obj low_mob hi_mob\n\r", ch );
-      send_to_char( "  name filename low_soft hi_soft low_hard hi_hard\n\r", ch );
-      send_to_char( "  author resetmsg resetfreq flags\n\r", ch );
+      send_to_char( "Usage: aset <area filename> <field> <value>\r\n", ch );
+      send_to_char( "\r\nField being one of:\r\n", ch );
+      send_to_char( "  low_room hi_room low_obj hi_obj low_mob hi_mob\r\n", ch );
+      send_to_char( "  name filename low_soft hi_soft low_hard hi_hard\r\n", ch );
+      send_to_char( "  author resetmsg resetfreq flags\r\n", ch );
       return;
    }
 
@@ -6669,20 +6627,40 @@ void do_aset( CHAR_DATA * ch, char *argument )
 
    if( !found )
    {
-      send_to_char( "Area not found.\n\r", ch );
+      send_to_char( "Area not found.\r\n", ch );
       return;
    }
 
    if( !str_cmp( arg2, "name" ) )
    {
+      AREA_DATA *uarea;
+
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "You can't set an area's name to nothing.\n\r", ch );
+         send_to_char( "You can't set an area's name to nothing.\r\n", ch );
          return;
+      }
+
+      for( uarea = first_area; uarea; uarea = uarea->next )
+      {
+         if( !str_cmp( uarea->name, argument ) )
+         {
+            send_to_char( "There is already an installed area with that name.\r\n", ch );
+            return;
+         }
+      }
+
+      for( uarea = first_build; uarea; uarea = uarea->next )
+      {
+         if( !str_cmp( uarea->name, argument ) )
+         {
+            send_to_char( "There is already a prototype area with that name.\r\n", ch );
+            return;
+         }
       }
       DISPOSE( tarea->name );
       tarea->name = str_dup( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6692,34 +6670,33 @@ void do_aset( CHAR_DATA * ch, char *argument )
 
       if( proto )
       {
-         send_to_char( "You should only change the filename of installed areas.\n\r", ch );
+         send_to_char( "You should only change the filename of installed areas.\r\n", ch );
          return;
       }
-      if( !argument || argument[0] == '\0' )
-      {
-         send_to_char( "You can't set an area's filename to nothing.\n\r", ch );
+
+      if( !is_valid_filename( ch, "", argument ) )
          return;
-      }
+
       mudstrlcpy( filename, tarea->filename, 256 );
       DISPOSE( tarea->filename );
       tarea->filename = str_dup( argument );
       rename( filename, tarea->filename );
       write_area_list(  );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
    if( !str_cmp( arg2, "low_economy" ) )
    {
       tarea->low_economy = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
    if( !str_cmp( arg2, "high_economy" ) )
    {
       tarea->high_economy = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6727,16 +6704,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->low_r_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->hi_r_vnum < vnum )
       {
-         send_to_char( "Can't set low_vnum higher than the hi_vnum.\n\r", ch );
+         send_to_char( "Can't set low_vnum higher than the hi_vnum.\r\n", ch );
          return;
       }
       tarea->low_r_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6744,16 +6721,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->hi_r_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->low_r_vnum > vnum )
       {
-         send_to_char( "Can't set low_vnum lower than the low_vnum.\n\r", ch );
+         send_to_char( "Can't set low_vnum lower than the low_vnum.\r\n", ch );
          return;
       }
       tarea->hi_r_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6761,16 +6738,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->low_o_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->hi_o_vnum < vnum )
       {
-         send_to_char( "Can't set low_obj higher than the hi_obj.\n\r", ch );
+         send_to_char( "Can't set low_obj higher than the hi_obj.\r\n", ch );
          return;
       }
       tarea->low_o_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6778,16 +6755,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->hi_o_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->low_o_vnum > vnum )
       {
-         send_to_char( "Can't set hi_obj lower than the low_obj.\n\r", ch );
+         send_to_char( "Can't set hi_obj lower than the low_obj.\r\n", ch );
          return;
       }
       tarea->hi_o_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6795,16 +6772,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->low_m_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->hi_m_vnum < vnum )
       {
-         send_to_char( "Can't set low_mob higher than the hi_mob.\n\r", ch );
+         send_to_char( "Can't set low_mob higher than the hi_mob.\r\n", ch );
          return;
       }
       tarea->low_m_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6812,16 +6789,16 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( check_for_area_conflicts( tarea, tarea->hi_m_vnum, vnum ) )
       {
-         send_to_char( "That would conflict with another area.\n\r", ch );
+         send_to_char( "That would conflict with another area.\r\n", ch );
          return;
       }
       if( tarea->low_m_vnum > vnum )
       {
-         send_to_char( "Can't set hi_mob lower than the low_mob.\n\r", ch );
+         send_to_char( "Can't set hi_mob lower than the low_mob.\r\n", ch );
          return;
       }
       tarea->hi_m_vnum = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6829,12 +6806,12 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( vnum < 0 || vnum > MAX_LEVEL )
       {
-         send_to_char( "That is not an acceptable value.\n\r", ch );
+         send_to_char( "That is not an acceptable value.\r\n", ch );
          return;
       }
 
       tarea->low_soft_range = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6842,12 +6819,12 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( vnum < 0 || vnum > MAX_LEVEL )
       {
-         send_to_char( "That is not an acceptable value.\n\r", ch );
+         send_to_char( "That is not an acceptable value.\r\n", ch );
          return;
       }
 
       tarea->hi_soft_range = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6855,12 +6832,12 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( vnum < 0 || vnum > MAX_LEVEL )
       {
-         send_to_char( "That is not an acceptable value.\n\r", ch );
+         send_to_char( "That is not an acceptable value.\r\n", ch );
          return;
       }
 
       tarea->low_hard_range = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6868,12 +6845,12 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( vnum < 0 || vnum > MAX_LEVEL )
       {
-         send_to_char( "That is not an acceptable value.\n\r", ch );
+         send_to_char( "That is not an acceptable value.\r\n", ch );
          return;
       }
 
       tarea->hi_hard_range = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6881,12 +6858,12 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Can't set an area's author to nothing.\n\r", ch );
+         send_to_char( "Can't set an area's author to nothing.\r\n", ch );
          return;
       }
       STRFREE( tarea->author );
       tarea->author = STRALLOC( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6896,14 +6873,14 @@ void do_aset( CHAR_DATA * ch, char *argument )
          DISPOSE( tarea->resetmsg );
       if( str_cmp( argument, "clear" ) && argument && argument[0] != '\0' )
          tarea->resetmsg = str_dup( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }  /* Rennard */
 
    if( !str_cmp( arg2, "resetfreq" ) )
    {
       tarea->reset_frequency = vnum;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
@@ -6911,7 +6888,7 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: aset <filename> flags <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: aset <filename> flags <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -6919,7 +6896,7 @@ void do_aset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_areaflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
          {
             if( IS_SET( tarea->flags, 1 << value ) )
@@ -6951,7 +6928,7 @@ void do_rlist( CHAR_DATA * ch, char *argument )
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_CREATOR || !ch->pcdata
        || ( !ch->pcdata->area && get_trust( ch ) < LEVEL_GREATER ) )
    {
-      send_to_char_color( "&YYou don't have an assigned area.\n\r", ch );
+      send_to_char_color( "&YYou don't have an assigned area.\r\n", ch );
       return;
    }
 
@@ -6990,7 +6967,7 @@ void do_rlist( CHAR_DATA * ch, char *argument )
 
       if( ( lrange < tarea->low_r_vnum || trange > tarea->hi_r_vnum ) && get_trust( ch ) < LEVEL_GREATER )
       {
-         send_to_char_color( "&YThat is out of your vnum range.\n\r", ch );
+         send_to_char_color( "&YThat is out of your vnum range.\r\n", ch );
          return;
       }
    }
@@ -7004,7 +6981,7 @@ void do_rlist( CHAR_DATA * ch, char *argument )
    {
       if( ( room = get_room_index( vnum ) ) == NULL )
          continue;
-      pager_printf( ch, "%5d) %s\n\r", vnum, room->name );
+      pager_printf( ch, "%5d) %s\r\n", vnum, room->name );
    }
    return;
 }
@@ -7028,7 +7005,7 @@ void do_olist( CHAR_DATA * ch, char *argument )
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_CREATOR || !ch->pcdata
        || ( !ch->pcdata->area && get_trust( ch ) < LEVEL_GREATER ) )
    {
-      send_to_char_color( "&YYou don't have an assigned area.\n\r", ch );
+      send_to_char_color( "&YYou don't have an assigned area.\r\n", ch );
       return;
    }
    tarea = ch->pcdata->area;
@@ -7048,7 +7025,7 @@ void do_olist( CHAR_DATA * ch, char *argument )
 
       if( ( lrange < tarea->low_o_vnum || trange > tarea->hi_o_vnum ) && get_trust( ch ) < LEVEL_GREATER )
       {
-         send_to_char_color( "&YThat is out of your vnum range.\n\r", ch );
+         send_to_char_color( "&YThat is out of your vnum range.\r\n", ch );
          return;
       }
    }
@@ -7062,7 +7039,7 @@ void do_olist( CHAR_DATA * ch, char *argument )
    {
       if( ( obj = get_obj_index( vnum ) ) == NULL )
          continue;
-      pager_printf( ch, "%5d) %-20s (%s)\n\r", vnum, obj->name, obj->short_descr );
+      pager_printf( ch, "%5d) %-20s (%s)\r\n", vnum, obj->name, obj->short_descr );
    }
    return;
 }
@@ -7082,7 +7059,7 @@ void do_mlist( CHAR_DATA * ch, char *argument )
    if( IS_NPC( ch ) || get_trust( ch ) < LEVEL_CREATOR || !ch->pcdata
        || ( !ch->pcdata->area && get_trust( ch ) < LEVEL_GREATER ) )
    {
-      send_to_char_color( "&YYou don't have an assigned area.\n\r", ch );
+      send_to_char_color( "&YYou don't have an assigned area.\r\n", ch );
       return;
    }
 
@@ -7103,7 +7080,7 @@ void do_mlist( CHAR_DATA * ch, char *argument )
 
       if( ( lrange < tarea->low_m_vnum || trange > tarea->hi_m_vnum ) && get_trust( ch ) < LEVEL_GREATER )
       {
-         send_to_char_color( "&YThat is out of your vnum range.\n\r", ch );
+         send_to_char_color( "&YThat is out of your vnum range.\r\n", ch );
          return;
       }
    }
@@ -7117,7 +7094,7 @@ void do_mlist( CHAR_DATA * ch, char *argument )
    {
       if( ( mob = get_mob_index( vnum ) ) == NULL )
          continue;
-      pager_printf( ch, "%5d) %-20s '%s'\n\r", vnum, mob->player_name, mob->short_descr );
+      pager_printf( ch, "%5d) %-20s '%s'\r\n", vnum, mob->player_name, mob->short_descr );
    }
 }
 
@@ -7155,13 +7132,13 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't mpedit\n\r", ch );
+      send_to_char( "Mob's can't mpedit\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -7169,10 +7146,13 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    {
       default:
          break;
+      case SUB_RESTRICTED:
+         send_to_char( "You can't use this command from within another command.\r\n", ch );
+         return;
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_mpedit: sub_mprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -7192,13 +7172,13 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    value = atoi( arg3 );
    if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
-      send_to_char( "Syntax: mpedit <victim> <command> [number] <program> <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Command being one of:\n\r", ch );
-      send_to_char( "  add delete insert edit list\n\r", ch );
-      send_to_char( "Program being one of:\n\r", ch );
-      send_to_char( "  act speech rand fight hitprcnt greet allgreet\n\r", ch );
-      send_to_char( "  entry give bribe death time hour script\n\r", ch );
+      send_to_char( "Syntax: mpedit <victim> <command> [number] <program> <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Command being one of:\r\n", ch );
+      send_to_char( "  add delete insert edit list\r\n", ch );
+      send_to_char( "Program being one of:\r\n", ch );
+      send_to_char( "  act speech rand fight hitprcnt greet allgreet\r\n", ch );
+      send_to_char( "  entry give bribe death time hour script\r\n", ch );
       return;
    }
 
@@ -7206,7 +7186,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    {
       if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "They aren't here.\n\r", ch );
+         send_to_char( "They aren't here.\r\n", ch );
          return;
       }
    }
@@ -7214,20 +7194,20 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    {
       if( ( victim = get_char_world( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "No one like that in all the realms.\n\r", ch );
+         send_to_char( "No one like that in all the realms.\r\n", ch );
          return;
       }
    }
 
    if( get_trust( ch ) < victim->level || !IS_NPC( victim ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       return;
    }
    if( get_trust( ch ) < LEVEL_GREATER && IS_NPC( victim ) && xIS_SET( victim->act, ACT_STATSHIELD ) )
    {
       set_pager_color( AT_IMMORT, ch );
-      send_to_pager( "Their godly glow prevents you from getting close enough.\n\r", ch );
+      send_to_pager( "Their godly glow prevents you from getting close enough.\r\n", ch );
       return;
    }
    if( !can_mmodify( ch, victim ) )
@@ -7235,7 +7215,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
 
    if( !xIS_SET( victim->act, ACT_PROTOTYPE ) )
    {
-      send_to_char( "A mobile must have a prototype flag to be mpset.\n\r", ch );
+      send_to_char( "A mobile must have a prototype flag to be mpset.\r\n", ch );
       return;
    }
 
@@ -7248,7 +7228,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
       cnt = 0;
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\n\r", ch );
+         send_to_char( "That mobile has no mob programs.\r\n", ch );
          return;
       }
 
@@ -7258,7 +7238,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
          {
             for( mprg = mprog; mprg; mprg = mprg->next )
             {
-               ch_printf( ch, "%d>%s %s\n\r", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist );
+               ch_printf( ch, "%d>%s %s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist );
             }
 
             return;
@@ -7267,7 +7247,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
          {
             for( mprg = mprog; mprg; mprg = mprg->next )
             {
-               ch_printf( ch, "%d>%s %s\n\r%s\n\r", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+               ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
             }
 
             return;
@@ -7278,13 +7258,13 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
       {
          if( ++cnt == value )
          {
-            ch_printf( ch, "%d>%s %s\n\r%s\n\r", cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+            ch_printf( ch, "%d>%s %s\r\n%s\r\n", cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
             break;
          }
       }
 
       if( !mprg )
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
 
       return;
    }
@@ -7293,7 +7273,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\n\r", ch );
+         send_to_char( "That mobile has no mob programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
@@ -7302,7 +7282,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
          mptype = get_mpflag( arg4 );
          if( mptype == -1 )
          {
-            send_to_char( "Unknown program type.\n\r", ch );
+            send_to_char( "Unknown program type.\r\n", ch );
             return;
          }
       }
@@ -7310,7 +7290,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
          mptype = -1;
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7325,7 +7305,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -7336,13 +7316,13 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
 
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\n\r", ch );
+         send_to_char( "That mobile has no mob programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7358,7 +7338,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
       }
       if( !found )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = num = 0;
@@ -7387,7 +7367,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
          DISPOSE( mprg_next );
          if( num <= 1 )
             xREMOVE_BIT( victim->pIndexData->progtypes, mptype );
-         send_to_char( "Program removed.\n\r", ch );
+         send_to_char( "Program removed.\r\n", ch );
       }
       return;
    }
@@ -7396,19 +7376,19 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\n\r", ch );
+         send_to_char( "That mobile has no mob programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
       mptype = get_mpflag( arg4 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       if( value == 1 )
@@ -7433,7 +7413,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -7442,7 +7422,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
       mptype = get_mpflag( arg3 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( mprog != NULL )
@@ -7475,13 +7455,13 @@ void do_opedit( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't opedit\n\r", ch );
+      send_to_char( "Mob's can't opedit\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -7489,10 +7469,13 @@ void do_opedit( CHAR_DATA * ch, char *argument )
    {
       default:
          break;
+      case SUB_RESTRICTED:
+         send_to_char( "You can't use this command from within another command.\r\n", ch );
+         return;
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -7513,16 +7496,16 @@ void do_opedit( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
-      send_to_char( "Syntax: opedit <object> <command> [number] <program> <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Command being one of:\n\r", ch );
-      send_to_char( "  add delete insert edit list\n\r", ch );
-      send_to_char( "Program being one of:\n\r", ch );
-      send_to_char( "  act speech rand wear remove sac zap get\n\r", ch );
-      send_to_char( "  drop damage repair greet exa use\n\r", ch );
-      send_to_char( "  pull push (for levers,pullchains,buttons)\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Object should be in your inventory to edit.\n\r", ch );
+      send_to_char( "Syntax: opedit <object> <command> [number] <program> <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Command being one of:\r\n", ch );
+      send_to_char( "  add delete insert edit list\r\n", ch );
+      send_to_char( "Program being one of:\r\n", ch );
+      send_to_char( "  act speech rand wear remove sac zap get\r\n", ch );
+      send_to_char( "  drop damage repair greet exa use\r\n", ch );
+      send_to_char( "  pull push (for levers,pullchains,buttons)\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Object should be in your inventory to edit.\r\n", ch );
       return;
    }
 
@@ -7530,7 +7513,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
    {
       if( ( obj = get_obj_carry( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "You aren't carrying that.\n\r", ch );
+         send_to_char( "You aren't carrying that.\r\n", ch );
          return;
       }
    }
@@ -7538,7 +7521,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
    {
       if( ( obj = get_obj_world( ch, arg1 ) ) == NULL )
       {
-         send_to_char( "Nothing like that in all the realms.\n\r", ch );
+         send_to_char( "Nothing like that in all the realms.\r\n", ch );
          return;
       }
    }
@@ -7548,7 +7531,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
 
    if( !IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
    {
-      send_to_char( "An object must have a prototype flag to be opset.\n\r", ch );
+      send_to_char( "An object must have a prototype flag to be opset.\r\n", ch );
       return;
    }
 
@@ -7561,11 +7544,11 @@ void do_opedit( CHAR_DATA * ch, char *argument )
       cnt = 0;
       if( !mprog )
       {
-         send_to_char( "That object has no obj programs.\n\r", ch );
+         send_to_char( "That object has no obj programs.\r\n", ch );
          return;
       }
       for( mprg = mprog; mprg; mprg = mprg->next )
-         ch_printf( ch, "%d>%s %s\n\r%s\n\r", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+         ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
       return;
    }
 
@@ -7573,7 +7556,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "That object has no obj programs.\n\r", ch );
+         send_to_char( "That object has no obj programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
@@ -7582,7 +7565,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
          mptype = get_mpflag( arg4 );
          if( mptype == -1 )
          {
-            send_to_char( "Unknown program type.\n\r", ch );
+            send_to_char( "Unknown program type.\r\n", ch );
             return;
          }
       }
@@ -7590,7 +7573,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
          mptype = -1;
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7605,7 +7588,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -7616,13 +7599,13 @@ void do_opedit( CHAR_DATA * ch, char *argument )
 
       if( !mprog )
       {
-         send_to_char( "That object has no obj programs.\n\r", ch );
+         send_to_char( "That object has no obj programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7638,7 +7621,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
       }
       if( !found )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = num = 0;
@@ -7667,7 +7650,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
          DISPOSE( mprg_next );
          if( num <= 1 )
             xREMOVE_BIT( obj->pIndexData->progtypes, mptype );
-         send_to_char( "Program removed.\n\r", ch );
+         send_to_char( "Program removed.\r\n", ch );
       }
       return;
    }
@@ -7676,19 +7659,19 @@ void do_opedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "That object has no obj programs.\n\r", ch );
+         send_to_char( "That object has no obj programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg4 );
       mptype = get_mpflag( arg4 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       if( value == 1 )
@@ -7713,7 +7696,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -7722,7 +7705,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
       mptype = get_mpflag( arg3 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( mprog != NULL )
@@ -7775,13 +7758,13 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't rpedit\n\r", ch );
+      send_to_char( "Mob's can't rpedit\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -7789,10 +7772,13 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
    {
       default:
          break;
+      case SUB_RESTRICTED:
+         send_to_char( "You can't use this command from within another command.\r\n", ch );
+         return;
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Thoric.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -7815,15 +7801,15 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Syntax: rpedit <command> [number] <program> <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Command being one of:\n\r", ch );
-      send_to_char( "  add delete insert edit list\n\r", ch );
-      send_to_char( "Program being one of:\n\r", ch );
-      send_to_char( "  act speech rand sleep rest rfight enter\n\r", ch );
-      send_to_char( "  leave death\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "You should be standing in room you wish to edit.\n\r", ch );
+      send_to_char( "Syntax: rpedit <command> [number] <program> <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Command being one of:\r\n", ch );
+      send_to_char( "  add delete insert edit list\r\n", ch );
+      send_to_char( "Program being one of:\r\n", ch );
+      send_to_char( "  act speech rand sleep rest rfight entry\r\n", ch );
+      send_to_char( "  leave death\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "You should be standing in the room you wish to edit.\r\n", ch );
       return;
    }
 
@@ -7839,11 +7825,11 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
       cnt = 0;
       if( !mprog )
       {
-         send_to_char( "This room has no room programs.\n\r", ch );
+         send_to_char( "This room has no room programs.\r\n", ch );
          return;
       }
       for( mprg = mprog; mprg; mprg = mprg->next )
-         ch_printf( ch, "%d>%s %s\n\r%s\n\r", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+         ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
       return;
    }
 
@@ -7851,7 +7837,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "This room has no room programs.\n\r", ch );
+         send_to_char( "This room has no room programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg3 );
@@ -7860,7 +7846,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
          mptype = get_mpflag( arg3 );
          if( mptype == -1 )
          {
-            send_to_char( "Unknown program type.\n\r", ch );
+            send_to_char( "Unknown program type.\r\n", ch );
             return;
          }
       }
@@ -7868,7 +7854,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
          mptype = -1;
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7883,7 +7869,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -7894,13 +7880,13 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
 
       if( !mprog )
       {
-         send_to_char( "That room has no room programs.\n\r", ch );
+         send_to_char( "That room has no room programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg3 );
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = 0;
@@ -7916,7 +7902,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
       }
       if( !found )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       cnt = num = 0;
@@ -7945,7 +7931,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
          DISPOSE( mprg_next );
          if( num <= 1 )
             xREMOVE_BIT( ch->in_room->progtypes, mptype );
-         send_to_char( "Program removed.\n\r", ch );
+         send_to_char( "Program removed.\r\n", ch );
       }
       return;
    }
@@ -7954,19 +7940,19 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
    {
       if( !mprog )
       {
-         send_to_char( "That room has no room programs.\n\r", ch );
+         send_to_char( "That room has no room programs.\r\n", ch );
          return;
       }
       argument = one_argument( argument, arg3 );
       mptype = get_mpflag( arg2 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( value < 1 )
       {
-         send_to_char( "Program not found.\n\r", ch );
+         send_to_char( "Program not found.\r\n", ch );
          return;
       }
       if( value == 1 )
@@ -7991,7 +7977,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      send_to_char( "Program not found.\n\r", ch );
+      send_to_char( "Program not found.\r\n", ch );
       return;
    }
 
@@ -8000,7 +7986,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
       mptype = get_mpflag( arg2 );
       if( mptype == -1 )
       {
-         send_to_char( "Unknown program type.\n\r", ch );
+         send_to_char( "Unknown program type.\r\n", ch );
          return;
       }
       if( mprog )
@@ -8025,13 +8011,13 @@ void do_rdelete( CHAR_DATA * ch, char *argument )
 
    if( ch->substate == SUB_RESTRICTED )
    {
-      send_to_char( "You can't do that while in a subprompt.\n\r", ch );
+      send_to_char( "You can't do that while in a subprompt.\r\n", ch );
       return;
    }
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Delete which room?\n\r", ch );
+      send_to_char( "Delete which room?\r\n", ch );
       return;
    }
 
@@ -8040,7 +8026,7 @@ void do_rdelete( CHAR_DATA * ch, char *argument )
     */
    if( !( location = find_location( ch, argument ) ) )
    {
-      send_to_char( "No such location.\n\r", ch );
+      send_to_char( "No such location.\r\n", ch );
       return;
    }
 
@@ -8050,13 +8036,13 @@ void do_rdelete( CHAR_DATA * ch, char *argument )
    if( get_trust( ch ) < sysdata.level_modify_proto
        && ( location->vnum < ch->pcdata->area->low_r_vnum || location->vnum > ch->pcdata->area->hi_r_vnum ) )
    {
-      send_to_char( "That room is not in your assigned range.\n\r", ch );
+      send_to_char( "That room is not in your assigned range.\r\n", ch );
       return;
    }
 
    delete_room( location );
    fix_exits(  ); /* Need to call this to solve a crash */
-   ch_printf( ch, "Room %s has been deleted.\n\r", argument );
+   ch_printf( ch, "Room %s has been deleted.\r\n", argument );
    return;
 }
 
@@ -8067,19 +8053,19 @@ void do_odelete( CHAR_DATA * ch, char *argument )
 
    if( ch->substate == SUB_RESTRICTED )
    {
-      send_to_char( "You can't do that while in a subprompt.\n\r", ch );
+      send_to_char( "You can't do that while in a subprompt.\r\n", ch );
       return;
    }
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Delete which object?\n\r", ch );
+      send_to_char( "Delete which object?\r\n", ch );
       return;
    }
 
    if( !is_number( argument ) )
    {
-      send_to_char( "You must specify the object's vnum to delete it.\n\r", ch );
+      send_to_char( "You must specify the object's vnum to delete it.\r\n", ch );
       return;
    }
 
@@ -8090,7 +8076,7 @@ void do_odelete( CHAR_DATA * ch, char *argument )
     */
    if( !( obj = get_obj_index( vnum ) ) )
    {
-      send_to_char( "No such object.\n\r", ch );
+      send_to_char( "No such object.\r\n", ch );
       return;
    }
 
@@ -8100,11 +8086,11 @@ void do_odelete( CHAR_DATA * ch, char *argument )
    if( get_trust( ch ) < sysdata.level_modify_proto
        && ( obj->vnum < ch->pcdata->area->low_o_vnum || obj->vnum > ch->pcdata->area->hi_o_vnum ) )
    {
-      send_to_char( "That object is not in your assigned range.\n\r", ch );
+      send_to_char( "That object is not in your assigned range.\r\n", ch );
       return;
    }
    delete_obj( obj );
-   ch_printf( ch, "Object %d has been deleted.\n\r", vnum );
+   ch_printf( ch, "Object %d has been deleted.\r\n", vnum );
    return;
 }
 
@@ -8115,19 +8101,19 @@ void do_mdelete( CHAR_DATA * ch, char *argument )
 
    if( ch->substate == SUB_RESTRICTED )
    {
-      send_to_char( "You can't do that while in a subprompt.\n\r", ch );
+      send_to_char( "You can't do that while in a subprompt.\r\n", ch );
       return;
    }
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Delete which mob?\n\r", ch );
+      send_to_char( "Delete which mob?\r\n", ch );
       return;
    }
 
    if( !is_number( argument ) )
    {
-      send_to_char( "You must specify the mob's vnum to delete it.\n\r", ch );
+      send_to_char( "You must specify the mob's vnum to delete it.\r\n", ch );
       return;
    }
 
@@ -8138,7 +8124,7 @@ void do_mdelete( CHAR_DATA * ch, char *argument )
     */
    if( !( mob = get_mob_index( vnum ) ) )
    {
-      send_to_char( "No such mob.\n\r", ch );
+      send_to_char( "No such mob.\r\n", ch );
       return;
    }
 
@@ -8148,11 +8134,11 @@ void do_mdelete( CHAR_DATA * ch, char *argument )
    if( get_trust( ch ) < sysdata.level_modify_proto
        && ( mob->vnum < ch->pcdata->area->low_m_vnum || mob->vnum > ch->pcdata->area->hi_m_vnum ) )
    {
-      send_to_char( "That mob is not in your assigned range.\n\r", ch );
+      send_to_char( "That mob is not in your assigned range.\r\n", ch );
       return;
    }
    delete_mob( mob );
-   ch_printf( ch, "Mob %d has been deleted.\n\r", vnum );
+   ch_printf( ch, "Mob %d has been deleted.\r\n", vnum );
    return;
 }
 
@@ -8185,13 +8171,13 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't opcopy\n\r", ch );
+      send_to_char( "Mob's can't opcopy\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -8201,16 +8187,16 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
 
    if( sobj[0] == '\0' || prog[0] == '\0' )
    {
-      send_to_char( "Syntax: opcopy <source object> <program> [number] <destination object>\n\r", ch );
-      send_to_char( "        opcopy <source object> all <destination object>\n\r", ch );
-      send_to_char( "        opcopy <source object> all <destination object> <program>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Program being one of:\n\r", ch );
-      send_to_char( "  act speech rand wear remove sac zap get\n\r", ch );
-      send_to_char( "  drop damage repair greet exa use\n\r", ch );
-      send_to_char( "  pull push (for levers,pullchains,buttons)\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Object should be in your inventory to edit.\n\r", ch );
+      send_to_char( "Syntax: opcopy <source object> <program> [number] <destination object>\r\n", ch );
+      send_to_char( "        opcopy <source object> all <destination object>\r\n", ch );
+      send_to_char( "        opcopy <source object> all <destination object> <program>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Program being one of:\r\n", ch );
+      send_to_char( "  act speech rand wear remove sac zap get\r\n", ch );
+      send_to_char( "  drop damage repair greet exa use\r\n", ch );
+      send_to_char( "  pull push (for levers,pullchains,buttons)\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Object should be in your inventory to edit.\r\n", ch );
       return;
    }
 
@@ -8232,13 +8218,13 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
    {
       if( ( source = get_obj_carry( ch, sobj ) ) == NULL )
       {
-         send_to_char( "You aren't carrying source object.\n\r", ch );
+         send_to_char( "You aren't carrying source object.\r\n", ch );
          return;
       }
 
       if( ( destination = get_obj_carry( ch, dobj ) ) == NULL )
       {
-         send_to_char( "You aren't carrying destination object.\n\r", ch );
+         send_to_char( "You aren't carrying destination object.\r\n", ch );
          return;
       }
    }
@@ -8246,33 +8232,33 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
    {
       if( ( source = get_obj_world( ch, sobj ) ) == NULL )
       {
-         send_to_char( "Can't find source object in all the realms.\n\r", ch );
+         send_to_char( "Can't find source object in all the realms.\r\n", ch );
          return;
       }
 
       if( ( destination = get_obj_world( ch, dobj ) ) == NULL )
       {
-         send_to_char( "Can't find destination object in all the realms.\n\r", ch );
+         send_to_char( "Can't find destination object in all the realms.\r\n", ch );
          return;
       }
    }
 
    if( source == destination )
    {
-      send_to_char( "Source and destination objects cannot be the same\n\r", ch );
+      send_to_char( "Source and destination objects cannot be the same\r\n", ch );
       return;
    }
 
 
    if( !can_omodify( ch, destination ) )
    {
-      send_to_char( "You cannot modify destination object.\n\r", ch );
+      send_to_char( "You cannot modify destination object.\r\n", ch );
       return;
    }
 
    if( !IS_OBJ_STAT( destination, ITEM_PROTOTYPE ) )
    {
-      send_to_char( "Destination object must have prototype flag.\n\r", ch );
+      send_to_char( "Destination object must have prototype flag.\r\n", ch );
       return;
    }
 
@@ -8287,7 +8273,7 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
 
    if( !source_oprog )
    {
-      send_to_char( "Source object has no mob programs.\n\r", ch );
+      send_to_char( "Source object has no mob programs.\r\n", ch );
       return;
    }
 
@@ -8315,16 +8301,16 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
 
       if( cnt == 0 )
       {
-         ch_printf( ch, "No such program in source object\n\r" );
+         ch_printf( ch, "No such program in source object\r\n" );
          return;
       }
-      ch_printf( ch, "%d programs successfully copied from %s to %s.\n\r", cnt, sobj, dobj );
+      ch_printf( ch, "%d programs successfully copied from %s to %s.\r\n", cnt, sobj, dobj );
       return;
    }
 
    if( value < 1 )
    {
-      send_to_char( "No such program in source object.\n\r", ch );
+      send_to_char( "No such program in source object.\r\n", ch );
       return;
    }
 
@@ -8343,13 +8329,13 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
             destination->pIndexData->mudprogs = dest_oprg;
          mpcopy( source_oprg, dest_oprg );
          xSET_BIT( destination->pIndexData->progtypes, dest_oprg->type );
-         ch_printf( ch, "%s program %d from %s successfully copied to %s.\n\r", prog, value, sobj, dobj );
+         ch_printf( ch, "%s program %d from %s successfully copied to %s.\r\n", prog, value, sobj, dobj );
          return;
       }
    }
    if( !source_oprg )
    {
-      send_to_char( "No such program in source object.\n\r", ch );
+      send_to_char( "No such program in source object.\r\n", ch );
       return;
    }
    do_opcopy( ch, "" );
@@ -8370,13 +8356,13 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't opcop\n\r", ch );
+      send_to_char( "Mob's can't opcop\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -8386,13 +8372,13 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
 
    if( smob[0] == '\0' || prog[0] == '\0' )
    {
-      send_to_char( "Syntax: mpcopy <source mobile> <program> [number] <destination mobile>\n\r", ch );
-      send_to_char( "        mpcopy <source mobile> all <destination mobile>\n\r", ch );
-      send_to_char( "        mpcopy <source mobile> all <destination mobile> <program>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "Program being one of:\n\r", ch );
-      send_to_char( "  act speech rand fight hitprcnt greet allgreet\n\r", ch );
-      send_to_char( "  entry give bribe death time hour script\n\r", ch );
+      send_to_char( "Syntax: mpcopy <source mobile> <program> [number] <destination mobile>\r\n", ch );
+      send_to_char( "        mpcopy <source mobile> all <destination mobile>\r\n", ch );
+      send_to_char( "        mpcopy <source mobile> all <destination mobile> <program>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "Program being one of:\r\n", ch );
+      send_to_char( "  act speech rand fight hitprcnt greet allgreet\r\n", ch );
+      send_to_char( "  entry give bribe death time hour script\r\n", ch );
       return;
    }
 
@@ -8414,13 +8400,13 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
    {
       if( ( source = get_char_room( ch, smob ) ) == NULL )
       {
-         send_to_char( "Source mobile is not present.\n\r", ch );
+         send_to_char( "Source mobile is not present.\r\n", ch );
          return;
       }
 
       if( ( destination = get_char_room( ch, dmob ) ) == NULL )
       {
-         send_to_char( "Destination mobile is not present.\n\r", ch );
+         send_to_char( "Destination mobile is not present.\r\n", ch );
          return;
       }
    }
@@ -8428,38 +8414,38 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
    {
       if( ( source = get_char_world( ch, smob ) ) == NULL )
       {
-         send_to_char( "Can't find source mobile\n\r", ch );
+         send_to_char( "Can't find source mobile\r\n", ch );
          return;
       }
 
       if( ( destination = get_char_world( ch, dmob ) ) == NULL )
       {
-         send_to_char( "Can't find destination mobile\n\r", ch );
+         send_to_char( "Can't find destination mobile\r\n", ch );
          return;
       }
    }
    if( source == destination )
    {
-      send_to_char( "Source and destination mobiles cannot be the same\n\r", ch );
+      send_to_char( "Source and destination mobiles cannot be the same\r\n", ch );
       return;
    }
 
    if( get_trust( ch ) < source->level || !IS_NPC( source ) ||
        get_trust( ch ) < destination->level || !IS_NPC( destination ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       return;
    }
 
    if( !can_mmodify( ch, destination ) )
    {
-      send_to_char( "You cannot modify destination mobile.\n\r", ch );
+      send_to_char( "You cannot modify destination mobile.\r\n", ch );
       return;
    }
 
    if( !xIS_SET( destination->act, ACT_PROTOTYPE ) )
    {
-      send_to_char( "Destination mobile must have a prototype flag to mpcopy.\n\r", ch );
+      send_to_char( "Destination mobile must have a prototype flag to mpcopy.\r\n", ch );
       return;
    }
 
@@ -8470,7 +8456,7 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
 
    if( !source_mprog )
    {
-      send_to_char( "Source mobile has no mob programs.\n\r", ch );
+      send_to_char( "Source mobile has no mob programs.\r\n", ch );
       return;
    }
 
@@ -8500,16 +8486,16 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
 
       if( cnt == 0 )
       {
-         ch_printf( ch, "No such program in source mobile\n\r" );
+         ch_printf( ch, "No such program in source mobile\r\n" );
          return;
       }
-      ch_printf( ch, "%d programs successfully copied from %s to %s.\n\r", cnt, smob, dmob );
+      ch_printf( ch, "%d programs successfully copied from %s to %s.\r\n", cnt, smob, dmob );
       return;
    }
 
    if( value < 1 )
    {
-      send_to_char( "No such program in source mobile.\n\r", ch );
+      send_to_char( "No such program in source mobile.\r\n", ch );
       return;
    }
 
@@ -8528,14 +8514,14 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
             destination->pIndexData->mudprogs = dest_mprg;
          mpcopy( source_mprg, dest_mprg );
          xSET_BIT( destination->pIndexData->progtypes, dest_mprg->type );
-         ch_printf( ch, "%s program %d from %s successfully copied to %s.\n\r", prog, value, smob, dmob );
+         ch_printf( ch, "%s program %d from %s successfully copied to %s.\r\n", prog, value, smob, dmob );
          return;
       }
    }
 
    if( !source_mprg )
    {
-      send_to_char( "No such program in source mobile.\n\r", ch );
+      send_to_char( "No such program in source mobile.\r\n", ch );
       return;
    }
    do_mpcopy( ch, "" );
@@ -8591,17 +8577,17 @@ void do_climate( CHAR_DATA * ch, char *argument )
    {
       NEIGHBOR_DATA *neigh;
 
-      ch_printf( ch, "%s:\n\r", area->name );
-      ch_printf( ch, "\tTemperature:\t%s\n\r", temp_settings[area->weather->climate_temp] );
-      ch_printf( ch, "\tPrecipitation:\t%s\n\r", precip_settings[area->weather->climate_precip] );
-      ch_printf( ch, "\tWind:\t\t%s\n\r", wind_settings[area->weather->climate_wind] );
+      ch_printf( ch, "%s:\r\n", area->name );
+      ch_printf( ch, "\tTemperature:\t%s\r\n", temp_settings[area->weather->climate_temp] );
+      ch_printf( ch, "\tPrecipitation:\t%s\r\n", precip_settings[area->weather->climate_precip] );
+      ch_printf( ch, "\tWind:\t\t%s\r\n", wind_settings[area->weather->climate_wind] );
 
       if( area->weather->first_neighbor )
-         ch_printf( ch, "\n\rNeighboring weather systems:\n\r" );
+         ch_printf( ch, "\r\nNeighboring weather systems:\r\n" );
 
       for( neigh = area->weather->first_neighbor; neigh; neigh = neigh->next )
       {
-         ch_printf( ch, "\t%s\n\r", neigh->name );
+         ch_printf( ch, "\t%s\r\n", neigh->name );
       }
 
       return;
@@ -8620,16 +8606,16 @@ void do_climate( CHAR_DATA * ch, char *argument )
             continue;
 
          area->weather->climate_temp = i;
-         ch_printf( ch, "The climate temperature " "for %s is now %s.\n\r", area->name, temp_settings[i] );
+         ch_printf( ch, "The climate temperature " "for %s is now %s.\r\n", area->name, temp_settings[i] );
          break;
       }
 
       if( i == MAX_CLIMATE )
       {
-         ch_printf( ch, "Possible temperature " "settings:\n\r" );
+         ch_printf( ch, "Possible temperature " "settings:\r\n" );
          for( i = 0; i < MAX_CLIMATE; i++ )
          {
-            ch_printf( ch, "\t%s\n\r", temp_settings[i] );
+            ch_printf( ch, "\t%s\r\n", temp_settings[i] );
          }
       }
 
@@ -8649,16 +8635,16 @@ void do_climate( CHAR_DATA * ch, char *argument )
             continue;
 
          area->weather->climate_precip = i;
-         ch_printf( ch, "The climate precipitation " "for %s is now %s.\n\r", area->name, precip_settings[i] );
+         ch_printf( ch, "The climate precipitation " "for %s is now %s.\r\n", area->name, precip_settings[i] );
          break;
       }
 
       if( i == MAX_CLIMATE )
       {
-         ch_printf( ch, "Possible precipitation " "settings:\n\r" );
+         ch_printf( ch, "Possible precipitation " "settings:\r\n" );
          for( i = 0; i < MAX_CLIMATE; i++ )
          {
-            ch_printf( ch, "\t%s\n\r", precip_settings[i] );
+            ch_printf( ch, "\t%s\r\n", precip_settings[i] );
          }
       }
 
@@ -8678,16 +8664,16 @@ void do_climate( CHAR_DATA * ch, char *argument )
             continue;
 
          area->weather->climate_wind = i;
-         ch_printf( ch, "The climate wind for %s " "is now %s.\n\r", area->name, wind_settings[i] );
+         ch_printf( ch, "The climate wind for %s " "is now %s.\r\n", area->name, wind_settings[i] );
          break;
       }
 
       if( i == MAX_CLIMATE )
       {
-         ch_printf( ch, "Possible wind settings:\n\r" );
+         ch_printf( ch, "Possible wind settings:\r\n" );
          for( i = 0; i < MAX_CLIMATE; i++ )
          {
-            ch_printf( ch, "\t%s\n\r", wind_settings[i] );
+            ch_printf( ch, "\t%s\r\n", wind_settings[i] );
          }
       }
 
@@ -8703,7 +8689,7 @@ void do_climate( CHAR_DATA * ch, char *argument )
 
       if( argument[0] == '\0' )
       {
-         ch_printf( ch, "Add or remove which area?\n\r" );
+         ch_printf( ch, "Add or remove which area?\r\n" );
          return;
       }
 
@@ -8750,7 +8736,7 @@ void do_climate( CHAR_DATA * ch, char *argument )
          }
 
          UNLINK( neigh, area->weather->first_neighbor, area->weather->last_neighbor, next, prev );
-         ch_printf( ch, "The weather in %s and %s " "no longer affect each other.\n\r", neigh->name, area->name );
+         ch_printf( ch, "The weather in %s and %s " "no longer affect each other.\r\n", neigh->name, area->name );
          STRFREE( neigh->name );
          DISPOSE( neigh );
       }
@@ -8763,12 +8749,12 @@ void do_climate( CHAR_DATA * ch, char *argument )
 
          if( !tarea )
          {
-            ch_printf( ch, "No such area exists.\n\r" );
+            ch_printf( ch, "No such area exists.\r\n" );
             return;
          }
          else if( tarea == area )
          {
-            ch_printf( ch, "%s already affects its " "own weather.\n\r", area->name );
+            ch_printf( ch, "%s already affects its " "own weather.\r\n", area->name );
             return;
          }
 
@@ -8788,23 +8774,22 @@ void do_climate( CHAR_DATA * ch, char *argument )
          neigh->address = area;
          LINK( neigh, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
 
-         ch_printf( ch, "The weather in %s and %s now " "affect one another.\n\r", tarea->name, area->name );
+         ch_printf( ch, "The weather in %s and %s now " "affect one another.\r\n", tarea->name, area->name );
       }
 
       return;
    }
    else
    {
-      ch_printf( ch, "Climate may only be followed by one " "of the following fields:\n\r" );
-      ch_printf( ch, "\ttemp\n\r" );
-      ch_printf( ch, "\tprecip\n\r" );
-      ch_printf( ch, "\twind\n\r" );
-      ch_printf( ch, "\tneighbor\n\r" );
+      ch_printf( ch, "Climate may only be followed by one " "of the following fields:\r\n" );
+      ch_printf( ch, "\ttemp\r\n" );
+      ch_printf( ch, "\tprecip\r\n" );
+      ch_printf( ch, "\twind\r\n" );
+      ch_printf( ch, "\tneighbor\r\n" );
 
       return;
    }
 }
-
 
 /*
  * Relations created to fix a crash bug with oset on and rset on
@@ -8816,32 +8801,35 @@ void RelCreate( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "RelCreate: invalid type (%d)", tp );
+      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
       return;
    }
+
    if( !actor )
    {
-      bug( "RelCreate: NULL actor" );
+      bug( "%s: NULL actor", __FUNCTION__ );
       return;
    }
+
    if( !subject )
    {
-      bug( "RelCreate: NULL subject" );
+      bug( "%s: NULL subject", __FUNCTION__ );
       return;
    }
+
    for( tmp = first_relation; tmp; tmp = tmp->next )
       if( tmp->Type == tp && tmp->Actor == actor && tmp->Subject == subject )
       {
-         bug( "RelCreate: duplicated relation" );
+         bug( "%s: duplicated relation", __FUNCTION__ );
          return;
       }
+
    CREATE( tmp, REL_DATA, 1 );
    tmp->Type = tp;
    tmp->Actor = actor;
    tmp->Subject = subject;
    LINK( tmp, first_relation, last_relation, next, prev );
 }
-
 
 /*
  * Relations created to fix a crash bug with oset on and rset on
@@ -8853,19 +8841,22 @@ void RelDestroy( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "RelDestroy: invalid type (%d)", tp );
+      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
       return;
    }
+
    if( !actor )
    {
-      bug( "RelDestroy: NULL actor" );
+      bug( "%s: NULL actor", __FUNCTION__ );
       return;
    }
+
    if( !subject )
    {
-      bug( "RelDestroy: NULL subject" );
+      bug( "%s: NULL subject", __FUNCTION__ );
       return;
    }
+
    for( rq = first_relation; rq; rq = rq->next )
       if( rq->Type == tp && rq->Actor == actor && rq->Subject == subject )
       {

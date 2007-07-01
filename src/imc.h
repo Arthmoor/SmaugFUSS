@@ -1,10 +1,10 @@
 /* IMC2 Freedom Client - Developed by Mud Domain.
  *
- * Copyright (C)2004 by Roger Libiez ( Samson )
- * Contributions by Johnathan Walker ( Xorith ), Copyright (C)2004
- * Additional contributions by Jesse Defer ( Garil ), Copyright (C)2004
- * Additional contributions by Rogel, Copyright (c) 2004
- * Comments and suggestions welcome: imc@imc2.org
+ * Copyright ©2004 by Roger Libiez ( Samson )
+ * Contributions by Johnathan Walker ( Xorith ), Copyright ©2004
+ * Additional contributions by Jesse Defer ( Garil ), Copyright ©2004
+ * Additional contributions by Rogel, Copyright ©2004
+ * Comments and suggestions welcome: http://www.mudbytes.net/index.php?a=forum&f=31
  * License terms are available in the imc2freedom.license file.
  */
 
@@ -15,7 +15,7 @@
  * This name was chosen to represent the ideals of not only the code, but of the
  * network which spawned it.
  */
-#define IMC_VERSION_STRING "IMC2 Freedom CL-2.1 "
+#define IMC_VERSION_STRING "IMC2 Freedom CL-2.1a "
 #define IMC_VERSION 2
 
 /* Number of entries to keep in the channel histories */
@@ -355,8 +355,8 @@ struct imc_siteinfo
    int adminlevel;   /* Admin level */
    int implevel;  /* Implementor level */
    unsigned short rport;   /* remote port of server */
-   bool sha256;   /* Client will support MD5 authentication */
-   bool sha256pass;  /* Client is using MD5 authentication */
+   bool sha256;   /* Client will support SHA-256 authentication */
+   bool sha256pass;  /* Client is using SHA-256 authentication */
    bool autoconnect; /* Do we autoconnect on bootup or not? - Samson */
 
    /*

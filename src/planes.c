@@ -24,9 +24,9 @@ void do_plist( CHAR_DATA * ch, char *argument )
 {
    PLANE_DATA *p;
 
-   send_to_char( "Planes:\n\r-------\n\r", ch );
+   send_to_char( "Planes:\r\n-------\r\n", ch );
    for( p = first_plane; p; p = p->next )
-      ch_printf( ch, "%s\n\r", p->name );
+      ch_printf( ch, "%s\r\n", p->name );
    return;
 }
 
@@ -38,10 +38,10 @@ void do_pstat( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg );
    if( !( p = plane_lookup( arg ) ) )
    {
-      send_to_char( "Stat which plane?\n\r", ch );
+      send_to_char( "Stat which plane?\r\n", ch );
       return;
    }
-   ch_printf( ch, "Name: %s\n\r", p->name );
+   ch_printf( ch, "Name: %s\r\n", p->name );
    return;
 }
 
@@ -54,19 +54,19 @@ void do_pset( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg );
    if( !*arg )
    {
-      send_to_char( "Syntax: pset <plane> create\n\r", ch );
-      send_to_char( "        pset save\n\r", ch );
-      send_to_char( "        pset <plane> delete\n\r", ch );
-      send_to_char( "        pset <plane> <field> <value>\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "  Where <field> is one of:\n\r", ch );
-      send_to_char( "    name\n\r", ch );
+      send_to_char( "Syntax: pset <plane> create\r\n", ch );
+      send_to_char( "        pset save\r\n", ch );
+      send_to_char( "        pset <plane> delete\r\n", ch );
+      send_to_char( "        pset <plane> <field> <value>\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "  Where <field> is one of:\r\n", ch );
+      send_to_char( "    name\r\n", ch );
       return;
    }
    if( !str_cmp( arg, "save" ) )
    {
       save_planes(  );
-      send_to_char( "Planes saved.\n\r", ch );
+      send_to_char( "Planes saved.\r\n", ch );
       return;
    }
 
@@ -77,18 +77,18 @@ void do_pset( CHAR_DATA * ch, char *argument )
    {
       if( p )
       {
-         send_to_char( "Plane already exists.\n\r", ch );
+         send_to_char( "Plane already exists.\r\n", ch );
          return;
       }
       CREATE( p, PLANE_DATA, 1 );
       p->name = STRALLOC( arg );
       LINK( p, first_plane, last_plane, next, prev );
-      send_to_char( "Plane created.\n\r", ch );
+      send_to_char( "Plane created.\r\n", ch );
       return;
    }
    if( !p )
    {
-      send_to_char( "Plane doesn't exist.\n\r", ch );
+      send_to_char( "Plane doesn't exist.\r\n", ch );
       return;
    }
    if( !str_prefix( mod, "delete" ) )
@@ -97,19 +97,19 @@ void do_pset( CHAR_DATA * ch, char *argument )
       STRFREE( p->name );
       DISPOSE( p );
       check_planes( p );
-      send_to_char( "Plane deleted.\n\r", ch );
+      send_to_char( "Plane deleted.\r\n", ch );
       return;
    }
    if( !str_prefix( mod, "name" ) )
    {
       if( plane_lookup( argument ) )
       {
-         send_to_char( "Another plane has that name.\n\r", ch );
+         send_to_char( "Another plane has that name.\r\n", ch );
          return;
       }
       STRFREE( p->name );
       p->name = STRALLOC( argument );
-      send_to_char( "Name changed.\n\r", ch );
+      send_to_char( "Name changed.\r\n", ch );
       return;
    }
    do_pset( ch, "" );

@@ -1,12 +1,13 @@
 /* IMC2 Freedom Client - Developed by Mud Domain.
  *
- * Copyright (C)2004 by Roger Libiez ( Samson )
- * Contributions by Johnathan Walker ( Xorith ), Copyright (C)2004
- * Additional contributions by Jesse Defer ( Garil ), Copyright (C)2004
- * Additional contributions by Rogel, Copyright (C)2004
- * Comments and suggestions welcome: imc@imc2.intermud.us
+ * Copyright ©2004 by Roger Libiez ( Samson )
+ * Contributions by Johnathan Walker ( Xorith ), Copyright ©2004
+ * Additional contributions by Jesse Defer ( Garil ), Copyright ©2004
+ * Additional contributions by Rogel, Copyright ©2004
+ * Comments and suggestions welcome: http://www.mudbytes.net/index.php?a=forum&f=31
  * License terms are available in the imc2freedom.license file.
  */
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +39,7 @@
 #include <sys/types.h>
 #endif
 #ifdef IMCSTANDALONE
-   #include "imc.h"
+#include "imc.h"
 #endif
 #include "sha256.h"
 
@@ -792,6 +793,8 @@ void imc_delete_reminfo( REMOTEINFO * p )
    IMCSTRFREE( p->network );
    IMCSTRFREE( p->path );
    IMCSTRFREE( p->url );
+   IMCSTRFREE( p->port );
+   IMCSTRFREE( p->host );
    IMCDISPOSE( p );
 }
 
@@ -1687,6 +1690,7 @@ PFUN( imc_recv_tell )
          IMC_RREPLY_NAME( vic ) = IMCSTRALLOC( imcgetname( q->from ) );
       }
    }
+
    /*
     * Tell social 
     */
@@ -1948,12 +1952,53 @@ PFUN( imc_recv_chanwhoreply )
    return;
 }
 
+char *get_local_chanwho( IMC_CHANNEL * c )
+{
+   DESCRIPTOR_DATA *d;
+   CHAR_DATA *person;
+   static char buf[IMC_BUFF_SIZE];
+   int count = 0, col = 0;
+
+   snprintf( buf, IMC_BUFF_SIZE, "The following people are listening to %s on %s:\r\n\r\n",
+             c->local_name, this_imcmud->localname );
+
+   for( d = first_descriptor; d; d = d->next )
+   {
+      person = d->original ? d->original : d->character;
+
+      if( !person )
+         continue;
+
+      if( IMCISINVIS( person ) )
+         continue;
+
+      if( !imc_hasname( IMC_LISTEN( person ), c->local_name ) )
+         continue;
+
+      snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%-15s", CH_IMCNAME( person ) );
+      count++;
+      if( ++col % 3 == 0 )
+      {
+         col = 0;
+         snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%s", "\r\n" );
+      }
+   }
+   if( col != 0 )
+      snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%s", "\r\n" );
+   /*
+    * Send no response to a broadcast request if nobody is listening. 
+    */
+   if( count == 0 )
+      imcstrlcat( buf, "Nobody\r\n", IMC_BUFF_SIZE );
+   else
+      imcstrlcat( buf, "\r\n", IMC_BUFF_SIZE );
+   return buf;
+}
+
 PFUN( imc_recv_chanwho )
 {
    IMC_PACKET *p;
    IMC_CHANNEL *c;
-   DESCRIPTOR_DATA *d;
-   CHAR_DATA *person;
    char buf[IMC_BUFF_SIZE], lvl[SMST], channel[SMST], lname[SMST];
    int level;
 
@@ -1974,40 +2019,13 @@ PFUN( imc_recv_chanwho )
       snprintf( buf, IMC_BUFF_SIZE, "Channel %s is above your permission level on %s\r\n", lname, this_imcmud->localname );
    else
    {
-      int count = 0, col = 0;
+      char cwho[IMC_BUFF_SIZE];
 
-      snprintf( buf, IMC_BUFF_SIZE, "The following people are listening to %s on %s:\r\n\r\n", lname,
-                this_imcmud->localname );
-      for( d = first_descriptor; d; d = d->next )
-      {
-         person = d->original ? d->original : d->character;
+      imcstrlcpy( cwho, get_local_chanwho( c ), IMC_BUFF_SIZE );
 
-         if( !person )
-            continue;
-
-         if( IMCISINVIS( person ) )
-            continue;
-
-         if( !imc_hasname( IMC_LISTEN( person ), c->local_name ) )
-            continue;
-
-         snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%-15s", CH_IMCNAME( person ) );
-         count++;
-         if( ++col % 3 == 0 )
-         {
-            col = 0;
-            snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%s", "\r\n" );
-         }
-      }
-      if( col != 0 )
-         snprintf( buf + strlen( buf ), IMC_BUFF_SIZE - strlen( buf ), "%s", "\r\n" );
-      /*
-       * Send no response to a broadcast request if nobody is listening. 
-       */
-      if( count == 0 && !strcasecmp( q->to, "*" ) )
+      if( ( !cwho || !strcasecmp( cwho, "" ) || !strcasecmp( cwho, "Nobody" ) ) && !strcasecmp( q->to, "*" ) )
          return;
-      else if( count == 0 )
-         imcstrlcat( buf, "Nobody\r\n", IMC_BUFF_SIZE );
+      imcstrlcpy( buf, cwho, IMC_BUFF_SIZE );
    }
 
    p = imc_newpacket( "*", "ice-chan-whoreply", q->from );
@@ -2294,10 +2312,10 @@ char *imc_assemble_who( void )
    CHAR_DATA *person;
    DESCRIPTOR_DATA *d;
    int pcount = 0;
-   bool plr = FALSE;
+   bool plr = FALSE, imm = FALSE;
    char plrheader[SMST], immheader[SMST], rank[SMST], flags[SMST], name[SMST], title[SMST], plrline[SMST], immline[SMST];
    char plrlines[LGST], immlines[LGST], head[LGST], tail[LGST];
-   static char master[LGST]; /* The final result that gets returned */
+   static char master[LGST];  /* The final result that gets returned */
 
    plrlines[0] = '\0';
    immlines[0] = '\0';
@@ -2338,7 +2356,7 @@ char *imc_assemble_who( void )
       }
    }
 
-   bool imm = FALSE;
+   imm = FALSE;
    for( d = first_descriptor; d; d = d->next )
    {
       person = d->original ? d->original : d->character;
@@ -2384,7 +2402,7 @@ void imc_process_who( char *from )
 {
    char whoreply[IMC_BUFF_SIZE];
 
-   imcstrlcpy( whoreply, imc_assemble_who(), IMC_BUFF_SIZE );
+   imcstrlcpy( whoreply, imc_assemble_who(  ), IMC_BUFF_SIZE );
    imc_send_whoreply( from, whoreply );
 }
 
@@ -3037,7 +3055,9 @@ void imc_parse_packet( char *packet )
    packet = imcone_argument( packet, p->type );
    packet = imcone_argument( packet, p->to );
 
-   /* Banned muds are silently dropped - thanks to WynterNyght@IoG for noticing this was missing. */
+   /*
+    * Banned muds are silently dropped - thanks to WynterNyght@IoG for noticing this was missing. 
+    */
    if( imc_isbanned( p->from ) )
    {
       IMCDISPOSE( p );
@@ -3219,7 +3239,7 @@ void imc_process_authentication( char *packet )
 
       if( !pw || pw[0] == '\0' )
       {
-         imclog( "SHA256 Authentication failure: No auth_value was returned by %s.", rname );
+         imclog( "SHA-256 Authentication failure: No auth_value was returned by %s.", rname );
          imc_shutdown( FALSE );
          return;
       }
@@ -3346,7 +3366,7 @@ bool imc_read_socket( void )
 
          begin = 0;
       }
-      else if( nRead == 0 && this_imcmud->desc == IMC_ONLINE )
+      else if( nRead == 0 && this_imcmud->state == IMC_ONLINE )
       {
          if( !begin )
             break;
@@ -3356,7 +3376,7 @@ bool imc_read_socket( void )
       }
       else if( iErr == EAGAIN )
          break;
-      else
+      else if( nRead == -1 )
       {
          imclog( "%s: Descriptor error on #%d: %s", __FUNCTION__, this_imcmud->desc, strerror( iErr ) );
          return FALSE;
@@ -3388,7 +3408,7 @@ void imc_loop( void )
          {
             imclog( "%s", "Unable to reconnect using SHA-256, trying standard authentication." );
             this_imcmud->sha256pass = FALSE;
-            imc_save_config();
+            imc_save_config(  );
             imcconnect_attempts = 0;
          }
          else
@@ -3432,6 +3452,20 @@ void imc_loop( void )
    {
       if( !imc_read_socket(  ) )
       {
+         if( this_imcmud->inbuf && this_imcmud->inbuf[0] != '\0' )
+         {
+            if( imc_read_buffer(  ) )
+            {
+               if( !strcasecmp( this_imcmud->incomm, "SHA-256 authentication is required." ) )
+               {
+                  imclog( "%s", "Unable to reconnect using standard authentication, trying SHA-256." );
+                  this_imcmud->sha256pass = TRUE;
+                  imc_save_config(  );
+               }
+               else
+                  imclog( "Buffer contents: %s", this_imcmud->incomm );
+            }
+         }
          FD_CLR( this_imcmud->desc, &out_set );
          imc_shutdown( TRUE );
          return;
@@ -3803,7 +3837,7 @@ void imc_freechardata( CHAR_DATA * ch )
       IMCDISPOSE( ign );
    }
    for( x = 0; x < MAX_IMCTELLHISTORY; x++ )
-      IMCDISPOSE( IMCTELLHISTORY( ch, x ) );
+      IMCSTRFREE( IMCTELLHISTORY( ch, x ) );
    IMCSTRFREE( IMC_LISTEN( ch ) );
    IMCSTRFREE( IMC_DENY( ch ) );
    IMCSTRFREE( IMC_RREPLY( ch ) );
@@ -4643,7 +4677,7 @@ void imc_save_config( void )
    }
 
    fprintf( fp, "%s", "$IMCCONFIG\n\n" );
-   fprintf( fp, "# %sconfig file.\n", this_imcmud->versionid );
+   fprintf( fp, "# %s config file.\n", this_imcmud->versionid );
    fprintf( fp, "%s", "# This file can now support the use of tildes in your strings.\n" );
    fprintf( fp, "%s", "# This information can be edited online using the 'imcconfig' command.\n" );
    fprintf( fp, "LocalName      %s\n", this_imcmud->localname );
@@ -4946,7 +4980,7 @@ void imc_load_who_template( void )
    }
 
    if( whot )
-      imc_delete_who_template();
+      imc_delete_who_template(  );
    IMCCREATE( whot, WHO_TEMPLATE, 1 );
 
    do
@@ -5011,7 +5045,7 @@ void imc_load_who_template( void )
 
 void imc_load_templates( void )
 {
-   imc_load_who_template();
+   imc_load_who_template(  );
 }
 
 int ipv4_connect( void )
@@ -5047,7 +5081,7 @@ int ipv4_connect( void )
       memcpy( &sa.sin_addr, hostp->h_addr, hostp->h_length );
    }
 #else
-   sa.sin_addr.s_addr = inet_addr(this_imcmud->rhost);
+   sa.sin_addr.s_addr = inet_addr( this_imcmud->rhost );
 #endif
 
    sa.sin_port = htons( this_imcmud->rport );
@@ -5077,7 +5111,7 @@ int ipv4_connect( void )
    }
 #endif
 
-   if( connect( desc, ( struct sockaddr * )&sa, sizeof( sa ) ) < 0 )
+   if( connect( desc, ( struct sockaddr * )&sa, sizeof( sa ) ) == -1 )
    {
       if( errno != EINPROGRESS )
       {
@@ -5146,7 +5180,7 @@ bool imc_server_connect( void )
    if( ai == NULL )
    {
       imclog( "%s: socket or connect: failed for %s port %hu", __FUNCTION__, this_imcmud->rhost, this_imcmud->rport );
-      imcwait = 100; // So it will try again according to the reconnect count.
+      imcwait = 100; /* So it will try again according to the reconnect count. */
       return FALSE;
    }
 
@@ -5219,7 +5253,7 @@ bool imc_server_connect( void )
 
 void imc_delete_templates( void )
 {
-   imc_delete_who_template();
+   imc_delete_who_template(  );
 }
 
 void free_imcdata( bool complete )
@@ -5265,7 +5299,7 @@ void free_imcdata( bool complete )
     */
    if( complete )
    {
-      imc_delete_templates();
+      imc_delete_templates(  );
 
       for( cmd = first_imc_command; cmd; cmd = cmd_next )
       {
@@ -5455,7 +5489,7 @@ void imc_startup( bool force, int desc, bool connected )
     * ... and the templates. Checks for whot being defined, but the others are loaded here to, so....
     */
    if( !whot )
-      imc_load_templates();
+      imc_load_templates(  );
 
    if( ( !this_imcmud->autoconnect && !force && !connected ) || ( connected && this_imcmud->desc < 1 ) )
    {
@@ -6138,13 +6172,14 @@ IMC_CMD( imcwho )
       return;
    }
 
-   /* Now why didn't I think of this before for local who testing?
-    * Meant for testing only, so it needs >= Imm perms
-    * Otherwise people could use it to bypass wizinvis locally.
+   /*
+    * Now why didn't I think of this before for local who testing?
+    * * Meant for testing only, so it needs >= Imm perms
+    * * Otherwise people could use it to bypass wizinvis locally.
     */
-   if( !strcasecmp( argument, this_imcmud->localname ) && IMCPERM(ch) >= IMCPERM_IMM )
+   if( !strcasecmp( argument, this_imcmud->localname ) && IMCPERM( ch ) >= IMCPERM_IMM )
    {
-      imc_to_char( imc_assemble_who(), ch );
+      imc_to_char( imc_assemble_who(  ), ch );
       return;
    }
 
@@ -6366,14 +6401,15 @@ IMC_CMD( imcbeep )
 }
 
 #ifdef WEBSVR
-void web_imc_list( WEB_DESCRIPTOR *wdesc )
+void web_imc_list( WEB_DESCRIPTOR * wdesc )
 {
    REMOTEINFO *rin;
    char *start, *onpath;
    char buf[MAX_STRING_LENGTH], urldump[MAX_INPUT_LENGTH], netname[MAX_INPUT_LENGTH], serverpath[MAX_INPUT_LENGTH];
    int end, count = 1;
 
-   snprintf( buf, MAX_STRING_LENGTH, "<table><tr><td colspan=\"5\"><font color=\"white\">Active muds on %s:</font></td></tr>",
+   snprintf( buf, MAX_STRING_LENGTH,
+             "<table><tr><td colspan=\"5\"><font color=\"white\">Active muds on %s:</font></td></tr>",
              this_imcmud->network );
    snprintf( buf + strlen( buf ), MAX_STRING_LENGTH,
              "<tr><td><font color=\"#008080\">%s</font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
@@ -6384,15 +6420,15 @@ void web_imc_list( WEB_DESCRIPTOR *wdesc )
        || !strstr( this_imcmud->www, "http://" ) )
    {
       snprintf( buf, MAX_STRING_LENGTH,
-             "<tr><td><font color=\"#008080\">%s</font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
-             this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername );
+                "<tr><td><font color=\"#008080\">%s</font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
+                this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername );
    }
    else
    {
       imcstrlcpy( urldump, this_imcmud->www, MAX_INPUT_LENGTH );
       snprintf( buf, MAX_STRING_LENGTH,
-             "<tr><td><font color=\"#008080\"><a href=\"%s\" class=\"dcyan\" target=\"_blank\">%s</a></font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
-             urldump, this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername );
+                "<tr><td><font color=\"#008080\"><a href=\"%s\" class=\"dcyan\" target=\"_blank\">%s</a></font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
+                urldump, this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername );
    }
    send_buf( wdesc->fd, buf );
 
@@ -6403,7 +6439,9 @@ void web_imc_list( WEB_DESCRIPTOR *wdesc )
       else
          imcstrlcpy( netname, rin->network, MAX_INPUT_LENGTH );
 
-      /* If there is more then one path use the second path */
+      /*
+       * If there is more then one path use the second path 
+       */
       if( rin->path && rin->path[0] != '\0' )
       {
          if( ( start = strchr( rin->path, '!' ) ) != NULL )
@@ -6422,8 +6460,7 @@ void web_imc_list( WEB_DESCRIPTOR *wdesc )
             imcstrlcpy( serverpath, rin->path, MAX_INPUT_LENGTH );
       }
 
-      if( !rin->url || !str_cmp( rin->url, "??" ) || !str_cmp( rin->url, "Unknown" )
-       || !strstr( rin->url, "http://" ) )
+      if( !rin->url || !str_cmp( rin->url, "??" ) || !str_cmp( rin->url, "Unknown" ) || !strstr( rin->url, "http://" ) )
       {
          snprintf( buf, MAX_STRING_LENGTH,
                    "<tr><td><font color=\"%s\">%s</font></td><td><font color=\"blue\">%s</font></td><td><font color=\"green\">%s</font></td><td><font color=\"#00FF00\">%s</font></td></tr>",
@@ -7195,6 +7232,8 @@ IMC_CMD( imcchanwho )
    imc_addtopacket( p, "channel=%s", c->name );
    imc_addtopacket( p, "lname=%s", c->local_name ? c->local_name : c->name );
    imc_write_packet( p );
+
+   imc_printf( ch, "~G%s", get_local_chanwho( c ) );
    return;
 }
 
@@ -7658,7 +7697,7 @@ IMC_CMD( imcrefresh )
 IMC_CMD( imctemplates )
 {
    imc_to_char( "Refreshing all templates.\r\n", ch );
-   imc_load_templates();
+   imc_load_templates(  );
 }
 
 IMC_CMD( imclast )
@@ -7704,7 +7743,7 @@ IMC_CMD( imc_other )
 
 #if defined(IMCSTANDALONE)
 /* Standalone compile won't have social structure at all */
-char *imc_send_social( CHAR_DATA *ch, char *argument, int telloption )
+char *imc_send_social( CHAR_DATA * ch, char *argument, int telloption )
 {
    return "";
 }
@@ -8426,11 +8465,11 @@ int main( int argc, char **argv )
    imc_startup( FALSE, -1, FALSE );
    while( !client_down )
    {
-      imc_loop();
+      imc_loop(  );
       usleep( 250000 );
    }
    imclog( "%s", "Something caused me to close!" );
-   exit(0);
+   exit( 0 );
    return 0;
 }
 #endif

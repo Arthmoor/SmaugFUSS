@@ -356,24 +356,24 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
 
    if( IS_NPC( ch ) && channel == CHANNEL_CLAN )
    {
-      send_to_char( "Mobs can't be in clans.\n\r", ch );
+      send_to_char( "Mobs can't be in clans.\r\n", ch );
       return;
    }
    if( IS_NPC( ch ) && channel == CHANNEL_ORDER )
    {
-      send_to_char( "Mobs can't be in orders.\n\r", ch );
+      send_to_char( "Mobs can't be in orders.\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) && channel == CHANNEL_COUNCIL )
    {
-      send_to_char( "Mobs can't be in councils.\n\r", ch );
+      send_to_char( "Mobs can't be in councils.\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) && channel == CHANNEL_GUILD )
    {
-      send_to_char( "Mobs can't be in guilds.\n\r", ch );
+      send_to_char( "Mobs can't be in guilds.\r\n", ch );
       return;
    }
 
@@ -381,27 +381,27 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
    {
       if( !IS_IMMORTAL( ch ) )
       {
-         send_to_char( "Peacefuls have no need to use wartalk.\n\r", ch );
+         send_to_char( "Peacefuls have no need to use wartalk.\r\n", ch );
          return;
       }
    }
 
    if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
-      send_to_char( "You can't do that here.\n\r", ch );
+      send_to_char( "You can't do that here.\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) && IS_AFFECTED( ch, AFF_CHARM ) )
    {
       if( ch->master )
-         send_to_char( "I don't think so...\n\r", ch->master );
+         send_to_char( "I don't think so...\r\n", ch->master );
       return;
    }
 
    if( argument[0] == '\0' )
    {
-      snprintf( buf, MAX_STRING_LENGTH, "%s what?\n\r", verb );
+      snprintf( buf, MAX_STRING_LENGTH, "%s what?\r\n", verb );
       buf[0] = UPPER( buf[0] );
       send_to_char( buf, ch );   /* where'd this line go? */
       return;
@@ -409,7 +409,7 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
 
    if( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_SILENCE ) )
    {
-      ch_printf( ch, "You can't %s.\n\r", verb );
+      ch_printf( ch, "You can't %s.\r\n", verb );
       return;
    }
 
@@ -419,22 +419,22 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
    {
       default:
          set_char_color( AT_GOSSIP, ch );
-         ch_printf( ch, "You %s '%s'\n\r", verb, argument );
+         ch_printf( ch, "You %s '%s'\r\n", verb, argument );
          snprintf( buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb );
          break;
       case CHANNEL_RACETALK:
          set_char_color( AT_RACETALK, ch );
-         ch_printf( ch, "You %s '%s'\n\r", verb, argument );
+         ch_printf( ch, "You %s '%s'\r\n", verb, argument );
          snprintf( buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb );
          break;
       case CHANNEL_TRAFFIC:
          set_char_color( AT_GOSSIP, ch );
-         ch_printf( ch, "You %s:  %s\n\r", verb, argument );
+         ch_printf( ch, "You %s:  %s\r\n", verb, argument );
          snprintf( buf, MAX_STRING_LENGTH, "$n %ss:  $t", verb );
          break;
       case CHANNEL_WARTALK:
          set_char_color( AT_WARTALK, ch );
-         ch_printf( ch, "You %s '%s'\n\r", verb, argument );
+         ch_printf( ch, "You %s '%s'\r\n", verb, argument );
          snprintf( buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb );
          break;
       case CHANNEL_IMMTALK:
@@ -519,14 +519,13 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
                continue;
          }
 
-
          if( channel == CHANNEL_RACETALK )
             if( vch->race != ch->race )
                continue;
 
          if( xIS_SET( ch->act, PLR_WIZINVIS ) && can_see( vch, ch ) && IS_IMMORTAL( vch ) )
          {
-            snprintf( lbuf, MAX_STRING_LENGTH, "(%d) ", ( !IS_NPC( ch ) ) ? ch->pcdata->wizinvis : ch->mobinvis );
+            snprintf( lbuf, MAX_INPUT_LENGTH + 4, "(%d) ", ( !IS_NPC( ch ) ) ? ch->pcdata->wizinvis : ch->mobinvis );
          }
          else
          {
@@ -621,7 +620,7 @@ void do_chat( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_CHAT, "chat" );
@@ -632,14 +631,14 @@ void do_clantalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) || !ch->pcdata->clan
        || ch->pcdata->clan->clan_type == CLAN_ORDER || ch->pcdata->clan->clan_type == CLAN_GUILD )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_CLAN, "clantalk" );
@@ -652,7 +651,7 @@ void do_newbiechat( CHAR_DATA * ch, char *argument )
        || ( !NOT_AUTHED( ch ) && !IS_IMMORTAL( ch )
             && !( ch->pcdata->council && !str_cmp( ch->pcdata->council->name, "Newbie Council" ) ) ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_NEWBIE, "newbiechat" );
@@ -668,13 +667,13 @@ void do_ordertalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) || !ch->pcdata->clan || ch->pcdata->clan->clan_type != CLAN_ORDER )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_ORDER, "ordertalk" );
@@ -685,13 +684,13 @@ void do_counciltalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) || !ch->pcdata->council )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_COUNCIL, "counciltalk" );
@@ -702,13 +701,13 @@ void do_guildtalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( IS_NPC( ch ) || !ch->pcdata->clan || ch->pcdata->clan->clan_type != CLAN_GUILD )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_GUILD, "guildtalk" );
@@ -719,7 +718,7 @@ void do_music( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_MUSIC, "music" );
@@ -731,7 +730,7 @@ void do_quest( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_QUEST, "quest" );
@@ -742,33 +741,29 @@ void do_ask( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_ASK, "ask" );
    return;
 }
 
-
-
 void do_answer( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_ASK, "answer" );
    return;
 }
 
-
-
 void do_shout( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_SHOUT, "shout" );
@@ -776,26 +771,22 @@ void do_shout( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
-
 void do_yell( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_YELL, "yell" );
    return;
 }
 
-
-
 void do_immtalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -803,43 +794,39 @@ void do_immtalk( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 void do_muse( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_HIGHGOD, "muse" );
    return;
 }
 
-
 void do_think( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_HIGH, "think" );
    return;
 }
 
-
 void do_avtalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_AVTALK, "avtalk" );
    return;
 }
-
 
 void do_say( CHAR_DATA * ch, char *argument )
 {
@@ -859,13 +846,13 @@ void do_say( CHAR_DATA * ch, char *argument )
 
    if( argument[0] == '\0' )
    {
-      send_to_char( "Say what?\n\r", ch );
+      send_to_char( "Say what?\r\n", ch );
       return;
    }
 
    if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
-      send_to_char( "You can't do that here.\n\r", ch );
+      send_to_char( "You can't do that here.\r\n", ch );
       return;
    }
 
@@ -892,7 +879,7 @@ void do_say( CHAR_DATA * ch, char *argument )
          else
          {
             set_char_color( AT_IGNORE, vch );
-            ch_printf( vch, "You attempt to ignore %s, but" " are unable to do so.\n\r", ch->name );
+            ch_printf( vch, "You attempt to ignore %s, but" " are unable to do so.\r\n", ch->name );
          }
       }
 
@@ -934,7 +921,6 @@ void do_say( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 void do_whisper( CHAR_DATA * ch, char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
@@ -942,8 +928,8 @@ void do_whisper( CHAR_DATA * ch, char *argument )
    CHAR_DATA *victim;
    int position;
    int speaking = -1, lang;
-#ifndef SCRAMBLE
 
+#ifndef SCRAMBLE
    for( lang = 0; lang_array[lang] != LANG_UNKNOWN; lang++ )
       if( ch->speaking & lang_array[lang] )
       {
@@ -958,45 +944,48 @@ void do_whisper( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' || argument[0] == '\0' )
    {
-      send_to_char( "Whisper to whom what?\n\r", ch );
+      send_to_char( "Whisper to whom what?\r\n", ch );
       return;
    }
 
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( ch == victim )
    {
-      send_to_char( "You have a nice little chat with yourself.\n\r", ch );
+      send_to_char( "You have a nice little chat with yourself.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && ( victim->switched ) && !IS_AFFECTED( victim->switched, AFF_POSSESS ) )
    {
-      send_to_char( "That player is switched.\n\r", ch );
+      send_to_char( "That player is switched.\r\n", ch );
       return;
    }
    else if( !IS_NPC( victim ) && ( !victim->desc ) )
    {
-      send_to_char( "That player is link-dead.\n\r", ch );
+      send_to_char( "That player is link-dead.\r\n", ch );
       return;
    }
+
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_AFK ) )
    {
-      send_to_char( "That player is afk.\n\r", ch );
+      send_to_char( "That player is afk.\r\n", ch );
       return;
    }
+
    if( IS_SET( victim->deaf, CHANNEL_WHISPER ) && ( !IS_IMMORTAL( ch ) || ( get_trust( ch ) < get_trust( victim ) ) ) )
    {
       act( AT_PLAIN, "$E has $S whispers turned off.", ch, NULL, victim, TO_CHAR );
       return;
    }
+
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_SILENCE ) )
-      send_to_char( "That player is silenced.  They will receive your message but can not respond.\n\r", ch );
+      send_to_char( "That player is silenced.  They will receive your message but can not respond.\r\n", ch );
 
    if( victim->desc  /* make sure desc exists first  -Thoric */
        && victim->desc->connected == CON_EDITING && get_trust( ch ) < LEVEL_GOD )
@@ -1016,13 +1005,13 @@ void do_whisper( CHAR_DATA * ch, char *argument )
       if( !IS_IMMORTAL( ch ) || get_trust( victim ) > get_trust( ch ) )
       {
          set_char_color( AT_IGNORE, ch );
-         ch_printf( ch, "%s is ignoring you.\n\r", victim->name );
+         ch_printf( ch, "%s is ignoring you.\r\n", victim->name );
          return;
       }
       else
       {
          set_char_color( AT_IGNORE, victim );
-         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\n\r", ch->name );
+         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\r\n", ch->name );
       }
    }
 
@@ -1038,6 +1027,8 @@ void do_whisper( CHAR_DATA * ch, char *argument )
       if( speakswell < 85 )
          act( AT_WHISPER, "$n whispers to you '$t'", ch,
               translate( speakswell, argument, lang_names[speaking] ), victim, TO_VICT );
+      else
+         act( AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT );
    }
    else
       act( AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT );
@@ -1085,13 +1076,13 @@ void do_tell( CHAR_DATA * ch, char *argument )
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
    if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
-      send_to_char( "You can't do that here.\n\r", ch );
+      send_to_char( "You can't do that here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( ch ) && ( xIS_SET( ch->act, PLR_SILENCE ) || xIS_SET( ch->act, PLR_NO_TELL ) ) )
    {
-      send_to_char( "You can't do that.\n\r", ch );
+      send_to_char( "You can't do that.\r\n", ch );
       return;
    }
 
@@ -1099,7 +1090,7 @@ void do_tell( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' || argument[0] == '\0' )
    {
-      send_to_char( "Tell whom what?\n\r", ch );
+      send_to_char( "Tell whom what?\r\n", ch );
       return;
    }
 
@@ -1107,26 +1098,26 @@ void do_tell( CHAR_DATA * ch, char *argument )
        || ( IS_NPC( victim ) && victim->in_room != ch->in_room )
        || ( !NOT_AUTHED( ch ) && NOT_AUTHED( victim ) && !IS_IMMORTAL( ch ) ) )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( ch == victim )
    {
-      send_to_char( "You have a nice little chat with yourself.\n\r", ch );
+      send_to_char( "You have a nice little chat with yourself.\r\n", ch );
       return;
    }
 
    if( NOT_AUTHED( ch ) && !NOT_AUTHED( victim ) && !IS_IMMORTAL( victim ) )
    {
-      send_to_char( "They can't hear you because you are not authorized.\n\r", ch );
+      send_to_char( "They can't hear you because you are not authorized.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && ( victim->switched )
        && ( get_trust( ch ) > LEVEL_AVATAR ) && !IS_AFFECTED( victim->switched, AFF_POSSESS ) )
    {
-      send_to_char( "That player is switched.\n\r", ch );
+      send_to_char( "That player is switched.\r\n", ch );
       return;
    }
 
@@ -1135,13 +1126,13 @@ void do_tell( CHAR_DATA * ch, char *argument )
 
    else if( !IS_NPC( victim ) && ( !victim->desc ) )
    {
-      send_to_char( "That player is link-dead.\n\r", ch );
+      send_to_char( "That player is link-dead.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_AFK ) )
    {
-      send_to_char( "That player is afk.\n\r", ch );
+      send_to_char( "That player is afk.\r\n", ch );
       return;
    }
 
@@ -1152,7 +1143,7 @@ void do_tell( CHAR_DATA * ch, char *argument )
    }
 
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_SILENCE ) )
-      send_to_char( "That player is silenced.  They will receive your message but can not respond.\n\r", ch );
+      send_to_char( "That player is silenced.  They will receive your message but can not respond.\r\n", ch );
 
    if( ( !IS_IMMORTAL( ch ) && !IS_AWAKE( victim ) ) )
    {
@@ -1184,13 +1175,13 @@ void do_tell( CHAR_DATA * ch, char *argument )
       if( !IS_IMMORTAL( ch ) || get_trust( victim ) > get_trust( ch ) )
       {
          set_char_color( AT_IGNORE, ch );
-         ch_printf( ch, "%s is ignoring you.\n\r", victim->name );
+         ch_printf( ch, "%s is ignoring you.\r\n", victim->name );
          return;
       }
       else
       {
          set_char_color( AT_IGNORE, victim );
-         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\n\r", ch->name );
+         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\r\n", ch->name );
       }
    }
 
@@ -1199,7 +1190,7 @@ void do_tell( CHAR_DATA * ch, char *argument )
    if( !IS_NPC( victim ) && IS_IMMORTAL( victim ) && victim->pcdata->tell_history &&
        isalpha( IS_NPC( ch ) ? ch->short_descr[0] : ch->name[0] ) )
    {
-      snprintf( buf, MAX_INPUT_LENGTH, "%s told you '%s'\n\r", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
+      snprintf( buf, MAX_INPUT_LENGTH, "%s told you '%s'\r\n", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
                 argument );
 
       /*
@@ -1257,8 +1248,6 @@ void do_tell( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
-
 void do_reply( CHAR_DATA * ch, char *argument )
 {
    char buf[MAX_STRING_LENGTH];
@@ -1279,36 +1268,36 @@ void do_reply( CHAR_DATA * ch, char *argument )
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
    if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
-      send_to_char( "You can't do that here.\n\r", ch );
+      send_to_char( "You can't do that here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_SILENCE ) )
    {
-      send_to_char( "Your message didn't get through.\n\r", ch );
+      send_to_char( "Your message didn't get through.\r\n", ch );
       return;
    }
 
    if( ( victim = ch->reply ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && ( victim->switched ) && can_see( ch, victim ) && ( get_trust( ch ) > LEVEL_AVATAR ) )
    {
-      send_to_char( "That player is switched.\n\r", ch );
+      send_to_char( "That player is switched.\r\n", ch );
       return;
    }
    else if( !IS_NPC( victim ) && ( !victim->desc ) )
    {
-      send_to_char( "That player is link-dead.\n\r", ch );
+      send_to_char( "That player is link-dead.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_AFK ) )
    {
-      send_to_char( "That player is afk.\n\r", ch );
+      send_to_char( "That player is afk.\r\n", ch );
       return;
    }
 
@@ -1343,13 +1332,13 @@ void do_reply( CHAR_DATA * ch, char *argument )
       if( !IS_IMMORTAL( ch ) || get_trust( victim ) > get_trust( ch ) )
       {
          set_char_color( AT_IGNORE, ch );
-         ch_printf( ch, "%s is ignoring you.\n\r", victim->name );
+         ch_printf( ch, "%s is ignoring you.\r\n", victim->name );
          return;
       }
       else
       {
          set_char_color( AT_IGNORE, victim );
-         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\n\r", ch->name );
+         ch_printf( victim, "You attempt to ignore %s, but " "are unable to do so.\r\n", ch->name );
       }
    }
 
@@ -1388,7 +1377,7 @@ void do_reply( CHAR_DATA * ch, char *argument )
    if( !IS_NPC( victim ) && IS_IMMORTAL( victim ) && victim->pcdata->tell_history &&
        isalpha( IS_NPC( ch ) ? ch->short_descr[0] : ch->name[0] ) )
    {
-      snprintf( buf, MAX_STRING_LENGTH, "%s told you '%s'\n\r", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
+      snprintf( buf, MAX_STRING_LENGTH, "%s told you '%s'\r\n", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
                 argument );
 
       /*
@@ -1430,19 +1419,19 @@ void do_retell( CHAR_DATA * ch, char *argument )
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
    if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
-      send_to_char( "You can't do that here.\n\r", ch );
+      send_to_char( "You can't do that here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( ch ) && ( xIS_SET( ch->act, PLR_SILENCE ) || xIS_SET( ch->act, PLR_NO_TELL ) ) )
    {
-      send_to_char( "You can't do that.\n\r", ch );
+      send_to_char( "You can't do that.\r\n", ch );
       return;
    }
 
    if( argument[0] == '\0' )
    {
-      ch_printf( ch, "What message do you wish to send?\n\r" );
+      ch_printf( ch, "What message do you wish to send?\r\n" );
       return;
    }
 
@@ -1450,14 +1439,14 @@ void do_retell( CHAR_DATA * ch, char *argument )
 
    if( !victim )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && ( victim->switched ) &&
        ( get_trust( ch ) > LEVEL_AVATAR ) && !IS_AFFECTED( victim->switched, AFF_POSSESS ) )
    {
-      send_to_char( "That player is switched.\n\r", ch );
+      send_to_char( "That player is switched.\r\n", ch );
       return;
    }
    else if( !IS_NPC( victim ) && ( victim->switched ) && IS_AFFECTED( victim->switched, AFF_POSSESS ) )
@@ -1466,13 +1455,13 @@ void do_retell( CHAR_DATA * ch, char *argument )
    }
    else if( !IS_NPC( victim ) && ( !victim->desc ) )
    {
-      send_to_char( "That player is link-dead.\n\r", ch );
+      send_to_char( "That player is link-dead.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_AFK ) )
    {
-      send_to_char( "That player is afk.\n\r", ch );
+      send_to_char( "That player is afk.\r\n", ch );
       return;
    }
 
@@ -1483,7 +1472,7 @@ void do_retell( CHAR_DATA * ch, char *argument )
    }
 
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_SILENCE ) )
-      send_to_char( "That player is silenced. They will receive your message, but can not respond.\n\r", ch );
+      send_to_char( "That player is silenced. They will receive your message, but can not respond.\r\n", ch );
 
    if( ( !IS_IMMORTAL( ch ) && !IS_AWAKE( victim ) ) ||
        ( !IS_NPC( victim ) && IS_SET( victim->in_room->room_flags, ROOM_SILENCE ) ) )
@@ -1509,13 +1498,13 @@ void do_retell( CHAR_DATA * ch, char *argument )
       if( !IS_IMMORTAL( ch ) || get_trust( victim ) > get_trust( ch ) )
       {
          set_char_color( AT_IGNORE, ch );
-         ch_printf( ch, "%s is ignoring you.\n\r", victim->name );
+         ch_printf( ch, "%s is ignoring you.\r\n", victim->name );
          return;
       }
       else
       {
          set_char_color( AT_IGNORE, victim );
-         ch_printf( victim, "You attempy to ignore %s, but " "are unable to do so.\n\r", ch->name );
+         ch_printf( victim, "You attempy to ignore %s, but " "are unable to do so.\r\n", ch->name );
       }
    }
 
@@ -1525,7 +1514,7 @@ void do_retell( CHAR_DATA * ch, char *argument )
    if( !IS_NPC( victim ) && IS_IMMORTAL( victim ) && victim->pcdata->tell_history &&
        isalpha( IS_NPC( ch ) ? ch->short_descr[0] : ch->name[0] ) )
    {
-      snprintf( buf, MAX_INPUT_LENGTH, "%s told you '%s'\n\r", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
+      snprintf( buf, MAX_INPUT_LENGTH, "%s told you '%s'\r\n", capitalize( IS_NPC( ch ) ? ch->short_descr : ch->name ),
                 argument );
 
       /*
@@ -1593,7 +1582,7 @@ void do_repeat( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) || !IS_IMMORTAL( ch ) || !ch->pcdata->tell_history )
    {
-      ch_printf( ch, "Huh?\n\r" );
+      ch_printf( ch, "Huh?\r\n" );
       return;
    }
 
@@ -1607,7 +1596,7 @@ void do_repeat( CHAR_DATA * ch, char *argument )
    }
    else
    {
-      ch_printf( ch, "You may only index your tell history using " "a single letter.\n\r" );
+      ch_printf( ch, "You may only index your tell history using " "a single letter.\r\n" );
       return;
    }
 
@@ -1618,7 +1607,7 @@ void do_repeat( CHAR_DATA * ch, char *argument )
    }
    else
    {
-      send_to_char( "No one like that has sent you a tell.\n\r", ch );
+      send_to_char( "No one like that has sent you a tell.\r\n", ch );
    }
    return;
 }
@@ -1642,13 +1631,13 @@ void do_emote( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_NO_EMOTE ) )
    {
-      send_to_char( "You can't show your emotions.\n\r", ch );
+      send_to_char( "You can't show your emotions.\r\n", ch );
       return;
    }
 
    if( argument[0] == '\0' )
    {
-      send_to_char( "Emote what?\n\r", ch );
+      send_to_char( "Emote what?\r\n", ch );
       return;
    }
 
@@ -1678,7 +1667,7 @@ void do_emote( CHAR_DATA * ch, char *argument )
          else
          {
             set_char_color( AT_IGNORE, vch );
-            ch_printf( vch, "You attempt to ignore %s, but" " are unable to do so.\n\r", ch->name );
+            ch_printf( vch, "You attempt to ignore %s, but" " are unable to do so.\r\n", ch->name );
          }
       }
 #ifndef SCRAMBLE
@@ -1719,20 +1708,20 @@ void do_bug( CHAR_DATA * ch, char *argument )
    set_char_color( AT_PLAIN, ch );
    if( argument[0] == '\0' )
    {
-      send_to_char( "\n\rUsage:  'bug <message>'  (your location is automatically recorded)\n\r", ch );
+      send_to_char( "\r\nUsage:  'bug <message>'  (your location is automatically recorded)\r\n", ch );
       return;
    }
    snprintf( buf, MAX_STRING_LENGTH, "(%-2.2d/%-2.2d):  %s", t->tm_mon + 1, t->tm_mday, argument );
    append_file( ch, PBUG_FILE, buf );
-   send_to_char( "Thanks, your bug notice has been recorded.\n\r", ch );
+   send_to_char( "Thanks, your bug notice has been recorded.\r\n", ch );
    return;
 }
 
 void do_ide( CHAR_DATA * ch, char *argument )
 {
    set_char_color( AT_PLAIN, ch );
-   send_to_char( "\n\rIf you want to send an idea, type 'idea <message>'.\n\r", ch );
-   send_to_char( "If you want to identify an object, use the identify spell.\n\r", ch );
+   send_to_char( "\r\nIf you want to send an idea, type 'idea <message>'.\r\n", ch );
+   send_to_char( "If you want to identify an object, use the identify spell.\r\n", ch );
    return;
 }
 
@@ -1741,11 +1730,11 @@ void do_idea( CHAR_DATA * ch, char *argument )
    set_char_color( AT_PLAIN, ch );
    if( argument[0] == '\0' )
    {
-      send_to_char( "\n\rUsage:  'idea <message>'\n\r", ch );
+      send_to_char( "\r\nUsage:  'idea <message>'\r\n", ch );
       return;
    }
    append_file( ch, IDEA_FILE, argument );
-   send_to_char( "Thanks, your idea has been recorded.\n\r", ch );
+   send_to_char( "Thanks, your idea has been recorded.\r\n", ch );
    return;
 }
 
@@ -1754,9 +1743,9 @@ void do_typo( CHAR_DATA * ch, char *argument )
    set_char_color( AT_PLAIN, ch );
    if( argument[0] == '\0' )
    {
-      send_to_char( "\n\rUsage:  'typo <message>'  (your location is automatically recorded)\n\r", ch );
+      send_to_char( "\r\nUsage:  'typo <message>'  (your location is automatically recorded)\r\n", ch );
       if( get_trust( ch ) >= LEVEL_ASCENDANT )
-         send_to_char( "Usage:  'typo list' or 'typo clear now'\n\r", ch );
+         send_to_char( "Usage:  'typo list' or 'typo clear now'\r\n", ch );
       return;
    }
    if( !str_cmp( argument, "clear now" ) && get_trust( ch ) >= LEVEL_ASCENDANT )
@@ -1764,18 +1753,18 @@ void do_typo( CHAR_DATA * ch, char *argument )
       FILE *fp = fopen( TYPO_FILE, "w" );
       if( fp )
          fclose( fp );
-      send_to_char( "Typo file cleared.\n\r", ch );
+      send_to_char( "Typo file cleared.\r\n", ch );
       return;
    }
    if( !str_cmp( argument, "list" ) && get_trust( ch ) >= LEVEL_ASCENDANT )
    {
-      send_to_char( "\n\r VNUM \n\r.......\n\r", ch );
+      send_to_char( "\r\n VNUM \r\n.......\r\n", ch );
       show_file( ch, TYPO_FILE );
    }
    else
    {
       append_file( ch, TYPO_FILE, argument );
-      send_to_char( "Thanks, your typo notice has been recorded.\n\r", ch );
+      send_to_char( "Thanks, your typo notice has been recorded.\r\n", ch );
    }
    return;
 }
@@ -1783,28 +1772,20 @@ void do_typo( CHAR_DATA * ch, char *argument )
 void do_rent( CHAR_DATA * ch, char *argument )
 {
    set_char_color( AT_WHITE, ch );
-   send_to_char( "There is no rent here.  Just save and quit.\n\r", ch );
+   send_to_char( "There is no rent here.  Just save and quit.\r\n", ch );
    return;
 }
-
-
 
 void do_qui( CHAR_DATA * ch, char *argument )
 {
    set_char_color( AT_RED, ch );
-   send_to_char( "If you want to QUIT, you have to spell it out.\n\r", ch );
+   send_to_char( "If you want to QUIT, you have to spell it out.\r\n", ch );
    return;
 }
 
 void do_quit( CHAR_DATA * ch, char *argument )
 {
    char log_buf[MAX_STRING_LENGTH];
-
-   /*
-    * OBJ_DATA *obj; 
-    *//*
-    * Unused 
-    */
    int x, y;
    int level;
 
@@ -1816,34 +1797,34 @@ void do_quit( CHAR_DATA * ch, char *argument )
        || ch->position == POS_DEFENSIVE || ch->position == POS_AGGRESSIVE || ch->position == POS_BERSERK )
    {
       set_char_color( AT_RED, ch );
-      send_to_char( "No way! You are fighting.\n\r", ch );
+      send_to_char( "No way! You are fighting.\r\n", ch );
       return;
    }
 
    if( ch->position < POS_STUNNED )
    {
       set_char_color( AT_BLOOD, ch );
-      send_to_char( "You're not DEAD yet.\n\r", ch );
+      send_to_char( "You're not DEAD yet.\r\n", ch );
       return;
    }
 
    if( get_timer( ch, TIMER_RECENTFIGHT ) > 0 && !IS_IMMORTAL( ch ) )
    {
       set_char_color( AT_RED, ch );
-      send_to_char( "Your adrenaline is pumping too hard to quit now!\n\r", ch );
+      send_to_char( "Your adrenaline is pumping too hard to quit now!\r\n", ch );
       return;
    }
 
    if( auction->item != NULL && ( ( ch == auction->buyer ) || ( ch == auction->seller ) ) )
    {
-      send_to_char( "Wait until you have bought/sold the item on auction.\n\r", ch );
+      send_to_char( "Wait until you have bought/sold the item on auction.\r\n", ch );
       return;
 
    }
 
    if( IS_PKILL( ch ) && ch->wimpy > ( int )ch->max_hit / 2.25 )
    {
-      send_to_char( "Your wimpy has been adjusted to the maximum level for deadlies.\n\r", ch );
+      send_to_char( "Your wimpy has been adjusted to the maximum level for deadlies.\r\n", ch );
       do_wimpy( ch, "max" );
    }
    /*
@@ -1853,7 +1834,7 @@ void do_quit( CHAR_DATA * ch, char *argument )
       do_dismount( ch, "" );
    set_char_color( AT_WHITE, ch );
    send_to_char
-      ( "Your surroundings begin to fade as a mystical swirling vortex of colors\n\renvelops your body... When you come to, things are not as they were.\n\r\n\r",
+      ( "Your surroundings begin to fade as a mystical swirling vortex of colors\r\nenvelops your body... When you come to, things are not as they were.\r\n\r\n",
         ch );
    act( AT_SAY, "A strange voice says, 'We await your return, $n...'", ch, NULL, NULL, TO_CHAR );
    act( AT_BYE, "$n has left the game.", ch, NULL, NULL, TO_CANSEE );
@@ -1886,12 +1867,6 @@ void do_quit( CHAR_DATA * ch, char *argument )
       for( y = 0; y < MAX_LAYERS; y++ )
          save_equipment[x][y] = NULL;
 
-   /*
-    * don't show who's logging off to leaving player 
-    */
-/*
-    to_channel( log_buf, CHANNEL_MONITOR, "Monitor", level ); 
-*/
    log_string_plus( log_buf, LOG_COMM, level );
    return;
 }
@@ -1968,7 +1943,7 @@ void do_rip( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Rip ON or OFF?\n\r", ch );
+      send_to_char( "Rip ON or OFF?\r\n", ch );
       return;
    }
    if( ( strcmp( arg, "on" ) == 0 ) || ( strcmp( arg, "ON" ) == 0 ) )
@@ -1982,7 +1957,7 @@ void do_rip( CHAR_DATA * ch, char *argument )
    if( ( strcmp( arg, "off" ) == 0 ) || ( strcmp( arg, "OFF" ) == 0 ) )
    {
       xREMOVE_BIT( ch->act, PLR_RIP );
-      send_to_char( "!|*\n\rRIP now off...\n\r", ch );
+      send_to_char( "!|*\r\nRIP now off...\r\n", ch );
       return;
    }
 }
@@ -1995,21 +1970,21 @@ void do_ansi( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "ANSI ON or OFF?\n\r", ch );
+      send_to_char( "ANSI ON or OFF?\r\n", ch );
       return;
    }
    if( ( strcmp( arg, "on" ) == 0 ) || ( strcmp( arg, "ON" ) == 0 ) )
    {
       xSET_BIT( ch->act, PLR_ANSI );
       set_char_color( AT_WHITE + AT_BLINK, ch );
-      send_to_char( "ANSI ON!!!\n\r", ch );
+      send_to_char( "ANSI ON!!!\r\n", ch );
       return;
    }
 
    if( ( strcmp( arg, "off" ) == 0 ) || ( strcmp( arg, "OFF" ) == 0 ) )
    {
       xREMOVE_BIT( ch->act, PLR_ANSI );
-      send_to_char( "Okay... ANSI support is now off\n\r", ch );
+      send_to_char( "Okay... ANSI support is now off\r\n", ch );
       return;
    }
 }
@@ -2020,14 +1995,14 @@ void do_save( CHAR_DATA * ch, char *argument )
       return;
    if( ch->level < 2 )
    {
-      send_to_char_color( "&BYou must be at least second level to save.\n\r", ch );
+      send_to_char_color( "&BYou must be at least second level to save.\r\n", ch );
       return;
    }
    WAIT_STATE( ch, 2 ); /* For big muds with save-happy players, like RoD */
    update_aris( ch );   /* update char affects and RIS */
    save_char_obj( ch );
    saving_char = NULL;
-   send_to_char( "Saved...\n\r", ch );
+   send_to_char( "Saved...\r\n", ch );
    return;
 }
 
@@ -2058,13 +2033,13 @@ void do_dismiss( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Dismiss whom?\n\r", ch );
+      send_to_char( "Dismiss whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
@@ -2079,7 +2054,7 @@ void do_dismiss( CHAR_DATA * ch, char *argument )
    }
    else
    {
-      send_to_char( "You cannot dismiss them.\n\r", ch );
+      send_to_char( "You cannot dismiss them.\r\n", ch );
    }
 
    return;
@@ -2094,13 +2069,13 @@ void do_follow( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Follow whom?\n\r", ch );
+      send_to_char( "Follow whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
@@ -2114,7 +2089,7 @@ void do_follow( CHAR_DATA * ch, char *argument )
    {
       if( !ch->master )
       {
-         send_to_char( "You already follow yourself.\n\r", ch );
+         send_to_char( "You already follow yourself.\r\n", ch );
          return;
       }
       stop_follower( ch );
@@ -2125,13 +2100,13 @@ void do_follow( CHAR_DATA * ch, char *argument )
        && !IS_HERO( ch ) && !( ch->level < 15 && !IS_NPC( victim )
                                && victim->pcdata->council && !str_cmp( victim->pcdata->council->name, "Newbie Council" ) ) )
    {
-      send_to_char( "You are not of the right caliber to follow.\n\r", ch );
+      send_to_char( "You are not of the right caliber to follow.\r\n", ch );
       return;
    }
 
    if( circle_follow( ch, victim ) )
    {
-      send_to_char( "Following in loops is not allowed... sorry.\n\r", ch );
+      send_to_char( "Following in loops is not allowed... sorry.\r\n", ch );
       return;
    }
 
@@ -2239,19 +2214,19 @@ void do_order( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' || argument[0] == '\0' )
    {
-      send_to_char( "Order whom to do what?\n\r", ch );
+      send_to_char( "Order whom to do what?\r\n", ch );
       return;
    }
 
    if( IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "You feel like taking, not giving, orders.\n\r", ch );
+      send_to_char( "You feel like taking, not giving, orders.\r\n", ch );
       return;
    }
 
    if( strstr( argument, "mp" ) != NULL )
    {
-      send_to_char( "No.. I don't think so.\n\r", ch );
+      send_to_char( "No.. I don't think so.\r\n", ch );
       return;
    }
 
@@ -2265,19 +2240,19 @@ void do_order( CHAR_DATA * ch, char *argument )
       fAll = FALSE;
       if( ( victim = get_char_room( ch, arg ) ) == NULL )
       {
-         send_to_char( "They aren't here.\n\r", ch );
+         send_to_char( "They aren't here.\r\n", ch );
          return;
       }
 
       if( victim == ch )
       {
-         send_to_char( "Aye aye, right away!\n\r", ch );
+         send_to_char( "Aye aye, right away!\r\n", ch );
          return;
       }
 
       if( !IS_AFFECTED( victim, AFF_CHARM ) || victim->master != ch )
       {
-         send_to_char( "Do it yourself!\n\r", ch );
+         send_to_char( "Do it yourself!\r\n", ch );
          return;
       }
    }
@@ -2299,11 +2274,11 @@ void do_order( CHAR_DATA * ch, char *argument )
    {
       snprintf( log_buf, MAX_STRING_LENGTH, "%s: order %s.", ch->name, argbuf );
       log_string_plus( log_buf, LOG_NORMAL, ch->level );
-      send_to_char( "Ok.\n\r", ch );
+      send_to_char( "Ok.\r\n", ch );
       WAIT_STATE( ch, 12 );
    }
    else
-      send_to_char( "You have no followers here.\n\r", ch );
+      send_to_char( "You have no followers here.\r\n", ch );
    return;
 }
 
@@ -2333,7 +2308,7 @@ void do_group( CHAR_DATA * ch, char *argument )
 
       leader = ch->leader ? ch->leader : ch;
       set_char_color( AT_DGREEN, ch );
-      ch_printf( ch, "\n\rFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\n\r",
+      ch_printf( ch, "\r\nFollowing %-12.12s     [hitpnts]   [ magic ] [mst] [mvs] [race]%s\r\n",
                  PERS( leader, ch ), ch->level < LEVEL_AVATAR ? " [to lvl]" : "" );
       for( gch = first_char; gch; gch = gch->next )
       {
@@ -2342,7 +2317,7 @@ void do_group( CHAR_DATA * ch, char *argument )
             set_char_color( AT_DGREEN, ch );
             if( IS_AFFECTED( gch, AFF_POSSESS ) )  /*reveal no information */
                ch_printf( ch,
-                          "[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\n\r",
+                          "[%2d %s] %-16s %4s/%4s hp %4s/%4s %s %4s/%4s mv %5s xp\r\n",
                           gch->level,
                           IS_NPC( gch ) ? "Mob" : class_table[gch->Class]->who_name,
                           capitalize( PERS( gch, ch ) ),
@@ -2416,7 +2391,7 @@ void do_group( CHAR_DATA * ch, char *argument )
             set_char_color( AT_GREEN, ch );
             if( gch->level < LEVEL_AVATAR )
                ch_printf( ch, "%8d ", exp_level( gch, gch->level + 1 ) - gch->exp );
-            send_to_char( "\n\r", ch );
+            send_to_char( "\r\n", ch );
          }
       }
       return;
@@ -2429,7 +2404,7 @@ void do_group( CHAR_DATA * ch, char *argument )
 
       if( ch->leader || ch->master )
       {
-         send_to_char( "You cannot disband a group if you're following someone.\n\r", ch );
+         send_to_char( "You cannot disband a group if you're following someone.\r\n", ch );
          return;
       }
 
@@ -2440,14 +2415,14 @@ void do_group( CHAR_DATA * ch, char *argument )
             gch->leader = NULL;
             gch->master = NULL;
             count++;
-            send_to_char( "Your group is disbanded.\n\r", gch );
+            send_to_char( "Your group is disbanded.\r\n", gch );
          }
       }
 
       if( count == 0 )
-         send_to_char( "You have no group members to disband.\n\r", ch );
+         send_to_char( "You have no group members to disband.\r\n", ch );
       else
-         send_to_char( "You disband your group.\n\r", ch );
+         send_to_char( "You disband your group.\r\n", ch );
 
       return;
    }
@@ -2473,24 +2448,24 @@ void do_group( CHAR_DATA * ch, char *argument )
       }
 
       if( count == 0 )
-         send_to_char( "You have no eligible group members.\n\r", ch );
+         send_to_char( "You have no eligible group members.\r\n", ch );
       else
       {
          act( AT_ACTION, "$n groups $s followers.", ch, NULL, NULL, TO_ROOM );
-         send_to_char( "You group your followers.\n\r", ch );
+         send_to_char( "You group your followers.\r\n", ch );
       }
       return;
    }
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( ch->master || ( ch->leader && ch->leader != ch ) )
    {
-      send_to_char( "But you are following someone else!\n\r", ch );
+      send_to_char( "But you are following someone else!\r\n", ch );
       return;
    }
 
@@ -2549,7 +2524,7 @@ void do_split( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Split how much?\n\r", ch );
+      send_to_char( "Split how much?\r\n", ch );
       return;
    }
 
@@ -2557,19 +2532,19 @@ void do_split( CHAR_DATA * ch, char *argument )
 
    if( amount < 0 )
    {
-      send_to_char( "Your group wouldn't like that.\n\r", ch );
+      send_to_char( "Your group wouldn't like that.\r\n", ch );
       return;
    }
 
    if( amount == 0 )
    {
-      send_to_char( "You hand out zero coins, but no one notices.\n\r", ch );
+      send_to_char( "You hand out zero coins, but no one notices.\r\n", ch );
       return;
    }
 
    if( ch->gold < amount )
    {
-      send_to_char( "You don't have that much gold.\n\r", ch );
+      send_to_char( "You don't have that much gold.\r\n", ch );
       return;
    }
 
@@ -2586,7 +2561,7 @@ void do_split( CHAR_DATA * ch, char *argument )
 
    if( members < 2 )
    {
-      send_to_char( "Just keep it all.\n\r", ch );
+      send_to_char( "Just keep it all.\r\n", ch );
       return;
    }
 
@@ -2595,7 +2570,7 @@ void do_split( CHAR_DATA * ch, char *argument )
 
    if( share == 0 )
    {
-      send_to_char( "Don't even bother, cheapskate.\n\r", ch );
+      send_to_char( "Don't even bother, cheapskate.\r\n", ch );
       return;
    }
 
@@ -2603,7 +2578,7 @@ void do_split( CHAR_DATA * ch, char *argument )
    ch->gold += share + extra;
 
    set_char_color( AT_GOLD, ch );
-   ch_printf( ch, "You split %d gold coins.  Your share is %d gold coins.\n\r", amount, share + extra );
+   ch_printf( ch, "You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra );
 
    snprintf( buf, MAX_STRING_LENGTH, "$n splits %d gold coins.  Your share is %d gold coins.", amount, share );
 
@@ -2636,13 +2611,13 @@ void do_gtell( CHAR_DATA * ch, char *argument )
 
    if( argument[0] == '\0' )
    {
-      send_to_char( "Tell your group what?\n\r", ch );
+      send_to_char( "Tell your group what?\r\n", ch );
       return;
    }
 
    if( xIS_SET( ch->act, PLR_NO_TELL ) )
    {
-      send_to_char( "Your message didn't get through!\n\r", ch );
+      send_to_char( "Your message didn't get through!\r\n", ch );
       return;
    }
 
@@ -2665,18 +2640,18 @@ void do_gtell( CHAR_DATA * ch, char *argument )
                                    knows_language( ch, ch->speaking, gch ) );
 
             if( speakswell < 85 )
-               ch_printf( gch, "%s tells the group '%s'.\n\r", ch->name,
+               ch_printf( gch, "%s tells the group '%s'.\r\n", ch->name,
                           translate( speakswell, argument, lang_names[speaking] ) );
             else
-               ch_printf( gch, "%s tells the group '%s'.\n\r", ch->name, argument );
+               ch_printf( gch, "%s tells the group '%s'.\r\n", ch->name, argument );
          }
          else
-            ch_printf( gch, "%s tells the group '%s'.\n\r", ch->name, argument );
+            ch_printf( gch, "%s tells the group '%s'.\r\n", ch->name, argument );
 #else
          if( knows_language( gch, ch->speaking, gch ) || ( IS_NPC( ch ) && !ch->speaking ) )
-            ch_printf( gch, "%s tells the group '%s'.\n\r", ch->name, argument );
+            ch_printf( gch, "%s tells the group '%s'.\r\n", ch->name, argument );
          else
-            ch_printf( gch, "%s tells the group '%s'.\n\r", ch->name, scramble( argument, ch->speaking ) );
+            ch_printf( gch, "%s tells the group '%s'.\r\n", ch->name, scramble( argument, ch->speaking ) );
 #endif
       }
    }
@@ -2853,7 +2828,7 @@ void do_speak( CHAR_DATA * ch, char *argument )
    {
       set_char_color( AT_SAY, ch );
       ch->speaking = ~LANG_CLAN;
-      send_to_char( "Now speaking all languages.\n\r", ch );
+      send_to_char( "Now speaking all languages.\r\n", ch );
       return;
    }
    for( langs = 0; lang_array[langs] != LANG_UNKNOWN; langs++ )
@@ -2864,11 +2839,11 @@ void do_speak( CHAR_DATA * ch, char *argument )
                continue;
             ch->speaking = lang_array[langs];
             set_char_color( AT_SAY, ch );
-            ch_printf( ch, "You now speak %s.\n\r", lang_names[langs] );
+            ch_printf( ch, "You now speak %s.\r\n", lang_names[langs] );
             return;
          }
    set_char_color( AT_SAY, ch );
-   send_to_char( "You do not know that language.\n\r", ch );
+   send_to_char( "You do not know that language.\r\n", ch );
 }
 
 void do_languages( CHAR_DATA * ch, char *argument )
@@ -2888,7 +2863,7 @@ void do_languages( CHAR_DATA * ch, char *argument )
       argument = one_argument( argument, arg2 );
       if( arg2[0] == '\0' )
       {
-         send_to_char( "Learn which language?\n\r", ch );
+         send_to_char( "Learn which language?\r\n", ch );
          return;
       }
       for( lang = 0; lang_array[lang] != LANG_UNKNOWN; lang++ )
@@ -2900,17 +2875,17 @@ void do_languages( CHAR_DATA * ch, char *argument )
       }
       if( lang_array[lang] == LANG_UNKNOWN )
       {
-         send_to_char( "That is not a language.\n\r", ch );
+         send_to_char( "That is not a language.\r\n", ch );
          return;
       }
       if( !( VALID_LANGS & lang_array[lang] ) )
       {
-         send_to_char( "You may not learn that language.\n\r", ch );
+         send_to_char( "You may not learn that language.\r\n", ch );
          return;
       }
       if( ( sn = skill_lookup( lang_names[lang] ) ) < 0 )
       {
-         send_to_char( "That is not a language.\n\r", ch );
+         send_to_char( "That is not a language.\r\n", ch );
          return;
       }
       if( race_table[ch->race]->language & lang_array[lang] ||
@@ -2927,7 +2902,7 @@ void do_languages( CHAR_DATA * ch, char *argument )
             break;
       if( !sch )
       {
-         send_to_char( "There is no one who can teach that language here.\n\r", ch );
+         send_to_char( "There is no one who can teach that language here.\r\n", ch );
          return;
       }
       if( countlangs( ch->speaks ) >= ( ch->level / 10 ) && ch->pcdata->learned[sn] <= 0 )
@@ -2972,9 +2947,9 @@ void do_languages( CHAR_DATA * ch, char *argument )
          else
             set_char_color( AT_PLAIN, ch );
          send_to_char( lang_names[lang], ch );
-         send_to_char( "\n\r", ch );
+         send_to_char( "\r\n", ch );
       }
-   send_to_char( "\n\r", ch );
+   send_to_char( "\r\n", ch );
    return;
 }
 
@@ -2982,7 +2957,7 @@ void do_traffic( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_TRAFFIC, "openly traffic" );
@@ -2993,7 +2968,7 @@ void do_wartalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_WARTALK, "war" );
@@ -3004,7 +2979,7 @@ void do_racetalk( CHAR_DATA * ch, char *argument )
 {
    if( NOT_AUTHED( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    talk_channel( ch, argument, CHANNEL_RACETALK, "racetalk" );

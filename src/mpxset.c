@@ -47,7 +47,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
     */
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) || ch->desc )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -71,7 +71,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
 
    if( IS_IMMORTAL( victim ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       return;
    }
 
@@ -277,7 +277,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
    {
       if( value < -300 || value > 300 )
       {
-         send_to_char( "AC range is -300 to 300.\n\r", ch );
+         send_to_char( "AC range is -300 to 300.\r\n", ch );
          return;
       }
       victim->armor = value;
@@ -597,7 +597,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
    {
       STRFREE( victim->long_descr );
       mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\n\r", MAX_STRING_LENGTH );
+      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
       victim->long_descr = STRALLOC( buf );
       return;
    }
@@ -954,14 +954,14 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
                continue;
             }
             if( v2 == -1 )
-               ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown language: %s\r\n", arg3 );
             else
                TOGGLE_BIT( victim->speaks, 1 << v2 );
          }
          else
          {
             if( v2 == -1 )
-               ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown language: %s\r\n", arg3 );
             else
                TOGGLE_BIT( victim->speaks, 1 << v2 );
          }
@@ -997,7 +997,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
          {
             v2 = get_langnum( arg3 );
             if( v2 == -1 )
-               ch_printf( ch, "Unknown language: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown language: %s\r\n", arg3 );
             else
                TOGGLE_BIT( victim->speaks, 1 << v2 );
          }
@@ -1024,7 +1024,7 @@ void do_mposet( CHAR_DATA * ch, char *argument )
     */
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) || ch->desc )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1147,7 +1147,6 @@ void do_mposet( CHAR_DATA * ch, char *argument )
          else
             TOGGLE_BIT( obj->wear_flags, 1 << value );
       }
-
       return;
    }
 
@@ -1186,6 +1185,13 @@ void do_mposet( CHAR_DATA * ch, char *argument )
    {
       STRFREE( obj->short_descr );
       obj->short_descr = STRALLOC( arg3 );
+
+      if( obj == supermob_obj )
+      {
+         STRFREE( supermob->short_descr );
+         supermob->short_descr = QUICKLINK( obj->short_descr );
+      }
+
       /*
        * Feature added by Narn, Apr/96 
        * * If the item is not proto, add the word 'rename' to the keywords
@@ -1230,7 +1236,7 @@ void do_mposet( CHAR_DATA * ch, char *argument )
       if( arg2[0] == '\0' || !argument || argument[0] == 0 )
       {
          progbug( "MpOset: Bad affect syntax", ch );
-         send_to_char( "Usage: oset <object> affect <field> <value>\n\r", ch );
+         send_to_char( "Usage: oset <object> affect <field> <value>\r\n", ch );
          return;
       }
       loc = get_atype( arg2 );
@@ -1300,7 +1306,7 @@ void do_mposet( CHAR_DATA * ch, char *argument )
          {
             UNLINK( paf, obj->first_affect, obj->last_affect, next, prev );
             DISPOSE( paf );
-            send_to_char( "Removed.\n\r", ch );
+            send_to_char( "Removed.\r\n", ch );
             --top_affect;
             return;
          }

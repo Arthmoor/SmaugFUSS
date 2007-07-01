@@ -207,7 +207,7 @@ typedef bool SPEC_FUN( CHAR_DATA * ch );
 #define MIN_EXP_WORTH		   20
 #define MAX_FIGHT               8
 
-#define MAX_VNUM 100000   /* Game can hold up to 2 billion but this is set low for protection in certain cases */
+#define MAX_VNUM 100000 /* Game can hold up to 2 billion but this is set low for protection in certain cases */
 #define MAX_REXITS		   20 /* Maximum exits allowed in 1 room */
 #define MAX_SKILL		  500
 #define SPELL_SILENT_MARKER   "silent" /* No OK. or Failed. */
@@ -294,10 +294,10 @@ typedef struct rel_data REL_DATA;
 
 struct rel_data
 {
-   void *Actor;
-   void *Subject;
    REL_DATA *next;
    REL_DATA *prev;
+   void *Actor;
+   void *Subject;
    relation_type Type;
 };
 
@@ -342,10 +342,11 @@ typedef enum
  */
 struct extended_bitvector
 {
-   int bits[XBI];
+   unsigned int bits[XBI];
 };
 
 #include "color.h"
+#include "dns.h"
 #include "hotboot.h"
 #ifdef IMC
 #include "imc.h"
@@ -529,8 +530,8 @@ struct watch_data
 #define MAX_NUISANCE_STAGE 10 /* How many nuisance stages */
 struct nuisance_data
 {
-   long int time; /* The time nuisance flag was set */
-   long int max_time;   /* Time for max penalties */
+   time_t set_time;  /* The time nuisance flag was set */
+   time_t max_time;  /* Time for max penalties */
    int flags;  /* Stage of nuisance */
    int power;  /* Power of nuisance */
 };
@@ -757,6 +758,8 @@ struct descriptor_data
    char pagecolor;
    int newstate;
    unsigned char prevcolor;
+   int ifd;
+   pid_t ipid;
 };
 
 /*
@@ -1182,6 +1185,7 @@ struct affect_data
 struct smaug_affect
 {
    SMAUG_AFF *next;
+   SMAUG_AFF *prev;
    char *duration;
    short location;
    char *modifier;
@@ -1203,6 +1207,7 @@ struct smaug_affect
 #define MOB_VNUM_VAMPIRE	   80
 #define MOB_VNUM_ANIMATED_CORPSE   5
 #define MOB_VNUM_DEITY		   17
+#define MOB_VNUM_SUPERMOB 3
 
 /*
  * ACT bits for mobs.
@@ -1470,27 +1475,27 @@ typedef enum
 
 #define MAX_TRAPTYPE		   TRAP_TYPE_SEX_CHANGE
 
-#define TRAP_ROOM      		   BV00
-#define TRAP_OBJ	      	   BV01
-#define TRAP_ENTER_ROOM		   BV02
-#define TRAP_LEAVE_ROOM		   BV03
+#define TRAP_ROOM      	   BV00
+#define TRAP_OBJ	         BV01
+#define TRAP_ENTER_ROOM	   BV02
+#define TRAP_LEAVE_ROOM	   BV03
 #define TRAP_OPEN		   BV04
-#define TRAP_CLOSE		   BV05
+#define TRAP_CLOSE	   BV05
 #define TRAP_GET		   BV06
 #define TRAP_PUT		   BV07
 #define TRAP_PICK		   BV08
-#define TRAP_UNLOCK		   BV09
-#define TRAP_N			   BV10
-#define TRAP_S			   BV11
-#define TRAP_E	      		   BV12
-#define TRAP_W	      		   BV13
-#define TRAP_U	      		   BV14
-#define TRAP_D	      		   BV15
-#define TRAP_EXAMINE		   BV16
-#define TRAP_NE			   BV17
-#define TRAP_NW			   BV18
-#define TRAP_SE			   BV19
-#define TRAP_SW			   BV20
+#define TRAP_UNLOCK	   BV09
+#define TRAP_N		   BV10
+#define TRAP_S		   BV11
+#define TRAP_E	         BV12
+#define TRAP_W	         BV13
+#define TRAP_U	         BV14
+#define TRAP_D	         BV15
+#define TRAP_EXAMINE	   BV16
+#define TRAP_NE		   BV17
+#define TRAP_NW		   BV18
+#define TRAP_SE		   BV19
+#define TRAP_SW		   BV20
 
 /*
  * Well known object virtual numbers.
@@ -2268,11 +2273,11 @@ struct pc_data
    long int outcast_time;  /* The time at which the char was outcast */
    NUISANCE_DATA *nuisance;   /* New Nuisance structure */
    long int restore_time;  /* The last time the char did a restore all */
-   int r_range_lo; /* room range */
+   int r_range_lo;   /* room range */
    int r_range_hi;
-   int m_range_lo; /* mob range  */
+   int m_range_lo;   /* mob range  */
    int m_range_hi;
-   int o_range_lo; /* obj range  */
+   int o_range_lo;   /* obj range  */
    int o_range_hi;
    short wizinvis;   /* wizinvis level */
    short min_snoop;  /* minimum snoop level */
@@ -2706,7 +2711,7 @@ struct skill_type
    short race_adept[MAX_RACE];   /* Racial abilities: adept      */
    SPELL_FUN *spell_fun;   /* Spell pointer (for spells) */
    char *spell_fun_name;   /* Spell function name - Trax */
-   DO_FUN *skill_fun;      /* Skill pointer (for skills) */
+   DO_FUN *skill_fun;   /* Skill pointer (for skills) */
    char *skill_fun_name;   /* Skill function name - Trax */
    short target;  /* Legal targets     */
    short minimum_position; /* Position for caster / user */
@@ -2739,7 +2744,8 @@ struct skill_type
    int spell_sector; /* Sector Spell work    */
    char saves; /* What saving spell applies  */
    char difficulty;  /* Difficulty of casting/learning */
-   SMAUG_AFF *affects;  /* Spell affects, if any   */
+   SMAUG_AFF *first_affect;   /* Spell affects, if any   */
+   SMAUG_AFF *last_affect;
    char *components; /* Spell components, if any   */
    char *teachers;   /* Skill requires a special teacher */
    char participants;   /* # of required participants */
@@ -3105,7 +3111,7 @@ do								\
 {								\
     if ( (ch)->substate == SUB_RESTRICTED )			\
     {								\
-	send_to_char( "You cannot use this command from within another command.\n\r", ch );	\
+	send_to_char( "You cannot use this command from within another command.\r\n", ch );	\
 	return;							\
     }								\
 } while(0)
@@ -3173,11 +3179,11 @@ do								\
 				&& (ch)->pcdata->clan			    \
 				&& (ch)->pcdata->clan->clan_type == CLAN_GUILD)
 
-#define IS_DEADLYCLAN(ch)	(!IS_NPC((ch))				    \
-				&& (ch)->pcdata->clan			    \
-				&& (ch)->pcdata->clan->clan_type != CLAN_NOKILL) \
-				&& (ch)->pcdata->clan->clan_type != CLAN_ORDER)  \
-				&& (ch)->pcdata->clan->clan_type != CLAN_GUILD)
+#define IS_DEADLYCLAN(ch)    (!IS_NPC((ch))                    \
+                && (ch)->pcdata->clan                \
+                && (ch)->pcdata->clan->clan_type != CLAN_NOKILL \
+                && (ch)->pcdata->clan->clan_type != CLAN_ORDER  \
+                && (ch)->pcdata->clan->clan_type != CLAN_GUILD)
 
 #define IS_DEVOTED(ch)		(!IS_NPC((ch))				    \
 				&& (ch)->pcdata->deity)
@@ -3484,6 +3490,7 @@ extern TELEPORT_DATA *last_teleport;
 extern OBJ_DATA *extracted_obj_queue;
 extern EXTRACT_CHAR_DATA *extracted_char_queue;
 extern OBJ_DATA *save_equipment[MAX_WEAR][MAX_LAYERS];
+extern OBJ_DATA *mob_save_equipment[MAX_WEAR][MAX_LAYERS];
 extern CHAR_DATA *quitting_char;
 extern CHAR_DATA *loading_char;
 extern CHAR_DATA *saving_char;
@@ -4083,7 +4090,7 @@ DECLARE_SPELL_FUN( spell_sacral_divinity );
  *
  */
 #define PLAYER_DIR	"../player/"   /* Player files         */
-#define BACKUP_DIR	"../backup/"  /* Backup Player files   */
+#define BACKUP_DIR	"../backup/"   /* Backup Player files   */
 #define GOD_DIR		"../gods/"  /* God Info Dir         */
 #define BOARD_DIR	      "../boards/"   /* Board data dir    */
 #define CLAN_DIR	      "../clans/" /* Clan data dir     */
@@ -4094,7 +4101,7 @@ DECLARE_SPELL_FUN( spell_sacral_divinity );
 #define PROG_DIR	      "../mudprogs/" /* MUDProg files     */
 #define CORPSE_DIR	"../corpses/"  /* Corpses        */
 #define CLASS_DIR	      "../classes/"  /* Classes        */
-#define RACE_DIR 	      "../races/"    /* Races */
+#define RACE_DIR 	      "../races/" /* Races */
 #define WATCH_DIR	      "../watch/" /* Imm watch files --Gorog      */
 
 /*
@@ -4278,7 +4285,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, unsigned int length 
 void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, unsigned int length );
 void send_to_char( const char *txt, CHAR_DATA * ch );
 void send_to_char_color( const char *txt, CHAR_DATA * ch );
-void send_to_desc_color( const char *txt, DESCRIPTOR_DATA *d );
+void send_to_desc_color( const char *txt, DESCRIPTOR_DATA * d );
 void send_to_pager( const char *txt, CHAR_DATA * ch );
 void send_to_pager_color( const char *txt, CHAR_DATA * ch );
 void ch_printf( CHAR_DATA * ch, char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
@@ -4312,6 +4319,7 @@ int fread_number args( ( FILE * fp ) );
 EXT_BV fread_bitvector args( ( FILE * fp ) );
 void fwrite_bitvector args( ( EXT_BV * bits, FILE * fp ) );
 char *print_bitvector args( ( EXT_BV * bits ) );
+bool is_valid_filename( CHAR_DATA * ch, const char *direct, const char *filename );
 char *fread_string args( ( FILE * fp ) );
 char *fread_flagstring( FILE * fp );
 char *fread_string_nohash args( ( FILE * fp ) );
@@ -4343,9 +4351,9 @@ void bug( const char *str, ... ) __attribute__ ( ( format( printf, 1, 2 ) ) );
 void log_string_plus( const char *str, short log_type, short level );
 void log_printf_plus( short log_type, short level, const char *fmt, ... ) __attribute__ ( ( format( printf, 3, 4 ) ) );
 void log_printf( const char *fmt, ... ) __attribute__ ( ( format( printf, 1, 2 ) ) );
-RID *make_room ( int vnum, AREA_DATA * area );
-OID *make_object ( int vnum, int cvnum, char *name );
-MID *make_mobile ( int vnum, int cvnum, char *name );
+RID *make_room( int vnum, AREA_DATA * area );
+OID *make_object( int vnum, int cvnum, char *name );
+MID *make_mobile( int vnum, int cvnum, char *name );
 ED *make_exit args( ( ROOM_INDEX_DATA * pRoomIndex, ROOM_INDEX_DATA * to_room, short door ) );
 void add_help args( ( HELP_DATA * pHelp ) );
 void fix_area_exits args( ( AREA_DATA * tarea ) );
@@ -4393,12 +4401,12 @@ bool is_safe args( ( CHAR_DATA * ch, CHAR_DATA * victim, bool SHOW ) );
 bool legal_loot args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
 short VAMP_AC args( ( CHAR_DATA * ch ) );
 bool check_illegal_pk args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
-void raw_kill args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
+OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim );
 bool in_arena args( ( CHAR_DATA * ch ) );
 bool can_astral args( ( CHAR_DATA * ch, CHAR_DATA * victim ) );
 
 /* makeobjs.c */
-void make_corpse args( ( CHAR_DATA * ch, CHAR_DATA * killer ) );
+OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer );
 void make_blood args( ( CHAR_DATA * ch ) );
 void make_bloodstain args( ( CHAR_DATA * ch ) );
 void make_scraps args( ( OBJ_DATA * obj ) );
@@ -4615,6 +4623,8 @@ int times_killed args( ( CHAR_DATA * ch, CHAR_DATA * mob ) );
 void update_aris args( ( CHAR_DATA * ch ) );
 AREA_DATA *get_area args( ( char *name ) );  /* FB */
 OD *get_objtype args( ( CHAR_DATA * ch, short type ) );
+void check_switches( bool possess );
+void check_switch( CHAR_DATA * ch, bool possess );
 
 /* interp.c */
 bool check_pos args( ( CHAR_DATA * ch, short position ) );
@@ -4623,7 +4633,7 @@ bool is_number args( ( char *arg ) );
 int number_argument args( ( char *argument, char *arg ) );
 char *one_argument args( ( char *argument, char *arg_first ) );
 char *one_argument2 args( ( char *argument, char *arg_first ) );
-ST *find_social args( ( char *command ) );
+ST *find_social( const char *command );
 CMDTYPE *find_command args( ( char *command ) );
 void hash_commands args( ( void ) );
 void start_timer args( ( struct timeval * sttime ) );
@@ -4738,6 +4748,7 @@ bool in_hash_table( char *str );
 #undef	EDD
 #undef	RD
 #undef	ED
+#undef      DE
 
 /*
  * defines for use with this get_affect function
@@ -4767,6 +4778,7 @@ DECLARE_DO_FUN( do_mapout );
  * mudprograms stuff
  */
 extern CHAR_DATA *supermob;
+extern OBJ_DATA *supermob_obj;
 
 void oprog_speech_trigger( char *txt, CHAR_DATA * ch );
 void oprog_random_trigger( OBJ_DATA * obj );

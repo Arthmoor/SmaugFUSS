@@ -167,17 +167,17 @@ void hash_dump( int hash )
 
    if( hash > STR_HASH_SIZE || hash < 0 )
    {
-      fprintf( stderr, "hash_dump: invalid hash size\n\r" );
+      fprintf( stderr, "hash_dump: invalid hash size\r\n" );
       return;
    }
    psize = sizeof( struct hashstr_data );
    for( c = 0, ptr = string_hash[hash]; ptr; ptr = ptr->next, c++ )
    {
       str = ( char * )( ( ( long )ptr ) + psize );
-      fprintf( stderr, "Len:%4d Lnks:%5d Str: %s\n\r", ptr->length, ptr->links, str );
+      fprintf( stderr, "Len:%4d Lnks:%5d Str: %s\r\n", ptr->length, ptr->links, str );
    }
    if( !mud_down || ( mud_down && c > 0 ) )
-      fprintf( stderr, "Total strings in hash %d: %d\n\r", hash, c );
+      fprintf( stderr, "Total strings in hash %d: %d\r\n", hash, c );
 }
 
 char *check_hash( char *str )
@@ -197,10 +197,10 @@ char *check_hash( char *str )
          p = c + 1;
       }
    if( fnd )
-      snprintf( buf, 1024, "Hash info on string: %s\n\rLinks: %d  Position: %d/%d  Hash: %d  Length: %d\n\r",
+      snprintf( buf, 1024, "Hash info on string: %s\r\nLinks: %d  Position: %d/%d  Hash: %d  Length: %d\r\n",
                 str, fnd->links, p, c, hash, fnd->length );
    else
-      snprintf( buf, 1024, "%s not found.\n\r", str );
+      snprintf( buf, 1024, "%s not found.\r\n", str );
    return buf;
 }
 
@@ -226,7 +226,7 @@ char *hash_stats( void )
       }
    }
    snprintf( buf, 1024,
-             "Hash strings allocated:%8d  Total links  : %d\n\rString bytes allocated:%8d  Bytes saved  : %d\n\rUnique (wasted) links :%8d  Hi-Link count: %d\n\r",
+             "Hash strings allocated:%8d  Total links  : %d\r\nString bytes allocated:%8d  Bytes saved  : %d\r\nUnique (wasted) links :%8d  Hi-Link count: %d\r\n",
              total, totlinks, bytesused, wouldhave - bytesused, unique, hilink );
    return buf;
 }
@@ -243,7 +243,7 @@ void show_high_hash( int top )
          if( ptr->links >= top )
          {
             str = ( char * )( ( ( long )ptr ) + psize );
-            fprintf( stderr, "Links: %5d  String: >%s<\n\r", ptr->links, str );
+            fprintf( stderr, "Links: %5d  String: >%s<\r\n", ptr->links, str );
          }
 }
 

@@ -1,4 +1,3 @@
-This list of fixes is only current as of the "Last Updated" date on Mud Planet.
 What's been done to this:
 
 Profanity checker removed.
@@ -36,4 +35,4 @@ The Mud Domain IMC2 Intermud Network
 An intermud communication network of various muds, using a wide variety of codebases. We represent a variety of people from all parts of the world. We encourage free speech, exchanging ideas, lending a helping hand, and in general just having fun with each other. We welcome and encourage new MU*s to join in. The development home of the IMC2 Intermud Protocol.
 
 IMC2 intermud support and connection information can be found at the following site:
-http://www.imc2-intermud.org
+http://imc2.intermud.us

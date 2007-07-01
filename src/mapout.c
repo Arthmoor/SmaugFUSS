@@ -43,7 +43,6 @@ void note_attach( CHAR_DATA * ch );
 /* Local function prototypes */
 MAP_INDEX_DATA *make_new_map_index( int vnum );
 void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index );
-void map_stats( CHAR_DATA * ch, int *rooms, int *rows, int *cols );
 int num_rooms_avail( CHAR_DATA * ch );
 
 int number_to_room_num( int array_index );
@@ -212,7 +211,7 @@ void do_mapout( CHAR_DATA * ch, char *argument )
    }
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Not in mobs.\n\r", ch );
+      send_to_char( "Not in mobs.\r\n", ch );
       return;
    }
    if( !ch->desc )
@@ -241,13 +240,13 @@ void do_mapout( CHAR_DATA * ch, char *argument )
    {
       if( !ch->pnote )
       {
-         send_to_char( "You have no map in progress.\n\r", ch );
+         send_to_char( "You have no map in progress.\r\n", ch );
          return;
       }
       map_stats( ch, &rooms, &rows, &cols );
-      ch_printf( ch, "Map represents %d rooms, %d rows, and %d columns\n\r", rooms, rows, cols );
+      ch_printf( ch, "Map represents %d rooms, %d rows, and %d columns\r\n", rooms, rows, cols );
       avail_rooms = num_rooms_avail( ch );
-      ch_printf( ch, "You currently have %d unused rooms.\n\r", avail_rooms );
+      ch_printf( ch, "You currently have %d unused rooms.\r\n", avail_rooms );
       act( AT_ACTION, "$n glances at an etherial map.", ch, NULL, NULL, TO_ROOM );
       return;
    }
@@ -265,7 +264,7 @@ void do_mapout( CHAR_DATA * ch, char *argument )
    {
       if( !ch->pnote )
       {
-         send_to_char( "You have no map in progress\n\r", ch );
+         send_to_char( "You have no map in progress\r\n", ch );
          return;
       }
       STRFREE( ch->pnote->text );
@@ -275,14 +274,14 @@ void do_mapout( CHAR_DATA * ch, char *argument )
       STRFREE( ch->pnote->sender );
       DISPOSE( ch->pnote );
       ch->pnote = NULL;
-      send_to_char( "Map cleared.\n\r", ch );
+      send_to_char( "Map cleared.\r\n", ch );
       return;
    }
    if( !str_cmp( arg, "show" ) )
    {
       if( !ch->pnote )
       {
-         send_to_char( "You have no map in progress.\n\r", ch );
+         send_to_char( "You have no map in progress.\r\n", ch );
          return;
       }
       send_to_char( ch->pnote->text, ch );
@@ -293,7 +292,7 @@ void do_mapout( CHAR_DATA * ch, char *argument )
    {
       if( !ch->pnote )
       {
-         send_to_char( "You have no map in progress.\n\r", ch );
+         send_to_char( "You have no map in progress.\r\n", ch );
          return;
       }
       map_stats( ch, &rooms, &rows, &cols );
@@ -304,7 +303,7 @@ void do_mapout( CHAR_DATA * ch, char *argument )
        */
       if( rooms > avail_rooms )
       {
-         send_to_char( "You don't have enough unused rooms allocated!\n\r", ch );
+         send_to_char( "You don't have enough unused rooms allocated!\r\n", ch );
          return;
       }
       act( AT_ACTION, "$n warps the very dimensions of space!", ch, NULL, NULL, TO_ROOM );
@@ -322,19 +321,19 @@ void do_mapout( CHAR_DATA * ch, char *argument )
       }
       else
       {
-         send_to_char( "Couldn't give you a map object.  Need Great Eastern Desert\n\r", ch );
+         send_to_char( "Couldn't give you a map object.  Need Great Eastern Desert\r\n", ch );
          return;
       }
 
       do_mapout( ch, "clear" );
-      send_to_char( "Ok.\n\r", ch );
+      send_to_char( "Ok.\r\n", ch );
       return;
    }
-   send_to_char( "mapout write: create a map in edit buffer.\n\r", ch );
-   send_to_char( "mapout stat: get information about a written, but not yet created map.\n\r", ch );
-   send_to_char( "mapout clear: clear a written, but not yet created map.\n\r", ch );
-   send_to_char( "mapout show: show a written, but not yet created map.\n\r", ch );
-   send_to_char( "mapout create: turn a written map into rooms in your assigned room vnum range.\n\r", ch );
+   send_to_char( "mapout write: create a map in edit buffer.\r\n", ch );
+   send_to_char( "mapout stat: get information about a written, but not yet created map.\r\n", ch );
+   send_to_char( "mapout clear: clear a written, but not yet created map.\r\n", ch );
+   send_to_char( "mapout show: show a written, but not yet created map.\r\n", ch );
+   send_to_char( "mapout create: turn a written map into rooms in your assigned room vnum range.\r\n", ch );
    return;
 }
 
@@ -346,7 +345,7 @@ int add_new_room_to_map( CHAR_DATA * ch, char code )
    /*
     * Get an unused room to copy to 
     */
-   for( i = ch->pcdata->r_range_lo; i <= ch->pcdata->r_range_hi; i++ )
+   for( i = ch->pcdata->area->low_r_vnum; i <= ch->pcdata->area->hi_r_vnum; i++ )
    {
       if( get_room_index( i ) == NULL )
       {
@@ -360,7 +359,7 @@ int add_new_room_to_map( CHAR_DATA * ch, char code )
           */
          location->area = ch->pcdata->area;
          location->name = STRALLOC( "Newly Created Room" );
-         location->description = STRALLOC( "Newly Created Room\n\r" );
+         location->description = STRALLOC( "Newly Created Room\r\n" );
          location->room_flags = ROOM_PROTOTYPE;
          location->light = 0;
          if( code == 'I' )
@@ -409,7 +408,7 @@ int num_rooms_avail( CHAR_DATA * ch )
    int i, n;
 
    n = 0;
-   for( i = ch->pcdata->r_range_lo; i <= ch->pcdata->r_range_hi; i++ )
+   for( i = ch->pcdata->area->low_r_vnum; i <= ch->pcdata->area->hi_r_vnum; i++ )
       if( !get_room_index( i ) )
          n++;
    return n;
@@ -432,7 +431,7 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 
    if( !ch->pnote )
    {
-      bug( "%s", "map_to_rooms: ch->pnote==NULL!" );
+      bug( "%s: ch->pnote==NULL!", __FUNCTION__ );
       return;
    }
 
@@ -452,8 +451,11 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
     * If not, then make a new one.
     */
    if( !m_index )
-   {  /* Make a new vnum */
-      for( i = ch->pcdata->r_range_lo; i <= ch->pcdata->r_range_hi; i++ )
+   {
+      /*
+       * Make a new vnum 
+       */
+      for( i = ch->pcdata->area->low_r_vnum; i <= ch->pcdata->area->hi_r_vnum; i++ )
       {
          if( ( tmp = get_map_index( i ) ) == NULL )
          {
@@ -463,23 +465,20 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
       }
    }
    else
-   {
       map_index = m_index;
-   }
 
    /*
     *  
     */
    if( !map_index )
    {
-      send_to_char( "Couldn't find or make a map_index for you!\n\r", ch );
-      bug( "%s", "map_to_rooms: Couldn't find or make a map_index\n\r" );
+      send_to_char( "Couldn't find or make a map_index for you!\r\n", ch );
+      bug( "%s", "map_to_rooms: Couldn't find or make a map_index\r\n" );
       /*
        * do something. return failed or somesuch 
        */
       return;
    }
-
 
    for( x = 0; x < 49; x++ )
    {

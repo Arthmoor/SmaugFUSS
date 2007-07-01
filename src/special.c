@@ -16,7 +16,13 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#if !defined(WIN32)
 #include <dlfcn.h>
+#else
+#include <windows.h>
+#define dlsym( handle, name ) ( (void*)GetProcAddress( (HINSTANCE) (handle), (name) ) )
+#define dlerror() GetLastError()
+#endif
 #include "mud.h"
 
 /*
@@ -43,6 +49,20 @@ DECLARE_SPEC_FUN( spec_thief );
 SPEC_LIST *first_specfun;
 SPEC_LIST *last_specfun;
 
+void free_specfuns( void )
+{
+   SPEC_LIST *specfun, *next_specfun;
+
+   for( specfun = first_specfun; specfun; specfun = next_specfun )
+   {
+      next_specfun = specfun->next;
+
+      UNLINK( specfun, first_specfun, last_specfun, next, prev );
+      DISPOSE( specfun->name );
+      DISPOSE( specfun );
+   }
+}
+
 /* Simple load function - no OLC support for now.
  * This is probably something you DONT want builders playing with.
  */
@@ -65,15 +85,15 @@ void load_specfuns( void )
    }
    else
    {
-      for( ; ; )
+      for( ;; )
       {
          if( feof( fp ) )
-	 {
-	    bug( "%s: Premature end of file!", __FUNCTION__ );
-	    fclose( fp );
+         {
+            bug( "%s: Premature end of file!", __FUNCTION__ );
+            fclose( fp );
             fp = NULL;
-	    return;
-	 }
+            return;
+         }
          word = fread_word( fp );
          if( !str_cmp( word, "$" ) )
             break;
@@ -107,15 +127,19 @@ bool validate_spec_fun( char *name )
 SPEC_FUN *spec_lookup( char *name )
 {
    void *funHandle;
+#if !defined(WIN32)
    const char *error;
+#else
+   DWORD error;
+#endif
 
    funHandle = dlsym( sysdata.dlHandle, name );
-   if( ( error = dlerror() ) != NULL )
+   if( ( error = dlerror(  ) ) )
    {
       bug( "Error locating function %s in symbol table.", name );
       return NULL;
    }
-   return (SPEC_FUN*)funHandle;
+   return ( SPEC_FUN * ) funHandle;
 }
 
 /* if a spell casting mob is hating someone... try and summon them */
@@ -750,8 +774,6 @@ bool spec_guard( CHAR_DATA * ch )
    return FALSE;
 }
 
-
-
 bool spec_janitor( CHAR_DATA * ch )
 {
    OBJ_DATA *trash;
@@ -765,6 +787,8 @@ bool spec_janitor( CHAR_DATA * ch )
       trash_next = trash->next_content;
       if( !IS_SET( trash->wear_flags, ITEM_TAKE ) || IS_OBJ_STAT( trash, ITEM_BURIED ) )
          continue;
+      if( IS_OBJ_STAT( trash, ITEM_PROTOTYPE ) && !xIS_SET( ch->act, ACT_PROTOTYPE ) )
+         continue;
       if( trash->item_type == ITEM_DRINK_CON
           || trash->item_type == ITEM_TRASH
           || trash->cost < 10 || ( trash->pIndexData->vnum == OBJ_VNUM_SHOPPING_BAG && !trash->first_content ) )
@@ -775,11 +799,8 @@ bool spec_janitor( CHAR_DATA * ch )
          return TRUE;
       }
    }
-
    return FALSE;
 }
-
-
 
 bool spec_mayor( CHAR_DATA * ch )
 {

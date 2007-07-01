@@ -171,7 +171,7 @@ void do_compress( CHAR_DATA * ch, char *argument )
    if( !ch->desc->mccp->out_compress )
    {
       if( !compressStart( ch->desc ) )
-         send_to_char( "&RCompression failed to start.\n\r", ch );
+         send_to_char( "&RCompression failed to start.\r\n", ch );
       else
          send_to_char( "&GOk, compression enabled.\n", ch );
    }

@@ -361,13 +361,13 @@ void do_morphset( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't morphset\n\r", ch );
+      send_to_char( "Mob's can't morphset\r\n", ch );
       return;
    }
 
    if( !ch->desc )
    {
-      send_to_char( "You have no descriptor\n\r", ch );
+      send_to_char( "You have no descriptor\r\n", ch );
       return;
    }
 
@@ -378,7 +378,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       case SUB_MORPH_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Samson.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_morphset: sub_morph_desc: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -395,7 +395,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       case SUB_MORPH_HELP:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to Samson.\n\r", ch );
+            send_to_char( "Fatal error: report to www.smaugfuss.org\r\n", ch );
             bug( "%s", "do_morphset: sub_morph_help: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -417,7 +417,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       morph = ( MORPH_DATA * ) ch->dest_buf;
       if( !morph )
       {
-         send_to_char( "Someone deleted your morph!\n\r", ch );
+         send_to_char( "Someone deleted your morph!\r\n", ch );
          argument = "done";
       }
       if( !argument || argument[0] == '\0' )
@@ -434,7 +434,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       }
       if( !str_cmp( argument, "done" ) || !str_cmp( argument, "off" ) )
       {
-         send_to_char( "Morphset mode off.\n\r", ch );
+         send_to_char( "Morphset mode off.\r\n", ch );
          ch->substate = SUB_NONE;
          ch->dest_buf = NULL;
          STRFREE( ch->pcdata->subprompt );
@@ -455,7 +455,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    }
    if( !str_cmp( arg1, "on" ) )
    {
-      send_to_char( "Syntax: morphset <morph> on.\n\r", ch );
+      send_to_char( "Syntax: morphset <morph> on.\r\n", ch );
       return;
    }
    value = is_number( arg3 ) ? atoi( arg3 ) : -1;
@@ -466,7 +466,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    if( ch->substate != SUB_REPEATCMD && arg1[0] != '\0' && !str_cmp( arg1, "save" ) )
    {
       save_morphs(  );
-      send_to_char( "Morph data saved.\n\r", ch );
+      send_to_char( "Morph data saved.\r\n", ch );
       return;
    }
    if( arg1[0] == '\0' || ( arg2[0] == '\0' && ch->substate != SUB_REPEATCMD ) || !str_cmp( arg1, "?" ) )
@@ -474,27 +474,27 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       if( ch->substate == SUB_REPEATCMD )
       {
          if( morph )
-            send_to_char( "Syntax: <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <field>  <value>\r\n", ch );
          else
-            send_to_char( "Syntax: <morph> <field>  <value>\n\r", ch );
+            send_to_char( "Syntax: <morph> <field>  <value>\r\n", ch );
       }
       else
-         send_to_char( "Syntax: morphset <morph> <field>  <value>\n\r", ch );
-      send_to_char( "Syntax: morphset save\n\r", ch );
-      send_to_char( "\n\r", ch );
-      send_to_char( "&cField being one of:\n\r", ch );
-      send_to_char( "&c-------------------------------------------------\n\r", ch );
-      send_to_char( "  ac, affected, cha, class, con, damroll, dayto,\n\r", ch );
-      send_to_char( "  dayfrom, deity, description, defpos, dex, dodge,\n\r", ch );
-      send_to_char( "  favourused, help, hitroll, hp, hpused, immune,\n\r", ch );
-      send_to_char( "  int, str, keyword, lck, level, long, mana, manaused,\n\r", ch );
-      send_to_char( "  morphother, morphself, move, moveused, name, noaffected,\n\r", ch );
-      send_to_char( "  nocast, castallow, noimmune, noresistant, noskill, nosusceptible,\n\r", ch );
-      send_to_char( "  obj1, obj2, obj3, objuse1, objuse2, objuse3, parry,\n\r", ch );
-      send_to_char( "  pkill, race, resistant, sav1, sav2, sav3, sav4, sav5,\n\r", ch );
-      send_to_char( "  sex, short, skills, susceptible, timefrom, timer, timeto,\n\r", ch );
-      send_to_char( "  tumble, unmorphother, unmorphself, wis.\n\r", ch );
-      send_to_char( "&c-------------------------------------------------\n\r", ch );
+         send_to_char( "Syntax: morphset <morph> <field>  <value>\r\n", ch );
+      send_to_char( "Syntax: morphset save\r\n", ch );
+      send_to_char( "\r\n", ch );
+      send_to_char( "&cField being one of:\r\n", ch );
+      send_to_char( "&c-------------------------------------------------\r\n", ch );
+      send_to_char( "  ac, affected, cha, class, con, damroll, dayto,\r\n", ch );
+      send_to_char( "  dayfrom, deity, description, defpos, dex, dodge,\r\n", ch );
+      send_to_char( "  favourused, help, hitroll, hp, hpused, immune,\r\n", ch );
+      send_to_char( "  int, str, keyword, lck, level, long, mana, manaused,\r\n", ch );
+      send_to_char( "  morphother, morphself, move, moveused, name, noaffected,\r\n", ch );
+      send_to_char( "  nocast, castallow, noimmune, noresistant, noskill, nosusceptible,\r\n", ch );
+      send_to_char( "  obj1, obj2, obj3, objuse1, objuse2, objuse3, parry,\r\n", ch );
+      send_to_char( "  pkill, race, resistant, sav1, sav2, sav3, sav4, sav5,\r\n", ch );
+      send_to_char( "  sex, short, skills, susceptible, timefrom, timer, timeto,\r\n", ch );
+      send_to_char( "  tumble, unmorphother, unmorphself, wis.\r\n", ch );
+      send_to_char( "&c-------------------------------------------------\r\n", ch );
       return;
    }
 
@@ -507,14 +507,14 @@ void do_morphset( CHAR_DATA * ch, char *argument )
 
       if( morph == NULL )
       {
-         send_to_char( "That morph does not exist.\n\r", ch );
+         send_to_char( "That morph does not exist.\r\n", ch );
          return;
       }
    }
    if( !str_cmp( arg2, "on" ) )
    {
       CHECK_SUBRESTRICTED( ch );
-      ch_printf( ch, "Morphset mode on. (Editing %s).\n\r", morph->name );
+      ch_printf( ch, "Morphset mode on. (Editing %s).\r\n", morph->name );
       ch->substate = SUB_REPEATCMD;
       ch->dest_buf = morph;
       STRFREE( ch->pcdata->subprompt );
@@ -526,7 +526,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Strength must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Strength must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->str = value;
@@ -535,7 +535,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Intelligence must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Intelligence must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->inte = value;
@@ -544,7 +544,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Wisdom must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Wisdom must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->wis = value;
@@ -553,7 +553,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > POS_STANDING )
       {
-         ch_printf( ch, "Position range is 0 to %d.\n\r", POS_STANDING );
+         ch_printf( ch, "Position range is 0 to %d.\r\n", POS_STANDING );
          return;
       }
       morph->defpos = value;
@@ -562,7 +562,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Dexterity must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Dexterity must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->dex = value;
@@ -571,7 +571,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Constitution must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Constitution must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->con = value;
@@ -580,7 +580,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Charisma must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Charisma must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->cha = value;
@@ -589,7 +589,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -10 || value > 10 )
       {
-         send_to_char( "Luck must be a value from -10 to 10.\n\r", ch );
+         send_to_char( "Luck must be a value from -10 to 10.\r\n", ch );
          return;
       }
       morph->lck = value;
@@ -600,7 +600,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
 
       if( value < 0 || value > 2 )
       {
-         send_to_char( "Invalid sex.\n\r", ch );
+         send_to_char( "Invalid sex.\r\n", ch );
          return;
       }
       morph->sex = value;
@@ -615,7 +615,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          morph->pkill = 0;
       else
       {
-         send_to_char( "Usuage: morphset <morph> pkill [pkill|peace|none]\n\r", ch );
+         send_to_char( "Usuage: morphset <morph> pkill [pkill|peace|none]\r\n", ch );
          return;
       }
    }
@@ -623,7 +623,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 2000 )
       {
-         send_to_char( "Mana used is a value from 0 to 2000.\n\r", ch );
+         send_to_char( "Mana used is a value from 0 to 2000.\r\n", ch );
          return;
       }
       morph->manaused = value;
@@ -632,7 +632,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 2000 )
       {
-         send_to_char( "Move used is a value from 0 to 2000.\n\r", ch );
+         send_to_char( "Move used is a value from 0 to 2000.\r\n", ch );
          return;
       }
       morph->moveused = value;
@@ -641,7 +641,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 2000 )
       {
-         send_to_char( "Hp used is a value from 0 to 2000.\n\r", ch );
+         send_to_char( "Hp used is a value from 0 to 2000.\r\n", ch );
          return;
       }
       morph->hpused = value;
@@ -650,7 +650,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 2000 )
       {
-         send_to_char( "Favour used is a value from 0 to 2000.\n\r", ch );
+         send_to_char( "Favour used is a value from 0 to 2000.\r\n", ch );
          return;
       }
       morph->favourused = value;
@@ -659,7 +659,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 23 )
       {
-         send_to_char( "Timeto is a value from 0 to 23.\n\r", ch );
+         send_to_char( "Timeto is a value from 0 to 23.\r\n", ch );
          return;
       }
       morph->timeto = value;
@@ -668,7 +668,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 23 )
       {
-         send_to_char( "Timefrom is a value from 0 to 23.\n\r", ch );
+         send_to_char( "Timefrom is a value from 0 to 23.\r\n", ch );
          return;
       }
       morph->timefrom = value;
@@ -677,7 +677,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 29 )
       {
-         send_to_char( "Dayto is a value from 0 to 29.\n\r", ch );
+         send_to_char( "Dayto is a value from 0 to 29.\r\n", ch );
          return;
       }
       morph->dayto = value;
@@ -686,7 +686,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > 29 )
       {
-         send_to_char( "Dayfrom is a value from 0 to 29.\n\r", ch );
+         send_to_char( "Dayfrom is a value from 0 to 29.\r\n", ch );
          return;
       }
       morph->dayfrom = value;
@@ -695,7 +695,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       morph->saving_poison_death = value;
@@ -704,7 +704,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       morph->saving_wand = value;
@@ -713,7 +713,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       morph->saving_para_petri = value;
@@ -722,7 +722,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       morph->saving_breath = value;
@@ -731,7 +731,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -30 || value > 30 )
       {
-         send_to_char( "Saving throw range is -30 to 30.\n\r", ch );
+         send_to_char( "Saving throw range is -30 to 30.\r\n", ch );
          return;
       }
       morph->saving_spell_staff = value;
@@ -740,7 +740,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < -1 || value == 0 )
       {
-         send_to_char( "Timer must be -1 (None) or greater than 0.\n\r", ch );
+         send_to_char( "Timer must be -1 (None) or greater than 0.\r\n", ch );
          return;
       }
       morph->timer = value;
@@ -770,7 +770,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value > 500 || value < -500 )
       {
-         send_to_char( "Ac range is -500 to 500.\n\r", ch );
+         send_to_char( "Ac range is -500 to 500.\r\n", ch );
          return;
       }
       morph->ac = value;
@@ -793,7 +793,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value > 100 || value < -100 )
       {
-         send_to_char( "Dodge range is -100 to 100.\n\r", ch );
+         send_to_char( "Dodge range is -100 to 100.\r\n", ch );
          return;
       }
       morph->dodge = value;
@@ -805,7 +805,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
 
       if( arg2[3] == '\0' )
       {
-         send_to_char( "Obj 1, 2, or 3.\n\r", ch );
+         send_to_char( "Obj 1, 2, or 3.\r\n", ch );
          return;
       }
       temp[0] = arg2[3];
@@ -813,12 +813,12 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       oindex = atoi( temp );
       if( oindex > 3 || oindex < 1 )
       {
-         send_to_char( "Obj 1, 2, or 3.\n\r", ch );
+         send_to_char( "Obj 1, 2, or 3.\r\n", ch );
          return;
       }
       if( !( get_obj_index( value ) ) )
       {
-         send_to_char( "No such vnum.\n\r", ch );
+         send_to_char( "No such vnum.\r\n", ch );
          return;
       }
       morph->obj[oindex - 1] = value;
@@ -827,7 +827,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value > 100 || value < -100 )
       {
-         send_to_char( "Parry range is -100 to 100.\n\r", ch );
+         send_to_char( "Parry range is -100 to 100.\r\n", ch );
          return;
       }
       morph->parry = value;
@@ -836,7 +836,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value > 100 || value < -100 )
       {
-         send_to_char( "Tumble range is -100 to 100.\n\r", ch );
+         send_to_char( "Tumble range is -100 to 100.\r\n", ch );
          return;
       }
       morph->tumble = value;
@@ -845,7 +845,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( value < 0 || value > LEVEL_AVATAR )
       {
-         ch_printf( ch, "Level range is 0 to %d.\n\r", LEVEL_AVATAR );
+         ch_printf( ch, "Level range is 0 to %d.\r\n", LEVEL_AVATAR );
          return;
       }
       morph->level = value;
@@ -857,7 +857,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
 
       if( arg2[6] == '\0' )
       {
-         send_to_char( "Objuse 1, 2 or 3?\n\r", ch );
+         send_to_char( "Objuse 1, 2 or 3?\r\n", ch );
          return;
       }
       temp[0] = arg2[6];
@@ -865,7 +865,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       oindex = atoi( temp );
       if( oindex > 3 || oindex < 1 )
       {
-         send_to_char( "Objuse 1, 2, or 3?\n\r", ch );
+         send_to_char( "Objuse 1, 2, or 3?\r\n", ch );
          return;
       }
       if( value )
@@ -884,7 +884,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> resistant <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> resistant <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -892,7 +892,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->resistant, 1 << value );
       }
@@ -901,7 +901,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> susceptible <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> susceptible <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -909,7 +909,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->suscept, 1 << value );
       }
@@ -918,7 +918,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> immune <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> immune <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -926,7 +926,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->immune, 1 << value );
       }
@@ -935,7 +935,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> noresistant <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> noresistant <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -943,7 +943,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->no_resistant, 1 << value );
       }
@@ -952,7 +952,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> nosusceptible <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> nosusceptible <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -960,7 +960,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->no_suscept, 1 << value );
       }
@@ -969,7 +969,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> noimmune <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> noimmune <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -977,7 +977,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_risflag( arg3 );
          if( value < 0 || value > 31 )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             TOGGLE_BIT( morph->no_immune, 1 << value );
       }
@@ -986,7 +986,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> affected <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> affected <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -994,7 +994,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( morph->affected_by, value );
       }
@@ -1003,7 +1003,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       if( !argument || argument[0] == '\0' )
       {
-         send_to_char( "Usage: morphset <morph> noaffected <flag> [flag]...\n\r", ch );
+         send_to_char( "Usage: morphset <morph> noaffected <flag> [flag]...\r\n", ch );
          return;
       }
       while( argument[0] != '\0' )
@@ -1011,7 +1011,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
          if( value < 0 || value > MAX_BITS )
-            ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+            ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( morph->no_affected_by, value );
       }
@@ -1050,7 +1050,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
    {
       DISPOSE( morph->long_desc );
       mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\n\r", MAX_STRING_LENGTH );
+      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
       morph->long_desc = str_dup( buf );
    }
    else if( !str_cmp( arg2, "description" ) || !str_cmp( arg2, "desc" ) )
@@ -1154,7 +1154,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       do_morphset( ch, "" );
       return;
    }
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
    return;
 }
 
@@ -1174,12 +1174,12 @@ void do_morphstat( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg );
    if( !arg || arg[0] == '\0' )
    {
-      send_to_pager( "Morphstat what?\n\r", ch );
+      send_to_pager( "Morphstat what?\r\n", ch );
       return;
    }
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Mob's can't morphstat\n\r", ch );
+      send_to_char( "Mob's can't morphstat\r\n", ch );
       return;
    }
 
@@ -1187,12 +1187,12 @@ void do_morphstat( CHAR_DATA * ch, char *argument )
    {
       if( !morph_start )
       {
-         send_to_pager( "No morph's currently exist.\n\r", ch );
+         send_to_pager( "No morph's currently exist.\r\n", ch );
          return;
       }
       for( morph = morph_start; morph; morph = morph->next )
       {
-         pager_printf( ch, "&c[&C%2d&c]   Name:  &C%-13s    &cVnum:  &C%4d  &cUsed:  &C%3d\n\r",
+         pager_printf( ch, "&c[&C%2d&c]   Name:  &C%-13s    &cVnum:  &C%4d  &cUsed:  &C%3d\r\n",
                        count, morph->name, morph->vnum, morph->used );
          count++;
       }
@@ -1205,87 +1205,87 @@ void do_morphstat( CHAR_DATA * ch, char *argument )
 
    if( morph == NULL )
    {
-      send_to_pager( "No such morph exists.\n\r", ch );
+      send_to_pager( "No such morph exists.\r\n", ch );
       return;
    }
    if( !argument || argument[0] == '\0' )
    {
-      pager_printf( ch, "  &cMorph Name: &C%-20s  Vnum: %4d\n\r", morph->name, morph->vnum );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      send_to_pager( "                           &BMorph Restrictions\n\r", ch );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      pager_printf( ch, "  &cClasses Allowed   : &w%s\n\r", class_string( morph->Class ) );
-      pager_printf( ch, "  &cRaces Not Allowed: &w%s\n\r", race_string( morph->race ) );
-      pager_printf( ch, "  &cSex:  &C%s   &cPkill:   &C%s   &cTime From:   &C%d   &cTime To:    &C%d\n\r",
+      pager_printf( ch, "  &cMorph Name: &C%-20s  Vnum: %4d\r\n", morph->name, morph->vnum );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      send_to_pager( "                           &BMorph Restrictions\r\n", ch );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      pager_printf( ch, "  &cClasses Allowed   : &w%s\r\n", class_string( morph->Class ) );
+      pager_printf( ch, "  &cRaces Not Allowed: &w%s\r\n", race_string( morph->race ) );
+      pager_printf( ch, "  &cSex:  &C%s   &cPkill:   &C%s   &cTime From:   &C%d   &cTime To:    &C%d\r\n",
                     morph->sex == SEX_MALE ? "male" :
                     morph->sex == SEX_FEMALE ? "female" : "neutral",
                     morph->pkill == ONLY_PKILL ? "YES" :
                     morph->pkill == ONLY_PEACEFULL ? "NO" : "n/a", morph->timefrom, morph->timeto );
-      pager_printf( ch, "  &cDay From:  &C%d  &cDay To:  &C%d\n\r", morph->dayfrom, morph->dayto );
-      pager_printf( ch, "  &cLevel:  &C%d       &cMorph Via Spell   : &C%s\n\r",
+      pager_printf( ch, "  &cDay From:  &C%d  &cDay To:  &C%d\r\n", morph->dayfrom, morph->dayto );
+      pager_printf( ch, "  &cLevel:  &C%d       &cMorph Via Spell   : &C%s\r\n",
                     morph->level, ( morph->no_cast ) ? "NO" : "yes" );
-      pager_printf( ch, "  &cUSAGES:  Mana:  &C%d  &cMove:  &C%d  &cHp:  &C%d  &cFavour:  &C%d\n\r",
+      pager_printf( ch, "  &cUSAGES:  Mana:  &C%d  &cMove:  &C%d  &cHp:  &C%d  &cFavour:  &C%d\r\n",
                     morph->manaused, morph->moveused, morph->hpused, morph->favourused );
       pager_printf( ch,
-                    "  &cObj1: &C%d  &cObjuse1: &C%s   &cObj2: &C%d  &cObjuse2: &C%s   &cObj3: &C%d  &cObjuse3: &c%s\n\r",
+                    "  &cObj1: &C%d  &cObjuse1: &C%s   &cObj2: &C%d  &cObjuse2: &C%s   &cObj3: &C%d  &cObjuse3: &c%s\r\n",
                     morph->obj[0], ( morph->objuse[0] ? "YES" : "no" ), morph->obj[1], ( morph->objuse[1] ? "YES" : "no" ),
                     morph->obj[2], ( morph->objuse[2] ? "YES" : "no" ) );
-      pager_printf( ch, "  &cTimer: &w%d\n\r", morph->timer );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      send_to_pager( "                       &BEnhancements to the Player\n\r", ch );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
+      pager_printf( ch, "  &cTimer: &w%d\r\n", morph->timer );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      send_to_pager( "                       &BEnhancements to the Player\r\n", ch );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
       pager_printf( ch,
-                    "  &cStr: &C%2d&c )( Int: &C%2d&c )( Wis: &C%2d&c )( Dex: &C%2d&c )( Con: &C%2d&c )( Cha: &C%2d&c )( Lck: &C%2d&c )\n\r",
+                    "  &cStr: &C%2d&c )( Int: &C%2d&c )( Wis: &C%2d&c )( Dex: &C%2d&c )( Con: &C%2d&c )( Cha: &C%2d&c )( Lck: &C%2d&c )\r\n",
                     morph->str, morph->inte, morph->wis, morph->dex, morph->con, morph->cha, morph->lck );
-      pager_printf( ch, "  &cSave versus: &w%d %d %d %d %d       &cDodge: &w%d  &cParry: &w%d  &cTumble: &w%d\n\r",
+      pager_printf( ch, "  &cSave versus: &w%d %d %d %d %d       &cDodge: &w%d  &cParry: &w%d  &cTumble: &w%d\r\n",
                     morph->saving_poison_death, morph->saving_wand, morph->saving_para_petri, morph->saving_breath,
                     morph->saving_spell_staff, morph->dodge, morph->parry, morph->tumble );
-      pager_printf( ch, "  &cHps     : &w%s    &cMana   : &w%s    &cMove      : &w%s\n\r", morph->hit, morph->mana,
+      pager_printf( ch, "  &cHps     : &w%s    &cMana   : &w%s    &cMove      : &w%s\r\n", morph->hit, morph->mana,
                     morph->move );
-      pager_printf( ch, "  &cDamroll : &w%s    &cHitroll: &w%s    &cAC     : &w%d\n\r", morph->damroll, morph->hitroll,
+      pager_printf( ch, "  &cDamroll : &w%s    &cHitroll: &w%s    &cAC     : &w%d\r\n", morph->damroll, morph->hitroll,
                     morph->ac );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      send_to_pager( "                          &BAffects to the Player\n\r", ch );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      pager_printf( ch, "  &cAffected by: &C%s\n\r", affect_bit_name( &morph->affected_by ) );
-      pager_printf( ch, "  &cImmune     : &w%s\n\r", flag_string( morph->immune, ris_flags ) );
-      pager_printf( ch, "  &cSusceptible: &w%s\n\r", flag_string( morph->suscept, ris_flags ) );
-      pager_printf( ch, "  &cResistant  : &w%s\n\r", flag_string( morph->resistant, ris_flags ) );
-      pager_printf( ch, "  &cSkills     : &w%s\n\r", morph->skills );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      send_to_pager( "                     &BPrevented affects to the Player\n\r", ch );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      pager_printf( ch, "  &cNot affected by: &C%s\n\r", affect_bit_name( &morph->no_affected_by ) );
-      pager_printf( ch, "  &cNot Immune     : &w%s\n\r", flag_string( morph->no_immune, ris_flags ) );
-      pager_printf( ch, "  &cNot Susceptible: &w%s\n\r", flag_string( morph->no_suscept, ris_flags ) );
-      pager_printf( ch, "  &cNot Resistant  : &w%s\n\r", flag_string( morph->no_resistant, ris_flags ) );
-      pager_printf( ch, "  &cNot Skills     : &w%s\n\r", morph->no_skills );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      send_to_char( "\n\r", ch );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      send_to_pager( "                          &BAffects to the Player\r\n", ch );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      pager_printf( ch, "  &cAffected by: &C%s\r\n", affect_bit_name( &morph->affected_by ) );
+      pager_printf( ch, "  &cImmune     : &w%s\r\n", flag_string( morph->immune, ris_flags ) );
+      pager_printf( ch, "  &cSusceptible: &w%s\r\n", flag_string( morph->suscept, ris_flags ) );
+      pager_printf( ch, "  &cResistant  : &w%s\r\n", flag_string( morph->resistant, ris_flags ) );
+      pager_printf( ch, "  &cSkills     : &w%s\r\n", morph->skills );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      send_to_pager( "                     &BPrevented affects to the Player\r\n", ch );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      pager_printf( ch, "  &cNot affected by: &C%s\r\n", affect_bit_name( &morph->no_affected_by ) );
+      pager_printf( ch, "  &cNot Immune     : &w%s\r\n", flag_string( morph->no_immune, ris_flags ) );
+      pager_printf( ch, "  &cNot Susceptible: &w%s\r\n", flag_string( morph->no_suscept, ris_flags ) );
+      pager_printf( ch, "  &cNot Resistant  : &w%s\r\n", flag_string( morph->no_resistant, ris_flags ) );
+      pager_printf( ch, "  &cNot Skills     : &w%s\r\n", morph->no_skills );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      send_to_char( "\r\n", ch );
    }
    else if( !str_cmp( argument, "help" ) || !str_cmp( argument, "desc" ) )
    {
-      pager_printf( ch, "  &cMorph Name  : &C%-20s\n\r", morph->name );
-      pager_printf( ch, "  &cDefault Pos : &w%d\n\r", morph->defpos );
-      pager_printf( ch, "  &cKeywords    : &w%s\n\r", morph->key_words );
-      pager_printf( ch, "  &cShortdesc   : &w%s\n\r",
+      pager_printf( ch, "  &cMorph Name  : &C%-20s\r\n", morph->name );
+      pager_printf( ch, "  &cDefault Pos : &w%d\r\n", morph->defpos );
+      pager_printf( ch, "  &cKeywords    : &w%s\r\n", morph->key_words );
+      pager_printf( ch, "  &cShortdesc   : &w%s\r\n",
                     ( morph->short_desc && morph->short_desc[0] == '\0' ) ? "(none set)" : morph->short_desc );
       pager_printf( ch, "  &cLongdesc    : &w%s",
-                    ( morph->long_desc && morph->long_desc[0] == '\0' ) ? "(none set)\n\r" : morph->long_desc );
-      pager_printf( ch, "  &cMorphself   : &w%s\n\r", morph->morph_self );
-      pager_printf( ch, "  &cMorphother  : &w%s\n\r", morph->morph_other );
-      pager_printf( ch, "  &cUnMorphself : &w%s\n\r", morph->unmorph_self );
-      pager_printf( ch, "  &cUnMorphother: &w%s\n\r", morph->unmorph_other );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      pager_printf( ch, "                                  &cHelp:\n\r&w%s\n\r", morph->help );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
-      pager_printf( ch, "                               &cDescription:\n\r&w%s\n\r", morph->description );
-      send_to_pager( "&B[----------------------------------------------------------------------------]\n\r", ch );
+                    ( morph->long_desc && morph->long_desc[0] == '\0' ) ? "(none set)\r\n" : morph->long_desc );
+      pager_printf( ch, "  &cMorphself   : &w%s\r\n", morph->morph_self );
+      pager_printf( ch, "  &cMorphother  : &w%s\r\n", morph->morph_other );
+      pager_printf( ch, "  &cUnMorphself : &w%s\r\n", morph->unmorph_self );
+      pager_printf( ch, "  &cUnMorphother: &w%s\r\n", morph->unmorph_other );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      pager_printf( ch, "                                  &cHelp:\r\n&w%s\r\n", morph->help );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
+      pager_printf( ch, "                               &cDescription:\r\n&w%s\r\n", morph->description );
+      send_to_pager( "&B[----------------------------------------------------------------------------]\r\n", ch );
    }
    else
    {
-      send_to_char( "Syntax: morphstat <morph>\n\r", ch );
-      send_to_char( "Syntax: morphstat <morph> <help/desc>\n\r", ch );
+      send_to_char( "Syntax: morphstat <morph>\r\n", ch );
+      send_to_char( "Syntax: morphstat <morph> <help/desc>\r\n", ch );
    }
    return;
 }
@@ -1509,7 +1509,7 @@ int do_morph_char( CHAR_DATA * ch, MORPH_DATA * morph )
 
    if( !canmorph )
    {
-      send_to_char( "You begin to transform, but something goes wrong.\n\r", ch );
+      send_to_char( "You begin to transform, but something goes wrong.\r\n", ch );
       return FALSE;
    }
    send_morph_message( ch, morph, TRUE );
@@ -1584,7 +1584,7 @@ void do_revert( CHAR_DATA * ch, char *argument )
 {
    if( !ch->morph )
    {
-      send_to_char( "But you aren't polymorphed?!?\n\r", ch );
+      send_to_char( "But you aren't polymorphed?!?\r\n", ch );
       return;
    }
    do_unmorph_char( ch );
@@ -2067,8 +2067,8 @@ void do_morphcreate( CHAR_DATA * ch, char *argument )
 
    if( !arg1 || arg1[0] == '\0' )
    {
-      send_to_char( "Usage: morphcreate <name>\n\r", ch );
-      send_to_char( "Usage: morphcreate <name/vnum> copy\n\r", ch );
+      send_to_char( "Usage: morphcreate <name>\r\n", ch );
+      send_to_char( "Usage: morphcreate <name/vnum> copy\r\n", ch );
       return;
    }
 
@@ -2078,13 +2078,13 @@ void do_morphcreate( CHAR_DATA * ch, char *argument )
       {
          if( ( temp = get_morph_vnum( atoi( arg1 ) ) ) == NULL )
          {
-            ch_printf( ch, "No such morph vnum %d exists.\n\r", atoi( arg1 ) );
+            ch_printf( ch, "No such morph vnum %d exists.\r\n", atoi( arg1 ) );
             return;
          }
       }
       else if( !( temp = get_morph( arg1 ) ) )
       {
-         ch_printf( ch, "No such morph %s exists.\n\r", arg1 );
+         ch_printf( ch, "No such morph %s exists.\r\n", arg1 );
          return;
       }
    }
@@ -2101,7 +2101,7 @@ void do_morphcreate( CHAR_DATA * ch, char *argument )
    morph->vnum = morph_vnum;
    morph_vnum++;
    LINK( morph, morph_start, morph_end, next, prev );
-   ch_printf( ch, "Morph %s created with vnum %d.\n\r", morph->name, morph->vnum );
+   ch_printf( ch, "Morph %s created with vnum %d.\r\n", morph->name, morph->vnum );
    return;
 }
 
@@ -2130,7 +2130,7 @@ void do_morphdestroy( CHAR_DATA * ch, char *argument )
 
    if( !argument || argument[0] == '\0' )
    {
-      send_to_char( "Destroy which morph?\n\r", ch );
+      send_to_char( "Destroy which morph?\r\n", ch );
       return;
    }
    if( is_number( argument ) )
@@ -2140,13 +2140,13 @@ void do_morphdestroy( CHAR_DATA * ch, char *argument )
 
    if( !morph )
    {
-      ch_printf( ch, "Unkown morph %s.\n\r", argument );
+      ch_printf( ch, "Unkown morph %s.\r\n", argument );
       return;
    }
    unmorph_all( morph );
    UNLINK( morph, morph_start, morph_end, next, prev );
    free_morph( morph );
-   send_to_char( "Morph deleted.\n\r", ch );
+   send_to_char( "Morph deleted.\r\n", ch );
    return;
 }
 
@@ -2380,7 +2380,7 @@ void do_imm_morph( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Only player characters can use this command.\n\r", ch );
+      send_to_char( "Only player characters can use this command.\r\n", ch );
       return;
    }
 
@@ -2388,7 +2388,7 @@ void do_imm_morph( CHAR_DATA * ch, char *argument )
 
    if( !is_number( arg ) )
    {
-      send_to_char( "Syntax: morph <vnum>\n\r", ch );
+      send_to_char( "Syntax: morph <vnum>\r\n", ch );
       return;
    }
    vnum = atoi( arg );
@@ -2396,24 +2396,24 @@ void do_imm_morph( CHAR_DATA * ch, char *argument )
 
    if( morph == NULL )
    {
-      ch_printf( ch, "No such morph %d exists.\n\r", vnum );
+      ch_printf( ch, "No such morph %d exists.\r\n", vnum );
       return;
    }
    if( !argument || argument[0] == '\0' )
       do_morph_char( ch, morph );
    else if( !( victim = get_char_world( ch, argument ) ) )
    {
-      send_to_char( "No one like that in all the realms.\n\r", ch );
+      send_to_char( "No one like that in all the realms.\r\n", ch );
       return;
    }
    if( victim != NULL && get_trust( ch ) < get_trust( victim ) && !IS_NPC( victim ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       return;
    }
    else if( victim != NULL )
       do_morph_char( victim, morph );
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
    return;
 }
 
@@ -2428,17 +2428,17 @@ void do_imm_unmorph( CHAR_DATA * ch, char *argument )
       do_unmorph_char( ch );
    else if( !( victim = get_char_world( ch, argument ) ) )
    {
-      send_to_char( "No one like that in all the realms.\n\r", ch );
+      send_to_char( "No one like that in all the realms.\r\n", ch );
       return;
    }
    if( victim != NULL && get_trust( ch ) < get_trust( victim ) && !IS_NPC( victim ) )
    {
-      send_to_char( "You can't do that!\n\r", ch );
+      send_to_char( "You can't do that!\r\n", ch );
       return;
    }
    else if( victim != NULL )
       do_unmorph_char( victim );
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
    return;
 }
 
@@ -2447,14 +2447,14 @@ void do_morphlist( CHAR_DATA * ch, char *argument )
 {
    MORPH_DATA *morph;
 
-   send_to_pager( "&GVnum |&YPolymorph Name\n\r", ch );
-   send_to_pager( "&G-----+----------------------------------\n\r", ch );
+   send_to_pager( "&GVnum |&YPolymorph Name\r\n", ch );
+   send_to_pager( "&G-----+----------------------------------\r\n", ch );
 
    for( morph = morph_start; morph; morph = morph->next )
    {
       if( morph == NULL )
          continue;
-      pager_printf( ch, "&G%-5d  &Y%s\n\r", morph->vnum, morph->name );
+      pager_printf( ch, "&G%-5d  &Y%s\r\n", morph->vnum, morph->name );
    }
    return;
 }

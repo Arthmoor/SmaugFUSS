@@ -9,6 +9,7 @@
 1 5 0 60
 $
 
+#SPELLLIMIT 0
 #RESETMSG A pixie pops into view then flutters away, giggling...~
 
 #FLAGS
@@ -39,13 +40,13 @@ your presence.
 0 0 0 0 0
 24 3 0 0 512 513 0
 0 0 263725 0 0 0 2 0
+> fight_prog 15~
+, spreads its jaws wide and nearly roars you backwards!
+~
 > death_prog 100~
 mpe _yel As the bear breathes its last and collapses with a thud.
 mpe _yel You notice one of its long, curved claws has fallen loose.
 mpoload 2071
-~
-> fight_prog 15~
-, spreads its jaws wide and nearly roars you backwards!
 ~
 |
 #2071
@@ -66,12 +67,12 @@ it as it bobs and darts about.
 0 0 0 0 0
 4 3 0 0 9 9 0
 0 0 34543 0 0 0 0 2
-> fight_prog 20~
-mpe _cya $I shrieks wildly through the air, trying to avoid harm.
-~
 > death_prog 100~
 mpe _cya As the small creature plunges to the surface, a wing is torn off.
 mpoload 2072
+~
+> fight_prog 20~
+mpe _cya $I shrieks wildly through the air, trying to avoid harm.
 ~
 |
 #2072
@@ -93,12 +94,12 @@ or perhaps to keep a watchful eye on the forest's creatures...
 0 0 0 0 0
 85 3 0 0 9 9 0
 0 0 1115887 0 2048 0 0 2
-> fight_prog 15~
-mpe $I's shriek resounds through the cave!
-~
 > death_prog 100~
 mpe _red As the foul imp perishes, a small object slips its grasp...
 mpoload 2070
+~
+> fight_prog 15~
+mpe $I's shriek resounds through the cave!
 ~
 |
 #2073
@@ -118,13 +119,13 @@ with a delightful laugh... oblivious to the danger you present.
 0 0 0 0 0
 4 3 0 0 9 9 0
 0 0 34543 0 2048 0 0 2
-> fight_prog 10~
-mpe _cya $I releases a lash of iced-filled water from its outstretched hand!
-mpdamage $n 3
-~
 > death_prog 100~
 mpe _cya $I collapses into the water, forming a circle of liquid.
 mpoload 2073
+~
+> fight_prog 10~
+mpe _cya $I releases a lash of iced-filled water from its outstretched hand!
+mpdamage $n 3
 ~
 |
 #0
@@ -212,9 +213,14 @@ Waters smooth as crystal absorb the ripples of your passage.~
 25 1073741824 0
 30000 30000 0 0
 1 0 0
-> rand_prog 3~
+#2077
+refreshing spring~
+A refreshing spring~
+A small spring runs along the northern wall offering clean drinking water.~
 ~
-|
+25 0 0
+0 0 0 0
+1 0 0
 #0
 
 
@@ -395,9 +401,9 @@ A path
 ~
 0 -1 2099
 E
-track~
-You recognize the track as belonging to a brown forest bear, whom
-are normally quite docial in this neck of the woods.
+footprint~
+You recognize the track as belonging to a brown forest bear, which
+are normally quite docile in this neck of the woods.
 ~
 S
 #2078
@@ -451,7 +457,7 @@ You stand within a crevice that leads out into the forest westwards
 and deeper into the darkness eastwards.  The odor of a predator
 lingers in the air here.
 ~
-0 0 3
+0 0 13
 D1
 Too dark to tell
 ~
@@ -468,7 +474,7 @@ Within a cozy cave~
 The cave continues to the north and west here with the stone walls showing
 signs of wear from constant claw marks.
 ~
-0 9 0
+0 9 13
 D0
 Too dark to tell
 ~
@@ -501,7 +507,7 @@ The tight, damp cave seems to have no walls, the shadows eagerly devouring
 what little light there is.  The darkness continues to the west, while a
 faint ray of light marks the entrance to the east.
 ~
-0 9 13
+0 13 13
 D1
 A dark clearing
 ~
@@ -623,7 +629,7 @@ You stand within a rather comfortable cave.  The cavern leads off to the
 north and south with the entrance to the west.  A few dried fish skeletons
 litter the ground, too frail to pick up.
 ~
-0 9 0
+0 9 13
 D0
 Too dark to tell
 ~
@@ -741,7 +747,7 @@ You have entered the lair of a family of brown bears.  The atmosphere
 is one of peace an tranquility.  Surprisingly the floor is clean and
 free of any remains from previous dinners.
 ~
-0 9 0
+0 9 13
 D1
 Too ark to tell
 ~
@@ -751,10 +757,9 @@ R M 0 2070 1 2094
 S
 #2095
 A bend in the cave~
-The cave continues to the south and west here.  A small spring runs along
-the northern wall offering clean drinking water.
+The cave continues to the south and west here.
 ~
-0 9 0
+0 9 13
 D2
 Too dark to tell
 ~
@@ -765,6 +770,7 @@ Too dark to tell
 ~
 ~
 0 -1 2094
+R O 0 2077 1 2095
 S
 #2096
 On a small pond~
@@ -824,7 +830,7 @@ from above is separated to form an elegant display of natural colors.
 You fear stepping off the stone path, thinking that you may accidentally
 destroy the fine balance of crystaline beauty.
 ~
-0 3145740 3
+0 3145732 3
 D2
 Dense foliage
 ~

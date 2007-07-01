@@ -18,9 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#ifndef WIN32
 #include <unistd.h>
-#endif
 #include "mud.h"
 
 /*
@@ -35,7 +33,6 @@ int load_imm_host(  )
    bool my_continue = TRUE;
    bool fMatch = FALSE;
    IMMORTAL_HOST *host;
-
 
    if( ( fp = fopen( IMM_HOST_FILE, "r" ) ) == NULL )
    {
@@ -58,6 +55,7 @@ int load_imm_host(  )
                my_continue = FALSE;
             }
             break;
+
          case 'S':
             if( !str_cmp( word, "Start" ) )
             {
@@ -71,7 +69,7 @@ int load_imm_host(  )
 
       if( !fMatch )
       {
-         bug( "Load_imm_host: no match: %s", word );
+         bug( "%s: no match: %s", __FUNCTION__, word );
          fread_to_eol( fp );
       }
    }
@@ -79,12 +77,10 @@ int load_imm_host(  )
    return rNONE;
 }
 
-
 /* 
  * This function reads one immortal host to a file.
  * Shaddai  July 27, 1997
  */
-
 int fread_imm_host( FILE * fp, IMMORTAL_HOST * data )
 {
    const char *word;
@@ -163,7 +159,7 @@ bool check_immortal_domain( CHAR_DATA * ch, char *host )
       if( !str_cmp( my_name, strlower( temp->name ) ) )
       {
          found = TRUE;
-         if( temp->prefix && temp->suffix && strstr( temp->host, my_host ) )
+         if( temp->prefix && temp->suffix && strstr( my_host, temp->host ) )
             return TRUE;
          else if( temp->prefix && !str_suffix( temp->host, my_host ) )
             return TRUE;
@@ -201,13 +197,13 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
    {
       if( immortal_host_start == NULL )
       {
-         send_to_char( "No immortals are protected at this time.\n\r", ch );
+         send_to_char( "No immortals are protected at this time.\r\n", ch );
          return;
       }
-      send_to_char( "Immortal   Host\n\r", ch );
+      send_to_char( "Immortal   Host\r\n", ch );
       set_char_color( AT_PLAIN, ch );
       for( temp = immortal_host_start; temp; temp = temp->next )
-         ch_printf( ch, "%-8s  %c%s%c\n\r",
+         ch_printf( ch, "%-8s  %c%s%c\r\n",
                     temp->name, ( temp->prefix ? '*' : ' ' ), temp->host, ( temp->suffix ? '*' : ' ' ) );
       return;
    }
@@ -215,19 +211,18 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
    /*
     * Ok we have a new entry make sure it doesn't contain a ~ 
     */
-
    if( !str_cmp( type, "save" ) )
    {
       do_write_imm_host(  );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       return;
    }
 
    if( arg2[0] == '\0' || arg1[0] == '\0' )
    {
-      send_to_char( "Syntax: immhost add    <name> <host>\n\r", ch );
-      send_to_char( "Syntax: immhost delete <name> <host>\n\r", ch );
-      send_to_char( "Syntax: immhost save\n\r", ch );
+      send_to_char( "Syntax: immhost add    <name> <host>\r\n", ch );
+      send_to_char( "Syntax: immhost delete <name> <host>\r\n", ch );
+      send_to_char( "Syntax: immhost save\r\n", ch );
       return;
    }
 
@@ -251,7 +246,7 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
       }
       if( it == NULL )
       {
-         send_to_char( "Didn't find that entry.\n\r", ch );
+         send_to_char( "Didn't find that entry.\r\n", ch );
          return;
       }
       DISPOSE( temp->name );
@@ -267,7 +262,6 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
       smash_tilde( arg1 );
       smash_tilde( arg2 );
       name = arg2;
-
 
       if( arg2[0] == '*' )
       {
@@ -288,7 +282,7 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
       {
          if( !str_cmp( temp->name, arg1 ) && !str_cmp( temp->host, name ) )
          {
-            send_to_char( "Entry already exists.\n\r", ch );
+            send_to_char( "Entry already exists.\r\n", ch );
             return;
          }
       }
@@ -301,12 +295,12 @@ void do_add_imm_host( CHAR_DATA * ch, char *argument )
    }
    else
    {
-      send_to_char( "Syntax: immhost add    <name> <host>\n\r", ch );
-      send_to_char( "Syntax: immhost delete <name> <host>\n\r", ch );
-      send_to_char( "Syntax: immhost save\n\r", ch );
+      send_to_char( "Syntax: immhost add    <name> <host>\r\n", ch );
+      send_to_char( "Syntax: immhost delete <name> <host>\r\n", ch );
+      send_to_char( "Syntax: immhost save\r\n", ch );
       return;
    }
-   send_to_char( "Done.\n\r", ch );
+   send_to_char( "Done.\r\n", ch );
    return;
 }
 

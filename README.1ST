@@ -1,9 +1,9 @@
-SmaugFUSS 1.6 Readme
+SmaugFUSS 1.7 Readme
 --------------------
 
 A few quick notes about this version.
 
-Why the 1.6?
+Why the 1.7?
 ------------
 
 Semi-arbitraty decision to reflect the major changes to the reset system to fix the problems with the nested put resets. All of the stock areas in this package have been updated to support the new format and as such will not be backward compatible with any Smaug mud that does not employ the reset fix. Since there has been some confusion of late about version numbers because of some 1.5 packages out there, I chose 1.6 to clearly differentiate this one.
@@ -12,6 +12,7 @@ Areas written for Smaug 1.02a, 1.4, and 1.4a should load without a problem and r
 
 Also as a result of these changes, areas saved using the 1.6 code will not be compatible with various area editors out there, such as Orb or Nick Gammon's Area Editor program. I have no control over whether they will plan to update their programs or not, so please don't ask me to do this :)
 
+Bump was made again to 1.7 after some extra support features were added for dlsym and MCCP among other things.
 
 Installing and using the code
 -----------------------------

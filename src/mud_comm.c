@@ -17,7 +17,7 @@
 #include "mud.h"
 
 ch_ret simple_damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt );
-void transfer_char( CHAR_DATA *ch, CHAR_DATA *victim, ROOM_INDEX_DATA *location );
+void transfer_char( CHAR_DATA * ch, CHAR_DATA * victim, ROOM_INDEX_DATA * location );
 
 char *mprog_type_to_name( int type )
 {
@@ -104,47 +104,47 @@ void do_mpstat( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "MProg stat whom?\n\r", ch );
+      send_to_char( "MProg stat whom?\r\n", ch );
       return;
    }
 
    if( ( victim = get_char_world( ch, arg ) ) == NULL )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
 
    if( !IS_NPC( victim ) )
    {
-      send_to_char( "Only Mobiles can have MobPrograms!\n\r", ch );
+      send_to_char( "Only Mobiles can have MobPrograms!\r\n", ch );
       return;
    }
    if( get_trust( ch ) < LEVEL_GREATER && xIS_SET( victim->act, ACT_STATSHIELD ) )
    {
       set_pager_color( AT_IMMORT, ch );
-      send_to_pager( "Their godly glow prevents you from getting a good look.\n\r", ch );
+      send_to_pager( "Their godly glow prevents you from getting a good look.\r\n", ch );
       return;
    }
    if( xIS_EMPTY( victim->pIndexData->progtypes ) )
    {
-      send_to_char( "That Mobile has no Programs set.\n\r", ch );
+      send_to_char( "That Mobile has no Programs set.\r\n", ch );
       return;
    }
 
-   ch_printf( ch, "Name: %s.  Vnum: %d.\n\r", victim->name, victim->pIndexData->vnum );
+   ch_printf( ch, "Name: %s.  Vnum: %d.\r\n", victim->name, victim->pIndexData->vnum );
 
-   ch_printf( ch, "Short description: %s.\n\rLong  description: %s",
-              victim->short_descr, victim->long_descr[0] != '\0' ? victim->long_descr : "(none).\n\r" );
+   ch_printf( ch, "Short description: %s.\r\nLong  description: %s",
+              victim->short_descr, victim->long_descr[0] != '\0' ? victim->long_descr : "(none).\r\n" );
 
-   ch_printf( ch, "Hp: %d/%d.  Mana: %d/%d.  Move: %d/%d. \n\r",
+   ch_printf( ch, "Hp: %d/%d.  Mana: %d/%d.  Move: %d/%d. \r\n",
               victim->hit, victim->max_hit, victim->mana, victim->max_mana, victim->move, victim->max_move );
 
    ch_printf( ch,
-              "Lv: %d.  Class: %d.  Align: %d.  AC: %d.  Gold: %d.  Exp: %d.\n\r",
+              "Lv: %d.  Class: %d.  Align: %d.  AC: %d.  Gold: %d.  Exp: %d.\r\n",
               victim->level, victim->Class, victim->alignment, GET_AC( victim ), victim->gold, victim->exp );
 
    for( mprg = victim->pIndexData->mudprogs; mprg; mprg = mprg->next )
-      ch_printf( ch, "%s>%s %s\n\r%s\n\r", ( mprg->fileprog ? "(FILEPROG) " : "" ),
+      ch_printf( ch, "%s>%s %s\r\n%s\r\n", ( mprg->fileprog ? "(FILEPROG) " : "" ),
                  mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
    return;
 }
@@ -160,28 +160,28 @@ void do_opstat( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "OProg stat what?\n\r", ch );
+      send_to_char( "OProg stat what?\r\n", ch );
       return;
    }
 
    if( ( obj = get_obj_world( ch, arg ) ) == NULL )
    {
-      send_to_char( "You cannot find that.\n\r", ch );
+      send_to_char( "You cannot find that.\r\n", ch );
       return;
    }
 
    if( xIS_EMPTY( obj->pIndexData->progtypes ) )
    {
-      send_to_char( "That object has no programs set.\n\r", ch );
+      send_to_char( "That object has no programs set.\r\n", ch );
       return;
    }
 
-   ch_printf( ch, "Name: %s.  Vnum: %d.\n\r", obj->name, obj->pIndexData->vnum );
+   ch_printf( ch, "Name: %s.  Vnum: %d.\r\n", obj->name, obj->pIndexData->vnum );
 
-   ch_printf( ch, "Short description: %s.\n\r", obj->short_descr );
+   ch_printf( ch, "Short description: %s.\r\n", obj->short_descr );
 
    for( mprg = obj->pIndexData->mudprogs; mprg; mprg = mprg->next )
-      ch_printf( ch, ">%s %s\n\r%s\n\r", mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+      ch_printf( ch, ">%s %s\r\n%s\r\n", mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
 
    return;
 
@@ -194,14 +194,14 @@ void do_rpstat( CHAR_DATA * ch, char *argument )
 
    if( xIS_EMPTY( ch->in_room->progtypes ) )
    {
-      send_to_char( "This room has no programs set.\n\r", ch );
+      send_to_char( "This room has no programs set.\r\n", ch );
       return;
    }
 
-   ch_printf( ch, "Name: %s.  Vnum: %d.\n\r", ch->in_room->name, ch->in_room->vnum );
+   ch_printf( ch, "Name: %s.  Vnum: %d.\r\n", ch->in_room->name, ch->in_room->vnum );
 
    for( mprg = ch->in_room->mudprogs; mprg; mprg = mprg->next )
-      ch_printf( ch, ">%s %s\n\r%s\n\r", mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+      ch_printf( ch, ">%s %s\r\n%s\r\n", mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
    return;
 }
 
@@ -215,7 +215,7 @@ void do_mpasupress( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -223,26 +223,26 @@ void do_mpasupress( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg2 );
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Mpasupress who?\n\r", ch );
+      send_to_char( "Mpasupress who?\r\n", ch );
       progbug( "Mpasupress:  invalid (nonexistent?) argument", ch );
       return;
    }
    if( arg2[0] == '\0' )
    {
-      send_to_char( "Supress their attacks for how many rounds?\n\r", ch );
+      send_to_char( "Supress their attacks for how many rounds?\r\n", ch );
       progbug( "Mpasupress:  invalid (nonexistent?) argument", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "No such victim in the room.\n\r", ch );
+      send_to_char( "No such victim in the room.\r\n", ch );
       progbug( "Mpasupress:  victim not present", ch );
       return;
    }
    rnds = atoi( arg2 );
    if( rnds < 0 || rnds > 32000 )
    {
-      send_to_char( "Invalid number of rounds to supress attacks.\n\r", ch );
+      send_to_char( "Invalid number of rounds to supress attacks.\r\n", ch );
       progbug( "Mpsupress:  invalid (nonexistent?) argument", ch );
       return;
    }
@@ -259,7 +259,7 @@ void do_mpkill( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
    if( !ch )
@@ -313,7 +313,7 @@ void do_mpjunk( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -391,7 +391,7 @@ void do_mpasound( CHAR_DATA * ch, char *argument )
    }
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -432,7 +432,7 @@ void do_mpechoaround( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -481,7 +481,7 @@ void do_mpechoat( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -530,7 +530,7 @@ void do_mpecho( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -562,7 +562,7 @@ void do_mpsoundaround( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -602,7 +602,7 @@ void do_mpsoundat( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -640,7 +640,7 @@ void do_mpsound( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -672,7 +672,7 @@ void do_mpmusicaround( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -703,7 +703,7 @@ void do_mpmusic( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -734,7 +734,7 @@ void do_mpmusicat( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -768,7 +768,7 @@ void do_mpmload( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -802,10 +802,9 @@ void do_mpoload( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
-
 
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
@@ -871,7 +870,7 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -881,19 +880,19 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
    if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
       progbug( "Mppardon:  missing argument", ch );
-      send_to_char( "Mppardon who for what?\n\r", ch );
+      send_to_char( "Mppardon who for what?\r\n", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
       progbug( "Mppardon: offender not present", ch );
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       return;
    }
    if( IS_NPC( victim ) )
    {
       progbug( "Mppardon:  trying to pardon NPC", ch );
-      send_to_char( "Not on NPC's.\n\r", ch );
+      send_to_char( "Not on NPC's.\r\n", ch );
       return;
    }
    if( !str_cmp( arg2, "attacker" ) )
@@ -901,8 +900,8 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
       if( xIS_SET( victim->act, PLR_ATTACKER ) )
       {
          xREMOVE_BIT( victim->act, PLR_ATTACKER );
-         send_to_char( "Attacker flag removed.\n\r", ch );
-         send_to_char( "Your crime of attack has been pardoned.\n\r", victim );
+         send_to_char( "Attacker flag removed.\r\n", ch );
+         send_to_char( "Your crime of attack has been pardoned.\r\n", victim );
       }
       return;
    }
@@ -911,8 +910,8 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
       if( xIS_SET( victim->act, PLR_KILLER ) )
       {
          xREMOVE_BIT( victim->act, PLR_KILLER );
-         send_to_char( "Killer flag removed.\n\r", ch );
-         send_to_char( "Your crime of murder has been pardoned.\n\r", victim );
+         send_to_char( "Killer flag removed.\r\n", ch );
+         send_to_char( "Your crime of murder has been pardoned.\r\n", victim );
       }
       return;
    }
@@ -921,8 +920,8 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
       if( xIS_SET( victim->act, PLR_LITTERBUG ) )
       {
          xREMOVE_BIT( victim->act, PLR_LITTERBUG );
-         send_to_char( "Litterbug flag removed.\n\r", ch );
-         send_to_char( "Your crime of littering has been pardoned./n/r", victim );
+         send_to_char( "Litterbug flag removed.\r\n", ch );
+         send_to_char( "Your crime of littering has been pardoned.\r\n", victim );
       }
       return;
    }
@@ -931,12 +930,12 @@ void do_mppardon( CHAR_DATA * ch, char *argument )
       if( xIS_SET( victim->act, PLR_THIEF ) )
       {
          xREMOVE_BIT( victim->act, PLR_THIEF );
-         send_to_char( "Thief flag removed.\n\r", ch );
-         send_to_char( "Your crime of theft has been pardoned.\n\r", victim );
+         send_to_char( "Thief flag removed.\r\n", ch );
+         send_to_char( "Your crime of theft has been pardoned.\r\n", victim );
       }
       return;
    }
-   send_to_char( "Pardon who for what?\n\r", ch );
+   send_to_char( "Pardon who for what?\r\n", ch );
    progbug( "Mppardon: Invalid argument", ch );
    return;
 }
@@ -953,10 +952,9 @@ void do_mppurge( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
-
 
    one_argument( argument, arg );
 
@@ -1000,7 +998,7 @@ void do_mppurge( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_NPC( victim ) && victim->pIndexData->vnum == 3 )
+   if( IS_NPC( victim ) && victim->pIndexData->vnum == MOB_VNUM_SUPERMOB )
    {
       progbug( "Mppurge: trying to purge supermob", ch );
       return;
@@ -1010,9 +1008,7 @@ void do_mppurge( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 /* Allow mobiles to go wizinvis with programs -- SB */
-
 void do_mpinvis( CHAR_DATA * ch, char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
@@ -1020,7 +1016,7 @@ void do_mpinvis( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1041,7 +1037,7 @@ void do_mpinvis( CHAR_DATA * ch, char *argument )
       }
 
       ch->mobinvis = level;
-      ch_printf( ch, "Mobinvis level set to %d.\n\r", level );
+      ch_printf( ch, "Mobinvis level set to %d.\r\n", level );
       return;
    }
 
@@ -1052,13 +1048,13 @@ void do_mpinvis( CHAR_DATA * ch, char *argument )
    {
       xREMOVE_BIT( ch->act, ACT_MOBINVIS );
       act( AT_IMMORT, "$n slowly fades into existence.", ch, NULL, NULL, TO_ROOM );
-      send_to_char( "You slowly fade back into existence.\n\r", ch );
+      send_to_char( "You slowly fade back into existence.\r\n", ch );
    }
    else
    {
       xSET_BIT( ch->act, ACT_MOBINVIS );
       act( AT_IMMORT, "$n slowly fades into thin air.", ch, NULL, NULL, TO_ROOM );
-      send_to_char( "You slowly vanish into thin air.\n\r", ch );
+      send_to_char( "You slowly vanish into thin air.\r\n", ch );
    }
    return;
 }
@@ -1075,7 +1071,7 @@ void do_mpgoto( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1120,7 +1116,7 @@ void do_mpat( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1163,7 +1159,7 @@ void do_mpadvance( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1207,19 +1203,19 @@ void do_mpadvance( CHAR_DATA * ch, char *argument )
       act( AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s fingers at $N!",
            ch, NULL, victim, TO_NOTVICT );
       set_char_color( AT_WHITE, victim );
-      send_to_char( "You suddenly feel very strange...\n\r\n\r", victim );
+      send_to_char( "You suddenly feel very strange...\r\n\r\n", victim );
       set_char_color( AT_LBLUE, victim );
    }
 
    switch ( level )
    {
       default:
-         send_to_char( "You feel more powerful!\n\r", victim );
+         send_to_char( "You feel more powerful!\r\n", victim );
          break;
       case LEVEL_IMMORTAL:
          do_help( victim, "M_GODLVL1_" );
          set_char_color( AT_WHITE, victim );
-         send_to_char( "You awake... all your possessions are gone.\n\r", victim );
+         send_to_char( "You awake... all your possessions are gone.\r\n", victim );
 
          while( victim->first_carrying )
             extract_obj( victim->first_carrying );
@@ -1292,7 +1288,7 @@ void do_mptransfer( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1340,7 +1336,7 @@ void do_mptransfer( CHAR_DATA * ch, char *argument )
    {
       for( d = first_descriptor; d; d = d->next )
       {
-         if( !d->character || ( d->connected != CON_PLAYING &&  d->connected != CON_EDITING )
+         if( !d->character || ( d->connected != CON_PLAYING && d->connected != CON_EDITING )
              || ch->in_room->area != d->character->in_room->area )
             continue;
 
@@ -1369,7 +1365,7 @@ void do_mpforce( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1437,7 +1433,7 @@ void do_mpnuisance( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1451,7 +1447,7 @@ void do_mpnuisance( CHAR_DATA * ch, char *argument )
 
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpnuisance: victim not in room", ch );
       return;
    }
@@ -1471,7 +1467,7 @@ void do_mpnuisance( CHAR_DATA * ch, char *argument )
       return;
    }
    CREATE( victim->pcdata->nuisance, NUISANCE_DATA, 1 );
-   victim->pcdata->nuisance->time = current_time;
+   victim->pcdata->nuisance->set_time = current_time;
    victim->pcdata->nuisance->flags = 1;
    victim->pcdata->nuisance->power = 2;
    now_time = localtime( &current_time );
@@ -1489,7 +1485,7 @@ void do_mpunnuisance( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1503,7 +1499,7 @@ void do_mpunnuisance( CHAR_DATA * ch, char *argument )
 
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpunnuisance: victim not in room", ch );
       return;
    }
@@ -1548,7 +1544,7 @@ void do_mpbodybag( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1560,21 +1556,23 @@ void do_mpbodybag( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( ( victim = get_char_room( ch, arg ) ) == NULL )
+   if( !( victim = get_char_room( ch, arg ) ) )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpbodybag: victim not in room", ch );
       return;
    }
+
    if( IS_NPC( victim ) )
    {
       progbug( "Mpbodybag: bodybagging a npc corpse", ch );
       return;
    }
+
    snprintf( buf2, MAX_STRING_LENGTH, "the corpse of %s", arg );
    for( obj = first_object; obj; obj = obj->next )
    {
-      if( obj->in_room && !str_cmp( buf2, obj->short_descr ) && ( obj->pIndexData->vnum == 11 ) )
+      if( obj->in_room && obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC && !str_cmp( buf2, obj->short_descr ) )
       {
          obj_from_room( obj );
          obj = obj_to_char( obj, ch );
@@ -1603,7 +1601,7 @@ void do_mpmorph( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1618,7 +1616,7 @@ void do_mpmorph( CHAR_DATA * ch, char *argument )
 
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpmorph: victim not in room", ch );
       return;
    }
@@ -1649,7 +1647,7 @@ void do_mpunmorph( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1663,7 +1661,7 @@ void do_mpunmorph( CHAR_DATA * ch, char *argument )
 
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpunmorph: victim not in room", ch );
       return;
    }
@@ -1686,7 +1684,7 @@ void do_mpechozone( CHAR_DATA * ch, char *argument )  /* Blod, late 97 */
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1733,7 +1731,7 @@ void do_mp_practice( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1834,7 +1832,7 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1843,19 +1841,19 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Mpstrew whom?\n\r", ch );
+      send_to_char( "Mpstrew whom?\r\n", ch );
       progbug( "Mpstrew: invalid (nonexistent?) argument", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpstrew: victim not in room", ch );
       return;
    }
    if( IS_IMMORTAL( victim ) && get_trust( victim ) >= get_trust( ch ) )
    {
-      send_to_char( "You haven't the power to succeed against this victim.\n\r", ch );
+      send_to_char( "You haven't the power to succeed against this victim.\r\n", ch );
       progbug( "Mpstrew: victim level too high", ch );
       return;
    }
@@ -1863,7 +1861,7 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
    {
       if( victim->gold < 1 )
       {
-         send_to_char( "Drat, this one's got no gold to start with.\n\r", ch );
+         send_to_char( "Drat, this one's got no gold to start with.\r\n", ch );
          return;
       }
       victim->gold = 0;
@@ -1871,13 +1869,13 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
    }
    if( arg2[0] == '\0' )
    {
-      send_to_char( "You must specify a low vnum.\n\r", ch );
+      send_to_char( "You must specify a low vnum.\r\n", ch );
       progbug( "Mpstrew:  missing low vnum", ch );
       return;
    }
    if( argument[0] == '\0' )
    {
-      send_to_char( "You must specify a high vnum.\n\r", ch );
+      send_to_char( "You must specify a high vnum.\r\n", ch );
       progbug( "Mpstrew:  missing high vnum", ch );
       return;
    }
@@ -1885,7 +1883,7 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
    high_vnum = atoi( argument );
    if( low_vnum < 1 || high_vnum < low_vnum || low_vnum > high_vnum || low_vnum == high_vnum || high_vnum > MAX_VNUM )
    {
-      send_to_char( "Invalid range.\n\r", ch );
+      send_to_char( "Invalid range.\r\n", ch );
       progbug( "Mpstrew:  invalid range", ch );
       return;
    }
@@ -1903,11 +1901,11 @@ void do_mpstrew( CHAR_DATA * ch, char *argument )
          obj_next = obj_lose->next_content;
          obj_from_char( obj_lose );
          obj_to_room( obj_lose, pRoomIndex );
-         pager_printf_color( ch, "\t&w%s sent to %d\n\r", capitalize( obj_lose->short_descr ), pRoomIndex->vnum );
+         pager_printf_color( ch, "\t&w%s sent to %d\r\n", capitalize( obj_lose->short_descr ), pRoomIndex->vnum );
       }
       return;
    }
-   send_to_char( "Strew their coins or inventory?\n\r", ch );
+   send_to_char( "Strew their coins or inventory?\r\n", ch );
    progbug( "Mpstrew:  no arguments", ch );
    return;
 }
@@ -1923,7 +1921,7 @@ void do_mpscatter( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -1931,31 +1929,31 @@ void do_mpscatter( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg2 );
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Mpscatter whom?\n\r", ch );
+      send_to_char( "Mpscatter whom?\r\n", ch );
       progbug( "Mpscatter: invalid (nonexistent?) argument", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpscatter: victim not in room", ch );
       return;
    }
    if( IS_IMMORTAL( victim ) && get_trust( victim ) >= get_trust( ch ) )
    {
-      send_to_char( "You haven't the power to succeed against this victim.\n\r", ch );
+      send_to_char( "You haven't the power to succeed against this victim.\r\n", ch );
       progbug( "Mpscatter: victim level too high", ch );
       return;
    }
    if( arg2[0] == '\0' )
    {
-      send_to_char( "You must specify a low vnum.\n\r", ch );
+      send_to_char( "You must specify a low vnum.\r\n", ch );
       progbug( "Mpscatter:  missing low vnum", ch );
       return;
    }
    if( argument[0] == '\0' )
    {
-      send_to_char( "You must specify a high vnum.\n\r", ch );
+      send_to_char( "You must specify a high vnum.\r\n", ch );
       progbug( "Mpscatter:  missing high vnum", ch );
       return;
    }
@@ -1963,7 +1961,7 @@ void do_mpscatter( CHAR_DATA * ch, char *argument )
    high_vnum = atoi( argument );
    if( low_vnum < 1 || high_vnum < low_vnum || low_vnum > high_vnum || low_vnum == high_vnum || high_vnum > MAX_VNUM )
    {
-      send_to_char( "Invalid range.\n\r", ch );
+      send_to_char( "Invalid range.\r\n", ch );
       progbug( "Mpscatter:  invalid range", ch );
       return;
    }
@@ -2005,35 +2003,35 @@ void do_mp_slay( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    argument = one_argument( argument, arg1 );
    if( arg1[0] == '\0' )
    {
-      send_to_char( "mpslay whom?\n\r", ch );
+      send_to_char( "mpslay whom?\r\n", ch );
       progbug( "Mpslay: invalid (nonexistent?) argument", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpslay: victim not in room", ch );
       return;
    }
 
    if( victim == ch )
    {
-      send_to_char( "You try to slay yourself.  You fail.\n\r", ch );
+      send_to_char( "You try to slay yourself.  You fail.\r\n", ch );
       progbug( "Mpslay: trying to slay self", ch );
       return;
    }
 
-   if( IS_NPC( victim ) && victim->pIndexData->vnum == 3 )
+   if( IS_NPC( victim ) && victim->pIndexData->vnum == MOB_VNUM_SUPERMOB )
    {
-      send_to_char( "You cannot slay supermob!\n\r", ch );
+      send_to_char( "You cannot slay supermob!\r\n", ch );
       progbug( "Mpslay: trying to slay supermob", ch );
       return;
    }
@@ -2073,7 +2071,7 @@ void do_mp_damage( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2081,7 +2079,7 @@ void do_mp_damage( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg2 );
    if( arg1[0] == '\0' )
    {
-      send_to_char( "mpdamage whom?\n\r", ch );
+      send_to_char( "mpdamage whom?\r\n", ch );
       progbug( "Mpdamage: invalid argument1", ch );
       return;
    }
@@ -2101,26 +2099,26 @@ void do_mp_damage( CHAR_DATA * ch, char *argument )
    }
    if( arg2[0] == '\0' )
    {
-      send_to_char( "mpdamage inflict how many hps?\n\r", ch );
+      send_to_char( "mpdamage inflict how many hps?\r\n", ch );
       progbug( "Mpdamage: invalid argument2", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpdamage: victim not in room", ch );
       return;
    }
    if( victim == ch )
    {
-      send_to_char( "You can't mpdamage yourself.\n\r", ch );
+      send_to_char( "You can't mpdamage yourself.\r\n", ch );
       progbug( "Mpdamage: trying to damage self", ch );
       return;
    }
    dam = atoi( arg2 );
    if( ( dam < 0 ) || ( dam > 32000 ) )
    {
-      send_to_char( "Mpdamage how much?\n\r", ch );
+      send_to_char( "Mpdamage how much?\r\n", ch );
       progbug( "Mpdamage: invalid (nonexistent?) argument", ch );
       return;
    }
@@ -2149,7 +2147,7 @@ void do_mp_log( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2176,7 +2174,7 @@ void do_mp_restore( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2185,21 +2183,21 @@ void do_mp_restore( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' )
    {
-      send_to_char( "mprestore whom?\n\r", ch );
+      send_to_char( "mprestore whom?\r\n", ch );
       progbug( "Mprestore: invalid argument1", ch );
       return;
    }
 
    if( arg2[0] == '\0' )
    {
-      send_to_char( "mprestore how many hps?\n\r", ch );
+      send_to_char( "mprestore how many hps?\r\n", ch );
       progbug( "Mprestore: invalid argument2", ch );
       return;
    }
 
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mprestore: victim not in room", ch );
       return;
    }
@@ -2208,7 +2206,7 @@ void do_mp_restore( CHAR_DATA * ch, char *argument )
 
    if( ( hp < 0 ) || ( hp > 32000 ) )
    {
-      send_to_char( "Mprestore how much?\n\r", ch );
+      send_to_char( "Mprestore how much?\r\n", ch );
       progbug( "Mprestore: invalid (nonexistent?) argument", ch );
       return;
    }
@@ -2231,7 +2229,7 @@ void do_mpfavor( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2240,14 +2238,14 @@ void do_mpfavor( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' )
    {
-      send_to_char( "mpfavor whom?\n\r", ch );
+      send_to_char( "mpfavor whom?\r\n", ch );
       progbug( "Mpfavor: invalid argument1", ch );
       return;
    }
 
    if( arg2[0] == '\0' )
    {
-      send_to_char( "mpfavor how much favor?\n\r", ch );
+      send_to_char( "mpfavor how much favor?\r\n", ch );
       progbug( "Mpfavor: invalid argument2", ch );
       return;
    }
@@ -2259,7 +2257,7 @@ void do_mpfavor( CHAR_DATA * ch, char *argument )
       tmp++;
       if( tmp[0] == '\0' )
       {
-         send_to_char( "mpfavor how much favor?\n\r", ch );
+         send_to_char( "mpfavor how much favor?\r\n", ch );
          progbug( "Mpfavor: invalid argument2", ch );
          return;
       }
@@ -2270,14 +2268,14 @@ void do_mpfavor( CHAR_DATA * ch, char *argument )
       tmp++;
       if( tmp[0] == '\0' )
       {
-         send_to_char( "mpfavor how much favor?\n\r", ch );
+         send_to_char( "mpfavor how much favor?\r\n", ch );
          progbug( "Mpfavor: invalid argument2", ch );
          return;
       }
    }
    if( ( victim = get_char_room( ch, arg1 ) ) == NULL )
    {
-      send_to_char( "Victim must be in room.\n\r", ch );
+      send_to_char( "Victim must be in room.\r\n", ch );
       progbug( "Mpfavor: victim not in room", ch );
       return;
    }
@@ -2309,7 +2307,7 @@ void do_mp_open_passage( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2398,7 +2396,7 @@ void do_mp_fill_in( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2431,7 +2429,7 @@ void do_mp_close_passage( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2507,7 +2505,7 @@ void do_mpnothing( CHAR_DATA * ch, char *argument )
 {
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2527,7 +2525,7 @@ void do_mpdream( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2543,7 +2541,7 @@ void do_mpdream( CHAR_DATA * ch, char *argument )
    if( vict->position <= POS_SLEEPING )
    {
       send_to_char( argument, vict );
-      send_to_char( "\n\r", vict );
+      send_to_char( "\r\n", vict );
    }
    return;
 }
@@ -2555,7 +2553,7 @@ void do_mpapply( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2573,7 +2571,7 @@ void do_mpapply( CHAR_DATA * ch, char *argument )
 
    if( !victim->desc )
    {
-      send_to_char( "Not on linkdeads.\n\r", ch );
+      send_to_char( "Not on linkdeads.\r\n", ch );
       return;
    }
 
@@ -2600,7 +2598,7 @@ void do_mpapplyb( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2618,7 +2616,7 @@ void do_mpapplyb( CHAR_DATA * ch, char *argument )
 
    if( !victim->desc )
    {
-      send_to_char( "Not on linkdeads.\n\r", ch );
+      send_to_char( "Not on linkdeads.\r\n", ch );
       return;
    }
 
@@ -2633,7 +2631,7 @@ void do_mpapplyb( CHAR_DATA * ch, char *argument )
       case 0:
       case 1:
       default:
-         send_to_char( "You attempt to regain the gods' attention.\n\r", victim );
+         send_to_char( "You attempt to regain the gods' attention.\r\n", victim );
          snprintf( log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s %s applying...",
                    victim->name, victim->desc->host,
                    race_table[victim->race]->race_name,
@@ -2646,14 +2644,14 @@ void do_mpapplyb( CHAR_DATA * ch, char *argument )
 
       case 2:
          send_to_char
-            ( "Your name has been deemed unsuitable by the gods.  Please choose a more medieval name with the 'name' command.\n\r",
+            ( "Your name has been deemed unsuitable by the gods.  Please choose a more medieval name with the 'name' command.\r\n",
               victim );
          add_timer( victim, TIMER_APPLIED, 10, NULL, 0 );
          break;
 
       case 3:
-         ch_printf( victim, "The gods permit you to enter the %s.\n\r", sysdata.mud_name );
-/*  send_to_char( "The gods permit you to enter the Realms of Despair.\n\r", victim);  */
+         ch_printf( victim, "The gods permit you to enter the %s.\r\n", sysdata.mud_name );
+/*  send_to_char( "The gods permit you to enter the Realms of Despair.\r\n", victim);  */
 /* Stat stuff that follows from here to name_stamp is to keep stat-cheats
    from abusing the auth system -- Blodkai */
          victim->perm_str = 13;
@@ -2718,7 +2716,7 @@ void do_mp_deposit( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2748,7 +2746,7 @@ void do_mp_withdraw( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2776,7 +2774,7 @@ void do_mpdelay( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -2789,32 +2787,32 @@ void do_mpdelay( CHAR_DATA * ch, char *argument )
    }
    if( !( victim = get_char_room( ch, arg ) ) )
    {
-      send_to_char( "They aren't here.\n\r", ch );
+      send_to_char( "They aren't here.\r\n", ch );
       progbug( "Mpdelay: target not in room", ch );
       return;
    }
    if( IS_IMMORTAL( victim ) )
    {
-      send_to_char( "Not against immortals.\n\r", ch );
+      send_to_char( "Not against immortals.\r\n", ch );
       progbug( "Mpdelay: target is immortal", ch );
       return;
    }
    argument = one_argument( argument, arg );
    if( !*arg || !is_number( arg ) )
    {
-      send_to_char( "Delay them for how many rounds?\n\r", ch );
+      send_to_char( "Delay them for how many rounds?\r\n", ch );
       progbug( "Mpdelay: invalid (nonexistant?) argument", ch );
       return;
    }
    delay = atoi( arg );
    if( delay < 1 || delay > 30 )
    {
-      send_to_char( "Argument out of range.\n\r", ch );
+      send_to_char( "Argument out of range.\r\n", ch );
       progbug( "Mpdelay:  argument out of range (1 to 30)", ch );
       return;
    }
    WAIT_STATE( victim, delay * PULSE_VIOLENCE );
-   send_to_char( "Mpdelay applied.\n\r", ch );
+   send_to_char( "Mpdelay applied.\r\n", ch );
    return;
 }
 
@@ -2826,14 +2824,14 @@ void do_mppeace( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    argument = one_argument( argument, arg );
    if( !*arg )
    {
-      send_to_char( "Who do you want to mppeace?\n\r", ch );
+      send_to_char( "Who do you want to mppeace?\r\n", ch );
       progbug( "Mppeace: invalid (nonexistent?) argument", ch );
       return;
    }
@@ -2850,7 +2848,7 @@ void do_mppeace( CHAR_DATA * ch, char *argument )
          stop_hunting( rch );
          stop_fearing( rch );
       }
-      send_to_char( "Ok.\n\r", ch );
+      send_to_char( "Ok.\r\n", ch );
       return;
    }
    if( ( victim = get_char_room( ch, arg ) ) == NULL )
@@ -2867,7 +2865,7 @@ void do_mppeace( CHAR_DATA * ch, char *argument )
    stop_hating( victim );
    stop_hunting( victim );
    stop_fearing( victim );
-   send_to_char( "Ok.\n\r", ch );
+   send_to_char( "Ok.\r\n", ch );
    return;
 }
 
@@ -2878,7 +2876,7 @@ void do_mppkset( CHAR_DATA * ch, char *argument )
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -3045,7 +3043,7 @@ ch_ret simple_damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
       case POS_DEAD:
          act( AT_DEAD, "$n is DEAD!!", victim, 0, 0, TO_ROOM );
-         act( AT_DEAD, "You have been KILLED!!\n\r", victim, 0, 0, TO_CHAR );
+         act( AT_DEAD, "You have been KILLED!!\r\n", victim, 0, 0, TO_CHAR );
          break;
 
       default:

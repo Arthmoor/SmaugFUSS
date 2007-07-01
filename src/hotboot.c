@@ -26,7 +26,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <unistd.h>
+#if !defined(WIN32)
 #include <dlfcn.h>
+#else
+#include <unistd.h>
+#include <windows.h>
+#define dlopen( libname, flags ) LoadLibrary( (libname) )
+#define dlclose( libname ) FreeLibrary( (HINSTANCE) (libname) )
+#endif
 #include "mud.h"
 #include "mccp.h"
 
@@ -190,7 +197,7 @@ CHAR_DATA *load_mobile( FILE * fp )
       vnum = fread_number( fp );
       if( get_mob_index( vnum ) == NULL )
       {
-         bug( "load_mobile: No index data for vnum %d", vnum );
+         bug( "%s: No index data for vnum %d", __FUNCTION__, vnum );
          return NULL;
       }
       mob = create_mobile( get_mob_index( vnum ) );
@@ -206,7 +213,7 @@ CHAR_DATA *load_mobile( FILE * fp )
             if( !str_cmp( word, "EndMobile" ) )
                break;
          }
-         bug( "load_mobile: Unable to create mobile for vnum %d", vnum );
+         bug( "%s: Unable to create mobile for vnum %d", __FUNCTION__, vnum );
          return NULL;
       }
    }
@@ -223,9 +230,10 @@ CHAR_DATA *load_mobile( FILE * fp )
             break;
       }
       extract_char( mob, TRUE );
-      bug( "%s", "load_mobile: Vnum not found" );
+      bug( "%s: Vnum not found", __FUNCTION__ );
       return NULL;
    }
+
    for( ;; )
    {
       word = feof( fp ) ? "EndMobile" : fread_word( fp );
@@ -236,12 +244,15 @@ CHAR_DATA *load_mobile( FILE * fp )
             fMatch = TRUE;
             fread_to_eol( fp );
             break;
+
          case '#':
             if( !str_cmp( word, "#OBJECT" ) )
             {
                mob->tempnum = -9999;   /* Hackish, yes. Works though doesn't it? */
                fread_obj( mob, fp, OS_CARRY );
             }
+            break;
+
          case 'A':
             if( !str_cmp( word, "Affect" ) || !str_cmp( word, "AffectData" ) )
             {
@@ -260,7 +271,7 @@ CHAR_DATA *load_mobile( FILE * fp )
                   if( ( sn = skill_lookup( sname ) ) < 0 )
                   {
                      if( ( sn = herb_lookup( sname ) ) < 0 )
-                        bug( "%s", "load_mobile: unknown skill." );
+                        bug( "%s: unknown skill.", __FUNCTION__ );
                      else
                         sn += TYPE_HERB;
                   }
@@ -282,6 +293,7 @@ CHAR_DATA *load_mobile( FILE * fp )
             }
             KEY( "AffectedBy", mob->affected_by, fread_bitvector( fp ) );
             break;
+
 #ifdef OVERLANDCODE
          case 'C':
             if( !str_cmp( word, "Coordinates" ) )
@@ -295,9 +307,17 @@ CHAR_DATA *load_mobile( FILE * fp )
             }
             break;
 #endif
+
          case 'D':
-            KEY( "Description", mob->description, fread_string( fp ) );
+            if( !str_cmp( word, "Description" ) )
+            {
+               STRFREE( mob->description );
+               mob->description = fread_string( fp );
+               fMatch = TRUE;
+               break;
+            }
             break;
+
          case 'E':
             if( !str_cmp( word, "EndMobile" ) )
             {
@@ -313,11 +333,15 @@ CHAR_DATA *load_mobile( FILE * fp )
             if( !str_cmp( word, "End" ) ) /* End of object, need to ignore this. sometimes they creep in there somehow -- Scion */
                fMatch = TRUE; /* Trick the system into thinking it matched something */
             break;
+
          case 'F':
             KEY( "Flags", mob->act, fread_bitvector( fp ) );
+            break;
+
          case 'G':
             KEY( "Gold", mob->gold, fread_number( fp ) );
             break;
+
          case 'H':
             if( !str_cmp( word, "HpManaMove" ) )
             {
@@ -335,23 +359,47 @@ CHAR_DATA *load_mobile( FILE * fp )
                break;
             }
             break;
+
          case 'L':
-            KEY( "Long", mob->long_descr, fread_string( fp ) );
+            if( !str_cmp( word, "Long" ) )
+            {
+               STRFREE( mob->long_descr );
+               mob->long_descr = fread_string( fp );
+               fMatch = TRUE;
+               break;
+            }
             KEY( "Level", mob->level, fread_number( fp ) );
             break;
+
          case 'N':
-            KEY( "Name", mob->name, fread_string( fp ) );
+            if( !str_cmp( word, "Name" ) )
+            {
+               STRFREE( mob->name );
+               mob->name = fread_string( fp );
+               fMatch = TRUE;
+               break;
+            }
             break;
+
          case 'P':
             KEY( "Position", mob->position, fread_number( fp ) );
             break;
+
          case 'R':
             KEY( "Room", inroom, fread_number( fp ) );
             break;
+
          case 'S':
-            KEY( "Short", mob->short_descr, fread_string( fp ) );
+            if( !str_cmp( word, "Short" ) )
+            {
+               STRFREE( mob->short_descr );
+               mob->short_descr = fread_string( fp );
+               fMatch = TRUE;
+               break;
+            }
             break;
       }
+
       if( !fMatch && str_cmp( word, "End" ) )
       {
          bug( "%s: no match: %s", __FUNCTION__, word );
@@ -550,7 +598,7 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
 
    if( found )
    {
-      ch_printf( ch, "Cannot hotboot at this time. There are %d combats in progress.\n\r", count );
+      ch_printf( ch, "Cannot hotboot at this time. There are %d combats in progress.\r\n", count );
       return;
    }
 
@@ -566,7 +614,7 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
 
    if( found )
    {
-      send_to_char( "Cannot hotboot at this time. Someone is using the line editor.\n\r", ch );
+      send_to_char( "Cannot hotboot at this time. Someone is using the line editor.\r\n", ch );
       return;
    }
 
@@ -577,7 +625,7 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
 
    if( !fp )
    {
-      send_to_char( "Hotboot file not writeable, aborted.\n\r", ch );
+      send_to_char( "Hotboot file not writeable, aborted.\r\n", ch );
       bug( "Could not write to hotboot file: %s. Hotboot aborted.", HOTBOOT_FILE );
       perror( "do_copyover:fopen" );
       return;
@@ -587,12 +635,12 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
     * And this one here will save the status of all objects and mobs in the game.
     * * This really should ONLY ever be used here. The less we do stuff like this the better.
     */
-   save_world( );
+   save_world(  );
 
    log_string( "Saving player files and connection states...." );
    if( ch && ch->desc )
       write_to_descriptor( ch->desc, "\033[0m", 0 );
-   snprintf( buf, 100, "\n\rThe flow of time is halted momentarily as the world is reshaped!\n\r" );
+   snprintf( buf, 100, "\r\nThe flow of time is halted momentarily as the world is reshaped!\r\n" );
    /*
     * For each playing descriptor, save its state 
     */
@@ -602,7 +650,7 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
       de_next = d->next;   /* We delete from the list , so need to save this */
       if( !d->character || d->connected < CON_PLAYING )  /* drop those logging on */
       {
-         write_to_descriptor( d, "\n\rSorry, we are rebooting. Come back in a few minutes.\n\r", 0 );
+         write_to_descriptor( d, "\r\nSorry, we are rebooting. Come back in a few minutes.\r\n", 0 );
          close_socket( d, FALSE );  /* throw'em out */
       }
       else
@@ -665,12 +713,12 @@ void do_hotboot( CHAR_DATA * ch, char *argument )
    sysdata.dlHandle = dlopen( NULL, RTLD_LAZY );
    if( !sysdata.dlHandle )
    {
-	bug( "%s", "FATAL ERROR: Unable to reopen system executable handle!" );
-	exit( 1 );
+      bug( "%s", "FATAL ERROR: Unable to reopen system executable handle!" );
+      exit( 1 );
    }
 
    bug( "%s", "Hotboot execution failed!!" );
-   send_to_char( "Hotboot FAILED!\n\r", ch );
+   send_to_char( "Hotboot FAILED!\r\n", ch );
 }
 
 /* Recover from a hotboot - load players */
@@ -711,7 +759,7 @@ void hotboot_recover( void )
       /*
        * Write something, and check if it goes error-free 
        */
-      if( !dcompress && !write_to_descriptor_old( desc, "\n\rThe ether swirls in chaos.\n\r", 0 ) )
+      if( !dcompress && !write_to_descriptor_old( desc, "\r\nThe ether swirls in chaos.\r\n", 0 ) )
       {
          close( desc ); /* nope */
          continue;
@@ -728,6 +776,8 @@ void hotboot_recover( void )
       d->scrlen = 24;
       d->newstate = 0;
       d->prevcolor = 0x08;
+      d->ifd = -1;
+      d->ipid = -1;
 
       CREATE( d->outbuf, char, d->outsize );
 
@@ -748,12 +798,12 @@ void hotboot_recover( void )
 
       if( !fOld ) /* Player file not found?! */
       {
-         write_to_descriptor( d, "\n\rSomehow, your character was lost during hotboot. Contact the immortals ASAP.\n\r", 0 );
+         write_to_descriptor( d, "\r\nSomehow, your character was lost during hotboot. Contact the immortals ASAP.\r\n", 0 );
          close_socket( d, FALSE );
       }
       else  /* ok! */
       {
-         write_to_descriptor( d, "\n\rTime resumes its normal flow.\n\r", 0 );
+         write_to_descriptor( d, "\r\nTime resumes its normal flow.\r\n", 0 );
          d->character->in_room = get_room_index( room );
          if( !d->character->in_room )
             d->character->in_room = get_room_index( ROOM_VNUM_TEMPLE );

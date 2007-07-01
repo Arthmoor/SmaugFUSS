@@ -49,7 +49,7 @@ void load_banlist( void )
 
    if( !( fp = fopen( SYSTEM_DIR BAN_LIST, "r" ) ) )
    {
-      bug( "Save_banlist: Cannot open %s", BAN_LIST );
+      bug( "%s: Cannot open %s", __FUNCTION__, BAN_LIST );
       perror( BAN_LIST );
       return;
    }
@@ -168,7 +168,7 @@ void fread_ban( FILE * fp, int type )
          pban->flag = i;
       else  /* The file is corupted throw out this ban structure */
       {
-         bug( "Bad class structure %d.\n\r", i );
+         bug( "Bad class structure %d.\r\n", i );
          free_ban( pban );
          return;
       }
@@ -262,7 +262,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )   /* Don't want mobs banning sites ;) */
    {
-      send_to_char( "Monsters are too dumb to do that!\n\r", ch );
+      send_to_char( "Monsters are too dumb to do that!\r\n", ch );
       return;
    }
 
@@ -296,7 +296,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
    if( btime != -1 && ( btime < 1 || btime > 1000 ) )
    {
-      send_to_char( "Time value is -1 (forever) or from 1 to 1000.\n\r", ch );
+      send_to_char( "Time value is -1 (forever) or from 1 to 1000.\r\n", ch );
       return;
    }
 
@@ -310,7 +310,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
          bug( "%s", "do_ban: illegal substate" );
          return;
       case SUB_RESTRICTED:
-         send_to_char( "You cannot use this command from within another command.\n\r", ch );
+         send_to_char( "You cannot use this command from within another command.\r\n", ch );
          return;
       case SUB_NONE:
          ch->tempnum = SUB_NONE;
@@ -346,7 +346,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < sysdata.ban_site_level )
       {
-         ch_printf( ch, "You must be %d level to add bans.\n\r", sysdata.ban_site_level );
+         ch_printf( ch, "You must be %d level to add bans.\r\n", sysdata.ban_site_level );
          return;
       }
       if( arg3[0] == '\0' )
@@ -368,7 +368,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < sysdata.ban_race_level )
       {
-         ch_printf( ch, "You must be %d level to add bans.\n\r", sysdata.ban_race_level );
+         ch_printf( ch, "You must be %d level to add bans.\r\n", sysdata.ban_race_level );
          return;
       }
       if( arg3[0] == '\0' )
@@ -390,7 +390,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
       if( get_trust( ch ) < sysdata.ban_class_level )
       {
-         ch_printf( ch, "You must be %d level to add bans.\n\r", sysdata.ban_class_level );
+         ch_printf( ch, "You must be %d level to add bans.\r\n", sysdata.ban_class_level );
          return;
       }
       if( arg3[0] == '\0' )
@@ -414,13 +414,13 @@ void do_ban( CHAR_DATA * ch, char *argument )
          temp++;
          if( !is_number( temp ) )
          {
-            send_to_char( "Which ban # to show?\n\r", ch );
+            send_to_char( "Which ban # to show?\r\n", ch );
             return;
          }
          value = atoi( temp );
          if( value < 1 )
          {
-            send_to_char( "You must specify a number greater than 0.\n\r", ch );
+            send_to_char( "You must specify a number greater than 0.\r\n", ch );
             return;
          }
       }
@@ -446,10 +446,10 @@ void do_ban( CHAR_DATA * ch, char *argument )
 
       if( !pban )
       {
-         send_to_char( "No such ban.\n\r", ch );
+         send_to_char( "No such ban.\r\n", ch );
          return;
       }
-      ch_printf( ch, "Banned by: %s\n\r", pban->ban_by );
+      ch_printf( ch, "Banned by: %s\r\n", pban->ban_by );
       send_to_char( pban->note, ch );
       return;
    }
@@ -463,15 +463,15 @@ void do_ban( CHAR_DATA * ch, char *argument )
  */
 
  syntax_message:
-   send_to_char( "Syntax: ban site  <address> <type> <duration>\n\r", ch );
-   send_to_char( "Syntax: ban race  <race>    <type> <duration>\n\r", ch );
-   send_to_char( "Syntax: ban class <class>   <type> <duration>\n\r", ch );
-   send_to_char( "Syntax: ban show  <field>   <number>\n\r", ch );
-   send_to_char( "Ban site lists current bans.\n\r", ch );
-   send_to_char( "Duration is the length of the ban in days.\n\r", ch );
-   send_to_char( "Type can be:  newbie, mortal, all, warn or level.\n\r", ch );
+   send_to_char( "Syntax: ban site  <address> <type> <duration>\r\n", ch );
+   send_to_char( "Syntax: ban race  <race>    <type> <duration>\r\n", ch );
+   send_to_char( "Syntax: ban class <class>   <type> <duration>\r\n", ch );
+   send_to_char( "Syntax: ban show  <field>   <number>\r\n", ch );
+   send_to_char( "Ban site lists current bans.\r\n", ch );
+   send_to_char( "Duration is the length of the ban in days.\r\n", ch );
+   send_to_char( "Type can be:  newbie, mortal, all, warn or level.\r\n", ch );
    send_to_char( "In ban show, the <field> is site, race or class,", ch );
-   send_to_char( "  and the <number> is the ban number.\n\r", ch );
+   send_to_char( "  and the <number> is the ban number.\r\n", ch );
    return;
 }
 
@@ -491,7 +491,7 @@ void do_allow( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )   /* No mobs allowing sites */
    {
-      send_to_char( "Monsters are too dumb to do that!\n\r", ch );
+      send_to_char( "Monsters are too dumb to do that!\r\n", ch );
       return;
    }
 
@@ -514,7 +514,7 @@ void do_allow( CHAR_DATA * ch, char *argument )
       temp++;
       if( !is_number( temp ) )
       {
-         send_to_char( "Which ban # to allow?\n\r", ch );
+         send_to_char( "Which ban # to allow?\r\n", ch );
          return;
       }
       value = atoi( temp );
@@ -525,8 +525,8 @@ void do_allow( CHAR_DATA * ch, char *argument )
       {
          if( strlen( arg2 ) < 2 )
          {
-            send_to_char( "You have to have at least 2 chars for a ban\n\r", ch );
-            send_to_char( "If you are trying to allow by number use #\n\r", ch );
+            send_to_char( "You have to have at least 2 chars for a ban\r\n", ch );
+            send_to_char( "If you are trying to allow by number use #\r\n", ch );
             return;
          }
 
@@ -605,10 +605,10 @@ void do_allow( CHAR_DATA * ch, char *argument )
    if( fMatch )
    {
       save_banlist(  );
-      ch_printf( ch, "%s is now allowed.\n\r", arg2 );
+      ch_printf( ch, "%s is now allowed.\r\n", arg2 );
    }
    else
-      ch_printf( ch, "%s was not banned.\n\r", arg2 );
+      ch_printf( ch, "%s was not banned.\r\n", arg2 );
    return;
 
 /*
@@ -616,9 +616,9 @@ void do_allow( CHAR_DATA * ch, char *argument )
  */
 
  syntax_message:
-   send_to_char( "Syntax: allow site  <address>\n\r", ch );
-   send_to_char( "Syntax: allow race  <race>\n\r", ch );
-   send_to_char( "Syntax: allow class <class>\n\r", ch );
+   send_to_char( "Syntax: allow site  <address>\r\n", ch );
+   send_to_char( "Syntax: allow race  <race>\r\n", ch );
+   send_to_char( "Syntax: allow class <class>\r\n", ch );
    return;
 }
 
@@ -639,7 +639,7 @@ void do_warn( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Monsters are too dumb to do that!\n\r", ch );
+      send_to_char( "Monsters are too dumb to do that!\r\n", ch );
       return;
    }
 
@@ -664,7 +664,7 @@ void do_warn( CHAR_DATA * ch, char *argument )
       count = atoi( name );
       if( count < 1 )
       {
-         send_to_char( "The number has to be above 0.\n\r", ch );
+         send_to_char( "The number has to be above 0.\r\n", ch );
          return;
       }
    }
@@ -718,24 +718,24 @@ void do_warn( CHAR_DATA * ch, char *argument )
          if( pban->level == BAN_WARN )
          {
             dispose_ban( pban, type );
-            send_to_char( "Warn has been deleted.\n\r", ch );
+            send_to_char( "Warn has been deleted.\r\n", ch );
          }
          else
          {
             pban->warn = FALSE;
-            send_to_char( "Warn turned off.\n\r", ch );
+            send_to_char( "Warn turned off.\r\n", ch );
          }
       }
       else
       {
          pban->warn = TRUE;
-         send_to_char( "Warn turned on.\n\r", ch );
+         send_to_char( "Warn turned on.\r\n", ch );
       }
       save_banlist(  );
    }
    else
    {
-      ch_printf( ch, "%s was not found in the ban list.\n\r", arg2 );
+      ch_printf( ch, "%s was not found in the ban list.\r\n", arg2 );
       return;
    }
    return;
@@ -743,11 +743,11 @@ void do_warn( CHAR_DATA * ch, char *argument )
     * The above return has to stay in! 
     */
  syntax_message:
-   send_to_char( "Syntax: warn class <field>\n\r", ch );
-   send_to_char( "Syntax: warn race  <field>\n\r", ch );
-   send_to_char( "Syntax: warn site  <field>\n\r", ch );
-   send_to_char( "Field is either #(ban_number) or the site/class/race.\n\r", ch );
-   send_to_char( "Example:  warn class #1\n\r", ch );
+   send_to_char( "Syntax: warn class <field>\r\n", ch );
+   send_to_char( "Syntax: warn race  <field>\r\n", ch );
+   send_to_char( "Syntax: warn site  <field>\r\n", ch );
+   send_to_char( "Field is either #(ban_number) or the site/class/race.\r\n", ch );
+   send_to_char( "Example:  warn class #1\r\n", ch );
    return;
 }
 
@@ -777,7 +777,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
          return 0;
 
       case SUB_RESTRICTED:
-         send_to_char( "You cannot use this command from within another command.\n\r", ch );
+         send_to_char( "You cannot use this command from within another command.\r\n", ch );
          return 0;
 
       case SUB_NONE:
@@ -793,7 +793,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
             level = atoi( arg2 );
             if( level < 0 || level > LEVEL_SUPREME )
             {
-               ch_printf( ch, "Level range is from 0 to %d.\n\r", LEVEL_SUPREME );
+               ch_printf( ch, "Level range is from 0 to %d.\r\n", LEVEL_SUPREME );
                return 0;
             }
          }
@@ -827,7 +827,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                }
                if( value < 0 || value >= MAX_CLASS )
                {
-                  send_to_char( "Unknown class.\n\r", ch );
+                  send_to_char( "Unknown class.\r\n", ch );
                   return 0;
                }
                for( temp = first_ban_class; temp; temp = temp->next )
@@ -836,7 +836,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                   {
                      if( temp->level == level )
                      {
-                        send_to_char( "That entry already exists.\n\r", ch );
+                        send_to_char( "That entry already exists.\r\n", ch );
                         return 0;
                      }
                      else
@@ -861,7 +861,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                         if( temp->ban_by )
                            DISPOSE( temp->ban_by );
                         temp->ban_by = str_dup( ch->name );
-                        send_to_char( "Updated entry.\n\r", ch );
+                        send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
@@ -886,7 +886,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                }
                if( value < 0 || value >= MAX_RACE )
                {
-                  send_to_char( "Unknown race.\n\r", ch );
+                  send_to_char( "Unknown race.\r\n", ch );
                   return 0;
                }
                for( temp = first_ban_race; temp; temp = temp->next )
@@ -895,7 +895,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                   {
                      if( temp->level == level )
                      {
-                        send_to_char( "That entry already exists.\n\r", ch );
+                        send_to_char( "That entry already exists.\r\n", ch );
                         return 0;
                      }
                      else
@@ -920,7 +920,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                         if( temp->ban_by )
                            DISPOSE( temp->ban_by );
                         temp->ban_by = str_dup( ch->name );
-                        send_to_char( "Updated entry.\n\r", ch );
+                        send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
@@ -965,7 +965,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                      DISPOSE( temp_host );
                      DISPOSE( temp_user );
                   }
-                  send_to_char( "Name was null.\n\r", ch );
+                  send_to_char( "Name was null.\r\n", ch );
                   return 0;
                }
 
@@ -994,7 +994,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                            DISPOSE( temp_host );
                            DISPOSE( temp_user );
                         }
-                        send_to_char( "That entry already exists.\n\r", ch );
+                        send_to_char( "That entry already exists.\r\n", ch );
                         return 0;
                      }
                      else
@@ -1026,7 +1026,7 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
                            DISPOSE( temp_user );
                         }
                         temp->ban_by = str_dup( ch->name );
-                        send_to_char( "Updated entry.\n\r", ch );
+                        send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
@@ -1088,11 +1088,11 @@ int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
          save_banlist(  );
          if( pban->duration > 0 )
          {
-            ch_printf( ch, "%s banned for %d days.\n\r", pban->name, pban->duration );
+            ch_printf( ch, "%s banned for %d days.\r\n", pban->name, pban->duration );
          }
          else
          {
-            ch_printf( ch, "%s banned forever.\n\r", pban->name );
+            ch_printf( ch, "%s banned forever.\r\n", pban->name );
          }
          return 1;
    }
@@ -1111,37 +1111,37 @@ void show_bans( CHAR_DATA * ch, int type )
    switch ( type )
    {
       case BAN_SITE:
-         send_to_pager( "Banned sites:\n\r", ch );
-         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Site\n\r", ch );
-         send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\n\r", ch );
+         send_to_pager( "Banned sites:\r\n", ch );
+         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Site\r\n", ch );
+         send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\r\n", ch );
          pban = first_ban;
          set_pager_color( AT_PLAIN, ch );
          for( bnum = 1; pban; pban = pban->next, bnum++ )
          {
-            pager_printf( ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %c%s%c\n\r",
+            pager_printf( ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %c%s%c\r\n",
                           bnum, ( pban->warn ) ? "YES" : "no", pban->level,
                           pban->ban_time, pban->ban_by, pban->duration,
                           ( pban->prefix ) ? '*' : ' ', pban->name, ( pban->suffix ) ? '*' : ' ' );
          }
          return;
       case BAN_RACE:
-         send_to_pager( "Banned races:\n\r", ch );
-         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Race\n\r", ch );
+         send_to_pager( "Banned races:\r\n", ch );
+         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Race\r\n", ch );
          pban = first_ban_race;
          break;
       case BAN_CLASS:
-         send_to_pager( "Banned classes:\n\r", ch );
-         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Class\n\r", ch );
+         send_to_pager( "Banned classes:\r\n", ch );
+         send_to_pager( "[ #] Warn (Lv) Time                     By              For   Class\r\n", ch );
          pban = first_ban_class;
          break;
       default:
          bug( "Bad type in show_bans: %d", type );
          return;
    }
-   send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\n\r", ch );
+   send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\r\n", ch );
    set_pager_color( AT_PLAIN, ch );
    for( bnum = 1; pban; pban = pban->next, bnum++ )
-      pager_printf( ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %s\n\r", bnum,
+      pager_printf( ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %s\r\n", bnum,
                     ( pban->warn ) ? "YES" : "no", pban->level, pban->ban_time, pban->ban_by, pban->duration, pban->name );
    return;
 }
@@ -1165,7 +1165,7 @@ bool check_total_bans( DESCRIPTOR_DATA * d )
    {
       if( pban->level != LEVEL_SUPREME )
          continue;
-      if( pban->prefix && pban->suffix && strstr( pban->name, new_host ) )
+      if( pban->prefix && pban->suffix && strstr( new_host, pban->name ) )
       {
          if( check_expire( pban ) )
          {

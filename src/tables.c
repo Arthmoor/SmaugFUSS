@@ -17,7 +17,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#if !defined(WIN32)
 #include <dlfcn.h>
+#else
+#include <windows.h>
+#define dlsym( handle, name ) ( (void*)GetProcAddress( (HINSTANCE) (handle), (name) ) )
+#define dlerror() GetLastError()
+#endif
 #include "mud.h"
 
 bool load_race_file( const char *fname );
@@ -44,29 +50,37 @@ char *const skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "
 SPELL_FUN *spell_function( char *name )
 {
    void *funHandle;
+#if !defined(WIN32)
    const char *error;
+#else
+   DWORD error;
+#endif
 
    funHandle = dlsym( sysdata.dlHandle, name );
-   if( ( error = dlerror() ) != NULL )
+   if( ( error = dlerror(  ) ) )
    {
-	bug( "Error locating %s in symbol table. %s", name, error );
+      bug( "Error locating %s in symbol table. %s", name, error );
       return spell_notfound;
    }
-   return (SPELL_FUN*)funHandle;
+   return ( SPELL_FUN * ) funHandle;
 }
 
 DO_FUN *skill_function( char *name )
 {
    void *funHandle;
+#if !defined(WIN32)
    const char *error;
+#else
+   DWORD error;
+#endif
 
    funHandle = dlsym( sysdata.dlHandle, name );
-   if( ( error = dlerror() ) != NULL )
+   if( ( error = dlerror(  ) ) )
    {
-	bug( "Error locating %s in symbol table. %s", name, error );
-	return skill_notfound;
+      bug( "Error locating %s in symbol table. %s", name, error );
+      return skill_notfound;
    }
-   return (DO_FUN*)funHandle;
+   return ( DO_FUN * ) funHandle;
 }
 
 bool load_class_file( const char *fname )
@@ -637,7 +651,7 @@ int skill_comp( SKILLTYPE ** sk1, SKILLTYPE ** sk2 )
       return -1;
    if( skill1->type > skill2->type )
       return 1;
-   return strcmp( skill1->name, skill2->name );
+   return strcasecmp( skill1->name, skill2->name );
 }
 
 /*
@@ -648,7 +662,6 @@ void sort_skill_table(  )
    log_string( "Sorting skill table..." );
    qsort( &skill_table[1], top_sn - 1, sizeof( SKILLTYPE * ), ( int ( * )( const void *, const void * ) )skill_comp );
 }
-
 
 /*
  * Remap slot numbers to sn values
@@ -666,7 +679,7 @@ void remap_slot_numbers(  )
    {
       if( ( skill = skill_table[sn] ) != NULL )
       {
-         for( aff = skill->affects; aff; aff = aff->next )
+         for( aff = skill->first_affect; aff; aff = aff->next )
             if( aff->location == APPLY_WEAPONSPELL
                 || aff->location == APPLY_WEARSPELL
                 || aff->location == APPLY_REMOVESPELL
@@ -763,7 +776,7 @@ void fwrite_skill( FILE * fpout, SKILLTYPE * skill )
       fprintf( fpout, "Components   %s~\n", skill->components );
    if( skill->teachers && skill->teachers[0] != '\0' )
       fprintf( fpout, "Teachers     %s~\n", skill->teachers );
-   for( aff = skill->affects; aff; aff = aff->next )
+   for( aff = skill->first_affect; aff; aff = aff->next )
    {
       fprintf( fpout, "Affect       '%s' %d ", aff->duration, aff->location );
       modifier = atoi( aff->modifier );
@@ -795,7 +808,6 @@ void fwrite_skill( FILE * fpout, SKILLTYPE * skill )
    }
    fprintf( fpout, "End\n\n" );
 }
-
 
 /*
  * Save the skill table to disk
@@ -944,8 +956,10 @@ void save_commands(  )
          }
          fprintf( fpout, "#COMMAND\n" );
          fprintf( fpout, "Name        %s~\n", command->name );
-         fprintf( fpout, "Code        %s\n", command->fun_name?command->fun_name:"" ); // Modded to use new field - Trax
-         /* Oops I think this may be a bad thing so I changed it -- Shaddai */
+         fprintf( fpout, "Code        %s\n", command->fun_name ? command->fun_name : "" );   // Modded to use new field - Trax
+         /*
+          * Oops I think this may be a bad thing so I changed it -- Shaddai 
+          */
          if( command->position < 100 )
             fprintf( fpout, "Position    %d\n", command->position + 100 );
          else
@@ -1025,8 +1039,7 @@ SKILLTYPE *fread_skill( FILE * fp )
                   if( x == 32 )
                      aff->bitvector = -1;
                }
-               aff->next = skill->affects;
-               skill->affects = aff;
+               LINK( aff, skill->first_affect, skill->last_affect, next, prev );
                fMatch = TRUE;
                break;
             }
@@ -1042,24 +1055,24 @@ SKILLTYPE *fread_skill( FILE * fp )
                fMatch = TRUE;
                break;
             }
-            if ( !str_cmp( word, "Code" ) )
+            if( !str_cmp( word, "Code" ) )
             {
                SPELL_FUN *spellfun;
                DO_FUN *dofun;
                char *w = fread_word( fp );
 
                fMatch = TRUE;
-               if( !str_prefix( "do_", w ) && ( dofun = skill_function(w) ) != skill_notfound )
+               if( !str_prefix( "do_", w ) && ( dofun = skill_function( w ) ) != skill_notfound )
                {
                   skill->skill_fun = dofun;
                   skill->spell_fun = NULL;
-                  skill->skill_fun_name = str_dup(w);
+                  skill->skill_fun_name = str_dup( w );
                }
-               else if( str_prefix( "do_", w ) && ( spellfun = spell_function(w) ) != spell_notfound )
+               else if( str_prefix( "do_", w ) && ( spellfun = spell_function( w ) ) != spell_notfound )
                {
                   skill->spell_fun = spellfun;
                   skill->skill_fun = NULL;
-                  skill->spell_fun_name = str_dup(w);
+                  skill->spell_fun_name = str_dup( w );
                }
                else
                {
@@ -1447,7 +1460,6 @@ void load_socials(  )
 
    if( ( fp = fopen( SOCIAL_FILE, "r" ) ) != NULL )
    {
-      top_sn = 0;
       for( ;; )
       {
          char letter;
@@ -1515,41 +1527,41 @@ void fread_command( FILE * fp )
             fread_to_eol( fp );
             break;
 
-	case 'C':
-	    KEY( "Code",	command->fun_name, str_dup( fread_word( fp ) ) );
-	    break;
+         case 'C':
+            KEY( "Code", command->fun_name, str_dup( fread_word( fp ) ) );
+            break;
 
-	case 'E':
-	    if ( !str_cmp( word, "End" ) )
-	    {
-		if( !command->name )
-		{
-		   bug( "%s: Name not found", __FUNCTION__ );
-		   free_command( command );
-		   return;
-		}
-		if( !command->fun_name )
-		{
-		   bug( "%s: No function name supplied for %s", __FUNCTION__, command->name );
-		   free_command( command );
-		   return;
-		}
-		/*
-	 	 * Mods by Trax
-		 * Fread in code into char* and try linkage here then
-		 * deal in the "usual" way I suppose..
-		 */
-	      command->do_fun = skill_function( command->fun_name );
-		if( command->do_fun == skill_notfound )
-		{
-		   bug( "%s: Function %s not found for %s", __FUNCTION__, command->fun_name, command->name );
-		   free_command( command );
-		   return;
-		}
-		add_command( command );
-		return;
-	    }
-	    break;
+         case 'E':
+            if( !str_cmp( word, "End" ) )
+            {
+               if( !command->name )
+               {
+                  bug( "%s: Name not found", __FUNCTION__ );
+                  free_command( command );
+                  return;
+               }
+               if( !command->fun_name )
+               {
+                  bug( "%s: No function name supplied for %s", __FUNCTION__, command->name );
+                  free_command( command );
+                  return;
+               }
+               /*
+                * Mods by Trax
+                * Fread in code into char* and try linkage here then
+                * deal in the "usual" way I suppose..
+                */
+               command->do_fun = skill_function( command->fun_name );
+               if( command->do_fun == skill_notfound )
+               {
+                  bug( "%s: Function %s not found for %s", __FUNCTION__, command->fun_name, command->name );
+                  free_command( command );
+                  return;
+               }
+               add_command( command );
+               return;
+            }
+            break;
 
          case 'F':
             KEY( "Flags", command->flags, fread_number( fp ) );
@@ -1627,7 +1639,6 @@ void load_commands(  )
 
    if( ( fp = fopen( COMMAND_FILE, "r" ) ) != NULL )
    {
-      top_sn = 0;
       for( ;; )
       {
          char letter;

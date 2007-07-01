@@ -1,7 +1,0 @@
-Sun Jul  6 03:00:00 2003: 1 players
-Wed Mar  3 21:30:00 2004: 1 players
-Wed Mar  3 22:00:00 2004: 0 players
-Thu Mar  4 11:00:00 2004: 0 players
-Fri Oct  1 14:00:00 2004: 2 players
-Fri Oct  1 14:30:00 2004: 0 players
-Fri Oct  1 15:00:00 2004: 0 players

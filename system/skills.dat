@@ -22,8 +22,8 @@ Slot         246
 Mana         10
 Code         spell_smaug
 Dammsg       ~
-Affect       '10' 31 '-3' -1
 Affect       '10' 13 '-75' -1
+Affect       '10' 31 '-3' -1
 Minlevel     51
 End
 
@@ -73,6 +73,49 @@ Code         spell_acid_breath
 Dammsg       blast of acid~
 Wearoff      !Acid Breath!~
 Minlevel     43
+End
+
+#SKILL
+Name         acidmist~
+Type         Spell
+Info         1536
+Flags        0
+Target       3
+Minpos       112
+Slot         9
+Mana         70
+Rounds       15
+Code         spell_smaug
+Dammsg       ~
+Wearoff      The cloud of acidic mist around you dissipates away.~
+Hitchar      A vaporous cloud of acidic mist forms around you.~
+Hitvict      A vaporous cloud of acidic mist forms around you.~
+Hitroom      A vaporous cloud of acidic mist forms around $N.~
+Missvict     You fail to conjure the acidic vapors.~
+Affect       '(l*4)+8' 26 'acidmist' 34
+Minlevel     41
+End
+
+#SKILL
+Name         acidshot~
+Type         Spell
+Info         1421
+Flags        0
+Target       1
+Minpos       113
+Slot         37
+Mana         15
+Rounds       12
+Code         spell_smaug
+Dammsg       droplet of acid~
+Hitchar      $N is burned by your acidmist!~
+Hitvict      You are burned by droplets of acid from $n's acidmist!~
+Hitroom      Droplets of acid from $n's acidmist horribly burn $N!~
+Diechar      $N's body dissolves under the onslaught of acid!~
+Dievict      The acid overwhelms you and dissolves you into goo!~
+Dieroom      $N's body dissolves under the onslaught of $n's acidmist!&z~
+Dice         l/2+30~
+Minlevel     51
 End
 
 #SKILL
@@ -190,7 +233,7 @@ Info         840
 Flags        14336
 Target       2
 Minpos       110
-Slot         95
+Slot         45
 Mana         15
 Rounds       15
 Code         spell_smaug
@@ -343,9 +386,9 @@ Wearoff      The blessing fades away.~
 Hitchar      You lay the blessing of your god upon $N.~
 Hitvict      A powerful blessing is laid upon you.~
 Hitroom      $N beams as a powerful blessing is laid upon $M.~
-Affect       'l*23' 18 'l/8' -1
 Affect       'l*23' 24 '-(l/8)' -1
-Affect       '' 60 '109' -1
+Affect       'l*23' 18 'l/8' -1
+Affect       '' 60 '54' -1
 Minlevel     5
 End
 
@@ -1060,8 +1103,8 @@ Dammsg       ~
 Wearoff      The eldritch sphere about you winks from existence.~
 Hitvict      A magical eldritch sphere forms about you...~
 Hitroom      A shimmering eldritch sphere forms about $N...~
-Affect       '(l*3)+25' 27 '1048576' -1
 Affect       '(l*3)+25' 27 '8192' -1
+Affect       '(l*3)+25' 27 '1048576' -1
 Minlevel     33
 End
 
@@ -1194,7 +1237,7 @@ Type         Spell
 Info         1544
 Flags        16384
 Minpos       111
-Slot         95
+Slot         46
 Mana         40
 Rounds       24
 Code         spell_smaug
@@ -1361,7 +1404,7 @@ Type         Spell
 Info         8
 Flags        16384
 Minpos       109
-Slot         95
+Slot         47
 Mana         30
 Rounds       10
 Code         spell_smaug
@@ -1421,7 +1464,7 @@ Info         840
 Flags        14336
 Target       2
 Minpos       109
-Slot         95
+Slot         48
 Mana         40
 Rounds       18
 Code         spell_smaug
@@ -1676,7 +1719,7 @@ Info         840
 Flags        14336
 Target       2
 Minpos       111
-Slot         95
+Slot         49
 Mana         90
 Rounds       15
 Code         spell_smaug
@@ -1685,8 +1728,8 @@ Wearoff      The Fury of The High Gods seeps from your veins, leaving you draine
 Hitchar      You lay The Fury of The High Gods upon $N.~
 Hitvict      The Fury of The High Gods is temporarily given to you.~
 Hitroom      The Fury of The High Gods is temporarily given to $N.~
-Affect       'l/2' 19 '1+(l/17)' -1
 Affect       'l/2' 18 '1+(l/17)' -1
+Affect       'l/2' 19 '1+(l/17)' -1
 Minlevel     27
 End
 
@@ -1907,7 +1950,7 @@ Info         840
 Flags        14336
 Target       2
 Minpos       112
-Slot         95
+Slot         50
 Mana         90
 Rounds       15
 Code         spell_smaug
@@ -1946,7 +1989,7 @@ Info         1552
 Flags        0
 Target       4
 Minpos       111
-Slot         95
+Slot         52
 Mana         30
 Rounds       20
 Code         spell_midas_touch
@@ -1962,7 +2005,7 @@ Info         840
 Flags        14336
 Target       2
 Minpos       111
-Slot         95
+Slot         54
 Mana         10
 Rounds       15
 Code         spell_smaug
@@ -1971,9 +2014,9 @@ Wearoff      The minor invocation fades away.~
 Hitchar      You lay a minor invocation of your god  upon $N.~
 Hitvict      A minor invocation is laid upon you.~
 Hitroom      $N beams as a minor invocation is laid upon $M.~
-Affect       '' 60 '3' -1
-Affect       'l*23' 24 '-(l/8)' -1
 Affect       'l*23' 18 '(l/8)' -1
+Affect       'l*23' 24 '-(l/8)' -1
+Affect       '' 60 '3' -1
 Minlevel     10
 End
 
@@ -2151,7 +2194,7 @@ Info         328
 Flags        0
 Target       3
 Minpos       110
-Slot         95
+Slot         55
 Mana         60
 Rounds       10
 Code         spell_smaug
@@ -2159,8 +2202,8 @@ Dammsg       ~
 Wearoff      Your pulse returns to a normal rate.~
 Hitvict      You feel your pulse quicken!~
 Missvict     You fail to gather enough magic to perform this spell.~
-Affect       'l+50' 2 '+2' -1
 Affect       'l+50' 26 'quickening' -1
+Affect       'l+50' 2 '+2' -1
 Minlevel     51
 End
 
@@ -2755,8 +2798,8 @@ Wearoff      Your vigor subsides, leaving you more charismatic.~
 Hitchar      $N's face contorts with a bestial vigor...~
 Hitvict      You sense a bestial vigor consume you...~
 Hitroom      $N's face contorts with a bestial vigor...~
-Affect       'l*24' 25 '-1' -1
 Affect       'l*24' 5 '1+(l/17)' -1
+Affect       'l*24' 25 '-1' -1
 Minlevel     6
 End
 
@@ -2785,7 +2828,7 @@ Type         Spell
 Info         0
 Flags        0
 Minpos       105
-Slot         95
+Slot         71
 Code         spell_smaug
 Dammsg       ~
 Minlevel     51
@@ -2808,8 +2851,8 @@ Hitchar      $N's eyes widen in fear as $S defenses are unravelled.~
 Hitvict      Your defenses are unravelled before your very eyes.~
 Hitroom      $N's eyes widen in fear as $S defenses are unravelled.~
 Immchar      Your spell has no effect upon $N.~
-Affect       '(l*3)+25' 29 '8192' -1
 Affect       '(l*3)+25' 29 '1048576' -1
+Affect       '(l*3)+25' 29 '8192' -1
 Minlevel     33
 End
 
@@ -2819,7 +2862,7 @@ Type         Spell
 Info         0
 Flags        32800
 Minpos       112
-Slot         95
+Slot         75
 Mana         50
 Rounds       16
 Code         spell_smaug
@@ -2850,6 +2893,49 @@ Hitvict      A magical resistance to paralysis consumes you.~
 Hitroom      $N is surrounded by an aura which protects $M from paralysis.~
 Affect       'l*23' 27 '2097152' -1
 Minlevel     14
+End
+
+#SKILL
+Name         venomshield~
+Type         Spell
+Info         1536
+Flags        0
+Target       3
+Minpos       112
+Slot         76
+Mana         70
+Rounds       15
+Code         spell_smaug
+Dammsg       ~
+Wearoff      The noxious cloud surrounding you dissipates into nothing.~
+Hitchar      A noxious vapor cloud forms around you.~
+Hitvict      A noxious vapor cloud forms around you.~
+Hitroom      A noxious vapor cloud forms around $N.~
+Missvict     You fail to create the noxious cloud.~
+Affect       '(l*4)+8' 26 'venomshield' 35
+Minlevel     29
+End
+
+#SKILL
+Name         venomshot~
+Type         Spell
+Info         1422
+Flags        0
+Target       1
+Minpos       113
+Slot         78
+Mana         15
+Rounds       12
+Code         spell_smaug
+Dammsg       burst of vapor~
+Hitchar      $N coughs and chokes on vapors from your venomshield!&z~
+Hitvict      You cough and choke on vapors from $N's venomshield!&z~
+Hitroom      $N coughs and chokes on vapors from $n's venomshield!&z~
+Diechar      $N gags and sputters, then collapses dead!&z~
+Dievict      The vapors from $n's venomshield prove too much for you....&z~
+Dieroom      $N gags and sputters for a moment, then collapses dead!~
+Dice         l/2~
+Minlevel     51
 End
 
 #SKILL
@@ -3116,7 +3202,6 @@ Type         Skill
 Info         0
 Flags        0
 Minpos       110
-Slot         100
 Rounds       14
 Code         do_cook
 Dammsg       ~
@@ -3524,7 +3609,6 @@ Type         Skill
 Info         0
 Flags        0
 Minpos       112
-Slot         290
 Mana         50
 Rounds       12
 Code         do_mistwalk
@@ -3560,8 +3644,8 @@ Dammsg       ~
 Wearoff      The fire in your eyes slowly fades...~
 Hitvict      Your eyes blaze like coals, filling your sight with unseen forms.~
 Hitroom      $N's eyes burn like coals in the darkness.~
-Affect       'l*14' 26 'detect_invis' 3
 Affect       'l*14' 26 'detect_hidden' 5
+Affect       'l*14' 26 'detect_invis' 3
 Minlevel     12
 End
 
@@ -3951,7 +4035,6 @@ Info         0
 Flags        0
 Target       1
 Minpos       109
-Slot         95
 Mana         95
 Rounds       8
 Code         spell_null
@@ -4078,11 +4161,11 @@ Hitroom      $N convulses as $n inflicts a silent curse...~
 Misschar     There seems to be no effect...~
 Missvict     $n extends a clawed hand toward you...~
 Missroom     $n extends a clawed hand toward $N...~
-Affect       '12' 31 '-1' -1
-Affect       '12' 24 'l/18' -1
-Affect       '12' 19 '-(l/8)' -1
-Affect       '12' 18 '-(l/8)' -1
 Affect       '12' 26 'curse' 10
+Affect       '12' 18 '-(l/8)' -1
+Affect       '12' 19 '-(l/8)' -1
+Affect       '12' 24 'l/18' -1
+Affect       '12' 31 '-1' -1
 Minlevel     13
 End
 
@@ -4255,90 +4338,6 @@ Flags        0
 Code         spell_null
 Dammsg       ~
 Minlevel     1
-End
-
-#SKILL
-Name         acidmist~
-Type         Spell
-Info         1536
-Flags        0
-Target       3
-Minpos       112
-Mana         70
-Rounds       15
-Code         spell_smaug
-Dammsg       ~
-Wearoff      The cloud of acidic mist around you dissipates away.~
-Hitchar      A vaporous cloud of acidic mist forms around you.~
-Hitvict      A vaporous cloud of acidic mist forms around you.~
-Hitroom      A vaporous cloud of acidic mist forms around $N.~
-Missvict     You fail to conjure the acidic vapors.~
-Affect       '(l*4)+8' 26 'acidmist' 34
-Minlevel     0
-End
-
-#SKILL
-Name         venomshield~
-Type         Spell
-Info         1536
-Flags        0
-Target       3
-Minpos       112
-Mana         70
-Rounds       15
-Code         spell_smaug
-Dammsg       ~
-Wearoff      The noxious cloud surrounding you dissipates into nothing.~
-Hitchar      A noxious vapor cloud forms around you.~
-Hitvict      A noxious vapor cloud forms around you.~
-Hitroom      A noxious vapor cloud forms around $N.~
-Missvict     You fail to create the noxious cloud.~
-Affect       '(l*4)+8' 26 'venomshield' 35
-Minlevel     0
-End
-
-#SKILL
-Name         acidshot~
-Type         Spell
-Info         1421
-Author	      Smaug~
-Flags        0~
-Target       1
-Minpos       9~
-Mana         15
-Rounds       12
-Code         spell_smaug
-Dammsg       droplet of acid~
-Hitchar      $N is burned by your acidmist!~
-Hitvict      You are burned by droplets of acid from $n's acidmist!~
-Hitroom      Droplets of acid from $n's acidmist horribly burn $N!~
-Diechar      $N's body dissolves under the onslaught of acid!~
-Dievict      The acid overwhelms you and dissolves you into goo!~
-Dieroom      $N's body dissolves under the onslaught of $n's acidmist!&z~
-Dice         l/2+30~
-Minlevel     51
-End
-
-#SKILL
-Name         venomshot~
-Type         Spell
-Info         1422
-Author	      Smaug~
-Flags        0~
-Target       1
-Minpos       9~
-Mana         15
-Rounds       12
-Code         spell_smaug
-Dammsg       burst of vapor~
-Hitchar      $N coughs and chokes on vapors from your venomshield!&z~
-Hitvict      You cough and choke on vapors from $N's venomshield!&z~
-Hitroom      $N coughs and chokes on vapors from $n's venomshield!&z~
-Diechar      $N gags and sputters, then collapses dead!&z~
-Dievict      The vapors from $n's venomshield prove too much for you....&z~
-Dieroom      $N gags and sputters for a moment, then collapses dead!~
-Dice         l/2~
-Minlevel     51
 End
 
 #END

@@ -47,7 +47,6 @@ OBJ_DATA *make_trap( int v0, int v1, int v2, int v3 )
    return trap;
 }
 
-
 /*
  * Turn an object into scraps.		-Thoric
  */
@@ -117,11 +116,10 @@ void make_scraps( OBJ_DATA * obj )
    extract_obj( obj );
 }
 
-
 /*
  * Make a corpse out of a character.
  */
-void make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
+OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
 {
    char buf[MAX_STRING_LENGTH];
    OBJ_DATA *corpse;
@@ -206,12 +204,8 @@ void make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
       else
          obj_to_obj( obj, corpse );
    }
-
-   obj_to_room( corpse, ch->in_room );
-   return;
+   return obj_to_room( corpse, ch->in_room );
 }
-
-
 
 void make_blood( CHAR_DATA * ch )
 {
@@ -222,7 +216,6 @@ void make_blood( CHAR_DATA * ch )
    obj->value[1] = number_range( 3, UMIN( 5, ch->level ) );
    obj_to_room( obj, ch->in_room );
 }
-
 
 void make_bloodstain( CHAR_DATA * ch )
 {

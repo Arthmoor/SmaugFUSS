@@ -26,6 +26,45 @@
 #include <ctype.h>
 #include "mud.h"
 
+void uphold_supermob( int *curr_serial, int serial, ROOM_INDEX_DATA ** supermob_room, OBJ_DATA * true_supermob_obj )
+{
+   if( *curr_serial != serial )
+   {
+      char buf[128];
+
+      if( supermob->in_room != *supermob_room )
+      {
+         char_from_room( supermob );
+         char_to_room( supermob, *supermob_room );
+      }
+
+      if( true_supermob_obj && true_supermob_obj != supermob_obj )
+      {
+         supermob_obj = true_supermob_obj;
+         STRFREE( supermob->short_descr );
+         STRFREE( supermob->description );
+         supermob->short_descr = QUICKLINK( supermob_obj->short_descr );
+         snprintf( buf, 128, "Object #%d", supermob_obj->pIndexData->vnum );
+         supermob->description = STRALLOC( buf );
+      }
+      else
+      {
+         if( !true_supermob_obj )
+            supermob_obj = NULL;
+         if( supermob->short_descr )
+            STRFREE( supermob->short_descr );
+         if( supermob->description )
+            STRFREE( supermob->description );
+         supermob->short_descr = QUICKLINK( ( *supermob_room )->name );
+         snprintf( buf, 128, "Room #%d", ( *supermob_room )->vnum );
+         supermob->description = STRALLOC( buf );
+      }
+      *curr_serial = serial;
+   }
+   else
+      *supermob_room = supermob->in_room;
+}
+
 /*
  * Recursive function used by the carryingvnum ifcheck.
  * It loops thru all objects belonging to a char (in nested containers)
@@ -43,9 +82,6 @@
  */
 static bool carryingvnum_visit( CHAR_DATA * ch, OBJ_DATA * obj, int vnum )
 {
-/*
-   pager_printf(ch, "***obj=%s vnum=%d\n\r", obj->name, obj->pIndexData->vnum );
-*/
    if( obj->wear_loc == -1 && obj->pIndexData->vnum == vnum )
       return TRUE;
    if( obj->first_content )   /* node has a child? */
@@ -143,64 +179,26 @@ void rprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, vo
 void rprog_wordlist_check( char *arg, CHAR_DATA * mob, CHAR_DATA * actor,
                            OBJ_DATA * obj, void *vo, int type, ROOM_INDEX_DATA * room );
 
-/***************************************************************************
- * Local function code and brief comments.
- */
-
-/* if you dont have these functions, you damn well should... */
-
-#ifdef DUNNO_STRSTR
-char *strstr( s1, s2 )
-     const char *s1;
-     const char *s2;
-{
-   char *cp;
-   int i, j = strlen( s1 ) - strlen( s2 ), k = strlen( s2 );
-   if( j < 0 )
-      return NULL;
-   for( i = 0; i <= j && strncmp( s1++, s2, k ) != 0; i++ );
-   return ( i > j ) ? NULL : ( s1 - 1 );
-}
-#endif
-
-#define RID ROOM_INDEX_DATA
-
 void init_supermob( void )
 {
-   RID *office;
+   ROOM_INDEX_DATA *office;
 
    supermob = create_mobile( get_mob_index( 3 ) );
    office = get_room_index( 3 );
    char_to_room( supermob, office );
-
-#ifdef NOTDEFD
-   CREATE( supermob, CHAR_DATA, 1 );
-   clear_char( supermob );
-
-   xSET_BIT( supermob->act, ACT_IS_NPC );
-   supermob->name = STRALLOC( "supermob" );
-   supermob->short_descr = STRALLOC( "supermob" );
-   supermob->long_descr = STRALLOC( "supermob is here" );
-
-   CREATE( supermob_index, MOB_INDEX_DATA, 1 )
-#endif
 }
 
-
-#undef RID
-
-
-/* Used to get sequential lines of a multi line string (separated by "\n\r")
+/* Used to get sequential lines of a multi line string (separated by "\r\n")
  * Thus its like one_argument(), but a trifle different. It is destructive
  * to the multi line string argument, and thus clist must not be shared.
  */
 char *mprog_next_command( char *clist )
 {
-
    char *pointer = clist;
 
    while( *pointer != '\n' && *pointer != '\0' )
       pointer++;
+
    if( *pointer == '\n' )
       *pointer++ = '\0';
    if( *pointer == '\r' )
@@ -233,7 +231,6 @@ bool mprog_seval( char *lhs, char *opr, char *rhs, CHAR_DATA * mob )
    snprintf( log_buf, MAX_STRING_LENGTH, "Improper MOBprog operator '%s'", opr );
    progbug( log_buf, mob );
    return 0;
-
 }
 
 bool mprog_veval( int lhs, char *opr, int rhs, CHAR_DATA * mob )
@@ -261,7 +258,6 @@ bool mprog_veval( int lhs, char *opr, int rhs, CHAR_DATA * mob )
    progbug( log_buf, mob );
 
    return 0;
-
 }
 
 #define isoperator(c) ((c)=='='||(c)=='<'||(c)=='>'||(c)=='!'||(c)=='&'||(c)=='|')
@@ -1252,13 +1248,16 @@ int mprog_do_ifcheck( char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DAT
       if( !str_cmp( chck, "leverpos" ) )
       {
          int isup = FALSE, wantsup = FALSE;
-         if( chkobj->item_type != ITEM_SWITCH || chkobj->item_type != ITEM_LEVER || chkobj->item_type != ITEM_PULLCHAIN )
+
+         if( chkobj->item_type != ITEM_SWITCH && chkobj->item_type != ITEM_LEVER && chkobj->item_type != ITEM_PULLCHAIN
+             && chkobj->item_type != ITEM_BUTTON )
             return FALSE;
 
          if( IS_SET( obj->value[0], TRIG_UP ) )
             isup = TRUE;
          if( !str_cmp( rval, "up" ) )
             wantsup = TRUE;
+
          return mprog_veval( wantsup, opr, isup, mob );
       }
       if( !str_cmp( chck, "objval0" ) )
@@ -1773,13 +1772,23 @@ void mprog_driver( char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA 
    char tmpcmndlst[MAX_STRING_LENGTH];
    char *command_list;
    char *cmnd;
-   CHAR_DATA *rndm = NULL;
-   CHAR_DATA *vch = NULL;
-   int count = 0;
-   int ignorelevel = 0;
-   int iflevel, result;
+   CHAR_DATA *rndm = NULL, *vch = NULL;
+   int count = 0, ignorelevel = 0, iflevel, result, curr_serial;
    bool ifstate[MAX_IFS][DO_ELSE + 1];
-   static int prog_nest;
+   static int prog_nest, serial;
+   ROOM_INDEX_DATA *supermob_room;
+   OBJ_DATA *true_supermob_obj;
+   bool rprog_oprog = ( mob == supermob );
+
+   if( rprog_oprog )
+   {
+      serial++;
+      supermob_room = mob->in_room;
+      true_supermob_obj = supermob_obj;
+   }
+   else
+      true_supermob_obj = NULL, supermob_room = NULL;
+   curr_serial = serial;
 
    if( IS_AFFECTED( mob, AFF_CHARM ) )
       return;
@@ -1888,6 +1897,9 @@ void mprog_driver( char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA 
       result = mprog_do_command( cmnd, mob, actor, obj, vo, rndm,
                                  ( ifstate[iflevel][IN_IF] && !ifstate[iflevel][DO_IF] )
                                  || ( ifstate[iflevel][IN_ELSE] && !ifstate[iflevel][DO_ELSE] ), ( ignorelevel > 0 ) );
+
+      if( rprog_oprog )
+         uphold_supermob( &curr_serial, serial, &supermob_room, true_supermob_obj );
 
       /*
        * Script prog support  -Thoric 
@@ -2662,7 +2674,6 @@ void rprog_script_trigger( ROOM_INDEX_DATA * room )
    return;
 }
 
-
 /*
  *  Mudprogram additions begin here
  */
@@ -2674,12 +2685,14 @@ void set_supermob( OBJ_DATA * obj )
    char buf[200];
 
    if( !supermob )
-      supermob = create_mobile( get_mob_index( 3 ) );
+      supermob = create_mobile( get_mob_index( MOB_VNUM_SUPERMOB ) );
 
    mob = supermob;   /* debugging */
 
    if( !obj )
       return;
+
+   supermob_obj = obj;
 
    for( in_obj = obj; in_obj->in_obj; in_obj = in_obj->in_obj )
       ;
@@ -2719,10 +2732,10 @@ void set_supermob( OBJ_DATA * obj )
 
 void release_supermob(  )
 {
+   supermob_obj = NULL;
    char_from_room( supermob );
-   char_to_room( supermob, get_room_index( 3 ) );
+   char_to_room( supermob, get_room_index( ROOM_VNUM_POLY ) );
 }
-
 
 bool oprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, void *vo, int type )
 {
@@ -3164,11 +3177,6 @@ void rprog_act_trigger( char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, OBJ_D
       room_act_add( room );
    }
 }
-
-/*
- *
- */
-
 
 void rprog_leave_trigger( CHAR_DATA * ch )
 {

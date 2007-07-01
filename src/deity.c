@@ -74,7 +74,7 @@ void write_deity_list(  )
    snprintf( filename, 256, "%s%s", DEITY_DIR, DEITY_LIST );
    fpout = fopen( filename, "w" );
    if( !fpout )
-      bug( "FATAL: cannot open %s for writing!\n\r", filename );
+      bug( "FATAL: cannot open %s for writing!\r\n", filename );
    else
    {
       for( tdeity = first_deity; tdeity; tdeity = tdeity->next )
@@ -369,7 +369,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
@@ -379,7 +379,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          break;
 
       case SUB_RESTRICTED:
-         send_to_char( "You cannot do this while in another command.\n\r", ch );
+         send_to_char( "You cannot do this while in another command.\r\n", ch );
          return;
 
       case SUB_DEITYDESC:
@@ -398,27 +398,27 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
 
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Usage: setdeity <deity> <field> <toggle>\n\r", ch );
-      send_to_char( "\n\rField being one of:\n\r", ch );
-      send_to_char( "filename name description type alignment worshippers npcfoe susceptnum\n\r", ch );
-      send_to_char( "race race2 npcrace class element sex affected suscept elementnum affectednum\n\r", ch );
-      send_to_char( "\n\rFavor adjustments:\n\r", ch );
-      send_to_char( "flee flee_npcrace kill kill_npcrace kill_magic\n\r", ch );
-      send_to_char( "die die_npcrace dig_corpse bury_corpse spell_aid\n\r", ch );
-      send_to_char( "steal backstab aid aid_spell sac kill_npcfoe\n\r", ch );
-      send_to_char( "die_npcfoe flee_npcfoe\n\r", ch );
-      send_to_char( "\n\rFavor requirements for supplicate:\n\r", ch );
-      send_to_char( "scorpse savatar sdeityobj srecall\n\r\n\r", ch );
-      send_to_char( "Objstat - being one of:\n\r", ch );
-      send_to_char( "str int wis con dex cha lck\n\r", ch );
-      send_to_char( " 0 - 1 - 2 - 3 - 4 - 5 - 6\n\r", ch );
+      send_to_char( "Usage: setdeity <deity> <field> <toggle>\r\n", ch );
+      send_to_char( "\r\nField being one of:\r\n", ch );
+      send_to_char( "filename name description type alignment worshippers npcfoe susceptnum\r\n", ch );
+      send_to_char( "race race2 npcrace class element sex affected suscept elementnum affectednum\r\n", ch );
+      send_to_char( "\r\nFavor adjustments:\r\n", ch );
+      send_to_char( "flee flee_npcrace kill kill_npcrace kill_magic\r\n", ch );
+      send_to_char( "die die_npcrace dig_corpse bury_corpse spell_aid\r\n", ch );
+      send_to_char( "steal backstab aid aid_spell sac kill_npcfoe\r\n", ch );
+      send_to_char( "die_npcfoe flee_npcfoe\r\n", ch );
+      send_to_char( "\r\nFavor requirements for supplicate:\r\n", ch );
+      send_to_char( "scorpse savatar sdeityobj srecall\r\n\r\n", ch );
+      send_to_char( "Objstat - being one of:\r\n", ch );
+      send_to_char( "str int wis con dex cha lck\r\n", ch );
+      send_to_char( " 0 - 1 - 2 - 3 - 4 - 5 - 6\r\n", ch );
       return;
    }
 
    deity = get_deity( arg1 );
    if( !deity )
    {
-      send_to_char( "No such deity.\n\r", ch );
+      send_to_char( "No such deity.\r\n", ch );
       return;
    }
 
@@ -447,11 +447,9 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    {
       char filename[256];
 
-      if( !argument || argument[0] == '\0' )
-      {
-         send_to_char( "You can't set a deity's filename to nothing.\r\n", ch );
+      if( !is_valid_filename( ch, DEITY_DIR, argument ) )
          return;
-      }
+
       snprintf( filename, 256, "%s%s", DEITY_DIR, deity->filename );
       if( !remove( filename ) )
          send_to_char( "Old deity file deleted.\r\n", ch );
@@ -459,7 +457,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       deity->filename = str_dup( argument );
       send_to_char( "Done.\r\n", ch );
       save_deity( deity );
-      write_deity_list( );
+      write_deity_list(  );
       return;
    }
 
@@ -478,7 +476,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "alignment" ) )
    {
       deity->alignment = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -486,7 +484,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "flee" ) )
    {
       deity->flee = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -494,7 +492,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "flee_npcrace" ) )
    {
       deity->flee_npcrace = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -502,7 +500,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "flee_npcfoe" ) )
    {
       deity->flee_npcfoe = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -510,7 +508,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "kill" ) )
    {
       deity->kill = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -518,7 +516,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "kill_npcrace" ) )
    {
       deity->kill_npcrace = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -526,7 +524,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "kill_npcfoe" ) )
    {
       deity->kill_npcfoe = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -534,7 +532,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "kill_magic" ) )
    {
       deity->kill_magic = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -542,7 +540,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "sac" ) )
    {
       deity->sac = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -550,7 +548,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "bury_corpse" ) )
    {
       deity->bury_corpse = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -558,7 +556,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "aid_spell" ) )
    {
       deity->aid_spell = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -566,7 +564,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "aid" ) )
    {
       deity->aid = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -574,7 +572,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "steal" ) )
    {
       deity->steal = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -582,7 +580,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "backstab" ) )
    {
       deity->backstab = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -590,7 +588,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "die" ) )
    {
       deity->die = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -598,7 +596,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "die_npcrace" ) )
    {
       deity->die_npcrace = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -606,7 +604,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "die_npcfoe" ) )
    {
       deity->die_npcfoe = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -614,7 +612,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "spell_aid" ) )
    {
       deity->spell_aid = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -622,7 +620,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "dig_corpse" ) )
    {
       deity->dig_corpse = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -630,7 +628,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "scorpse" ) )
    {
       deity->scorpse = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -638,7 +636,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "savatar" ) )
    {
       deity->savatar = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -646,7 +644,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "sdeityobj" ) )
    {
       deity->sdeityobj = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -654,7 +652,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "objstat" ) )
    {
       deity->objstat = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -662,7 +660,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "srecall" ) )
    {
       deity->srecall = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -670,7 +668,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "worshippers" ) )
    {
       deity->worshippers = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -683,11 +681,11 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       if( ( value < 0 ) || ( value >= MAX_PC_RACE ) )
       {
          deity->race = -1;
-         send_to_char( "No race set.\n\r", ch );
+         send_to_char( "No race set.\r\n", ch );
          return;
       }
       deity->race = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -700,11 +698,11 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       if( ( value < 0 ) || ( value >= MAX_PC_RACE ) )
       {
          deity->race2 = -1;
-         send_to_char( "No race set.\n\r", ch );
+         send_to_char( "No race set.\r\n", ch );
          return;
       }
       deity->race2 = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -717,11 +715,11 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          value = atoi( argument );
       if( ( value < 0 ) || ( value >= MAX_NPC_RACE ) )
       {
-         send_to_char( "Invalid npc race.\n\r", ch );
+         send_to_char( "Invalid npc race.\r\n", ch );
          return;
       }
       deity->npcrace = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -733,11 +731,11 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          value = atoi( argument );
       if( ( value < 0 ) || ( value >= MAX_NPC_RACE ) )
       {
-         send_to_char( "Invalid npc race.\n\r", ch );
+         send_to_char( "Invalid npc race.\r\n", ch );
          return;
       }
       deity->npcfoe = value;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -747,7 +745,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       deity->Class = atoi( argument );
       if( ( deity->Class < 0 ) || ( deity->Class >= MAX_PC_CLASS ) )
          deity->Class = -1;
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -755,7 +753,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "susceptnum" ) )
    {
       deity->susceptnum = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -763,7 +761,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "elementnum" ) )
    {
       deity->elementnum = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -771,7 +769,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "affectednum" ) )
    {
       deity->affectednum = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -792,7 +790,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          {
             value = get_risflag( arg3 );
             if( value < 0 || value > 31 )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
             {
                TOGGLE_BIT( deity->suscept, 1 << value );
@@ -802,7 +800,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       }
 
       if( fMatch )
-         ch_printf( ch, "Done.\n\r" );
+         ch_printf( ch, "Done.\r\n" );
       save_deity( deity );
       return;
    }
@@ -823,7 +821,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          {
             value = get_risflag( arg3 );
             if( value < 0 || value > 31 )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
             {
                TOGGLE_BIT( deity->element, 1 << value );
@@ -833,7 +831,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       }
 
       if( fMatch )
-         ch_printf( ch, "Done.\n\r" );
+         ch_printf( ch, "Done.\r\n" );
       save_deity( deity );
       return;
    }
@@ -841,7 +839,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "sex" ) )
    {
       deity->sex = atoi( argument );
-      send_to_char( "Done.\n\r", ch );
+      send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       return;
    }
@@ -862,7 +860,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          {
             value = get_aflag( arg3 );
             if( value < 0 || value > MAX_BITS )
-               ch_printf( ch, "Unknown flag: %s\n\r", arg3 );
+               ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
             {
                xTOGGLE_BIT( deity->affected, value );
@@ -872,7 +870,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       }
 
       if( fMatch )
-         ch_printf( ch, "Done.\n\r" );
+         ch_printf( ch, "Done.\r\n" );
       save_deity( deity );
       return;
    }
@@ -888,51 +886,51 @@ void do_showdeity( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( argument[0] == '\0' )
    {
-      send_to_char( "Usage: showdeity <deity>\n\r", ch );
+      send_to_char( "Usage: showdeity <deity>\r\n", ch );
       return;
    }
 
    deity = get_deity( argument );
    if( !deity )
    {
-      send_to_char( "No such deity.\n\r", ch );
+      send_to_char( "No such deity.\r\n", ch );
       return;
    }
 
-   ch_printf( ch, "Deity: %s\n\rFilename: %s\n\rDescription:\n\r%s\n\r", deity->name, deity->filename, deity->description );
-   ch_printf( ch, "Alignment: %-7dNpcrace: %-9sNpcfoe: %s\n\r",
+   ch_printf( ch, "Deity: %s\r\nFilename: %s\r\nDescription:\r\n%s\r\n", deity->name, deity->filename, deity->description );
+   ch_printf( ch, "Alignment: %-7dNpcrace: %-9sNpcfoe: %s\r\n",
               deity->alignment,
               ( deity->npcrace < 0 || deity->npcrace > MAX_NPC_RACE ) ? "none" : npc_race[deity->npcrace],
               ( deity->npcfoe < 0 || deity->npcfoe > MAX_NPC_RACE ) ? "none" : npc_race[deity->npcfoe] );
-   ch_printf( ch, "Race: %-12sClass: %-11sSex: %-13sRace2: %s\n\r",
+   ch_printf( ch, "Race: %-12sClass: %-11sSex: %-13sRace2: %s\r\n",
               ( deity->race < 0 || deity->race > MAX_PC_RACE ) ? "none" : race_table[deity->race]->race_name,
               ( deity->Class < 0 || deity->Class > MAX_PC_CLASS ) ? "none" : class_table[deity->Class]->who_name,
               deity->sex == -1 ? "none" :
               deity->sex == SEX_MALE ? "male" :
               deity->sex == SEX_FEMALE ? "female" : "neutral",
               ( deity->race2 < 0 || deity->race2 > MAX_PC_RACE ) ? "none" : npc_race[deity->race2] );
-   ch_printf( ch, "Objstat: %-9dWorshippers: %d\n\r", deity->objstat, deity->worshippers );
-   ch_printf( ch, "Affectednum: %-5dElementnum: %-6dSusceptnum: %d\n\r", deity->affectednum, deity->elementnum,
+   ch_printf( ch, "Objstat: %-9dWorshippers: %d\r\n", deity->objstat, deity->worshippers );
+   ch_printf( ch, "Affectednum: %-5dElementnum: %-6dSusceptnum: %d\r\n", deity->affectednum, deity->elementnum,
               deity->susceptnum );
-   ch_printf( ch, "\n\rAffected: %s\n\r", affect_bit_name( &deity->affected ) );
-   ch_printf( ch, "Suscept: %s\n\r", flag_string( deity->suscept, ris_flags ) );
-   ch_printf( ch, "Element: %s\n\r", flag_string( deity->element, ris_flags ) );
-   ch_printf( ch, "\n\rFlee: %-12dFlee_npcrace: %-4dKill_npcrace: "
-              "%-4dKill: %d\n\r", deity->flee, deity->flee_npcrace, deity->kill_npcrace, deity->kill );
+   ch_printf( ch, "\r\nAffected: %s\r\n", affect_bit_name( &deity->affected ) );
+   ch_printf( ch, "Suscept: %s\r\n", flag_string( deity->suscept, ris_flags ) );
+   ch_printf( ch, "Element: %s\r\n", flag_string( deity->element, ris_flags ) );
+   ch_printf( ch, "\r\nFlee: %-12dFlee_npcrace: %-4dKill_npcrace: "
+              "%-4dKill: %d\r\n", deity->flee, deity->flee_npcrace, deity->kill_npcrace, deity->kill );
    ch_printf( ch, "Kill_magic: %-6dSac: %-13dBury_corpse: %-5dAid_spell: "
-              "%d\n\r", deity->kill_magic, deity->sac, deity->bury_corpse, deity->aid_spell );
-   ch_printf( ch, "Aid: %-13dSteal: %-11dBackstab: %-8dDie: %d\n\r", deity->aid, deity->steal, deity->backstab, deity->die );
-   ch_printf( ch, "Die_npcrace: %-5dDig_corpse: %-6dSpell_aid: %-7dKill_npcfoe: %d\n\r",
+              "%d\r\n", deity->kill_magic, deity->sac, deity->bury_corpse, deity->aid_spell );
+   ch_printf( ch, "Aid: %-13dSteal: %-11dBackstab: %-8dDie: %d\r\n", deity->aid, deity->steal, deity->backstab, deity->die );
+   ch_printf( ch, "Die_npcrace: %-5dDig_corpse: %-6dSpell_aid: %-7dKill_npcfoe: %d\r\n",
               deity->die_npcrace, deity->dig_corpse, deity->spell_aid, deity->kill_npcfoe );
-   ch_printf( ch, "Die_npcfoe: %-6dFlee_npcfoe: %d\n\r", deity->die_npcfoe, deity->flee_npcfoe );
-   ch_printf( ch, "\n\rScorpse: %-9dSavatar: %-9dSdeityobj: %-7d"
-              "Srecall: %d\n\r", deity->scorpse, deity->savatar, deity->sdeityobj, deity->srecall );
+   ch_printf( ch, "Die_npcfoe: %-6dFlee_npcfoe: %d\r\n", deity->die_npcfoe, deity->flee_npcfoe );
+   ch_printf( ch, "\r\nScorpse: %-9dSavatar: %-9dSdeityobj: %-7d"
+              "Srecall: %d\r\n", deity->scorpse, deity->savatar, deity->sdeityobj, deity->srecall );
    return;
 }
 
@@ -958,7 +956,7 @@ void do_makedeity( CHAR_DATA * ch, char *argument )
    LINK( deity, first_deity, last_deity, next, prev );
    deity->name = STRALLOC( argument );
    deity->filename = str_dup( strlower( argument ) );
-   write_deity_list( );
+   write_deity_list(  );
    save_deity( deity );
    ch_printf( ch, "%s deity has been created\r\n", argument );
    return;
@@ -971,13 +969,13 @@ void do_devote( CHAR_DATA * ch, char *argument )
 
    if( IS_NPC( ch ) )
    {
-      send_to_char( "Huh?\n\r", ch );
+      send_to_char( "Huh?\r\n", ch );
       return;
    }
 
    if( ch->level < 5 )
    {
-      send_to_char( "You are not yet prepared for such devotion.\n\r", ch );
+      send_to_char( "You are not yet prepared for such devotion.\r\n", ch );
       return;
    }
 
@@ -985,7 +983,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Devote yourself to which deity?\n\r", ch );
+      send_to_char( "Devote yourself to which deity?\r\n", ch );
       return;
    }
 
@@ -994,7 +992,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
       AFFECT_DATA af;
       if( !ch->pcdata->deity )
       {
-         send_to_char( "You have already chosen to worship no deities.\n\r", ch );
+         send_to_char( "You have already chosen to worship no deities.\r\n", ch );
          return;
       }
       --ch->pcdata->deity->worshippers;
@@ -1002,7 +1000,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
          ch->pcdata->deity->worshippers = 0;
       ch->pcdata->favor = -2500;
       ch->mental_state = -80;
-      send_to_char( "A terrible curse afflicts you as you forsake a deity!\n\r", ch );
+      send_to_char( "A terrible curse afflicts you as you forsake a deity!\r\n", ch );
       xREMOVE_BITS( ch->affected_by, ch->pcdata->deity->affected );
       REMOVE_BIT( ch->resistant, ch->pcdata->deity->element );
       REMOVE_BIT( ch->susceptible, ch->pcdata->deity->suscept );
@@ -1014,7 +1012,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
       af.bitvector = meb( AFF_BLIND );
       affect_to_char( ch, &af );
       save_deity( ch->pcdata->deity );
-      send_to_char( "You cease to worship any deity.\n\r", ch );
+      send_to_char( "You cease to worship any deity.\r\n", ch );
       ch->pcdata->deity = NULL;
       STRFREE( ch->pcdata->deity_name );
       ch->pcdata->deity_name = STRALLOC( "" );
@@ -1025,25 +1023,25 @@ void do_devote( CHAR_DATA * ch, char *argument )
    deity = get_deity( arg );
    if( !deity )
    {
-      send_to_char( "No such deity holds weight on this world.\n\r", ch );
+      send_to_char( "No such deity holds weight on this world.\r\n", ch );
       return;
    }
 
    if( ch->pcdata->deity )
    {
-      send_to_char( "You are already devoted to a deity.\n\r", ch );
+      send_to_char( "You are already devoted to a deity.\r\n", ch );
       return;
    }
 
    if( ( deity->Class != -1 ) && ( deity->Class != ch->Class ) )
    {
-      send_to_char( "That deity will not accept your worship due to your class.\n\r", ch );
+      send_to_char( "That deity will not accept your worship due to your class.\r\n", ch );
       return;
    }
 
    if( ( deity->sex != -1 ) && ( deity->sex != ch->sex ) )
    {
-      send_to_char( "That deity will not accept worshippers of your sex.\n\r", ch );
+      send_to_char( "That deity will not accept worshippers of your sex.\r\n", ch );
       return;
    }
 
@@ -1052,7 +1050,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
    {
       if( ( deity->race != ch->race ) && ( deity->race2 != ch->race ) )
       {
-         send_to_char( "That deity will not accept worshippers of your race.\n\r", ch );
+         send_to_char( "That deity will not accept worshippers of your race.\r\n", ch );
          return;
       }
    }
@@ -1062,7 +1060,7 @@ void do_devote( CHAR_DATA * ch, char *argument )
 	AFFECT_DATA af;
 	--ch->pcdata->deity->worshippers;
 	ch->pcdata->favor = -2500;
-	send_to_char( "A terrible curse afflicts you as you forsake a deity!\n\r", ch );
+	send_to_char( "A terrible curse afflicts you as you forsake a deity!\r\n", ch );
 	xREMOVE_BITs( ch->affected_by, ch->pcdata->deity->affected );
 	REMOVE_BIT( ch->resistant, ch->pcdata->deity->element );
 
@@ -1107,16 +1105,16 @@ void do_deities( CHAR_DATA * ch, char *argument )
 
    if( argument[0] == '\0' )
    {
-      send_to_pager_color( "&gFor detailed information on a deity, try 'deities <deity>' or 'help deities'\n\r", ch );
-      send_to_pager_color( "Deity			Worshippers\n\r", ch );
+      send_to_pager_color( "&gFor detailed information on a deity, try 'deities <deity>' or 'help deities'\r\n", ch );
+      send_to_pager_color( "Deity			Worshippers\r\n", ch );
       for( deity = first_deity; deity; deity = deity->next )
       {
-         pager_printf_color( ch, "&G%-14s	&g%19d\n\r", deity->name, deity->worshippers );
+         pager_printf_color( ch, "&G%-14s	&g%19d\r\n", deity->name, deity->worshippers );
          count++;
       }
       if( !count )
       {
-         send_to_pager_color( "&gThere are no deities on this world.\n\r", ch );
+         send_to_pager_color( "&gThere are no deities on this world.\r\n", ch );
          return;
       }
       return;
@@ -1125,12 +1123,12 @@ void do_deities( CHAR_DATA * ch, char *argument )
    deity = get_deity( argument );
    if( !deity )
    {
-      send_to_pager_color( "&gThat deity does not exist.\n\r", ch );
+      send_to_pager_color( "&gThat deity does not exist.\r\n", ch );
       return;
    }
 
-   pager_printf_color( ch, "&gDeity:        &G%s\n\r", deity->name );
-   pager_printf_color( ch, "&gDescription:\n\r&G%s", deity->description );
+   pager_printf_color( ch, "&gDeity:        &G%s\r\n", deity->name );
+   pager_printf_color( ch, "&gDescription:\r\n&G%s", deity->description );
    return;
 }
 
@@ -1143,7 +1141,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
    one_argument( argument, arg );
    if( IS_NPC( ch ) || !ch->pcdata->deity )
    {
-      send_to_char( "You have no deity to supplicate to.\n\r", ch );
+      send_to_char( "You have no deity to supplicate to.\r\n", ch );
       return;
    }
 
@@ -1151,7 +1149,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
    if( arg[0] == '\0' )
    {
-      send_to_char( "Supplicate for what?\n\r", ch );
+      send_to_char( "Supplicate for what?\r\n", ch );
       return;
    }
 
@@ -1163,13 +1161,13 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( ch->pcdata->favor < ch->pcdata->deity->scorpse )
       {
-         send_to_char( "You are not favored enough for a corpse retrieval.\n\r", ch );
+         send_to_char( "You are not favored enough for a corpse retrieval.\r\n", ch );
          return;
       }
 
       if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-         send_to_char( "You cannot supplicate in a storage room.\n\r", ch );
+         send_to_char( "You cannot supplicate in a storage room.\r\n", ch );
          return;
       }
 
@@ -1177,7 +1175,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
       snprintf( buf2, MAX_STRING_LENGTH, "the corpse of %s", ch->name );
       for( obj = first_object; obj; obj = obj->next )
       {
-         if( obj->in_room && !str_cmp( buf2, obj->short_descr ) && ( obj->pIndexData->vnum == 11 ) )
+         if( obj->in_room && !str_cmp( buf2, obj->short_descr ) && ( obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC ) )
          {
             found = TRUE;
             if( IS_SET( obj->in_room->room_flags, ROOM_NOSUPPLICATE ) )
@@ -1194,7 +1192,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( !found )
       {
-         send_to_char( "No corpse of yours litters the world...\n\r", ch );
+         send_to_char( "No corpse of yours litters the world...\r\n", ch );
          return;
       }
       ch->pcdata->favor -= ch->pcdata->deity->scorpse;
@@ -1221,7 +1219,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( ch->pcdata->favor < ch->pcdata->deity->savatar )
       {
-         send_to_char( "You are not favored enough for that.\n\r", ch );
+         send_to_char( "You are not favored enough for that.\r\n", ch );
          return;
       }
 
@@ -1275,7 +1273,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( ch->pcdata->favor < ch->pcdata->deity->sdeityobj )
       {
-         send_to_char( "You are not favored enough for that.\n\r", ch );
+         send_to_char( "You are not favored enough for that.\r\n", ch );
          return;
       }
 
@@ -1355,19 +1353,19 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( ch->pcdata->favor < ch->pcdata->deity->srecall )
       {
-         send_to_char( "Your favor is inadequate for such a supplication.\n\r", ch );
+         send_to_char( "Your favor is inadequate for such a supplication.\r\n", ch );
          return;
       }
 
       if( IS_SET( ch->in_room->room_flags, ROOM_NOSUPPLICATE ) )
       {
-         send_to_char( "You have been forsaken!\n\r", ch );
+         send_to_char( "You have been forsaken!\r\n", ch );
          return;
       }
 
       if( get_timer( ch, TIMER_RECENTFIGHT ) > 0 && !IS_IMMORTAL( ch ) )
       {
-         send_to_char( "You cannot supplicate recall under adrenaline!\n\r", ch );
+         send_to_char( "You cannot supplicate recall under adrenaline!\r\n", ch );
          return;
       }
 
@@ -1390,7 +1388,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
 
       if( !location )
       {
-         send_to_char( "You are completely lost.\n\r", ch );
+         send_to_char( "You are completely lost.\r\n", ch );
          return;
       }
 
@@ -1421,7 +1419,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   send_to_char( "You cannot supplicate for that.\n\r", ch );
+   send_to_char( "You cannot supplicate for that.\r\n", ch );
    return;
 }
 

@@ -93,7 +93,7 @@ void advance_level( CHAR_DATA * ch )
       add_mana = ( int )( add_mana + add_mana * .3 );
       add_move = ( int )( add_move + add_move * .3 );
       add_hp += 1;   /* bitch at blod if you don't like this :) */
-      send_to_char( "Gravoc's Pandect steels your sinews.\n\r", ch );
+      send_to_char( "Gravoc's Pandect steels your sinews.\r\n", ch );
    }
 
    ch->max_hit += add_hp;
@@ -112,7 +112,7 @@ void advance_level( CHAR_DATA * ch )
          if( d->connected == CON_PLAYING && d->character != ch )
          {
             set_char_color( AT_IMMORT, d->character );
-            ch_printf( d->character, "%s has just achieved Avatarhood!\n\r", ch->name );
+            ch_printf( d->character, "%s has just achieved Avatarhood!\r\n", ch->name );
          }
       set_char_color( AT_WHITE, ch );
       do_help( ch, "M_ADVHERO_" );
@@ -121,19 +121,17 @@ void advance_level( CHAR_DATA * ch )
    {
       if( IS_VAMPIRE( ch ) )
          snprintf( buf, MAX_STRING_LENGTH,
-                   "Your gain is: %d/%d hp, %d/%d bp, %d/%d mv %d/%d prac.\n\r",
+                   "Your gain is: %d/%d hp, %d/%d bp, %d/%d mv %d/%d prac.\r\n",
                    add_hp, ch->max_hit, 1, ch->level + 10, add_move, ch->max_move, add_prac, ch->practice );
       else
          snprintf( buf, MAX_STRING_LENGTH,
-                   "Your gain is: %d/%d hp, %d/%d mana, %d/%d mv %d/%d prac.\n\r",
+                   "Your gain is: %d/%d hp, %d/%d mana, %d/%d mv %d/%d prac.\r\n",
                    add_hp, ch->max_hit, add_mana, ch->max_mana, add_move, ch->max_move, add_prac, ch->practice );
       set_char_color( AT_WHITE, ch );
       send_to_char( buf, ch );
    }
    return;
 }
-
-
 
 void gain_exp( CHAR_DATA * ch, int gain )
 {
@@ -150,22 +148,22 @@ void gain_exp( CHAR_DATA * ch, int gain )
    {
       if( ch->level <= 6 )
       {
-         send_to_char( "The Favor of Gravoc fosters your learning.\n\r", ch );
+         send_to_char( "The Favor of Gravoc fosters your learning.\r\n", ch );
          modgain *= 2;
       }
       if( ch->level <= 10 && ch->level >= 7 )
       {
-         send_to_char( "The Hand of Gravoc hastens your learning.\n\r", ch );
+         send_to_char( "The Hand of Gravoc hastens your learning.\r\n", ch );
          modgain *= 1.75;
       }
       if( ch->level <= 13 && ch->level >= 11 )
       {
-         send_to_char( "The Cunning of Gravoc succors your learning.\n\r", ch );
+         send_to_char( "The Cunning of Gravoc succors your learning.\r\n", ch );
          modgain *= 1.5;
       }
       if( ch->level <= 16 && ch->level >= 14 )
       {
-         send_to_char( "The Patronage of Gravoc reinforces your learning.\n\r", ch );
+         send_to_char( "The Patronage of Gravoc reinforces your learning.\r\n", ch );
          modgain *= 1.25;
       }
    }
@@ -183,10 +181,9 @@ void gain_exp( CHAR_DATA * ch, int gain )
       if( ch->exp + modgain < exp_level( ch, ch->level ) )
       {
          modgain = exp_level( ch, ch->level ) - ch->exp;
-         send_to_char( "Gravoc's Pandect protects your insight.\n\r", ch );
+         send_to_char( "Gravoc's Pandect protects your insight.\r\n", ch );
       }
    }
-
 
    /*
     * xp cap to prevent any one event from giving enuf xp to 
@@ -200,7 +197,7 @@ void gain_exp( CHAR_DATA * ch, int gain )
 
    if( NOT_AUTHED( ch ) && ch->exp >= exp_level( ch, ch->level + 1 ) )
    {
-      send_to_char( "You can not ascend to a higher level until you are authorized.\n\r", ch );
+      send_to_char( "You can not ascend to a higher level until you are authorized.\r\n", ch );
       ch->exp = ( exp_level( ch, ( ch->level + 1 ) ) - 1 );
       return;
    }
@@ -209,10 +206,9 @@ void gain_exp( CHAR_DATA * ch, int gain )
    {
       set_char_color( AT_WHITE + AT_BLINK, ch );
       ch->level += 1;
-      ch_printf( ch, "You have now obtained experience level %d!\n\r", ch->level );
+      ch_printf( ch, "You have now obtained experience level %d!\r\n", ch->level );
       advance_level( ch );
    }
-
    return;
 }
 
@@ -322,8 +318,6 @@ int mana_gain( CHAR_DATA * ch )
    return UMIN( gain, ch->max_mana - ch->mana );
 }
 
-
-
 int move_gain( CHAR_DATA * ch )
 {
    int gain;
@@ -388,7 +382,6 @@ int move_gain( CHAR_DATA * ch )
    return UMIN( gain, ch->max_move - ch->move );
 }
 
-
 void gain_condition( CHAR_DATA * ch, int iCond, int value )
 {
    int condition;
@@ -411,7 +404,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_HUNGRY, ch );
-               send_to_char( "You are STARVING!\n\r", ch );
+               send_to_char( "You are STARVING!\r\n", ch );
                act( AT_HUNGRY, "$n is starved half to death!", ch, NULL, NULL, TO_ROOM );
                if( !IS_PKILL( ch ) || number_bits( 1 ) == 0 )
                   worsen_mental_state( ch, 1 );
@@ -423,7 +416,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_THIRSTY, ch );
-               send_to_char( "You are DYING of THIRST!\n\r", ch );
+               send_to_char( "You are DYING of THIRST!\r\n", ch );
                act( AT_THIRSTY, "$n is dying of thirst!", ch, NULL, NULL, TO_ROOM );
                worsen_mental_state( ch, IS_PKILL( ch ) ? 1 : 2 );
                retcode = damage( ch, ch, 2, TYPE_UNDEFINED );
@@ -434,7 +427,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR )
             {
                set_char_color( AT_BLOOD, ch );
-               send_to_char( "You are starved to feast on blood!\n\r", ch );
+               send_to_char( "You are starved to feast on blood!\r\n", ch );
                act( AT_BLOOD, "$n is suffering from lack of blood!", ch, NULL, NULL, TO_ROOM );
                worsen_mental_state( ch, 2 );
                retcode = damage( ch, ch, ch->max_hit / 20, TYPE_UNDEFINED );
@@ -444,7 +437,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( condition != 0 )
             {
                set_char_color( AT_SOBER, ch );
-               send_to_char( "You are sober.\n\r", ch );
+               send_to_char( "You are sober.\r\n", ch );
             }
             retcode = rNONE;
             break;
@@ -466,7 +459,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_HUNGRY, ch );
-               send_to_char( "You are really hungry.\n\r", ch );
+               send_to_char( "You are really hungry.\r\n", ch );
                act( AT_HUNGRY, "You can hear $n's stomach growling.", ch, NULL, NULL, TO_ROOM );
                if( number_bits( 1 ) == 0 )
                   worsen_mental_state( ch, 1 );
@@ -477,7 +470,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_THIRSTY, ch );
-               send_to_char( "You are really thirsty.\n\r", ch );
+               send_to_char( "You are really thirsty.\r\n", ch );
                worsen_mental_state( ch, 1 );
                act( AT_THIRSTY, "$n looks a little parched.", ch, NULL, NULL, TO_ROOM );
             }
@@ -487,7 +480,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR )
             {
                set_char_color( AT_BLOOD, ch );
-               send_to_char( "You have a growing need to feast on blood!\n\r", ch );
+               send_to_char( "You have a growing need to feast on blood!\r\n", ch );
                act( AT_BLOOD, "$n gets a strange look in $s eyes...", ch, NULL, NULL, TO_ROOM );
                worsen_mental_state( ch, 1 );
             }
@@ -496,12 +489,11 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( condition != 0 )
             {
                set_char_color( AT_SOBER, ch );
-               send_to_char( "You are feeling a little less light headed.\n\r", ch );
+               send_to_char( "You are feeling a little less light headed.\r\n", ch );
             }
             break;
       }
    }
-
 
    if( ch->pcdata->condition[iCond] == 2 )
    {
@@ -511,7 +503,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_HUNGRY, ch );
-               send_to_char( "You are hungry.\n\r", ch );
+               send_to_char( "You are hungry.\r\n", ch );
             }
             break;
 
@@ -519,7 +511,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_THIRSTY, ch );
-               send_to_char( "You are thirsty.\n\r", ch );
+               send_to_char( "You are thirsty.\r\n", ch );
             }
             break;
 
@@ -527,7 +519,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR )
             {
                set_char_color( AT_BLOOD, ch );
-               send_to_char( "You feel an urgent need for blood.\n\r", ch );
+               send_to_char( "You feel an urgent need for blood.\r\n", ch );
             }
             break;
       }
@@ -541,7 +533,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_HUNGRY, ch );
-               send_to_char( "You are a mite peckish.\n\r", ch );
+               send_to_char( "You are a mite peckish.\r\n", ch );
             }
             break;
 
@@ -549,7 +541,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE )
             {
                set_char_color( AT_THIRSTY, ch );
-               send_to_char( "You could use a sip of something refreshing.\n\r", ch );
+               send_to_char( "You could use a sip of something refreshing.\r\n", ch );
             }
             break;
 
@@ -557,22 +549,18 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             if( ch->level < LEVEL_AVATAR )
             {
                set_char_color( AT_BLOOD, ch );
-               send_to_char( "You feel an aching in your fangs.\n\r", ch );
+               send_to_char( "You feel an aching in your fangs.\r\n", ch );
             }
             break;
       }
    }
-
-
    return;
 }
-
 
 /*
  * Put this in a seperate function so it isn't called three times per tick
  * This was added after a suggestion from Cronel	--Shaddai
  */
-
 void check_alignment( CHAR_DATA * ch )
 {
    /*
@@ -598,7 +586,7 @@ void check_alignment( CHAR_DATA * ch )
       if( ch->alignment < 250 )
       {
          set_char_color( AT_BLOOD, ch );
-         send_to_char( "You are wracked with guilt and remorse for your craven actions!\n\r", ch );
+         send_to_char( "You are wracked with guilt and remorse for your craven actions!\r\n", ch );
          act( AT_BLOOD, "$n prostrates $mself, seeking forgiveness from $s Lord.", ch, NULL, NULL, TO_ROOM );
          worsen_mental_state( ch, 15 );
          return;
@@ -606,7 +594,7 @@ void check_alignment( CHAR_DATA * ch )
       if( ch->alignment < 500 )
       {
          set_char_color( AT_BLOOD, ch );
-         send_to_char( "As you betray your faith, your mind begins to betray you.\n\r", ch );
+         send_to_char( "As you betray your faith, your mind begins to betray you.\r\n", ch );
          act( AT_BLOOD, "$n shudders, judging $s actions unworthy of a Paladin.", ch, NULL, NULL, TO_ROOM );
          worsen_mental_state( ch, 6 );
          return;
@@ -773,6 +761,8 @@ void mobile_update( void )
          obj_best = NULL;
          for( obj = ch->in_room->first_content; obj; obj = obj->next_content )
          {
+            if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) && !xIS_SET( ch->act, ACT_PROTOTYPE ) )
+               continue;
             if( CAN_WEAR( obj, ITEM_TAKE ) && obj->cost > max && !IS_OBJ_STAT( obj, ITEM_BURIED ) )
             {
                obj_best = obj;
@@ -797,6 +787,7 @@ void mobile_update( void )
           && ( door = number_bits( 5 ) ) <= 9
           && ( pexit = get_exit( ch->in_room, door ) ) != NULL
           && pexit->to_room
+          && !IS_SET( pexit->exit_info, EX_WINDOW )
           && !IS_SET( pexit->exit_info, EX_CLOSED )
           && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
           && !IS_SET( pexit->to_room->room_flags, ROOM_DEATH )
@@ -821,7 +812,10 @@ void mobile_update( void )
       if( ch->hit < ch->max_hit / 2
           && ( door = number_bits( 4 ) ) <= 9
           && ( pexit = get_exit( ch->in_room, door ) ) != NULL
-          && pexit->to_room && !IS_SET( pexit->exit_info, EX_CLOSED ) && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) )
+          && pexit->to_room
+          && !IS_SET( pexit->exit_info, EX_WINDOW )
+          && !IS_SET( pexit->exit_info, EX_CLOSED )
+          && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !IS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
       {
          CHAR_DATA *rch;
          bool found;
@@ -858,8 +852,6 @@ void mobile_update( void )
 
    return;
 }
-
-
 
 /*
  * Update all chars, including mobs.
@@ -936,7 +928,6 @@ void char_update( void )
       /*
        * Morph timer expires 
        */
-
       if( ch->morph )
       {
          if( ch->morph->timer > 0 )
@@ -951,17 +942,16 @@ void char_update( void )
        * To make people with a nuisance's flags life difficult 
        * * --Shaddai
        */
-
       if( !IS_NPC( ch ) && ch->pcdata->nuisance )
       {
-         long int temp;
+         time_t temp;
 
          if( ch->pcdata->nuisance->flags < MAX_NUISANCE_STAGE )
          {
-            temp = ch->pcdata->nuisance->max_time - ch->pcdata->nuisance->time;
+            temp = ch->pcdata->nuisance->max_time - ch->pcdata->nuisance->set_time;
             temp *= ch->pcdata->nuisance->flags;
             temp /= MAX_NUISANCE_STAGE;
-            temp += ch->pcdata->nuisance->time;
+            temp += ch->pcdata->nuisance->set_time;
             if( temp < current_time )
                ch->pcdata->nuisance->flags++;
          }
@@ -986,7 +976,6 @@ void char_update( void )
             }
          }
 
-
          if( ++ch->timer >= 12 )
          {
             if( !IS_IDLE( ch ) )
@@ -997,7 +986,7 @@ void char_update( void )
                if( ch->fighting )
                   stop_fighting( ch, TRUE );
                act( AT_ACTION, "$n disappears into the void.", ch, NULL, NULL, TO_ROOM );
-               send_to_char( "You disappear into the void.\n\r", ch );
+               send_to_char( "You disappear into the void.\r\n", ch );
                if( IS_SET( sysdata.save_flags, SV_IDLE ) )
                   save_char_obj( ch );
                SET_BIT( ch->pcdata->flags, PCFLAG_IDLE );
@@ -1104,6 +1093,7 @@ void char_update( void )
             }
 
       }
+
       if( !IS_NPC( ch ) && !IS_IMMORTAL( ch ) && ch->pcdata->release_date > 0 && ch->pcdata->release_date <= current_time )
       {
          ROOM_INDEX_DATA *location;
@@ -1116,7 +1106,7 @@ void char_update( void )
          MOBtrigger = FALSE;
          char_from_room( ch );
          char_to_room( ch, location );
-         send_to_char( "The gods have released you from hell as your sentance is up!\n\r", ch );
+         send_to_char( "The gods have released you from hell as your sentance is up!\r\n", ch );
          do_look( ch, "auto" );
          STRFREE( ch->pcdata->helled_by );
          ch->pcdata->helled_by = NULL;
@@ -1181,39 +1171,40 @@ void char_update( void )
             switch ( ( ch->mental_state + 5 ) / 10 )
             {
                case 3:
-                  send_to_char( "You feel feverish.\n\r", ch );
+                  send_to_char( "You feel feverish.\r\n", ch );
                   act( AT_ACTION, "$n looks kind of out of it.", ch, NULL, NULL, TO_ROOM );
                   break;
                case 4:
-                  send_to_char( "You do not feel well at all.\n\r", ch );
+                  send_to_char( "You do not feel well at all.\r\n", ch );
                   act( AT_ACTION, "$n doesn't look too good.", ch, NULL, NULL, TO_ROOM );
                   break;
                case 5:
-                  send_to_char( "You need help!\n\r", ch );
+                  send_to_char( "You need help!\r\n", ch );
                   act( AT_ACTION, "$n looks like $e could use your help.", ch, NULL, NULL, TO_ROOM );
                   break;
                case 6:
-                  send_to_char( "Seekest thou a cleric.\n\r", ch );
+                  send_to_char( "Seekest thou a cleric.\r\n", ch );
                   act( AT_ACTION, "Someone should fetch a healer for $n.", ch, NULL, NULL, TO_ROOM );
                   break;
                case 7:
-                  send_to_char( "You feel reality slipping away...\n\r", ch );
+                  send_to_char( "You feel reality slipping away...\r\n", ch );
                   act( AT_ACTION, "$n doesn't appear to be aware of what's going on.", ch, NULL, NULL, TO_ROOM );
                   break;
                case 8:
-                  send_to_char( "You begin to understand... everything.\n\r", ch );
+                  send_to_char( "You begin to understand... everything.\r\n", ch );
                   act( AT_ACTION, "$n starts ranting like a madman!", ch, NULL, NULL, TO_ROOM );
                   break;
                case 9:
-                  send_to_char( "You are ONE with the universe.\n\r", ch );
+                  send_to_char( "You are ONE with the universe.\r\n", ch );
                   act( AT_ACTION, "$n is ranting on about 'the answer', 'ONE' and other mumbo-jumbo...", ch, NULL, NULL,
                        TO_ROOM );
                   break;
                case 10:
-                  send_to_char( "You feel the end is near.\n\r", ch );
+                  send_to_char( "You feel the end is near.\r\n", ch );
                   act( AT_ACTION, "$n is muttering and ranting in tongues...", ch, NULL, NULL, TO_ROOM );
                   break;
             }
+
          if( ch->mental_state <= -30 )
             switch ( ( abs( ch->mental_state ) + 5 ) / 10 )
             {
@@ -1224,7 +1215,7 @@ void char_update( void )
                            || ch->position < POS_FIGHTING ) && number_percent(  ) + 10 < abs( ch->mental_state ) )
                         do_sleep( ch, "" );
                      else
-                        send_to_char( "You're barely conscious.\n\r", ch );
+                        send_to_char( "You're barely conscious.\r\n", ch );
                   }
                   break;
                case 9:
@@ -1234,7 +1225,7 @@ void char_update( void )
                            || ch->position < POS_FIGHTING ) && ( number_percent(  ) + 20 ) < abs( ch->mental_state ) )
                         do_sleep( ch, "" );
                      else
-                        send_to_char( "You can barely keep your eyes open.\n\r", ch );
+                        send_to_char( "You can barely keep your eyes open.\r\n", ch );
                   }
                   break;
                case 8:
@@ -1243,28 +1234,28 @@ void char_update( void )
                      if( ch->position < POS_SITTING && ( number_percent(  ) + 30 ) < abs( ch->mental_state ) )
                         do_sleep( ch, "" );
                      else
-                        send_to_char( "You're extremely drowsy.\n\r", ch );
+                        send_to_char( "You're extremely drowsy.\r\n", ch );
                   }
                   break;
                case 7:
                   if( ch->position > POS_RESTING )
-                     send_to_char( "You feel very unmotivated.\n\r", ch );
+                     send_to_char( "You feel very unmotivated.\r\n", ch );
                   break;
                case 6:
                   if( ch->position > POS_RESTING )
-                     send_to_char( "You feel sedated.\n\r", ch );
+                     send_to_char( "You feel sedated.\r\n", ch );
                   break;
                case 5:
                   if( ch->position > POS_RESTING )
-                     send_to_char( "You feel sleepy.\n\r", ch );
+                     send_to_char( "You feel sleepy.\r\n", ch );
                   break;
                case 4:
                   if( ch->position > POS_RESTING )
-                     send_to_char( "You feel tired.\n\r", ch );
+                     send_to_char( "You feel tired.\r\n", ch );
                   break;
                case 3:
                   if( ch->position > POS_RESTING )
-                     send_to_char( "You could use a rest.\n\r", ch );
+                     send_to_char( "You could use a rest.\r\n", ch );
                   break;
             }
          if( ch->timer > 24 )
@@ -1273,11 +1264,8 @@ void char_update( void )
             save_char_obj( ch );
       }
    }
-
    return;
 }
-
-
 
 /*
  * Update all objs.
@@ -1341,9 +1329,9 @@ void obj_update( void )
             REMOVE_BIT( obj->value[3], PIPE_HOT );
       }
 
-
-/* Corpse decay (npc corpses decay at 8 times the rate of pc corpses) - Narn */
-
+      /*
+       * Corpse decay (npc corpses decay at 8 times the rate of pc corpses) - Narn 
+       */
       if( obj->item_type == ITEM_CORPSE_PC || obj->item_type == ITEM_CORPSE_NPC )
       {
          short timerfrac = UMAX( 1, obj->timer - 1 );
@@ -1386,7 +1374,6 @@ void obj_update( void )
       /*
        * if we get this far, object's timer has expired. 
        */
-
       AT_TEMP = AT_PLAIN;
       switch ( obj->item_type )
       {
@@ -1434,17 +1421,6 @@ void obj_update( void )
             AT_TEMP = AT_OBJECT;
             break;
          case ITEM_FIRE:
-            /*
-             * This is removed because it is done in obj_from_room
-             * * Thanks to gfinello@mail.karmanet.it for pointing this out.
-             * * --Shaddai
-             * if (obj->in_room)
-             * {
-             * --obj->in_room->light;
-             * if ( obj->in_room->light < 0 )
-             * obj->in_room->light = 0;
-             * }
-             */
             message = "$p burns out.";
             AT_TEMP = AT_FIRE;
       }
@@ -1465,7 +1441,6 @@ void obj_update( void )
    }
    return;
 }
-
 
 /*
  * Function to check important stuff happening to a player
@@ -1544,7 +1519,7 @@ void char_check( void )
             xREMOVE_BIT( ch->mount->act, ACT_MOUNTED );
             ch->mount = NULL;
             ch->position = POS_STANDING;
-            send_to_char( "No longer upon your mount, you fall to the ground...\n\rOUCH!\n\r", ch );
+            send_to_char( "No longer upon your mount, you fall to the ground...\r\nOUCH!\r\n", ch );
          }
 
          if( ( ch->in_room && ch->in_room->sector_type == SECT_UNDERWATER )
@@ -1562,7 +1537,7 @@ void char_check( void )
                   dam = number_range( ch->max_hit / 100, ch->max_hit / 50 );
                   dam = UMAX( 1, dam );
                   if( number_bits( 3 ) == 0 )
-                     send_to_char( "You cough and choke as you try to breathe water!\n\r", ch );
+                     send_to_char( "You cough and choke as you try to breathe water!\r\n", ch );
                   damage( ch, ch, dam, TYPE_UNDEFINED );
                }
             }
@@ -1604,7 +1579,7 @@ void char_check( void )
                         dam = UMAX( 1, dam );
 
                         if( number_bits( 3 ) == 0 )
-                           send_to_char( "Struggling with exhaustion, you choke on a mouthful of water.\n\r", ch );
+                           send_to_char( "Struggling with exhaustion, you choke on a mouthful of water.\r\n", ch );
                         damage( ch, ch, dam, TYPE_UNDEFINED );
                      }
                   }
@@ -1646,7 +1621,6 @@ void char_check( void )
    }
 }
 
-
 /*
  * Aggress.
  *
@@ -1670,29 +1644,6 @@ void aggr_update( void )
    CHAR_DATA *vch_next;
    CHAR_DATA *victim;
    struct act_prog_data *apdtmp;
-
-#ifdef UNDEFD
-   /*
-    *  GRUNT!  To do
-    *
-    */
-   if( IS_NPC( wch ) && wch->mpactnum > 0 && wch->in_room->area->nplayer > 0 )
-   {
-      MPROG_ACT_LIST *tmp_act, *tmp2_act;
-      for( tmp_act = wch->mpact; tmp_act; tmp_act = tmp_act->next )
-      {
-         oprog_wordlist_check( tmp_act->buf, wch, tmp_act->ch, tmp_act->obj, tmp_act->vo, ACT_PROG );
-         DISPOSE( tmp_act->buf );
-      }
-      for( tmp_act = wch->mpact; tmp_act; tmp_act = tmp2_act )
-      {
-         tmp2_act = tmp_act->next;
-         DISPOSE( tmp_act );
-      }
-      wch->mpactnum = 0;
-      wch->mpact = NULL;
-   }
-#endif
 
    /*
     * check mobprog act queue 
@@ -1721,7 +1672,6 @@ void aggr_update( void )
       DISPOSE( apdtmp );
    }
 
-
    /*
     * Just check descriptors here for victims to aggressive mobs
     * We can check for linkdead victims in char_check   -Thoric
@@ -1729,7 +1679,7 @@ void aggr_update( void )
    for( d = first_descriptor; d; d = dnext )
    {
       dnext = d->next;
-      if( d->connected != CON_PLAYING || ( wch = d->character ) == NULL )
+      if( ( d->connected != CON_PLAYING && d->connected != CON_EDITING ) || ( wch = d->character ) == NULL )
          continue;
 
       if( char_died( wch ) || IS_NPC( wch ) || wch->level >= LEVEL_IMMORTAL || !wch->in_room )
@@ -1816,12 +1766,11 @@ void aggr_update( void )
          global_retcode = multi_hit( ch, victim, TYPE_UNDEFINED );
       }
    }
-
    return;
 }
 
 /* From interp.c */
-bool check_social args( ( CHAR_DATA * ch, char *command, char *argument ) );
+bool check_social( CHAR_DATA * ch, char *command, char *argument );
 
 /*
  * drunk randoms	- Tricops
@@ -1878,67 +1827,67 @@ void hallucinations( CHAR_DATA * ch )
       {
          default:
          case 1:
-            t = "You feel very restless... you can't sit still.\n\r";
+            t = "You feel very restless... you can't sit still.\r\n";
             break;
          case 2:
-            t = "You're tingling all over.\n\r";
+            t = "You're tingling all over.\r\n";
             break;
          case 3:
-            t = "Your skin is crawling.\n\r";
+            t = "Your skin is crawling.\r\n";
             break;
          case 4:
-            t = "You suddenly feel that something is terribly wrong.\n\r";
+            t = "You suddenly feel that something is terribly wrong.\r\n";
             break;
          case 5:
-            t = "Those damn little fairies keep laughing at you!\n\r";
+            t = "Those damn little fairies keep laughing at you!\r\n";
             break;
          case 6:
-            t = "You can hear your mother crying...\n\r";
+            t = "You can hear your mother crying...\r\n";
             break;
          case 7:
-            t = "Have you been here before, or not?  You're not sure...\n\r";
+            t = "Have you been here before, or not?  You're not sure...\r\n";
             break;
          case 8:
-            t = "Painful childhood memories flash through your mind.\n\r";
+            t = "Painful childhood memories flash through your mind.\r\n";
             break;
          case 9:
-            t = "You hear someone call your name in the distance...\n\r";
+            t = "You hear someone call your name in the distance...\r\n";
             break;
          case 10:
-            t = "Your head is pulsating... you can't think straight.\n\r";
+            t = "Your head is pulsating... you can't think straight.\r\n";
             break;
          case 11:
-            t = "The ground... seems to be squirming...\n\r";
+            t = "The ground... seems to be squirming...\r\n";
             break;
          case 12:
-            t = "You're not quite sure what is real anymore.\n\r";
+            t = "You're not quite sure what is real anymore.\r\n";
             break;
          case 13:
-            t = "It's all a dream... or is it?\n\r";
+            t = "It's all a dream... or is it?\r\n";
             break;
          case 14:
-            t = "You hear your grandchildren praying for you to watch over them.\n\r";
+            t = "You hear your grandchildren praying for you to watch over them.\r\n";
             break;
          case 15:
-            t = "They're coming to get you... coming to take you away...\n\r";
+            t = "They're coming to get you... coming to take you away...\r\n";
             break;
          case 16:
-            t = "You begin to feel all powerful!\n\r";
+            t = "You begin to feel all powerful!\r\n";
             break;
          case 17:
-            t = "You're light as air... the heavens are yours for the taking.\n\r";
+            t = "You're light as air... the heavens are yours for the taking.\r\n";
             break;
          case 18:
-            t = "Your whole life flashes by... and your future...\n\r";
+            t = "Your whole life flashes by... and your future...\r\n";
             break;
          case 19:
-            t = "You are everywhere and everything... you know all and are all!\n\r";
+            t = "You are everywhere and everything... you know all and are all!\r\n";
             break;
          case 20:
-            t = "You feel immortal!\n\r";
+            t = "You feel immortal!\r\n";
             break;
          case 21:
-            t = "Ahh... the power of a Supreme Entity... what to do...\n\r";
+            t = "Ahh... the power of a Supreme Entity... what to do...\r\n";
             break;
       }
       send_to_char( t, ch );
@@ -1971,35 +1920,6 @@ void tele_update( void )
    }
 }
 
-#if FALSE
-/* 
- * Write all outstanding authorization requests to Log channel - Gorog
- */
-void auth_update( void )
-{
-   CHAR_DATA *victim;
-   DESCRIPTOR_DATA *d;
-   char log_buf[MAX_INPUT_LENGTH];
-   bool first_time = TRUE; /* so titles are only done once */
-
-   for( d = first_descriptor; d; d = d->next )
-   {
-      victim = d->character;
-      if( victim && IS_WAITING_FOR_AUTH( victim ) )
-      {
-         if( first_time )
-         {
-            first_time = FALSE;
-            to_channel( "Pending authorizations:", CHANNEL_AUTH, "Auth", 1 );
-         }
-         snprintf( log_buf, MAX_INPUT_LENGTH, " %s@%s new %s %s", victim->name,
-                   victim->desc->host, race_table[victim->race]->race_name, class_table[victim->Class]->who_name );
-         to_channel( log_buf, CHANNEL_AUTH, "Auth", 1 );
-      }
-   }
-}
-#endif
-
 void auth_update( void )
 {
    CHAR_DATA *victim;
@@ -2008,13 +1928,13 @@ void auth_update( void )
    char log_buf[MAX_STRING_LENGTH];
    bool found_hit = FALSE; /* was at least one found? */
 
-   mudstrlcpy( log_buf, "Pending authorizations:\n\r", MAX_STRING_LENGTH );
+   mudstrlcpy( log_buf, "Pending authorizations:\r\n", MAX_STRING_LENGTH );
    for( d = first_descriptor; d; d = d->next )
    {
       if( ( victim = d->character ) && IS_WAITING_FOR_AUTH( victim ) )
       {
          found_hit = TRUE;
-         snprintf( buf, MAX_INPUT_LENGTH, " %s@%s new %s %s\n\r", victim->name,
+         snprintf( buf, MAX_INPUT_LENGTH, " %s@%s new %s %s\r\n", victim->name,
                    victim->desc->host, race_table[victim->race]->race_name, class_table[victim->Class]->who_name );
          mudstrlcat( log_buf, buf, MAX_STRING_LENGTH );
       }
@@ -2041,7 +1961,7 @@ void update_handler( void )
    if( timechar )
    {
       set_char_color( AT_PLAIN, timechar );
-      send_to_char( "Starting update timer.\n\r", timechar );
+      send_to_char( "Starting update timer.\r\n", timechar );
       gettimeofday( &sttime, NULL );
    }
 
@@ -2079,6 +1999,7 @@ void update_handler( void )
    {
       pulse_second = PULSE_PER_SECOND;
       char_check(  );
+      check_dns(  );
       reboot_check( 0 );
    }
 
@@ -2098,9 +2019,9 @@ void update_handler( void )
    {
       gettimeofday( &etime, NULL );
       set_char_color( AT_PLAIN, timechar );
-      send_to_char( "Update timing complete.\n\r", timechar );
+      send_to_char( "Update timing complete.\r\n", timechar );
       subtract_times( &etime, &sttime );
-      ch_printf( timechar, "Timing took %ld.%06ld seconds.\n\r", ( time_t ) etime.tv_sec, ( time_t ) etime.tv_usec );
+      ch_printf( timechar, "Timing took %ld.%06ld seconds.\r\n", ( time_t ) etime.tv_sec, ( time_t ) etime.tv_usec );
       timechar = NULL;
    }
    tail_chain(  );
@@ -2194,11 +2115,11 @@ void reboot_check( time_t reset )
          if( auction->buyer && auction->buyer != auction->seller )
          {
             auction->buyer->gold += auction->bet;
-            send_to_char( "Your money has been returned.\n\r", auction->buyer );
+            send_to_char( "Your money has been returned.\r\n", auction->buyer );
          }
       }
       echo_to_all( AT_YELLOW, "You are forced from these realms by a strong "
-                   "magical presence\n\ras life here is reconstructed.", ECHOTAR_ALL );
+                   "magical presence\r\nas life here is reconstructed.", ECHOTAR_ALL );
       log_string( "Automatic Reboot" );
       for( vch = first_char; vch; vch = vch->next )
          if( !IS_NPC( vch ) )
@@ -2292,7 +2213,7 @@ void auction_update( void )
             boost_economy( auction->seller->in_room->area, tax );
             auction->seller->gold += pay; /* give him the money, tax 10 % */
             ch_printf( auction->seller, "The auctioneer pays you %s gold, charging an auction fee of ", num_punct( pay ) );
-            ch_printf( auction->seller, "%s.\n\r", num_punct( tax ) );
+            ch_printf( auction->seller, "%s.\r\n", num_punct( tax ) );
 
             auction->item = NULL;   /* reset item */
             if( IS_SET( sysdata.save_flags, SV_AUCTION ) )
@@ -2303,7 +2224,7 @@ void auction_update( void )
          }
          else  /* not sold */
          {
-            snprintf( buf, MAX_STRING_LENGTH, "No bids received for %s - removed from auction.\n\r",
+            snprintf( buf, MAX_STRING_LENGTH, "No bids received for %s - removed from auction.\r\n",
                       auction->item->short_descr );
             talk_auction( buf );
             act( AT_ACTION, "The auctioneer appears before you to return $p to you.",
@@ -2322,7 +2243,7 @@ void auction_update( void )
                obj_to_char( auction->item, auction->seller );
             tax = ( int )( auction->item->cost * 0.05 );
             boost_economy( auction->seller->in_room->area, tax );
-            ch_printf( auction->seller, "The auctioneer charges you an auction fee of %s.\n\r", num_punct( tax ) );
+            ch_printf( auction->seller, "The auctioneer charges you an auction fee of %s.\r\n", num_punct( tax ) );
             if( ( auction->seller->gold - tax ) < 0 )
                auction->seller->gold = 0;
             else
@@ -2359,7 +2280,7 @@ void adjust_vectors( WEATHER_DATA * weather )
 
    if( !weather )
    {
-      bug( "%s", "adjust_vectors: NULL weather data." );
+      bug( "%s: NULL weather data.", __FUNCTION__ );
       return;
    }
 
@@ -2380,7 +2301,6 @@ void adjust_vectors( WEATHER_DATA * weather )
    dT += climate_factor * ( ( ( weather->climate_temp - 2 ) * weath_unit ) - ( weather->temp ) ) / weath_unit;
    dP += climate_factor * ( ( ( weather->climate_precip - 2 ) * weath_unit ) - ( weather->precip ) ) / weath_unit;
    dW += climate_factor * ( ( ( weather->climate_wind - 2 ) * weath_unit ) - ( weather->wind ) ) / weath_unit;
-
 
    /*
     * Add in effects from neighboring areas 
@@ -2544,10 +2464,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          if( precip - dP > -2 * weath_unit )
          {
             char *echo_strings[4] = {
-               "The clouds disappear.\n\r",
-               "The clouds disappear.\n\r",
-               "The sky begins to break through " "the clouds.\n\r",
-               "The clouds are slowly " "evaporating.\n\r"
+               "The clouds disappear.\r\n",
+               "The clouds disappear.\r\n",
+               "The sky begins to break through the clouds.\r\n",
+               "The clouds are slowly evaporating.\r\n"
             };
 
             weath->echo = echo_strings[n];
@@ -2559,10 +2479,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          if( precip - dP <= -2 * weath_unit )
          {
             char *echo_strings[4] = {
-               "The sky is getting cloudy.\n\r",
-               "The sky is getting cloudy.\n\r",
-               "Light clouds cast a haze over " "the sky.\n\r",
-               "Billows of clouds spread through " "the sky.\n\r"
+               "The sky is getting cloudy.\r\n",
+               "The sky is getting cloudy.\r\n",
+               "Light clouds cast a haze over the sky.\r\n",
+               "Billows of clouds spread through the sky.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_GREY;
@@ -2575,10 +2495,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             if( tindex > 1 )
             {
                char *echo_strings[4] = {
-                  "The rain stops.\n\r",
-                  "The rain stops.\n\r",
-                  "The rainstorm tapers " "off.\n\r",
-                  "The rain's intensity " "breaks.\n\r"
+                  "The rain stops.\r\n",
+                  "The rain stops.\r\n",
+                  "The rainstorm tapers off.\r\n",
+                  "The rain's intensity breaks.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_CYAN;
@@ -2586,10 +2506,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             else
             {
                char *echo_strings[4] = {
-                  "The snow stops.\n\r",
-                  "The snow stops.\n\r",
-                  "The snow showers taper " "off.\n\r",
-                  "The snow flakes disappear " "from the sky.\n\r"
+                  "The snow stops.\r\n",
+                  "The snow stops.\r\n",
+                  "The snow showers taper off.\r\n",
+                  "The snow flakes disappear from the sky.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_WHITE;
@@ -2603,10 +2523,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             if( tindex > 1 )
             {
                char *echo_strings[4] = {
-                  "It starts to rain.\n\r",
-                  "It starts to rain.\n\r",
-                  "A droplet of rain falls " "upon you.\n\r",
-                  "The rain begins to " "patter.\n\r"
+                  "It starts to rain.\r\n",
+                  "It starts to rain.\r\n",
+                  "A droplet of rain falls upon you.\r\n",
+                  "The rain begins to patter.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_CYAN;
@@ -2614,10 +2534,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             else
             {
                char *echo_strings[4] = {
-                  "It starts to snow.\n\r",
-                  "It starts to snow.\n\r",
-                  "Crystal flakes begin to " "fall from the " "sky.\n\r",
-                  "Snow flakes drift down " "from the clouds.\n\r"
+                  "It starts to snow.\r\n",
+                  "It starts to snow.\r\n",
+                  "Crystal flakes begin to fall from the " "sky.\r\n",
+                  "Snow flakes drift down from the clouds.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_WHITE;
@@ -2626,10 +2546,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex < 2 && temp - dT > -weath_unit )
          {
             char *echo_strings[4] = {
-               "The temperature drops and the rain " "becomes a light snow.\n\r",
-               "The temperature drops and the rain " "becomes a light snow.\n\r",
-               "Flurries form as the rain freezes.\n\r",
-               "Large snow flakes begin to fall " "with the rain.\n\r"
+               "The temperature drops and the rain becomes a light snow.\r\n",
+               "The temperature drops and the rain becomes a light snow.\r\n",
+               "Flurries form as the rain freezes.\r\n",
+               "Large snow flakes begin to fall with the rain.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_WHITE;
@@ -2637,10 +2557,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex > 1 && temp - dT <= -weath_unit )
          {
             char *echo_strings[4] = {
-               "The snow flurries are gradually " "replaced by pockets of rain.\n\r",
-               "The snow flurries are gradually " "replaced by pockets of rain.\n\r",
-               "The falling snow turns to a cold drizzle.\n\r",
-               "The snow turns to rain as the air warms.\n\r"
+               "The snow flurries are gradually replaced by pockets of rain.\r\n",
+               "The snow flurries are gradually replaced by pockets of rain.\r\n",
+               "The falling snow turns to a cold drizzle.\r\n",
+               "The snow turns to rain as the air warms.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_CYAN;
@@ -2653,10 +2573,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             if( tindex > 1 )
             {
                char *echo_strings[4] = {
-                  "The lightning has stopped.\n\r",
-                  "The lightning has stopped.\n\r",
-                  "The sky settles, and the " "thunder surrenders.\n\r",
-                  "The lightning bursts fade as " "the storm weakens.\n\r"
+                  "The lightning has stopped.\r\n",
+                  "The lightning has stopped.\r\n",
+                  "The sky settles, and the thunder surrenders.\r\n",
+                  "The lightning bursts fade as the storm weakens.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_GREY;
@@ -2665,10 +2585,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex < 2 && temp - dT > -weath_unit )
          {
             char *echo_strings[4] = {
-               "The cold rain turns to snow.\n\r",
-               "The cold rain turns to snow.\n\r",
-               "Snow flakes begin to fall " "amidst the rain.\n\r",
-               "The driving rain begins to freeze.\n\r"
+               "The cold rain turns to snow.\r\n",
+               "The cold rain turns to snow.\r\n",
+               "Snow flakes begin to fall amidst the rain.\r\n",
+               "The driving rain begins to freeze.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_WHITE;
@@ -2676,10 +2596,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex > 1 && temp - dT <= -weath_unit )
          {
             char *echo_strings[4] = {
-               "The snow becomes a freezing rain.\n\r",
-               "The snow becomes a freezing rain.\n\r",
-               "A cold rain beats down on you " "as the snow begins to melt.\n\r",
-               "The snow is slowly replaced by a heavy " "rain.\n\r"
+               "The snow becomes a freezing rain.\r\n",
+               "The snow becomes a freezing rain.\r\n",
+               "A cold rain beats down on you as the snow begins to melt.\r\n",
+               "The snow is slowly replaced by a heavy rain.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_CYAN;
@@ -2692,10 +2612,10 @@ void get_weather_echo( WEATHER_DATA * weath )
             if( tindex > 1 )
             {
                char *echo_strings[4] = {
-                  "Lightning flashes in the " "sky.\n\r",
-                  "Lightning flashes in the " "sky.\n\r",
-                  "A flash of lightning splits " "the sky.\n\r",
-                  "The sky flashes, and the " "ground trembles with " "thunder.\n\r"
+                  "Lightning flashes in the sky.\r\n",
+                  "Lightning flashes in the sky.\r\n",
+                  "A flash of lightning splits the sky.\r\n",
+                  "The sky flashes, and the ground trembles with thunder.\r\n"
                };
                weath->echo = echo_strings[n];
                weath->echo_color = AT_YELLOW;
@@ -2704,10 +2624,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex > 1 && temp - dT <= -weath_unit )
          {
             char *echo_strings[4] = {
-               "The sky rumbles with thunder as " "the snow changes to rain.\n\r",
-               "The sky rumbles with thunder as " "the snow changes to rain.\n\r",
-               "The falling turns to freezing rain " "amidst flashes of " "lightning.\n\r",
-               "The falling snow begins to melt as " "thunder crashes overhead.\n\r"
+               "The sky rumbles with thunder as the snow changes to rain.\r\n",
+               "The sky rumbles with thunder as the snow changes to rain.\r\n",
+               "The falling turns to freezing rain amidst flashes of lightning.\r\n",
+               "The falling snow begins to melt as thunder crashes overhead.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_WHITE;
@@ -2715,10 +2635,10 @@ void get_weather_echo( WEATHER_DATA * weath )
          else if( tindex < 2 && temp - dT > -weath_unit )
          {
             char *echo_strings[4] = {
-               "The lightning stops as the rainstorm " "becomes a blinding " "blizzard.\n\r",
-               "The lightning stops as the rainstorm " "becomes a blinding " "blizzard.\n\r",
-               "The thunder dies off as the " "pounding rain turns to " "heavy snow.\n\r",
-               "The cold rain turns to snow and " "the lightning stops.\n\r"
+               "The lightning stops as the rainstorm becomes a blinding blizzard.\r\n",
+               "The lightning stops as the rainstorm becomes a blinding blizzard.\r\n",
+               "The thunder dies off as the pounding rain turns to heavy snow.\r\n",
+               "The cold rain turns to snow and the lightning stops.\r\n"
             };
             weath->echo = echo_strings[n];
             weath->echo_color = AT_CYAN;
@@ -2726,7 +2646,7 @@ void get_weather_echo( WEATHER_DATA * weath )
          break;
 
       default:
-         bug( "%s", "echo_weather: invalid precip index" );
+         bug( "%s: invalid precip index", __FUNCTION__ );
          weath->precip = 0;
          break;
    }
@@ -2756,10 +2676,10 @@ void get_time_echo( WEATHER_DATA * weath )
       case 5:
       {
          char *echo_strings[4] = {
-            "The day has begun.\n\r",
-            "The day has begun.\n\r",
-            "The sky slowly begins to glow.\n\r",
-            "The sun slowly embarks upon a new day.\n\r"
+            "The day has begun.\r\n",
+            "The day has begun.\r\n",
+            "The sky slowly begins to glow.\r\n",
+            "The sun slowly embarks upon a new day.\r\n"
          };
          time_info.sunlight = SUN_RISE;
          weath->echo = echo_strings[n];
@@ -2769,10 +2689,10 @@ void get_time_echo( WEATHER_DATA * weath )
       case 6:
       {
          char *echo_strings[4] = {
-            "The sun rises in the east.\n\r",
-            "The sun rises in the east.\n\r",
-            "The hazy sun rises over the horizon.\n\r",
-            "Day breaks as the sun lifts into the sky.\n\r"
+            "The sun rises in the east.\r\n",
+            "The sun rises in the east.\r\n",
+            "The hazy sun rises over the horizon.\r\n",
+            "Day breaks as the sun lifts into the sky.\r\n"
          };
          time_info.sunlight = SUN_LIGHT;
          weath->echo = echo_strings[n];
@@ -2783,13 +2703,13 @@ void get_time_echo( WEATHER_DATA * weath )
       {
          if( pindex > 0 )
          {
-            weath->echo = "It's noon.\n\r";
+            weath->echo = "It's noon.\r\n";
          }
          else
          {
             char *echo_strings[2] = {
-               "The intensity of the sun " "heralds the noon hour.\n\r",
-               "The sun's bright rays beat down " "upon your shoulders.\n\r"
+               "The intensity of the sun heralds the noon hour.\r\n",
+               "The sun's bright rays beat down upon your shoulders.\r\n"
             };
             weath->echo = echo_strings[n % 2];
          }
@@ -2800,10 +2720,10 @@ void get_time_echo( WEATHER_DATA * weath )
       case 19:
       {
          char *echo_strings[4] = {
-            "The sun slowly disappears in the west.\n\r",
-            "The reddish sun sets past the horizon.\n\r",
-            "The sky turns a reddish orange as the sun " "ends its journey.\n\r",
-            "The sun's radiance dims as it sinks in the " "sky.\n\r"
+            "The sun slowly disappears in the west.\r\n",
+            "The reddish sun sets past the horizon.\r\n",
+            "The sky turns a reddish orange as the sun ends its journey.\r\n",
+            "The sun's radiance dims as it sinks in the sky.\r\n"
          };
          time_info.sunlight = SUN_SET;
          weath->echo = echo_strings[n];
@@ -2815,16 +2735,16 @@ void get_time_echo( WEATHER_DATA * weath )
          if( pindex > 0 )
          {
             char *echo_strings[2] = {
-               "The night begins.\n\r",
-               "Twilight descends around you.\n\r"
+               "The night begins.\r\n",
+               "Twilight descends around you.\r\n"
             };
             weath->echo = echo_strings[n % 2];
          }
          else
          {
             char *echo_strings[2] = {
-               "The moon's gentle glow diffuses " "through the night sky.\n\r",
-               "The night sky gleams with " "glittering starlight.\n\r"
+               "The moon's gentle glow diffuses through the night sky.\r\n",
+               "The night sky gleams with glittering starlight.\r\n"
             };
             weath->echo = echo_strings[n % 2];
          }
