@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- * 			Table load/save Module				    *
+ *                            Table load/save Module                        *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -27,15 +27,14 @@
 #include "mud.h"
 
 bool load_race_file( const char *fname );
-void write_race_file( int ra );
 
 /* global variables */
-int top_sn;
 int top_herb;
 int MAX_PC_CLASS;
 int MAX_PC_RACE;
 
 SKILLTYPE *skill_table[MAX_SKILL];
+const SKILLTYPE *skill_table_bytype[MAX_SKILL];
 struct class_type *class_table[MAX_CLASS];
 RACE_TYPE *race_table[MAX_RACE];
 char *title_table[MAX_CLASS][MAX_LEVEL + 1][2];
@@ -45,7 +44,7 @@ SKILLTYPE *disease_table[MAX_DISEASE];
 LANG_DATA *first_lang;
 LANG_DATA *last_lang;
 
-char *const skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "Herb", "Racial", "Disease" };
+const char *skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "Herb", "Racial", "Disease" };
 
 SPELL_FUN *spell_function( char *name )
 {
@@ -185,11 +184,11 @@ bool load_class_file( const char *fname )
                sn = skill_lookup( word );
                if( cl < 0 || cl >= MAX_CLASS )
                {
-                  bug( "load_class_file: Skill %s -- class bad/not found (%d)", word, cl );
+                  bug( "%s: Skill %s -- class bad/not found (%d)", __FUNCTION__, word, cl );
                }
                else if( !IS_VALID_SN( sn ) )
                {
-                  bug( "load_class_file: Skill %s unknown", word );
+                  bug( "%s: Skill %s unknown", __FUNCTION__, word );
                }
                else
                {
@@ -223,7 +222,7 @@ bool load_class_file( const char *fname )
                   ++tlev;
                }
                else
-                  bug( "%s", "load_class_file: Too many titles" );
+                  bug( "%s: Too many titles", __FUNCTION__ );
                fMatch = TRUE;
                break;
             }
@@ -258,7 +257,7 @@ void load_classes(  )
    /*
     * Pre-init the class_table with blank classes
     */
-   for( i = 0; i < MAX_CLASS; i++ )
+   for( i = 0; i < MAX_CLASS; ++i )
       class_table[i] = NULL;
 
    snprintf( classlist, 256, "%s%s", CLASS_DIR, CLASS_LIST );
@@ -279,10 +278,10 @@ void load_classes(  )
          bug( "Cannot load class file: %s", filename );
       }
       else
-         MAX_PC_CLASS++;
+         ++MAX_PC_CLASS;
    }
    fclose( fpList );
-   for( i = 0; i < MAX_CLASS; i++ )
+   for( i = 0; i < MAX_CLASS; ++i )
    {
       if( class_table[i] == NULL )
       {
@@ -292,7 +291,6 @@ void load_classes(  )
    }
    return;
 }
-
 
 void write_class_file( int cl )
 {
@@ -324,19 +322,18 @@ void write_class_file( int cl )
    fprintf( fpout, "Affected    %s\n", print_bitvector( &Class->affected ) );
    fprintf( fpout, "Resist	 %d\n", Class->resist );
    fprintf( fpout, "Suscept	 %d\n", Class->suscept );
-   for( x = 0; x < top_sn; x++ )
+   for( x = 0; x < num_skills; ++x )
    {
       if( !skill_table[x]->name || skill_table[x]->name[0] == '\0' )
          break;
       if( ( y = skill_table[x]->skill_level[cl] ) < LEVEL_IMMORTAL )
          fprintf( fpout, "Skill '%s' %d %d\n", skill_table[x]->name, y, skill_table[x]->skill_adept[cl] );
    }
-   for( x = 0; x <= MAX_LEVEL; x++ )
+   for( x = 0; x <= MAX_LEVEL; ++x )
       fprintf( fpout, "Title\n%s~\n%s~\n", title_table[cl][x][0], title_table[cl][x][1] );
    fprintf( fpout, "End\n" );
    fclose( fpout );
 }
-
 
 /*
  * Load in all the race files.
@@ -352,7 +349,7 @@ void load_races(  )
    /*
     * Pre-init the race_table with blank races
     */
-   for( i = 0; i < MAX_RACE; i++ )
+   for( i = 0; i < MAX_RACE; ++i )
       race_table[i] = NULL;
 
    snprintf( racelist, 256, "%s%s", RACE_DIR, RACE_LIST );
@@ -369,13 +366,11 @@ void load_races(  )
          break;
 
       if( !load_race_file( filename ) )
-      {
          bug( "Cannot load race file: %s", filename );
-      }
       else
-         MAX_PC_RACE++;
+         ++MAX_PC_RACE;
    }
-   for( i = 0; i < MAX_RACE; i++ )
+   for( i = 0; i < MAX_RACE; ++i )
    {
       if( race_table[i] == NULL )
       {
@@ -438,10 +433,10 @@ void write_race_file( int ra )
    fprintf( fpout, "Mana_Regen  %d\n", race->mana_regen );
    fprintf( fpout, "HP_Regen    %d\n", race->hp_regen );
    fprintf( fpout, "Race_Recall %d\n", race->race_recall );
-   for( i = 0; i < MAX_WHERE_NAME; i++ )
+   for( i = 0; i < MAX_WHERE_NAME; ++i )
       fprintf( fpout, "WhereName  %s~\n", race->where_name[i] );
 
-   for( x = 0; x < top_sn; x++ )
+   for( x = 0; x < num_skills; ++x )
    {
       if( !skill_table[x]->name || skill_table[x]->name[0] == '\0' )
          break;
@@ -450,6 +445,7 @@ void write_race_file( int ra )
    }
    fprintf( fpout, "End\n" );
    fclose( fpout );
+   fpout = NULL;
 }
 
 bool load_race_file( const char *fname )
@@ -634,7 +630,7 @@ bool load_race_file( const char *fname )
 }
 
 /*
- * Function used by qsort to sort skills
+ * Function used by qsort to sort skills; sorts by name, not case sensitive.
  */
 int skill_comp( SKILLTYPE ** sk1, SKILLTYPE ** sk2 )
 {
@@ -647,10 +643,33 @@ int skill_comp( SKILLTYPE ** sk1, SKILLTYPE ** sk2 )
       return -1;
    if( !skill1 && !skill2 )
       return 0;
+   // Sort without regard to case.
+   return strcasecmp( skill1->name, skill2->name );
+}
+
+/*
+ * Function used by qsort to sort skills; sorts by type,
+ * then by name, not case sensitive.
+ */
+int skill_comp_bytype( SKILLTYPE ** sk1, SKILLTYPE ** sk2 )
+{
+   SKILLTYPE *skill1 = ( *sk1 );
+   SKILLTYPE *skill2 = ( *sk2 );
+
+   if( !skill1 && skill2 )
+      return 1;
+   if( skill1 && !skill2 )
+      return -1;
+   if( !skill1 && !skill2 )
+      return 0;
+
+   // sort by type, first
    if( skill1->type < skill2->type )
       return -1;
    if( skill1->type > skill2->type )
       return 1;
+
+   // Sort without regard to case.
    return strcasecmp( skill1->name, skill2->name );
 }
 
@@ -659,8 +678,19 @@ int skill_comp( SKILLTYPE ** sk1, SKILLTYPE ** sk2 )
  */
 void sort_skill_table(  )
 {
+   int i;
+
    log_string( "Sorting skill table..." );
-   qsort( &skill_table[1], top_sn - 1, sizeof( SKILLTYPE * ), ( int ( * )( const void *, const void * ) )skill_comp );
+   qsort( &skill_table[1], num_skills - 1, sizeof( SKILLTYPE * ), ( int ( * )( const void *, const void * ) )skill_comp );
+
+   log_string( "Creating skill table sorted by type..." );
+   // first, refresh the bytype table from the skill table
+   for( i = 0; i < MAX_SKILL; ++i )
+   {
+      skill_table_bytype[i] = skill_table[i];
+   }
+   qsort( &skill_table_bytype[1], num_skills - 1, sizeof( SKILLTYPE * ),
+          ( int ( * )( const void *, const void * ) )skill_comp_bytype );
 }
 
 /*
@@ -675,7 +705,7 @@ void remap_slot_numbers(  )
 
    log_string( "Remapping slots to sns" );
 
-   for( sn = 0; sn <= top_sn; sn++ )
+   for( sn = 0; sn <= num_skills; ++sn )
    {
       if( ( skill = skill_table[sn] ) != NULL )
       {
@@ -794,14 +824,14 @@ void fwrite_skill( FILE * fpout, SKILLTYPE * skill )
    {
       int y;
       int min = 1000;
-      for( y = 0; y < MAX_CLASS; y++ )
+      for( y = 0; y < MAX_CLASS; ++y )
          if( skill->skill_level[y] < min )
             min = skill->skill_level[y];
 
       fprintf( fpout, "Minlevel     %d\n", min );
 
       min = 1000;
-      for( y = 0; y < MAX_RACE; y++ )
+      for( y = 0; y < MAX_RACE; ++y )
          if( skill->race_level[y] < min )
             min = skill->race_level[y];
 
@@ -824,7 +854,7 @@ void save_skill_table(  )
       return;
    }
 
-   for( x = 0; x < top_sn; x++ )
+   for( x = 0; x < num_skills; ++x )
    {
       if( !skill_table[x]->name || skill_table[x]->name[0] == '\0' )
          break;
@@ -850,7 +880,7 @@ void save_herb_table(  )
       return;
    }
 
-   for( x = 0; x < top_herb; x++ )
+   for( x = 0; x < top_herb; ++x )
    {
       if( !herb_table[x]->name || herb_table[x]->name[0] == '\0' )
          break;
@@ -877,7 +907,7 @@ void save_socials(  )
       return;
    }
 
-   for( x = 0; x < 27; x++ )
+   for( x = 0; x < 27; ++x )
    {
       for( social = social_index[x]; social; social = social->next )
       {
@@ -913,7 +943,7 @@ void save_socials(  )
 
 int get_skill( char *skilltype )
 {
-   if( !str_cmp( skilltype, "Race" ) )
+   if( !str_cmp( skilltype, "Racial" ) )
       return SKILL_RACIAL;
    if( !str_cmp( skilltype, "Spell" ) )
       return SKILL_SPELL;
@@ -945,7 +975,7 @@ void save_commands(  )
       return;
    }
 
-   for( x = 0; x < 126; x++ )
+   for( x = 0; x < 126; ++x )
    {
       for( command = command_hash[x]; command; command = command->next )
       {
@@ -986,12 +1016,12 @@ SKILLTYPE *fread_skill( FILE * fp )
    CREATE( skill, SKILLTYPE, 1 );
    skill->slot = 0;
    skill->min_mana = 0;
-   for( x = 0; x < MAX_CLASS; x++ )
+   for( x = 0; x < MAX_CLASS; ++x )
    {
       skill->skill_level[x] = LEVEL_IMMORTAL;
       skill->skill_adept[x] = 95;
    }
-   for( x = 0; x < MAX_RACE; x++ )
+   for( x = 0; x < MAX_RACE; ++x )
    {
       skill->race_level[x] = LEVEL_IMMORTAL;
       skill->race_adept[x] = 95;
@@ -1028,7 +1058,7 @@ SKILLTYPE *fread_skill( FILE * fp )
 
                if( !got_info )
                {
-                  for( x = 0; x < 32; x++ )
+                  for( x = 0; x < 32; ++x )
                   {
                      if( IS_SET( aff->bitvector, 1 << x ) )
                      {
@@ -1055,6 +1085,7 @@ SKILLTYPE *fread_skill( FILE * fp )
                fMatch = TRUE;
                break;
             }
+
             if( !str_cmp( word, "Code" ) )
             {
                SPELL_FUN *spellfun;
@@ -1098,7 +1129,7 @@ SKILLTYPE *fread_skill( FILE * fp )
             {
                if( skill->saves != 0 && SPELL_SAVE( skill ) == SE_NONE )
                {
-                  bug( "fread_skill(%s):  Has saving throw (%d) with no saving effect.", skill->name, skill->saves );
+                  bug( "%s (%s):  Has saving throw (%d) with no saving effect.", __FUNCTION__, skill->name, skill->saves );
                   SET_SSAV( skill, SE_NEGATE );
                }
                return skill;
@@ -1267,7 +1298,7 @@ SKILLTYPE *fread_skill( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_skill: no match: %s", word );
+         bug( "%s: no match: %s", __FUNCTION__, word );
          fread_to_eol( fp );
       }
    }
@@ -1279,7 +1310,7 @@ void load_skill_table(  )
 
    if( ( fp = fopen( SKILL_FILE, "r" ) ) != NULL )
    {
-      top_sn = 0;
+      num_skills = 0;
       for( ;; )
       {
          char letter;
@@ -1294,31 +1325,33 @@ void load_skill_table(  )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_skill_table: # not found." );
+            bug( "%s: # not found.", __FUNCTION__ );
             break;
          }
 
          word = fread_word( fp );
          if( !str_cmp( word, "SKILL" ) )
          {
-            if( top_sn >= MAX_SKILL )
+            if( num_skills >= MAX_SKILL )
             {
-               bug( "load_skill_table: more skills than MAX_SKILL %d", MAX_SKILL );
+               bug( "%s: more skills than MAX_SKILL %d", __FUNCTION__, MAX_SKILL );
                fclose( fp );
+               fp = NULL;
                return;
             }
-            skill_table[top_sn++] = fread_skill( fp );
+            skill_table[num_skills++] = fread_skill( fp );
             continue;
          }
          else if( !str_cmp( word, "END" ) )
             break;
          else
          {
-            bug( "%s", "Load_skill_table: bad section." );
+            bug( "%s: bad section.", __FUNCTION__ );
             continue;
          }
       }
       fclose( fp );
+      fp = NULL;
    }
    else
    {
@@ -1327,7 +1360,6 @@ void load_skill_table(  )
       exit( 0 );
    }
 }
-
 
 void load_herb_table(  )
 {
@@ -1350,7 +1382,7 @@ void load_herb_table(  )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_herb_table: # not found." );
+            bug( "%s: # not found.", __FUNCTION__ );
             break;
          }
 
@@ -1359,8 +1391,9 @@ void load_herb_table(  )
          {
             if( top_herb >= MAX_HERB )
             {
-               bug( "load_herb_table: more herbs than MAX_HERB %d", MAX_HERB );
+               bug( "%s: more herbs than MAX_HERB %d", __FUNCTION__, MAX_HERB );
                fclose( fp );
+               fp = NULL;
                return;
             }
             herb_table[top_herb++] = fread_skill( fp );
@@ -1372,11 +1405,12 @@ void load_herb_table(  )
             break;
          else
          {
-            bug( "%s", "Load_herb_table: bad section." );
+            bug( "%s: bad section.", __FUNCTION__ );
             continue;
          }
       }
       fclose( fp );
+      fp = NULL;
    }
    else
    {
@@ -1684,8 +1718,16 @@ void save_classes(  )
 {
    int x;
 
-   for( x = 0; x < MAX_PC_CLASS; x++ )
+   for( x = 0; x < MAX_PC_CLASS; ++x )
       write_class_file( x );
+}
+
+void save_races(  )
+{
+   int x;
+
+   for( x = 0; x < MAX_PC_RACE; ++x )
+      write_race_file( x );
 }
 
 void free_tongues( void )

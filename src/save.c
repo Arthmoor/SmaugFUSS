@@ -43,7 +43,11 @@ int file_ver;
  */
 void fwrite_comments( CHAR_DATA * ch, FILE * fp );
 void fread_comment( CHAR_DATA * ch, FILE * fp );
+void fwrite_variables( CHAR_DATA * ch, FILE * fp );
+void fread_variable( CHAR_DATA * ch, FILE * fp );
 bool check_parse_name( char *name, bool newchar );
+void fwrite_fuss_exdesc( FILE * fpout, EXTRA_DESCR_DATA * ed );
+void fwrite_fuss_affect( FILE * fp, AFFECT_DATA * paf );
 
 /*
  * Array of containers read for proper re-nesting of objects.
@@ -53,9 +57,9 @@ static OBJ_DATA *rgObjNest[MAX_NEST];
 /*
  * Local functions.
  */
-void fwrite_char args( ( CHAR_DATA * ch, FILE * fp ) );
-void fread_char args( ( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover ) );
-void write_corpses args( ( CHAR_DATA * ch, char *name, OBJ_DATA * objrem ) );
+void fwrite_char( CHAR_DATA * ch, FILE * fp );
+void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover );
+void write_corpses( CHAR_DATA * ch, char *name, OBJ_DATA * objrem );
 
 #ifdef WIN32   /* NJG */
 UINT timer_code = 0; /* needed to kill the timer */
@@ -98,6 +102,7 @@ void de_equip_char( CHAR_DATA * ch )
             save_equipment[x][y] = NULL;
       }
    }
+
    for( obj = ch->first_carrying; obj; obj = obj->next_content )
    {
       if( obj->wear_loc > -1 && obj->wear_loc < MAX_WEAR )
@@ -136,6 +141,21 @@ void de_equip_char( CHAR_DATA * ch )
          unequip_char( ch, obj );
       }
    }
+
+   if( ch->in_room )
+   {
+      AFFECT_DATA *paf;
+
+      /*
+       * If the char is altered by room affects, strip those before recording the pfile!!
+       */
+      for( paf = ch->in_room->first_affect; paf; paf = paf->next )
+         if( paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL )
+            affect_modify( ch, paf, FALSE );
+      for( paf = ch->in_room->first_permaffect; paf; paf = paf->next )
+         if( paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL )
+            affect_modify( ch, paf, FALSE );
+   }
 }
 
 /*
@@ -172,6 +192,22 @@ void re_equip_char( CHAR_DATA * ch )
                break;
          }
       }
+   }
+
+   if( ch->in_room )
+   {
+      AFFECT_DATA *paf;
+
+      /*
+       * We had to strip room affects from the char to get their stats correct for
+       * writing the pfile.  Now add the room affects back on.
+       */
+      for( paf = ch->in_room->first_affect; paf; paf = paf->next )
+         if( paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL )
+            affect_modify( ch, paf, TRUE );
+      for( paf = ch->in_room->first_permaffect; paf; paf = paf->next )
+         if( paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL )
+            affect_modify( ch, paf, TRUE );
    }
 }
 
@@ -268,6 +304,8 @@ void save_char_obj( CHAR_DATA * ch )
 
       if( sysdata.save_pets && ch->pcdata->pet )
          fwrite_mobile( fp, ch->pcdata->pet );
+      if( ch->variables )
+         fwrite_variables( ch, fp );
       if( ch->comments )   /* comments */
          fwrite_comments( ch, fp ); /* comments */
       fprintf( fp, "#END\n" );
@@ -444,13 +482,16 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
    else
       fprintf( fp, "Site         (Link-Dead)\n" );
 
-   for( sn = 1; sn < top_sn; sn++ )
+   for( sn = 1; sn < num_skills; ++sn )
    {
       if( skill_table[sn]->name && ch->pcdata->learned[sn] > 0 )
          switch ( skill_table[sn]->type )
          {
             default:
                fprintf( fp, "Skill        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name );
+               break;
+            case SKILL_RACIAL:
+               fprintf( fp, "Ability      %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name );
                break;
             case SKILL_SPELL:
                fprintf( fp, "Spell        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name );
@@ -570,6 +611,8 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
       fprintf( fp, "Description  %s~\n", obj->description );
    if( obj->action_desc && ( !obj->pIndexData->action_desc || str_cmp( obj->action_desc, obj->pIndexData->action_desc ) ) )
       fprintf( fp, "ActionDesc   %s~\n", obj->action_desc );
+   if( obj->owner && obj->owner[0] != '\0' )
+      fprintf( fp, "Owner        %s~\n", obj->owner );
    fprintf( fp, "Vnum         %d\n", obj->pIndexData->vnum );
    if( ( os_type == OS_CORPSE || hotboot ) && obj->in_room )
    {
@@ -662,34 +705,11 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
       /*
        * Save extra object affects           -Thoric
        */
-      if( paf->type < 0 || paf->type >= top_sn )
-      {
-         fprintf( fp, "Affect       %d %d %d %d %s\n",
-                  paf->type,
-                  paf->duration,
-                  ( ( paf->location == APPLY_WEAPONSPELL
-                      || paf->location == APPLY_WEARSPELL
-                      || paf->location == APPLY_REMOVESPELL
-                      || paf->location == APPLY_STRIPSN
-                      || paf->location == APPLY_RECURRINGSPELL )
-                    && IS_VALID_SN( paf->modifier ) )
-                  ? skill_table[paf->modifier]->slot : paf->modifier, paf->location, print_bitvector( &paf->bitvector ) );
-      }
-      else
-         fprintf( fp, "AffectData   '%s' %d %d %d %s\n",
-                  skill_table[paf->type]->name,
-                  paf->duration,
-                  ( ( paf->location == APPLY_WEAPONSPELL
-                      || paf->location == APPLY_WEARSPELL
-                      || paf->location == APPLY_REMOVESPELL
-                      || paf->location == APPLY_STRIPSN
-                      || paf->location == APPLY_RECURRINGSPELL )
-                    && IS_VALID_SN( paf->modifier ) )
-                  ? skill_table[paf->modifier]->slot : paf->modifier, paf->location, print_bitvector( &paf->bitvector ) );
+      fwrite_fuss_affect( fp, paf );
    }
 
    for( ed = obj->first_extradesc; ed; ed = ed->next )
-      fprintf( fp, "ExtraDescr   %s~ %s~\n", ed->keyword, ed->description );
+      fwrite_fuss_exdesc( fp, ed );
 
    fprintf( fp, "End\n\n" );
 
@@ -847,6 +867,8 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
             else
                bug( "%s: Deleted mob saved on %s - skipping", __FUNCTION__, ch->name );
          }
+         else if( !str_cmp( word, "VARIABLE" ) )   // Quest Flags
+            fread_variable( ch, fp );
          else if( !strcmp( word, "END" ) )   /* Done     */
             break;
          else
@@ -995,6 +1017,39 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
             KEY( "Alignment", ch->alignment, fread_number( fp ) );
             KEY( "Armor", ch->armor, fread_number( fp ) );
 
+            if( !str_cmp( word, "Ability" ) )
+            {
+               int sn, value;
+
+               if( preload )
+                  word = "End";
+               else
+               {
+                  value = fread_number( fp );
+                  if( file_ver < 3 )
+                     sn = skill_lookup( fread_word( fp ) );
+                  else
+                     sn = find_ability( NULL, fread_word( fp ), FALSE );
+
+                  if( sn < 0 )
+                     bug( "%s: unknown skill.", __FUNCTION__ );
+                  else
+                  {
+                     ch->pcdata->learned[sn] = value;
+                     if( ch->level < LEVEL_IMMORTAL )
+                     {
+                        if( skill_table[sn]->race_level[ch->race] >= LEVEL_IMMORTAL )
+                        {
+                           ch->pcdata->learned[sn] = 0;
+                           ++ch->practice;
+                        }
+                     }
+                  }
+                  fMatch = TRUE;
+                  break;
+               }
+            }
+
             if( !strcmp( word, "Affect" ) || !strcmp( word, "AffectData" ) )
             {
                AFFECT_DATA *paf;
@@ -1005,6 +1060,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                   fread_to_eol( fp );
                   break;
                }
+
                CREATE( paf, AFFECT_DATA, 1 );
                if( !strcmp( word, "Affect" ) )
                {
@@ -1274,7 +1330,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                 */
                for( ign = 0, inode = ch->pcdata->first_ignored; inode; inode = inode->next )
                {
-                  ign++;
+                  ++ign;
                }
 
                /*
@@ -1282,7 +1338,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                 */
                if( ign >= MAX_IGN )
                {
-                  bug( "fread_char: too many ignored names" );
+                  bug( "%s: too many ignored names", __FUNCTION__ );
                }
                else
                {
@@ -1485,6 +1541,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                fMatch = TRUE;
                break;
             }
+
             if( !strcmp( word, "RoomRange" ) )
             {
                ch->pcdata->r_range_lo = fread_number( fp );
@@ -1546,9 +1603,10 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                   if( file_ver < 3 )
                      sn = skill_lookup( fread_word( fp ) );
                   else
-                     sn = bsearch_skill_exact( fread_word( fp ), gsn_first_skill, gsn_first_weapon - 1 );
+                     sn = find_skill( NULL, fread_word( fp ), FALSE );
+
                   if( sn < 0 )
-                     bug( "%s", "Fread_char: unknown skill." );
+                     bug( "%s: unknown skill.", __FUNCTION__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1562,7 +1620,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                         if( skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL )
                         {
                            ch->pcdata->learned[sn] = 0;
-                           ch->practice++;
+                           ++ch->practice;
                         }
                      }
                   }
@@ -1581,9 +1639,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                {
                   value = fread_number( fp );
 
-                  sn = bsearch_skill_exact( fread_word( fp ), gsn_first_spell, gsn_first_skill - 1 );
+                  sn = find_spell( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s", "Fread_char: unknown spell." );
+                     bug( "%s: unknown spell.", __FUNCTION__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1591,7 +1649,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                         if( skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL )
                         {
                            ch->pcdata->learned[sn] = 0;
-                           ch->practice++;
+                           ++ch->practice;
                         }
                   }
                   fMatch = TRUE;
@@ -1671,7 +1729,8 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                   ch->weight =
                      number_range( ( int )( race_table[ch->race]->weight * .9 ),
                                    ( int )( race_table[ch->race]->weight * 1.1 ) );
-
+               if( ch->pcdata->clan )
+                  update_roster( ch );
                return;
             }
             KEY( "Exp", ch->exp, fread_number( fp ) );
@@ -1688,9 +1747,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                {
                   value = fread_number( fp );
 
-                  sn = bsearch_skill_exact( fread_word( fp ), gsn_first_tongue, gsn_top_sn - 1 );
+                  sn = find_tongue( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s", "Fread_char: unknown tongue." );
+                     bug( "%s: unknown tongue.", __FUNCTION__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1742,9 +1801,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                {
                   value = fread_number( fp );
 
-                  sn = bsearch_skill_exact( fread_word( fp ), gsn_first_weapon, gsn_first_tongue - 1 );
+                  sn = find_weapon( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s", "Fread_char: unknown weapon." );
+                     bug( "%s: unknown weapon.", __FUNCTION__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1752,7 +1811,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                         if( skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL )
                         {
                            ch->pcdata->learned[sn] = 0;
-                           ch->practice++;
+                           ++ch->practice;
                         }
                   }
                   fMatch = TRUE;
@@ -1791,8 +1850,8 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
    obj->wear_loc = -1;
    obj->weight = 1;
 
-   fNest = TRUE;  /* Requiring a Nest 0 is a waste */
-   fVnum = TRUE;
+   fNest = TRUE;  // Requiring a Nest 0 is a waste
+   fVnum = FALSE; // We can't assume this - what if Vnum isn't written to the file? Crashy crashy is what. - Pulled from Smaug 1.8
    iNest = 0;
 
    for( ;; )
@@ -1904,6 +1963,10 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                      obj->short_descr = QUICKLINK( obj->pIndexData->short_descr );
                   if( !obj->action_desc )
                      obj->action_desc = QUICKLINK( obj->pIndexData->action_desc );
+                  if( IS_OBJ_STAT( obj, ITEM_PERSONAL ) && !obj->owner && ch )
+                     obj->owner = QUICKLINK( ch->name );
+                  if( !obj->owner )
+                     obj->owner = STRALLOC( "" );
                   LINK( obj, first_object, last_object, next, prev );
                   obj->pIndexData->count += obj->count;
                   if( !obj->serial )
@@ -2018,6 +2081,16 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                   iNest = 0;
                   fNest = FALSE;
                }
+               fMatch = TRUE;
+            }
+            break;
+
+         case 'O':
+            if( !strcmp( word, "Owner" ) )
+            {
+               STRFREE( obj->owner );
+               obj->owner = fread_string( fp );
+               xSET_BIT( obj->extra_flags, ITEM_PERSONAL );
                fMatch = TRUE;
             }
             break;
@@ -2174,7 +2247,6 @@ void do_last( CHAR_DATA * ch, char *argument )
  * Added support for removeing so we could take out the write_corpses
  * so we could take it out of the save_char_obj function. --Shaddai
  */
-
 void write_corpses( CHAR_DATA * ch, char *name, OBJ_DATA * objrem )
 {
    OBJ_DATA *corpse;

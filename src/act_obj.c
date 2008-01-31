@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			   Object manipulation module			    *
+ *                         Object manipulation module                       *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -122,7 +122,7 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
 
    if( ch->carry_number + get_obj_number( obj ) > can_carry_n( ch ) )
    {
-      act( AT_PLAIN, "$d: you can't carry that many items.", ch, NULL, obj->name, TO_CHAR );
+      act( AT_PLAIN, "$d: you can't carry that many items.", ch, NULL, obj->short_descr, TO_CHAR );
       return;
    }
 
@@ -167,14 +167,14 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
          {
             if( ( ch->carry_weight + weight ) > can_carry_w( ch ) )
             {
-               act( AT_PLAIN, "$d: you can't carry that much weight.", ch, NULL, obj->name, TO_CHAR );
+               act( AT_PLAIN, "$d: you can't carry that much weight.", ch, NULL, obj->short_descr, TO_CHAR );
                return;
             }
          }
       }
       else if( ( ch->carry_weight + weight ) > can_carry_w( ch ) )
       {
-         act( AT_PLAIN, "$d: you can't carry that much weight.", ch, NULL, obj->name, TO_CHAR );
+         act( AT_PLAIN, "$d: you can't carry that much weight.", ch, NULL, obj->short_descr, TO_CHAR );
          return;
       }
    }
@@ -207,7 +207,7 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
    /*
     * Clan storeroom checks 
     */
-   if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && ( !container || container->carried_by == NULL ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && ( !container || container->carried_by == NULL ) )
    {
       for( clan = first_clan; clan; clan = clan->next )
          if( clan->storeroom == ch->in_room->vnum )
@@ -221,59 +221,13 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
 
    if( obj->item_type == ITEM_MONEY )
    {
-      amt = obj->value[0];
-
-/*
- *  The idea was to make some races more adroit at money handling,
- *  however, this resulted in elves dropping 1M gps and picking 
- *  up 1.1M, repeating, and getting rich.  The only solution would
- *  be to fuzzify the "drop coins" code, but that seems like it'd
- *  lead to more confusion than it warrants.  -h
- *
- *  When you work on this again, make it so that amt is NEVER multiplied
- *  by more than 1.0.  Use less than 1.0 for ogre, orc, troll, etc.
- *  (Ie: a penalty rather than a bonus)
- */
-#ifdef GOLD_MULT
-      switch ( ch->race )
-      {
-         case ( 1 ):
-            amt *= 1.1;
-            break;   /* elf */
-         case ( 2 ):
-            amt *= 0.97;
-            break;   /* dwarf */
-         case ( 3 ):
-            amt *= 1.02;
-            break;   /* halfling */
-         case ( 4 ):
-            amt *= 1.08;
-            break;   /* pixie */
-         case ( 6 ):
-            amt *= 0.92;
-            break;   /* half-ogre */
-         case ( 7 ):
-            amt *= 0.94;
-            break;   /* half-orc */
-         case ( 8 ):
-            amt *= 0.90;
-            break;   /* half-troll */
-         case ( 9 ):
-            amt *= 1.04;
-            break;   /* half-elf */
-         case ( 10 ):
-            amt *= 1.06;
-            break;   /* gith */
-      }
-#endif
+      amt = obj->value[0] * obj->count;
 
       ch->gold += amt;
       extract_obj( obj );
    }
    else
-   {
       obj = obj_to_char( obj, ch );
-   }
 
    if( char_died( ch ) || obj_extracted( obj ) )
       return;
@@ -292,6 +246,14 @@ void do_get( CHAR_DATA * ch, char *argument )
    bool found;
 
    argument = one_argument( argument, arg1 );
+
+   if( ch->carry_number < 0 || ch->carry_weight < 0 )
+   {
+      send_to_char( "Uh oh ... better contact an immortal about your number or weight of items carried.\r\n", ch );
+      log_printf( "%s has negative carry_number or carry_weight!", ch->name );
+      return;
+   }
+
    if( is_number( arg1 ) )
    {
       number = atoi( arg1 );
@@ -354,7 +316,7 @@ void do_get( CHAR_DATA * ch, char *argument )
          bool fAll;
          char *chk;
 
-         if( IS_SET( ch->in_room->room_flags, ROOM_DONATION ) )
+         if( xIS_SET( ch->in_room->room_flags, ROOM_DONATION ) )
          {
             send_to_char( "The gods frown upon such a display of greed!\r\n", ch );
             return;
@@ -758,23 +720,26 @@ void do_put( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( ( IS_OBJ_STAT( container, ITEM_COVERING )
-            && ( get_obj_weight( obj ) / obj->count )
-            > ( ( get_obj_weight( container ) / container->count ) - container->weight ) ) )
+      // Fix by Luc - Sometime in 2000?
       {
-         send_to_char( "It won't fit under there.\r\n", ch );
-         return;
-      }
+         int tweight = ( get_real_obj_weight( container ) / container->count ) + ( get_real_obj_weight( obj ) / obj->count );
 
-      /*
-       * note use of get_real_obj_weight 
-       */
-      if( ( get_real_obj_weight( obj ) / obj->count )
-          + ( get_real_obj_weight( container ) / container->count ) > container->value[0] )
-      {
-         send_to_char( "It won't fit.\r\n", ch );
-         return;
+         if( IS_OBJ_STAT( container, ITEM_COVERING ) )
+         {
+            if( container->item_type == ITEM_CONTAINER
+                ? tweight > container->value[0] : tweight - container->weight > container->weight )
+            {
+               send_to_char( "It won't fit under there.\r\n", ch );
+               return;
+            }
+         }
+         else if( tweight - container->weight > container->value[0] )
+         {
+            send_to_char( "It won't fit.\r\n", ch );
+            return;
+         }
       }
+      // Fix end
 
       separate_obj( obj );
       separate_obj( container );
@@ -811,9 +776,8 @@ void do_put( CHAR_DATA * ch, char *argument )
       /*
        * Clan storeroom check 
        */
-      if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
       {
-/*	   if (!char_died && !save_char ) save_char_obj(ch); */
          for( clan = first_clan; clan; clan = clan->next )
             if( clan->storeroom == ch->in_room->vnum )
                save_clan_storeroom( ch, clan );
@@ -901,18 +865,15 @@ void do_put( CHAR_DATA * ch, char *argument )
       /*
        * Clan storeroom check 
        */
-      if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
       {
-/*	  if (!char_died && !save_char) save_char_obj(ch); */
          for( clan = first_clan; clan; clan = clan->next )
             if( clan->storeroom == ch->in_room->vnum )
                save_clan_storeroom( ch, clan );
       }
    }
-
    return;
 }
-
 
 void do_drop( CHAR_DATA * ch, char *argument )
 {
@@ -953,7 +914,7 @@ void do_drop( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_NODROP ) && ch != supermob )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_NODROP ) && ch != supermob )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "A magical force stops you!\r\n", ch );
@@ -1036,9 +997,8 @@ void do_drop( CHAR_DATA * ch, char *argument )
       /*
        * Clan storeroom saving 
        */
-      if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-/*	   if (!char_died) save_char_obj(ch); */
          for( clan = first_clan; clan; clan = clan->next )
             if( clan->storeroom == ch->in_room->vnum )
                save_clan_storeroom( ch, clan );
@@ -1061,7 +1021,7 @@ void do_drop( CHAR_DATA * ch, char *argument )
       /*
        * 'drop all' or 'drop all.obj' 
        */
-      if( IS_SET( ch->in_room->room_flags, ROOM_NODROPALL ) || IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_NODROPALL ) || xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
          send_to_char( "You can't seem to do that here...\r\n", ch );
          return;
@@ -1113,8 +1073,6 @@ void do_drop( CHAR_DATA * ch, char *argument )
       save_char_obj( ch ); /* duping protector */
    return;
 }
-
-
 
 void do_give( CHAR_DATA * ch, char *argument )
 {
@@ -1354,7 +1312,6 @@ obj_ret damage_obj( OBJ_DATA * obj )
    return objcode;
 }
 
-
 /*
  * Remove an object.
  */
@@ -1367,7 +1324,7 @@ bool remove_obj( CHAR_DATA * ch, int iWear, bool fReplace )
 
    if( !fReplace && ch->carry_number + get_obj_number( obj ) > can_carry_n( ch ) )
    {
-      act( AT_PLAIN, "$d: you can't carry that many items.", ch, NULL, obj->name, TO_CHAR );
+      act( AT_PLAIN, "$d: you can't carry that many items.", ch, NULL, obj->short_descr, TO_CHAR );
       return FALSE;
    }
 
@@ -1388,6 +1345,14 @@ bool remove_obj( CHAR_DATA * ch, int iWear, bool fReplace )
    act( AT_ACTION, "$n stops using $p.", ch, obj, NULL, TO_ROOM );
    act( AT_ACTION, "You stop using $p.", ch, obj, NULL, TO_CHAR );
    oprog_remove_trigger( ch, obj );
+   /*
+    * Added check in case, the trigger forces them to rewear the item
+    * * --Shaddai
+    */
+   if( !( obj = get_eq_char( ch, iWear ) ) )
+      return TRUE;
+   else
+      return FALSE;
    return TRUE;
 }
 
@@ -1493,6 +1458,15 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
    {
       act( AT_MAGIC, "You are forbidden to use that item.", ch, NULL, NULL, TO_CHAR );
       act( AT_ACTION, "$n tries to use $p, but is forbidden to do so.", ch, obj, NULL, TO_ROOM );
+      return;
+   }
+
+   if( IS_OBJ_STAT( obj, ITEM_PERSONAL ) && str_cmp( ch->name, obj->owner ) )
+   {
+      send_to_char( "That item is personalized and belongs to someone else.\r\n", ch );
+      if( obj->carried_by )
+         obj_from_char( obj );
+      obj_to_room( obj, ch->in_room );
       return;
    }
 
@@ -2318,9 +2292,9 @@ void do_brandish( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( ( sn = staff->value[3] ) < 0 || sn >= top_sn || skill_table[sn]->spell_fun == NULL )
+   if( ( sn = staff->value[3] ) < 0 || sn >= num_skills || skill_table[sn]->spell_fun == NULL )
    {
-      bug( "Do_brandish: bad sn %d.", sn );
+      bug( "%s: bad sn %d.", __FUNCTION__, sn );
       return;
    }
 
@@ -2386,8 +2360,6 @@ void do_brandish( CHAR_DATA * ch, char *argument )
 
    return;
 }
-
-
 
 void do_zap( CHAR_DATA * ch, char *argument )
 {
@@ -2475,7 +2447,6 @@ void do_zap( CHAR_DATA * ch, char *argument )
          global_objcode = rOBJ_USED;
       extract_obj( wand );
    }
-
    return;
 }
 
@@ -2491,20 +2462,20 @@ void save_clan_storeroom( CHAR_DATA * ch, CLAN_DATA * clan )
 
    if( !clan )
    {
-      bug( "%s", "save_clan_storeroom: Null clan pointer!" );
+      bug( "%s: Null clan pointer!", __FUNCTION__ );
       return;
    }
 
    if( !ch )
    {
-      bug( "%s", "save_clan_storeroom: Null ch pointer!" );
+      bug( "%s: Null ch pointer!", __FUNCTION__ );
       return;
    }
 
    snprintf( filename, 256, "%s%s.vault", CLAN_DIR, clan->filename );
-   if( ( fp = fopen( filename, "w" ) ) == NULL )
+   if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "save_clan_storeroom: cant open %s", filename );
+      bug( "%s: cant open %s", __FUNCTION__, filename );
       perror( filename );
    }
    else
@@ -2517,6 +2488,7 @@ void save_clan_storeroom( CHAR_DATA * ch, CLAN_DATA * clan )
       fprintf( fp, "#END\n" );
       ch->level = templvl;
       fclose( fp );
+      fp = NULL;
       return;
    }
    return;
@@ -2599,21 +2571,21 @@ void do_auction( CHAR_DATA * ch, char *argument )
             case ITEM_POTION:
                ch_printf( ch, "Level %d spells of:", obj->value[0] );
 
-               if( obj->value[1] >= 0 && obj->value[1] < top_sn )
+               if( obj->value[1] >= 0 && obj->value[1] < num_skills )
                {
                   send_to_char( " '", ch );
                   send_to_char( skill_table[obj->value[1]]->name, ch );
                   send_to_char( "'", ch );
                }
 
-               if( obj->value[2] >= 0 && obj->value[2] < top_sn )
+               if( obj->value[2] >= 0 && obj->value[2] < num_skills )
                {
                   send_to_char( " '", ch );
                   send_to_char( skill_table[obj->value[2]]->name, ch );
                   send_to_char( "'", ch );
                }
 
-               if( obj->value[3] >= 0 && obj->value[3] < top_sn )
+               if( obj->value[3] >= 0 && obj->value[3] < num_skills )
                {
                   send_to_char( " '", ch );
                   send_to_char( skill_table[obj->value[3]]->name, ch );
@@ -2627,7 +2599,7 @@ void do_auction( CHAR_DATA * ch, char *argument )
             case ITEM_STAFF:
                ch_printf( ch, "Has %d(%d) charges of level %d", obj->value[1], obj->value[2], obj->value[0] );
 
-               if( obj->value[3] >= 0 && obj->value[3] < top_sn )
+               if( obj->value[3] >= 0 && obj->value[3] < num_skills )
                {
                   send_to_char( " '", ch );
                   send_to_char( skill_table[obj->value[3]]->name, ch );
@@ -2801,7 +2773,10 @@ void do_auction( CHAR_DATA * ch, char *argument )
          return;
       }
    }
-/* finally... */
+
+   /*
+    * finally... 
+    */
    if( ms_find_obj( ch ) )
       return;
 
@@ -2816,6 +2791,12 @@ void do_auction( CHAR_DATA * ch, char *argument )
    if( obj->timer > 0 )
    {
       send_to_char( "You can't auction objects that are decaying.\r\n", ch );
+      return;
+   }
+
+   if( IS_OBJ_STAT( obj, ITEM_PERSONAL ) )
+   {
+      send_to_char( "Personal items may not be auctioned.\r\n", ch );
       return;
    }
 
@@ -2954,7 +2935,7 @@ void obj_fall( OBJ_DATA * obj, bool through )
       return;
    }
 
-   if( IS_SET( obj->in_room->room_flags, ROOM_NOFLOOR ) && CAN_GO( obj, DIR_DOWN ) && !IS_OBJ_STAT( obj, ITEM_MAGIC ) )
+   if( xIS_SET( obj->in_room->room_flags, ROOM_NOFLOOR ) && CAN_GO( obj, DIR_DOWN ) && !IS_OBJ_STAT( obj, ITEM_MAGIC ) )
    {
 
       pexit = get_exit( obj->in_room, DIR_DOWN );
@@ -2988,7 +2969,7 @@ void obj_fall( OBJ_DATA * obj, bool through )
          act( AT_PLAIN, "$p falls from above...", obj->in_room->first_person, obj, NULL, TO_CHAR );
       }
 
-      if( !IS_SET( obj->in_room->room_flags, ROOM_NOFLOOR ) && through )
+      if( !xIS_SET( obj->in_room->room_flags, ROOM_NOFLOOR ) && through )
       {
 /*		int dam = (int)9.81*sqrt(fall_count*2/9.81)*obj->weight/2;
 */ int dam = fall_count * obj->weight / 2;
@@ -3143,9 +3124,9 @@ void do_findnote( CHAR_DATA * ch, char *argument )
    return;
 }
 
-char *get_chance_verb( OBJ_DATA * obj )
+const char *get_chance_verb( OBJ_DATA * obj )
 {
-   return ( obj->action_desc[0] != '\0' ) ? obj->action_desc : ( char * )"roll$q";
+   return ( obj->action_desc[0] != '\0' ) ? obj->action_desc : "roll$q";
 }
 
 char *get_ed_number( OBJ_DATA * obj, int number )
@@ -3170,7 +3151,7 @@ void do_rolldie( CHAR_DATA * ch, char *argument )
    char roll_string[MAX_STRING_LENGTH];
    char total_string[MAX_STRING_LENGTH];
 
-   char *verb;
+   const char *verb;
 
 /*  char* face_string = NULL;
   char** face_table = NULL;*/

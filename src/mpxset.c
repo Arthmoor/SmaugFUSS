@@ -17,18 +17,7 @@
 #include <string.h>
 #include "mud.h"
 
-int get_npc_race args( ( char *type ) );
-int get_actflag args( ( char *flag ) );
-int get_risflag args( ( char *flag ) );
-int get_partflag args( ( char *flag ) );
-int get_attackflag args( ( char *flag ) );
-int get_defenseflag args( ( char *flag ) );
-int get_langflag args( ( char *flag ) );
-int get_langnum args( ( char *flag ) );
-int get_trigflag args( ( char *flag ) );
-
 extern int top_affect;
-
 
 void do_mpmset( CHAR_DATA * ch, char *argument )
 {
@@ -653,7 +642,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_actflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             progbug( "MpMset: Invalid flag", ch );
          else
          {
@@ -661,10 +650,6 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
                progbug( "MpMset: can't set prototype flag", ch );
             else if( value == ACT_IS_NPC )
                progbug( "MpMset: can't remove npc flag", ch );
-/*
-	     else if ( value == ACT_POLYMORPHED )
-		progbug("MpMset: can't change polymorphed flag", ch);
-*/
             else
                xTOGGLE_BIT( victim->act, value );
          }
@@ -689,7 +674,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             progbug( "MpMset: Invalid affected", ch );
          else
             xTOGGLE_BIT( victim->affected_by, value );
@@ -892,7 +877,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_defenseflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             progbug( "MpMset: Invalid defense", ch );
          else
             xTOGGLE_BIT( victim->defenses, value );
@@ -1118,7 +1103,7 @@ void do_mposet( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_oflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             progbug( "MpOset: Invalid flag", ch );
          else
          {

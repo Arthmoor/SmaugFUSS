@@ -12,46 +12,46 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			      Regular update module			    *
+ *                           Regular update module                          *
  ****************************************************************************/
 
 #include <stdio.h>
 #include <sys/time.h>
 #include "mud.h"
+#include "hint.h"
 
 /*
  * Local functions.
  */
-int hit_gain args( ( CHAR_DATA * ch ) );
-int mana_gain args( ( CHAR_DATA * ch ) );
-int move_gain args( ( CHAR_DATA * ch ) );
-void mobile_update args( ( void ) );
-void time_update args( ( void ) );  /* FB */
-void char_update args( ( void ) );
-void obj_update args( ( void ) );
-void aggr_update args( ( void ) );
-void room_act_update args( ( void ) );
-void obj_act_update args( ( void ) );
-void char_check args( ( void ) );
-void drunk_randoms args( ( CHAR_DATA * ch ) );
-void hallucinations args( ( CHAR_DATA * ch ) );
-void subtract_times args( ( struct timeval * etime, struct timeval * sttime ) );
+int hit_gain( CHAR_DATA * ch );
+int mana_gain( CHAR_DATA * ch );
+int move_gain( CHAR_DATA * ch );
+void mobile_update( void );
+void time_update( void );  /* FB */
+void char_update( void );
+void obj_update( void );
+void aggr_update( void );
+void room_act_update( void );
+void obj_act_update( void );
+void char_check( void );
+void drunk_randoms( CHAR_DATA * ch );
+void hallucinations( CHAR_DATA * ch );
+void subtract_times( struct timeval *etime, struct timeval *sttime );
 
 /* weather functions - FB */
-void adjust_vectors args( ( WEATHER_DATA * weather ) );
-void get_weather_echo args( ( WEATHER_DATA * weather ) );
-void get_time_echo args( ( WEATHER_DATA * weather ) );
+void adjust_vectors( WEATHER_DATA * weather );
+void get_weather_echo( WEATHER_DATA * weather );
+void get_time_echo( WEATHER_DATA * weather );
+
+/* From interp.c */
+bool check_social( CHAR_DATA * ch, const char *command, char *argument );
 
 /*
  * Global Variables
  */
-
-CHAR_DATA *gch_prev;
-OBJ_DATA *gobj_prev;
-
 CHAR_DATA *timechar;
 
-char *corpse_descs[] = {
+const char *corpse_descs[] = {
    "The corpse of %s is in the last stages of decay.",
    "The corpse of %s is crawling with vermin.",
    "The corpse of %s fills the air with a foul stench.",
@@ -67,10 +67,7 @@ extern int top_exit;
 void advance_level( CHAR_DATA * ch )
 {
    char buf[MAX_STRING_LENGTH];
-   int add_hp;
-   int add_mana;
-   int add_move;
-   int add_prac;
+   int add_hp, add_mana, add_move, add_prac;
 
    snprintf( buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0] );
    set_title( ch, buf );
@@ -117,6 +114,7 @@ void advance_level( CHAR_DATA * ch )
       set_char_color( AT_WHITE, ch );
       do_help( ch, "M_ADVHERO_" );
    }
+
    if( ch->level < LEVEL_IMMORTAL )
    {
       if( IS_VAMPIRE( ch ) )
@@ -130,7 +128,6 @@ void advance_level( CHAR_DATA * ch )
       set_char_color( AT_WHITE, ch );
       send_to_char( buf, ch );
    }
-   return;
 }
 
 void gain_exp( CHAR_DATA * ch, int gain )
@@ -187,11 +184,9 @@ void gain_exp( CHAR_DATA * ch, int gain )
 
    /*
     * xp cap to prevent any one event from giving enuf xp to 
-    */
-   /*
     * gain more than one level - FB 
     */
-   modgain = UMIN( modgain, exp_level( ch, ch->level + 2 ) - exp_level( ch, ch->level + 1 ) );
+   modgain = UMIN( (int)modgain, exp_level( ch, ch->level + 2 ) - exp_level( ch, ch->level + 1 ) );
 
    ch->exp = UMAX( 0, ch->exp + ( int )modgain );
 
@@ -209,7 +204,6 @@ void gain_exp( CHAR_DATA * ch, int gain )
       ch_printf( ch, "You have now obtained experience level %d!\r\n", ch->level );
       advance_level( ch );
    }
-   return;
 }
 
 /*
@@ -554,7 +548,6 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             break;
       }
    }
-   return;
 }
 
 /*
@@ -611,6 +604,7 @@ void mobile_update( void )
    char buf[MAX_STRING_LENGTH];
    CHAR_DATA *ch;
    EXIT_DATA *pexit;
+   TRV_WORLD *lc;
    int door;
    ch_ret retcode;
 
@@ -619,25 +613,10 @@ void mobile_update( void )
    /*
     * Examine all mobs. 
     */
-   for( ch = last_char; ch; ch = gch_prev )
+   lc = trworld_create( TR_CHAR_WORLD_BACK );
+   for( ch = last_char; ch; ch = trvch_wnext( lc ) )
    {
       set_cur_char( ch );
-      if( ch == first_char && ch->prev )
-      {
-         bug( "%s", "mobile_update: first_char->prev != NULL... fixed" );
-         ch->prev = NULL;
-      }
-
-      gch_prev = ch->prev;
-
-      if( gch_prev && gch_prev->next != ch )
-      {
-         bug( "FATAL: Mobile_update: %s->prev->next doesn't point to ch.", ch->name );
-         bug( "%s", "Short-cutting here" );
-         gch_prev = NULL;
-         ch->prev = NULL;
-         do_shout( ch, "Thoric says, 'Prepare for the worst!'" );
-      }
 
       if( !IS_NPC( ch ) )
       {
@@ -652,7 +631,6 @@ void mobile_update( void )
       /*
        * Clean up 'animated corpses' that are not charmed' - Scryn 
        */
-
       if( ch->pIndexData->vnum == MOB_VNUM_ANIMATED_CORPSE && !IS_AFFECTED( ch, AFF_CHARM ) )
       {
          if( ch->in_room->first_person )
@@ -666,13 +644,6 @@ void mobile_update( void )
       if( !xIS_SET( ch->act, ACT_RUNNING ) && !xIS_SET( ch->act, ACT_SENTINEL ) && !ch->fighting && ch->hunting )
       {
          WAIT_STATE( ch, 2 * PULSE_VIOLENCE );
-         /*
-          * Commented out temporarily to avoid spam - Scryn 
-          * snprintf( buf, MAX_STRING_LENGTH, "%s hunting %s from %s.", ch->name,
-          * ch->hunting->name,
-          * ch->in_room->name );
-          * log_string( buf ); 
-          */
          hunt_victim( ch );
          continue;
       }
@@ -716,10 +687,9 @@ void mobile_update( void )
          continue;
       }
 
-      if( IS_SET( ch->in_room->room_flags, ROOM_SAFE )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE )
           && ( xIS_SET( ch->act, ACT_AGGRESSIVE ) || xIS_SET( ch->act, ACT_META_AGGR ) ) )
          do_emote( ch, "glares around and snarls." );
-
 
       /*
        * MOBprogram random trigger 
@@ -789,8 +759,8 @@ void mobile_update( void )
           && pexit->to_room
           && !IS_SET( pexit->exit_info, EX_WINDOW )
           && !IS_SET( pexit->exit_info, EX_CLOSED )
-          && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
-          && !IS_SET( pexit->to_room->room_flags, ROOM_DEATH )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH )
           && ( !xIS_SET( ch->act, ACT_STAY_AREA ) || pexit->to_room->area == ch->in_room->area ) )
       {
          retcode = move_char( ch, pexit, 0 );
@@ -815,7 +785,7 @@ void mobile_update( void )
           && pexit->to_room
           && !IS_SET( pexit->exit_info, EX_WINDOW )
           && !IS_SET( pexit->exit_info, EX_CLOSED )
-          && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !IS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
       {
          CHAR_DATA *rch;
          bool found;
@@ -849,8 +819,7 @@ void mobile_update( void )
             retcode = move_char( ch, pexit, 0 );
       }
    }
-
-   return;
+   trworld_dispose( &lc );
 }
 
 /*
@@ -861,23 +830,14 @@ void char_update( void )
 {
    CHAR_DATA *ch;
    CHAR_DATA *ch_save;
+   TRV_WORLD *lc;
    short save_count = 0;
 
    ch_save = NULL;
-   for( ch = last_char; ch; ch = gch_prev )
+   lc = trworld_create( TR_CHAR_WORLD_BACK );
+   for( ch = last_char; ch; ch = trvch_wnext( lc ) )
    {
-      if( ch == first_char && ch->prev )
-      {
-         bug( "%s", "char_update: first_char->prev != NULL... fixed" );
-         ch->prev = NULL;
-      }
-      gch_prev = ch->prev;
       set_cur_char( ch );
-      if( gch_prev && gch_prev->next != ch )
-      {
-         bug( "%s", "char_update: ch->prev->next != ch" );
-         return;
-      }
 
       /*
        *  Do a room_prog rand check right off the bat
@@ -926,13 +886,37 @@ void char_update( void )
          update_pos( ch );
 
       /*
+       * Expire variables 
+       */
+      if( ch->variables )
+      {
+         VARIABLE_DATA *vd, *vd_next = NULL, *vd_prev = NULL;
+
+         for( vd = ch->variables; vd; vd = vd_next )
+         {
+            vd_next = vd->next;
+
+            if( vd->timer > 0 && --vd->timer == 0 )
+            {
+               if( vd == ch->variables )
+                  ch->variables = vd_next;
+               else if( vd_prev )
+                  vd_prev->next = vd_next;
+               delete_variable( vd );
+            }
+            else
+               vd_prev = vd;
+         }
+      }
+
+      /*
        * Morph timer expires 
        */
       if( ch->morph )
       {
          if( ch->morph->timer > 0 )
          {
-            ch->morph->timer--;
+            --ch->morph->timer;
             if( ch->morph->timer == 0 )
                do_unmorph_char( ch );
          }
@@ -953,7 +937,7 @@ void char_update( void )
             temp /= MAX_NUISANCE_STAGE;
             temp += ch->pcdata->nuisance->set_time;
             if( temp < current_time )
-               ch->pcdata->nuisance->flags++;
+               ++ch->pcdata->nuisance->flags;
          }
       }
 
@@ -1051,6 +1035,7 @@ void char_update( void )
                   break;
             }
          }
+
          /*
           * Function added on suggestion from Cronel
           */
@@ -1091,7 +1076,6 @@ void char_update( void )
                      gain_condition( ch, COND_THIRST, -1 + race_table[ch->race]->thirst_mod );
                   break;
             }
-
       }
 
       if( !IS_NPC( ch ) && !IS_IMMORTAL( ch ) && ch->pcdata->release_date > 0 && ch->pcdata->release_date <= current_time )
@@ -1168,6 +1152,7 @@ void char_update( void )
          }
 
          if( ch->mental_state >= 30 )
+         {
             switch ( ( ch->mental_state + 5 ) / 10 )
             {
                case 3:
@@ -1204,8 +1189,10 @@ void char_update( void )
                   act( AT_ACTION, "$n is muttering and ranting in tongues...", ch, NULL, NULL, TO_ROOM );
                   break;
             }
+         }
 
          if( ch->mental_state <= -30 )
+         {
             switch ( ( abs( ch->mental_state ) + 5 ) / 10 )
             {
                case 10:
@@ -1258,13 +1245,15 @@ void char_update( void )
                      send_to_char( "You could use a rest.\r\n", ch );
                   break;
             }
+         }
+
          if( ch->timer > 24 )
             do_quit( ch, "" );
          else if( ch == ch_save && IS_SET( sysdata.save_flags, SV_AUTO ) && ++save_count < 10 ) /* save max of 10 per tick */
             save_char_obj( ch );
       }
    }
-   return;
+   trworld_dispose( &lc );
 }
 
 /*
@@ -1274,25 +1263,17 @@ void char_update( void )
 void obj_update( void )
 {
    OBJ_DATA *obj;
+   TRV_WORLD *lc;
    short AT_TEMP;
 
-   for( obj = last_object; obj; obj = gobj_prev )
+   lc = trworld_create( TR_OBJ_WORLD_BACK );
+   for( obj = last_object; obj; obj = trvobj_wnext( lc ) )
    {
       CHAR_DATA *rch;
       char *message;
 
-      if( obj == first_object && obj->prev )
-      {
-         bug( "%s", "obj_update: first_object->prev != NULL... fixed" );
-         obj->prev = NULL;
-      }
-      gobj_prev = obj->prev;
-      if( gobj_prev && gobj_prev->next != obj )
-      {
-         bug( "%s", "obj_update: obj->prev->next != obj" );
-         return;
-      }
       set_cur_obj( obj );
+
       if( obj->carried_by )
          oprog_random_trigger( obj );
       else if( obj->in_room && obj->in_room->area->nplayer > 0 )
@@ -1426,9 +1407,7 @@ void obj_update( void )
       }
 
       if( obj->carried_by )
-      {
          act( AT_TEMP, message, obj->carried_by, obj, NULL, TO_CHAR );
-      }
       else if( obj->in_room && ( rch = obj->in_room->first_person ) != NULL && !IS_OBJ_STAT( obj, ITEM_BURIED ) )
       {
          act( AT_TEMP, message, rch, obj, NULL, TO_ROOM );
@@ -1439,7 +1418,7 @@ void obj_update( void )
          global_objcode = rOBJ_EXPIRED;
       extract_obj( obj );
    }
-   return;
+   trworld_dispose( &lc );
 }
 
 /*
@@ -1448,7 +1427,8 @@ void obj_update( void )
  */
 void char_check( void )
 {
-   CHAR_DATA *ch, *ch_next;
+   CHAR_DATA *ch;
+   TRV_WORLD *lc1;
    OBJ_DATA *obj;
    EXIT_DATA *pexit;
    static int cnt = 0;
@@ -1459,10 +1439,11 @@ void char_check( void )
     */
    cnt = ( cnt + 1 ) % SECONDS_PER_TICK;
 
-   for( ch = first_char; ch; ch = ch_next )
+   lc1 = trworld_create( TR_CHAR_WORLD_FORW );
+   for( ch = first_char; ch; ch = trvch_wnext( lc1 ) )
    {
       set_cur_char( ch );
-      ch_next = ch->next;
+
       will_fall( ch, 0 );
 
       if( char_died( ch ) )
@@ -1478,7 +1459,8 @@ void char_check( void )
           */
          if( xIS_SET( ch->act, ACT_RUNNING ) )
          {
-            if( !xIS_SET( ch->act, ACT_SENTINEL ) && !ch->fighting && ch->hunting )
+            if( !xIS_SET( ch->act, ACT_SENTINEL )
+                && ch->position == POS_STANDING && !xIS_SET( ch->act, ACT_MOUNTED ) && !ch->fighting && ch->hunting )
             {
                WAIT_STATE( ch, 2 * PULSE_VIOLENCE );
                hunt_victim( ch );
@@ -1494,13 +1476,15 @@ void char_check( void )
             }
 
             if( !xIS_SET( ch->act, ACT_SENTINEL )
+                && ch->position == POS_STANDING
+                && !xIS_SET( ch->act, ACT_MOUNTED )
                 && !xIS_SET( ch->act, ACT_PROTOTYPE )
                 && ( door = number_bits( 4 ) ) <= 9
                 && ( pexit = get_exit( ch->in_room, door ) ) != NULL
                 && pexit->to_room
                 && !IS_SET( pexit->exit_info, EX_CLOSED )
-                && !IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
-                && !IS_SET( pexit->to_room->room_flags, ROOM_DEATH )
+                && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
+                && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH )
                 && ( !xIS_SET( ch->act, ACT_STAY_AREA ) || pexit->to_room->area == ch->in_room->area ) )
             {
                retcode = move_char( ch, pexit, 0 );
@@ -1592,12 +1576,12 @@ void char_check( void )
           */
          if( !ch->desc )
          {
-            CHAR_DATA *wch, *wch_next;
+            CHAR_DATA *wch;
+            TRV_DATA *lc2;
 
-            for( wch = ch->in_room->first_person; wch; wch = wch_next )
+            lc2 = trvch_create( ch, TR_CHAR_ROOM_FORW );
+            for( wch = ch->in_room->first_person; wch; wch = trvch_next( lc2 ) )
             {
-               wch_next = wch->next_in_room;
-
                if( !IS_NPC( wch )
                    || wch->fighting
                    || IS_AFFECTED( wch, AFF_CHARM )
@@ -1612,13 +1596,15 @@ void char_check( void )
 
                if( ( !xIS_SET( wch->act, ACT_AGGRESSIVE )
                      && !xIS_SET( wch->act, ACT_META_AGGR ) )
-                   || xIS_SET( wch->act, ACT_MOUNTED ) || IS_SET( wch->in_room->room_flags, ROOM_SAFE ) )
+                   || xIS_SET( wch->act, ACT_MOUNTED ) || xIS_SET( wch->in_room->room_flags, ROOM_SAFE ) )
                   continue;
                global_retcode = multi_hit( wch, ch, TYPE_UNDEFINED );
             }
+            trv_dispose( &lc2 );
          }
       }
    }
+   trworld_dispose( &lc1 );
 }
 
 /*
@@ -1637,12 +1623,8 @@ void char_check( void )
 void aggr_update( void )
 {
    DESCRIPTOR_DATA *d, *dnext;
-   CHAR_DATA *wch;
-   CHAR_DATA *ch;
-   CHAR_DATA *ch_next;
-   CHAR_DATA *vch;
-   CHAR_DATA *vch_next;
-   CHAR_DATA *victim;
+   TRV_DATA *lc;
+   CHAR_DATA *wch, *ch, *vch, *victim;
    struct act_prog_data *apdtmp;
 
    /*
@@ -1685,11 +1667,10 @@ void aggr_update( void )
       if( char_died( wch ) || IS_NPC( wch ) || wch->level >= LEVEL_IMMORTAL || !wch->in_room )
          continue;
 
-      for( ch = wch->in_room->first_person; ch; ch = ch_next )
+      lc = trvch_create( wch, TR_CHAR_ROOM_FORW );
+      for( ch = wch->in_room->first_person; ch; ch = trvch_next( lc ) )
       {
          int count;
-
-         ch_next = ch->next_in_room;
 
          if( !IS_NPC( ch )
              || ch->fighting
@@ -1705,7 +1686,7 @@ void aggr_update( void )
 
          if( ( !xIS_SET( ch->act, ACT_AGGRESSIVE )
                && !xIS_SET( ch->act, ACT_META_AGGR ) )
-             || xIS_SET( ch->act, ACT_MOUNTED ) || IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+             || xIS_SET( ch->act, ACT_MOUNTED ) || xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
             continue;
 
          /*
@@ -1717,10 +1698,8 @@ void aggr_update( void )
           */
          count = 0;
          victim = NULL;
-         for( vch = wch->in_room->first_person; vch; vch = vch_next )
+         for( vch = wch->in_room->first_person; vch; vch = vch->next_in_room )
          {
-            vch_next = vch->next_in_room;
-
             if( ( !IS_NPC( vch ) || xIS_SET( ch->act, ACT_META_AGGR )
                   || xIS_SET( vch->act, ACT_ANNOYING ) )
                 && vch->level < LEVEL_IMMORTAL
@@ -1728,13 +1707,13 @@ void aggr_update( void )
             {
                if( number_range( 0, count ) == 0 )
                   victim = vch;
-               count++;
+               ++count;
             }
          }
 
          if( !victim )
          {
-            bug( "Aggr_update: null victim. %d", count );
+            bug( "%s: null victim. %d", __FUNCTION__, count );
             continue;
          }
 
@@ -1765,12 +1744,9 @@ void aggr_update( void )
          }
          global_retcode = multi_hit( ch, victim, TYPE_UNDEFINED );
       }
+      trv_dispose( &lc );
    }
-   return;
 }
-
-/* From interp.c */
-bool check_social( CHAR_DATA * ch, char *command, char *argument );
 
 /*
  * drunk randoms	- Tricops
@@ -1909,7 +1885,7 @@ void tele_update( void )
       {
          if( tele->room->first_person )
          {
-            if( IS_SET( tele->room->room_flags, ROOM_TELESHOWDESC ) )
+            if( xIS_SET( tele->room->room_flags, ROOM_TELESHOWDESC ) )
                teleport( tele->room->first_person, tele->room->tele_vnum, TELE_SHOWDESC | TELE_TRANSALL );
             else
                teleport( tele->room->first_person, tele->room->tele_vnum, TELE_TRANSALL );
@@ -1990,6 +1966,7 @@ void update_handler( void )
       auth_update(  );  /* Gorog */
       time_update(  );
       weather_update(  );
+      hint_update(  );
       char_update(  );
       obj_update(  );
       clear_vrooms(  ); /* remove virtual rooms */
@@ -2009,6 +1986,7 @@ void update_handler( void )
       auction_update(  );
    }
 
+   mpsleep_update(  );  /* Check for sleeping mud progs -rkb */
    tele_update(  );
    aggr_update(  );
    obj_act_update(  );
@@ -2792,21 +2770,44 @@ void time_update(  )
          break;
       case 24:
          time_info.hour = 0;
-         time_info.day++;
+         ++time_info.day;
          break;
    }
 
    if( time_info.day >= 30 )
    {
       time_info.day = 0;
-      time_info.month++;
+      ++time_info.month;
    }
 
    if( time_info.month >= 17 )
    {
       time_info.month = 0;
-      time_info.year++;
+      ++time_info.year;
    }
 
+   return;
+}
+
+void hint_update(  )
+{
+   DESCRIPTOR_DATA *d;
+
+   if( time_info.hour % 1 == 0 )
+   {
+      for( d = first_descriptor; d; d = d->next )
+      {
+         if( d->connected == CON_PLAYING && IS_AWAKE( d->character ) && d->character->pcdata )
+         {
+            if( IS_SET( d->character->pcdata->flags, PCFLAG_HINTS ) && number_bits( 1 ) == 0 )
+            {
+               if( d->character->level > LEVEL_AVATAR )
+                  ch_printf_color( d->character, "&p( &wHINT&p ):  &P%s\r\n", get_hint( LEVEL_AVATAR ) );
+               else
+                  ch_printf_color( d->character, "&p( &wHINT&p ):  &P%s\r\n", get_hint( d->character->level ) );
+            }
+         }
+      }
+   }
    return;
 }

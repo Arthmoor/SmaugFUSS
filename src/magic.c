@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			     Spell handling module			    *
+ *                            Spell handling module                         *
  ****************************************************************************/
 
 #include <ctype.h>
@@ -23,12 +23,11 @@
 /*
  * Local functions.
  */
-void say_spell args( ( CHAR_DATA * ch, int sn ) );
-/*
-CHAR_DATA *make_poly_mob args( (CHAR_DATA *ch, int vnum) );
-*/
-ch_ret spell_affect args( ( int sn, int level, CHAR_DATA * ch, void *vo ) );
-ch_ret spell_affectchar args( ( int sn, int level, CHAR_DATA * ch, void *vo ) );
+static int bsearch_skill_prefix( const char *name, int first, int top );
+static int bsearch_skill_exact( const char *name, int first, int top );
+void say_spell( CHAR_DATA * ch, int sn );
+ch_ret spell_affect( int sn, int level, CHAR_DATA * ch, void *vo );
+ch_ret spell_affectchar( int sn, int level, CHAR_DATA * ch, void *vo );
 int dispel_casting( AFFECT_DATA * paf, CHAR_DATA * ch, CHAR_DATA * victim, int affect, bool dispel );
 bool can_charm( CHAR_DATA * ch );
 
@@ -64,6 +63,34 @@ int ch_slookup( CHAR_DATA * ch, const char *name )
 {
    int sn;
 
+   sn = skill_lookup( name );
+   // does this skill even exist?
+   if( sn == -1 )
+      return -1;
+
+   // Make sure that:
+   // (a) ch knows this skill
+   // and, (b) ch's level is high enough
+   if( IS_NPC(ch) )
+      return sn;
+   if( ch->pcdata->learned[sn] > 0
+       && ( ch->level >= skill_table[sn]->skill_level[ch->Class] || ch->level >= skill_table[sn]->race_level[ch->race] ) )
+   {
+      return sn;
+   }
+   else
+   {
+      // nope... ch doesn't have this skill.
+      return -1;
+   }
+
+   /*
+    * Doing the below is silly -- it means a linear lookup
+    * over the entire skill table. (why???)
+    * It is much more efficient to simply do the normal
+    * binary search, and *then* make sure that ch has it.
+    * -- dchaley 2007-06-22 + */
+#if 0
    if( IS_NPC( ch ) )
       return skill_lookup( name );
    for( sn = 0; sn < top_sn; sn++ )
@@ -75,8 +102,8 @@ int ch_slookup( CHAR_DATA * ch, const char *name )
           && LOWER( name[0] ) == LOWER( skill_table[sn]->name[0] ) && !str_prefix( name, skill_table[sn]->name ) )
          return sn;
    }
-
    return -1;
+#endif
 }
 
 /*
@@ -121,37 +148,48 @@ int personal_lookup( CHAR_DATA * ch, const char *name )
 
 /*
  * Lookup a skill by name.
+ *
+ * First tries to find an exact match. Then looks for a prefix match.
+ * Rehauled by dchaley 2007-06-22.
  */
 int skill_lookup( const char *name )
 {
    int sn;
 
-   if( ( sn = bsearch_skill_exact( name, gsn_first_spell, gsn_first_skill - 1 ) ) == -1 )
-      if( ( sn = bsearch_skill_exact( name, gsn_first_skill, gsn_first_weapon - 1 ) ) == -1 )
-         if( ( sn = bsearch_skill_exact( name, gsn_first_weapon, gsn_first_tongue - 1 ) ) == -1 )
-            if( ( sn = bsearch_skill_exact( name, gsn_first_tongue, gsn_top_sn - 1 ) ) == -1 )
-               if( ( sn = bsearch_skill_prefix( name, gsn_first_spell, gsn_first_skill - 1 ) ) == -1 )
-                  if( ( sn = bsearch_skill_prefix( name, gsn_first_skill, gsn_first_weapon - 1 ) ) == -1 )
-                     if( ( sn = bsearch_skill_prefix( name, gsn_first_weapon, gsn_first_tongue - 1 ) ) == -1 )
-                        if( ( sn = bsearch_skill_prefix( name, gsn_first_tongue, gsn_top_sn - 1 ) ) == -1
-                            && gsn_top_sn < top_sn )
-                        {
-                           for( sn = gsn_top_sn; sn < top_sn; sn++ )
-                           {
-                              if( !skill_table[sn] || !skill_table[sn]->name )
-                                 return -1;
-                              if( LOWER( name[0] ) == LOWER( skill_table[sn]->name[0] )
-                                  && !str_prefix( name, skill_table[sn]->name ) )
-                                 return sn;
-                           }
-                           return -1;
-                        }
+   // Try to find an exact match for this skill.
+   if( ( sn = bsearch_skill_exact( name, 0, num_sorted_skills - 1 ) ) == -1 )
+   {
+      // We failed to find an exact match;
+      // so try to find a prefix match.
+      if( ( sn = bsearch_skill_prefix( name, 0, num_sorted_skills - 1 ) ) == -1 )
+      {
+         // We failed to find the skill in the sorted skills. It is
+         // possible that the skill was added after the game booted;
+         // so try looking through the unsorted skills.
+         for( sn = num_sorted_skills; sn < num_skills; ++sn )
+         {
+            // have we reached the end of the skills?
+            if( !skill_table[sn] || !skill_table[sn]->name )
+            {
+               bug( "%s: WARNING: skill table entry %d had bad skill", __FUNCTION__, sn );
+               return -1;
+            }
+
+            // is this the one we want?
+            if( !str_prefix( name, skill_table[sn]->name ) )
+               return sn;
+         }
+         return -1;
+      }
+   }
    return sn;
 }
 
 /*
  * Return a skilltype pointer based on sn			-Thoric
  * Returns NULL if bad, unused or personal sn.
+ *
+ * This seems to be unaffected by resorting the skill table.
  */
 SKILLTYPE *get_skilltype( int sn )
 {
@@ -168,9 +206,15 @@ SKILLTYPE *get_skilltype( int sn )
  * Perform a binary search on a section of the skill table	-Thoric
  * Each different section of the skill table is sorted alphabetically
  *
- * Check for prefix matches
+ * Check for prefix matches.
+ *
+ * Made static by dchaley 2007-06-22. Nobody has any business calling the
+ * binary search directly; they should only use the skill_lookup or
+ * find_* functions. (A practical reason is that a bsearch call will
+ * prevent you from finding skills in the interval used for skills created
+ * after MUD boot.)
  */
-int bsearch_skill_prefix( const char *name, int first, int top )
+static int bsearch_skill_prefix( const char *name, int first, int top )
 {
    int sn;
 
@@ -194,15 +238,22 @@ int bsearch_skill_prefix( const char *name, int first, int top )
  * Perform a binary search on a section of the skill table	-Thoric
  * Each different section of the skill table is sorted alphabetically
  *
- * Check for exact matches only
+ * Check for exact matches only.
+ *
+ * Made static by dchaley 2007-06-22. Nobody has any business calling the
+ * binary search directly; they should only use the skill_lookup or
+ * find_* functions. (A practical reason is that a bsearch call will
+ * prevent you from finding skills in the interval used for skills created
+ * after MUD boot.)
  */
-int bsearch_skill_exact( const char *name, int first, int top )
+static int bsearch_skill_exact( const char *name, int first, int top )
 {
    int sn;
 
    for( ;; )
    {
       sn = ( first + top ) >> 1;
+
       if( !IS_VALID_SN( sn ) )
          return -1;
       if( !strcasecmp( name, skill_table[sn]->name ) )
@@ -217,101 +268,58 @@ int bsearch_skill_exact( const char *name, int first, int top )
 }
 
 /*
- * Perform a binary search on a section of the skill table	-Thoric
- * Each different section of the skill table is sorted alphabetically
+ * Look up a skill by name. If 'ch' is a PC and 'know' is true, make sure that
+ * ch actually knows the skill. If 'ch' is not specified, or if 'ch' is an NPC,
+ * or if 'know' is false, just look up the skill by name.
  *
- * Check exact match first, then a prefix match
+ * If the skill was found, further check to make sure that its type was of type
+ * 'expectedType'.
+ *
+ * On success, returns the skill number.
+ * On failure, returns -1.
+ *
+ *  -- dchaley 2007-06-22
  */
-int bsearch_skill( const char *name, int first, int top )
-{
-   int sn = bsearch_skill_exact( name, first, top );
-
-   return ( sn == -1 ) ? bsearch_skill_prefix( name, first, top ) : sn;
-}
-
-/*
- * Perform a binary search on a section of the skill table
- * Each different section of the skill table is sorted alphabetically
- * Only match skills player knows				-Thoric
- */
-int ch_bsearch_skill_prefix( CHAR_DATA * ch, const char *name, int first, int top )
+int find_skill_of_type( CHAR_DATA * ch, const char *name, bool know, int expectedType )
 {
    int sn;
 
-   for( ;; )
-   {
-      sn = ( first + top ) >> 1;
+   if( !ch || IS_NPC( ch ) || !know )
+      sn = skill_lookup( name );
+   else
+      sn = ch_slookup( ch, name );
 
-      if( LOWER( name[0] ) == LOWER( skill_table[sn]->name[0] )
-          && !str_prefix( name, skill_table[sn]->name )
-          && ch->pcdata->learned[sn] > 0 && ch->level >= skill_table[sn]->skill_level[ch->Class] )
-         return sn;
-      if( first >= top )
-         return -1;
-      if( strcmp( name, skill_table[sn]->name ) < 1 )
-         top = sn - 1;
-      else
-         first = sn + 1;
-   }
-}
+   // did we fail to find this skill?
+   if( sn == -1 )
+      return -1;
 
-int ch_bsearch_skill_exact( CHAR_DATA * ch, const char *name, int first, int top )
-{
-   int sn;
-
-   for( ;; )
-   {
-      sn = ( first + top ) >> 1;
-
-      if( !str_cmp( name, skill_table[sn]->name )
-          && ch->pcdata->learned[sn] > 0 && ch->level >= skill_table[sn]->skill_level[ch->Class] )
-         return sn;
-      if( first >= top )
-         return -1;
-      if( strcmp( name, skill_table[sn]->name ) < 1 )
-         top = sn - 1;
-      else
-         first = sn + 1;
-   }
-}
-
-int ch_bsearch_skill( CHAR_DATA * ch, const char *name, int first, int top )
-{
-   int sn = ch_bsearch_skill_exact( ch, name, first, top );
-
-   return ( sn == -1 ) ? ch_bsearch_skill_prefix( ch, name, first, top ) : sn;
+   // make sure that the found skill is of the expected type
+   return ( skill_table[sn]->type == expectedType ? sn : -1 );
 }
 
 int find_spell( CHAR_DATA * ch, const char *name, bool know )
 {
-   if( IS_NPC( ch ) || !know )
-      return bsearch_skill( name, gsn_first_spell, gsn_first_skill - 1 );
-   else
-      return ch_bsearch_skill( ch, name, gsn_first_spell, gsn_first_skill - 1 );
+   return find_skill_of_type( ch, name, know, SKILL_SPELL );
 }
 
 int find_skill( CHAR_DATA * ch, const char *name, bool know )
 {
-   if( IS_NPC( ch ) || !know )
-      return bsearch_skill( name, gsn_first_skill, gsn_first_weapon - 1 );
-   else
-      return ch_bsearch_skill( ch, name, gsn_first_skill, gsn_first_weapon - 1 );
+   return find_skill_of_type( ch, name, know, SKILL_SKILL );
+}
+
+int find_ability( CHAR_DATA * ch, const char *name, bool know )
+{
+   return find_skill_of_type( ch, name, know, SKILL_RACIAL );
 }
 
 int find_weapon( CHAR_DATA * ch, const char *name, bool know )
 {
-   if( IS_NPC( ch ) || !know )
-      return bsearch_skill( name, gsn_first_weapon, gsn_first_tongue - 1 );
-   else
-      return ch_bsearch_skill( ch, name, gsn_first_weapon, gsn_first_tongue - 1 );
+   return find_skill_of_type( ch, name, know, SKILL_WEAPON );
 }
 
 int find_tongue( CHAR_DATA * ch, const char *name, bool know )
 {
-   if( IS_NPC( ch ) || !know )
-      return bsearch_skill( name, gsn_first_tongue, gsn_top_sn - 1 );
-   else
-      return ch_bsearch_skill( ch, name, gsn_first_tongue, gsn_top_sn - 1 );
+   return find_skill_of_type( ch, name, know, SKILL_TONGUE );
 }
 
 /*
@@ -326,16 +334,15 @@ int slot_lookup( int slot )
    if( slot <= 0 )
       return -1;
 
-   for( sn = 0; sn < top_sn; sn++ )
+   for( sn = 0; sn < num_skills; ++sn )
       if( slot == skill_table[sn]->slot )
          return sn;
 
    if( fBootDb )
    {
-      bug( "Slot_lookup: bad slot %d.", slot );
+      bug( "%s: bad slot %d.", __FUNCTION__, slot );
       abort(  );
    }
-
    return -1;
 }
 
@@ -1382,7 +1389,7 @@ void do_cast( CHAR_DATA * ch, char *argument )
             return;
          }
 
-         if( IS_SET( ch->in_room->room_flags, ROOM_NO_MAGIC ) )
+         if( xIS_SET( ch->in_room->room_flags, ROOM_NO_MAGIC ) )
          {
             set_char_color( AT_MAGIC, ch );
             send_to_char( "You failed.\r\n", ch );
@@ -1860,14 +1867,14 @@ ch_ret obj_cast_spell( int sn, int level, CHAR_DATA * ch, CHAR_DATA * victim, OB
       return rERROR;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_NO_MAGIC ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_NO_MAGIC ) )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "Nothing seems to happen...\r\n", ch );
       return rNONE;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) && skill->target == TAR_CHAR_OFFENSIVE )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) && skill->target == TAR_CHAR_OFFENSIVE )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "Nothing seems to happen...\r\n", ch );
@@ -2081,15 +2088,14 @@ ch_ret spell_burning_hands( int sn, int level, CHAR_DATA * ch, void *vo )
    return damage( ch, victim, dam, sn );
 }
 
-
-
 ch_ret spell_call_lightning( int sn, int level, CHAR_DATA * ch, void *vo )
 {
+   ROOM_INDEX_DATA *where;
    CHAR_DATA *vch;
-   CHAR_DATA *vch_next;
+   TRV_WORLD *lc;
    int dam;
    bool ch_died;
-   ch_ret retcode = rNONE;
+   ch_ret retcode;
 
    if( !IS_OUTSIDE( ch ) )
    {
@@ -2103,19 +2109,21 @@ ch_ret spell_call_lightning( int sn, int level, CHAR_DATA * ch, void *vo )
       return rSPELL_FAILED;
    }
 
-   dam = dice( level / 2, 8 );
-
    set_char_color( AT_MAGIC, ch );
    send_to_char( "God's lightning strikes your foes!\r\n", ch );
    act( AT_MAGIC, "$n calls God's lightning to strike $s foes!", ch, NULL, NULL, TO_ROOM );
 
+   where = ch->in_room;
    ch_died = FALSE;
-   for( vch = first_char; vch; vch = vch_next )
+   retcode = rNONE;
+   dam = dice( level / 2, 8 );
+   lc = trworld_create( TR_CHAR_WORLD_FORW );
+   for( vch = first_char; vch; vch = trvch_wnext( lc ) )
    {
-      vch_next = vch->next;
       if( !vch->in_room )
          continue;
-      if( vch->in_room == ch->in_room )
+
+      if( vch->in_room == where )
       {
          if( !IS_NPC( vch ) && xIS_SET( vch->act, PLR_WIZINVIS ) && vch->pcdata->wizinvis >= LEVEL_IMMORTAL )
             continue;
@@ -2124,43 +2132,29 @@ ch_ret spell_call_lightning( int sn, int level, CHAR_DATA * ch, void *vo )
             retcode = damage( ch, vch, saves_spell_staff( level, vch ) ? dam / 2 : dam, sn );
          if( retcode == rCHAR_DIED || char_died( ch ) )
             ch_died = TRUE;
-         continue;
       }
-
-      if( !ch_died && vch->in_room->area == ch->in_room->area && IS_OUTSIDE( vch ) && IS_AWAKE( vch ) )
-      {
-         if( number_bits( 3 ) == 0 )
-            send_to_char_color( "&BLightning flashes in the sky.\r\n", vch );
-      }
+      else if( vch->in_room->area == where->area && IS_OUTSIDE( vch ) && IS_AWAKE( vch ) && number_bits( 2 ) == 0 )
+         send_to_char( "&BLightning flashes in the sky.\r\n", vch );
    }
 
-   if( ch_died )
-      return rCHAR_DIED;
-   else
-      return rNONE;
+   trworld_dispose( &lc );
+   return ch_died ? rCHAR_DIED : rNONE;
 }
-
-
 
 ch_ret spell_cause_light( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    return damage( ch, ( CHAR_DATA * ) vo, dice( 1, 8 ) + level / 3, sn );
 }
 
-
-
 ch_ret spell_cause_critical( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    return damage( ch, ( CHAR_DATA * ) vo, dice( 3, 8 ) + level - 6, sn );
 }
 
-
-
 ch_ret spell_cause_serious( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    return damage( ch, ( CHAR_DATA * ) vo, dice( 2, 8 ) + level / 2, sn );
 }
-
 
 ch_ret spell_change_sex( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -2188,10 +2182,7 @@ ch_ret spell_change_sex( int sn, int level, CHAR_DATA * ch, void *vo )
    while( af.modifier == 0 );
    xCLEAR_BITS( af.bitvector );
    affect_to_char( victim, &af );
-/*    set_char_color( AT_MAGIC, victim );
-    send_to_char( "You feel different.\r\n", victim );
-    if ( ch != victim )
-	send_to_char( "Ok.\r\n", ch );*/
+
    successful_casting( skill, ch, victim, NULL );
    return rNONE;
 }
@@ -2264,7 +2255,6 @@ ch_ret spell_charm_person( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 ch_ret spell_chill_touch( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *victim = ( CHAR_DATA * ) vo;
@@ -2300,8 +2290,6 @@ ch_ret spell_chill_touch( int sn, int level, CHAR_DATA * ch, void *vo )
 
    return damage( ch, victim, dam, sn );
 }
-
-
 
 ch_ret spell_colour_spray( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -2362,7 +2350,6 @@ ch_ret spell_control_weather( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 ch_ret spell_create_food( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *mushroom;
@@ -2374,7 +2361,6 @@ ch_ret spell_create_food( int sn, int level, CHAR_DATA * ch, void *vo )
    mushroom = obj_to_room( mushroom, ch->in_room );
    return rNONE;
 }
-
 
 ch_ret spell_create_water( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -2413,7 +2399,6 @@ ch_ret spell_create_water( int sn, int level, CHAR_DATA * ch, void *vo )
       }
       act( AT_MAGIC, "$p is filled.", ch, obj, NULL, TO_CHAR );
    }
-
    return rNONE;
 }
 
@@ -2517,7 +2502,6 @@ ch_ret spell_bethsaidean_touch( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 ch_ret spell_cure_poison( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *victim = ( CHAR_DATA * ) vo;
@@ -2591,7 +2575,6 @@ ch_ret spell_curse( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 ch_ret spell_detect_poison( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *obj = ( OBJ_DATA * ) vo;
@@ -2613,7 +2596,6 @@ ch_ret spell_detect_poison( int sn, int level, CHAR_DATA * ch, void *vo )
 
    return rNONE;
 }
-
 
 ch_ret spell_dispel_evil( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -2647,7 +2629,6 @@ ch_ret spell_dispel_evil( int sn, int level, CHAR_DATA * ch, void *vo )
       dam /= 2;
    return damage( ch, victim, dam, sn );
 }
-
 
 /*
  * New version of dispel magic fixes alot of bugs, and allows players
@@ -2877,30 +2858,31 @@ ch_ret spell_polymorph( int sn, int level, CHAR_DATA * ch, void *vo )
 
 ch_ret spell_earthquake( int sn, int level, CHAR_DATA * ch, void *vo )
 {
+   ROOM_INDEX_DATA *where;
    CHAR_DATA *vch;
-   CHAR_DATA *vch_next;
+   TRV_WORLD *lc;
    bool ch_died;
    ch_ret retcode;
-   SKILLTYPE *skill = get_skilltype( sn );
 
-   ch_died = FALSE;
-   retcode = rNONE;
-
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
-      failed_casting( skill, ch, NULL, NULL );
+      failed_casting( get_skilltype( sn ), ch, NULL, NULL );
       return rSPELL_FAILED;
    }
 
    act( AT_MAGIC, "The earth trembles beneath your feet!", ch, NULL, NULL, TO_CHAR );
    act( AT_MAGIC, "$n makes the earth tremble and shiver.", ch, NULL, NULL, TO_ROOM );
 
-   for( vch = first_char; vch; vch = vch_next )
+   ch_died = FALSE;
+   retcode = rNONE;
+   where = ch->in_room;
+   lc = trworld_create( TR_CHAR_WORLD_FORW );
+   for( vch = first_char; vch; vch = trvch_wnext( lc ) )
    {
-      vch_next = vch->next;
       if( !vch->in_room )
          continue;
-      if( vch->in_room == ch->in_room )
+
+      if( vch->in_room == where )
       {
          if( !IS_NPC( vch ) && xIS_SET( vch->act, PLR_WIZINVIS ) && vch->pcdata->wizinvis >= LEVEL_IMMORTAL )
             continue;
@@ -2911,32 +2893,21 @@ ch_ret spell_earthquake( int sn, int level, CHAR_DATA * ch, void *vo )
          if( retcode == rCHAR_DIED || char_died( ch ) )
          {
             ch_died = TRUE;
-            continue;
          }
-         if( char_died( vch ) )
-            continue;
       }
-
-      if( !ch_died && vch->in_room->area == ch->in_room->area )
-      {
-         if( number_bits( 3 ) == 0 )
-            send_to_char_color( "&BThe earth trembles and shivers.\r\n", vch );
-      }
+      else if( vch->in_room->area == where->area && number_bits( 2 ) == 0 )
+         send_to_char( "&BThe earth trembles and shivers.\r\n", vch );
    }
-
-   if( ch_died )
-      return rCHAR_DIED;
-   else
-      return rNONE;
+   trworld_dispose( &lc );
+   return ch_died ? rCHAR_DIED : rNONE;
 }
-
 
 ch_ret spell_enchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *obj = ( OBJ_DATA * ) vo;
    AFFECT_DATA *paf;
 
-   if( obj->item_type != ITEM_WEAPON || IS_OBJ_STAT( obj, ITEM_MAGIC ) || obj->first_affect )
+   if( obj->item_type != ITEM_WEAPON || IS_OBJ_STAT( obj, ITEM_MAGIC ) || IS_OBJ_STAT( obj, ITEM_ENCHANTED ) || obj->first_affect )
    {
       act( AT_MAGIC, "Your magic twists and winds around $p but cannot take hold.", ch, obj, NULL, TO_CHAR );
       act( AT_MAGIC, "$n's magic twists and winds around $p but cannot take hold.", ch, obj, NULL, TO_NOTVICT );
@@ -2963,6 +2934,8 @@ ch_ret spell_enchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
    xCLEAR_BITS( paf->bitvector );
    LINK( paf, obj->first_affect, obj->last_affect, next, prev );
 
+   xSET_BIT( obj->extra_flags, ITEM_ENCHANTED );
+
    if( IS_GOOD( ch ) )
    {
       xSET_BIT( obj->extra_flags, ITEM_ANTI_EVIL );
@@ -2988,7 +2961,7 @@ ch_ret spell_enchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
 ch_ret spell_disenchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *obj = ( OBJ_DATA * ) vo;
-   AFFECT_DATA *paf;
+   AFFECT_DATA *paf, *paf_next;
 
    if( obj->item_type != ITEM_WEAPON )
    {
@@ -2996,50 +2969,42 @@ ch_ret spell_disenchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
       return rSPELL_FAILED;
    }
 
-   if( !IS_OBJ_STAT( obj, ITEM_MAGIC ) || !obj->first_affect )
+   if( !IS_OBJ_STAT( obj, ITEM_ENCHANTED ) || !obj->first_affect )
    {
       send_to_char( "This weapon appears to have no enchantments on it.", ch );
-      return rSPELL_FAILED;
-   }
-
-   if( xIS_SET( obj->pIndexData->extra_flags, ITEM_MAGIC ) )
-   {
-      send_to_char( "You can't disenchant a weapon that's inherently magical.", ch );
-      return rSPELL_FAILED;
-   }
-
-   if( xIS_SET( obj->pIndexData->extra_flags, ITEM_ANTI_GOOD ) || xIS_SET( obj->pIndexData->extra_flags, ITEM_ANTI_EVIL ) )
-   {
-      send_to_char( "You can't disenchant a weapon that's inherently good or evil.", ch );
       return rSPELL_FAILED;
    }
 
    separate_obj( obj );
    for( paf = obj->first_affect; paf; paf = paf->next )
    {
+      paf_next = paf->next;
       if( paf->location == APPLY_HITROLL || paf->location == APPLY_DAMROLL )
       {
          UNLINK( paf, obj->first_affect, obj->last_affect, next, prev );
+         DISPOSE( paf );
       }
    }
 
-   if( IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) )
+   if( IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) && IS_OBJ_STAT( obj, ITEM_ANTI_EVIL ) )
    {
       xREMOVE_BIT( obj->extra_flags, ITEM_ANTI_EVIL );
-      act( AT_BLUE, "$p momentarily absorbs all blue light around it.", ch, obj, NULL, TO_CHAR );
+      xREMOVE_BIT( obj->extra_flags, ITEM_ANTI_GOOD );
+      act( AT_YELLOW, "$p momentarily absorbs all disquieting light around it.", ch, obj, NULL, TO_CHAR );  
    }
-   if( IS_OBJ_STAT( obj, ITEM_ANTI_EVIL ) )
+   if( IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) )
    {
       xREMOVE_BIT( obj->extra_flags, ITEM_ANTI_GOOD );
       act( AT_RED, "$p momentarily absorbs all red light around it.", ch, obj, NULL, TO_CHAR );
    }
-
-/*    send_to_char( "Ok.\r\n", ch );*/
+   if( IS_OBJ_STAT( obj, ITEM_ANTI_EVIL ) )
+   {
+      xREMOVE_BIT( obj->extra_flags, ITEM_ANTI_EVIL );
+      act( AT_BLUE, "$p momentarily absorbs all blue light around it.", ch, obj, NULL, TO_CHAR );
+   }
    successful_casting( get_skilltype( sn ), ch, NULL, obj );
    return rNONE;
 }
-
-
 
 /*
  * Drain XP, MANA, HP.
@@ -3210,7 +3175,6 @@ ch_ret spell_harm( int sn, int level, CHAR_DATA * ch, void *vo )
    return damage( ch, victim, dam, sn );
 }
 
-
 ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
 {
 /* Modified by Scryn to work on mobs/players/objs */
@@ -3233,7 +3197,6 @@ ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
    {
       set_char_color( AT_LBLUE, ch );
       ch_printf( ch, "\r\nObject '%s' is %s",
-/*		obj->name,*/
                  obj->short_descr, aoran( item_type_name( obj ) ) );
       if( obj->item_type != ITEM_LIGHT && obj->wear_flags - 1 > 0 )
          ch_printf( ch, ", with wear location:  %s\r\n", flag_string( obj->wear_flags, w_flags ) );
@@ -3242,10 +3205,9 @@ ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
       ch_printf( ch,
                  "Special properties:  %s\r\nIts weight is %d, value is %d, and level is %d.\r\n",
                  extra_bit_name( &obj->extra_flags ),
-                 /*
-                  * magic_bit_name( obj->magic_flags ), -- unused for now 
-                  */
                  obj->weight, obj->cost, obj->level );
+      if( IS_OBJ_STAT( obj, ITEM_PERSONAL ) && obj->owner[0] != '\0' )
+         ch_printf( ch, "&cOwner: &Y%s\r\n", obj->owner );
       set_char_color( AT_MAGIC, ch );
 
       switch ( obj->item_type )
@@ -3364,14 +3326,6 @@ ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
       ch_printf( ch, "%s appears to be between level %d and %d.\r\n",
                  name, victim->level - ( victim->level % 5 ), victim->level - ( victim->level % 5 ) + 5 );
 
-/* DELETE LATER -- SHADDAI 
-    if ( IS_NPC(victim) && xIS_SET(victim->act, ACT_POLYMORPHED) )
-	ch_printf(ch,"%s appears to truly be %s.\r\n",
-	name, 
-	((ch->level > victim->level + 10) 
-	 && victim->desc && victim->desc->original)
-	? victim->desc->original->name : "someone else");
-*/
       if( IS_NPC( victim ) && victim->morph )
          ch_printf( ch, "%s appears to truly be %s.\r\n",
                     name, ( ch->level > victim->level + 10 ) ? victim->name : "someone else" );
@@ -3421,8 +3375,6 @@ ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
    }
    return rNONE;
 }
-
-
 
 ch_ret spell_invis( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -3878,7 +3830,7 @@ ch_ret spell_sleep( int sn, int level, CHAR_DATA * ch, void *vo )
    if( IS_AFFECTED( victim, AFF_SLEEP )
        || ( schance = ris_save( victim, tmp, RIS_SLEEP ) ) == 1000
        || level < victim->level
-       || ( victim != ch && IS_SET( victim->in_room->room_flags, ROOM_SAFE ) ) || saves_spell_staff( schance, victim ) )
+       || ( victim != ch && xIS_SET( victim->in_room->room_flags, ROOM_SAFE ) ) || saves_spell_staff( schance, victim ) )
    {
       failed_casting( skill, ch, victim, NULL );
       if( ch == victim )
@@ -3931,12 +3883,12 @@ ch_ret spell_summon( int sn, int level, CHAR_DATA * ch, void *vo )
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
        || !victim->in_room
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_SAFE )
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_SUMMON )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SAFE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_SUMMON )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 3
        || victim->fighting
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
@@ -4028,7 +3980,7 @@ ch_ret spell_teleport( int sn, int level, CHAR_DATA * ch, void *vo )
    SKILLTYPE *skill = get_skilltype( sn );
 
    if( !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
        || ( !IS_NPC( ch ) && victim->fighting )
        || ( victim != ch && ( saves_spell_staff( level, victim ) || saves_wands( level, victim ) ) ) )
    {
@@ -4040,12 +3992,12 @@ ch_ret spell_teleport( int sn, int level, CHAR_DATA * ch, void *vo )
    {
       pRoomIndex = get_room_index( number_range( 0, MAX_VNUM ) );
       if( pRoomIndex )
-         if( !IS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL )
+         if( !xIS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL )
              && !IS_SET( pRoomIndex->area->flags, AFLAG_NOTELEPORT )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_NO_RECALL ) && in_hard_range( ch, pRoomIndex->area ) )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_NO_RECALL ) && in_hard_range( ch, pRoomIndex->area ) )
             break;
    }
 
@@ -4318,28 +4270,23 @@ ch_ret spell_frost_breath( int sn, int level, CHAR_DATA * ch, void *vo )
    return damage( ch, victim, dam, sn );
 }
 
-
-
 ch_ret spell_gas_breath( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *vch;
-   CHAR_DATA *vch_next;
-   int dam;
-   int hpch;
-   bool ch_died;
+   TRV_DATA *loop_ctrl;
+   int dam, hpch;
+   bool ch_died = FALSE;
 
-   ch_died = FALSE;
-
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "You fail to breathe.\r\n", ch );
       return rNONE;
    }
 
-   for( vch = ch->in_room->first_person; vch; vch = vch_next )
+   loop_ctrl = trvch_create( ch, TR_CHAR_ROOM_FORW );
+   for( vch = ch->in_room->first_person; vch; vch = trvch_next( loop_ctrl ) )
    {
-      vch_next = vch->next_in_room;
       if( !IS_NPC( vch ) && xIS_SET( vch->act, PLR_WIZINVIS ) && vch->pcdata->wizinvis >= LEVEL_IMMORTAL )
          continue;
 
@@ -4353,13 +4300,9 @@ ch_ret spell_gas_breath( int sn, int level, CHAR_DATA * ch, void *vo )
             ch_died = TRUE;
       }
    }
-   if( ch_died )
-      return rCHAR_DIED;
-   else
-      return rNONE;
+   trv_dispose( &loop_ctrl );
+   return ch_died ? rCHAR_DIED : rNONE;
 }
-
-
 
 ch_ret spell_lightning_breath( int sn, int level, CHAR_DATA * ch, void *vo )
 {
@@ -4387,7 +4330,6 @@ ch_ret spell_notfound( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 /*
  *   Haus' Spell Additions
  *
@@ -4414,12 +4356,12 @@ ch_ret spell_transport( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
        || ( IS_NPC( victim ) && saves_spell_staff( level, victim ) ) )
@@ -4427,7 +4369,6 @@ ch_ret spell_transport( int sn, int level, CHAR_DATA * ch, void *vo )
       failed_casting( skill, ch, victim, NULL );
       return rSPELL_FAILED;
    }
-
 
    if( victim->in_room == ch->in_room )
    {
@@ -4468,7 +4409,6 @@ ch_ret spell_transport( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-
 /*
  * Syntax portal (mob/char) 
  * opens a 2-way EX_PORTAL from caster's room to room inhabited by  
@@ -4493,14 +4433,14 @@ ch_ret spell_portal( int sn, int level, CHAR_DATA * ch, void *vo )
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_ASTRAL )
        || victim->level >= level + 15
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
        || ( IS_NPC( victim ) && saves_spell_staff( level, victim ) )
@@ -4515,7 +4455,6 @@ ch_ret spell_portal( int sn, int level, CHAR_DATA * ch, void *vo )
       send_to_char( "They are right beside you!", ch );
       return rSPELL_FAILED;
    }
-
 
    targetRoomVnum = victim->in_room->vnum;
    fromRoom = ch->in_room;
@@ -4592,12 +4531,7 @@ ch_ret spell_portal( int sn, int level, CHAR_DATA * ch, void *vo )
    STRFREE( portalObj->short_descr );
    portalObj->short_descr = STRALLOC( buf );
    portalObj = obj_to_room( portalObj, targetRoom );
-/*
-    snprintf( buf, MAX_STRING_LENGTH, "%s has made a portal from room %d to room %d.", 
-             ch->name, fromRoom->vnum, targetRoomVnum );
-    log_string_plus( buf, LOG_NORMAL, ch->level );
-    to_channel( buf, CHANNEL_MONITOR, "Monitor", UMAX( LEVEL_IMMORTAL, ch->level)  );
-*/
+
    return rNONE;
 }
 
@@ -4618,12 +4552,12 @@ ch_ret spell_farsight( int sn, int level, CHAR_DATA * ch, void *vo )
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
        || ( IS_NPC( victim ) && saves_spell_staff( level, victim ) )
@@ -4719,16 +4653,16 @@ ch_ret spell_plant_pass( int sn, int level, CHAR_DATA * ch, void *vo )
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
        || ( victim->in_room->sector_type != SECT_FOREST
             && victim->in_room->sector_type != SECT_FIELD )
        || ( ch->in_room->sector_type != SECT_FOREST
             && ch->in_room->sector_type != SECT_FIELD )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( CAN_PKILL( victim ) && !IS_NPC( ch ) && !IS_PKILL( ch ) )
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
@@ -4779,12 +4713,12 @@ ch_ret spell_mist_walk( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( ( time_info.hour < 21 && time_info.hour > 5 && !allowday )
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( CAN_PKILL( victim ) && !IS_NPC( ch ) && !IS_PKILL( ch ) )
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
@@ -4827,12 +4761,12 @@ ch_ret spell_solar_flight( int sn, int level, CHAR_DATA * ch, void *vo )
        || !IS_OUTSIDE( ch )
        || !IS_OUTSIDE( victim )
        || weath->precip >= 0
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( CAN_PKILL( victim ) && !IS_NPC( ch ) && !IS_PKILL( ch ) )
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
@@ -4933,7 +4867,6 @@ ch_ret spell_remove_invis( int sn, int level, CHAR_DATA * ch, void *vo )
          affect_strip( victim, gsn_invis );
          affect_strip( victim, gsn_mass_invis );
          xREMOVE_BIT( victim->affected_by, AFF_INVISIBLE );
-/*	    send_to_char( "Ok.\r\n", ch );*/
          successful_casting( skill, ch, victim, NULL );
          return rNONE;
       }
@@ -5037,7 +4970,6 @@ ch_ret spell_animate_dead( int sn, int level, CHAR_DATA * ch, void *vo )
          mob->max_hit = dice( pMobIndex->hitnodice, pMobIndex->hitsizedice ) + pMobIndex->hitplus;
       mob->max_hit = UMAX( URANGE( mob->max_hit / 4,
                                    ( mob->max_hit * corpse->value[3] ) / 100, ch->level * dice( 20, 10 ) ), 1 );
-
 
       mob->hit = mob->max_hit;
       mob->damroll = ch->level / 8;
@@ -5211,10 +5143,8 @@ ch_ret spell_dream( int sn, int level, CHAR_DATA * ch, void *vo )
    set_char_color( AT_TELL, victim );
    ch_printf( victim, "You have dreams about %s telling you '%s'.\r\n", PERS( ch, victim ), target_name );
    successful_casting( get_skilltype( sn ), ch, victim, NULL );
-/*  send_to_char("Ok.\r\n", ch);*/
    return rNONE;
 }
-
 
 /* Added spells spiral_blast, scorching surge,
     nostrum, and astral   by SB for Augurer class 
@@ -5222,30 +5152,29 @@ ch_ret spell_dream( int sn, int level, CHAR_DATA * ch, void *vo )
 ch_ret spell_spiral_blast( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *vch;
-   CHAR_DATA *vch_next;
-   int dam;
-   int hpch;
+   TRV_DATA *lc;
+   int dam, hpch;
    bool ch_died;
 
    ch_died = FALSE;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "You fail to breathe.\r\n", ch );
       return rNONE;
    }
 
-   for( vch = ch->in_room->first_person; vch; vch = vch_next )
+   lc = trvch_create( ch, TR_CHAR_ROOM_FORW );
+   for( vch = ch->in_room->first_person; vch; vch = trvch_next( lc ) )
    {
-      vch_next = vch->next_in_room;
       if( !IS_NPC( vch ) && xIS_SET( vch->act, PLR_WIZINVIS ) && vch->pcdata->wizinvis >= LEVEL_IMMORTAL )
          continue;
 
       if( IS_NPC( ch ) ? !IS_NPC( vch ) : IS_NPC( vch ) )
       {
-         act( AT_MAGIC, "Swirling colours radiate from $n" ", encompassing $N.", ch, ch, vch, TO_ROOM );
-         act( AT_MAGIC, "Swirling colours radiate from you," " encompassing $N", ch, ch, vch, TO_CHAR );
+         act( AT_MAGIC, "Swirling colours radiate from $n, encompassing $N.", ch, ch, vch, TO_ROOM );
+         act( AT_MAGIC, "Swirling colours radiate from you, encompassing $N", ch, ch, vch, TO_CHAR );
 
          hpch = UMAX( 10, ch->hit );
          dam = number_range( hpch / 14 + 1, hpch / 7 );
@@ -5255,11 +5184,8 @@ ch_ret spell_spiral_blast( int sn, int level, CHAR_DATA * ch, void *vo )
             ch_died = TRUE;
       }
    }
-
-   if( ch_died )
-      return rCHAR_DIED;
-   else
-      return rNONE;
+   trv_dispose( &lc );
+   return ch_died ? rCHAR_DIED : rNONE;
 }
 
 ch_ret spell_scorching_surge( int sn, int level, CHAR_DATA * ch, void *vo )
@@ -5287,7 +5213,6 @@ ch_ret spell_scorching_surge( int sn, int level, CHAR_DATA * ch, void *vo )
    return damage( ch, victim, ( int )( dam * 1.4 ), sn );
 }
 
-
 ch_ret spell_helical_flow( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *victim;
@@ -5296,12 +5221,12 @@ ch_ret spell_helical_flow( int sn, int level, CHAR_DATA * ch, void *vo )
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= level + 15
        || ( CAN_PKILL( victim ) && !IS_NPC( ch ) && !IS_PKILL( ch ) )
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
@@ -5320,7 +5245,6 @@ ch_ret spell_helical_flow( int sn, int level, CHAR_DATA * ch, void *vo )
    do_look( ch, "auto" );
    return rNONE;
 }
-
 
    /*******************************************************
 	 * Everything after this point is part of SMAUG SPELLS *
@@ -5439,7 +5363,7 @@ ch_ret spell_area_attack( int sn, int level, CHAR_DATA * ch, void *vo )
    bool ch_died = FALSE;
    ch_ret retcode = rNONE;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       failed_casting( skill, ch, NULL, NULL );
       return rSPELL_FAILED;
@@ -6170,7 +6094,7 @@ ch_ret spell_smaug( int sn, int level, CHAR_DATA * ch, void *vo )
           */
          if( SPELL_FLAG( skill, SF_DISTANT )
              && ( victim = get_char_world( ch, target_name ) )
-             && !IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL ) && SPELL_FLAG( skill, SF_CHARACTER ) )
+             && !xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL ) && SPELL_FLAG( skill, SF_CHARACTER ) )
             return spell_affect( sn, level, ch, get_char_world( ch, target_name ) );
 
          /*

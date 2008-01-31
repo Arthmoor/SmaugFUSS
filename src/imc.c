@@ -87,6 +87,7 @@ int imcwait;   /* Reconnect timer */
 int imcconnect_attempts;   /* How many times have we tried to reconnect? */
 unsigned long imc_sequencenumber;   /* sequence# for outgoing packets */
 bool imcpacketdebug = FALSE;
+bool default_packets_registered = FALSE; // Cheesy global for a stupid problem!
 time_t imcucache_clock; /* prune ucache stuff regularly */
 time_t imc_time;  /* Current clock time for the client */
 
@@ -528,7 +529,7 @@ char *imccapitalize( const char *str )
 }
 
 /* Does the list have the member in it? */
-bool imc_hasname( char *list, char *member )
+bool imc_hasname( const char *list, const char *member )
 {
    if( !list || list[0] == '\0' )
       return FALSE;
@@ -540,7 +541,7 @@ bool imc_hasname( char *list, char *member )
 }
 
 /* Add a new member to the list, provided it's not already there */
-void imc_addname( char **list, char *member )
+void imc_addname( char **list, const char *member )
 {
    char newlist[LGST];
 
@@ -558,7 +559,7 @@ void imc_addname( char **list, char *member )
 }
 
 /* Remove a member from a list, provided it's there. */
-void imc_removename( char **list, char *member )
+void imc_removename( char **list, const char *member )
 {
    char newlist[LGST];
 
@@ -572,7 +573,7 @@ void imc_removename( char **list, char *member )
    return;
 }
 
-char *imc_nameof( char *src )
+char *imc_nameof( const char *src )
 {
    static char name[SMST];
    size_t x;
@@ -588,7 +589,7 @@ char *imc_nameof( char *src )
    return name;
 }
 
-char *imc_mudof( char *src )
+char *imc_mudof( const char *src )
 {
    static char mud[SMST];
    char *person;
@@ -600,7 +601,7 @@ char *imc_mudof( char *src )
    return mud;
 }
 
-char *imc_channel_mudof( char *src )
+char *imc_channel_mudof( const char *src )
 {
    static char mud[SMST];
    size_t x;
@@ -617,7 +618,7 @@ char *imc_channel_mudof( char *src )
    return mud;
 }
 
-char *imc_channel_nameof( char *src )
+char *imc_channel_nameof( const char *src )
 {
    static char name[SMST];
    size_t x, y = 0;
@@ -639,7 +640,7 @@ char *imc_channel_nameof( char *src )
    return name;
 }
 
-char *imc_makename( char *person, char *mud )
+char *imc_makename( const char *person, const char *mud )
 {
    static char name[SMST];
 
@@ -701,7 +702,7 @@ char *escape_string( const char *src )
 /*
  * Returns a CHAR_DATA class which matches the string
  */
-CHAR_DATA *imc_find_user( char *name )
+CHAR_DATA *imc_find_user( const char *name )
 {
    DESCRIPTOR_DATA *d;
    CHAR_DATA *vch = NULL;
@@ -715,7 +716,7 @@ CHAR_DATA *imc_find_user( char *name )
    return NULL;
 }
 
-char *imcgetname( char *from )
+char *imcgetname( const char *from )
 {
    static char buf[SMST];
    char *mud, *name;
@@ -732,7 +733,7 @@ char *imcgetname( char *from )
 }
 
 /* check if a packet from a given source should be ignored */
-bool imc_isbanned( char *who )
+bool imc_isbanned( const char *who )
 {
    IMC_BAN *mud;
 
@@ -799,7 +800,7 @@ void imc_delete_reminfo( REMOTEINFO * p )
 }
 
 /* create a new info entry, insert into list */
-void imc_new_reminfo( char *mud, char *version, char *netname, char *url, char *path )
+void imc_new_reminfo( const char *mud, const char *version, const char *netname, const char *url, const char *path )
 {
    REMOTEINFO *p, *mud_prev;
 
@@ -842,7 +843,7 @@ void imc_new_reminfo( char *mud, char *version, char *netname, char *url, char *
 }
 
 /* find an info entry for "name" */
-REMOTEINFO *imc_find_reminfo( char *name )
+REMOTEINFO *imc_find_reminfo( const char *name )
 {
    REMOTEINFO *p;
 
@@ -854,7 +855,7 @@ REMOTEINFO *imc_find_reminfo( char *name )
    return NULL;
 }
 
-bool check_mud( CHAR_DATA * ch, char *mud )
+bool check_mud( CHAR_DATA * ch, const char *mud )
 {
    REMOTEINFO *r = imc_find_reminfo( mud );
 
@@ -872,7 +873,7 @@ bool check_mud( CHAR_DATA * ch, char *mud )
    return TRUE;
 }
 
-bool check_mudof( CHAR_DATA * ch, char *mud )
+bool check_mudof( CHAR_DATA * ch, const char *mud )
 {
    return check_mud( ch, imc_mudof( mud ) );
 }
@@ -925,7 +926,7 @@ IMC_BAN *imc_newban( void )
    return ban;
 }
 
-void imc_addban( char *what )
+void imc_addban( const char *what )
 {
    IMC_BAN *ban;
 
@@ -956,7 +957,7 @@ bool imc_delban( const char *what )
    return FALSE;
 }
 
-IMC_CHANNEL *imc_findchannel( char *name )
+IMC_CHANNEL *imc_findchannel( const char *name )
 {
    IMC_CHANNEL *c;
 
@@ -1055,7 +1056,8 @@ void imcformat_channel( CHAR_DATA * ch, IMC_CHANNEL * d, int format, bool all )
    return;
 }
 
-void imc_new_channel( char *chan, char *owner, char *ops, char *invite, char *exclude, bool copen, int perm, char *lname )
+void imc_new_channel( const char *chan, const char *owner, const char *ops, const char *invite, const char *exclude,
+                      bool copen, int perm, const char *lname )
 {
    IMC_CHANNEL *c;
 
@@ -1326,7 +1328,7 @@ char imcfread_letter( FILE * fp )
  * Packet handling and routing functions. *
  ******************************************/
 
-void imc_register_packet_handler( char *name, PACKET_FUN * func )
+void imc_register_packet_handler( const char *name, PACKET_FUN * func )
 {
    IMC_PHANDLER *ph;
 
@@ -1608,7 +1610,7 @@ void imc_update_tellhistory( CHAR_DATA * ch, const char *msg )
    return;
 }
 
-void imc_send_tell( char *from, char *to, char *txt, int reply )
+void imc_send_tell( const char *from, const char *to, const char *txt, int reply )
 {
    IMC_PACKET *p;
 
@@ -3002,7 +3004,7 @@ void imc_register_default_packets( void )
    /*
     * Once registered, these are not cleared unless the mud is shut down 
     */
-   if( first_phandler )
+   if( default_packets_registered )
       return;
 
    imc_register_packet_handler( "keepalive-request", imc_send_keepalive );
@@ -3025,6 +3027,8 @@ void imc_register_default_packets( void )
    imc_register_packet_handler( "ice-chan-whoreply", imc_recv_chanwhoreply );
    imc_register_packet_handler( "channel-notify", imc_recv_channelnotify );
    imc_register_packet_handler( "close-notify", imc_recv_closenotify );
+
+   default_packets_registered = TRUE;
 }
 
 PACKET_FUN *pfun_lookup( const char *type )

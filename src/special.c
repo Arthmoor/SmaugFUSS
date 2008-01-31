@@ -25,6 +25,8 @@
 #endif
 #include "mud.h"
 
+void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit );
+
 /*
  * The following special functions are available for mobiles.
  */
@@ -45,6 +47,7 @@ DECLARE_SPEC_FUN( spec_janitor );
 DECLARE_SPEC_FUN( spec_mayor );
 DECLARE_SPEC_FUN( spec_poison );
 DECLARE_SPEC_FUN( spec_thief );
+DECLARE_SPEC_FUN( spec_wanderer );
 
 SPEC_LIST *first_specfun;
 SPEC_LIST *last_specfun;
@@ -153,7 +156,7 @@ void summon_if_hating( CHAR_DATA * ch )
    if( ch->position <= POS_SLEEPING )
       return;
 
-   if( ch->fighting || ch->fearing || !ch->hating || IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( ch->fighting || ch->fearing || !ch->hating || xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
       return;
 
    /*
@@ -188,9 +191,6 @@ void summon_if_hating( CHAR_DATA * ch )
    return;
 }
 
-
-
-
 /*
  * Core procedure for dragons.
  */
@@ -220,8 +220,6 @@ bool dragon( CHAR_DATA * ch, char *fspell_name )
    ( *skill_table[sn]->spell_fun ) ( sn, ch->level, ch, victim );
    return TRUE;
 }
-
-
 
 /*
  * Special procedures for mobiles.
@@ -646,7 +644,7 @@ bool spec_executioner( CHAR_DATA * ch )
    if( !victim )
       return FALSE;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  As well as a COWARD!", victim->name, crime );
       do_yell( ch, buf );
@@ -749,7 +747,7 @@ bool spec_guard( CHAR_DATA * ch )
       }
    }
 
-   if( victim && IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( victim && xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  As well as a COWARD!", victim->name, crime );
       do_yell( ch, buf );
@@ -917,8 +915,6 @@ bool spec_poison( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_thief( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
@@ -955,6 +951,149 @@ bool spec_thief( CHAR_DATA * ch )
          return TRUE;
       }
    }
+   return FALSE;
+}
 
+/*****
+ * A wanderer (nomad) that arm's itself and discards what it doesnt.. Kinda fun
+ * to watch. I wrote this for an area that repops alot of armor on the ground
+ * Adds a little spice to the area. Basically a modified janitor. Started off as
+ * an easy project. Thanks to Mark Zagorski <mwz0615@ksu.edu> for pointing out I 
+ * had a reduntancy if I had two mobs that in rooms that only led to each other
+ * they would throw the piece of armor back and forth. He also suggested 
+ * damaging the armor when thrown. 
+ *****/
+bool spec_wanderer( CHAR_DATA * ch )
+{
+   OBJ_DATA *trash;
+   OBJ_DATA *trash_next;
+   OBJ_DATA *obj2;
+   ROOM_INDEX_DATA *was_in_room;
+   EXIT_DATA *pexit = NULL;
+   CHAR_DATA *vch;
+   int door;
+   int schance = 50;
+   bool found = FALSE;  /* Valid direction */
+   bool thrown = FALSE; /* Whether to be thrown or not */
+   bool noexit = TRUE;  /* Assume there is no valid exits */
+
+   was_in_room = ch->in_room;
+   if( !IS_AWAKE( ch ) )
+      return FALSE;
+
+   if( ( pexit = ch->in_room->first_exit ) != NULL )
+      noexit = FALSE;
+
+   if( schance > number_percent(  ) )
+   {
+      /****
+       * Look for objects on the ground and pick it up
+       ****/
+      for( trash = ch->in_room->first_content; trash; trash = trash_next )
+      {
+         trash_next = trash->next_content;
+         if( !IS_SET( trash->wear_flags, ITEM_TAKE ) || IS_OBJ_STAT( trash, ITEM_BURIED ) )
+            continue;
+
+         if( trash->item_type == ITEM_WEAPON || trash->item_type == ITEM_ARMOR || trash->item_type == ITEM_LIGHT )
+         {
+            separate_obj( trash );  /* So there is no 'sword <6>' gets only one object off ground */
+            act( AT_ACTION, "$n leans over and gets $p.", ch, trash, NULL, TO_ROOM );
+            obj_from_room( trash );
+            trash = obj_to_char( trash, ch );
+
+            /*****
+             * If object is too high a level throw it away.
+             *****/
+            if( ch->level < trash->level )
+            {
+               act( AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, trash, NULL, TO_ROOM );
+               thrown = TRUE;
+            }
+
+            /*****
+             * Wear the object if it is not to be thrown. The FALSE is passed
+             * so that the mob wont remove a piece of armor already there
+             * if it is not worn it is assumed that they can't use it or 
+             * they already are wearing something.
+             *****/
+
+            if( !thrown )
+               wear_obj( ch, trash, FALSE, -1 );
+
+            /*****
+             * Look for an object in the inventory that is not being worn
+             * then throw it away...
+             *****/
+            found = FALSE;
+            if( !thrown )
+            {
+               for( obj2 = ch->first_carrying; obj2; obj2 = obj2->next_content )
+               {
+                  if( obj2->wear_loc == WEAR_NONE )
+                  {
+                     do_say( ch, "Hmm, I can't use this." );
+                     trash = obj2;
+                     thrown = TRUE;
+                  }
+               }
+            }
+
+            /*****
+             * Ugly bit of code..
+             * Checks if the object is to be thrown & there is a valid exit, 
+             * randomly pick a direction to throw it, and check to make sure no other
+             * spec_wanderer mobs are in that room.
+             *****/
+            if( thrown && !noexit )
+            {
+               while( !found && !noexit )
+               {
+                  door = number_door(  );
+                  if( ( pexit = get_exit( ch->in_room, door ) ) != NULL
+                      && pexit->to_room
+                      && !IS_SET( pexit->exit_info, EX_CLOSED ) && !xIS_SET( pexit->to_room->room_flags, ROOM_NODROP ) )
+                  {
+                     if( ( vch = pexit->to_room->first_person ) != NULL )
+                        for( vch = pexit->to_room->first_person; vch; vch = vch->next_in_room )
+                        {
+                           if( !str_cmp( vch->spec_funname, "spec_wanderer" ) )
+                           {
+                              noexit = TRUE;
+                              return FALSE;
+                           }
+                        }
+                     found = TRUE;
+                  }
+               }
+            }
+
+            if( !noexit && thrown )
+            {
+               set_cur_obj( trash );
+               if( damage_obj( trash ) != rOBJ_SCRAPPED )
+               {
+                  separate_obj( trash );
+                  act( AT_ACTION, "$n growls and throws $p $T.", ch, trash, dir_name[pexit->vdir], TO_ROOM );
+                  obj_from_char( trash );
+                  obj_to_room( trash, pexit->to_room );
+                  char_from_room( ch );
+                  char_to_room( ch, pexit->to_room );
+                  act( AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, TO_ROOM );
+                  char_from_room( ch );
+                  char_to_room( ch, was_in_room );
+               }
+               else
+               {
+                  do_say( ch, "This thing is junk!" );
+                  act( AT_ACTION, "$n growls and breaks $p.", ch, trash, NULL, TO_ROOM );
+               }
+               return TRUE;
+            }
+            return TRUE;
+         }
+      }  /* get next obj */
+      return FALSE;  /* No objects :< */
+   }
    return FALSE;
 }

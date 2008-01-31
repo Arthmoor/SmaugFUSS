@@ -20,17 +20,6 @@
 #include "mud.h"
 
 /*
- * Local functions
- */
-
-#define	CD	CHAR_DATA
-CD *find_keeper args( ( CHAR_DATA * ch ) );
-CD *find_fixer args( ( CHAR_DATA * ch ) );
-int get_cost args( ( CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj, bool fBuy ) );
-int get_repaircost args( ( CHAR_DATA * keeper, OBJ_DATA * obj ) );
-#undef CD
-
-/*
  * Shopping commands.
  */
 CHAR_DATA *find_keeper( CHAR_DATA * ch )
@@ -282,8 +271,6 @@ CHAR_DATA *find_fixer( CHAR_DATA * ch )
    return keeper;
 }
 
-
-
 int get_cost( CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj, bool fBuy )
 {
    SHOP_DATA *pShop;
@@ -400,8 +387,6 @@ int get_repaircost( CHAR_DATA * keeper, OBJ_DATA * obj )
    return cost;
 }
 
-
-
 void do_buy( CHAR_DATA * ch, char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
@@ -415,7 +400,7 @@ void do_buy( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_PET_SHOP ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_PET_SHOP ) )
    {
       char buf[MAX_STRING_LENGTH];
       CHAR_DATA *pet;
@@ -428,7 +413,7 @@ void do_buy( CHAR_DATA * ch, char *argument )
       pRoomIndexNext = get_room_index( ch->in_room->vnum + 1 );
       if( !pRoomIndexNext )
       {
-         bug( "Do_buy: bad pet shop at vnum %d.", ch->in_room->vnum );
+         bug( "%s: bad pet shop at vnum %d.", __FUNCTION__, ch->in_room->vnum );
          send_to_char( "Sorry, you can't buy that here.\r\n", ch );
          return;
       }
@@ -469,9 +454,6 @@ void do_buy( CHAR_DATA * ch, char *argument )
       xSET_BIT( ch->act, PLR_BOUGHT_PET );
       xSET_BIT( pet->act, ACT_PET );
       xSET_BIT( pet->affected_by, AFF_CHARM );
-/*	This isn't needed anymore since you can order your pets --Shaddai
-	xSET_BIT(pet->affected_by, AFF_CHARM);
-*/
 
       argument = one_argument( argument, arg );
       if( arg[0] != '\0' )
@@ -628,7 +610,7 @@ void do_buy( CHAR_DATA * ch, char *argument )
          obj_from_char( obj );
          obj_to_char( obj, ch );
       }
-
+      mprog_sell_trigger( keeper, ch, obj );
       return;
    }
 }
@@ -660,7 +642,7 @@ void do_list( CHAR_DATA * ch, char *argument )
    char *divright = " ]-----------------------------------";
 
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_PET_SHOP ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_PET_SHOP ) )
    {
       ROOM_INDEX_DATA *pRoomIndexNext;
       CHAR_DATA *pet;

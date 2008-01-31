@@ -19,9 +19,7 @@
 #include <string.h>
 #include "mud.h"
 
-extern int get_secflag( char *flag );
 bool validate_spec_fun( char *name );
-int get_risflag( char *flag );
 
 char *const spell_flag[] = { "water", "earth", "air", "astral", "area", "distant", "reverse",
    "noself", "_unused2_", "accumulative", "recastable", "noscribe",
@@ -107,10 +105,12 @@ void free_skills( void )
    SKILLTYPE *skill;
    int hash = 0;
 
-   for( hash = 0; hash < top_sn; hash++ )
+   for( hash = 0; hash < num_skills; ++hash )
    {
       skill = skill_table[hash];
       free_skill( skill );
+
+      skill_table_bytype[hash] = NULL;
    }
 
    for( hash = 0; hash < top_herb; hash++ )
@@ -222,6 +222,271 @@ bool is_legal_kill( CHAR_DATA * ch, CHAR_DATA * vch )
    return TRUE;
 }
 
+/* 
+ * Racial Skills Handling -- Kayle 7-8-07
+ */
+bool check_ability( CHAR_DATA * ch, char *command, char *argument )
+{
+   int sn, mana, blood;
+   struct timeval time_used;
+
+   /*
+    * bsearch for the ability
+    */
+   sn = ch_slookup( ch, command );
+
+   if( sn == -1 )
+      return FALSE;
+
+   // some additional checks
+   if( !( skill_table[sn]->skill_fun || skill_table[sn]->spell_fun != spell_null ) || !can_use_skill( ch, 0, sn ) )
+   {
+      return FALSE;
+   }
+
+   if( !check_pos( ch, skill_table[sn]->minimum_position ) )
+      return TRUE;
+
+   if( IS_NPC( ch ) && ( IS_AFFECTED( ch, AFF_CHARM ) || IS_AFFECTED( ch, AFF_POSSESS ) ) )
+   {
+      send_to_char( "For some reason, you seem unable to perform that...\r\n", ch );
+      act( AT_GREY, "$n wanders around aimlessly.", ch, NULL, NULL, TO_ROOM );
+      return TRUE;
+   }
+
+   /*
+    * check if mana is required
+    */
+   if( skill_table[sn]->min_mana )
+   {
+      mana =
+         IS_NPC( ch ) ? 0 : UMAX( skill_table[sn]->min_mana,
+                                  100 / ( 2 + ch->level - skill_table[sn]->race_level[ch->race] ) );
+      if( IS_VAMPIRE( ch ) )
+      {
+         if( ch->pcdata->condition[COND_BLOODTHIRST] < blood )
+         {
+            send_to_char( "You don't have enough blood power.\r\n", ch );
+            return TRUE;
+         }
+      }
+      else if( !IS_NPC( ch ) && ch->mana < mana )
+      {
+         send_to_char( "You don't have enough mana.\r\n", ch );
+         return TRUE;
+      }
+   }
+   else
+   {
+      mana = 0;
+      blood = 0;
+   }
+
+   /*
+    * Is this a real do-fun, or a really a spell?
+    */
+   if( !skill_table[sn]->skill_fun )
+   {
+      ch_ret retcode = rNONE;
+      void *vo = NULL;
+      CHAR_DATA *victim = NULL;
+      OBJ_DATA *obj = NULL;
+
+      target_name = "";
+
+      switch ( skill_table[sn]->target )
+      {
+         default:
+            bug( "Check_ability: bad target for sn %d.", sn );
+            send_to_char( "Something went wrong...\r\n", ch );
+            return TRUE;
+
+         case TAR_IGNORE:
+            vo = NULL;
+            if( !argument || argument[0] == '\0' )
+            {
+               if( ( victim = who_fighting( ch ) ) != NULL )
+                  target_name = victim->name;
+            }
+            else
+               target_name = argument;
+            break;
+
+         case TAR_CHAR_OFFENSIVE:
+         {
+            if( ( !argument || argument[0] == '\0' ) && !( victim = who_fighting( ch ) ) )
+            {
+               ch_printf( ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill_table[sn]->name );
+               return TRUE;
+            }
+            else if( argument[0] != '\0' && !( victim = get_char_room( ch, argument ) ) )
+            {
+               send_to_char( "They aren't here.\r\n", ch );
+               return TRUE;
+            }
+         }
+            if( is_safe( ch, victim, TRUE ) )
+               return TRUE;
+
+            if( ch == victim && SPELL_FLAG( skill_table[sn], SF_NOSELF ) )
+            {
+               send_to_char( "You can't target yourself!\r\n", ch );
+               return TRUE;
+            }
+
+            if( !IS_NPC( ch ) )
+            {
+               if( !IS_NPC( victim ) )
+               {
+                  if( get_timer( ch, TIMER_PKILLED ) > 0 )
+                  {
+                     send_to_char( "You have been killed in the last 5 minutes.\r\n", ch );
+                     return TRUE;
+                  }
+
+                  if( get_timer( victim, TIMER_PKILLED ) > 0 )
+                  {
+                     send_to_char( "This player has been killed in the last 5 minutes.\r\n", ch );
+                     return TRUE;
+                  }
+
+                  if( victim != ch )
+                     send_to_char( "You really shouldn't do this to another player...\r\n", ch );
+               }
+
+               if( IS_AFFECTED( ch, AFF_CHARM ) && ch->master == victim )
+               {
+                  send_to_char( "You can't do that on your own follower.\r\n", ch );
+                  return TRUE;
+               }
+            }
+
+            if( check_illegal_pk( ch, victim ) )
+            {
+               send_to_char( "You can't do that to another player!\r\n", ch );
+               return TRUE;
+            }
+            vo = ( void * )victim;
+            break;
+
+         case TAR_CHAR_DEFENSIVE:
+         {
+            if( argument[0] != '\0' && !( victim = get_char_room( ch, argument ) ) )
+            {
+               send_to_char( "They aren't here.\r\n", ch );
+               return TRUE;
+            }
+            if( !victim )
+               victim = ch;
+         }
+
+            if( ch == victim && SPELL_FLAG( skill_table[sn], SF_NOSELF ) )
+            {
+               send_to_char( "You can't target yourself!\r\n", ch );
+               return TRUE;
+            }
+            vo = ( void * )victim;
+            break;
+
+         case TAR_CHAR_SELF:
+            victim = ch;
+            vo = ( void * )ch;
+            break;
+
+         case TAR_OBJ_INV:
+         {
+            if( !( obj = get_obj_carry( ch, argument ) ) )
+            {
+               send_to_char( "You can't find that.\r\n", ch );
+               return TRUE;
+            }
+         }
+            vo = ( void * )obj;
+            break;
+      }
+
+      /*
+       * waitstate
+       */
+      WAIT_STATE( ch, skill_table[sn]->beats );
+      /*
+       * check for failure
+       */
+      if( ( number_percent(  ) + skill_table[sn]->difficulty * 5 ) > ( IS_NPC( ch ) ? 75 : LEARNED( ch, sn ) ) )
+      {
+         failed_casting( skill_table[sn], ch, victim, obj );
+         learn_from_failure( ch, sn );
+         if( mana )
+         {
+            if( IS_VAMPIRE( ch ) )
+               gain_condition( ch, COND_BLOODTHIRST, -blood / 2 );
+            else
+               ch->mana -= mana / 2;
+         }
+         return TRUE;
+      }
+      if( mana )
+      {
+         if( IS_VAMPIRE( ch ) )
+            gain_condition( ch, COND_BLOODTHIRST, -blood );
+         else
+            ch->mana -= mana;
+      }
+      start_timer( &time_used );
+      retcode = ( *skill_table[sn]->spell_fun ) ( sn, ch->level, ch, vo );
+      end_timer( &time_used );
+      update_userec( &time_used, &skill_table[sn]->userec );
+
+      if( retcode == rCHAR_DIED || retcode == rERROR )
+         return TRUE;
+
+      if( char_died( ch ) )
+         return TRUE;
+
+      if( retcode == rSPELL_FAILED )
+      {
+         learn_from_failure( ch, sn );
+         retcode = rNONE;
+      }
+      else
+         ability_learn_from_success( ch, sn );
+
+      if( skill_table[sn]->target == TAR_CHAR_OFFENSIVE && victim != ch && !char_died( victim ) )
+      {
+         CHAR_DATA *vch;
+         CHAR_DATA *vch_next;
+
+         for( vch = ch->in_room->first_person; vch; vch = vch_next )
+         {
+            vch_next = vch->next_in_room;
+            if( victim == vch && !victim->fighting && victim->master != ch )
+            {
+               retcode = multi_hit( victim, ch, TYPE_UNDEFINED );
+               break;
+            }
+         }
+      }
+      return TRUE;
+   }
+
+   if( mana )
+   {
+      if( IS_VAMPIRE( ch ) )
+         gain_condition( ch, COND_BLOODTHIRST, -blood );
+      else
+         ch->mana -= mana;
+   }
+   ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
+   ch->last_cmd = skill_table[sn]->skill_fun;
+   start_timer( &time_used );
+   ( *skill_table[sn]->skill_fun ) ( ch, argument );
+   end_timer( &time_used );
+   update_userec( &time_used, &skill_table[sn]->userec );
+
+   tail_chain(  );
+   return TRUE;
+}
+
 /*
  * Perform a binary search on a section of the skill table
  * Each different section of the skill table is sorted alphabetically
@@ -229,34 +494,21 @@ bool is_legal_kill( CHAR_DATA * ch, CHAR_DATA * vch )
  */
 bool check_skill( CHAR_DATA * ch, char *command, char *argument )
 {
-   int sn;
-   int first = gsn_first_skill;
-   int top = gsn_first_weapon - 1;
-   int mana, blood;
+   int sn, mana, blood;
    struct timeval time_used;
 
    /*
-    * bsearch for the skill 
+    * bsearch for the skill
     */
-   for( ;; )
-   {
-      sn = ( first + top ) >> 1;
+   sn = ch_slookup( ch, command );
 
-      if( LOWER( command[0] ) == LOWER( skill_table[sn]->name[0] )
-          && !str_prefix( command, skill_table[sn]->name )
-          && ( skill_table[sn]->skill_fun || skill_table[sn]->spell_fun != spell_null ) && ( can_use_skill( ch, 0, sn ) ) )
-/*
-	&&  (IS_NPC(ch)
-	||  (ch->pcdata->learned[sn] > 0
-	&&   ch->level >= skill_table[sn]->skill_level[ch->class])) )
-*/
-         break;
-      if( first >= top )
-         return FALSE;
-      if( strcasecmp( command, skill_table[sn]->name ) < 1 )
-         top = sn - 1;
-      else
-         first = sn + 1;
+   if( sn == -1 )
+      return FALSE;
+
+   // some additional checks
+   if( !( skill_table[sn]->skill_fun || skill_table[sn]->spell_fun != spell_null ) || !can_use_skill( ch, 0, sn ) )
+   {
+      return FALSE;
    }
 
    if( !check_pos( ch, skill_table[sn]->minimum_position ) )
@@ -358,9 +610,6 @@ bool check_skill( CHAR_DATA * ch, char *command, char *argument )
                    * send_to_char( "You can't do that on a player.\r\n", ch );
                    * return TRUE;
                    */
-/*
-		    if ( xIS_SET(victim->act, PLR_PK))
-*/
                   if( get_timer( ch, TIMER_PKILLED ) > 0 )
                   {
                      send_to_char( "You have been killed in the last 5 minutes.\r\n", ch );
@@ -591,7 +840,7 @@ void do_slookup( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg, "all" ) )
    {
-      for( sn = 0; sn < top_sn && skill_table[sn] && skill_table[sn]->name; sn++ )
+      for( sn = 0; sn < num_skills && skill_table[sn] && skill_table[sn]->name; ++sn )
          pager_printf( ch, "Sn: %4d Slot: %4d Skill/spell: '%-20s' Damtype: %s\r\n",
                        sn, skill_table[sn]->slot, skill_table[sn]->name, spell_damage[SPELL_DAMAGE( skill_table[sn] )] );
    }
@@ -651,7 +900,7 @@ void do_slookup( CHAR_DATA * ch, char *argument )
          int x;
 
          mudstrlcpy( buf, "Flags:", MAX_STRING_LENGTH );
-         for( x = 0; x < 32; x++ )
+         for( x = 0; x < 32; ++x )
             if( SPELL_FLAG( skill, 1 << x ) )
             {
                mudstrlcat( buf, " ", MAX_STRING_LENGTH );
@@ -837,9 +1086,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Saving skill table...\r\n", ch );
          save_skill_table(  );
          save_classes(  );
-         /*
-          * save_races(); 
-          */
+         save_races(  );
          return;
       }
       if( !str_cmp( arg2, "herb" ) )
@@ -867,11 +1114,11 @@ void do_sset( CHAR_DATA * ch, char *argument )
             return;
          }
       }
-      else if( top_sn >= MAX_SKILL )
+      else if( num_skills >= MAX_SKILL )
       {
          ch_printf( ch, "The current top sn is %d, which is the maximum.  "
                     "To add more skills,\r\nMAX_SKILL will have to be "
-                    "raised in mud.h, and the mud recompiled.\r\n", top_sn );
+                    "raised in mud.h, and the mud recompiled.\r\n", num_skills );
          return;
       }
       CREATE( skill, struct skill_type, 1 );
@@ -886,8 +1133,8 @@ void do_sset( CHAR_DATA * ch, char *argument )
                max = herb_table[x]->slot;
          skill->slot = max + 1;
       }
-      else
-         skill_table[top_sn++] = skill;
+      else  // add the skill. See db.c for why we are adding without sorting.
+         skill_table[num_skills++] = skill;
       skill->min_mana = 0;
       skill->name = str_dup( argument );
       skill->noun_damage = str_dup( "" );
@@ -1265,6 +1512,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
             skill->skill_level[Class] = URANGE( 0, atoi( argument ), MAX_LEVEL );
          return;
       }
+
       if( !str_cmp( arg2, "racelevel" ) )
       {
          char arg3[MAX_INPUT_LENGTH];
@@ -1278,6 +1526,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
             skill->race_level[race] = URANGE( 0, atoi( argument ), MAX_LEVEL );
          return;
       }
+
       if( !str_cmp( arg2, "adept" ) )
       {
          char arg3[MAX_INPUT_LENGTH];
@@ -1291,6 +1540,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
             skill->skill_adept[Class] = URANGE( 0, atoi( argument ), 100 );
          return;
       }
+
       if( !str_cmp( arg2, "raceadept" ) )
       {
          char arg3[MAX_INPUT_LENGTH];
@@ -1305,7 +1555,6 @@ void do_sset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-
       if( !str_cmp( arg2, "name" ) )
       {
          DISPOSE( skill->name );
@@ -1313,6 +1562,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "dammsg" ) )
       {
          DISPOSE( skill->noun_damage );
@@ -1323,6 +1573,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "wearoff" ) )
       {
          DISPOSE( skill->msg_off );
@@ -1331,6 +1582,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "hitchar" ) )
       {
          if( skill->hit_char )
@@ -1340,6 +1592,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "hitvict" ) )
       {
          if( skill->hit_vict )
@@ -1349,6 +1602,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "hitroom" ) )
       {
          if( skill->hit_room )
@@ -1358,6 +1612,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "hitdest" ) )
       {
          if( skill->hit_dest )
@@ -1367,6 +1622,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "misschar" ) )
       {
          if( skill->miss_char )
@@ -1376,6 +1632,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "missvict" ) )
       {
          if( skill->miss_vict )
@@ -1385,6 +1642,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "missroom" ) )
       {
          if( skill->miss_room )
@@ -1394,6 +1652,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "diechar" ) )
       {
          if( skill->die_char )
@@ -1403,6 +1662,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "dievict" ) )
       {
          if( skill->die_vict )
@@ -1412,6 +1672,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "dieroom" ) )
       {
          if( skill->die_room )
@@ -1421,6 +1682,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "immchar" ) )
       {
          if( skill->imm_char )
@@ -1430,6 +1692,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "immvict" ) )
       {
          if( skill->imm_vict )
@@ -1439,6 +1702,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "immroom" ) )
       {
          if( skill->imm_room )
@@ -1448,6 +1712,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "dice" ) )
       {
          if( skill->dice )
@@ -1457,6 +1722,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "components" ) )
       {
          if( skill->components )
@@ -1466,6 +1732,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
          send_to_char( "Ok.\r\n", ch );
          return;
       }
+
       if( !str_cmp( arg2, "teachers" ) )
       {
          if( skill->teachers )
@@ -1479,7 +1746,7 @@ void do_sset( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( ( victim = get_char_world( ch, arg1 ) ) == NULL )
+   if( !( victim = get_char_world( ch, arg1 ) ) )
    {
       if( ( sn = skill_lookup( arg1 ) ) >= 0 )
       {
@@ -1523,12 +1790,13 @@ void do_sset( CHAR_DATA * ch, char *argument )
 
    if( fAll )
    {
-      for( sn = 0; sn < top_sn; sn++ )
+      for( sn = 0; sn < num_skills; ++sn )
       {
          /*
           * Fix by Narn to prevent ssetting skills the player shouldn't have. 
           */
-         if( skill_table[sn]->name && ( victim->level >= skill_table[sn]->skill_level[victim->Class] || value == 0 ) )
+         if( victim->level >= skill_table[sn]->skill_level[victim->Class]
+             || victim->level >= skill_table[sn]->race_level[victim->race] )
          {
             if( value == 100 && !IS_IMMORTAL( victim ) )
                victim->pcdata->learned[sn] = GET_ADEPT( victim, sn );
@@ -1543,6 +1811,51 @@ void do_sset( CHAR_DATA * ch, char *argument )
    return;
 }
 
+/*
+ * Racial Skills Learning -- Kayle 7-8-07
+ */
+void ability_learn_from_success( CHAR_DATA * ch, int sn )
+{
+   int adept, gain, sklvl, learn, percent, schance;
+
+   if( IS_NPC( ch ) || ch->pcdata->learned[sn] <= 0 )
+      return;
+
+   adept = skill_table[sn]->race_adept[ch->race];
+
+   sklvl = skill_table[sn]->race_level[ch->race];
+
+   if( sklvl == 0 )
+      sklvl = ch->level;
+   if( ch->pcdata->learned[sn] < adept )
+   {
+      schance = ch->pcdata->learned[sn] + ( 5 * skill_table[sn]->difficulty );
+      percent = number_percent(  );
+      if( percent >= schance )
+         learn = 2;
+      else if( schance - percent > 25 )
+         return;
+      else
+         learn = 1;
+      ch->pcdata->learned[sn] = UMIN( adept, ch->pcdata->learned[sn] + learn );
+      if( ch->pcdata->learned[sn] == adept ) /* fully learned! */
+      {
+         gain = 1000 * sklvl;
+         set_char_color( AT_WHITE, ch );
+         ch_printf( ch, "You are now an adept of %s!  You gain %d bonus experience!\r\n", skill_table[sn]->name, gain );
+      }
+      else
+      {
+         gain = 20 * sklvl;
+         if( !ch->fighting && sn != gsn_hide && sn != gsn_sneak )
+         {
+            set_char_color( AT_WHITE, ch );
+            ch_printf( ch, "You gain %d experience points from your success!\r\n", gain );
+         }
+      }
+      gain_exp( ch, gain );
+   }
+}
 
 void learn_from_success( CHAR_DATA * ch, int sn )
 {
@@ -1592,7 +1905,6 @@ void learn_from_success( CHAR_DATA * ch, int sn )
    }
 }
 
-
 void learn_from_failure( CHAR_DATA * ch, int sn )
 {
    int adept, schance;
@@ -1606,7 +1918,6 @@ void learn_from_failure( CHAR_DATA * ch, int sn )
    if( ch->pcdata->learned[sn] < ( adept - 1 ) )
       ch->pcdata->learned[sn] = UMIN( adept, ch->pcdata->learned[sn] + 1 );
 }
-
 
 void do_gouge( CHAR_DATA * ch, char *argument )
 {
@@ -2148,7 +2459,7 @@ void do_steal( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "A magical force interrupts you.\r\n", ch );
@@ -3136,12 +3447,12 @@ void do_mistwalk( CHAR_DATA * ch, char *argument )
       allowday = FALSE;
    if( ( time_info.hour < 21 && time_info.hour > 5 && !allowday )
        || !victim->in_room
-       || IS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
-       || IS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
-       || IS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
-       || IS_SET( victim->in_room->room_flags, ROOM_DEATH )
-       || IS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
-       || IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
+       || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
+       || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
+       || xIS_SET( victim->in_room->room_flags, ROOM_DEATH )
+       || xIS_SET( victim->in_room->room_flags, ROOM_PROTOTYPE )
+       || xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL )
        || victim->level >= ch->level + 15
        || ( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
        || ( IS_NPC( victim ) && saves_spell_staff( ch->level, victim ) )
@@ -3491,7 +3802,7 @@ void do_recall( CHAR_DATA * ch, char *argument )
    if( ch->in_room == location )
       return;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_NO_RECALL ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_NO_RECALL ) )
    {
       send_to_char( "For some strange reason... nothing happens.\r\n", ch );
       return;
@@ -4399,7 +4710,7 @@ void do_hitall( CHAR_DATA * ch, char *argument )
    short nhit = 0;
    short percent;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       send_to_char_color( "&BA godly force prevents you.\r\n", ch );
       return;
@@ -4733,7 +5044,7 @@ ch_ret spell_attack( int, int, CHAR_DATA *, void * );
 ch_ret ranged_got_target( CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * weapon,
                           OBJ_DATA * projectile, short dist, short dt, char *stxt, short color )
 {
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       /*
        * safe room, bubye projectile 
@@ -4885,7 +5196,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, char *argument, OBJ_DATA * weapon, OBJ_DAT
     */
    if( !victim )
    {
-      if( IS_SET( ch->in_room->room_flags, ROOM_PRIVATE ) || IS_SET( ch->in_room->room_flags, ROOM_SOLITARY ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_PRIVATE ) || xIS_SET( ch->in_room->room_flags, ROOM_SOLITARY ) )
       {
          send_to_char( "You cannot perform a ranged attack from a private room.\r\n", ch );
          return rNONE;
@@ -4943,7 +5254,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, char *argument, OBJ_DATA * weapon, OBJ_DAT
       /*
        * don't allow attacks on mobs that are in a no-missile room --Shaddai 
        */
-      if( IS_SET( vch->in_room->room_flags, ROOM_NOMISSILE ) )
+      if( xIS_SET( vch->in_room->room_flags, ROOM_NOMISSILE ) )
       {
          send_to_char( "You can't get a clean shot off.\r\n", ch );
          return rNONE;
@@ -5216,7 +5527,7 @@ void do_fire( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       set_char_color( AT_MAGIC, ch );
       send_to_char( "A magical force prevents you from attacking.\r\n", ch );
@@ -5290,7 +5601,7 @@ bool mob_fire( CHAR_DATA * ch, char *name )
    OBJ_DATA *bow;
    short max_dist;
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
       return FALSE;
 
    if( ( bow = get_eq_char( ch, WEAR_MISSILE_WIELD ) ) != NULL )

@@ -33,7 +33,6 @@ void do_gold( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 void do_worth( CHAR_DATA * ch, char *argument )
 {
    char buf[MAX_STRING_LENGTH];
@@ -1593,12 +1592,27 @@ void do_affected( CHAR_DATA * ch, char *argument )
 
 void do_inventory( CHAR_DATA * ch, char *argument )
 {
-   set_char_color( AT_RED, ch );
-   send_to_char( "You are carrying:\r\n", ch );
-   show_list_to_char( ch->first_carrying, ch, TRUE, TRUE );
+   CHAR_DATA *victim;
+
+   if( !argument || argument[0] == '\0' || !IS_IMMORTAL( ch ) )
+      victim = ch;
+   else
+   {
+      if( !( victim = get_char_world( ch, argument ) ) )
+      {
+         ch_printf( ch, "There is nobody named %s online.\r\n", argument );
+         return;
+      }
+   }
+
+   if( victim != ch )
+      ch_printf( ch, "&R%s is carrying:\r\n", IS_NPC( victim ) ? victim->short_descr : victim->name );
+   else
+      send_to_char( "&RYou are carrying:\r\n", ch );
+
+   show_list_to_char( victim->first_carrying, ch, TRUE, TRUE );
    return;
 }
-
 
 void do_equipment( CHAR_DATA * ch, char *argument )
 {
@@ -1636,8 +1650,6 @@ void do_equipment( CHAR_DATA * ch, char *argument )
 
    return;
 }
-
-
 
 void set_title( CHAR_DATA * ch, char *title )
 {

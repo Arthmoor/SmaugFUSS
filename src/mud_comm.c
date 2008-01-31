@@ -2433,7 +2433,6 @@ void do_mp_close_passage( CHAR_DATA * ch, char *argument )
       return;
    }
 
-
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
    argument = one_argument( argument, arg3 );
@@ -2495,8 +2494,6 @@ void do_mp_close_passage( CHAR_DATA * ch, char *argument )
 
    return;
 }
-
-
 
 /*
  * Does nothing.  Used for scripts.
@@ -3122,4 +3119,292 @@ ch_ret simple_damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
    tail_chain(  );
    return rNONE;
+}
+
+/* New mob hate, hunt, and fear code courtesy Rjael of Saltwind MUD */
+void do_mphate( CHAR_DATA * ch, char *argument )
+{
+   char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
+   CHAR_DATA *victim, *master, *mob;
+   int vnum;
+
+   if( !IS_NPC( ch ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' )
+   {
+      progbug( "Mphate - Bad syntax, bad victim", ch );
+      return;
+   }
+
+   if( !( victim = get_char_world( ch, arg1 ) ) )
+   {
+      progbug( "Mphate - No such person", ch );
+      return;
+   }
+   else if( IS_NPC( victim ) )
+   {
+      if( IS_AFFECTED( victim, AFF_CHARM ) && ( master = victim->master ) )
+      {
+         if( !( victim = get_char_world( ch, master->name ) ) )
+         {
+            progbug( "Mphate - NULL NPC Master", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mphate - NPC victim", ch );
+         return;
+      }
+   }
+
+   if( arg2[0] == '\0' )
+   {
+      progbug( "Mphate - bad syntax, no aggressor", ch );
+      return;
+   }
+   else
+   {
+      if( is_number( arg2 ) )
+      {
+         vnum = atoi( arg2 );
+         if( vnum < 1 || vnum > MAX_VNUM )
+         {
+            progbug( "Mphate -- aggressor vnum out of range", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mphate -- aggressor no vnum", ch );
+         return;
+      }
+   }
+
+   for( mob = first_char; mob; mob = mob->next )
+   {
+      if( !IS_NPC( mob ) || !mob->in_room || !mob->pIndexData->vnum )
+         continue;
+
+      if( vnum == mob->pIndexData->vnum )
+         start_hating( mob, victim );
+   }
+}
+
+void do_mphunt( CHAR_DATA * ch, char *argument )
+{
+   char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
+   CHAR_DATA *victim, *master, *mob;
+   int vnum;
+
+   if( !IS_NPC( ch ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' )
+   {
+      progbug( "Mphunt - Bad syntax, bad victim", ch );
+      return;
+   }
+
+   if( !( victim = get_char_world( ch, arg1 ) ) )
+   {
+      progbug( "Mphunt - No such person", ch );
+      return;
+   }
+   else if( IS_NPC( victim ) )
+   {
+      if( IS_AFFECTED( victim, AFF_CHARM ) && ( master = victim->master ) )
+      {
+         if( !( victim = get_char_world( ch, master->name ) ) )
+         {
+            progbug( "Mphunt - NULL NPC Master", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mphunt - NPC victim", ch );
+         return;
+      }
+   }
+
+   if( arg2[0] == '\0' )
+   {
+      progbug( "Mphunt - bad syntax, no aggressor", ch );
+      return;
+   }
+   else
+   {
+      if( is_number( arg2 ) )
+      {
+         vnum = atoi( arg2 );
+         if( vnum < 1 || vnum > MAX_VNUM )
+         {
+            progbug( "Mphunt -- aggressor vnum out of range", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mphunt -- aggressor no vnum", ch );
+         return;
+      }
+   }
+
+   for( mob = first_char; mob; mob = mob->next )
+   {
+      if( !IS_NPC( mob ) || !mob->in_room || !mob->pIndexData->vnum )
+         continue;
+
+      if( vnum == mob->pIndexData->vnum )
+         start_hunting( mob, victim );
+   }
+}
+
+void do_mpfear( CHAR_DATA * ch, char *argument )
+{
+   char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
+   CHAR_DATA *victim, *master, *mob;
+   int vnum;
+
+   if( !IS_NPC( ch ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' )
+   {
+      progbug( "Mpfear - Bad syntax, bad victim", ch );
+      return;
+   }
+
+   if( !( victim = get_char_world( ch, arg1 ) ) )
+   {
+      progbug( "Mpfear - No such person", ch );
+      return;
+   }
+   else if( IS_NPC( victim ) )
+   {
+      if( IS_AFFECTED( victim, AFF_CHARM ) && ( master = victim->master ) )
+      {
+         if( !( victim = get_char_world( ch, master->name ) ) )
+         {
+            progbug( "Mpfear - NULL NPC Master", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mpfear - NPC victim", ch );
+         return;
+      }
+   }
+
+   if( arg2[0] == '\0' )
+   {
+      progbug( "Mpfear - bad syntax, no aggressor", ch );
+      return;
+   }
+   else
+   {
+      if( is_number( arg2 ) )
+      {
+         vnum = atoi( arg2 );
+         if( vnum < 1 || vnum > MAX_VNUM )
+         {
+            progbug( "Mpfear -- aggressor vnum out of range", ch );
+            return;
+         }
+      }
+      else
+      {
+         progbug( "Mpfear -- aggressor no vnum", ch );
+         return;
+      }
+   }
+
+   for( mob = first_char; mob; mob = mob->next )
+   {
+      if( !IS_NPC( mob ) || !mob->in_room || !mob->pIndexData->vnum )
+         continue;
+
+      if( vnum == mob->pIndexData->vnum )
+         start_fearing( mob, victim );
+   }
+}
+
+/*
+ * Make an object owned by a char. --Shaddai
+ */
+void do_mpoowner( CHAR_DATA * ch, char *argument )
+{
+   OBJ_DATA *obj;
+   CHAR_DATA *victim = NULL;
+   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH];
+
+   if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' || arg2[0] == '\0' )
+   {
+      send_to_char( "Syntax: oowner <object> <player>\r\n", ch );
+      return;
+   }
+
+   if( str_cmp( arg2, "none" ) && ( victim = get_char_room( ch, arg2 ) ) == NULL )
+   {
+      send_to_char( "No such player is in the room.\r\n", ch );
+      return;
+   }
+
+   if( ( obj = get_obj_here( ch, arg1 ) ) == NULL )
+   {
+      send_to_char( "No such object exists.\r\n", ch );
+      return;
+   }
+
+   separate_obj( obj );
+
+   if( !str_cmp( "none", arg2 ) )
+   {
+      STRFREE( obj->owner );
+      obj->owner = STRALLOC( "" );
+      xREMOVE_BIT( obj->extra_flags, ITEM_PERSONAL );
+      send_to_char( "Done.\r\n", ch );
+      return;
+   }
+
+   if( IS_NPC( victim ) )
+   {
+      send_to_char( "A mob can't be an owner of an item.\r\n", ch );
+      return;
+   }
+   xSET_BIT( obj->extra_flags, ITEM_PERSONAL );
+   STRFREE( obj->owner );
+   obj->owner = STRALLOC( victim->name );
+   send_to_char( "Done.\r\n", ch );
+   return;
 }

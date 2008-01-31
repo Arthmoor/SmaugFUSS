@@ -422,8 +422,17 @@ bool imc_loadchar( CHAR_DATA * ch, FILE * fp, const char *word );
 void imc_savechar( CHAR_DATA * ch, FILE * fp );
 void imc_freechardata( CHAR_DATA * ch );
 void imc_loop( void );
-IMC_CHANNEL *imc_findchannel( char *name );  /* Externalized for comm.c spamguard checks */
-void imc_register_packet_handler( char *name, PACKET_FUN * func );
+IMC_CHANNEL *imc_findchannel( const char *name );
+void imc_register_packet_handler( const char *name, PACKET_FUN * func );
+IMC_PACKET *imc_newpacket( const char *from, const char *type, const char *to );
+void imc_addtopacket( IMC_PACKET * p, const char *fmt, ... );
+void imc_write_packet( IMC_PACKET * p );
+char *imc_getData( char *output, const char *key, const char *packet );
+CHAR_DATA *imc_find_user( const char *name );
+char *imc_nameof( const char *src );
+char *imc_mudof( const char *src );
+void imc_send_tell( const char *from, const char *to, const char *txt, int reply );
+
 #if defined(_DISKIO_H_)
 void imc_load_pfile( CHAR_DATA * ch, char *tag, int num, char *line );
 void imc_save_pfile( struct CHAR_DATA *ch, FBFILE * fp );

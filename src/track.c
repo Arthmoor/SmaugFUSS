@@ -16,7 +16,7 @@
 #define BFS_ERROR	   -1
 #define BFS_ALREADY_THERE  -2
 #define BFS_NO_PATH	   -3
-#define BFS_MARK    536870912
+#define BFS_MARK    ROOM_BFS_MARK
 
 #define TRACK_THROUGH_DOORS
 
@@ -38,9 +38,9 @@ struct bfs_queue_struct
 static BFS_DATA *queue_head = NULL, *queue_tail = NULL, *room_queue = NULL;
 
 /* Utility macros */
-#define MARK(room)	(SET_BIT(	(room)->room_flags, BFS_MARK) )
-#define UNMARK(room)	(REMOVE_BIT(	(room)->room_flags, BFS_MARK) )
-#define IS_MARKED(room)	(IS_SET(	(room)->room_flags, BFS_MARK) )
+#define MARK(room)	(xSET_BIT(	(room)->room_flags, BFS_MARK) )
+#define UNMARK(room)	(xREMOVE_BIT(	(room)->room_flags, BFS_MARK) )
+#define IS_MARKED(room)	(xIS_SET(	(room)->room_flags, BFS_MARK) )
 
 bool valid_edge( EXIT_DATA * pexit )
 {
@@ -283,7 +283,7 @@ void found_prey( CHAR_DATA * ch, CHAR_DATA * victim )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
    {
       if( number_percent(  ) < 90 )
          return;

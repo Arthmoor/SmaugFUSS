@@ -1,117 +1,166 @@
-#AREA   Unholy Grounds~
+#FUSSAREA
+#AREADATA
+Version      1
+Name         Unholy Grounds~
+Author       Eldaera~
+Ranges       5 15 0 60
+Economy      0 1323238
+ResetMsg     The grief of mourners is audible throughout the burial ground...~
+ResetFreq    10
+Climate      2 2 2
+#ENDAREADATA
 
-
-
-#VERSION 1
-#AUTHOR Eldaera~
-
-#RANGES
-5 15 0 60
-$
-
-#RESETMSG The grief of mourners is audible throughout the burial ground...~
-
-#FLAGS
-0 10
-
-#ECONOMY 0 1323238
-
-#CLIMATE 2 2 2
-
-#MOBILES
-#2101
-gravedigger grave digger~
-a gravedigger~
-A gravedigger is here, digging a new grave.
+#MOBILE
+Vnum       2101
+Keywords   gravedigger grave digger~
+Short      a gravedigger~
+Long       A gravedigger is here, digging a new grave.
 ~
-The darkness of night provides the perfect opportunity to do the job of
+Desc       The darkness of night provides the perfect opportunity to do the job of
 burying the dead such as this gravedigger does.  Hasty to finish his morbid
 job, this gravedigger turns his back on you, oblivious to your presence.
 ~
-69 0 -100 C
-5 15 5 5d5+50 1d5+5
-200 600
-112 112 1
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 1775 0 0 0 64 0
-#2102
-graverobber grave robber thief~
-a graverobber~
-A graverobber seeks valuable treasures buried within the earth.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc scavenger stayarea~
+Stats1     -100 5 15 5 200 600
+Stats2     5 5 50
+Stats3     1 5 5
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart guts hands feet ear eye~
+Attacks    trip~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2102
+Keywords   graverobber grave robber thief~
+Short      a graverobber~
+Long       A graverobber seeks valuable treasures buried within the earth.
 ~
-Searching for valuable trinkets buried with corpses beneath the ground,
+Desc       Searching for valuable trinkets buried with corpses beneath the ground,
 this thief disrespectfully claws at the earth and chisels away at the
 tombstones throughout the area.
 ~
-69 33288 -350 C
-7 15 5 5d5+50 1d7+5
-473 700
-112 112 1
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 2 0 0 1 1 0
-0 0 1263 0 0 0 64 0
-#2103
-Arabella~
-Arabella~
-The corpse of Arabella lies here decaying within the coffin.
+Race       human~
+Class      thief~
+Position   standing~
+DefPos     standing~
+Specfun    spec_janitor~
+Gender     male~
+Actflags   npc scavenger stayarea~
+Affected   detect_invis infrared sneak~
+Stats1     -350 7 15 5 473 700
+Stats2     5 5 50
+Stats3     1 7 5
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart guts hands feet eye~
+Attacks    trip~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2103
+Keywords   Arabella~
+Short      Arabella~
+Long       The corpse of Arabella lies here decaying within the coffin.
 ~
-Though some patches of flesh still remain on different parts of her body,
+Desc       Though some patches of flesh still remain on different parts of her body,
 most of Arabella's corpse has decayed away, revealing the white boney
 skeleton within the corpse.  Maggots writhe horribly within the corpse,
 feeding upon the decaying organs hungrily.
 ~
-99 0 3 C
-13 8 5 13d13+130 1d10+12
-2000 10000
-112 112 2
-13 13 13 13 13 13 13
-0 0 0 0 0
-60 3 0 0 400197 1 0
-0 0 167 0 0 0 0 8
-#2104
-Anastacia~
-Anastacia~
-The corpse of Anastacia sleeps peacefully within her glass coffin.
+Race       skeleton~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel aggressive stayarea~
+Stats1     3 13 8 5 2000 10000
+Stats2     13 13 130
+Stats3     1 10 12
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common dwarven trollese insectoid mammal dragon spiritual halfling clan~
+Speaking   common~
+Bodyparts  head arms legs guts feet~
+Defenses   curelight~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2104
+Keywords   Anastacia~
+Short      Anastacia~
+Long       The corpse of Anastacia sleeps peacefully within her glass coffin.
 ~
-Clad in a long red velvet dress, Anastacia sleeps peacefully upon a bed
+Desc       Clad in a long red velvet dress, Anastacia sleeps peacefully upon a bed
 of large white rose petals scattered inside her glass coffin placed in the
 center of the room upon a marble platform.  Her long raven hair tumbles
 softly down her shoulders, framing her delicate face that seems to smile
 in her deathly repose, making you your heart ache as you realize that you
 will never have the chance to belong to this lovely beauty.
 ~
-7 131080 1000 C
-10 9 -1 10d10+100 1d6+10
-1500 4500
-112 112 2
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 2047 0 0 0 0 8
-#2105
-preacher~
-a grey haired preacher~
-A grey haired preacher stands here, offering hollow words of comfort.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel scavenger~
+Affected   detect_invis sleep~
+Stats1     1000 10 9 -1 1500 4500
+Stats2     10 10 100
+Stats3     1 6 10
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
+Defenses   curelight~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2105
+Keywords   preacher~
+Short      a grey haired preacher~
+Long       A grey haired preacher stands here, offering hollow words of comfort.
 ~
-The preacher's shoulders slump slightly as he stands here preaching
+Desc       The preacher's shoulders slump slightly as he stands here preaching
 insincere words of comfort to mourners that visit the graveyard.  Thin
 whisps of grey hair, unwashed and uncombed, barely hides the scar on his
 forehead he received when he stumbled upon a gang of thieves vandalizing
 one of the graves within the cemetary.
 ~
-7 0 0 C
-7 8 3 7d7+70 1d6+4
-1000 1500
-112 112 1
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 1727 0 0 0 33554432 0
-> rand_prog 1~
-open trapdoor
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc sentinel scavenger~
+Stats1     0 7 8 3 1000 1500
+Stats2     7 7 70
+Stats3     1 6 4
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart brains guts feet ear eye~
+Attacks    curse~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   1~
+Comlist   open trapdoor
 mpecho The preacher leaves up through a trapdoor.
 up
 mpecho The grey haired preacher pulls the bell rope.
@@ -120,446 +169,606 @@ push rope
 down
 close trapdoor
 ~
-|
-#2106
-savage beast~
-the savage beast~
-A savage beast stands here, visciously gnawing upon a corpse.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       2106
+Keywords   savage beast~
+Short      the savage beast~
+Long       A savage beast stands here, visciously gnawing upon a corpse.
 ~
-Growling loudly as it chews upon one of the several corpses that it
+Desc       Growling loudly as it chews upon one of the several corpses that it
 violently ripped out of one of the crypts, the beast splatters blood
 across its face, drooling the rusty red liquid from a mouth filled
 with jagged teeth.  Upon noticing your presence, the beast drops
 the bloody corpse and turns to you...
 ~
-39 520 -500 C
-11 13 4 1d1+150 1d6+8
-0 2000
-112 112 0
-16 13 13 16 13 13 13
-0 -1 0 0 0
-71 3 0 0 396423 396423 0
-0 0 328895 0 3072 0 66 0
-#2107
-mourner~
-a mourner~
-A mourner wails sadly, grieving the loss of her loved one.
+Race       zombie~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_fido~
+Gender     neuter~
+Actflags   npc sentinel scavenger aggressive~
+Affected   detect_invis infrared~
+Stats1     -500 11 13 4 0 2000
+Stats2     1 1 150
+Stats3     1 6 8
+Stats4     0 0 0 0 0
+Attribs    16 13 13 16 13 13 13
+Saves      0 -1 0 0 0
+Speaks     common elvish dwarven rodent reptile dragon halfling clan~
+Speaking   common elvish dwarven rodent reptile dragon halfling clan~
+Bodyparts  head arms legs heart brains guts feet eye tail claws~
+Immune     sleep charm~
+Attacks    claws trip~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2107
+Keywords   mourner~
+Short      a mourner~
+Long       A mourner wails sadly, grieving the loss of her loved one.
 ~
-Clad in the black clothing which marks the grieving period of a recently
+Desc       Clad in the black clothing which marks the grieving period of a recently
 departed loved one, she wails loudly, burying her veiled face deeply in
 her shaking hands.
 ~
-193 0 200 C
-10 10 1 10d10+100 1d6+6
-500 3800
-112 112 2
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 1711 0 2048 0 0 0
-#2108
-grey rat~
-a small grey rat~
-A small rat is here feasting upon the rotting corpse.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc stayarea wimpy~
+Stats1     200 10 10 1 500 3800
+Stats2     10 10 100
+Stats3     1 6 6
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart guts feet ear eye~
+Immune     charm~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2108
+Keywords   grey rat~
+Short      a small grey rat~
+Long       A small rat is here feasting upon the rotting corpse.
 ~
-Obviously disturbed by your presence, this small grey rat scurries about,
+Desc       Obviously disturbed by your presence, this small grey rat scurries about,
 leaving behind its morbid buffet of rotten flesh and decaying organs.  Finding
 no escape, it turns on you with the hopes that its victory will leave him with
 a fresher corpse to devour.
 ~
-35 520 -100 C
-5 10 2 1d1+55 1d6+3
-10 700
-112 112 0
-13 13 13 13 13 13 13
-0 0 0 0 0
-54 3 0 0 398781 398781 0
-0 0 0 0 0 0 0 0
-#2110
-gravedigger grave digger~
-a gravedigger~
-A gravedigger scouts for an open plot to begin digging a new grave.
+Race       rat~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_fido~
+Gender     neuter~
+Actflags   npc sentinel aggressive~
+Affected   detect_invis infrared~
+Stats1     -100 5 10 2 10 700
+Stats2     1 1 55
+Stats3     1 6 3
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common dwarven pixie ogre orcish rodent insectoid reptile spiritual halfling clan~
+Speaking   common dwarven pixie ogre orcish rodent insectoid reptile spiritual halfling clan~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2110
+Keywords   gravedigger grave digger~
+Short      a gravedigger~
+Long       A gravedigger scouts for an open plot to begin digging a new grave.
 ~
-The darkness of night provides the perfect opportunity to do the job of
+Desc       The darkness of night provides the perfect opportunity to do the job of
 burying the dead such as this gravedigger does.  Hasty to finish his morbid
 job, this gravedigger turns his back on you, oblivious to your presence.
 ~
-69 0 -100 C
-6 15 5 5d5+50 1d5+5
-200 600
-112 112 1
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 1775 0 0 0 64 0
-#2111
-mutilated decaying corpse~
-a mutilated, decaying corpse~
-A mutilated corpse arises from its grave, seeking to devour you.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc scavenger stayarea~
+Stats1     -100 6 15 5 200 600
+Stats2     5 5 50
+Stats3     1 5 5
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart guts hands feet ear eye~
+Attacks    trip~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2111
+Keywords   mutilated decaying corpse~
+Short      a mutilated, decaying corpse~
+Long       A mutilated corpse arises from its grave, seeking to devour you.
 ~
-Your eyes widen in horror as this corpse claws through the earth, to attack you
+Desc       Your eyes widen in horror as this corpse claws through the earth, to attack you
 with its skeletal jaws still dripping with the deep red blood of its latest
 victim.  Large chunks of decaying flesh fall from its skull, revealing the
 dull grey bones crushed by a traveller's futile blows in attempt to defeat
 this corpse and flee with his life still intact.
 ~
-35 552 -750 C
-14 0 0 0d0+0 0d0+0
-5000 0
-112 112 0
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 2047 0 0 0 33554432 8
-#2113
-vines tangle thorny~
-a tangle of thorny vines~
-Long thorny vines wrap around your body, choking the life out of you.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel aggressive~
+Affected   detect_invis detect_hidden infrared~
+Stats1     -750 14 0 0 5000 0
+Stats2     0 0 0
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
+Attacks    curse~
+Defenses   curelight~
+#ENDMOBILE
+
+#MOBILE
+Vnum       2113
+Keywords   vines tangle thorny~
+Short      a tangle of thorny vines~
+Long       Long thorny vines wrap around your body, choking the life out of you.
 ~
-All throughout the graveyard, these long thorny vines grow wildly over
+Desc       All throughout the graveyard, these long thorny vines grow wildly over
 the ground, smothering the earth.  Climbing wildly over headstones and
 statues throughout the area, the vines entangle your feet, causing you
 to nearly stumble.
 ~
-35 4194344 0 C
-2 0 0 1d1+9 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 13
-0 0 0 0 0
-67 3 0 0 399469 399469 0
-0 0 0 0 2048 0 0 0
-> death_prog 100~
-mpgoto 3
+Race       undead~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel aggressive~
+Affected   detect_invis detect_hidden truesight~
+Stats1     0 2 0 0 0 0
+Stats2     1 1 9
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common dwarven pixie orcish trollese dragon spiritual halfling clan~
+Speaking   common dwarven pixie orcish trollese dragon spiritual halfling clan~
+Immune     charm~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 3
 ~
-|
-#2120
-owl bird hoot~
-an owl~
-A lone owl flies high among the branches, echoing cries of warning.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       2120
+Keywords   owl bird hoot~
+Short      an owl~
+Long       A lone owl flies high among the branches, echoing cries of warning.
 ~
-Through the thick, rotten air, this owl flies throughout the darkened
+Desc       Through the thick, rotten air, this owl flies throughout the darkened
 grove, calling out a shrill hoot of warning to those who trample within
 the unholy confines of the cemetery.
 ~
-3 524288 0 C
-6 0 4 0d0+0 1d5+5
-0 0
-112 112 0
-13 13 13 13 13 13 13
-0 0 0 0 0
-59 3 0 0 400341 400341 0
-0 0 99385 0 0 0 0 0
-#0
+Race       shrieker~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel~
+Affected   flying~
+Stats1     0 6 0 4 0 0
+Stats2     0 0 0
+Stats3     1 5 5
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common dwarven ogre trollese rodent insectoid mammal dragon spiritual halfling clan~
+Speaking   common dwarven ogre trollese rodent insectoid mammal dragon spiritual halfling clan~
+Bodyparts  head heart brains guts eye wings tail~
+#ENDMOBILE
 
+#OBJECT
+Vnum     2101
+Keywords robe muddy~
+Type     armor~
+Short    a gravedigger's muddy robe~
+Long     A gravedigger's robe lays here caked in mud.~
+WFlags   take body~
+Values   5 0 0 0 0 0
+Stats    5 320 32 0 0
+Affect       -1 -1 -5 17 0
+#ENDOBJECT
 
-#OBJECTS
-#2101
-robe muddy~
-a gravedigger's muddy robe~
-A gravedigger's robe lays here caked in mud.~
-~
-9 0 9
-5 0 0 0
-5 320 32
-A
-17 -5
-#2102
-shawl black~
-a black woolen shawl~
-A mourner's shawl lays here in a crumpled pile.~
-~
-9 4 9
-5 4 0 0
-4 840 84
-A
-17 -3
-#2103
-gravedigger spade shovel~
-a gravedigger's spade~
-A rusty gravedigger's shovel has been stuck into the ground.~
-~
-5 524288 8193
-0 2 7 4
-9 900 90
-A
-17 -5
-A
-18 1
-#2104
-headstone plaque~
-a headstone's stolen plaque~
-Stolen from a headstone, a brass plaque has been dropped here.~
-~
-9 524288 513
-4 4 0 0
-5 540 54
-A
-1 1
-A
-25 -1
-#2105
-crucifix wooden cross~
-a shattered crucifix~
-An old wooden crucifix lays here, shattered into several pieces.~
-~
-3 2 16385
-11 3 3 -1
-1 300 30
-'dispel evil'
-#2106
-chisel rusted~
-a graverobber's chisel~
-A rusty chisel has been dropped here.~
-~
-5 524292 8193
-0 7 2 11
-3 354 35
-A
-17 -6
-A
-18 4
-#2107
-slippers mourner black~
-black pair of slippers caked with mud~
-A pair of black slippers are here covered in mud.~
-~
-9 4 65
-3 0 0 0
-3 760 76
-A
-12 5
-A
-18 1
-#2108
-bible~
-a preacher's bible~
-A tattered old bible lays on the ground gathering dust.~
-~
-4 1345 16385
-6 2 2 -1
-1 1000 100
-'fly'
-#2109
-gold bracelet~
-Arabella's golden bracelet~
-Arabella's shiny gold bracelet lays twinklink brightly on the ground.~
-~
-9 524544 257
-2 0 0 0
-2 500 50
-A
-1 1
-A
-13 5
-A
-17 -5
-#2110
-cane widow ebony~
-a widow's cane~
-A shiny black ebony cane rests on the ground.~
-~
-5 4 8193
-0 1 12 7
-3 675 67
-A
-14 40
-A
-18 4
-#2111
-ring diamond Thomas~
-a golden ring encrusted with diamonds~
-A small, glittering diamond ring lays on the ground, sparkling brightly.~
-~
-9 1 3
-4 0 0 0
-1 10000 1000
-A
-12 20
-A
-13 10
-A
-1 1
-#2112
-gloves skin chunk~
-gloves of rotten flesh~
-A leathery chunk of flesh is here decaying in a pool of blood.~
-~
-9 262144 129
--15 0 0 0
-1 2000 200
-A
-12 -15
-A
-13 -10
-A
-18 5
-#2113
-pine coffin~
-Thomas' pine coffin~
-An old, moldy pine box lays here, broken in several places.~
-~
-12 262144 0
-0 0 0 0
-1000 0 0
-#2114
-fountain granite~
-a crumbling fountain~
-A crumbling granite fountain stands here, filled with stagnant water.~
-~
-25 0 0
-0 0 0 0
-1 0 0
-#2115
-tree dead fall~
-a large dead tree~
-A giant tree has fallen here, blocking your way to the east.~
-~
-12 262144 0
-0 0 0 0
-1 0 0
-#2116
-glass coffin~
-Anastacia's glass coffin~
-A crystal clear coffin made of glass lies upon a platform of swirled marble.~
-~
-15 0 0
-2 0 0 0
-1 0 0
-#2117
-petals rose bed~
-a bed of scattered white rose petals~
-Thousands of white rose petals lay here, a floral bed of scented softness.~
-~
-13 262144 0
-0 0 0 0
-2 0 0
-#2118
-lily flower~
-a large white lily~
-A large white flower grows along the earth.~
-~
-13 262144 16385
-0 0 0 0
-1 0 0
-A
-12 15
-#2119
-bell brass cracked rope~
-a shriveled rope attached to a bell~
-A large brass bell hangs from the ceiling, suspended from a rotten wooden beam.~
-~
-37 524288 0
-0 0 0 0
-1000 0 0
-> push_prog 100~
-mpasound The mournful toll of a bell announces the death of another soul.
-mpecho The mournful toll of a bell announces the death of another soul.
-~
-> pull_prog 100~
-mpasound The loud bell cries out for those lost to this world.
+#OBJECT
+Vnum     2102
+Keywords shawl black~
+Type     armor~
+Short    a black woolen shawl~
+Long     A mourner's shawl lays here in a crumpled pile.~
+Flags    dark~
+WFlags   take body~
+Values   5 4 0 0 0 0
+Stats    4 840 84 0 0
+Affect       -1 -1 -3 17 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2103
+Keywords gravedigger spade shovel~
+Type     weapon~
+Short    a gravedigger's spade~
+Long     A rusty gravedigger's shovel has been stuck into the ground.~
+Flags    metal~
+WFlags   take wield~
+Values   0 2 7 4 0 0
+Stats    9 900 90 0 0
+Affect       -1 -1 -5 17 0
+Affect       -1 -1 1 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2104
+Keywords headstone plaque~
+Type     armor~
+Short    a headstone's stolen plaque~
+Long     Stolen from a headstone, a brass plaque has been dropped here.~
+Flags    metal~
+WFlags   take shield~
+Values   4 4 0 0 0 0
+Stats    5 540 54 0 0
+Affect       -1 -1 1 1 0
+Affect       -1 -1 -1 25 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2105
+Keywords crucifix wooden cross~
+Type     wand~
+Short    a shattered crucifix~
+Long     An old wooden crucifix lays here, shattered into several pieces.~
+Flags    hum~
+WFlags   take hold~
+Values   11 3 3 -1 0 0
+Stats    1 300 30 0 0
+Spells   'dispel evil'
+#ENDOBJECT
+
+#OBJECT
+Vnum     2106
+Keywords chisel rusted~
+Type     weapon~
+Short    a graverobber's chisel~
+Long     A rusty chisel has been dropped here.~
+Flags    dark metal~
+WFlags   take wield~
+Values   0 7 2 11 0 0
+Stats    3 354 35 0 0
+Affect       -1 -1 -6 17 0
+Affect       -1 -1 4 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2107
+Keywords slippers mourner black~
+Type     armor~
+Short    black pair of slippers caked with mud~
+Long     A pair of black slippers are here covered in mud.~
+Flags    dark~
+WFlags   take feet~
+Values   3 0 0 0 0 0
+Stats    3 760 76 0 0
+Affect       -1 -1 5 12 0
+Affect       -1 -1 1 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2108
+Keywords bible~
+Type     staff~
+Short    a preacher's bible~
+Long     A tattered old bible lays on the ground gathering dust.~
+Flags    glow magic bless antievil~
+WFlags   take hold~
+Values   6 2 2 -1 0 0
+Stats    1 1000 100 0 0
+Spells   'fly'
+#ENDOBJECT
+
+#OBJECT
+Vnum     2109
+Keywords gold bracelet~
+Type     armor~
+Short    Arabella's golden bracelet~
+Long     Arabella's shiny gold bracelet lays twinklink brightly on the ground.~
+Flags    bless metal~
+WFlags   take arms~
+Values   2 0 0 0 0 0
+Stats    2 500 50 0 0
+Affect       -1 -1 1 1 0
+Affect       -1 -1 5 13 0
+Affect       -1 -1 -5 17 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2110
+Keywords cane widow ebony~
+Type     weapon~
+Short    a widow's cane~
+Long     A shiny black ebony cane rests on the ground.~
+Flags    dark~
+WFlags   take wield~
+Values   0 1 12 7 0 0
+Stats    3 675 67 0 0
+Affect       -1 -1 40 14 0
+Affect       -1 -1 4 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2111
+Keywords ring diamond Thomas~
+Type     armor~
+Short    a golden ring encrusted with diamonds~
+Long     A small, glittering diamond ring lays on the ground, sparkling brightly.~
+Flags    glow~
+WFlags   take finger~
+Values   4 0 0 0 0 0
+Stats    1 10000 1000 0 0
+Affect       -1 -1 20 12 0
+Affect       -1 -1 10 13 0
+Affect       -1 -1 1 1 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2112
+Keywords gloves skin chunk~
+Type     armor~
+Short    gloves of rotten flesh~
+Long     A leathery chunk of flesh is here decaying in a pool of blood.~
+Flags    organic~
+WFlags   take hands~
+Values   -15 0 0 0 0 0
+Stats    1 2000 200 0 0
+Affect       -1 -1 -15 12 0
+Affect       -1 -1 -10 13 0
+Affect       -1 -1 5 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2113
+Keywords pine coffin~
+Type     furniture~
+Short    Thomas' pine coffin~
+Long     An old, moldy pine box lays here, broken in several places.~
+Flags    organic~
+Values   0 0 0 0 0 0
+Stats    1000 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2114
+Keywords fountain granite~
+Type     fountain~
+Short    a crumbling fountain~
+Long     A crumbling granite fountain stands here, filled with stagnant water.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2115
+Keywords tree dead fall~
+Type     furniture~
+Short    a large dead tree~
+Long     A giant tree has fallen here, blocking your way to the east.~
+Flags    organic~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2116
+Keywords glass coffin~
+Type     container~
+Short    Anastacia's glass coffin~
+Long     A crystal clear coffin made of glass lies upon a platform of swirled marble.~
+Values   2 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2117
+Keywords petals rose bed~
+Type     trash~
+Short    a bed of scattered white rose petals~
+Long     Thousands of white rose petals lay here, a floral bed of scented softness.~
+Flags    organic~
+Values   0 0 0 0 0 0
+Stats    2 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2118
+Keywords lily flower~
+Type     trash~
+Short    a large white lily~
+Long     A large white flower grows along the earth.~
+Flags    organic~
+WFlags   take hold~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+Affect       -1 -1 15 12 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2119
+Keywords bell brass cracked rope~
+Type     lever~
+Short    a shriveled rope attached to a bell~
+Long     A large brass bell hangs from the ceiling, suspended from a rotten wooden beam.~
+Flags    metal~
+Values   0 0 0 0 0 0
+Stats    1000 0 0 0 0
+#MUDPROG
+Progtype  pull_prog~
+Arglist   100~
+Comlist   mpasound The loud bell cries out for those lost to this world.
 mpecho The loud bell cries out for those lost to this world.
 ~
-|
-#2120
-veil black~
-a thin black veil~
-A ragged black veil has been tossed here.~
-~
-9 4 131073
-4 4 0 0
-5 970 97
-A
-17 -5
-A
-4 1
-#2121
-swirled headstone~
-a swirled black marble headstone~
-A swirled marble headstone lays on its side, sinking in the earth.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2122
-rugged cross~
-old rugged cross~
-A splintered old cross stands here, entangled in vines.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2123
-piles corpse limbs~
-mangled limbs and bloody corpses~
-Several piles of decapitated corpses and mangled limbs litter the ground.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2124
-corpse suicide rope~
-decaying corpse hanging from a rope~
-Dangling from an old rotten rope, a decaying corpse sways in the wind.~
-~
-12 262144 0
-0 0 0 0
-1 0 0
-#2125
-headstone flowered preacher~
-a preacher's headstone~
-Crumbly, dead flowers lay decaying at the base of a dull black headstone.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2126
-crushed corpse stone~
-fallen headstone~
-A large headstone lays on the ground, resting at a strange angle.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2127
-withered old oak tree~
-a withered old oak tree~
-A withered old oak tree now lays on its side, decaying in the rains.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2128
-statue beheaded~
-a beheaded statue~
-A grisly statue caked in blood stands before you.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-#2129
-statue gargoyle~
-statue of a woman~
-A statue, well worn and eroded, stands here dripping blood.~
-~
-12 262144 0
-0 0 0 0
-1 0 0
-#2150
-border object~
-a newly created border object~
-Some god dropped a newly created border object here.~
-~
-13 1073741824 0
-0 0 0 0
-1 0 0
-#0
+#ENDPROG
 
+#MUDPROG
+Progtype  push_prog~
+Arglist   100~
+Comlist   mpasound The mournful toll of a bell announces the death of another soul.
+mpecho The mournful toll of a bell announces the death of another soul.
+~
+#ENDPROG
 
-#ROOMS
-#2101
-The Broken, Uneven Grounds~
-Once inside the entrance, you see the hazy fog start to settle on the
+#ENDOBJECT
+
+#OBJECT
+Vnum     2120
+Keywords veil black~
+Type     armor~
+Short    a thin black veil~
+Long     A ragged black veil has been tossed here.~
+Flags    dark~
+WFlags   take eyes~
+Values   4 4 0 0 0 0
+Stats    5 970 97 0 0
+Affect       -1 -1 -5 17 0
+Affect       -1 -1 1 4 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2121
+Keywords swirled headstone~
+Type     furniture~
+Short    a swirled black marble headstone~
+Long     A swirled marble headstone lays on its side, sinking in the earth.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2122
+Keywords rugged cross~
+Type     furniture~
+Short    old rugged cross~
+Long     A splintered old cross stands here, entangled in vines.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2123
+Keywords piles corpse limbs~
+Type     furniture~
+Short    mangled limbs and bloody corpses~
+Long     Several piles of decapitated corpses and mangled limbs litter the ground.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2124
+Keywords corpse suicide rope~
+Type     furniture~
+Short    decaying corpse hanging from a rope~
+Long     Dangling from an old rotten rope, a decaying corpse sways in the wind.~
+Flags    organic~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2125
+Keywords headstone flowered preacher~
+Type     furniture~
+Short    a preacher's headstone~
+Long     Crumbly, dead flowers lay decaying at the base of a dull black headstone.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2126
+Keywords crushed corpse stone~
+Type     furniture~
+Short    fallen headstone~
+Long     A large headstone lays on the ground, resting at a strange angle.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2127
+Keywords withered old oak tree~
+Type     furniture~
+Short    a withered old oak tree~
+Long     A withered old oak tree now lays on its side, decaying in the rains.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2128
+Keywords statue beheaded~
+Type     furniture~
+Short    a beheaded statue~
+Long     A grisly statue caked in blood stands before you.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2129
+Keywords statue gargoyle~
+Type     furniture~
+Short    statue of a woman~
+Long     A statue, well worn and eroded, stands here dripping blood.~
+Flags    organic~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     2150
+Keywords border object~
+Type     trash~
+Short    a newly created border object~
+Long     Some god dropped a newly created border object here.~
+Flags    prototype~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#ROOM
+Vnum     2101
+Name     The Broken, Uneven Grounds~
+Sector   city~
+Flags    dark~
+Desc     Once inside the entrance, you see the hazy fog start to settle on the
 ground, causing you to stumble over the uneven soil beneath your feet.
 Several broken twigs lay scattered on the rotten earth, crackling as
 you continue through the haze-enshrouded cemetery.  Mossy stones cause
@@ -569,34 +778,45 @@ the ghoulish creatures which burrow through the grounds, searching for
 fresh new corpses that lay buried inside their wooden boxes like well-
 prepared banquet tables before their fiendish devourers.
 ~
-0 1 1
-D1
-The graves lay this way, hoping that you will be their occupant.
+#EXIT
+Direction east~
+ToRoom    2102
+Desc      The graves lay this way, hoping that you will be their occupant.
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2172
+Desc      The path becomes smoother.
 ~
-0 -1 2102
-D3
-The path becomes smoother.
-~
-~
-0 -1 2172
-R M 0 2110 4 2101
-  R G 1 2103 1
-  R E 1 2101 1 5
-E
-twigs~
-Twisted brown twigs lay dead at your feet, blown away from the fingers
+#ENDEXIT
+
+Reset M 0 2110 4 2101
+  Reset G 1 2103 1
+  Reset E 1 2101 1 5
+#EXDESC
+ExDescKey    twigs~
+ExDesc       Twisted brown twigs lay dead at your feet, blown away from the fingers
 of the tree that stands at the entrance.
 ~
-E
-stones~
-Caused by the many rains that drench the area, several mossy stones
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    stones~
+ExDesc       Caused by the many rains that drench the area, several mossy stones
 scatter the grounds, covered in the slippery green carpet-like mold.
 ~
-S
-#2102
-Unholy Grounds of the Dead~
-Trampling slowly through the cemetery, you find yourself standing at the
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2102
+Name     Unholy Grounds of the Dead~
+Sector   city~
+Flags    dark~
+Desc     Trampling slowly through the cemetery, you find yourself standing at the
 beginning of the many graves of the former dwellers of the land.  Hastily
 buried by uncaring gravediggers, many corpses now protrude from the earth,
 unwilling to accept their own fatalities, grotesquely twisted and mangled
@@ -606,37 +826,50 @@ their broken coffin lids cracked and broken away.  Several statues, their
 faces worn away to horrid stumps by the rains and the wind, stand as
 mangled monuments tothe very gods who stole the lives of those buried here.
 ~
-0 1 1
-D1
-More graves await you...
+#EXIT
+Direction east~
+ToRoom    2103
+Desc      More graves await you...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2101
+Desc      Darkness dissipates slightly.
 ~
-0 -1 2103
-D3
-Darkness dissipates slightly.
+#ENDEXIT
+
+#EXIT
+Direction southeast~
+ToRoom    2109
+Desc      Eternal death awaits...
 ~
-~
-0 -1 2101
-D8
-Eternal death awaits...
-~
-~
-0 -1 2109
-E
-corpses~
-Sloppily buried in shallow graves, several corpses lay beneath the earth.
+#ENDEXIT
+
+#EXDESC
+ExDescKey    corpses~
+ExDesc       Sloppily buried in shallow graves, several corpses lay beneath the earth.
 Twisted arms and mangled legs lay half buried, left to be chewed by
 scavengers in the cemetery.
 ~
-E
-statues~
-Statues of the gods stand here - their faces worn away to fiendish
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    statues~
+ExDesc       Statues of the gods stand here - their faces worn away to fiendish
 mutations that almost resemble gargoyles.
 ~
-S
-#2103
-An Unkempt Grave~
-Like most of the graves around you, the one before you lays blanketed in
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2103
+Name     An Unkempt Grave~
+Sector   city~
+Flags    dark~
+Desc     Like most of the graves around you, the one before you lays blanketed in
 a brown, dead shroud of weeds.  The broken footstone, sunken deep into
 the earth, crumbles to the touch as you reach down to its inscription.
 Sunken patches of ground cover the plot, causing you to wend and move
@@ -646,46 +879,59 @@ leg as if to pull you deep under the earth to a horrible death.  Tearing
 yourself from its grasp, you move quickly forward in hopes that you will
 soon be away from this terrifying nightmare.
 ~
-0 1 1
-D1
-The darkness continues...
+#EXIT
+Direction east~
+ToRoom    2104
+Desc      The darkness continues...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2110
+Desc      The foggy darkness continues...
 ~
-0 -1 2104
-D2
-The foggy darkness continues...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2102
+Desc      The darkness continues...
 ~
+#ENDEXIT
+
+Reset M 0 2107 12 2103
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+Reset M 0 2102 12 2103
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset M 0 2101 4 2103
+  Reset E 1 2103 1 16
+  Reset E 1 2101 1 5
+#EXDESC
+ExDescKey    footstone~
+ExDesc       This grey marble stone lays sunken into the earth, crumbling to the touch.
 ~
-0 -1 2110
-D3
-The darkness continues...
-~
-~
-0 -1 2102
-R M 0 2107 12 2103
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-R M 0 2102 12 2103
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R M 0 2101 4 2103
-  R E 1 2103 1 16
-  R E 1 2101 1 5
-E
-footstone~
-This grey marble stone lays sunken into the earth, crumbling to the touch.
-~
-E
-hand~
-Rotting patches of flesh have fallen away to reveal the white skeletal
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    hand~
+ExDesc       Rotting patches of flesh have fallen away to reveal the white skeletal
 bones of this hand.
 ~
-S
-#2104
-The Coffin of Thomas~
-Wandering through the darkness, your heart jumps as you find an old
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2104
+Name     The Coffin of Thomas~
+Sector   city~
+Flags    dark~
+Desc     Wandering through the darkness, your heart jumps as you find an old
 pine box laying broken wide open on the ground before you.  Shattered and
 splintered, the lid lies strewn in several pieces, left to rot in the cold
 rains like a pile of moldy garbage disposed by a vagrant. Looking into the
@@ -697,38 +943,47 @@ markings left by countless thieves scavaging for anything of value.  A
 single dead and decaying rose rests in Thomas' hands, tied carefully with
 a faded red ribbon which attaches a solemn note.
 ~
-0 1 1
-D1
-The darkness continues...
+#EXIT
+Direction east~
+ToRoom    2105
+Desc      The darkness continues...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2111
+Desc      The fog grows thicker...
 ~
-0 -1 2105
-D2
-The fog grows thicker...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2103
+Desc      The darkness continues ...
 ~
-~
-0 -1 2111
-D3
-The darkness continues ...
-~
-~
-0 -1 2103
-R O 0 2113 1 2104
-E
-box~
-Inside the box lay the corpse of Thomas.  Though thoroughly decaying,
+#ENDEXIT
+
+Reset O 0 2113 1 2104
+#EXDESC
+ExDescKey    box~
+ExDesc       Inside the box lay the corpse of Thomas.  Though thoroughly decaying,
 it is obvious that Thomas was a young man, perhaps no more than 21,
 who's life was stolen long before it was time.
 ~
-E
-rose~
-A single rose, its lovely red blossoms long withered away leaving
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    rose~
+ExDesc       A single rose, its lovely red blossoms long withered away leaving
 a long black thorny stem to rest in Thomas' hands, lays here with
 a faded note attached to it.
 ~
-E
-note~
-Thomas,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    note~
+ExDesc       Thomas,
  
 Though the gods have taken you from me before we were to be married,
 my heart will always remain with you.  In my darkest hours I find
@@ -739,10 +994,16 @@ you eternally until I too join you and we walk together.
                                 Eternal Love,
                                           Arabella
 ~
-S
-#2105
-The Fallen Headstone~
-Reeling from the things you have seen, you step quickly away in any
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2105
+Name     The Fallen Headstone~
+Sector   city~
+Flags    dark~
+Desc     Reeling from the things you have seen, you step quickly away in any
 direction that might lead you from this place.  Darkened mists grow
 thick now, causing you to almost miss the headstone before you that
 has fallen over on its side.  A grey fog encircles the stone, making
@@ -753,39 +1014,50 @@ horizontally in the black of night.  Along the stoney face, in the
 headstone's center, hangs a simple white plaque, muddy and worn and
 off-setting the dull black stone around it.
 ~
-0 1 1
-D1
-The fog gets thicker...
+#EXIT
+Direction east~
+ToRoom    2106
+Desc      The fog gets thicker...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2104
+Desc      More darkness continues...
 ~
-0 -1 2106
-D3
-More darkness continues...
-~
-~
-0 -1 2104
-R M 0 2102 12 2105
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R M 0 2101 4 2105
-  R E 1 2103 1 16
-  R E 1 2101 1 5
-R O 0 2121 1 2105
-E
-headstone~
-Caused by the rain-soaked, uneven grounds, this tombstone appears to have
+#ENDEXIT
+
+Reset M 0 2102 12 2105
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset M 0 2101 4 2105
+  Reset E 1 2103 1 16
+  Reset E 1 2101 1 5
+Reset O 0 2121 1 2105
+#EXDESC
+ExDescKey    headstone~
+ExDesc       Caused by the rain-soaked, uneven grounds, this tombstone appears to have
 fallen on its side.  Sinking deep into the earth, this tomstone probably
 has been laying here for many years, neglected by even the caretakers of
 the cemetary.  A white plaque is still legible on its face.
 ~
-E
-plaque~
-Looking at the plaque, you see only the name 'Thomas' inscribed on it.
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    plaque~
+ExDesc       Looking at the plaque, you see only the name 'Thomas' inscribed on it.
 ~
-S
-#2106
-Darkened Grave of the Unknown Warrior~
-The word 'Unknown' catches your eye as you walk carefully through the mists.
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2106
+Name     Darkened Grave of the Unknown Warrior~
+Sector   city~
+Flags    dark~
+Desc     The word 'Unknown' catches your eye as you walk carefully through the mists.
 The black, rotten earth is soggy here, pitted in puddles of stagnant water
 that stand on the side of this unknown person.  Old, rusty swords, mounted
 forever on the headstone, cross themselves in dull, useless tribute to the
@@ -796,47 +1068,63 @@ tools.  The wind begins to blow slightly, bringing forth a slight odor of
 fresh death somewhere to the south of you, and raising your desires to
 leave this place, never to return.
 ~
-0 1 1
-D1
-The weeds grow thicker...
+#EXIT
+Direction east~
+ToRoom    2107
+Desc      The weeds grow thicker...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2113
+Desc      An old cross stands in the shadows of the cemetary...
 ~
-0 -1 2107
-D2
-An old cross stands in the shadows of the cemetary...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2105
+Desc      Darkness overcomes the fog...
 ~
-~
-0 -1 2113
-D3
-Darkness overcomes the fog...
-~
-~
-0 -1 2105
-R M 0 2107 12 2106
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-E
-headstone~
-Two old swords are mounted here, crossed in a rusty brown tribute to the
+#ENDEXIT
+
+Reset M 0 2107 12 2106
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+#EXDESC
+ExDescKey    headstone~
+ExDesc       Two old swords are mounted here, crossed in a rusty brown tribute to the
 warrior that lays beneath the rotting ground.  Though the weather has worn
 this stone down, you can still read the word 'Unknown' carved deep into the
 crumbly headstone.
 ~
-E
-swords~
-Two old swords, rusting to a crumbly dust, are mounted upon the tombstone,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    swords~
+ExDesc       Two old swords, rusting to a crumbly dust, are mounted upon the tombstone,
 crossed forever.
 ~
-> rand_prog 10~
-mpecho The muffled sound of a chisel against granite distracts you slightly...
+#ENDEXDESC
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho The muffled sound of a chisel against granite distracts you slightly...
 ~
-|
-S
-#2107
-An Overgrown Grave~
-In the midsts of the cemetery, not unlike many of the other plots in the
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2107
+Name     An Overgrown Grave~
+Sector   city~
+Flags    dark~
+Desc     In the midsts of the cemetery, not unlike many of the other plots in the
 area, lies this overgrown plot.  Tall, dried grass entangles your legs,
 causing your pace to slow as the long, brown, finger-like blades protrude
 from the earth.  Thick weeds curtain the old footstone which sinks deeper
@@ -844,41 +1132,54 @@ into the ground with each miserable rain, forcing the cold, lifeless mud
 to seep through the weeds and thickly cover the footstoney, burying any
 chance you may have in learning who is buried here.
 ~
-0 1 1
-D1
-A large tree now lays on its side...
+#EXIT
+Direction east~
+ToRoom    2108
+Desc      A large tree now lays on its side...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2106
+Desc      The thick fog almost chokes you...
 ~
-0 -1 2108
-D3
-The thick fog almost chokes you...
-~
-~
-0 -1 2106
-R M 0 2102 12 2107
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-E
-grass~
-The tall brown grass grows thick here, in a smothering unkept jungle,
+#ENDEXIT
+
+Reset M 0 2102 12 2107
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+#EXDESC
+ExDescKey    grass~
+ExDesc       The tall brown grass grows thick here, in a smothering unkept jungle,
 covering the grave beneath you.
 ~
-E
-footstone~
-The old grey tombstone, sinking deeper into the earth, lays cracked in
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    footstone~
+ExDesc       The old grey tombstone, sinking deeper into the earth, lays cracked in
 several places where the tall weeks have broken through, trying to entrap
 anything that may wander by.  Thick brown mud has oozed through the weeds,
 making it impossible to read anything that may be written upon the footstone.
 ~
-E
-mud~
-Dark brown mud, caused by the many rains, has oozed over the footstone,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    mud~
+ExDesc       Dark brown mud, caused by the many rains, has oozed over the footstone,
 making it impossible to read the epitaph written upon it.
 ~
-S
-#2108
-The Fallen Tree~
-Deeper into the cemetery, you find yourself in the presence of a rather
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2108
+Name     The Fallen Tree~
+Sector   city~
+Flags    dark~
+Desc     Deeper into the cemetery, you find yourself in the presence of a rather
 large tree, blocking your view of the old, rusty fencing that surrounds
 this hellish graveyard.  Long, dead branches, rotten and covered with a
 dark brown fungus, outstretch all around you, with their crooked, boney,
@@ -889,42 +1190,55 @@ later ravage the soil in search of anything that lay decaying on the
 ground.  A single worm, its belly partially exposed above the ground,
 tunnels through the earth, seeking new corpses to devour.
 ~
-0 1 1
-D3
-The weeds grow thicker...
+#EXIT
+Direction west~
+ToRoom    2107
+Desc      The weeds grow thicker...
 ~
+#ENDEXIT
+
+#EXIT
+Direction southeast~
+ToRoom    2115
+Desc      The misty fog almost chokes you...
 ~
-0 -1 2107
-D8
-The misty fog almost chokes you...
-~
-~
-0 -1 2115
-R M 0 2107 12 2108
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-R O 0 2115 1 2108
-E
-tree~
-This tree, possibly a sycamore, lies rotting on its side, fallen to its
+#ENDEXIT
+
+Reset M 0 2107 12 2108
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+Reset O 0 2115 1 2108
+#EXDESC
+ExDescKey    tree~
+ExDesc       This tree, possibly a sycamore, lies rotting on its side, fallen to its
 death.
 ~
-E
-beetles~
-Several black beetles, suddenly revealed upon lifting the branch.
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    beetles~
+ExDesc       Several black beetles, suddenly revealed upon lifting the branch.
 scurry quickly away, hiding from your light source.
 ~
-E
-worm~
-A fat brown worm, its belly undulating slowly downward, tunnels through
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    worm~
+ExDesc       A fat brown worm, its belly undulating slowly downward, tunnels through
 the soil to where ever its next grizzly meal may come from.
 ~
-S
-#2109
-The Death of a Child~
-A small pair of leather shoes dipped in brass, tarnished to a dull brown,
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2109
+Name     The Death of a Child~
+Sector   city~
+Flags    dark~
+Desc     A small pair of leather shoes dipped in brass, tarnished to a dull brown,
 adorn this small headstone hidden deep inside a dead mulberry bush planted
 long ago.  Remnants of a broken rattle lay scattered in a thousand pieces
 across the ground, shattered by thieves trampling through in search of the
@@ -934,21 +1248,28 @@ image of a child's face, now deformed by the tools of vandals into the
 sickening head of a mutilated wolf.  A tiny rosary, with several beads
 broken and cracked, lay covered in mud near the rattle's handle.
 ~
-0 1 1
-D1
-A lone wolf cries in the distance...
+#EXIT
+Direction east~
+ToRoom    2110
+Desc      A lone wolf cries in the distance...
 ~
+#ENDEXIT
+
+#EXIT
+Direction northwest~
+ToRoom    2102
+Desc      The ground becomes more uneven...
 ~
-0 -1 2110
-D7
-The ground becomes more uneven...
-~
-~
-0 -1 2102
-S
-#2110
-Uneven Grounds of the Mourned~
-Several small brown mounds, left behind by the many gophers tunneling
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2110
+Name     Uneven Grounds of the Mourned~
+Sector   city~
+Flags    dark~
+Desc     Several small brown mounds, left behind by the many gophers tunneling
 through the earth in their gruesome hunt to find a newly buried feast,
 litter the grounds here.  An eerie chill in the air sends shivers
 through your bones, and a lone wolf howls somewhere in the distance in
@@ -958,35 +1279,49 @@ buried here lay overturned on their sides by thieves savaging the area
 in search of any trinket that may be buried with the dead beneath the
 wretched earth at your feet.
 ~
-0 1 1
-D0
-giant tree now lays on its side...
+#EXIT
+Direction north~
+ToRoom    2103
+Desc      giant tree now lays on its side...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2111
+Desc      The grounds grow uneven...
 ~
-0 -1 2103
-D1
-The grounds grow uneven...
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2116
+Desc      A giant tree now lays on its side...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2109
+Desc      A small dead mulberry bush lay this way.
 ~
-0 -1 2111
-D2
-A giant tree now lays on its side...
+#ENDEXIT
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpecho The solemm howl of a wolf echoes in the distance...
 ~
-~
-0 -1 2116
-D3
-A small dead mulberry bush lay this way.
-~
-~
-0 -1 2109
-> rand_prog 5~
-mpecho The solemm howl of a wolf echoes in the distance...
-~
-|
-S
-#2111
-Darkened Grounds of the Dead~
-Travelling deeper into the cemetery, your throat starts to tighten as the
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2111
+Name     Darkened Grounds of the Dead~
+Sector   city~
+Flags    dark~
+Desc     Travelling deeper into the cemetery, your throat starts to tighten as the
 thick grey fog chokes you, bringing forth dark visions of death to your
 mind.  Deep brown puddles of mud, oozing in the uneven earth below you,
 pit the land to make each step you take through the graveyard a difficult
@@ -995,26 +1330,35 @@ small trees fallen to the ground, leaving behind their own brown rotting
 corpses of moldy bark and mangled limbs to shrivel in resignation to the
 lifeless existance within the rusty gates of this sickening place.
 ~
-0 1 1
-D0
-You barely make out a plain pine box laying on the ground...
+#EXIT
+Direction north~
+ToRoom    2104
+Desc      You barely make out a plain pine box laying on the ground...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2117
+Desc      Several twisted roots protrude above the soil of a grave...
 ~
-0 -1 2104
-D2
-Several twisted roots protrude above the soil of a grave...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2110
+Desc      Darkness unforgivingly blurs your vision...
 ~
-~
-0 -1 2117
-D3
-Darkness unforgivingly blurs your vision...
-~
-~
-0 -1 2110
-S
-#2112
-Within the Graveyard~
-Thick swirls of misty fog blanket the ground, smothering even the brown
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2112
+Name     Within the Graveyard~
+Sector   city~
+Flags    dark~
+Desc     Thick swirls of misty fog blanket the ground, smothering even the brown
 weeds beneath your feet, making for a difficult journey through the
 graveyard.  Many statues, their faces worn away to mangled stumps by the
 rains and the wind, stand throughout the cemetary as horrid monuments to
@@ -1022,24 +1366,31 @@ the gods that have stolen the lives of each person buried here within
 the muddy grounds.  Throughout the area a terrible stench permeates the
 air, arising from partially buried corpses rotting in the elements.
 ~
-0 1 1
-D1
-A tall wooden cross stands in the shadows of the cemetary...
+#EXIT
+Direction east~
+ToRoom    2113
+Desc      A tall wooden cross stands in the shadows of the cemetary...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2118
+Desc      A broken skull lays on the ground...
 ~
-0 -1 2113
-D2
-A broken skull lays on the ground...
-~
-~
-0 -1 2118
-R M 0 2101 4 2112
-  R E 1 2103 1 16
-  R E 1 2101 1 5
-S
-#2113
-The Old Rugged Cross~
-Blown by chilling winds, dried dead leaves lay in a rotten pile beneath a
+#ENDEXIT
+
+Reset M 0 2101 4 2112
+  Reset E 1 2103 1 16
+  Reset E 1 2101 1 5
+#ENDROOM
+
+#ROOM
+Vnum     2113
+Name     The Old Rugged Cross~
+Sector   city~
+Flags    dark~
+Desc     Blown by chilling winds, dried dead leaves lay in a rotten pile beneath a
 large wooden cross erected in the shadows of the unknown warrior's grave.
 Long smothering vines grow wild here - their many thorns digging into the
 holy symbol with a vengeance as they meander over its knotted surface in a
@@ -1050,27 +1401,36 @@ answered.  The ground is slippery here, causing you to fall before the
 cross, cutting your leg on a jagged branch severed from one of the skeletal
 trees inhabiting the wretched grounds of the graveyard.
 ~
-0 1 1
-D0
-You barely make out a tombstone through the fog...
+#EXIT
+Direction north~
+ToRoom    2106
+Desc      You barely make out a tombstone through the fog...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2114
+Desc      Branches litter the ground...
 ~
-0 -1 2106
-D1
-Branches litter the ground...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2112
+Desc      The odor of rotting corpses permeates the air...
 ~
-~
-0 -1 2114
-D3
-The odor of rotting corpses permeates the air...
-~
-~
-0 -1 2112
-R O 0 2122 1 2113
-S
-#2114
-The Twig-Covered Grave~
-The air grows cold as the winds begin to stir the leaves laying on the
+#ENDEXIT
+
+Reset O 0 2122 1 2113
+#ENDROOM
+
+#ROOM
+Vnum     2114
+Name     The Twig-Covered Grave~
+Sector   city~
+Flags    dark~
+Desc     The air grows cold as the winds begin to stir the leaves laying on the
 ground at your feet.  Large crooked branches, broken away by the winds,
 lay scattered across the graveyard like twisted skeletal arms violently
 ripped away from their corpses by some vicious beast.  The earth is
@@ -1081,21 +1441,28 @@ Just as horrid during the day, this graveyard's poorly kept condition
 enhances the fear you feel as you travel through it at night, causing
 you to want to leave this place as quickly as possible.
 ~
-0 1 1
-D1
-A rusty iron fence stands, enclosing the cemetary...
+#EXIT
+Direction east~
+ToRoom    2115
+Desc      A rusty iron fence stands, enclosing the cemetary...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2113
+Desc      A large cross stands silently in the mists...
 ~
-0 -1 2115
-D3
-A large cross stands silently in the mists...
-~
-~
-0 -1 2113
-S
-#2115
-Along the Wrought Iron Fence~
-Thick patches of fog strangle you as you move deeper into the area,
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2115
+Name     Along the Wrought Iron Fence~
+Sector   city~
+Flags    dark~
+Desc     Thick patches of fog strangle you as you move deeper into the area,
 causing you to step carefully through the tall vines entangling
 themselves around the old wrought-iron fence that surrounds the
 cemetary.  Your stomach retches as you step along bloody piles
@@ -1103,31 +1470,40 @@ of chewed human bones strewn across the ground amongst rotting
 human flesh savaged by wolves.  The ground is uneven here,
 causing you to rethink any ideas of travelling farther.
 ~
-0 1 1
-D2
-The wrought iron fence stretches farther in the distance...
+#EXIT
+Direction south~
+ToRoom    2120
+Desc      The wrought iron fence stretches farther in the distance...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2114
+Desc      A filthy grave lies covered with branches...
 ~
-0 -1 2120
-D3
-A filthy grave lies covered with branches...
+#ENDEXIT
+
+#EXIT
+Direction northwest~
+ToRoom    2108
+Desc      A large tree now lays on its side...
 ~
-~
-0 -1 2114
-D7
-A large tree now lays on its side...
-~
-~
-0 -1 2108
-R M 0 2107 12 2115
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-S
-#2116
-The Withered Old Tree~
-Like most of the other trees that used to grow mightily throughout the
+#ENDEXIT
+
+Reset M 0 2107 12 2115
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+#ENDROOM
+
+#ROOM
+Vnum     2116
+Name     The Withered Old Tree~
+Sector   city~
+Flags    dark~
+Desc     Like most of the other trees that used to grow mightily throughout the
 cemetery, this large oak now lays on its side, a lifeless corpse left
 to rot in the cold rains that plague the area.  Its once thick limbs
 now stretch outward in a mangled heap of fungus-covered branches,
@@ -1137,30 +1513,37 @@ beneath a wide, rotten trunk lined deeply by hungry termites which
 chew through its fleshy bark.  Forever abandoned to its own fate, the
 tree now blocks your way south.
 ~
-0 1 1
-D0
-A forlorn wolf howls in the distance...
+#EXIT
+Direction north~
+ToRoom    2110
+Desc      A forlorn wolf howls in the distance...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2117
+Desc      The thick, broken roots of the tree extend unto the east...
 ~
-0 -1 2110
-D1
-The thick, broken roots of the tree extend unto the east...
-~
-~
-0 -1 2117
-R M 0 2107 12 2116
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-R M 0 2102 12 2116
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R O 0 2127 1 2116
-S
-#2117
-Grave Beneath the Tree~
-The colds winds begin to pick up a little bit, easily blowing away the
+#ENDEXIT
+
+Reset M 0 2107 12 2116
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+Reset M 0 2102 12 2116
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset O 0 2127 1 2116
+#ENDROOM
+
+#ROOM
+Vnum     2117
+Name     Grave Beneath the Tree~
+Sector   city~
+Flags    dark~
+Desc     The colds winds begin to pick up a little bit, easily blowing away the
 thin wisps of fog that cover the ground, causing you to huddle closely to
 the black granite headstone before you, marking the grave of a tortured
 soul that has resigned its corpse.  Looking closely at the headstone, you
@@ -1170,30 +1553,42 @@ brass plaque mounted upon it.  Large twisted roots of a tree to the west
 extend beneath the ground, causing you to almost trip over them as they
 protrude through the rotten soil which now marks this grave.
 ~
-0 1 1
-D0
-The ground grows muddy, causing you to slow your pace...
+#EXIT
+Direction north~
+ToRoom    2111
+Desc      The ground grows muddy, causing you to slow your pace...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2121
+Desc      A muddy trail lays to the south...
 ~
-0 -1 2111
-D2
-A muddy trail lays to the south...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2116
+Desc      A withered old tree now lays withered on its side...
 ~
+#ENDEXIT
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho Cold damp winds begin to blow miserably through the graveyard...
 ~
-0 -1 2121
-D3
-A withered old tree now lays withered on its side...
-~
-~
-0 -1 2116
-> rand_prog 10~
-mpecho Cold damp winds begin to blow miserably through the graveyard...
-~
-|
-S
-#2118
-The Exhumed Grave~
-A dirty brown skull lies crushed almost beyond recognition on the ground
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2118
+Name     The Exhumed Grave~
+Sector   city~
+Flags    dark~
+Desc     A dirty brown skull lies crushed almost beyond recognition on the ground
 in front of a crumbling tombstone.  Your stomach churns as you look at
 this moldy grave resting within the confines of the rusty wrought-iron
 fence.  Giant black beetles crawl quickly across the ground, feeding
@@ -1204,19 +1599,24 @@ struggle for each breath while you examine the cracked headstone before
 you.  Newly exhumed from the grave beneath you, the skeletal corpse now
 lays scattered on the ground in a trail leading to the east.
 ~
-0 1 1
-D0
-The fog grows thicker...
+#EXIT
+Direction north~
+ToRoom    2112
+Desc      The fog grows thicker...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2119
+Desc      A trail of rotten old bones lay this way...
 ~
-0 -1 2112
-D1
-A trail of rotten old bones lay this way...
-~
-~
-0 -1 2119
-> entry_prog 40~
-if isimmort($n)
+#ENDEXIT
+
+#MUDPROG
+Progtype  entry_prog~
+Arglist   40~
+Comlist   if isimmort($n)
 or isnpc($n)
 else
   if mobinroom(2111) < 1
@@ -1229,11 +1629,16 @@ mpforce $n pray
   endif
 endif
 ~
-|
-S
-#2119
-Trail of Broken Bones~
-A wretched stench fills the air as you follow the path of broken bones
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2119
+Name     Trail of Broken Bones~
+Sector   city~
+Flags    dark~
+Desc     A wretched stench fills the air as you follow the path of broken bones
 laying on the ground in a trail that originates to the west.  Darkened
 pools of blood, oozing from several dismembered corpses scattered along
 the rotten earth, stain some of the bones, weakening your stomach as
@@ -1241,21 +1646,28 @@ you travel nervously along the path.  You gasp in horror as one hand,
 no longer attached to its body, reaches to grab your legs, causing your
 pace to quicken as you seek desperate escape from this ghastly place.
 ~
-0 1 1
-D2
-The trail of bloody, broken bones ends...
+#EXIT
+Direction south~
+ToRoom    2123
+Desc      The trail of bloody, broken bones ends...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2118
+Desc      A freshly exhumed grave lays this way...
 ~
-0 -1 2123
-D3
-A freshly exhumed grave lays this way...
-~
-~
-0 -1 2118
-S
-#2120
-Along the Wrought-Iron Fence~
-Travelling along the old rusty fence, you feel a sense of dread encompass
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2120
+Name     Along the Wrought-Iron Fence~
+Sector   city~
+Flags    dark~
+Desc     Travelling along the old rusty fence, you feel a sense of dread encompass
 your body.  Thick weeds choke the ground at your feet, smothering the earth
 in a mangled blanket of thorns and vines that twist upwardly through the
 rusty iron bars, blocking any view of the grounds that lay outside.  More
@@ -1264,21 +1676,28 @@ large chunks of flesh rotting slowly against the bones.  A gut-wrenching
 stench seems too common throughout the graveyard, making it dificult to
 stay here for very much longer.
 ~
-0 1 1
-D0
-The wrought iron fence stretches onward...
+#EXIT
+Direction north~
+ToRoom    2115
+Desc      The wrought iron fence stretches onward...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2125
+Desc      The fence seems to have toppled to the ground...
 ~
-0 -1 2115
-D2
-The fence seems to have toppled to the ground...
-~
-~
-0 -1 2125
-S
-#2121
-Trail of the Mourned~
-A cold chill sends shivers down your spine with each step you take as the
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2121
+Name     Trail of the Mourned~
+Sector   city~
+Flags    dark~
+Desc     A cold chill sends shivers down your spine with each step you take as the
 cold winds begin to howl ferociously through the graveyard.  The vile odor
 of decaying corpses and stagnant puddles of water chokes you, causing you
 to gasp slightly at every breath.  All traces of the thick shroud of fog
@@ -1287,21 +1706,28 @@ oozing mud which cakes your feet in a slippery mixture of dead leaves and
 thick brown slime.  Further to the southeast, you see several tombstones
 crumbling away on their sides, while others remain still upright.
 ~
-0 1 1
-D0
-A crumbling black headstone marks the grave of another soul...
+#EXIT
+Direction north~
+ToRoom    2117
+Desc      A crumbling black headstone marks the grave of another soul...
 ~
+#ENDEXIT
+
+#EXIT
+Direction southeast~
+ToRoom    2122
+Desc      A white marble cross lies on the ground, broken from its headstone...
 ~
-0 -1 2117
-D8
-A white marble cross lies on the ground, broken from its headstone...
-~
-~
-0 -1 2122
-S
-#2122
-Along the Trail of the Mourned~
-Farther along the darkened trail, you find yourself standing in front of
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2122
+Name     Along the Trail of the Mourned~
+Sector   city~
+Flags    dark~
+Desc     Farther along the darkened trail, you find yourself standing in front of
 an old, worn tombstone now turned on its side.  Worn with age and time,
 the muddy old headstone lies forgotten as it sinks deeper into the soil
 with each passing day.  Thick brown mud covers the stone in cold, slimy
@@ -1313,21 +1739,28 @@ separated from the marker by a violent kick from cruel graverobber's
 boot in an attempt to gain quicker access to the coffin buried beneath
 the soggy earth.  Several more tombstones lie towards the southeast.
 ~
-0 1 1
-D7
-The odor of rotting corpses fills the air...
+#EXIT
+Direction northwest~
+ToRoom    2121
+Desc      The odor of rotting corpses fills the air...
 ~
+#ENDEXIT
+
+#EXIT
+Direction southeast~
+ToRoom    2127
+Desc      Dismembered corpses lie scattered along the ground...
 ~
-0 -1 2121
-D8
-Dismembered corpses lie scattered along the ground...
-~
-~
-0 -1 2127
-S
-#2123
-The Trail Ends~
-A thick odor of death and decay overwhelms you as you stand before the
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2123
+Name     The Trail Ends~
+Sector   city~
+Flags    dark~
+Desc     A thick odor of death and decay overwhelms you as you stand before the
 remains of several bodies.  Exhumed from their earthly graves here inside
 the ghastly confines of the fence surrounding the cemetery, corpses have
 been unceremoniously dumped, left to rot in the vicious elements plaguing
@@ -1337,20 +1770,25 @@ partially chewed away by voracious wolves.  Still other corpses, decaying
 away to reveal white bones, lay completely intact among the mounds of
 cadavers at your feet.
 ~
-0 1 1
-D0
-A trail of bones leads off into the distance...
+#EXIT
+Direction north~
+ToRoom    2119
+Desc      A trail of bones leads off into the distance...
 ~
-~
-0 -1 2119
-R M 0 2102 12 2123
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R O 0 2123 1 2123
-S
-#2124
-The Broken Old Fountain~
-The lonely call of a wolf drifts through the wind, sending a shiver down
+#ENDEXIT
+
+Reset M 0 2102 12 2123
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset O 0 2123 1 2123
+#ENDROOM
+
+#ROOM
+Vnum     2124
+Name     The Broken Old Fountain~
+Sector   city~
+Flags    dark~
+Desc     The lonely call of a wolf drifts through the wind, sending a shiver down
 your spine as you travel through the dark graveyard.  Dried brown weeds
 are common here, growing tall around the dirty white cracked fountain
 that stands before you, almost hiding the old granite fountain from view.
@@ -1359,17 +1797,22 @@ decomposing in the murky stagnant water that fills the waterbowl, adding
 to the already stale odor that fills the air and causing your stomach to
 churn miserably in protest of the vile stench that surrounds you.
 ~
-0 1 1
-D1
-A rusty wrought iron fence has fallen...
+#EXIT
+Direction east~
+ToRoom    2125
+Desc      A rusty wrought iron fence has fallen...
 ~
-~
-0 -1 2125
-R O 0 2114 1 2124
-S
-#2125
-The Fallen Fence~
-The winds begin to pick up as the thick grey fog is blown away, leaving
+#ENDEXIT
+
+Reset O 0 2114 1 2124
+#ENDROOM
+
+#ROOM
+Vnum     2125
+Name     The Fallen Fence~
+Sector   city~
+Flags    dark~
+Desc     The winds begin to pick up as the thick grey fog is blown away, leaving
 soil black as night newly exposed beneath your feet.  The pungent odor
 of death, still noticeable in the cold night winds, lingers heavily,
 filling your lungs with the vile stench common throughout this area.
@@ -1378,21 +1821,28 @@ broken by thieves in their feverish attempts to plunder treasures
 buried beneath the earth.  Twigs crackle loudly beneath your feet with
 each step you take through the unkept grounds.
 ~
-0 1 1
-D0
-The rusty fence stretches onward...
+#EXIT
+Direction north~
+ToRoom    2120
+Desc      The rusty fence stretches onward...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2124
+Desc      A broken fountain stands filled with stagnant water...
 ~
-0 -1 2120
-D3
-A broken fountain stands filled with stagnant water...
-~
-~
-0 -1 2124
-S
-#2126
-Mournful Death Trail~
-The cold winds grow eerily calm, allowing fog to enshround the headstone
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2126
+Name     Mournful Death Trail~
+Sector   city~
+Flags    dark~
+Desc     The cold winds grow eerily calm, allowing fog to enshround the headstone
 which now lies slumped at a strange angle, causing an unnatural calmness
 to overcome you as you travel within the unholy confines of this graveyard.
 Getting a closer look at the tombstone, you recoil at the sight of a bloody
@@ -1401,22 +1851,29 @@ Large chunks of flesh from the corpse are missing, chewed away by hungry
 scavengers, revealing rotten greay bones beneath shrivelled and decaying
 skin.  Fearing your own safety, you turn to flee from the morbid trail.
 ~
-0 1 1
-D2
-A barren headstone stands surrounded by thick whisps of fog...
+#EXIT
+Direction south~
+ToRoom    2131
+Desc      A barren headstone stands surrounded by thick whisps of fog...
 ~
+#ENDEXIT
+
+#EXIT
+Direction northeast~
+ToRoom    2127
+Desc      Dismembered corpses lay decaying along the trail...
 ~
-0 -1 2131
-D6
-Dismembered corpses lay decaying along the trail...
-~
-~
-0 -1 2127
-R O 0 2126 1 2126
-S
-#2127
-The Mournful Trail Continues~
-Your stomach tightens as you travel alongside a small winding path of
+#ENDEXIT
+
+Reset O 0 2126 1 2126
+#ENDROOM
+
+#ROOM
+Vnum     2127
+Name     The Mournful Trail Continues~
+Sector   city~
+Flags    dark~
+Desc     Your stomach tightens as you travel alongside a small winding path of
 crumbling tombstones that mark the rotting graves within the confines
 of the cemetery.  Thick strips of human flesh decay slowly, hanging
 in shreds from dismembered corpses scattered throughout the area,
@@ -1425,21 +1882,28 @@ frenzy upon the vile remains of the exhumed bodies.  Turning away from
 the horrid sight, you find yourself whispering a silent prayer to the
 gods, begging them to remove you from this horrific ground.
 ~
-0 1 1
-D7
-A white marble cross lay broken away from the headstone...
+#EXIT
+Direction northwest~
+ToRoom    2122
+Desc      A white marble cross lay broken away from the headstone...
 ~
+#ENDEXIT
+
+#EXIT
+Direction southwest~
+ToRoom    2126
+Desc      A tombstone lays on its side, atop a decaying corpse...
 ~
-0 -1 2122
-D9
-A tombstone lays on its side, atop a decaying corpse...
-~
-~
-0 -1 2126
-S
-#2128
-The Crypts~
-An unusual silence eerily surrounds you, clouding your mind with thoughts
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2128
+Name     The Crypts~
+Sector   inside~
+Flags    dark~
+Desc     An unusual silence eerily surrounds you, clouding your mind with thoughts
 of despair as you step deeper into the mausoleum.  Weakness gnaws at you,
 and you fight the urge to flee in terror from the sight of broken crypts
 clawed violently by some hideous creature seeking to devour corpses that
@@ -1449,21 +1913,28 @@ stomach as you notice a bloody leg, covered in maggots, hanging lifeless
 from one of the cells along the northern wall.  Still another crypt, its
 contents ripped from its stone confines, leaks thickened brown blood.
 ~
-0 1 0
-D1
-Still more crypts stand before you...
+#EXIT
+Direction east~
+ToRoom    2129
+Desc      Still more crypts stand before you...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2133
+Desc      Puddles of dried blood stains streak the floor...
 ~
-0 -1 2129
-D2
-Puddles of dried blood stains streak the floor...
-~
-~
-0 -1 2133
-S
-#2129
-Beyond the Shadow of Death~
-Still more crypts stand before you as you walk alongside the north side
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2129
+Name     Beyond the Shadow of Death~
+Sector   inside~
+Flags    dark~
+Desc     Still more crypts stand before you as you walk alongside the north side
 of the mausoleum.  Splintered almost beyond recognition, broken coffins
 ripped from the crypts lie at your feet causing you to stumble
 precariously as you back away from the visions of horror before you.  A
@@ -1474,42 +1945,59 @@ torso for a later time when hunger again strikes the belly of the beast.
 Feeling an urge to flee, your hands begin to tremble as you hear a growl
 resonate from somewhere below the crypt.
 ~
-0 1 0
-D2
-A thick heavy stench chokes you breathless...
+#EXIT
+Direction south~
+ToRoom    2134
+Desc      A thick heavy stench chokes you breathless...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2128
+Desc      Several crypts stand broken open...
 ~
-0 -1 2134
-D3
-Several crypts stand broken open...
-~
-~
-0 -1 2128
-D5
-~
-grate~
-2098187 -1 2130
-R D 0 2129 5 1
-E
-floor bones corpse body torso~
-Scavaging through the broken bones, you find a large puddle of a thick
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    2130
+Keywords  grate~
+Flags     isdoor closed secret nopassdoor searchable~
+#ENDEXIT
+
+Reset D 0 2129 5 1
+#EXDESC
+ExDescKey    floor bones corpse body torso~
+ExDesc       Scavaging through the broken bones, you find a large puddle of a thick
 bloody liquid.  Its streaks stretch all the way to a small rusty grate
 hidden deep beneath the moldy remains of corpses that have been torn
 from their darkened crypts, and away from their final death beds.
 ~
-E
-grate~
-Twisted and scarred metal bars form the grate, beyond which comes
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    grate~
+ExDesc       Twisted and scarred metal bars form the grate, beyond which comes
 not a sight or sound...
 ~
-> rand_prog 10~
-mpecho A rumbling growl bellows from the ground below...
+#ENDEXDESC
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho A rumbling growl bellows from the ground below...
 ~
-|
-S
-#2130
-Beneath the Mausoleum~
-You find yourself surrounded by darkness.  A sudden, throaty growl echos
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2130
+Name     Beneath the Mausoleum~
+Sector   inside~
+Flags    dark~
+Desc     You find yourself surrounded by darkness.  A sudden, throaty growl echos
 almost deafeningly as you step deeper into the tunnel, sending surges of
 adrenaline through your veins.  Rusty, brown blood flows thick here,
 covering the floor in splotches of death, marking the trail taken by the
@@ -1520,22 +2008,31 @@ its eyes still bulging from the realization that death drew near, lies
 on one of the many piles of discarded body parts, forgotten by the beast
 in its frenzy to feed upon less boney pieces of its victim.
 ~
-0 1 0
-D1
-Several chewed corpses lay on the floor...
+#EXIT
+Direction east~
+ToRoom    2135
+Desc      Several chewed corpses lay on the floor...
 ~
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    2129
+Desc      A quick escape into the mausoleum is your only hope...
 ~
-0 -1 2135
-D4
-A quick escape into the mausoleum is your only hope...
-~
-grate~
-1027 -1 2129
-R D 0 2130 4 1
-S
-#2131
-The Barren Headstone~
-The murky grey fog swirls around your feet as you step across the slippery
+Keywords  grate~
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+Reset D 0 2130 4 1
+#ENDROOM
+
+#ROOM
+Vnum     2131
+Name     The Barren Headstone~
+Sector   city~
+Flags    dark~
+Desc     The murky grey fog swirls around your feet as you step across the slippery
 weeds choking the ground before the large granite stone that marks yet
 another victim fallen to the skeletal hands of death.  Thick piles of dead
 leaves, blown against the cold headstone, frame a small vase of flowers;
@@ -1544,25 +2041,35 @@ masses, now carelessly thrown upon the ground by a long forgotten relative.
 Along the top of the stone you see tool markings left behind by thieves in
 their quick haste to remove whatever it was that once adorned it.
 ~
-0 1 1
-D0
-A tombstone lays on its side atop a decaying corpse...
+#EXIT
+Direction north~
+ToRoom    2126
+Desc      A tombstone lays on its side atop a decaying corpse...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2132
+Desc      A thick blanket of fog hovers over the ground...
 ~
-0 -1 2126
-D1
-A thick blanket of fog hovers over the ground...
+#ENDEXIT
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho The thick swirls of fog smothers the ground...
 ~
-~
-0 -1 2132
-> rand_prog 10~
-mpecho The thick swirls of fog smothers the ground...
-~
-|
-S
-#2132
-The Darkened Cemetary~
-Thick brambles cover the ground as you travel forward, leaving behind any
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2132
+Name     The Darkened Cemetary~
+Sector   city~
+Flags    dark~
+Desc     Thick brambles cover the ground as you travel forward, leaving behind any
 hopes of making it out alive.  A thick misty fog blankets the area, hiding
 holes in the ground left by earth creatures tunneling through the soil in
 search of their meals of rotting flesh and decomposing corpses left behind.
@@ -1572,47 +2079,62 @@ forgotten time when this area was filled with life.  Broken bones lie
 entangled in the weeds of some graves while others lay covered with
 broken slabs of stone.
 ~
-0 1 1
-D2
-Thick armlike vines grow thickly, entangling your feet...
+#EXIT
+Direction south~
+ToRoom    2137
+Desc      Thick armlike vines grow thickly, entangling your feet...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2131
+Desc      A barren headstone stands here, cluttered with dead flowers...
 ~
-0 -1 2137
-D3
-A barren headstone stands here, cluttered with dead flowers...
-~
-~
-0 -1 2131
-E
-fog~
-A damp thick fog surrounds you, causing you to stumble across the
+#ENDEXIT
+
+#EXDESC
+ExDescKey    fog~
+ExDesc       A damp thick fog surrounds you, causing you to stumble across the
 uneven grounds before you, adding an evil mist to the already hellish
 graveyard that surrounds you.
 ~
-E
-holes~
-Mounds of rotting earth lay at your feet, leaving the trails of a
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    holes~
+ExDesc       Mounds of rotting earth lay at your feet, leaving the trails of a
 hungry animal marked clearly.
 ~
-E
-tombstones~
-Tombstones scatter the area, standing as broken monuments of the
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    tombstones~
+ExDesc       Tombstones scatter the area, standing as broken monuments of the
 dwellers of the city that used to surround the city.  Though many of
 the names on these tombstones are legible, most remain worn away by
 the winds and the rains that pound the cemetary.
 ~
-E
-bones~
-Brown, rotten bones scatter the ground - some of them chewed by the
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    bones~
+ExDesc       Brown, rotten bones scatter the ground - some of them chewed by the
 different scavengers that dwell in the earth below.  Lying underneath
 broken, flat, stoney slabs, still other bones seem to be chipped and
 carved to form some sort of tool used to break into the many graves
 that are here.
 ~
-S
-#2133
-Hall of Death and Destruction~
-Once inside the mausoleum, a sick feeling fills your stomach as you gaze
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2133
+Name     Hall of Death and Destruction~
+Sector   inside~
+Flags    dark~
+Desc     Once inside the mausoleum, a sick feeling fills your stomach as you gaze
 around.  Dried bloodstains streak the walls, marking some violent struggle
 which leaves you with the horrid revelation that something else has
 visited this place.  Strewn about the floor are piles of fallen rubble
@@ -1622,29 +2144,39 @@ their blood still dripping from the gashes left by teeth marks of a
 carnivourous beast.  Wanting to flee, you turn to run away, only to trip
 over a splintered coffin visciously ripped apart from one of the crypts.
 ~
-0 1 0
-D0
-An unusual silence fills the air...
+#EXIT
+Direction north~
+ToRoom    2128
+Desc      An unusual silence fills the air...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2134
+Desc      Cracked walls allow just enough light in, giving this place an eerie glow...
 ~
-0 -1 2128
-D1
-Cracked walls allow just enough light in, giving this place an eerie glow...
-~
-~
-0 -1 2134
-D2
-~
-gate~
-1027 -1 2138
-R M 0 2102 12 2133
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R D 0 2133 2 1
-S
-#2134
-Within the Decaying Mausoleum~
-Stepping deeper into the mausoleum, you find yourself gripped in the
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2138
+Keywords  gate~
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+Reset M 0 2102 12 2133
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset D 0 2133 2 1
+#ENDROOM
+
+#ROOM
+Vnum     2134
+Name     Within the Decaying Mausoleum~
+Sector   inside~
+Flags    dark~
+Desc     Stepping deeper into the mausoleum, you find yourself gripped in the
 terrifying embrace of fear.  Cracked walls, crumbling slowly to piles
 of dust and debris, allow just enough space for wicked moonlight to
 creep into the small building, giving the room an eerie glow.  Moving
@@ -1656,21 +2188,28 @@ leaving a sick feeling in the pit of your stomach.  Terror fills your
 mind, paralyzing you with fear as you notice the arm twitching in a
 reflexive motion.
 ~
-0 1 0
-D0
-Several crypts, violently broken open, line the northern wall...
+#EXIT
+Direction north~
+ToRoom    2129
+Desc      Several crypts, violently broken open, line the northern wall...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2133
+Desc      Dried blood stains streak the floor...
 ~
-0 -1 2129
-D3
-Dried blood stains streak the floor...
-~
-~
-0 -1 2133
-S
-#2135
-Darkened Trails of the Beast~
-A stomach-churning stench chokes you as you enter.  Chewed and bloodied
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2135
+Name     Darkened Trails of the Beast~
+Sector   inside~
+Flags    dark~
+Desc     A stomach-churning stench chokes you as you enter.  Chewed and bloodied
 corpses, some with gaping wounds exposing the white bones beneath their
 flesh, lie on the floor waiting to be devoured by the creature that
 inhabits this mausoleum.  A rusty-red pool of blood covers the floor,
@@ -1678,18 +2217,23 @@ staining it the colour of death.  A loud growl fills the air as you
 suddenly realize that you may be the next victim to the vile
 beast that resides within the room you have just entered.
 ~
-0 1 0
-D3
-A trail of blood leads away from the beast's lair...
+#EXIT
+Direction west~
+ToRoom    2130
+Desc      A trail of blood leads away from the beast's lair...
 ~
-~
-0 -1 2130
-R M 0 2106 1 2135
-  R E 1 2112 3 9
-S
-#2136
-Arabella's Final Resting Place~
-Traveling onward into the misty cemetary, you find yourself before a
+#ENDEXIT
+
+Reset M 0 2106 1 2135
+  Reset E 1 2112 3 9
+#ENDROOM
+
+#ROOM
+Vnum     2136
+Name     Arabella's Final Resting Place~
+Sector   city~
+Flags    dark~
+Desc     Traveling onward into the misty cemetary, you find yourself before a
 unique grave.  The air is thick here, damp and musty with the scent of
 death lingering beneath a large, stoney slab which covers the final
 resting place of yet another victim to mortality.  Moving the tangled
@@ -1700,31 +2244,45 @@ bringing with it an unholy terror that whatever lies beneath this stone
 is still moving, seeking any opportunity to remove the stone and pull
 you deep within its graven belly ... and devour you whole.
 ~
-0 1 1
-D1
-A misty fog blankets the cemetary...
+#EXIT
+Direction east~
+ToRoom    2137
+Desc      A misty fog blankets the cemetary...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2146
+Desc      Outlines of tombstones become visible...
 ~
-0 -1 2137
-D2
-Outlines of tombstones become visible...
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    2141
+Desc      The grave of Triabella lies open here...
 ~
+Keywords  slab~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset D 0 2136 5 1
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho The muffled sound of scratching fills the air...
 ~
-0 -1 2146
-D5
-The grave of Triabella lies open here...
-~
-slab~
-3 -1 2141
-R D 0 2136 5 1
-> rand_prog 10~
-mpecho The muffled sound of scratching fills the air...
-~
-|
-S
-#2137
-The Misty Cemetary~
-Twigs crackle beneath your feet as you stumble upon a ground made
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2137
+Name     The Misty Cemetary~
+Sector   city~
+Flags    dark~
+Desc     Twigs crackle beneath your feet as you stumble upon a ground made
 uneven by a gravedigger's quickened haste to finish his thankless
 job of burying the dead.  As a misty fog blankets the area,
 headstones of old forgotten fighters from the past stand before
@@ -1735,48 +2293,63 @@ stealing your soul, leaving your rotting corpse to fill one of
 the weed-covered plots reserved for the future warriors who dare
 to travel throughout these lands.
 ~
-0 1 1
-D0
-A thick misty fog blankets the ground...
+#EXIT
+Direction north~
+ToRoom    2132
+Desc      A thick misty fog blankets the ground...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2138
+Desc      small withered building stands surrounded by a cast iron gate...
 ~
-0 -1 2132
-D1
-small withered building stands surrounded by a cast iron gate...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2136
+Desc      A stoney slab rests on the ground, marking another grave...
 ~
-~
-0 -1 2138
-D3
-A stoney slab rests on the ground, marking another grave...
-~
-~
-0 -1 2136
-R M 0 2102 12 2137
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-R M 0 2102 12 2137
-  R E 1 2106 12 16
-  R E 1 2104 12 11
-E
-twigs~
-Dead broken twigs lay here, fallen from the huge tree that marks
+#ENDEXIT
+
+Reset M 0 2102 12 2137
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+Reset M 0 2102 12 2137
+  Reset E 1 2106 12 16
+  Reset E 1 2104 12 11
+#EXDESC
+ExDescKey    twigs~
+ExDesc       Dead broken twigs lay here, fallen from the huge tree that marks
 the entrance.  Strong winds and wild animals must've scattered them
 throughout the area.
 ~
-E
-headstones~
-Broken and chipped away, many tombstones fill the area.
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    headstones~
+ExDesc       Broken and chipped away, many tombstones fill the area.
 ~
-E
-vines~
-Thick arm-like vines, their thorny brambles catching your armor,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    vines~
+ExDesc       Thick arm-like vines, their thorny brambles catching your armor,
 smother the ground, cause you to slow your pace.  Bringing you to the
 realization that maybe you shouldn't be here.
 ~
-S
-#2138
-Pallbearer's Lament~
-Towards the center of the graveyard, surrounded by a mysterious dark
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2138
+Name     Pallbearer's Lament~
+Sector   city~
+Flags    dark~
+Desc     Towards the center of the graveyard, surrounded by a mysterious dark
 cloud, stands what appears to be a stone building.  Dirty brown bones
 scattered throughout the building lay in decaying piles, entangled by
 weeds that have broken through cracks in the floor.  A dusty old skull,
@@ -1787,60 +2360,83 @@ have been broken away with hammers or crumbled away during the hellish
 departure of the many souls that lay buried within this tomb.  Your
 heart races in fear as you open the cast-iron gate to the mausoleum.
 ~
-0 1 1
-D0
-Through the rusty cast iron gate you see the inside of a small mausoleum...
+#EXIT
+Direction north~
+ToRoom    2133
+Desc      Through the rusty cast iron gate you see the inside of a small mausoleum...
 ~
-gate~
-1027 -1 2133
-D1
-A statue stands eroding in the elements...
+Keywords  gate~
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2140
+Desc      A statue stands eroding in the elements...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2143
+Desc      Deeper into the graveyard...
 ~
-0 -1 2140
-D2
-Deeper into the graveyard...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2137
+Desc      Long armlike vines grow thickly within the graveyard...
 ~
-~
-0 -1 2143
-D3
-Long armlike vines grow thickly within the graveyard...
-~
-~
-0 -1 2137
-R D 0 2138 0 1
-E
-building~
-To the north, you see what appears to be a mausoleum.  The gate, clearly
+#ENDEXIT
+
+Reset D 0 2138 0 1
+#EXDESC
+ExDescKey    building~
+ExDesc       To the north, you see what appears to be a mausoleum.  The gate, clearly
 broken and rusty, is the only barrier that stops you from going inside.
 ~
-E
-bones~
-Through the cast iron gate, you see many piles of bones scattered
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    bones~
+ExDesc       Through the cast iron gate, you see many piles of bones scattered
 along the floor, leaving you to wonder what kind of terrible beast could
 inhabit this area.  Though frightened by their appearance, you dredge onward.
 ~
-E
-skull~
-A broken skull, brown and grey with age, hangs as a grizzly artifact
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    skull~
+ExDesc       A broken skull, brown and grey with age, hangs as a grizzly artifact
 upon the walls of the mausoleum to the north.
 ~
-E
-crypts~
-Through the rusty fence you see the outlines of several crypts along
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    crypts~
+ExDesc       Through the rusty fence you see the outlines of several crypts along
 the northern wall.
 ~
-E
-gate~
-A rusty cast iron gate stands here, keeping greedy grave-robbers from
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    gate~
+ExDesc       A rusty cast iron gate stands here, keeping greedy grave-robbers from
 gaining entry to the mausoleum.  Though it appears to have a lock,
 time has caused the lock to crumble away to the touch, making it possible
 for you to gain entry to the mausoleum.
 ~
-S
-#2139
-The Opened Grave~
-Running quickly from the sights you have seen, you fall deep into a dark,
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2139
+Name     The Opened Grave~
+Sector   city~
+Flags    dark~
+Desc     Running quickly from the sights you have seen, you fall deep into a dark,
 open grave.  Cold and frightened, you yell in fear, hoping that you are
 not alone in the cemetery.  Leeches, trying to feed in a frenzy of hunger
 upon your flesh, attach themselves to your face, causing you to claw at
@@ -1849,23 +2445,31 @@ thousands barrel through the earth, slithering grotesquely at your feet
 as you stand up slowly, gathering all of your strength to climb out of
 this gaping hole in the rotting earth.
 ~
-0 1 1
-D4
-Eerie shadows block any view of way lies above you...
+#EXIT
+Direction up~
+ToRoom    2144
+Desc      Eerie shadows block any view of way lies above you...
 ~
-~
-0 -1 2144
-> rand_prog 100~
-if ispc($r)
+#ENDEXIT
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   100~
+Comlist   if ispc($r)
   mpecho Leeches burrow deep into your face, feeding hungrily upon your flesh.
   mpdamage $r 10
 endif
 ~
-|
-S
-#2140
-The Unholy Statue~
-A deep, throaty scream escapes your mouth as you quickly retreat away from
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2140
+Name     The Unholy Statue~
+Sector   city~
+Flags    dark~
+Desc     A deep, throaty scream escapes your mouth as you quickly retreat away from
 the statue before you.  Though once a beautiful angel with outstretched
 hands, vandals have mangled the statue into a frightening gargoyle looming
 over you, standing ready to devour any living thing that crosses its path.
@@ -1875,29 +2479,36 @@ to a flesh-tearing sharpness, awaiting their chance to rip your soul from
 your body.  Its fiery eyes not bore down through your skin as you notice
 fresh blood dripping fiendishly from its mouth.
 ~
-0 1 1
-D2
-A small granite footstone marks the grave of another victim...
+#EXIT
+Direction south~
+ToRoom    2145
+Desc      A small granite footstone marks the grave of another victim...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2138
+Desc      The entrance to a small mausoleum lies this way...
 ~
-0 -1 2145
-D3
-The entrance to a small mausoleum lies this way...
-~
-~
-0 -1 2138
-R M 0 2107 12 2140
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-R M 0 2101 4 2140
-  R E 1 2103 1 16
-R O 0 2129 1 2140
-S
-#2141
-Inside the Grave of Arabella~
-Upon lifting the stone slab you find yourself standing in what appears to
+#ENDEXIT
+
+Reset M 0 2107 12 2140
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+Reset M 0 2101 4 2140
+  Reset E 1 2103 1 16
+Reset O 0 2129 1 2140
+#ENDROOM
+
+#ROOM
+Vnum     2141
+Name     Inside the Grave of Arabella~
+Sector   inside~
+Flags    dark~
+Desc     Upon lifting the stone slab you find yourself standing in what appears to
 be a small mausoleum.  Thick stoney walls, pitted by thieves whose greed
 led them to gouge the precious jewels which once adorned the walls, encase
 the room, trapping a sour musty odor caused by numerous rains that managed
@@ -1907,23 +2518,34 @@ contents in a dark, musty sleep.  A simple brass plaque engraved with the
 single name "Arabella", tarnished and rusty due to neglect, adorns the
 head of the coffin.
 ~
-0 1 0
-D4
-The stoney slab that once covered your escape now lays torn away...
+#EXIT
+Direction up~
+ToRoom    2136
+Desc      The stoney slab that once covered your escape now lays torn away...
 ~
-slab~
-3 -1 2136
-D5
-Upon opening the coffin, grey rats scurry away from your light...
+Keywords  slab~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    2142
+Desc      Upon opening the coffin, grey rats scurry away from your light...
 ~
-coffin~
-3 -1 2142
-R D 0 2141 4 1
-R D 0 2141 5 1
-S
-#2142
-Arabella's Coffin~
-Breaking open the rusty brass hinges, you peer inside the oaken coffin -
+Keywords  coffin~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset D 0 2141 4 1
+Reset D 0 2141 5 1
+#ENDROOM
+
+#ROOM
+Vnum     2142
+Name     Arabella's Coffin~
+Sector   inside~
+Flags    dark~
+Desc     Breaking open the rusty brass hinges, you peer inside the oaken coffin -
 its white lining, stained from the bloody corpse that lies here, remains
 tattered and moldy.  Grey rats scatter quickly to safety as you reach
 inside the coffin to touch a small golden bracelet still attached to
@@ -1931,22 +2553,29 @@ Arabella's skeletal wrist.  Bits of flesh fall from Arabella's face,
 revealing a skull writhing with maggots undisturbed by your presence.  A
 throaty scream fills the air as Arabella sits up, reaching out to you.
 ~
-0 1 0
-D4
-An excape lies this way...
+#EXIT
+Direction up~
+ToRoom    2141
+Desc      An excape lies this way...
 ~
-coffin~
-3 -1 2141
-R M 0 2103 1 2142
-  R E 1 2109 1 10
-  R E 1 2111 1 1
-R M 0 2108 2 2142
-R M 0 2108 2 2142
-R D 0 2142 4 1
-S
-#2143
-Deeper into the Cemetary~
-The evil of the night presses closes as you move deeper into the cemetery.
+Keywords  coffin~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset M 0 2103 1 2142
+  Reset E 1 2109 1 10
+  Reset E 1 2111 1 1
+Reset M 0 2108 2 2142
+Reset M 0 2108 2 2142
+Reset D 0 2142 4 1
+#ENDROOM
+
+#ROOM
+Vnum     2143
+Name     Deeper into the Cemetary~
+Sector   city~
+Flags    dark~
+Desc     The evil of the night presses closes as you move deeper into the cemetery.
 Distant calls of owls hidden inside the boughs of crooked trees cry out a
 shrill warning for you to leave this place, kicking up a howling wind to
 scattering debris across your path.  Along the uneven ground you find
@@ -1957,29 +2586,38 @@ spine as a warm trickle of blood flows down your leg, and you tear away a
 small rat crazed by the sight of the fleshy meal you've come to represent.
 A small grove of forboding trees to the south beckons you...
 ~
-0 1 1
-D0
-An old mausoleum stands crumbling in the mists...
+#EXIT
+Direction north~
+ToRoom    2138
+Desc      An old mausoleum stands crumbling in the mists...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2144
+Desc      Grey mists and dark shadows almost hide the grave here...
 ~
-0 -1 2138
-D1
-Grey mists and dark shadows almost hide the grave here...
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2147
+Desc      A darkened grove of trees awaits in the distance...
 ~
-~
-0 -1 2144
-D2
-A darkened grove of trees awaits in the distance...
-~
-~
-0 -1 2147
-R M 0 2102 12 2143
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-S
-#2144
-The Shadowy Grave~
-Deeper inside the graveyard, you find yourself standing in a place
+#ENDEXIT
+
+Reset M 0 2102 12 2143
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+#ENDROOM
+
+#ROOM
+Vnum     2144
+Name     The Shadowy Grave~
+Sector   city~
+Flags    dark~
+Desc     Deeper inside the graveyard, you find yourself standing in a place
 completely enshrouded by the evil shadows that bring horror to life before
 your eyes.  The winds howl furiously through the darkness, filling your
 mind with terror as you fight the urge to flee away from the shadows that
@@ -1987,30 +2625,42 @@ encase the grave before you.  The thick, musty odor of death is strong,
 choking you in its attempt to steal your life slowly from you, making you
 another victim that forever rots in this cemetery.
 ~
-0 1 1
-D1
-A small broken footstone lies in the ground...
+#EXIT
+Direction east~
+ToRoom    2145
+Desc      A small broken footstone lies in the ground...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2143
+Desc      Deeper into the graveyard...
 ~
-0 -1 2145
-D3
-Deeper into the graveyard...
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    2139
+Desc      A cold eerie blackness of the unknown lies beneath you...
 ~
+#ENDEXIT
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpecho The wind blows coldly, howling with an echo of fury...
 ~
-0 -1 2143
-D5
-A cold eerie blackness of the unknown lies beneath you...
-~
-~
-0 -1 2139
-> rand_prog 10~
-mpecho The wind blows coldly, howling with an echo of fury...
-~
-|
-S
-#2145
-The Broken Footstone~
-The grounds grow slippery here, causing your feet to slide apart quickly
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2145
+Name     The Broken Footstone~
+Sector   city~
+Flags    dark~
+Desc     The grounds grow slippery here, causing your feet to slide apart quickly
 in the thick brown mud beneath you.  In a bone-crunching thud, you find
 yourself laying precisely over a fresh grave, newly filled in the night
 by a withering old gravedigger in a rush to perform his ghastly duties
@@ -2021,26 +2671,35 @@ marks left in an attempt to remove the old name that was once carved in
 the stone, causing its surface to bow inward and bringing a darkened
 shadow over the name now carved upon it.
 ~
-0 1 1
-D0
-A single statue of an angel stands erroding in the elements..
+#EXIT
+Direction north~
+ToRoom    2140
+Desc      A single statue of an angel stands erroding in the elements..
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2149
+Desc      Several trees line this side of the graveyard...
 ~
-0 -1 2140
-D2
-Several trees line this side of the graveyard...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2144
+Desc      Thick mists and shadows cover a grave...
 ~
-~
-0 -1 2149
-D3
-Thick mists and shadows cover a grave...
-~
-~
-0 -1 2144
-S
-#2146
-Dark Trail of Vines~
-Leaves blown by cold night wings rustle beneath your feet as you travel
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2146
+Name     Dark Trail of Vines~
+Sector   city~
+Flags    dark~
+Desc     Leaves blown by cold night wings rustle beneath your feet as you travel
 across the shaky grounds made uneven by a gravedigger's hasty burial
 before dawn.  As the soupy fog settles throughout the area, the outlines
 of tombstones become visible, giving the ghostly grey aura of evil that
@@ -2049,19 +2708,24 @@ that tortures your very soul.  As you gather your wits, long grey vines
 entangle your feet in a thorny grip of horror, causing you to choose
 each step carefully within the evil confines of the graveyard.
 ~
-0 1 1
-D0
-A large stoney slab marks the grave of another soul lain to rest...
+#EXIT
+Direction north~
+ToRoom    2136
+Desc      A large stoney slab marks the grave of another soul lain to rest...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2150
+Desc      The trail continues...
 ~
-0 -1 2136
-D2
-The trail continues...
-~
-~
-0 -1 2150
-> entry_prog 33~
-if isimmort($n)
+#ENDEXIT
+
+#MUDPROG
+Progtype  entry_prog~
+Arglist   33~
+Comlist   if isimmort($n)
 or isnpc($n)
 else
 if mobinroom(2113) < 2
@@ -2073,11 +2737,16 @@ mpforce $n scream
 endif
 endif
 ~
-|
-S
-#2147
-Small Unholy Grove of Trees Within the Graveyard~
-A twisted oak tree now lays on its side in a moldy wooden corpse, marking
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     2147
+Name     Small Unholy Grove of Trees Within the Graveyard~
+Sector   city~
+Flags    dark~
+Desc     A twisted oak tree now lays on its side in a moldy wooden corpse, marking
 the edge of a small grove of trees within the graveyard.  Thick brown weeds,
 their thorny brambles piercing to the touch, rustle beneath your feet as you
 walk towards a darkened area filled with broken headstones and moldy coffins.
@@ -2086,24 +2755,31 @@ the holes dug by wolves clawing the cold rotting earth in search of a fleshy
 feast.  Several dead trees line the area, their mangled branches seeming to
 grab ahold of you as you pass by.
 ~
-0 1 1
-D0
-An unmarked grave lies forgotten...
+#EXIT
+Direction north~
+ToRoom    2143
+Desc      An unmarked grave lies forgotten...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2152
+Desc      The grove gets darker with each step...
 ~
-0 -1 2143
-D2
-The grove gets darker with each step...
-~
-~
-0 -1 2152
-R M 0 2102 12 2147
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-S
-#2148
-Man's Best Friend~
-Surrounded by small withered hedges, you find this small grave in the cold
+#ENDEXIT
+
+Reset M 0 2102 12 2147
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+#ENDROOM
+
+#ROOM
+Vnum     2148
+Name     Man's Best Friend~
+Sector   city~
+Flags    dark~
+Desc     Surrounded by small withered hedges, you find this small grave in the cold
 wet ground at your feet.  Darkened mist swirls at your feet, blanketing
 the earth with a dreary grey shroud, causing you to stumble upon something
 protruding through the rotten soil.  Your stomach churns in disgust as you
@@ -2116,21 +2792,26 @@ realization that you were the intended meal of the hellish hound that is
 buried here.  At the foot of the grave, a single word - "beware" - has
 been scribed in blood across the face of the footstone.
 ~
-0 1 1
-D1
-Several withered old trees surround you...
+#EXIT
+Direction east~
+ToRoom    2149
+Desc      Several withered old trees surround you...
 ~
-~
-0 -1 2149
-R M 0 2107 12 2148
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-S
-#2149
-A Small Grove of Forgotten Trees~
-Along the southern half of the graveyard, several trees line the area,
+#ENDEXIT
+
+Reset M 0 2107 12 2148
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+#ENDROOM
+
+#ROOM
+Vnum     2149
+Name     A Small Grove of Forgotten Trees~
+Sector   forest~
+Flags    dark~
+Desc     Along the southern half of the graveyard, several trees line the area,
 standing barely upright with their knotted trunks marred by different animals
 sharpening their claws against the rotting bark.  Thick vines of green and
 brown ivy creep up the sides of some trees, strangling their crooked branches
@@ -2140,26 +2821,35 @@ covered rubble crumbling slowly away into the moldy earth.  Though most of the
 grave sites can be found to the north, a few graves lay within this grove,
 long forgotten as the winds and the rains howl throughout the cemetary.
 ~
-0 1 3
-D0
-A small granite footstone marks a fresh grave...
+#EXIT
+Direction north~
+ToRoom    2145
+Desc      A small granite footstone marks a fresh grave...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2154
+Desc      Piles of broken coffins and old broken headstones litter the ground...
 ~
-0 -1 2145
-D2
-Piles of broken coffins and old broken headstones litter the ground...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2148
+Desc      A small grave lies hidden within withering hedges...
 ~
-~
-0 -1 2154
-D3
-A small grave lies hidden within withering hedges...
-~
-~
-0 -1 2148
-S
-#2150
-Overgrown Trail of Vines~
-The lonely howl of a wolf in the distance echoes its curse over the land
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2150
+Name     Overgrown Trail of Vines~
+Sector   city~
+Flags    dark~
+Desc     The lonely howl of a wolf in the distance echoes its curse over the land
 as you travel farther along the wretched path of thorny vines inside the
 graveyard.  Broken brown bones, unearthed by graverobbers in their search
 for any ghastly treasure buried within the coffins nestled beneath the
@@ -2170,31 +2860,40 @@ breaking rather then the sound of a freshly exhumed corpse being wrested
 from its grave.  Farther to the east, you see the beginning of a small
 grove of trees.
 ~
-0 1 1
-D0
-A dangerous trail of vines extends northward...
+#EXIT
+Direction north~
+ToRoom    2146
+Desc      A dangerous trail of vines extends northward...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2151
+Desc      A small darkened grove of trees lies this way...
 ~
-0 -1 2146
-D1
-A small darkened grove of trees lies this way...
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2160
+Desc      The thorny trail of weeds and vines continues...
 ~
-~
-0 -1 2151
-D2
-The thorny trail of weeds and vines continues...
-~
-~
-0 -1 2160
-R M 0 2107 12 2150
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-S
-#2151
-The Edge of the Darkened Grove~
-Whether it be day or night, the skies above the cemetery remain perpetually
+#ENDEXIT
+
+Reset M 0 2107 12 2150
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+#ENDROOM
+
+#ROOM
+Vnum     2151
+Name     The Edge of the Darkened Grove~
+Sector   forest~
+Flags    dark~
+Desc     Whether it be day or night, the skies above the cemetery remain perpetually
 darkened.  The ground is soggy, slowing your steps as mud cakes the bottom
 of your shoes with cold wet earth that houses the souls who have had their
 bodies ripped away by Death's savage grip.  Large mangled trees stand
@@ -2204,20 +2903,26 @@ the many pilegoto s of debris tossed haphazardly within the grove fills
 your nostrils with the odour of death and decay.  To the easy, the grove
 grows darker, causing you to rethink any ideas of further travel.
 ~
-0 1 3
-D1
-The grove thickens...
+#EXIT
+Direction east~
+ToRoom    2152
+Desc      The grove thickens...
 ~
-~
-0 -1 2152
-D3
-~
-~
-0 -1 2150
-S
-#2152
-The Midsts of the Grove~
-Traveling deeper into the grove, you barely catch your breath as you climb
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2150
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2152
+Name     The Midsts of the Grove~
+Sector   forest~
+Flags    dark~
+Desc     Traveling deeper into the grove, you barely catch your breath as you climb
 through several piles of broken tombstones crumbling away into piles of dusty
 granite spattered with blood.  Long brown vines entangle your feet with
 each step you take through the ground which rots beneath you.  Cold winds
@@ -2226,32 +2931,41 @@ debris that clutters the grove.  Somewhere in the distance, you hear the
 lonely hoot of an owl perched high upon one of the many dead trees that line
 the area.
 ~
-0 1 3
-D0
-An old oak tree marks the edge of the grove...
+#EXIT
+Direction north~
+ToRoom    2147
+Desc      An old oak tree marks the edge of the grove...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2157
+Desc      The grove lightens to the south...
 ~
-0 -1 2147
-D2
-The grove lightens to the south...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2151
+Desc      The edge of the grove can be seen...
 ~
-~
-0 -1 2157
-D3
-The edge of the grove can be seen...
-~
-~
-0 -1 2151
-R M 0 2102 12 2152
-  R E 1 2106 12 16
-  R E 1 2104 12 11
-R M 0 2110 4 2152
-  R G 1 2103 1
-  R E 1 2101 1 5
-S
-#2153
-Deep Inside the Brightened Grove~
-Thick foliage surrounds you, punctuated by graceful trees, as you step
+#ENDEXIT
+
+Reset M 0 2102 12 2152
+  Reset E 1 2106 12 16
+  Reset E 1 2104 12 11
+Reset M 0 2110 4 2152
+  Reset G 1 2103 1
+  Reset E 1 2101 1 5
+#ENDROOM
+
+#ROOM
+Vnum     2153
+Name     Deep Inside the Brightened Grove~
+Sector   forest~
+Flags    dark~
+Desc     Thick foliage surrounds you, punctuated by graceful trees, as you step
 deeper into a sunny grove deep within the cemetary.  The ground is fresh
 here, providing a warm blanket of soil for the wildflowers in full bloom,
 causing you to momentarily forget the ghastly sights within the wrought-
@@ -2259,27 +2973,37 @@ iron confines of the graveyard.  Looking down, you see a blanket of
 lush grass thickly covering the grove, almost hiding a very faint
 trail that leads to the south.
 ~
-0 1 3
-D1
-Small blue and white wildflowers bloom in patches along the ground...
+#EXIT
+Direction east~
+ToRoom    2159
+Desc      Small blue and white wildflowers bloom in patches along the ground...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2158
+Desc      A hidden mausoleum lies this way...
 ~
-0 -1 2159
-D2
-A hidden mausoleum lies this way...
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2157
+Desc      Small wildflowers blossom brightly in patches of color along the ground...
 ~
-~
-3 -1 2158
-D3
-Small wildflowers blossom brightly in patches of color along the ground...
-~
-~
-0 -1 2157
-R D 0 2153 2 1
-S
-#2154
-The Grove Thickens~
-The winds begin to die and an eerie calm settles over the cemetery as you
+#ENDEXIT
+
+Reset D 0 2153 2 1
+#ENDROOM
+
+#ROOM
+Vnum     2154
+Name     The Grove Thickens~
+Sector   forest~
+Flags    dark~
+Desc     The winds begin to die and an eerie calm settles over the cemetery as you
 travel through this dreadful grove of trees.  The ground is soggy, causing
 a thick layer of mud to cake on your feet with each step you take.  Near
 the base of clump of mangled trees lie fragments of old, splintered coffins
@@ -2290,24 +3014,31 @@ seeking trinkets buried beneath the large tombstone that once marked the
 site of one laid to eternal rest.  Sadly enough, the grave has been looted
 of its precious contents, its owner robbed of his earthly possessions.
 ~
-0 1 3
-D0
-Crooked skeletal trees line the grove...
+#EXIT
+Direction north~
+ToRoom    2149
+Desc      Crooked skeletal trees line the grove...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2159
+Desc      The grove of trees seems to brighten...
 ~
-0 -1 2149
-D2
-The grove of trees seems to brighten...
-~
-~
-0 -1 2159
-R M 0 2102 12 2154
-  R E 1 2104 12 11
-  R E 1 2106 12 16
-S
-#2155
-The Chapel Foyer~
-Once inside the chapel, your ears fill with the sounds of sorrowful wailing
+#ENDEXIT
+
+Reset M 0 2102 12 2154
+  Reset E 1 2104 12 11
+  Reset E 1 2106 12 16
+#ENDROOM
+
+#ROOM
+Vnum     2155
+Name     The Chapel Foyer~
+Sector   inside~
+Flags    dark~
+Desc     Once inside the chapel, your ears fill with the sounds of sorrowful wailing
 that echoes in from the east.  Along the northern wall, stands a small dust-
 covered table with a single book opened to show the names of the mourners
 who have come to show their final respects to the recently departed soul
@@ -2315,22 +3046,30 @@ soon to be laid to rest in the cemetary.  Brown muddy floors creak under
 your weight with each step you take adding to the commotion that now grows
 louder as you move towards the sanctuary.
 ~
-0 1 0
-D1
-The wails of mourners echo loudly...
+#EXIT
+Direction east~
+ToRoom    2156
+Desc      The wails of mourners echo loudly...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2162
+Desc      A splintered old door leads to the graveyard...
 ~
-0 -1 2156
-D2
-A splintered old door leads to the graveyard...
-~
-~
-1027 -1 2162
-R D 0 2155 2 1
-S
-#2156
-The Mournful Sanctuary~
-Three solitary pews rest upon a wooden floor precariously slanted
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+Reset D 0 2155 2 1
+#ENDROOM
+
+#ROOM
+Vnum     2156
+Name     The Mournful Sanctuary~
+Sector   inside~
+Flags    dark~
+Desc     Three solitary pews rest upon a wooden floor precariously slanted
 from the dark brown mud oozing from beneath.  A gray haired man, 
 slumped horribly in his old age, stands crookedly in front of a candle-
 lit podium, preaching hollow words of comfort to mourners grieving
@@ -2342,35 +3081,44 @@ ladder leading to the belfry which houses a bell that will soon sound
 throughout the cemetary, marking death's triumphant vicotry over life
 just recently ended.
 ~
-0 1 0
-D3
-A small table stands within the chapel foyer...
+#EXIT
+Direction west~
+ToRoom    2155
+Desc      A small table stands within the chapel foyer...
 ~
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    2163
+Desc      The bellfry looms above you...
 ~
-0 -1 2155
-D4
-The bellfry looms above you...
-~
-trapdoor~
-65539 -1 2163
-R M 0 2105 1 2156
-  R E 1 2108 1 17
-  R G 1 2105 2
-R M 0 2107 12 2156
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2112 3 9
-  R E 1 2120 12 20
-R M 0 2107 12 2156
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2112 3 9
-  R E 1 2120 12 20
-R D 0 2156 4 1
-S
-#2157
-Within the Brightened Grove~
-Climbing past the piles of debris and dead trees, you find yourself standing
+Keywords  trapdoor~
+Flags     isdoor closed can_climb~
+#ENDEXIT
+
+Reset M 0 2105 1 2156
+  Reset E 1 2108 1 17
+  Reset G 1 2105 2
+Reset M 0 2107 12 2156
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2112 3 9
+  Reset E 1 2120 12 20
+Reset M 0 2107 12 2156
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2112 3 9
+  Reset E 1 2120 12 20
+Reset D 0 2156 4 1
+#ENDROOM
+
+#ROOM
+Vnum     2157
+Name     Within the Brightened Grove~
+Sector   forest~
+Flags    dark~
+Desc     Climbing past the piles of debris and dead trees, you find yourself standing
 in the midsts of a small lightened grove of white oak trees blooming so
 thickly that you cannot see either the warm light of the sun or the
 glowing white moon shining through the thick canopy of leaves.  The ground
@@ -2380,26 +3128,35 @@ in search of their fleshy meals.  Small wildflowers blossom colourfully
 in patches of pink, blue and yellow along the ground.
 pink, blue, and yellow along the ground.
 ~
-0 1 3
-D0
-The grove grows darker, failing to disguise the piles of broker headstones littering the ground...
+#EXIT
+Direction north~
+ToRoom    2152
+Desc      The grove grows darker, failing to disguise the piles of broker headstones littering the ground...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2153
+Desc      Wildflowers grow colorfully near the center of the grove...
 ~
-0 -1 2152
-D1
-Wildflowers grow colorfully near the center of the grove...
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2164
+Desc      The grove grows darker...
 ~
-~
-0 -1 2153
-D2
-The grove grows darker...
-~
-~
-0 -1 2164
-S
-#2158
-Before A Hidden Tomb~
-Hidden deep within the trees and tucked far away from any thieves that may
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2158
+Name     Before A Hidden Tomb~
+Sector   forest~
+Flags    dark~
+Desc     Hidden deep within the trees and tucked far away from any thieves that may
 savage the grounds for riches, a small well-kept building stands in
 reverence to the person who resides within this tiny mausoleum. Small
 yellow buttercups grow along the ground in two straight rows, surrounded
@@ -2407,28 +3164,37 @@ by a white picket fence. Over the doorway you see the name "Anastacia"
 embossed in golden letters glittering softly in the light that has
 broken through the heavy canopy of trees that enshroud this tomb.
 ~
-0 1 3
-D0
-Wildflowers explode with vibrant colorful blossums...
+#EXIT
+Direction north~
+ToRoom    2153
+Desc      Wildflowers explode with vibrant colorful blossums...
 ~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2165
+Desc      A door with the name "Anastacia" stands here, marking the entrance...
 ~
-3 -1 2153
-D2
-A door with the name "Anastacia" stands here, marking the entrance...
-~
-~
-3 -1 2165
-R M 0 2107 12 2158
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-R D 0 2158 0 1
-R D 0 2158 2 1
-S
-#2159
-Brightened Grove~
-Clawing your way through the large forest of dead trees and piles of broken
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset M 0 2107 12 2158
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+Reset D 0 2158 0 1
+Reset D 0 2158 2 1
+#ENDROOM
+
+#ROOM
+Vnum     2159
+Name     Brightened Grove~
+Sector   forest~
+Flags    dark~
+Desc     Clawing your way through the large forest of dead trees and piles of broken
 coffins, you find yourself standing in the midst of tall, white oak
 trees blooming so thickly that you cannot see the warm bright light of the sun
 or the glowing white moon shining through the canopy of foliage.
@@ -2437,24 +3203,31 @@ the hellish gophers that scavenge the area in search of fleshy meals buried
 in their cold dark graves deep beneath the cemetary.  Small blue and
 white wild flowers grow in patches all throughout the trees.
 ~
-0 1 3
-D0
-The grove darkens considerably...
+#EXIT
+Direction north~
+ToRoom    2154
+Desc      The grove darkens considerably...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2153
+Desc      Wildflowers bloom brightly in the middle of the grove...
 ~
-0 -1 2154
-D3
-Wildflowers bloom brightly in the middle of the grove...
-~
-~
-0 -1 2153
-R M 0 2110 4 2159
-  R G 1 2103 1
-  R E 1 2101 1 5
-S
-#2160
-Along the Dark Trail of Vines~
-Thorny brambles within weeds smother the ground as you continue to follow the
+#ENDEXIT
+
+Reset M 0 2110 4 2159
+  Reset G 1 2103 1
+  Reset E 1 2101 1 5
+#ENDROOM
+
+#ROOM
+Vnum     2160
+Name     Along the Dark Trail of Vines~
+Sector   city~
+Flags    dark~
+Desc     Thorny brambles within weeds smother the ground as you continue to follow the
 viney path, causing a warm trickle of blood to flow from a wound on your legs
 left by the piercing thorns that grow like daggers wildy around you.  In the
 distance you hear the mournful toll of a bell, annoucing the passing of another
@@ -2463,21 +3236,28 @@ graveyard.  The heavy odor of decomposing flesh is thick here, causing you to
 gasp for anything that may resemble fresh air as you hope that you will not
 be the next resident of this hellish place.
 ~
-0 1 1
-D0
-The weedy trail of vines continues...
+#EXIT
+Direction north~
+ToRoom    2150
+Desc      The weedy trail of vines continues...
 ~
+#ENDEXIT
+
+#EXIT
+Direction southeast~
+ToRoom    2161
+Desc      A neglected grave lies in the shadows of the chapel...
 ~
-0 -1 2150
-D8
-A neglected grave lies in the shadows of the chapel...
-~
-~
-0 -1 2161
-S
-#2161
-The Death of a Holy Man~
-Lying in the shadows of the chapel, you find yourself standing at the foot
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2161
+Name     The Death of a Holy Man~
+Sector   city~
+Flags    dark~
+Desc     Lying in the shadows of the chapel, you find yourself standing at the foot
 of the grave of the preacher that once spoke words of comfort to mourners
 who came to bury their beloved ones.  The large black headstone that marks
 this grave stands covered thickly with the same overgrown weeds and thorny
@@ -2487,22 +3267,29 @@ flowers, once vibrant with color and scent, now lay lifeless at the base
 of the headstone, trampled by uncaring gravediggers as they carry their
 coffins from the chapel.  An overgrown trail lies to the northwest.
 ~
-0 1 1
-D1
-The entrance to a run down chapel can be seen...
+#EXIT
+Direction east~
+ToRoom    2162
+Desc      The entrance to a run down chapel can be seen...
 ~
+#ENDEXIT
+
+#EXIT
+Direction northwest~
+ToRoom    2160
+Desc      Thorny weeds smother the ground...
 ~
-0 -1 2162
-D7
-Thorny weeds smother the ground...
-~
-~
-0 -1 2160
-R O 0 2125 1 2161
-S
-#2162
-In Front of a Shoddy Old Chapel~
-Somewhere inside the graveyard, you find yourself standing in front of an
+#ENDEXIT
+
+Reset O 0 2125 1 2161
+#ENDROOM
+
+#ROOM
+Vnum     2162
+Name     In Front of a Shoddy Old Chapel~
+Sector   city~
+Flags    dark~
+Desc     Somewhere inside the graveyard, you find yourself standing in front of an
 old wooden chapel.  Two rotten wooden steps lead up to the door, savagely
 beaten by the weather and splintering in several places; hanging upon rusty
 hinges that creak in a bone-shivering moan when opened by gravediggers
@@ -2512,26 +3299,36 @@ all mortals must surrender their lives.  The chapel's roof, sagging with age
 and disrepair does little to shelter the mourners, saddened by their loss, 
 from the cold wind and rain plaguing the cemetary.
 ~
-0 1 1
-D0
-The chapel foyer stands void of furnature except a small table...
+#EXIT
+Direction north~
+ToRoom    2155
+Desc      The chapel foyer stands void of furnature except a small table...
 ~
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2166
+Desc      A small urn lays shattered in several pieces...
 ~
-1027 -1 2155
-D2
-A small urn lays shattered in several pieces...
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2161
+Desc      A large headstone stands neglected...
 ~
-~
-0 -1 2166
-D3
-A large headstone stands neglected...
-~
-~
-0 -1 2161
-S
-#2163
-For Whom The Bell Tolls~
-Rotten floorboards creak loudly as you enter the belfry, stirring the
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2163
+Name     For Whom The Bell Tolls~
+Sector   inside~
+Flags    dark~
+Desc     Rotten floorboards creak loudly as you enter the belfry, stirring the
 bats that hang silently from the old rotted ceiling.  Cold winds swirl
 through the broken shutters that hang miserably upon each wall, causing
 you to siver slightly as you look around the room.  Stepping carefully
@@ -2542,17 +3339,24 @@ The tarnished bell, cracked in several places, hangs in a darkened silence
 as the winds howl visciously outside, moaning with anticipation for your
 soul to join those laid to rest in this sickening place.
 ~
-0 1 0
-D5
-Wails of sorrowful mourners echo from beneath your feet...
+#EXIT
+Direction down~
+ToRoom    2156
+Desc      Wails of sorrowful mourners echo from beneath your feet...
 ~
-trapdoor~
-65539 -1 2156
-R O 0 2119 1 2163
-S
-#2164
-Grove of the Dead~
-Jagged piles of broken granite litter the ground alongside splintered
+Keywords  trapdoor~
+Flags     isdoor closed can_climb~
+#ENDEXIT
+
+Reset O 0 2119 1 2163
+#ENDROOM
+
+#ROOM
+Vnum     2164
+Name     Grove of the Dead~
+Sector   forest~
+Flags    dark~
+Desc     Jagged piles of broken granite litter the ground alongside splintered
 coffins, causing you to step unsteadily through the field of debris which
 clutters the bases of the petrified trees.  Wide, knotted stumps, chewed
 upon hungrily by thousands of termites, jut through the debris while
@@ -2561,23 +3365,30 @@ with boney, finger-like branches.  Your eyes widen as you sight a rotting
 corpse swaying by a dangling rope in the wind, and you to consider making
 yourself scarce as quickly as possible.
 ~
-0 1 3
-D0
-Past the debris stands a bright grove...
+#EXIT
+Direction north~
+ToRoom    2157
+Desc      Past the debris stands a bright grove...
 ~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2169
+Desc      Large piles of debris block your view to the south...
 ~
-0 -1 2157
-D2
-Large piles of debris block your view to the south...
-~
-~
-0 -1 2169
-R M 0 2120 1 2164
-R O 0 2124 1 2164
-S
-#2165
-The Shrine of Anastacia~
-Once inside, you find yourself surrounded by several colourful paintings
+#ENDEXIT
+
+Reset M 0 2120 1 2164
+Reset O 0 2124 1 2164
+#ENDROOM
+
+#ROOM
+Vnum     2165
+Name     The Shrine of Anastacia~
+Sector   inside~
+Flags    dark~
+Desc     Once inside, you find yourself surrounded by several colourful paintings
 of a smiling woman carefully placed on the walls around you.  Large oak
 tables, resting on royal blue carpet beneath your feet, lovingly display
 several personal trinkets that once belonged to the tall, slender woman
@@ -2588,22 +3399,30 @@ A single lock of hair tied with a small red ribbon adorns a tiny white
 velvet pillow delicately placed in a rocking chair directly leading to
 the room where Anastacia now sleeps eternally.
 ~
-0 1 0
-D0
-The well lit grove lies this way...
+#EXIT
+Direction north~
+ToRoom    2158
+Desc      The well lit grove lies this way...
 ~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    2170
+Desc      A beautiful glass topped coffin lies this way...
 ~
-3 -1 2158
-D2
-A beautiful glass topped coffin lies this way...
-~
-~
-0 -1 2170
-R D 0 2165 0 1
-S
-#2166
-Near the Cemetary's Chapel~
-Drudging slowly inside the confines of the fence, you find yourself
+#ENDEXIT
+
+Reset D 0 2165 0 1
+#ENDROOM
+
+#ROOM
+Vnum     2166
+Name     Near the Cemetary's Chapel~
+Sector   city~
+Flags    dark~
+Desc     Drudging slowly inside the confines of the fence, you find yourself
 amongst the shadows of a chapel which served to perform funerals for
 the past dwellers of this land.  At your feet, a small urn lies broken
 into several pieces: dropped by the chapel's preacher in his rush to
@@ -2612,21 +3431,28 @@ you to huddle closely to the dead brown hedges that grow alongside the
 rusty fence. Farther to the east you can barely make out the shadowy
 outlines of several headstones.
 ~
-0 1 1
-D0
-An old shabby chapel stands to the north...
+#EXIT
+Direction north~
+ToRoom    2162
+Desc      An old shabby chapel stands to the north...
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2167
+Desc      A statue of a woman stands alongside the rusty wrought iron fence...
 ~
-0 -1 2162
-D1
-A statue of a woman stands alongside the rusty wrought iron fence...
-~
-~
-0 -1 2167
-S
-#2167
-The Beheaded Statue~
-Farther along the southern edge of the graveyard, you find yourself standing
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2167
+Name     The Beheaded Statue~
+Sector   city~
+Flags    dark~
+Desc     Farther along the southern edge of the graveyard, you find yourself standing
 before another statue mounted firmly upon a granite base in front of the
 old wrought-iron fence.  A closer look at the statue strikes terror in you
 as you notice the head, once that of a beautiful woman, replaced with the
@@ -2635,22 +3461,29 @@ alone...only to meet an untimely death at the jaws of a hungry wolf in
 search of a fresh meal.  Praying aloud, you beg the gods to spare your
 life and allow you to flee the cemetary in one piece.
 ~
-0 1 1
-D1
-A bloody headstone lies within the hedges along the wrought iron fence...
+#EXIT
+Direction east~
+ToRoom    2168
+Desc      A bloody headstone lies within the hedges along the wrought iron fence...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2166
+Desc      A small urn lays shattered on the ground...
 ~
-0 -1 2168
-D3
-A small urn lays shattered on the ground...
-~
-~
-0 -1 2166
-R O 0 2128 1 2167
-S
-#2168
-The Bloody Headstone~
-A rusty wrought-iron fence, crumbling with age and neglect, lines the
+#ENDEXIT
+
+Reset O 0 2128 1 2167
+#ENDROOM
+
+#ROOM
+Vnum     2168
+Name     The Bloody Headstone~
+Sector   city~
+Flags    dark~
+Desc     A rusty wrought-iron fence, crumbling with age and neglect, lines the
 southern side of the graveyard, barely withstanding the heavy winds and
 rains that frequent the area.  Tall untrimmed hedges, now a dull brown 
 colour, stand wretchedly alongside the fence, almost hiding a small 
@@ -2662,26 +3495,33 @@ a permanent member.  To the east, a darkened grove of trees stands among
 broken tombstones and piles of splintered coffins, their lids barely
 attached by their old rusty hinges.
 ~
-0 1 1
-D1
-The rusty wrought iron fence disappears within the grove...
+#EXIT
+Direction east~
+ToRoom    2169
+Desc      The rusty wrought iron fence disappears within the grove...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2167
+Desc      A statue of a woman stands alongside the rusty wrought iron fence...
 ~
-0 -1 2169
-D3
-A statue of a woman stands alongside the rusty wrought iron fence...
-~
-~
-0 -1 2167
-R M 0 2107 12 2168
-  R E 1 2110 10 16
-  R E 1 2102 12 5
-  R E 1 2107 12 8
-  R E 1 2120 12 20
-S
-#2169
-The Beginning of a Small Grove Within the Graveyard~
-A cold wind blows through the air, sending a shiver down your spine as you
+#ENDEXIT
+
+Reset M 0 2107 12 2168
+  Reset E 1 2110 10 16
+  Reset E 1 2102 12 5
+  Reset E 1 2107 12 8
+  Reset E 1 2120 12 20
+#ENDROOM
+
+#ROOM
+Vnum     2169
+Name     The Beginning of a Small Grove Within the Graveyard~
+Sector   forest~
+Flags    dark~
+Desc     A cold wind blows through the air, sending a shiver down your spine as you
 find yourself standing at the beginning of a small grove of trees within the
 graveyard.  Piles of rotten earth lay upon the ground, marking the burrowing
 habits of gophers in search of the many bodies laying under your feet.  The
@@ -2690,21 +3530,28 @@ as if to grasp anything that comes within reach.  Piles of splintered coffins,
 some with rotten corpses tucked inside, lay scattered upon the ground,
 causing your stomach to convulse reflexively.
 ~
-0 1 3
-D0
-Large piles of debris clutter the grove...
+#EXIT
+Direction north~
+ToRoom    2164
+Desc      Large piles of debris clutter the grove...
 ~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    2168
+Desc      A rusty wrought iron fence crumbles in the elements along the southern side..
 ~
-0 -1 2164
-D3
-A rusty wrought iron fence crumbles in the elements along the southern side..
-~
-~
-0 -1 2168
-S
-#2170
-The Eternal Sleep of Anastacia~
-Several large arrangements of flowers fill the room where Anastacia forever
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     2170
+Name     The Eternal Sleep of Anastacia~
+Sector   inside~
+Flags    dark~
+Desc     Several large arrangements of flowers fill the room where Anastacia forever
 sleeps upon large white rose petals in her glass casket resting peacefully
 upon a white marble platform in the center of the room.  Gazing down at
 Anastacia, a feeling of sadness fills your heart as you see her delicate face
@@ -2715,21 +3562,26 @@ rest softly across her waist.  Her full ruby lips almost seem to smile at you,
 bringing a warmth into the room as she eternally rests upon her delicate red
 satin pillow.
 ~
-0 1 0
-D0
-A small shrine to Anastacia lies undisturbed...
+#EXIT
+Direction north~
+ToRoom    2165
+Desc      A small shrine to Anastacia lies undisturbed...
 ~
-~
-0 -1 2165
-R M 0 2104 1 2170
-  R G 1 2105 2
-  R E 1 2118 1 17
-R O 0 2116 1 2170
-  R P 0 2117 1 2116
-S
-#2171
-Before the Graveyard~
-Lying amidst the ruins, you come upon a cemetery in heavy disrepair.  Much
+#ENDEXIT
+
+Reset M 0 2104 1 2170
+  Reset G 1 2105 2
+  Reset E 1 2118 1 17
+Reset O 0 2116 1 2170
+  Reset P 0 2117 1 2116
+#ENDROOM
+
+#ROOM
+Vnum     2171
+Name     Before the Graveyard~
+Sector   city~
+Flags    dark~
+Desc     Lying amidst the ruins, you come upon a cemetery in heavy disrepair.  Much
 akin to the southern ruins of the city, the cemetery lies in the poorest
 of condition:  neglected and weed-ridden.  A wrought-iron fence, rusted so
 badly it rains down a perpetual shower of metal flakes, encircles the area
@@ -2739,37 +3591,48 @@ failing to stave off the stench of rot and decaying flesh that assails your
 nostrils.  A large gate, long ago unhinged, lays inextricably entangled in
 a lush thicket, forever entombing it within the cold ground.
 ~
-0 1 1
-D2
-You see the entrance to the graveyard.
+#EXIT
+Direction south~
+ToRoom    2172
+Desc      You see the entrance to the graveyard.
 ~
-~
-0 -1 2172
-R M 0 2110 4 2171
-  R G 1 2103 1
-  R E 1 2101 1 5
-E
-fence~
-This tall, wrought iron fence encircles the area, locking all
+#ENDEXIT
+
+Reset M 0 2110 4 2171
+  Reset G 1 2103 1
+  Reset E 1 2101 1 5
+#EXDESC
+ExDescKey    fence~
+ExDesc       This tall, wrought iron fence encircles the area, locking all
 unwanted visitors out of the area.  Rusty and worn, the fence
 stands in ill repair, missing the gate that once stood firmly
 at the entrance.
 ~
-E
-weeds~
-Tall brown weeds, growing almost like ivy up the bars of the fence,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    weeds~
+ExDesc       Tall brown weeds, growing almost like ivy up the bars of the fence,
 smother the grounds before you.
 ~
-E
-gate~
-Long ago fallen or broken away from its hinges, this gate lays
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    gate~
+ExDesc       Long ago fallen or broken away from its hinges, this gate lays
 entangled on the ground in weeds that have grown up around the
 bars, forever trapping it against the rotting earth beneath it.
 ~
-S
-#2172
-Entrance to the Graveyard~
-A twisted and rotting tree marks the entrance to a long forgotten
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     2172
+Name     Entrance to the Graveyard~
+Sector   city~
+Flags    dark~
+Desc     A twisted and rotting tree marks the entrance to a long forgotten
 graveyard.  Thick brambles tear at your tender flesh as you travel
 forward through the darkened cemetery, stealing away any hopes of
 making it out alive.  Travelling deeper, a misty fog envelops you,
@@ -2781,61 +3644,55 @@ with life.  Graves strewn with broken bones lie entangled amongst
 the weeds while others fall carelessly, covered with broken slabs
 of stone.
 ~
-0 1 1
-D0
-You see a possible escape this way.
+#EXIT
+Direction north~
+ToRoom    2171
+Desc      You see a possible escape this way.
 ~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    2101
+Desc      The graveyard expands around you this way.
 ~
-0 -1 2171
-D1
-The graveyard expands around you this way.
-~
-~
-0 -1 2101
-E
-tree~
-A tall, crooked tree stands before you with it's finger-like branches
+#ENDEXIT
+
+#EXDESC
+ExDescKey    tree~
+ExDesc       A tall, crooked tree stands before you with it's finger-like branches
 outreaching towards the blackened sky like a man begging to his deity
 to save him from this wretched place that stands before him.  Not
 unlike the deceased inhabitants that inhabit the area, this tree is no
 longer living, but its twisted, mangled corpse remains.
 ~
-E
-brambles~
-Thorny brambles grab at your clothing as you walk across the grounds
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    brambles~
+ExDesc       Thorny brambles grab at your clothing as you walk across the grounds
 with their brown spiney thorns ripping across your armor.
 ~
-E
-holes~
-Mounds of the moldy earth lay here in piles, marking the paths of
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    holes~
+ExDesc       Mounds of the moldy earth lay here in piles, marking the paths of
 hungry gophers tunneling through the groun in search of food.
 ~
-E
-tombstones~
-Broken tombstones stand here before you, crumbling with age and the
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    tombstones~
+ExDesc       Broken tombstones stand here before you, crumbling with age and the
 abuse that the elements have bestowed upon them.  Greedy grave robbers
 have left their mark on many of the tombstones, with the hopes to break
 into the tombs that lay beneath the earth to find treasure, chiseling
 away uncarefully at many of the stones, making it difficult to read
 the names inscribed upon them.
 ~
-S
-#0
+#ENDEXDESC
 
+#ENDROOM
 
-#SHOPS
-0
-
-
-#REPAIRS
-0
-
-
-#SPECIALS
-M  2102 spec_janitor
-M  2106 spec_fido
-M  2108 spec_fido
-S
-
-
-#$
+#ENDAREA

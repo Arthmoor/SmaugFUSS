@@ -22,20 +22,11 @@
 #include "mud.h"
 
 /*
- *  Externals
- */
-void send_obj_page_to_char( CHAR_DATA * ch, OBJ_INDEX_DATA * idx, char page );
-void send_room_page_to_char( CHAR_DATA * ch, ROOM_INDEX_DATA * idx, char page );
-void send_page_to_char( CHAR_DATA * ch, MOB_INDEX_DATA * idx, char page );
-void send_control_page_to_char( CHAR_DATA * ch, char page );
-
-/*
  * Local functions.
  */
-void talk_channel args( ( CHAR_DATA * ch, char *argument, int channel, const char *verb ) );
-
-char *scramble args( ( const char *argument, int modifier ) );
-char *drunk_speech args( ( const char *argument, CHAR_DATA * ch ) );
+void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb );
+char *scramble( const char *argument, int modifier );
+char *drunk_speech( const char *argument, CHAR_DATA * ch );
 
 /* Text scrambler -- Altrag */
 char *scramble( const char *argument, int modifier )
@@ -386,7 +377,7 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
       }
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
       send_to_char( "You can't do that here.\r\n", ch );
       return;
@@ -447,7 +438,7 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
          break;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf2, MAX_STRING_LENGTH, "%s: %s (%s)", IS_NPC( ch ) ? ch->short_descr : ch->name, argument, verb );
       append_to_file( LOG_FILE, buf2 );
@@ -498,7 +489,7 @@ void talk_channel( CHAR_DATA * ch, char *argument, int channel, const char *verb
              ( !IS_IMMORTAL( och ) && !NOT_AUTHED( och )
                && !( och->pcdata->council && !str_cmp( och->pcdata->council->name, "Newbie Council" ) ) ) )
             continue;
-         if( IS_SET( vch->in_room->room_flags, ROOM_SILENCE ) )
+         if( xIS_SET( vch->in_room->room_flags, ROOM_SILENCE ) )
             continue;
          if( channel == CHANNEL_YELL && vch->in_room->area != ch->in_room->area )
             continue;
@@ -850,7 +841,7 @@ void do_say( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
       send_to_char( "You can't do that here.\r\n", ch );
       return;
@@ -906,7 +897,7 @@ void do_say( CHAR_DATA * ch, char *argument )
    ch->act = actflags;
    MOBtrigger = FALSE;
    act( AT_SAY, "You say '$T'", ch, NULL, drunk_speech( argument, ch ), TO_CHAR );
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s: %s", IS_NPC( ch ) ? ch->short_descr : ch->name, argument );
       append_to_file( LOG_FILE, buf );
@@ -1040,18 +1031,18 @@ void do_whisper( CHAR_DATA * ch, char *argument )
       act( AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT );
 #endif
 
-   if( !IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( !xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
       act( AT_WHISPER, "$n whispers something to $N.", ch, argument, victim, TO_NOTVICT );
 
    victim->position = position;
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_INPUT_LENGTH, "%s: %s (whisper to) %s.",
                 IS_NPC( ch ) ? ch->short_descr : ch->name, argument, IS_NPC( victim ) ? victim->short_descr : victim->name );
       append_to_file( LOG_FILE, buf );
    }
 
-   mprog_speech_trigger( argument, ch );
+   mprog_tell_trigger( argument, ch );
    return;
 }
 
@@ -1074,7 +1065,7 @@ void do_tell( CHAR_DATA * ch, char *argument )
 #endif
 
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
-   if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
       send_to_char( "You can't do that here.\r\n", ch );
       return;
@@ -1151,7 +1142,7 @@ void do_tell( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( !IS_NPC( victim ) && IS_SET( victim->in_room->room_flags, ROOM_SILENCE ) )
+   if( !IS_NPC( victim ) && xIS_SET( victim->in_room->room_flags, ROOM_SILENCE ) )
    {
       act( AT_PLAIN, "A magic force prevents your message from being heard.", ch, 0, victim, TO_CHAR );
       return;
@@ -1237,14 +1228,14 @@ void do_tell( CHAR_DATA * ch, char *argument )
 
    victim->position = position;
    victim->reply = ch;
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_INPUT_LENGTH, "%s: %s (tell to) %s.",
                 IS_NPC( ch ) ? ch->short_descr : ch->name, argument, IS_NPC( victim ) ? victim->short_descr : victim->name );
       append_to_file( LOG_FILE, buf );
    }
 
-   mprog_speech_trigger( argument, ch );
+   mprog_tell_trigger( argument, ch );
    return;
 }
 
@@ -1266,7 +1257,7 @@ void do_reply( CHAR_DATA * ch, char *argument )
 
 
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
-   if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
       send_to_char( "You can't do that here.\r\n", ch );
       return;
@@ -1308,7 +1299,7 @@ void do_reply( CHAR_DATA * ch, char *argument )
    }
 
    if( ( !IS_IMMORTAL( ch ) && !IS_AWAKE( victim ) )
-       || ( !IS_NPC( victim ) && IS_SET( victim->in_room->room_flags, ROOM_SILENCE ) ) )
+       || ( !IS_NPC( victim ) && xIS_SET( victim->in_room->room_flags, ROOM_SILENCE ) ) )
    {
       act( AT_PLAIN, "$E can't hear you.", ch, 0, victim, TO_CHAR );
       return;
@@ -1367,7 +1358,7 @@ void do_reply( CHAR_DATA * ch, char *argument )
    victim->position = position;
    victim->reply = ch;
    ch->retell = victim;
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s: %s (reply to) %s.",
                 IS_NPC( ch ) ? ch->short_descr : ch->name, argument, IS_NPC( victim ) ? victim->short_descr : victim->name );
@@ -1396,7 +1387,7 @@ void do_reply( CHAR_DATA * ch, char *argument )
        */
       victim->pcdata->tell_history[victim->pcdata->lt_index] = STRALLOC( buf );
    }
-   mprog_speech_trigger( argument, ch );
+   mprog_tell_trigger( argument, ch );
    return;
 }
 
@@ -1417,7 +1408,7 @@ void do_retell( CHAR_DATA * ch, char *argument )
       }
 #endif
    REMOVE_BIT( ch->deaf, CHANNEL_TELLS );
-   if( IS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_SILENCE ) )
    {
       send_to_char( "You can't do that here.\r\n", ch );
       return;
@@ -1475,7 +1466,7 @@ void do_retell( CHAR_DATA * ch, char *argument )
       send_to_char( "That player is silenced. They will receive your message, but can not respond.\r\n", ch );
 
    if( ( !IS_IMMORTAL( ch ) && !IS_AWAKE( victim ) ) ||
-       ( !IS_NPC( victim ) && IS_SET( victim->in_room->room_flags, ROOM_SILENCE ) ) )
+       ( !IS_NPC( victim ) && xIS_SET( victim->in_room->room_flags, ROOM_SILENCE ) ) )
    {
       act( AT_PLAIN, "$E can't hear you.", ch, 0, victim, TO_CHAR );
       return;
@@ -1565,14 +1556,14 @@ void do_retell( CHAR_DATA * ch, char *argument )
 #endif
    victim->position = position;
    victim->reply = ch;
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_INPUT_LENGTH, "%s: %s (retell to) %s.",
                 IS_NPC( ch ) ? ch->short_descr : ch->name, argument, IS_NPC( victim ) ? victim->short_descr : victim->name );
       append_to_file( LOG_FILE, buf );
    }
 
-   mprog_speech_trigger( argument, ch );
+   mprog_tell_trigger( argument, ch );
    return;
 }
 
@@ -1691,7 +1682,7 @@ void do_emote( CHAR_DATA * ch, char *argument )
     MOBtrigger = FALSE;
     act( AT_ACTION, "$n $T", ch, NULL, buf, TO_CHAR );*/
    ch->act = actflags;
-   if( IS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_LOGSPEECH ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s %s (emote)", IS_NPC( ch ) ? ch->short_descr : ch->name, argument );
       append_to_file( LOG_FILE, buf );
@@ -2692,7 +2683,7 @@ void talk_auction( char *argument )
    {
       original = d->original ? d->original : d->character;  /* if switched */
       if( ( d->connected == CON_PLAYING ) && !IS_SET( original->deaf, CHANNEL_AUCTION )
-          && !IS_SET( original->in_room->room_flags, ROOM_SILENCE ) && !NOT_AUTHED( original ) )
+          && !xIS_SET( original->in_room->room_flags, ROOM_SILENCE ) && !NOT_AUTHED( original ) )
          act( AT_GOSSIP, buf, original, NULL, NULL, TO_CHAR );
    }
 }
@@ -2793,13 +2784,14 @@ int const lang_array[] = {
 };
 
 char *const lang_names[] = {
-   "common", "elvish", "dwarven", "pixie", "ogre",
-   "orcish", "trollese", "rodent", "insectoid",
-   "mammal", "reptile", "dragon", "spiritual",
-   "magical", "goblin", "god", "ancient",
-   "halfling", "clan", "gith", "gnome", ""
+   "common", "elvish", "dwarven", "pixie",
+   "ogre", "orcish", "trollese", "rodent",
+   "insectoid", "mammal", "reptile",
+   "dragon", "spiritual", "magical",
+   "goblin", "god", "ancient", "halfling",
+   "clan", "gith", "gnome", "", "", "", "",
+   "", "", "", "", "", "", "", ""   /* pad to 32 for compat with flag_string */
 };
-
 
 /* Note: does not count racial language.  This is intentional (for now). */
 int countlangs( int languages )

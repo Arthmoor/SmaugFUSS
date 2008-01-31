@@ -51,8 +51,8 @@
 #define ENOSR 63
 #endif
 
-char will_compress2_str[] = { IAC, WILL, TELOPT_COMPRESS2, '\0' };
-char start_compress2_str[] = { IAC, SB, TELOPT_COMPRESS2, IAC, SE, '\0' };
+char will_compress2_str[] = { ( char )IAC, ( char )WILL, TELOPT_COMPRESS2, '\0' };
+char start_compress2_str[] = { ( char )IAC, ( char )SB, TELOPT_COMPRESS2, ( char )IAC, ( char )SE, '\0' };
 
 bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length );
 

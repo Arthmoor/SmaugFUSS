@@ -1,67 +1,64 @@
-#AREA   Gods~
+#FUSSAREA
+#AREADATA
+Version      1
+Name         Gods~
+Author       ROD~
+Ranges       0 60 0 60
+Economy      0 45000000
+ResetMsg     A low humming noise can be heard.~
+Climate      2 2 2
+Neighbor     Limbo~
+#ENDAREADATA
 
-
-
-#VERSION 1
-#AUTHOR ROD~
-
-#RANGES
-0 60 0 60
-$
-
-#RESETMSG A low humming noise can be heard.~
-
-#FLAGS
-0
-
-#ECONOMY 0 45000000
-
-#CLIMATE 2 2 2
-
-#NEIGHBOR Limbo~
-
-#MOBILES
-#1200
-mobile~
-a mobile~
-A mobile is here.
+#MOBILE
+Vnum       1200
+Keywords   mobile~
+Short      a mobile~
+Long       A mobile is here.
 ~
-~
-1073741825 0 0 C
-1 50 0 0d0+0 0d0+0
-100 4000
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 0
-3 0 0 0 131073 1 0
-0 0 0 0 0 0 0 0
-#0
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc prototype~
+Stats1     0 1 50 0 100 4000
+Stats2     0 0 0
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 0
+Speaks     common halfling~
+Speaking   common~
+#ENDMOBILE
 
+#OBJECT
+Vnum     1200
+Keywords immortal board~
+Type     furniture~
+Short    the immortal board~
+Long     Mystical sparkling colors converge here to form arcane runes...~
+Values   0 0 0 0 0 0
+Stats    1 10 1 0 0
+#ENDOBJECT
 
-#OBJECTS
-#1200
-immortal board~
-the immortal board~
-Mystical sparkling colors converge here to form arcane runes...~
-~
-12 0 0
-0 0 0 0
-1 10 1
-#0
-
-
-#ROOMS
-#1200
-The Parlour of the Immortals~
-You are lounging in a quiet cosy parlour, warmed by a gentle magical fire
+#ROOM
+Vnum     1200
+Name     The Parlour of the Immortals~
+Sector   inside~
+Flags    nomob indoors nosummon noastral~
+Desc     You are lounging in a quiet cosy parlour, warmed by a gentle magical fire
 which twinkles happily in a warm fireplace. 
  
 ~
-0 3145740 0
-S
-#1201
-Thoric's Den~
-You find yourself in a cozy little room.
+#ENDROOM
+
+#ROOM
+Vnum     1201
+Name     Thoric's Den~
+Sector   inside~
+Flags    nomob indoors private nosummon noastral~
+Desc     You find yourself in a cozy little room.
 This is the place where Thoric comes to relax, and get inspired!
 Looking around yourself, you find this to be quite a comfortable, medieval
 room, which seems to be inside some sort of log cabin.  There's a very nice
@@ -73,33 +70,24 @@ suddenly get the urge to make yourself comfortable in front of the fire with
 a mug of hot coffee, fill a pipe up with some pipeweed, relax and listen to
 tales of days long past.
 ~
-0 3146252 0
-E
-fireplace~
-The fireplace contains a nice warm fire.
+#EXDESC
+ExDescKey    fireplace~
+ExDesc       The fireplace contains a nice warm fire.
 ~
-E
-rug~
-It sure does look inviting.
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    rug~
+ExDesc       It sure does look inviting.
 ~
-E
-chair~
-It looks very comfortable.
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    chair~
+ExDesc       It looks very comfortable.
 ~
-S
-#0
+#ENDEXDESC
 
+#ENDROOM
 
-#SHOPS
-0
-
-
-#REPAIRS
-0
-
-
-#SPECIALS
-S
-
-
-#$
+#ENDAREA

@@ -12,14 +12,13 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			    Battle & death module			    *
+ *                            Battle & death module                         *
  ****************************************************************************/
 
 #include <stdio.h>
 #include "mud.h"
 
 extern char lastplayercmd[MAX_INPUT_LENGTH];
-extern CHAR_DATA *gch_prev;
 
 OBJ_DATA *used_weapon;  /* Used to figure out which weapon later */
 
@@ -258,7 +257,9 @@ void violence_update( void )
    CHAR_DATA *ch;
    CHAR_DATA *lst_ch;
    CHAR_DATA *victim;
-   CHAR_DATA *rch, *rch_next;
+   CHAR_DATA *rch;
+   TRV_WORLD *lcw;
+   TRV_DATA *lcr;
    AFFECT_DATA *paf, *paf_next;
    TIMER *timer, *timer_next;
    ch_ret retcode;
@@ -269,26 +270,10 @@ void violence_update( void )
    lst_ch = NULL;
    pulse = ( pulse + 1 ) % 100;
 
-   for( ch = last_char; ch; lst_ch = ch, ch = gch_prev )
+   lcw = trworld_create( TR_CHAR_WORLD_BACK );
+   for( ch = last_char; ch; lst_ch = ch, ch = trvch_wnext( lcw ) )
    {
       set_cur_char( ch );
-
-      if( ch == first_char && ch->prev )
-      {
-         bug( "%s", "ERROR: first_char->prev != NULL, fixing..." );
-         ch->prev = NULL;
-      }
-
-      gch_prev = ch->prev;
-
-      if( gch_prev && gch_prev->next != ch )
-      {
-         bug( "FATAL: violence_update: %s->prev->next doesn't point to ch.", ch->name );
-         bug( "%s", "Short-cutting here" );
-         ch->prev = NULL;
-         gch_prev = NULL;
-         do_shout( ch, "Thoric says, 'Prepare for the worst!'" );
-      }
 
       /*
        * See if we got a pointer to someone who recently died...
@@ -301,30 +286,10 @@ void violence_update( void )
          continue;
 
       /*
-       * See if we got a pointer to some bad looking data...
-       */
-      if( !ch->in_room || !ch->name )
-      {
-         log_string( "violence_update: bad ch record!  (Shortcutting.)" );
-         log_printf( "ch: %ld  ch->in_room: %ld  ch->prev: %ld  ch->next: %ld",
-                     ( long )ch, ( long )ch->in_room, ( long )ch->prev, ( long )ch->next );
-         log_string( lastplayercmd );
-         if( lst_ch )
-            log_printf( "lst_ch: %ld  lst_ch->prev: %ld  lst_ch->next: %ld",
-                        ( long )lst_ch, ( long )lst_ch->prev, ( long )lst_ch->next );
-         else
-            log_string( "lst_ch: NULL" );
-         gch_prev = NULL;
-         continue;
-      }
-
-      /*
        * Experience gained during battle deceases as battle drags on
        */
-      if( ch->fighting )
-         if( ( ++ch->fighting->duration % 24 ) == 0 )
-            ch->fighting->xp = ( ( ch->fighting->xp * 9 ) / 10 );
-
+      if( ch->fighting && ( ++ch->fighting->duration % 24 ) == 0 )
+         ch->fighting->xp = ( ( ch->fighting->xp * 9 ) / 10 );
 
       for( timer = ch->first_timer; timer; timer = timer_next )
       {
@@ -339,10 +304,9 @@ void violence_update( void )
                   continue;
                }
             }
+
             if( timer->type == TIMER_NUISANCE )
-            {
                DISPOSE( ch->pcdata->nuisance );
-            }
 
             if( timer->type == TIMER_DO_FUN )
             {
@@ -409,13 +373,12 @@ void violence_update( void )
       /*
        * Let the battle begin! 
        */
-
       if( ( victim = who_fighting( ch ) ) == NULL || IS_AFFECTED( ch, AFF_PARALYSIS ) )
          continue;
 
       retcode = rNONE;
 
-      if( IS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
       {
          log_printf( "violence_update: %s fighting %s in a SAFE room.", ch->name, victim->name );
          stop_fighting( ch, TRUE );
@@ -554,6 +517,7 @@ void violence_update( void )
                   continue;
             }
          }
+
          /*
           * NPC special defense flags          -Thoric
           */
@@ -697,20 +661,15 @@ void violence_update( void )
       /*
        * Fun for the whole family!
        */
-      for( rch = ch->in_room->first_person; rch; rch = rch_next )
+      lcr = trvch_create( ch, TR_CHAR_ROOM_FORW );
+      for( rch = ch->in_room->first_person; rch; rch = trvch_next( lcr ) )
       {
-         rch_next = rch->next_in_room;
-
          /*
           *   Group Fighting Styles Support:
           *   If ch is tanking
           *   If rch is using a more aggressive style than ch
           *   Then rch is the new tank   -h
           */
-         /*
-          * &&( is_same_group(ch, rch)      ) 
-          */
-
          if( ( !IS_NPC( ch ) && !IS_NPC( rch ) )
              && ( rch != ch )
              && ( rch->fighting )
@@ -718,7 +677,6 @@ void violence_update( void )
              && ( !xIS_SET( rch->fighting->who->act, ACT_AUTONOMOUS ) ) && ( rch->style < ch->style ) )
          {
             rch->fighting->who->fighting->who = rch;
-
          }
 
          if( IS_AWAKE( rch ) && !rch->fighting )
@@ -770,12 +728,11 @@ void violence_update( void )
             }
          }
       }
+      trv_dispose( &lcr );
    }
-
+   trworld_dispose( &lcw );
    return;
 }
-
-
 
 /*
  * Do one group of attacks.
@@ -1348,7 +1305,7 @@ ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt )
     */
    if( dam == -1 )
    {
-      if( dt >= 0 && dt < top_sn )
+      if( dt >= 0 && dt < num_skills )
       {
          SKILLTYPE *skill = skill_table[dt];
          bool found = FALSE;
@@ -1373,6 +1330,7 @@ ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt )
       }
       dam = 0;
    }
+
    if( ( retcode = damage( ch, victim, dam, dt ) ) != rNONE )
       return retcode;
    if( char_died( ch ) )
@@ -1388,18 +1346,26 @@ ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt )
     * Weapon spell support            -Thoric
     * Each successful hit casts a spell
     */
-   if( wield && !IS_SET( victim->immune, RIS_MAGIC ) && !IS_SET( victim->in_room->room_flags, ROOM_NO_MAGIC ) )
+   if( wield && !IS_SET( victim->immune, RIS_MAGIC ) && !xIS_SET( victim->in_room->room_flags, ROOM_NO_MAGIC ) )
    {
       AFFECT_DATA *aff;
 
       for( aff = wield->pIndexData->first_affect; aff; aff = aff->next )
          if( aff->location == APPLY_WEAPONSPELL && IS_VALID_SN( aff->modifier ) && skill_table[aff->modifier]->spell_fun )
             retcode = ( *skill_table[aff->modifier]->spell_fun ) ( aff->modifier, ( wield->level + 3 ) / 3, ch, victim );
+
+      if( retcode == rSPELL_FAILED )
+         retcode = rNONE;  // Luc, 6/11/2007
+
       if( retcode != rNONE || char_died( ch ) || char_died( victim ) )
          return retcode;
       for( aff = wield->first_affect; aff; aff = aff->next )
          if( aff->location == APPLY_WEAPONSPELL && IS_VALID_SN( aff->modifier ) && skill_table[aff->modifier]->spell_fun )
             retcode = ( *skill_table[aff->modifier]->spell_fun ) ( aff->modifier, ( wield->level + 3 ) / 3, ch, victim );
+
+      if( retcode == rSPELL_FAILED )
+         retcode = rNONE;  // Luc, 6/11/2007
+
       if( retcode != rNONE || char_died( ch ) || char_died( victim ) )
          return retcode;
    }
@@ -1665,7 +1631,7 @@ ch_ret projectile_hit( CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * wield, OBJ
     */
    if( dam == -1 )
    {
-      if( dt >= 0 && dt < top_sn )
+      if( dt >= 0 && dt < num_skills )
       {
          SKILLTYPE *skill = skill_table[dt];
          bool found = FALSE;
@@ -1734,8 +1700,10 @@ ch_ret projectile_hit( CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * wield, OBJ
       return retcode;
    }
 
-/* weapon spells	-Thoric */
-   if( wield && !IS_SET( victim->immune, RIS_MAGIC ) && !IS_SET( victim->in_room->room_flags, ROOM_NO_MAGIC ) )
+   /*
+    * weapon spells  -Thoric 
+    */
+   if( wield && !IS_SET( victim->immune, RIS_MAGIC ) && !xIS_SET( victim->in_room->room_flags, ROOM_NO_MAGIC ) )
    {
       AFFECT_DATA *aff;
 
@@ -1863,7 +1831,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
       if( dam == -1 )
       {
-         if( dt >= 0 && dt < top_sn )
+         if( dt >= 0 && dt < num_skills )
          {
             bool found = FALSE;
             SKILLTYPE *skill = skill_table[dt];
@@ -1894,7 +1862,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
     * Precautionary step mainly to prevent people in Hell from finding
     * a way out. --Shaddai
     */
-   if( IS_SET( victim->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( victim->in_room->room_flags, ROOM_SAFE ) )
       dam = 0;
 
    if( dam && npcvict && ch != victim )
@@ -2271,7 +2239,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
          break;
 
       case POS_DEAD:
-         if( dt >= 0 && dt < top_sn )
+         if( dt >= 0 && dt < num_skills )
          {
             SKILLTYPE *skill = skill_table[dt];
 
@@ -2488,7 +2456,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       return TRUE;
    }
 
-   if( IS_SET( victim->in_room->room_flags, ROOM_SAFE ) )
+   if( xIS_SET( victim->in_room->room_flags, ROOM_SAFE ) )
    {
       if( show_messg )
       {
@@ -3665,7 +3633,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
    const char *vp;
    const char *attack;
    char punct;
-   short dampc;
+   int dampc;
    struct skill_type *skill = NULL;
    bool gcflag = FALSE;
    bool gvflag = FALSE;
@@ -3689,7 +3657,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
    /*
     * Get the weapon index 
     */
-   if( dt > 0 && dt < ( unsigned int )top_sn )
+   if( dt > 0 && dt < ( unsigned int )num_skills )
    {
       w_index = 0;
    }
@@ -3734,7 +3702,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
    if( dam == 0 && ( !IS_NPC( victim ) && ( IS_SET( victim->pcdata->flags, PCFLAG_GAG ) ) ) )
       gvflag = TRUE;
 
-   if( dt >= 0 && dt < ( unsigned int )top_sn )
+   if( dt >= 0 && dt < ( unsigned int )num_skills )
       skill = skill_table[dt];
    if( dt == TYPE_HIT )
    {
@@ -4008,7 +3976,7 @@ void do_murder( CHAR_DATA * ch, char *argument )
  */
 bool in_arena( CHAR_DATA * ch )
 {
-   if( IS_SET( ch->in_room->room_flags, ROOM_ARENA ) )
+   if( xIS_SET( ch->in_room->room_flags, ROOM_ARENA ) )
       return TRUE;
    if( IS_SET( ch->in_room->area->flags, AFLAG_FREEKILL ) )
       return TRUE;
@@ -4103,7 +4071,7 @@ void do_flee( CHAR_DATA * ch, char *argument )
           || IS_SET( pexit->exit_info, EX_NOFLEE )
           || ( IS_SET( pexit->exit_info, EX_CLOSED )
                && !IS_AFFECTED( ch, AFF_PASS_DOOR ) )
-          || ( IS_NPC( ch ) && IS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) ) )
+          || ( IS_NPC( ch ) && xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) ) )
          continue;
       affect_strip( ch, gsn_sneak );
       xREMOVE_BIT( ch->affected_by, AFF_SNEAK );

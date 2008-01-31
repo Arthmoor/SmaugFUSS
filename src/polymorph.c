@@ -19,10 +19,6 @@
 #include <string.h>
 #include "mud.h"
 
-int get_risflag( char *flag );
-int get_pc_race( char *type );
-int get_pc_class( char *Class );
-
 #define MKEY( literal, field, value ) \
 	if( !str_cmp( word, literal ) ) \
 	{ 				\
@@ -993,7 +989,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( morph->affected_by, value );
@@ -1010,7 +1006,7 @@ void do_morphset( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( morph->no_affected_by, value );

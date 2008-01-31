@@ -1338,7 +1338,7 @@ void dispose_ban( BAN_DATA * pban, int type )
 
    if( type != BAN_SITE && type != BAN_CLASS && type != BAN_RACE )
    {
-      bug( "Dispose_ban: Unknown Ban Type %d.", type );
+      bug( "%s: Unknown Ban Type %d.", __FUNCTION__, type );
       return;
    }
 
@@ -1355,19 +1355,14 @@ void dispose_ban( BAN_DATA * pban, int type )
          break;
    }
    free_ban( pban );
-   return;
 }
 
 void free_ban( BAN_DATA * pban )
 {
-   if( pban->name )
-      DISPOSE( pban->name );
-   if( pban->ban_time )
-      DISPOSE( pban->ban_time );
-   if( pban->note )
-      STRFREE( pban->note );
-   if( pban->ban_by )
-      DISPOSE( pban->ban_by );
+   DISPOSE( pban->name );
+   DISPOSE( pban->ban_time );
+   STRFREE( pban->note );
+   DISPOSE( pban->ban_by );
    DISPOSE( pban );
 }
 

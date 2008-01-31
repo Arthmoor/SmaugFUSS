@@ -93,7 +93,7 @@ char *quick_link( char *str )
    ptr = ( struct hashstr_data * )( str - sizeof( struct hashstr_data ) );
    if( ptr->links == 0 )
    {
-      fprintf( stderr, "quick_link: bad pointer\n" );
+      fprintf( stderr, "quick_link: bad pointer. String = %s\n", str );
       return NULL;
    }
    if( ptr->links < 65535 )

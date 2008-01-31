@@ -1,69 +1,43 @@
-#AREA   Darkhaven Art Gallery~
+#FUSSAREA
+#AREADATA
+Version      1
+Name         Darkhaven Art Gallery~
+Author       Zaknafein~
+Ranges       10 50 0 60
+Economy      0 94935260
+Climate      2 2 2
+#ENDAREADATA
 
-
-
-#VERSION 1
-#AUTHOR Zaknafein~
-
-#RANGES
-10 50 0 60
-$
-
-#FLAGS
-0
-
-#ECONOMY 0 94935260
-
-#CLIMATE 2 2 2
-
-#MOBILES
-#24800
-woman receptionist~
-the receptionist~
-The gallery's receptionist looks up at you and smiles warmly.
+#MOBILE
+Vnum       24800
+Keywords   woman receptionist~
+Short      the receptionist~
+Long       The gallery's receptionist looks up at you and smiles warmly.
 ~
-This young lady enjoys her job here at the art gallery.  It gives her the 
+Desc       This young lady enjoys her job here at the art gallery.  It gives her the 
 opportunity to see her share of muscled, handsome warriors.
 ~
-3 4194344 0 C
-30 0 -200 1d1+3800 25d5+25
-0 0
-112 112 2
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 0 0 3072 0 0 2
-> rand_prog 15~
-sit
-, hums happily to herself.
-~
-> bribe_prog 100~
-mpoload 24800 1
-mpjunk all.coins
-give key $n
-say Thank you, $n, and enjoy your visit
-~
-> greet_prog 100~
-if inroom($i) == 24801
-  emote looks up from her work
-  smile $n
-  say Welcome to the Art Gallery, $n
-else
-  emote looks about in worry at her strange surroundings.
-endif
-~
-> act_prog p north.~
-stand
-close n
-lock n
-sit
-~
-> speech_prog fuck shit goddam bitch ass~
-sigh
-say PLEASE watch your language in here.
-~
-> fight_prog 100~
-mpat 3 c heal
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel~
+Affected   detect_invis detect_hidden truesight~
+Stats1     0 30 0 -200 0 0
+Stats2     1 1 3800
+Stats3     25 5 25
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Immune     sleep charm~
+Defenses   dodge~
+#MUDPROG
+Progtype  fight_prog~
+Arglist   100~
+Comlist   mpat 3 c heal
 if isnpc($n)
   mppurge $n
 else
@@ -71,22 +45,88 @@ else
   mpforce $n flee
 endif
 ~
-|
-#24801
-mike michael cosner curator~
-the Art Gallery's curator~
-The gallery curator sits here, moaning about the unending sea of papers.
+#ENDPROG
+
+#MUDPROG
+Progtype  speech_prog~
+Arglist   fuck shit goddam bitch ass~
+Comlist   sigh
+say PLEASE watch your language in here.
 ~
-Mike hasn't had a good day.  In fact, he hasn't had a good day in months.  
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p north.~
+Comlist   stand
+close n
+lock n
+sit
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  greet_prog~
+Arglist   100~
+Comlist   if inroom($i) == 24801
+  emote looks up from her work
+  smile $n
+  say Welcome to the Art Gallery, $n
+else
+  emote looks about in worry at her strange surroundings.
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  bribe_prog~
+Arglist   100~
+Comlist   mpoload 24800 1
+mpjunk all.coins
+give key $n
+say Thank you, $n, and enjoy your visit
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   sit
+, hums happily to herself.
+~
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24801
+Keywords   mike michael cosner curator~
+Short      the Art Gallery's curator~
+Long       The gallery curator sits here, moaning about the unending sea of papers.
+~
+Desc       Mike hasn't had a good day.  In fact, he hasn't had a good day in months.  
 His job is slowly killing him.  The stress is just too much.  How would YOU 
 feel if your job consisted of pricing all the art in the Realms?
 ~
-67 0 0 S
-40 0 -100 1d1+20000 0d0+0
-0 0
-112 112 1
-> rand_prog 80~
-if inroom($i) == 24802
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Stats1     0 40 0 -100 0 0
+Stats2     1 1 20000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   0 0 0 0 0 120 90 0 23
+#MUDPROG
+Progtype  rand_prog~
+Arglist   80~
+Comlist   if inroom($i) == 24802
 else
   mpecho The Curator exclaims, 'Oh my!  I really must be getting back to work!'
   mpecho He produces a large map, quickly unfolding it and taking his bearings.
@@ -95,561 +135,967 @@ else
   mpgoto 24802
 endif
 ~
-|
-#24802
-cashier woman gift shoppe~
-the cashier~
-The gift shoppe cashier stands here, ready to accept your money.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24802
+Keywords   cashier woman gift shoppe~
+Short      the cashier~
+Long       The gift shoppe cashier stands here, ready to accept your money.
 ~
-She looks quite bored.  Evidently, having to stand around all day selling 
+Desc       She looks quite bored.  Evidently, having to stand around all day selling 
 reproductions of art touches a nerve in the boredom region of the brain.
 ~
-67 0 0 S
-50 0 -200 30000d0+1 0d0+0
-0 0
-112 112 2
-#24803
-sculpture phunbaba demon~
-the sculpture of Phunbaba~
-A hideous-looking sculpture stands hunched over here.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel stayarea~
+Stats1     0 50 0 -200 0 0
+Stats2     30000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24803
+Keywords   sculpture phunbaba demon~
+Short      the sculpture of Phunbaba~
+Long       A hideous-looking sculpture stands hunched over here.
 ~
-A plaque mounted on the statue says proudly, "PHUNBABA".
+Desc       A plaque mounted on the statue says proudly, "PHUNBABA".
 ~
-67 8320 0 C
-44 0 -300 5000d0+1 3d4+15
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 34
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> greet_prog 100~
-mpecho The bronze sculpture's eyes gleam as you enter the room.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   sanctuary protect~
+Stats1     0 44 0 -300 0 0
+Stats2     5000 0 1
+Stats3     3 4 15
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 34
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpecho The bronze sculpture's eyes gleam as you enter the room.
 ~
-|
-#24804
-phunbaba demon green~
-Phunbaba~
-A hideous-looking, hunchbacked demon snarls at you ferally.  Run!
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24804
+Keywords   phunbaba demon green~
+Short      Phunbaba~
+Long       A hideous-looking, hunchbacked demon snarls at you ferally.  Run!
 ~
-Now that Phunbaba has come to life, he is truly a frightening sight!  Acidic 
+Desc       Now that Phunbaba has come to life, he is truly a frightening sight!  Acidic 
 drool falls from his lips to the floor, and he grins, threatening to show a 
 faint glimmer of intelligence.
 ~
-99 168 0 S
-35 0 -200 3000d0+1 0d0+0
-3 0
-112 112 1
-#24805
-green envy color~
-Envy~
-A vague sense of fiery jealousy forms a humanoid shape in front of you.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_breath_lightning~
+Gender     male~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_invis detect_hidden sanctuary~
+Stats1     0 35 0 -200 3 0
+Stats2     3000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24805
+Keywords   green envy color~
+Short      Envy~
+Long       A vague sense of fiery jealousy forms a humanoid shape in front of you.
 ~
-Damn!  What it must be like to be able to change shape at will!  You fume 
+Desc       Damn!  What it must be like to be able to change shape at will!  You fume 
 with jealousy at the ethereal quality of the shape before you.  "Why can't 
 -I- be like that...that thing?", you think to yourself.
 ~
-67 524328 0 C
-35 0 -200 7000d0+1 0d0+0
-13 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 112 0 0 0 0
-> rand_prog 25~
-grumble
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden flying~
+Stats1     0 35 0 -200 13 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+Resist     blunt pierce slash~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   grumble
   sigh
 ~
-|
-#24806
-melancholy blue color~
-Melancholy~
-Sadness washes over you as a nebulous mass congeals into a shape above you.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24806
+Keywords   melancholy blue color~
+Short      Melancholy~
+Long       Sadness washes over you as a nebulous mass congeals into a shape above you.
 ~
-*sniffle* How depressing.  The essence before you conveys such a feeling of 
+Desc       *sniffle* How depressing.  The essence before you conveys such a feeling of 
 unspeakable loss and depression that you can't help but cry.  You can feel 
 your knees grow weak from the emotion, and it becomes an effort to stand.
 ~
-1 524288 0 C
-40 0 -50 500d0+500 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-cry
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc~
+Affected   flying~
+Stats1     0 40 0 -50 0 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   cry
   sniff
 ~
-|
-#24807
-yellow cowardice color~
-Cowardice~
-A yellow mist forms around you and immediately darts off into the distance.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24807
+Keywords   yellow cowardice color~
+Short      Cowardice~
+Long       A yellow mist forms around you and immediately darts off into the distance.
 ~
-You don't know whether to laugh or cry at the display of weakness before you.
+Desc       You don't know whether to laugh or cry at the display of weakness before you.
 The sense of pathetic cowardice eminating from the mist that surrounds you 
 turns your stomach.  You wonder how ANYthing could be that afraid.
 ~
-195 524328 0 C
-39 0 -200 7000d0+1 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-gasp  
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea wimpy~
+Affected   detect_invis detect_hidden flying~
+Stats1     0 39 0 -200 0 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   gasp  
   grovel
 ~
-|
-#24808
-confusion indigo color~
-Confusion~
-A dark blue fog creeps towards you, causing you to look around in bewilderment.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24808
+Keywords   confusion indigo color~
+Short      Confusion~
+Long       A dark blue fog creeps towards you, causing you to look around in bewilderment.
 ~
-The fog feels cool against your skin.  What are you doing here?  You can 
+Desc       The fog feels cool against your skin.  What are you doing here?  You can 
 remember coming in here for a reason, but what was it?  You stop and scratch 
 your head.  Hmm.  Maybe it would be best to just leave this place.
 ~
-67 524328 0 C
-38 0 -250 7000d0+1 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131073 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-ponder
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden flying~
+Stats1     0 38 0 -250 0 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   common halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   ponder
   shrug
 ~
-|
-#24809
-life orange color~
-Life~
-An orange glow surrounds the area, filling your body with vitality.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24809
+Keywords   life orange color~
+Short      Life~
+Long       An orange glow surrounds the area, filling your body with vitality.
 ~
-You have never felt so alive!  The pure energy coursing through your veins 
+Desc       You have never felt so alive!  The pure energy coursing through your veins 
 fills you with a renewed sense of vigor.  If you were forced to remain here 
 forever, you wouldn't mind.  In fact, that seems like a very good idea.
 ~
-67 524328 0 C
-35 0 -200 7000d0+1 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-dance
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden flying~
+Stats1     0 35 0 -200 0 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   dance
   sing
 ~
-|
-#24810
-purple violet love color~
-Love~
-A purple cloud becomes a beautiful shape before you, filling you with love.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24810
+Keywords   purple violet love color~
+Short      Love~
+Long       A purple cloud becomes a beautiful shape before you, filling you with love.
 ~
-Your heart feels as though it might burst due to the deep passion you feel 
+Desc       Your heart feels as though it might burst due to the deep passion you feel 
 inside.  You gaze longingly into the violet mass before you, completely lost 
 in a world of desire and peace.  Siiiiiiiigh.
 ~
-67 524328 0 C
-35 0 -200 7000d0+1 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-kiss $n
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden flying~
+Stats1     0 35 0 -200 0 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   kiss $n
   love $n
 ~
-|
-#24811
-anger red hatred color~
-Anger~
-A red mist surrounds you, filling you with an intense hatred.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24811
+Keywords   anger red hatred color~
+Short      Anger~
+Long       A red mist surrounds you, filling you with an intense hatred.
 ~
-A wild growl escapes your lips as you gaze into the crimson vapor.  Your 
+Desc       A wild growl escapes your lips as you gaze into the crimson vapor.  Your 
 vision films over with the color of blood, and your brain pumps adrenaline 
 straight to your muscles and tendons.  You feel an almost insane rage coming 
 from this mass.
 ~
-99 524328 -1000 C
-37 0 -250 7000d0+1 0d0+0
-100 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 84
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> rand_prog 25~
-fume $n
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_invis detect_hidden flying~
+Stats1     -1000 37 0 -250 100 0
+Stats2     7000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 84
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   fume $n
   glare $n
 ~
-|
-#24812
-white innocence ball color~
-Innocence~
-An innocent-looking white ball of light floats here, seeming almost amused.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24812
+Keywords   white innocence ball color~
+Short      Innocence~
+Long       An innocent-looking white ball of light floats here, seeming almost amused.
 ~
-Although you are close to blinded by the intensity of the form in front of 
+Desc       Although you are close to blinded by the intensity of the form in front of 
 you, you know that it doesn't matter much.  There is no way this entity could 
 harm you.  It's too nice.  You smile to yourself and sigh happily.
 ~
-67 524456 1000 S
-40 0 -200 9000d0+1 0d0+0
-1 0
-112 112 0
-> rand_prog 25~
-smile
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden sanctuary flying~
+Stats1     1000 40 0 -200 1 0
+Stats2     9000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   smile
   giggle
 ~
-|
-#24813
-evil black color~
-Evil~
-A large mass of absolute blackness surrounds you, chilling you to your bones.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24813
+Keywords   evil black color~
+Short      Evil~
+Long       A large mass of absolute blackness surrounds you, chilling you to your bones.
 ~
-Nothing, in all the Realms, is this evil.  Not Shimmergloom, not Lord Seth, not
+Desc       Nothing, in all the Realms, is this evil.  Not Shimmergloom, not Lord Seth, not
 War, nothing.  Your heart freezes with dread, your throat tightens, and your 
 flesh chills.  You try to scream, but nothing comes out.  This  is  pure  evil.
 ~
-67 524456 0 S
-45 0 -200 10000d0+1 0d0+0
-666 0
-112 112 0
-> rand_prog 25~
-growl
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden sanctuary flying~
+Stats1     0 45 0 -200 666 0
+Stats2     10000 0 1
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   growl
   scream
 ~
-|
-#24814
-left foot welmar leftfoot~
-Welmar's Left Foot~
-The monstrous left foot of King Welmar is here, tapping impatiently.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24814
+Keywords   left foot welmar leftfoot~
+Short      Welmar's Left Foot~
+Long       The monstrous left foot of King Welmar is here, tapping impatiently.
 ~
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc sentinel~
+Stats1     0 20 0 -50 0 0
+Stats2     900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Attacks    kick~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-3 0 0 C
-20 0 -50 900d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 0
-0 0 0 0 0 0 32 0
-> act_prog defend_foot~
-mpgoto rightfoot
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   defend_foot~
+Comlist   mpgoto rightfoot
   mpkill $n
 ~
-> death_prog 100~
-mpgoto 4
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24815
+Keywords   right foot welmar rightfoot~
+Short      Welmar's Right Foot~
+Long       The humongous right foot of King Welmar is here, tracing designs on the floor.
 ~
-|
-#24815
-right foot welmar rightfoot~
-Welmar's Right Foot~
-The humongous right foot of King Welmar is here, tracing designs on the floor.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc sentinel~
+Stats1     0 20 0 -50 0 0
+Stats2     900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Attacks    kick~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-~
-3 0 0 C
-20 0 -50 900d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 32 0
-> act_prog defend_foot~
-mpgoto leftfoot
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   defend_foot~
+Comlist   mpgoto leftfoot
   mpkill $n
 ~
-> death_prog 100~
-mpgoto 4
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24816
+Keywords   right hand welmar righthand~
+Short      Welmar's Right hand~
+Long       The gigantic right hand of King Welmar is here, gripping a huge golden sceptre.
 ~
-|
-#24816
-right hand welmar righthand~
-Welmar's Right hand~
-The gigantic right hand of King Welmar is here, gripping a huge golden sceptre.
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc stayarea~
+Stats1     750 30 0 -75 0 0
+Stats2     1900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Attacks    punch~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-~
-65 0 750 C
-30 0 -75 1900d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 0
-0 0 0 0 0 0 16 0
-> act_prog defend_me~
-mpgoto $n
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   defend_me~
+Comlist   mpgoto $n
   mpecho Welmar's Right Hand comes to the rescue!
   mpkill $n 
 ~
-> death_prog 100~
-mpgoto 4
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24817
+Keywords   left hand welmar lefthand~
+Short      Welmar's Left hand~
+Long       Welmar's enormous left hand is here, drumming its fingers.
 ~
-|
-#24817
-left hand welmar lefthand~
-Welmar's Left hand~
-Welmar's enormous left hand is here, drumming its fingers.
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc~
+Stats1     -1000 30 0 -75 0 0
+Stats2     1900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Attacks    punch~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-~
-1 0 -1000 C
-30 0 -75 1900d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 0
-0 0 0 0 0 0 16 0
-> act_prog defend_me~
-mpgoto $n
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   defend_me~
+Comlist   mpgoto $n
   mpecho Welmar's Left Hand comes to the rescue!
   mpkill $n 
 ~
-> death_prog 100~
-mpgoto 4
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24818
+Keywords   left eye welmar~
+Short      Welmar's Left Eye~
+Long       King Welmar's left eye glares at you in irritation.
 ~
-|
-#24818
-left eye welmar~
-Welmar's Left Eye~
-King Welmar's left eye glares at you in irritation.
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel~
+Affected   detect_evil detect_invis detect_hidden sanctuary~
+Stats1     750 35 0 -100 0 0
+Stats2     2400 0 100
+Stats3     0 0 0
+Stats4     0 0 1 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Defenses   dodge~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24819
+Keywords   right eye welmar~
+Short      Welmar's Right Eye~
+Long       King Welmar's right eye stares at you impassively.
 ~
-3 172 750 C
-35 0 -100 2400d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 1
-0 0 0 0 0 0 0 2
-> death_prog 100~
-mpgoto 4
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel~
+Affected   detect_evil detect_invis detect_hidden sanctuary~
+Stats1     750 35 0 -100 0 0
+Stats2     2400 0 100
+Stats3     0 0 0
+Stats4     0 0 1 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-|
-#24819
-right eye welmar~
-Welmar's Right Eye~
-King Welmar's right eye stares at you impassively.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24820
+Keywords   mouth welmar~
+Short      Welmar's Mouth~
+Long       King Welmar's mouth mutters something about "kill" and "damn intruders".
 ~
+Race       magical~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_cast_mage~
+Gender     neuter~
+Actflags   npc sentinel~
+Stats1     -1000 40 0 -150 0 0
+Stats2     2900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+Attacks    bite~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
-3 172 750 C
-35 0 -100 2400d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 1
-0 0 0 0 0 0 0 0
-> death_prog 100~
-mpgoto 4
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24821
+Keywords   dragon dust Dracolithos~
+Short      Dracolithos~
+Long       A swirling cloud of dust forms a terrifying dragon shape before you.
 ~
-|
-#24820
-mouth welmar~
-Welmar's Mouth~
-King Welmar's mouth mutters something about "kill" and "damn intruders".
-~
-~
-3 0 -1000 C
-40 0 -150 2900d0+100 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-85 0 0 0 131073 131072 0
-0 0 0 0 0 0 1 0
-> death_prog 100~
-mpgoto 4
-~
-|
-#24821
-dragon dust Dracolithos~
-Dracolithos~
-A swirling cloud of dust forms a terrifying dragon shape before you.
-~
-Dracolithos has lived in this painting for thousands of years, feeding on 
+Desc       Dracolithos has lived in this painting for thousands of years, feeding on 
 those adventurers foolish or unlucky to end up in this wasteland.  It 
 displays its pile of bone powder as one would show a trophy on their wall.  
 You begin to regret ever coming to the art gallery.
 ~
-3 4792872 0 C
-50 0 -150 1d1+11000 8d8+6
-650000 0
-112 112 0
-18 13 13 16 13 13 0
-0 0 0 -15 -6
-31 0 0 0 131073 131073 5
-0 0 198688 0 2100231 520 7 3
-> rand_prog 8~
-emote snorts, sending sand clouds swirling.
-hide
+Race       dragon~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_breath_gas~
+Gender     neuter~
+Actflags   npc sentinel~
+Affected   detect_invis detect_hidden infrared protect hide flying truesight~
+Stats1     0 50 0 -150 650000 0
+Stats2     1 1 11000
+Stats3     8 8 6
+Stats4     0 0 5 0 0
+Attribs    18 13 13 16 13 13 0
+Saves      0 0 0 -15 -6
+Speaks     common halfling~
+Speaking   common halfling~
+Bodyparts  guts long_tongue tail scales~
+Immune     fire cold electricity sleep charm paralysis~
+Suscept    energy drain~
+Attacks    bite claws tail~
+Defenses   parry dodge~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpat 3 c heal
 ~
-> all_greet_prog 100~
-mpecho As you trudge along, the sand all around you begins to swirl upward.
-mpecho This is unlike any dust storm you've ever seen, though.
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p flees head over heels!~
+Comlist   mpat 3 c heal
+mpat 3 c heal
+mpat 3 c heal
+mpat 3 c heal
+mpat 3 c heal
 ~
-> death_prog 100~
-mpoload 24816
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 24816
 mpecho The insubstantial form of Dracolithos finally returns from whence
 mpecho it came:  dust.  All that remains is a simple band of fire-blown
 mpecho glass, pitted and etched by time and driven sand.
 ~
-> act_prog p flees head over heels!~
-mpat 3 c heal
-mpat 3 c heal
-mpat 3 c heal
-mpat 3 c heal
-mpat 3 c heal
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   mpecho As you trudge along, the sand all around you begins to swirl upward.
+mpecho This is unlike any dust storm you've ever seen, though.
 ~
-> rand_prog 5~
-mpat 3 c heal
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   8~
+Comlist   emote snorts, sending sand clouds swirling.
+hide
 ~
-|
-#24822
-zombie noble~
-a zombie noble~
-A well-dressed zombie turns to you and emits a terrifying moan.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24822
+Keywords   zombie noble~
+Short      a zombie noble~
+Long       A well-dressed zombie turns to you and emits a terrifying moan.
 ~
-A close examination of this zombie wasn't really what you had in mind.  
+Desc       A close examination of this zombie wasn't really what you had in mind.  
 Unfortunately, the details of his rotting visage are forever etched into your 
 mind.  Looks like he's been sitting here for a long, long, LONG time.
 ~
-67 40 -1000 C
-30 0 -75 1000d0+500 0d0+0
-10000 0
-112 112 1
-13 13 13 13 13 13 0
-0 0 0 0 71
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24823
-ghoul noble~
-a ghoul noble~
-A ghoul dressed in tattered majestic robes growls at you hungrily.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden~
+Stats1     -1000 30 0 -75 10000 0
+Stats2     1000 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 71
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24823
+Keywords   ghoul noble~
+Short      a ghoul noble~
+Long       A ghoul dressed in tattered majestic robes growls at you hungrily.
 ~
-This ghoul seems as bereft of brain power as any other undead creature, but 
+Desc       This ghoul seems as bereft of brain power as any other undead creature, but 
 an evil glint in its eyes gives away a faint remainder of cunning, if not 
 intelligence.  Watch out for this one.
 ~
-99 40 -1000 C
-35 0 -100 1200d0+50 0d0+0
-20000 0
-112 112 1
-13 13 13 13 13 13 0
-0 0 0 0 67
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24824
-skeleton lady~
-a lady skeleton~
-A lady of regal bearing stands here, devoid of everything but bone.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_poison~
+Gender     male~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_invis detect_hidden~
+Stats1     -1000 35 0 -100 20000 0
+Stats2     1200 0 50
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 67
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24824
+Keywords   skeleton lady~
+Short      a lady skeleton~
+Long       A lady of regal bearing stands here, devoid of everything but bone.
 ~
-This important-looking skeleton's face is forever locked in a grin, due to 
+Desc       This important-looking skeleton's face is forever locked in a grin, due to 
 the fact that she has no face to do anything else with.  Her crown is still 
 on her head, the only thing on what's left of her body that hasn't rotted away.
 ~
-67 40 -1000 C
-35 0 -100 1300d0+50 0d0+0
-10000 0
-112 112 2
-13 13 13 13 13 13 0
-0 0 0 0 60
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24825
-vampire lord king~
-The Vampire Lord~
-A fearsome vampire sits here, smiling coldly.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel stayarea~
+Affected   detect_invis detect_hidden~
+Stats1     -1000 35 0 -100 10000 0
+Stats2     1300 0 50
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 60
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24825
+Keywords   vampire lord king~
+Short      The Vampire Lord~
+Long       A fearsome vampire sits here, smiling coldly.
 ~
-This vampire has not bothered to wipe the blood from his face, a testament to 
+Desc       This vampire has not bothered to wipe the blood from his face, a testament to 
 his many kills.  You can almost feel his razor-sharp fangs digging into your 
 neck, and you rub your neck involuntarily at the thought.
 ~
-99 2097320 -1000 C
-45 0 -200 2800d0+200 0d0+0
-50000 0
-112 112 1
-13 13 13 13 13 13 0
-0 0 0 0 5
-3 0 0 0 131073 131072 0
-0 0 0 0 2048 0 0 2
-#24826
-deer~
-a strong deer~
-A deer spies you and quickly bounds away.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_cast_undead~
+Gender     male~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_invis detect_hidden sanctuary floating~
+Stats1     -1000 45 0 -200 50000 0
+Stats2     2800 0 200
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 5
+Speaks     common halfling~
+Speaking   halfling~
+Immune     charm~
+Defenses   dodge~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24826
+Keywords   deer~
+Short      a strong deer~
+Long       A deer spies you and quickly bounds away.
 ~
-This stag's antlers look rather intimidating.  You can imagine yourself being 
+Desc       This stag's antlers look rather intimidating.  You can imagine yourself being 
 impaled on the many racks of them.  His skin looks rather warm, though.  No 
 wonder he looks so carefree.
 ~
-193 0 0 C
-20 0 0 400d0+100 0d0+0
-0 0
-112 112 1
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 0 0 0 0 0 2
-> death_prog 100~
-mpoload 24821
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc stayarea wimpy~
+Stats1     0 20 0 0 0 0
+Stats2     400 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Defenses   dodge~
+#MUDPROG
+Progtype  fight_prog~
+Arglist   20~
+Comlist   kick
 ~
-> fight_prog 20~
-kick
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 24821
 ~
-|
-#24827
-yeti~
-a tundra yeti~
-A huge yeti rises up before you, its white fur blending with the snow.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24827
+Keywords   yeti~
+Short      a tundra yeti~
+Long       A huge yeti rises up before you, its white fur blending with the snow.
 ~
-This huge animal resembles a large white bear, only with much stronger arms 
+Desc       This huge animal resembles a large white bear, only with much stronger arms 
 and jaws.  You wouldn't want to get caught between either of those.
 ~
-97 32 0 C
-22 0 0 1d1+800 10d2+5
-0 0
-112 112 0
-13 13 13 13 13 13 13
-0 0 0 0 0
-0 3 0 0 1 1 0
-0 0 0 0 0 1048576 64 2
-#24828
-dragon icingdeath ingeloakastimizilian ice white~
-Icingdeath~
-Icingdeath, king of the white dragons, lies here on a frozen bed of gold.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc aggressive stayarea~
+Affected   detect_hidden~
+Stats1     0 22 0 0 0 0
+Stats2     1 1 800
+Stats3     10 2 5
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Suscept    magic~
+Attacks    trip~
+Defenses   dodge~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24828
+Keywords   dragon icingdeath ingeloakastimizilian ice white~
+Short      Icingdeath~
+Long       Icingdeath, king of the white dragons, lies here on a frozen bed of gold.
 ~
-Ingeloakastimizilian, or Icingdeath, as he has come to be known, has lived in 
+Desc       Ingeloakastimizilian, or Icingdeath, as he has come to be known, has lived in 
 this cavern for hundreds of years.  He, like many others of his kind, has grown
 too large to leave his lair.  So Icingdeath is content to lie here in repose 
 and count his treasure in his tiny dragon mind.  Disturbing him was probably 
 a very bad idea.
 ~
-99 4726972 0 C
-45 0 -250 7000d0+1000 2d5+4
-750000 0
-112 112 1
-17 13 13 16 13 13 0
-0 0 0 0 0
-3 0 0 0 131073 131073 0
-0 0 4686861 4 2099202 1 64 2
-> rand_prog 25~
-mpforce all shiver
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_breath_frost~
+Gender     male~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 45 0 -250 750000 0
+Stats2     7000 0 1000
+Stats3     2 5 4
+Stats4     0 0 0 0 0
+Attribs    17 13 13 16 13 13 0
+Saves      0 0 0 0 0
+Speaks     common halfling~
+Speaking   common halfling~
+Bodyparts  head legs heart eye wings tail scales claws tailattack~
+Resist     electricity~
+Immune     cold charm paralysis~
+Suscept    fire~
+Attacks    trip~
+Defenses   dodge~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho Icingdeath shudders once as blood trickles out of his nostrils.  He
+  mpecho gathers his lungs for one final breath of frost, but all that comes
+  mpecho out is a mildly nippy cough.  His head crashes to the floor.
 ~
-> greet_prog 100~
-mpecho Ingeloakastimizilian's eyes dart open as soon as you step into
+#ENDPROG
+
+#MUDPROG
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpecho Ingeloakastimizilian's eyes dart open as soon as you step into
 the room.
   mpecho The thin layer of ice that covers the dragon's body immediately
   mpecho shatters as he screams, a truly horrible sound.
@@ -659,428 +1105,821 @@ yell You will be my dinner after a centuries long fast $n.
 else
 endif
 ~
-> death_prog 100~
-mpecho Icingdeath shudders once as blood trickles out of his nostrils.  He
-  mpecho gathers his lungs for one final breath of frost, but all that comes
-  mpecho out is a mildly nippy cough.  His head crashes to the floor.
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   mpforce all shiver
 ~
-|
-#24829
-lich aram aram-dol dol~
-Aram-Dol~
-A skeletal being of pure evil lies here, its eyes glowing with an unholy light.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24829
+Keywords   lich aram aram-dol dol~
+Short      Aram-Dol~
+Long       A skeletal being of pure evil lies here, its eyes glowing with an unholy light.
 ~
-Aram-Dol has been feeding off unwary adventurers for centuries now, their 
+Desc       Aram-Dol has been feeding off unwary adventurers for centuries now, their 
 life force sustaining his existence.  He should have been dead millenia ago, 
 but his evil ambitions and magic crown have allowed him to cheat death and 
 enter the realm of the undead.
 ~
-67 60 0 C
-45 0 -200 7000d0+1000 0d0+0
-100000 0
-112 112 1
-13 13 13 13 13 13 0
-0 0 0 0 67
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-> fight_prog 25~
-mpecho Aram-Dol grabs your arm!
-  c 'energy drain' $n
-~
-> death_prog 100~
-mpecho Aram-Dol emits a terrifying scream as he crumbles into dust.  All
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Specfun    spec_cast_mage~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden~
+Stats1     0 45 0 -200 100000 0
+Stats2     7000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 67
+Speaks     common halfling~
+Speaking   halfling~
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho Aram-Dol emits a terrifying scream as he crumbles into dust.  All
   mpecho that remains of him are his crown and his wand.
 mpoload 24823 40
 drop decay
 mpoload 24822 40
 drop crown
 ~
-|
-#24830
-butcher graeme davis~
-the butcher~
-A blond young man offers a blood-stained hand as you enter the room.
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   25~
+Comlist   mpecho Aram-Dol grabs your arm!
+  c 'energy drain' $n
 ~
-Graeme loves his job.  It gives him the chance to take out his aggressions on 
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24830
+Keywords   butcher graeme davis~
+Short      the butcher~
+Long       A blond young man offers a blood-stained hand as you enter the room.
+~
+Desc       Graeme loves his job.  It gives him the chance to take out his aggressions on 
 human-sized targets with a huge cleaver.  He doesn't look like the type to be 
 messed with.
 ~
-67 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 0
-#24831
-baker jon lang~
-the baker~
-A wild-eyed man is here, covered in flour from his shoes to his glasses.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24831
+Keywords   baker jon lang~
+Short      the baker~
+Long       A wild-eyed man is here, covered in flour from his shoes to his glasses.
 ~
-Jon Lang runs around manically as you study him.  The flour all over his body 
+Desc       Jon Lang runs around manically as you study him.  The flour all over his body 
 is caked into his skin and clothes.  Apparently, he hasn't had time to clean 
 himself.
 ~
-67 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24832
-stafford fruit markham vendor~
-the fruit stand vendor~
-A grizzled, moustached man stands here, offering you various fruits.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24832
+Keywords   stafford fruit markham vendor~
+Short      the fruit stand vendor~
+Long       A grizzled, moustached man stands here, offering you various fruits.
 ~
-Stafford has given up his job designing signs for the shops around here, and 
+Desc       Stafford has given up his job designing signs for the shops around here, and 
 is content to sell you every fruit he has ever come across.  Yes, his job is 
 just about as boring as it sounds.
 ~
-67 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24833
-tabby cat orange~
-the orange tabby~
-A beautiful orange tabby cat rubs up against your leg and purrs here.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24833
+Keywords   tabby cat orange~
+Short      the orange tabby~
+Long       A beautiful orange tabby cat rubs up against your leg and purrs here.
 ~
-The cat's coat is a lustrous orange.  Obviously, someone has been taking care 
+Desc       The cat's coat is a lustrous orange.  Obviously, someone has been taking care 
 of her quite well.
 ~
-67 0 0 C
-20 0 -75 900d0+100 0d0+0
-0 0
-112 112 2
-13 13 13 13 13 13 0
-0 0 0 0 29
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24834
-bonnie dairy milkmaid roberts ~
-the dimpled milkmaid~
-A beautiful blonde woman shyly offers you dairy products.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     female~
+Actflags   npc sentinel stayarea~
+Stats1     0 20 0 -75 0 0
+Stats2     900 0 100
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 29
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24834
+Keywords   bonnie dairy milkmaid roberts ~
+Short      the dimpled milkmaid~
+Long       A beautiful blonde woman shyly offers you dairy products.
 ~
-Bonnie has grown fed up with her bureaucratic job at the university.  She now 
+Desc       Bonnie has grown fed up with her bureaucratic job at the university.  She now 
 runs the Goodbody Dairy, which has been her dream for many years.  Her cheeks
 flush as she offers you merchandise.
 ~
-67 4726972 0 S
-10 0 -300 29000d0+200 0d0+0
-0 0
-112 112 2
-#24835
-barbarian heafstaag~
-a barbarian fighter~
-A huge barbarian stands here motionless, awaiting his next target.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     female~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 200
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24835
+Keywords   barbarian heafstaag~
+Short      a barbarian fighter~
+Long       A huge barbarian stands here motionless, awaiting his next target.
 ~
-This huge man appears to be quite worked up about something.  Every muscle on 
+Desc       This huge man appears to be quite worked up about something.  Every muscle on 
 his huge body is taut with exertion.  It is his eyes that draw your attention,
 though.  They are frightened, pleading eyes.  The eyes of a beaten man.
 ~
-67 0 0 S
-30 0 -175 3500d0+500 0d0+0
-0 0
-112 112 1
-> rand_prog 20~
-growl
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Stats1     0 30 0 -175 0 0
+Stats2     3500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   20~
+Comlist   growl
 ~
-|
-#24836
-storm giant galstorm~
-the storm giant chieftain~
-A storm giant stands here, completely motionless.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24836
+Keywords   storm giant galstorm~
+Short      the storm giant chieftain~
+Long       A storm giant stands here, completely motionless.
 ~
-The twenty-foot-plus giant that stands before you pays you absolutely no 
+Desc       The twenty-foot-plus giant that stands before you pays you absolutely no 
 attention.  You can hear energy crackling all around him, which gives him away
 as a storm giant even before his deep violet skin.
 ~
-67 0 0 S
-50 0 -200 5500d0+500 0d0+0
-0 0
-112 112 1
-> rand_prog 25~
-cackle
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Stats1     0 50 0 -200 0 0
+Stats2     5500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   cackle
 ~
-|
-#24837
-mind flayer galflayer~
-the mind flayer~
-A revoltingly colored mind flayer stands here, its eyes widening in shock.
+#ENDPROG
+
+#ENDMOBILE
+
+#MOBILE
+Vnum       24837
+Keywords   mind flayer galflayer~
+Short      the mind flayer~
+Long       A revoltingly colored mind flayer stands here, its eyes widening in shock.
 ~
-This illithid is one of the most disgusting creatures you've ever seen.  Its 
+Desc       This illithid is one of the most disgusting creatures you've ever seen.  Its 
 skin glistens with slime, and its bizarre eyes have no pupils.  This creature's
 very existence is a defamation of nature.
 ~
-99 8 0 C
-30 0 -100 2500d0+500 0d0+0
-10000 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 85
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24838
-siberian husky dog~
-a Siberian Husky~
-A healthy-looking Siberian Husky sits here at the table, intent on his hand.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel aggressive stayarea~
+Affected   detect_invis~
+Stats1     0 30 0 -100 10000 0
+Stats2     2500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 85
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24838
+Keywords   siberian husky dog~
+Short      a Siberian Husky~
+Long       A healthy-looking Siberian Husky sits here at the table, intent on his hand.
 ~
-A tag on his collar says "Tundra".
+Desc       A tag on his collar says "Tundra".
 ~
-67 0 0 C
-10 0 -50 500d0+500 0d0+0
-10000 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 30
-3 0 0 0 131073 131072 0
-0 0 4 0 0 0 0 0
-#24839
-golden retriever dog~
-a Golden Retriever~
-A Golden Retriever with a shiny coat sits here oblivious at the table.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Stats1     0 10 0 -50 10000 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 30
+Speaks     common halfling~
+Speaking   halfling~
+Bodyparts  legs~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24839
+Keywords   golden retriever dog~
+Short      a Golden Retriever~
+Long       A Golden Retriever with a shiny coat sits here oblivious at the table.
 ~
-A tag on his collar says "Pyrite".
+Desc       A tag on his collar says "Pyrite".
 ~
-67 0 0 C
-10 0 -50 500d0+500 0d0+0
-10000 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 30
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24840
-dachsund weiner dog~
-a Wirehaired Dachsund~
-A seemingly bored Wirehaired Dachsund is losing.  Poor doggie.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Stats1     0 10 0 -50 10000 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 30
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24840
+Keywords   dachsund weiner dog~
+Short      a Wirehaired Dachsund~
+Long       A seemingly bored Wirehaired Dachsund is losing.  Poor doggie.
 ~
-A tag on his collar says "Schultz".
+Desc       A tag on his collar says "Schultz".
 ~
-67 0 0 C
-10 0 -50 500d0+500 0d0+0
-10000 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 30
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24841
-irish setter dog~
-an Irish Setter~
-An excited Irish Setter leans up against the table here, wagging its tail.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Stats1     0 10 0 -50 10000 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 30
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24841
+Keywords   irish setter dog~
+Short      an Irish Setter~
+Long       An excited Irish Setter leans up against the table here, wagging its tail.
 ~
-A tag on his collar says "O'Sullivan".
+Desc       A tag on his collar says "O'Sullivan".
 ~
-67 0 0 C
-10 0 -50 500d0+500 0d0+0
-40000 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 30
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24842
-boxer dog~
-a Boxer~
-A mean-looking Boxer has lost all his money.  Better watch out.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Stats1     0 10 0 -50 40000 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 30
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24842
+Keywords   boxer dog~
+Short      a Boxer~
+Long       A mean-looking Boxer has lost all his money.  Better watch out.
 ~
-A tag on his collar says "Tyson".
+Desc       A tag on his collar says "Tyson".
 ~
-99 0 0 C
-10 0 -50 500d0+500 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 30
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24843
-dragonfly blue~
-a sky blue dragonfly~
-A gigantic light blue dragonfly buzzes next to your ear.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel aggressive stayarea~
+Stats1     0 10 0 -50 0 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 30
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24843
+Keywords   dragonfly blue~
+Short      a sky blue dragonfly~
+Long       A gigantic light blue dragonfly buzzes next to your ear.
 ~
-Its wings are moving much too fast for you to see, but you decide to trust 
+Desc       Its wings are moving much too fast for you to see, but you decide to trust 
 your senses and believe that this creature is flying.  You'd hate to be 
 bitten by one of these.  If dragonflies do indeed bite.  Hmm.
 ~
-67 524288 0 C
-10 0 -50 500d0+500 0d0+0
-0 0
-112 112 0
-13 13 13 13 13 13 0
-0 0 0 0 83
-3 0 0 0 131073 131072 0
-0 0 0 0 0 0 0 0
-#24844
-blue jay bluejay~
-an exuberant blue jay~
-A happy-looking blue jay flies circles around your head.
+Race       halfling~
+Class      mage~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   flying~
+Stats1     0 10 0 -50 0 0
+Stats2     500 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 0
+Saves      0 0 0 0 83
+Speaks     common halfling~
+Speaking   halfling~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24844
+Keywords   blue jay bluejay~
+Short      an exuberant blue jay~
+Long       A happy-looking blue jay flies circles around your head.
 ~
-This bird is uncommonly happy for some reason.  You can't imagine why, given 
+Desc       This bird is uncommonly happy for some reason.  You can't imagine why, given 
 the mood of this room.  You half expect it to burst into tears at any moment.
 That would be the icing on the cake.
 ~
-67 524288 0 S
-15 0 -75 1000d0+500 0d0+0
-0 0
-112 112 0
-#24845
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   flying~
+Stats1     0 15 0 -75 0 0
+Stats2     1000 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24845
+Keywords   ~
+Short      the butcher~
+Long       A blond young man offers a blood-stained hand as you enter the room.
 ~
-the butcher~
-A blond young man offers a blood-stained hand as you enter the room.
-~
-Graeme loves his job.  It gives him the chance to take out his aggressions on 
+Desc       Graeme loves his job.  It gives him the chance to take out his aggressions on 
 human-sized targets with a huge cleaver.  He doesn't look like the type to be 
 messed with.
 ~
-1073741891 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 0
-#24846
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc sentinel stayarea prototype~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24846
+Keywords   ~
+Short      the baker~
+Long       A wild-eyed man is here, covered in flour from his shoes to his glasses.
 ~
-the baker~
-A wild-eyed man is here, covered in flour from his shoes to his glasses.
-~
-Jon Lang runs around manically as you study him.  The flour all over his body 
+Desc       Jon Lang runs around manically as you study him.  The flour all over his body 
 is caked into his skin and clothes.  Apparently, he hasn't had time to clean 
 himself.
 ~
-1073741891 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24847
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea prototype~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24847
+Keywords   ~
+Short      the fruit stand vendor~
+Long       A grizzled, moustached man stands here, offering you various fruits.
 ~
-the fruit stand vendor~
-A grizzled, moustached man stands here, offering you various fruits.
-~
-Stafford has given up his job designing signs for the shops around here, and 
+Desc       Stafford has given up his job designing signs for the shops around here, and 
 is content to sell you every fruit he has ever come across.  Yes, his job is 
 just about as boring as it sounds.
 ~
-1073741891 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24848
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea prototype~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24848
+Keywords   ~
+Short      the dimpled milkmaid~
+Long       A beautiful blonde woman shyly offers you dairy products.
 ~
-the dimpled milkmaid~
-A beautiful blonde woman shyly offers you dairy products.
-~
-Bonnie has grown fed up with her bureaucratic job at the university.  She now 
+Desc       Bonnie has grown fed up with her bureaucratic job at the university.  She now 
 runs the Goodbody Dairy, which has been her dream for many years.  Her cheeks
 flush as she offers you merchandise.
 ~
-1073741891 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 2
-#24850
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     female~
+Actflags   npc sentinel stayarea prototype~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24850
+Keywords   ~
+Short      the butcher~
+Long       A blond young man offers a blood-stained hand as you enter the room.
 ~
-the butcher~
-A blond young man offers a blood-stained hand as you enter the room.
-~
-Graeme loves his job.  It gives him the chance to take out his aggressions on 
+Desc       Graeme loves his job.  It gives him the chance to take out his aggressions on 
 human-sized targets with a huge cleaver.  He doesn't look like the type to be 
 messed with.
 ~
-1073741891 4726972 0 S
-10 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 0
-#24851
-butcher graeme davis~
-the butcher~
-A blond young man offers a blood-stained hand as you enter the room.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc sentinel stayarea prototype~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24851
+Keywords   butcher graeme davis~
+Short      the butcher~
+Long       A blond young man offers a blood-stained hand as you enter the room.
 ~
-Graeme loves his job.  It gives him the chance to take out his aggressions on 
+Desc       Graeme loves his job.  It gives him the chance to take out his aggressions on 
 human-sized targets with a huge cleaver.  He doesn't look like the type to be 
 messed with.
 ~
-67 4726972 0 S
-10 0 -300 1d0+600 0d0+0
-0 0
-112 112 0
-#24852
-milkmaid dairy roberts bonnie~
-the dimpled milkmaid~
-A beautiful blonde woman shyly offers you dairy products.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_executioner~
+Gender     neuter~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     1 0 600
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24852
+Keywords   milkmaid dairy roberts bonnie~
+Short      the dimpled milkmaid~
+Long       A beautiful blonde woman shyly offers you dairy products.
 ~
-Bonnie has grown fed up with her bureaucratic job at the university.  She now 
+Desc       Bonnie has grown fed up with her bureaucratic job at the university.  She now 
 runs the Goodbody Dairy, which has been her dream for many years.  Her cheeks
 flush as she offers you merchandise.
 ~
-67 4726972 0 S
-10 0 -300 300d0+200 0d0+0
-0 0
-112 112 2
-#24853
-baker jon lang~
-the baker~
-A wild-eyed man is here, covered in flour from his shoes to his glasses.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_executioner~
+Gender     female~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     300 0 200
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24853
+Keywords   baker jon lang~
+Short      the baker~
+Long       A wild-eyed man is here, covered in flour from his shoes to his glasses.
 ~
-Jon Lang runs around manically as you study him.  The flour all over his body 
+Desc       Jon Lang runs around manically as you study him.  The flour all over his body 
 is caked into his skin and clothes.  Apparently, he hasn't had time to clean 
 himself.
 ~
-67 4726972 0 S
-10 0 -300 300d0+500 0d0+0
-0 0
-112 112 1
-#24854
-stafford fruit markham vendor~
-the fruit stand vendor~
-A grizzled, moustached man stands here, offering you various fruits.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_executioner~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     300 0 500
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24854
+Keywords   stafford fruit markham vendor~
+Short      the fruit stand vendor~
+Long       A grizzled, moustached man stands here, offering you various fruits.
 ~
-Stafford has given up his job designing signs for the shops around here, and 
+Desc       Stafford has given up his job designing signs for the shops around here, and 
 is content to sell you every fruit he has ever come across.  Yes, his job is 
 just about as boring as it sounds.
 ~
-67 4726972 0 S
-10 0 -300 200d0+650 0d0+0
-0 0
-112 112 1
-#24892
-wiggins scott ~
-Scott~
-A towering man in a Corps of Cadets uniform stands here at attention.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_executioner~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 10 0 -300 0 0
+Stats2     200 0 650
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+ShopData   19 17 26 0 0 120 90 0 23
+#ENDMOBILE
+
+#MOBILE
+Vnum       24892
+Keywords   wiggins scott ~
+Short      Scott~
+Long       A towering man in a Corps of Cadets uniform stands here at attention.
 ~
-Scott is in uniform, of course.  It looks like quite an uncomfortable uniform
+Desc       Scott is in uniform, of course.  It looks like quite an uncomfortable uniform
 at that.  You're very glad YOU don't have to wear it.  You're also very glad 
 you're not the one in the Corps.
 ~
-65 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 0
-#24893
-aaron white~
-Aaron~
-A smiling student in tattered sweatshorts stands here, whining about work.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     neuter~
+Actflags   npc stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24893
+Keywords   aaron white~
+Short      Aaron~
+Long       A smiling student in tattered sweatshorts stands here, whining about work.
 ~
-Aaron notices your gaze and says "What the hell are you looking at?"  He is 
+Desc       Aaron notices your gaze and says "What the hell are you looking at?"  He is 
 holding his koofers for the big test tomorrow.
 ~
-67 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24894
-schneider rob schneidr~
-Rob~
-A tall young lad with thick glasses is here, making fun of you.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24894
+Keywords   schneider rob schneidr~
+Short      Rob~
+Long       A tall young lad with thick glasses is here, making fun of you.
 ~
-Rob is wearing his "Politically Incorrect" T-shirt, and shorts (of course...
+Desc       Rob is wearing his "Politically Incorrect" T-shirt, and shorts (of course...
 the guy doesn't have any other legwear).  He is working on a five-page paper 
 for Political Theory class.  Don't disturb him.
 ~
-67 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24895
-tex aaron lee~
-Tex~
-A tall, lanky Texan stands here with his thumbs in his belt loops.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24895
+Keywords   tex aaron lee~
+Short      Tex~
+Long       A tall, lanky Texan stands here with his thumbs in his belt loops.
 ~
-After a close inspection of Tex's outfit, you wonder why he is here in 
+Desc       After a close inspection of Tex's outfit, you wonder why he is here in 
 Blacksburg and not down in Austin.  Faded cowboy boots, a black cowboy hat, 
 blue jeans jacket, and a Garth Brooksesque shirt make up this weirdo's ensemble
 Aaron notices your gaze and says "What the hell are you looking at?"  He is 
@@ -1089,249 +1928,348 @@ After a close inspection of Tex's outfit, you wonder why he is here in
 Blacksburg and not down in Austin.  Faded cowboy boots, a black cowboy hat, 
 blue jeans jacket, and a Garth Brooksesque shirt make up this weirdo's ensemble
 ~
-65 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24896
-forrester chris~
-Forrester~
-A thin, goateed weakling stands here doing impressions.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24896
+Keywords   forrester chris~
+Short      Forrester~
+Long       A thin, goateed weakling stands here doing impressions.
 ~
-Forrester is battling with Rob for "Smallest Person in Miles".  He still 
+Desc       Forrester is battling with Rob for "Smallest Person in Miles".  He still 
 looks quite dangerous, though.
 ~
-67 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24897
-cox brian bastard~
-Cox~
-An annoying bastard is here, wandering about the area.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24897
+Keywords   cox brian bastard~
+Short      Cox~
+Long       An annoying bastard is here, wandering about the area.
 ~
-You can't get a good look at him through all the flannel.  But maybe that's 
+Desc       You can't get a good look at him through all the flannel.  But maybe that's 
 just as well.
 ~
-65 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24898
-roberts grant troll-boy~
-Grant~
-A disinterested, long haired freak sits here at his computer.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24898
+Keywords   roberts grant troll-boy~
+Short      Grant~
+Long       A disinterested, long haired freak sits here at his computer.
 ~
-Grant is in his customary position.  Sprawled in his favorite, uncomfortable 
+Desc       Grant is in his customary position.  Sprawled in his favorite, uncomfortable 
 red chair with his feet in his computer desk.  His face is twisted in a look 
 of concentration as he types much, MUCH too quickly on his keyboard.
 ~
-67 4726972 0 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#24899
-seguin brian~
-Seguin~
-Brian Seguin stands here, laughing at something.  What a dork.
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     0 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
+
+#MOBILE
+Vnum       24899
+Keywords   seguin brian~
+Short      Seguin~
+Long       Brian Seguin stands here, laughing at something.  What a dork.
 ~
-Seguin is wearing his usual outfit.  A dark sweater with khaki shorts.  The kid
+Desc       Seguin is wearing his usual outfit.  A dark sweater with khaki shorts.  The kid
 has no fashion sense.  But that's why the women love him.
 ~
-67 4726972 -1000 S
-50 0 -300 29000d0+1000 0d0+0
-0 0
-112 112 1
-#0
+Race       human~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_guard~
+Gender     male~
+Actflags   npc sentinel stayarea~
+Affected   detect_evil detect_invis detect_magic detect_hidden sanctuary protect flying truesight~
+Stats1     -1000 50 0 -300 0 0
+Stats2     29000 0 1000
+Stats3     0 0 0
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+#ENDMOBILE
 
+#OBJECT
+Vnum     24800
+Keywords key~
+Type     key~
+Short    the Art Gallery key~
+Long     A silver key with the initials "D A G" carved on it lies here.~
+WFlags   take~
+Values   0 0 0 0 0 0
+Stats    1 1000000 -31072 0 0
+#ENDOBJECT
 
-#OBJECTS
-#24800
-key~
-the Art Gallery key~
-A silver key with the initials "D A G" carved on it lies here.~
-~
-18 0 1
-0 0 0 0
-1 1000000 -31072
-#24801
-ruby sabre spectrum~
-a ruby sabre~
-A long sabre, completely covered in rubies, is stuck in the ground here.~
-~
-5 147457 8193
-0 0 0 3
-5 500000 -15536
-A
-18 5
-A
-19 5
-A
-1 2
-#24802
-topaz staff spectrum~
-a topaz staff~
-A five-foot-long staff made of orange topaz lies on the ground here.~
-~
-5 25264129 8193
-0 0 0 7
-7 200000 20000
-A
-18 7
-A
-19 3
-A
-13 50
-#24803
-golden axe gold spectrum~
-a golden axe~
-A huge half moon-bladed axe made entirely of gold lies here on the ground.~
-~
-5 25346049 8193
-0 0 0 1
-10 500000 -15536
-A
-18 2
-A
-19 8
-A
-2 2
-#24804
-emerald morningstar star spectrum~
-an emerald morningstar~
-A large emerald spiked ball, chained to a long handle, is here on the ground.~
-~
-5 8437761 8193
-0 0 0 8
-12 350000 -30536
-A
-18 3
-A
-19 7
-A
-5 2
-#24805
-blue topaz claw glove spectrum~
-a blue topaz glove~
-A blue topaz-encrusted glove with wicked claws on the fingers lies here.~
-~
-5 25247745 8193
-0 0 0 5
-3 200000 20000
-A
-18 8
-A
-19 7
-A
-4 2
-#24806
-blue sapphire scythe spectrum~
-a sapphire scythe~
-A midnight blue scythe lies here, light glinting off its wicked blade.~
-~
-5 16924673 8193
-0 0 0 10
-15 450000 -20536
-A
-3 2
-A
-19 7
-#24807
-amethyst dagger gauche spectrum~
-an amethyst gauche~
-A long dagger completely covered in amethyst lies here on the ground.~
-~
-5 147457 8193
-0 0 0 11
-3 325000 32500
-A
-18 6
-A
-19 4
-#24808
-ivory rapier spectrum~
-an ivory rapier~
-A perfectly balanced ivory-covered rapier is skewered into the ground here. ~
-~
-5 8537089 8193
-0 0 0 2
-15 225000 22500
-A
-18 12
-A
-19 -2
-A
-12 50
-#24809
-onyx whip spectrum~
-an onyx whip~
-A whip with a handle of the deepest onyx lies here forgotten.~
-~
-5 529 8193
-0 0 0 4
-6 425000 -23036
-A
-18 5
-A
-19 5
-#24810
-daisy flower~
-bhelliom~
-An intricately designed rose made of sapphire lies here, pulsing with life.~
-~
-3 0 16385
-50 5 5 -1
-1 2000000 3392
-'shockshield'
-A
-17 0
-#24811
-dandelion flower~
-a dandelion~
-A huge dandelion is sprouting up from the ground below you.~
-~
-3 0 16385
-50 5 5 -1
-1 2000000 3392
-'fireshield'
-#24812
-bouquet marigolds flower marigold~
-a marigold~
-A single marigold is pushing up through the soil here.~
-~
-3 0 16385
-50 5 5 -1
-1 2000000 3392
-'sanctuary'
-#24813
-pansy flower~
-a pansy~
-A tasty-looking pansy grows by itself off to the side here.~
-~
-26 0 1
-50 -1 -1 -1
-1 2000000 3392
-'stone skin' 'shield' 'protection'
-#24814
-primrose flower~
-a potted primrose~
-A bright red primrose grows in a pot here.~
-~
-26 0 1
-50 -1 -1 -1
-1 2000000 3392
-'fly' 'kindred strength' 'scry'
-#24815
-plaque keystone~
-the Art Gallery's keystone~
-A plaque is mounted on the keystone of the gallery.~
-~
-12 0 0
-0 0 0 0
-1 0 0
-E
-plaque keystone~
-------------------------------------------------------------------------------
+#OBJECT
+Vnum     24801
+Keywords ruby sabre spectrum~
+Type     weapon~
+Short    a ruby sabre~
+Long     A long sabre, completely covered in rubies, is stuck in the ground here.~
+Flags    glow antimage anticleric~
+WFlags   take wield~
+Values   0 0 0 3 0 0
+Stats    5 500000 -15536 0 0
+Affect       -1 -1 5 18 0
+Affect       -1 -1 5 19 0
+Affect       -1 -1 2 1 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24802
+Keywords topaz staff spectrum~
+Type     weapon~
+Short    a topaz staff~
+Long     A five-foot-long staff made of orange topaz lies on the ground here.~
+Flags    glow antithief antiwarrior antivampire antidruid~
+WFlags   take wield~
+Values   0 0 0 7 0 0
+Stats    7 200000 20000 0 0
+Affect       -1 -1 7 18 0
+Affect       -1 -1 3 19 0
+Affect       -1 -1 50 13 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24803
+Keywords golden axe gold spectrum~
+Type     weapon~
+Short    a golden axe~
+Long     A huge half moon-bladed axe made entirely of gold lies here on the ground.~
+Flags    glow antimage antithief anticleric antivampire antidruid~
+WFlags   take wield~
+Values   0 0 0 1 0 0
+Stats    10 500000 -15536 0 0
+Affect       -1 -1 2 18 0
+Affect       -1 -1 8 19 0
+Affect       -1 -1 2 2 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24804
+Keywords emerald morningstar star spectrum~
+Type     weapon~
+Short    an emerald morningstar~
+Long     A large emerald spiked ball, chained to a long handle, is here on the ground.~
+Flags    glow antimage antithief antivampire~
+WFlags   take wield~
+Values   0 0 0 8 0 0
+Stats    12 350000 -30536 0 0
+Affect       -1 -1 3 18 0
+Affect       -1 -1 7 19 0
+Affect       -1 -1 2 5 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24805
+Keywords blue topaz claw glove spectrum~
+Type     weapon~
+Short    a blue topaz glove~
+Long     A blue topaz-encrusted glove with wicked claws on the fingers lies here.~
+Flags    glow antimage antiwarrior antivampire antidruid~
+WFlags   take wield~
+Values   0 0 0 5 0 0
+Stats    3 200000 20000 0 0
+Affect       -1 -1 8 18 0
+Affect       -1 -1 7 19 0
+Affect       -1 -1 2 4 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24806
+Keywords blue sapphire scythe spectrum~
+Type     weapon~
+Short    a sapphire scythe~
+Long     A midnight blue scythe lies here, light glinting off its wicked blade.~
+Flags    glow antimage anticleric antidruid~
+WFlags   take wield~
+Values   0 0 0 10 0 0
+Stats    15 450000 -20536 0 0
+Affect       -1 -1 2 3 0
+Affect       -1 -1 7 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24807
+Keywords amethyst dagger gauche spectrum~
+Type     weapon~
+Short    an amethyst gauche~
+Long     A long dagger completely covered in amethyst lies here on the ground.~
+Flags    glow antimage anticleric~
+WFlags   take wield~
+Values   0 0 0 11 0 0
+Stats    3 325000 32500 0 0
+Affect       -1 -1 6 18 0
+Affect       -1 -1 4 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24808
+Keywords ivory rapier spectrum~
+Type     weapon~
+Short    an ivory rapier~
+Long     A perfectly balanced ivory-covered rapier is skewered into the ground here. ~
+Flags    glow antievil antimage anticleric antivampire~
+WFlags   take wield~
+Values   0 0 0 2 0 0
+Stats    15 225000 22500 0 0
+Affect       -1 -1 12 18 0
+Affect       -1 -1 -2 19 0
+Affect       -1 -1 50 12 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24809
+Keywords onyx whip spectrum~
+Type     weapon~
+Short    an onyx whip~
+Long     A whip with a handle of the deepest onyx lies here forgotten.~
+Flags    glow evil antigood~
+WFlags   take wield~
+Values   0 0 0 4 0 0
+Stats    6 425000 -23036 0 0
+Affect       -1 -1 5 18 0
+Affect       -1 -1 5 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24810
+Keywords daisy flower~
+Type     wand~
+Short    bhelliom~
+Long     An intricately designed rose made of sapphire lies here, pulsing with life.~
+WFlags   take hold~
+Values   50 5 5 -1 0 0
+Stats    1 2000000 3392 0 0
+Affect       -1 -1 0 17 0
+Spells   'shockshield'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24811
+Keywords dandelion flower~
+Type     wand~
+Short    a dandelion~
+Long     A huge dandelion is sprouting up from the ground below you.~
+WFlags   take hold~
+Values   50 5 5 -1 0 0
+Stats    1 2000000 3392 0 0
+Spells   'fireshield'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24812
+Keywords bouquet marigolds flower marigold~
+Type     wand~
+Short    a marigold~
+Long     A single marigold is pushing up through the soil here.~
+WFlags   take hold~
+Values   50 5 5 -1 0 0
+Stats    1 2000000 3392 0 0
+Spells   'sanctuary'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24813
+Keywords pansy flower~
+Type     pill~
+Short    a pansy~
+Long     A tasty-looking pansy grows by itself off to the side here.~
+WFlags   take~
+Values   50 -1 -1 -1 0 0
+Stats    1 2000000 3392 0 0
+Spells   'stone skin' 'shield' 'protection'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24814
+Keywords primrose flower~
+Type     pill~
+Short    a potted primrose~
+Long     A bright red primrose grows in a pot here.~
+WFlags   take~
+Values   50 -1 -1 -1 0 0
+Stats    1 2000000 3392 0 0
+Spells   'fly' 'kindred strength' 'scry'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24815
+Keywords plaque keystone~
+Type     furniture~
+Short    the Art Gallery's keystone~
+Long     A plaque is mounted on the keystone of the gallery.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#EXDESC
+ExDescKey    plaque keystone~
+ExDesc       ------------------------------------------------------------------------------
                       Copyright 1995 Do'Urden Enterprises
  
 This area, my second, is dedicated to Becky Boilek, who gives me the inspir-
@@ -1342,458 +2280,580 @@ Oh yeah, and by the way, the Art Gallery was based, in part (a small part) on
 Owzer's house, in Final Fantasy III.  Those who've played it know what I mean.
 ------------------------------------------------------------------------------
 ~
-#24816
-scorched band glass~
-a scorched band of glass~
-A dark piece of sand-etched glass has fallen here.~
+#ENDEXDESC
+
+#ENDOBJECT
+
+#OBJECT
+Vnum     24816
+Keywords scorched band glass~
+Type     armor~
+Short    a scorched band of glass~
+Long     A dark piece of sand-etched glass has fallen here.~
+Flags    antievil antineutral antithief~
+WFlags   take finger~
+Values   0 0 0 0 0 0
+Stats    8 248000 24800 0 0
+Affect       -1 -1 -2 22 0
+Affect       -1 -1 -5 17 0
+Affect       -1 -1 -40 12 0
+Affect       -1 -1 25 13 0
+Affect       -1 -1 1 18 0
+Affect       -1 -1 3 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24817
+Keywords tattered cape~
+Type     armor~
+Short    a tattered cape~
+Long     An old, tattered, moth-eaten cape lies here in a heap.~
+Flags    magic nodrop~
+WFlags   take about~
+Values   10 0 0 0 0 0
+Stats    2 5000 500 0 0
+Affect       -1 -1 5 17 0
+Affect       -1 -1 2 5 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24818
+Keywords crown~
+Type     armor~
+Short    a flawless crown~
+Long     A completely flawless golden crown lies here on the ground.~
+Flags    magic nodrop~
+WFlags   take head~
+Values   0 0 0 0 0 0
+Stats    5 50000 5000 0 0
+Affect       -1 -1 2 5 0
+Affect       -1 -1 -8 24 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24819
+Keywords sceptre death~
+Type     staff~
+Short    the Death Sceptre~
+Long     A jet black sceptre is here, exuding an aura of evil.~
+Flags    hum dark evil magic nodrop antigood antineutral noremove~
+WFlags   take hold~
+Values   50 5 10 -1 0 0
+Stats    5 1000000 -31072 0 0
+Affect       -1 -1 -40 17 0
+Affect       -1 -1 2 1 0
+Affect       -1 -1 1 5 0
+Spells   'chill touch'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24820
+Keywords pool evermelt~
+Type     fountain~
+Short    mikeCosnerGraemeDavisLaszloTabaJonLangBrianSeguinBrianCoxAaronWhiteRobSchneiderAaronLeeScottWigginsChrisForrester~
+Long     The pool's water looks inviting and refreshing.  Care for a sip?~
+Values   0 0 0 0 0 0
+Stats    10000 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24821
+Keywords fat deer animal layer~
+Type     armor~
+Short    a layer of animal fat~
+Long     A disgusting mass of black-tinged animal fat lies here.~
+WFlags   take body~
+Values   0 0 0 0 0 0
+Stats    1 1 0 0 0
+#EXDESC
+ExDescKey    fat deer animal layer~
+ExDesc       Looks like this nasty stuff would keep you quite warm on a cold day.
 ~
-9 35840 3
-0 0 0 0
-8 248000 24800
-A
-22 -2
-A
-17 -5
-A
-12 -40
-A
-13 25
-A
-18 1
-A
-19 3
-#24817
-tattered cape~
-a tattered cape~
-An old, tattered, moth-eaten cape lies here in a heap.~
-~
-9 192 1025
-10 0 0 0
-2 5000 500
-A
-17 5
-A
-5 2
-#24818
-crown~
-a flawless crown~
-A completely flawless golden crown lies here on the ground.~
-~
-9 192 17
-0 0 0 0
-5 50000 5000
-A
-5 2
-A
-24 -8
-#24819
-sceptre death~
-the Death Sceptre~
-A jet black sceptre is here, exuding an aura of evil.~
-~
-4 6870 16385
-50 5 10 -1
-5 1000000 -31072
-'chill touch'
-A
-17 -40
-A
-1 2
-A
-5 1
-#24820
-pool evermelt~
-mikeCosnerGraemeDavisLaszloTabaJonLangBrianSeguinBrianCoxAaronWhiteRobSchneiderAaronLeeScottWigginsChrisForrester~
-The pool's water looks inviting and refreshing.  Care for a sip?~
-~
-25 0 0
-0 0 0 0
-10000 0 0
-#24821
-fat deer animal layer~
-a layer of animal fat~
-A disgusting mass of black-tinged animal fat lies here.~
-~
-9 0 9
-0 0 0 0
-1 1 0
-E
-fat deer animal layer~
-Looks like this nasty stuff would keep you quite warm on a cold day.
-~
-#24822
-crown jeweled~
-an extravagantly jeweled crown~
-A gold crown layered in huge jewels lies here on the ground.~
-~
-9 4820 17
-0 0 0 0
-3 100000 10000
-A
-9 -100
-A
-5 3
-A
-19 4
-#24823
-wand decay~
-the Wand of Decay~
-An ice-cold onyx wand lies here on the ground, killing all life underneath it.~
-~
-3 4820 16385
-60 3 3 -1
-5 100000 10000
-'energy drain'
-A
-9 -100
-A
-5 2
-A
-19 5
-A
-17 -25
-A
-13 25
-#24824
-ice plate breastplate~
-the Ice Breastplate~
-A large breastplate made entirely of ice lies here twinkling the ground.~
-~
-9 1 9
--50 -50 0 0
-10 500000 -15536
-A
-17 -30
-A
-5 1
-A
-23 -10
-#24825
-ice leggings~
-the Ice Leggings~
-A pair of leggings fashioned entirely of ice lie here, shining brightly.~
-~
-9 1 33
--50 12 0 0
-5 300000 30000
-A
-17 -20
-A
-4 1
-A
-14 100
-#24826
-ice arm guards~
-the Ice Arm Guards~
-Two arm guards made of opaque ice lie here on the ground.~
-~
-9 1 257
--50 13 0 0
-4 200000 20000
-A
-17 -10
-A
-1 1
-A
-19 6
-#24827
-ice earrings~
-the Ice Earrings~
-Two dragon's head-shaped earrings made of ice lie here untouched.~
-~
-9 1 65537
--50 13 0 0
-1 150000 15000
-A
-17 -5
-A
-12 50
-#24828
-ice gauntlets~
-the Ice Gauntlets~
-Two rock-hard gauntlets made entirely of ice lie here waiting to be picked up.~
-~
-9 1 129
--50 16 0 0
-3 225000 22500
-A
-17 -10
-A
-2 1
-A
-18 6
-#24829
-ice helm~
-the Ice Helm~
-A helmet made of the hardest ice lies here, seemingly giving off its own light.~
-~
-9 1 17
--50 -50 0 0
-4 250000 25000
-A
-17 -15
-A
-3 1
-A
-24 -5
-#24830
-ice girth~
-the Ice Girth~
-A large hoop of ice lies here on the ground, waiting to be put on.~
-~
-9 1 2049
--50 15 0 0
-3 175000 17500
-A
-17 -15
-A
-24 -8
-A
-23 -9
-A
-20 -9
-A
-21 -9
-A
-22 -9
-#24831
-pork chop marketplace~
-a juicy pork chop~
-A pork chop, stewing in its own juices, lies on the ground here.~
-%s voraciously scarf$q down $p.~
-19 0 1
-70 0 0 0
-2 14 1
-#24832
-steak huge marketplace~
-a huge steak~
-A steak, weighing several pounds, lies here growing cold on the ground.~
-%s force$q $p down your throat in three bites.  *choke*~
-19 0 1
-80 0 0 0
-3 16 1
-#24833
-haunch goat marketplace~
-a haunch of goat~
-A warm haunch of goat lies here on the dirty ground.~
-$s~
-19 0 1
-65 0 0 0
-2 13 1
-#24834
-veal cutlet marketplace~
-a veal cutlet~
-A small cutlet of tender veal is lying on the ground here.~
-%s whip$q out a knife and fork and delicately eat$q $p.~
-19 0 1
-65 0 0 0
-2 13 1
-#24835
-venison cut marketplace~
-a cut of venison~
-A tasty-looking cut of venison is growing dirty on the ground here.~
-%s season$q $p and eat$q it with a flourish.~
-19 0 1
-60 0 0 0
-1 12 1
-#24836
-chicken breast marketplace~
-a broiled chicken breast~
-A breast of some poor chicken is going to waste on the ground here.~
-%s feel$q like chicken tonight and eat$q $p.~
-19 0 1
-60 0 0 0
-1 12 1
-#24837
-ribs rack marketplace~
-a rack of ribs~
-A rack of ribs, covered in an unknown sauce, is here on the ground.~
-%s slather$q $p with sauce and eat$q them quickly.~
-19 0 1
-70 0 0 0
-2 14 1
-#24838
-liver steak marketplace~
-a liver steak~
-A cut of liver formed into a steak lies here on the ground.~
-%s eat$q $p in five bites.  Wow!~
-19 0 1
-60 0 0 0
-1 12 1
-#24839
-meatloaf slab marketplace~
-a slab of meatloaf~
-A slab of old-looking meatloaf is here on the ground.~
-%s reluctantly nibble$q on $p.~
-19 0 1
-65 0 0 0
-3 13 1
-#24840
-turkey drumstick marketplace~
-a turkey drumstick~
-A yummy-looking turkey drumstick lies here on the ground.~
-%s tear$q some meat off $p and gulp$q it down.~
-19 0 1
-70 0 0 0
-1 14 1
-#24841
-pheasant roast marketplace~
-a roast pheasant~
-A plump roast pheasant lies here on the ground, surrounded by steam.~
-%s briefly consider$q the plight of $p, then eat$q it anyway.~
-19 0 1
-60 0 0 0
-2 12 1
-#24842
-honeybaked ham marketplace~
-a honeybaked ham~
-A large ham, slathered with honey and sugar, lies here on the ground.~
-%s eat$q an entire honeybaked ham in one bite!  Whoa!~
-19 0 1
-80 0 0 0
-4 17 1
-#24843
-bacon strips marketplace~
-a few strips of bacon~
-Several strips of lean bacon lie on the ground here.~
-%s savor$q $p.  Mmmmm.~
-19 0 1
-50 0 0 0
-1 10 1
-#24844
-apple pie marketplace~
-a hot apple pie~
-A freshly baked apple pie lies here steaming on the ground.~
-%s eat$q all four quarters of $p.  Impressive.~
-19 0 1
-80 0 0 0
-2 16 1
-#24845
-cherry pie marketplace~
-a fresh cherry pie~
-A hot cherry pie with oh-so-flaky crust lies here on the ground.~
-%s gobble$q down $p, getting cherry filling everywhere.~
-19 0 1
-75 0 0 0
-2 15 1
-#24846
-blueberry pie marketplace~
-a yummy blueberry pie~
-A large blueberry pie lies here on the ground growing cold.~
-%s procure$q a scoop of ice cream, and eat$q it with $p.~
-19 0 1
-75 0 0 0
-2 15 1
-#24847
-pecan pie marketplace~
-a tasty pecan pie~
-A perfectly baked pecan pie lies here on the ground, losing its heat.~
-%s quickly eat$q $p, dropping soft pecans on the floor.~
-19 0 1
-75 0 0 0
-2 15 1
-#24848
-pumpkin pie marketplace~
-a moist pumpkin pie~
-A glorious-smelling pumpkin pie lies here on the ground.~
-%s eat$q $p in one bite, then cough$q up the tin on the ground.~
-19 0 1
-80 0 0 0
-2 17 1
-#24849
-donut doughnut jelly marketplace~
-a jelly donut~
-Jelly leaks out of a powdered donut that is on the ground here.~
-%s reluctantly eat$q $p without any beer to go with it.  *sigh*~
-19 0 1
-50 0 0 0
-1 10 1
-#24850
-stickybun gooey marketplace~
-a gooey stickybun~
-A gooey, sugar-covered stickybun lies here on the ground.~
-%s carefully eat$q $p, but get$q sticky sauce everywhere anyway.~
-19 0 1
-55 0 0 0
-1 10 1
-#24851
-chocolate chip cookie marketplace~
-a chocolate-chip cookie~
-The most tasty-looking cookie you have ever seen lies on the ground here.~
-%s eat$q $p and proclaim$q it THE BEST COOKIE EVER!~
-19 0 1
-35 0 0 0
-1 8 0
-#24852
-brownie marketplace~
-a moist brownie~
-A nut-filled, frosted brownie lies here on the ground.~
-%s eat$q $p in several little bites, and wince$q when it is gone.~
-19 0 1
-30 0 0 0
-1 7 0
-#24854
-angel food angelfood cake marketplace~
-a freshly baked angel food cake~
-A moist, bouncy angel food cake lies here on the ground.~
-%s look$q around suspiciously, then scarf$q down $p.~
-19 0 1
-90 0 0 0
-3 20 2
-#24855
-chocolate cake marketplace~
-a sinful chocolate cake~
-A chocolate cake sits here, beckoning you to eat it.~
-%s throw$q health to the wind and eat$q $p.~
-19 0 1
-90 0 0 0
-3 20 2
-#24856
-ice shoes~
-the Ice Shoes~
-A pair of shoes made of flawless ice lie here on the ground.~
-~
-9 1 65
-0 0 0 0
-3 300000 30000
-A
-2 1
-A
-17 -15
-A
-2 2
-#24857
-ice orb~
-the Ice Orb~
-A crystal clear, perfectly formed sphere gives off its own light here.~
-~
-4 1 16385
-43 5 5 -1
-1 1000000 -31072
-'sanctuary'
-#24858
-ice tooth~
-the Ice Tooth~
-The razor-sharp tooth of a white dragon lies here embedded in the ground.~
-~
-5 25313281 8193
-0 0 0 11
-2 1500000 18928
-A
-19 7
-A
-18 2
-#24859
-statue hokies 1995 nit champs baby~
-the 1995 NIT Championship Statue~
-A solid gold statue of a heavyset, moustached man stands here.~
-~
-13 0 0
-0 0 0 0
-20000 0 0
-E
-statue nit smith sean shawn~
-This statue serves to remind everyone of the results of the 1995 National 
+#ENDEXDESC
+
+#ENDOBJECT
+
+#OBJECT
+Vnum     24822
+Keywords crown jeweled~
+Type     armor~
+Short    an extravagantly jeweled crown~
+Long     A gold crown layered in huge jewels lies here on the ground.~
+Flags    dark evil magic nodrop antigood noremove~
+WFlags   take head~
+Values   0 0 0 0 0 0
+Stats    3 100000 10000 0 0
+Affect       -1 -1 -100 9 0
+Affect       -1 -1 3 5 0
+Affect       -1 -1 4 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24823
+Keywords wand decay~
+Type     wand~
+Short    the Wand of Decay~
+Long     An ice-cold onyx wand lies here on the ground, killing all life underneath it.~
+Flags    dark evil magic nodrop antigood noremove~
+WFlags   take hold~
+Values   60 3 3 -1 0 0
+Stats    5 100000 10000 0 0
+Affect       -1 -1 -100 9 0
+Affect       -1 -1 2 5 0
+Affect       -1 -1 5 19 0
+Affect       -1 -1 -25 17 0
+Affect       -1 -1 25 13 0
+Spells   'energy drain'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24824
+Keywords ice plate breastplate~
+Type     armor~
+Short    the Ice Breastplate~
+Long     A large breastplate made entirely of ice lies here twinkling the ground.~
+Flags    glow~
+WFlags   take body~
+Values   -50 -50 0 0 0 0
+Stats    10 500000 -15536 0 0
+Affect       -1 -1 -30 17 0
+Affect       -1 -1 1 5 0
+Affect       -1 -1 -10 23 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24825
+Keywords ice leggings~
+Type     armor~
+Short    the Ice Leggings~
+Long     A pair of leggings fashioned entirely of ice lie here, shining brightly.~
+Flags    glow~
+WFlags   take legs~
+Values   -50 12 0 0 0 0
+Stats    5 300000 30000 0 0
+Affect       -1 -1 -20 17 0
+Affect       -1 -1 1 4 0
+Affect       -1 -1 100 14 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24826
+Keywords ice arm guards~
+Type     armor~
+Short    the Ice Arm Guards~
+Long     Two arm guards made of opaque ice lie here on the ground.~
+Flags    glow~
+WFlags   take arms~
+Values   -50 13 0 0 0 0
+Stats    4 200000 20000 0 0
+Affect       -1 -1 -10 17 0
+Affect       -1 -1 1 1 0
+Affect       -1 -1 6 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24827
+Keywords ice earrings~
+Type     armor~
+Short    the Ice Earrings~
+Long     Two dragon's head-shaped earrings made of ice lie here untouched.~
+Flags    glow~
+WFlags   take ears~
+Values   -50 13 0 0 0 0
+Stats    1 150000 15000 0 0
+Affect       -1 -1 -5 17 0
+Affect       -1 -1 50 12 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24828
+Keywords ice gauntlets~
+Type     armor~
+Short    the Ice Gauntlets~
+Long     Two rock-hard gauntlets made entirely of ice lie here waiting to be picked up.~
+Flags    glow~
+WFlags   take hands~
+Values   -50 16 0 0 0 0
+Stats    3 225000 22500 0 0
+Affect       -1 -1 -10 17 0
+Affect       -1 -1 1 2 0
+Affect       -1 -1 6 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24829
+Keywords ice helm~
+Type     armor~
+Short    the Ice Helm~
+Long     A helmet made of the hardest ice lies here, seemingly giving off its own light.~
+Flags    glow~
+WFlags   take head~
+Values   -50 -50 0 0 0 0
+Stats    4 250000 25000 0 0
+Affect       -1 -1 -15 17 0
+Affect       -1 -1 1 3 0
+Affect       -1 -1 -5 24 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24830
+Keywords ice girth~
+Type     armor~
+Short    the Ice Girth~
+Long     A large hoop of ice lies here on the ground, waiting to be put on.~
+Flags    glow~
+WFlags   take waist~
+Values   -50 15 0 0 0 0
+Stats    3 175000 17500 0 0
+Affect       -1 -1 -15 17 0
+Affect       -1 -1 -8 24 0
+Affect       -1 -1 -9 23 0
+Affect       -1 -1 -9 20 0
+Affect       -1 -1 -9 21 0
+Affect       -1 -1 -9 22 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24831
+Keywords pork chop marketplace~
+Type     food~
+Short    a juicy pork chop~
+Long     A pork chop, stewing in its own juices, lies on the ground here.~
+Action   %s voraciously scarf$q down $p.~
+WFlags   take~
+Values   70 0 0 0 0 0
+Stats    2 14 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24832
+Keywords steak huge marketplace~
+Type     food~
+Short    a huge steak~
+Long     A steak, weighing several pounds, lies here growing cold on the ground.~
+Action   %s force$q $p down your throat in three bites.  *choke*~
+WFlags   take~
+Values   80 0 0 0 0 0
+Stats    3 16 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24833
+Keywords haunch goat marketplace~
+Type     food~
+Short    a haunch of goat~
+Long     A warm haunch of goat lies here on the dirty ground.~
+Action   $s~
+WFlags   take~
+Values   65 0 0 0 0 0
+Stats    2 13 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24834
+Keywords veal cutlet marketplace~
+Type     food~
+Short    a veal cutlet~
+Long     A small cutlet of tender veal is lying on the ground here.~
+Action   %s whip$q out a knife and fork and delicately eat$q $p.~
+WFlags   take~
+Values   65 0 0 0 0 0
+Stats    2 13 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24835
+Keywords venison cut marketplace~
+Type     food~
+Short    a cut of venison~
+Long     A tasty-looking cut of venison is growing dirty on the ground here.~
+Action   %s season$q $p and eat$q it with a flourish.~
+WFlags   take~
+Values   60 0 0 0 0 0
+Stats    1 12 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24836
+Keywords chicken breast marketplace~
+Type     food~
+Short    a broiled chicken breast~
+Long     A breast of some poor chicken is going to waste on the ground here.~
+Action   %s feel$q like chicken tonight and eat$q $p.~
+WFlags   take~
+Values   60 0 0 0 0 0
+Stats    1 12 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24837
+Keywords ribs rack marketplace~
+Type     food~
+Short    a rack of ribs~
+Long     A rack of ribs, covered in an unknown sauce, is here on the ground.~
+Action   %s slather$q $p with sauce and eat$q them quickly.~
+WFlags   take~
+Values   70 0 0 0 0 0
+Stats    2 14 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24838
+Keywords liver steak marketplace~
+Type     food~
+Short    a liver steak~
+Long     A cut of liver formed into a steak lies here on the ground.~
+Action   %s eat$q $p in five bites.  Wow!~
+WFlags   take~
+Values   60 0 0 0 0 0
+Stats    1 12 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24839
+Keywords meatloaf slab marketplace~
+Type     food~
+Short    a slab of meatloaf~
+Long     A slab of old-looking meatloaf is here on the ground.~
+Action   %s reluctantly nibble$q on $p.~
+WFlags   take~
+Values   65 0 0 0 0 0
+Stats    3 13 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24840
+Keywords turkey drumstick marketplace~
+Type     food~
+Short    a turkey drumstick~
+Long     A yummy-looking turkey drumstick lies here on the ground.~
+Action   %s tear$q some meat off $p and gulp$q it down.~
+WFlags   take~
+Values   70 0 0 0 0 0
+Stats    1 14 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24841
+Keywords pheasant roast marketplace~
+Type     food~
+Short    a roast pheasant~
+Long     A plump roast pheasant lies here on the ground, surrounded by steam.~
+Action   %s briefly consider$q the plight of $p, then eat$q it anyway.~
+WFlags   take~
+Values   60 0 0 0 0 0
+Stats    2 12 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24842
+Keywords honeybaked ham marketplace~
+Type     food~
+Short    a honeybaked ham~
+Long     A large ham, slathered with honey and sugar, lies here on the ground.~
+Action   %s eat$q an entire honeybaked ham in one bite!  Whoa!~
+WFlags   take~
+Values   80 0 0 0 0 0
+Stats    4 17 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24843
+Keywords bacon strips marketplace~
+Type     food~
+Short    a few strips of bacon~
+Long     Several strips of lean bacon lie on the ground here.~
+Action   %s savor$q $p.  Mmmmm.~
+WFlags   take~
+Values   50 0 0 0 0 0
+Stats    1 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24844
+Keywords apple pie marketplace~
+Type     food~
+Short    a hot apple pie~
+Long     A freshly baked apple pie lies here steaming on the ground.~
+Action   %s eat$q all four quarters of $p.  Impressive.~
+WFlags   take~
+Values   80 0 0 0 0 0
+Stats    2 16 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24845
+Keywords cherry pie marketplace~
+Type     food~
+Short    a fresh cherry pie~
+Long     A hot cherry pie with oh-so-flaky crust lies here on the ground.~
+Action   %s gobble$q down $p, getting cherry filling everywhere.~
+WFlags   take~
+Values   75 0 0 0 0 0
+Stats    2 15 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24846
+Keywords blueberry pie marketplace~
+Type     food~
+Short    a yummy blueberry pie~
+Long     A large blueberry pie lies here on the ground growing cold.~
+Action   %s procure$q a scoop of ice cream, and eat$q it with $p.~
+WFlags   take~
+Values   75 0 0 0 0 0
+Stats    2 15 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24847
+Keywords pecan pie marketplace~
+Type     food~
+Short    a tasty pecan pie~
+Long     A perfectly baked pecan pie lies here on the ground, losing its heat.~
+Action   %s quickly eat$q $p, dropping soft pecans on the floor.~
+WFlags   take~
+Values   75 0 0 0 0 0
+Stats    2 15 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24848
+Keywords pumpkin pie marketplace~
+Type     food~
+Short    a moist pumpkin pie~
+Long     A glorious-smelling pumpkin pie lies here on the ground.~
+Action   %s eat$q $p in one bite, then cough$q up the tin on the ground.~
+WFlags   take~
+Values   80 0 0 0 0 0
+Stats    2 17 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24849
+Keywords donut doughnut jelly marketplace~
+Type     food~
+Short    a jelly donut~
+Long     Jelly leaks out of a powdered donut that is on the ground here.~
+Action   %s reluctantly eat$q $p without any beer to go with it.  *sigh*~
+WFlags   take~
+Values   50 0 0 0 0 0
+Stats    1 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24850
+Keywords stickybun gooey marketplace~
+Type     food~
+Short    a gooey stickybun~
+Long     A gooey, sugar-covered stickybun lies here on the ground.~
+Action   %s carefully eat$q $p, but get$q sticky sauce everywhere anyway.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24851
+Keywords chocolate chip cookie marketplace~
+Type     food~
+Short    a chocolate-chip cookie~
+Long     The most tasty-looking cookie you have ever seen lies on the ground here.~
+Action   %s eat$q $p and proclaim$q it THE BEST COOKIE EVER!~
+WFlags   take~
+Values   35 0 0 0 0 0
+Stats    1 8 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24852
+Keywords brownie marketplace~
+Type     food~
+Short    a moist brownie~
+Long     A nut-filled, frosted brownie lies here on the ground.~
+Action   %s eat$q $p in several little bites, and wince$q when it is gone.~
+WFlags   take~
+Values   30 0 0 0 0 0
+Stats    1 7 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24854
+Keywords angel food angelfood cake marketplace~
+Type     food~
+Short    a freshly baked angel food cake~
+Long     A moist, bouncy angel food cake lies here on the ground.~
+Action   %s look$q around suspiciously, then scarf$q down $p.~
+WFlags   take~
+Values   90 0 0 0 0 0
+Stats    3 20 2 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24855
+Keywords chocolate cake marketplace~
+Type     food~
+Short    a sinful chocolate cake~
+Long     A chocolate cake sits here, beckoning you to eat it.~
+Action   %s throw$q health to the wind and eat$q $p.~
+WFlags   take~
+Values   90 0 0 0 0 0
+Stats    3 20 2 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24856
+Keywords ice shoes~
+Type     armor~
+Short    the Ice Shoes~
+Long     A pair of shoes made of flawless ice lie here on the ground.~
+Flags    glow~
+WFlags   take feet~
+Values   0 0 0 0 0 0
+Stats    3 300000 30000 0 0
+Affect       -1 -1 1 2 0
+Affect       -1 -1 -15 17 0
+Affect       -1 -1 2 2 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24857
+Keywords ice orb~
+Type     staff~
+Short    the Ice Orb~
+Long     A crystal clear, perfectly formed sphere gives off its own light here.~
+Flags    glow~
+WFlags   take hold~
+Values   43 5 5 -1 0 0
+Stats    1 1000000 -31072 0 0
+Spells   'sanctuary'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24858
+Keywords ice tooth~
+Type     weapon~
+Short    the Ice Tooth~
+Long     The razor-sharp tooth of a white dragon lies here embedded in the ground.~
+Flags    glow antimage anticleric antivampire antidruid~
+WFlags   take wield~
+Values   0 0 0 11 0 0
+Stats    2 1500000 18928 0 0
+Affect       -1 -1 7 19 0
+Affect       -1 -1 2 18 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24859
+Keywords statue hokies 1995 nit champs baby~
+Type     trash~
+Short    the 1995 NIT Championship Statue~
+Long     A solid gold statue of a heavyset, moustached man stands here.~
+Values   0 0 0 0 0 0
+Stats    20000 0 0 0 0
+#EXDESC
+ExDescKey    statue nit smith sean shawn~
+ExDesc       This statue serves to remind everyone of the results of the 1995 National 
 Invitation Tournament.
  
 VIRGINIA TECH -- 65
@@ -1801,370 +2861,505 @@ MARQUETTE     -- 64
  
 The Virginia Tech Hokies.  1995 NIT Champions.
 ~
-#24860
-juicy big red apple marketplace~
-a big red apple~
-An unbruised, big, juicy apple lies here on the ground.~
-%s loudly eat$q $p.  CRUNCH! CRUNCH! CRUNCH!~
-19 0 1
-35 0 0 0
-1 7 0
-#24861
-orange plump marketplace~
-a plump orange~
-A yummy-looking orange is here lying on the ground.~
-%s peel$q $p and wolf$q it down.~
-19 0 1
-30 0 0 0
-1 6 0
-#24862
-banana underripe marketplace~
-an underripe banana~
-A greenish banana lies here on the ground, waiting to be peeled and eaten.~
-%s dramatically peel$q $p and eat$q it in one bite.~
-19 0 1
-25 0 0 0
-1 5 0
-#24863
-grapes bunch marketplace~
-a bunch of red grapes~
-A bunch of red grapes lie here, glistening with water.~
-%s pick$q a few grapes from $p and eat$q them.~
-19 0 1
-35 0 0 0
-1 7 0
-#24864
-watermelon huge marketplace~
-a huge half watermelon~
-A perfectly ripe half of a watermelon lies here, ready to be eaten.~
-%s messily eat$q $p and spit$q the seeds in random directions.~
-19 0 1
-50 0 0 0
-2 10 1
-#24865
-pear ripe marketplace~
-a ripe pear~
-A pear-shaped pear lies here on the ground.~
-%s messily eat$q $p, stem and all.~
-19 0 1
-30 0 0 0
-1 6 0
-#24866
-peach juicy marketplace~
-a juicy peach~
-A moist, juicy peach is here lying on the ground.~
-%s eat$q $p and wince$q at the fuzz taste.~
-19 0 1
-25 0 0 0
-1 5 0
-#24867
-tomato large marketplace~
-a large tomato~
-An abnormally large tomato lies here on the ground.~
-%s chomp$q on $p, not caring if it's a fruit or vegetable.~
-19 0 1
-30 0 0 0
-1 6 0
-#24868
-corn ear marketplace~
-an ear of white corn~
-A shucked ear of white, buttered corn lies here on the ground.~
-%s butter$q $p and eat$q it rapidly.~
-19 0 1
-40 0 0 0
-1 8 0
-#24869
-zucchini crisp marketplace~
-a crisp zucchini~
-A watery, crisp zucchini lies here on the ground getting dirty.~
-%s eat$q $p, making disturbingly loud noises.~
-19 0 1
-35 0 0 0
-1 7 0
-#24870
-carrot dirty marketplace~
-a dirty carrot~
-A fresh carrot lies here, tinged with dirt.~
-%s eat$q $p, and immediately regret$q it.  BLECCH!~
-19 0 1
-25 0 0 6
-1 5 0
-#24871
-celery stalk marketplace~
-a celery stalk~
-A leafy stalk of celery lies here on the ground.~
-%s eat$q $p and feel$q quite healthy.~
-19 0 1
-20 0 0 0
-1 4 0
-#24872
-broccoli flower marketplace~
-a broccoli flower~
-A flower of fresh broccoli is lying here on the ground.~
-%s cover$q $p with cheese and scarf$q it down.~
-19 0 1
-25 0 0 0
-1 5 0
-#24873
-apricot tart marketplace~
-a tart apricot~
-A shriveled apricot lies here on the ground.~
-%s eat$q $p and shudder$q at the flavor.~
-19 0 1
-25 0 0 0
-1 5 0
-#24874
-milk bottle marketplace~
-a bottle of ice cold milk~
-A bottle of milk stands here, condensation glistening on its side.~
-%s drink$q milk from $p.  It does a body good.~
-17 0 1
-20 20 10 0
-2 30 3
-#24875
-milk buttermilk butter jug marketplace~
-a jug of buttermilk~
-A jug of buttermilk stands here, overflowing with its contents.~
-~
-17 0 1
-25 25 10 0
-2 35 3
-#24876
-milk chocolate carton marketplace~
-a carton of chocolate milk~
-A big carton of chocolate milk lies here, ready to be chugged.~
-~
-17 0 1
-30 30 10 0
-2 40 4
-#24877
-swiss cheese marketplace~
-a block of swiss cheese~
-A large block of cheese, filled with holes, lies here on the ground.~
-%s make$q silly gestures with $p, then eat$q it quickly.~
-19 0 1
-55 0 0 0
-1 11 1
-#24878
-cheddar cheese marketplace~
-several slices of cheddar cheese~
-A few slices of heavy cheddar cheese lie here on the ground.~
-%s roll$q up $p and eat$q them all at once.~
-19 0 1
-55 0 0 0
-1 11 1
-#24879
-muenster cheese marketplace~
-a wedge of muenster cheese~
-A large wedge of muenster cheese is lying here on the ground.~
-%s scarf$q $p without stopping to breathe.  Wow.~
-19 0 1
-55 0 0 0
-1 11 1
-#24880
-monterey jack cheese wheel marketplace~
-a wheel of Monterey Jack cheese~
-A yummy-looking wheel of Monterey Jack cheese lies here on the ground.~
-%s roll$q $p on the ground before eating it.  Yum.~
-19 0 1
-55 0 0 0
-1 11 1
-#24881
-bag mozzarella cheese marketplace~
-a bag of shredded mozzarella cheese~
-A large quantity of shredded mozzarella cheese is here in a bag.~
-%s dump$q the contents of $p down the proverbial hatch.~
-19 0 1
-55 0 0 0
-1 11 1
-#24882
-ice cream vanilla marketplace~
-a bowl of vanilla ice cream~
-A large bowl lies here, filled with a few scoops of vanilla ice cream.~
-%s eat$q several spoonfuls from $p.~
-19 0 1
-50 0 0 0
-2 10 1
-#24883
-ice cream chocolate marketplace~
-a bowl of chocolate ice cream~
-A large bowl lies here, filled with a few scoops of chocolate ice cream.~
-%s slurp$q $p completely clean.~
-19 0 1
-50 0 0 0
-2 10 1
-#24884
-flamberge sword two-handed~
-a flamberge~
-A massive, fearsome-looking, two-handed sword lies here on the ground.~
-~
-5 25346048 8193
-0 0 0 3
-15 800000 14464
-A
-18 -5
-A
-19 5
-#24885
-slave crown~
-the Slave Crown~
-An ordinary-looking crown with a blood red stone lies here.~
-~
-9 208 17
--20 0 0 0
-1 13 1
-A
-3 -20
-A
-4 -20
-A
-2 -20
-#24887
-storm giant beard~
-a storm giant beard~
-A large mass of thick violet hair lies here on the ground.~
-~
-9 0 9
-0 0 0 0
-2 5000 500
-A
-1 3
-A
-23 -5
-#24888
-club gigantic~
-a gigantic club~
-A ridiculously big club lies here on the ground.  Good luck picking it up.~
-~
-5 0 8193
-0 0 0 8
-25 500 50
-A
-17 10
-A
-19 5
-#24889
-lifeless body corpse~
-the drained body~
-A dead human with a horrified look on his pale face lies here.~
-~
-15 0 1
-0 0 0 0
-100 0 0
-#24890
-body corpse dead lizardman~
-the drained lizardman body~
-A lizardman corpse lies here, its scales seeming somehow pale.~
-~
-15 0 1
-0 0 0 0
-100 0 0
-#24891
-mind flayer tentacle~
-a mind flayer tentacle~
-The severed tentacle of a mind flayer lies here on the ground.~
-~
-9 0 4097
-0 0 0 0
-1 1000000 -31072
-A
-3 2
-#24892
-mind flayer robe~
-a mind flayer's robe~
-An exotic-looking robe lies here, its inside covered with slime.~
-~
-9 0 1025
-0 0 0 0
-1 10000 1000
-A
-3 1
-A
-13 100
-#24893
-cards deck~
-a deck of cards~
-An old, beat-up deck of cards lies here on the ground.~
-~
-3 0 16385
-20 13 5 -1
-1 10000 1000
-'charm person'
-#24894
-visor clear~
-a clear visor~
-A flimsy-looking visor lies here crumpled on the ground.~
-~
-9 0 17
-0 0 0 0
-1 1000 100
-A
-4 2
-#24895
-chest dusty~
-a dusty chest~
-An old, dusty-looking chest sits here, covered with cobwebs and blood.~
-~
-15 0 0
-200 1 24816 0
-1 0 0
-#24896
-lake blood red~
-the lake of blood~
-The lake of blood you just crawled out of is as still as death here.~
-~
-27 0 0
-5 40 0 1
-1 0 0
-#24897
-tree lemon~
-a lemon tree~
-A brilliant yellow tree, covered with lemons, grows eagerly here.~
-~
-15 1 0
-10000 0 0 0
-10000 0 0
-#24898
-lemon tiny~
-a tiny lemon~
-A perfectly formed lemon lies here on the ground.~
-~
-19 0 1
-80 0 0 0
-1 0 0
-#24899
-glass wine~
-a glass of violet wine~
-A violet crystal glass of exquisite wine stands here.~
-~
-17 0 1
-4 4 2 0
-1 15 1
-#0
+#ENDEXDESC
 
+#ENDOBJECT
 
-#ROOMS
-#24800
-Entrance to the Darkhaven Art Gallery~
-The change in atmosphere as you step through the doors into the gallery is 
+#OBJECT
+Vnum     24860
+Keywords juicy big red apple marketplace~
+Type     food~
+Short    a big red apple~
+Long     An unbruised, big, juicy apple lies here on the ground.~
+Action   %s loudly eat$q $p.  CRUNCH! CRUNCH! CRUNCH!~
+WFlags   take~
+Values   35 0 0 0 0 0
+Stats    1 7 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24861
+Keywords orange plump marketplace~
+Type     food~
+Short    a plump orange~
+Long     A yummy-looking orange is here lying on the ground.~
+Action   %s peel$q $p and wolf$q it down.~
+WFlags   take~
+Values   30 0 0 0 0 0
+Stats    1 6 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24862
+Keywords banana underripe marketplace~
+Type     food~
+Short    an underripe banana~
+Long     A greenish banana lies here on the ground, waiting to be peeled and eaten.~
+Action   %s dramatically peel$q $p and eat$q it in one bite.~
+WFlags   take~
+Values   25 0 0 0 0 0
+Stats    1 5 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24863
+Keywords grapes bunch marketplace~
+Type     food~
+Short    a bunch of red grapes~
+Long     A bunch of red grapes lie here, glistening with water.~
+Action   %s pick$q a few grapes from $p and eat$q them.~
+WFlags   take~
+Values   35 0 0 0 0 0
+Stats    1 7 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24864
+Keywords watermelon huge marketplace~
+Type     food~
+Short    a huge half watermelon~
+Long     A perfectly ripe half of a watermelon lies here, ready to be eaten.~
+Action   %s messily eat$q $p and spit$q the seeds in random directions.~
+WFlags   take~
+Values   50 0 0 0 0 0
+Stats    2 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24865
+Keywords pear ripe marketplace~
+Type     food~
+Short    a ripe pear~
+Long     A pear-shaped pear lies here on the ground.~
+Action   %s messily eat$q $p, stem and all.~
+WFlags   take~
+Values   30 0 0 0 0 0
+Stats    1 6 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24866
+Keywords peach juicy marketplace~
+Type     food~
+Short    a juicy peach~
+Long     A moist, juicy peach is here lying on the ground.~
+Action   %s eat$q $p and wince$q at the fuzz taste.~
+WFlags   take~
+Values   25 0 0 0 0 0
+Stats    1 5 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24867
+Keywords tomato large marketplace~
+Type     food~
+Short    a large tomato~
+Long     An abnormally large tomato lies here on the ground.~
+Action   %s chomp$q on $p, not caring if it's a fruit or vegetable.~
+WFlags   take~
+Values   30 0 0 0 0 0
+Stats    1 6 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24868
+Keywords corn ear marketplace~
+Type     food~
+Short    an ear of white corn~
+Long     A shucked ear of white, buttered corn lies here on the ground.~
+Action   %s butter$q $p and eat$q it rapidly.~
+WFlags   take~
+Values   40 0 0 0 0 0
+Stats    1 8 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24869
+Keywords zucchini crisp marketplace~
+Type     food~
+Short    a crisp zucchini~
+Long     A watery, crisp zucchini lies here on the ground getting dirty.~
+Action   %s eat$q $p, making disturbingly loud noises.~
+WFlags   take~
+Values   35 0 0 0 0 0
+Stats    1 7 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24870
+Keywords carrot dirty marketplace~
+Type     food~
+Short    a dirty carrot~
+Long     A fresh carrot lies here, tinged with dirt.~
+Action   %s eat$q $p, and immediately regret$q it.  BLECCH!~
+WFlags   take~
+Values   25 0 0 6 0 0
+Stats    1 5 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24871
+Keywords celery stalk marketplace~
+Type     food~
+Short    a celery stalk~
+Long     A leafy stalk of celery lies here on the ground.~
+Action   %s eat$q $p and feel$q quite healthy.~
+WFlags   take~
+Values   20 0 0 0 0 0
+Stats    1 4 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24872
+Keywords broccoli flower marketplace~
+Type     food~
+Short    a broccoli flower~
+Long     A flower of fresh broccoli is lying here on the ground.~
+Action   %s cover$q $p with cheese and scarf$q it down.~
+WFlags   take~
+Values   25 0 0 0 0 0
+Stats    1 5 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24873
+Keywords apricot tart marketplace~
+Type     food~
+Short    a tart apricot~
+Long     A shriveled apricot lies here on the ground.~
+Action   %s eat$q $p and shudder$q at the flavor.~
+WFlags   take~
+Values   25 0 0 0 0 0
+Stats    1 5 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24874
+Keywords milk bottle marketplace~
+Type     drinkcon~
+Short    a bottle of ice cold milk~
+Long     A bottle of milk stands here, condensation glistening on its side.~
+Action   %s drink$q milk from $p.  It does a body good.~
+WFlags   take~
+Values   20 20 10 0 0 0
+Stats    2 30 3 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24875
+Keywords milk buttermilk butter jug marketplace~
+Type     drinkcon~
+Short    a jug of buttermilk~
+Long     A jug of buttermilk stands here, overflowing with its contents.~
+WFlags   take~
+Values   25 25 10 0 0 0
+Stats    2 35 3 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24876
+Keywords milk chocolate carton marketplace~
+Type     drinkcon~
+Short    a carton of chocolate milk~
+Long     A big carton of chocolate milk lies here, ready to be chugged.~
+WFlags   take~
+Values   30 30 10 0 0 0
+Stats    2 40 4 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24877
+Keywords swiss cheese marketplace~
+Type     food~
+Short    a block of swiss cheese~
+Long     A large block of cheese, filled with holes, lies here on the ground.~
+Action   %s make$q silly gestures with $p, then eat$q it quickly.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 11 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24878
+Keywords cheddar cheese marketplace~
+Type     food~
+Short    several slices of cheddar cheese~
+Long     A few slices of heavy cheddar cheese lie here on the ground.~
+Action   %s roll$q up $p and eat$q them all at once.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 11 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24879
+Keywords muenster cheese marketplace~
+Type     food~
+Short    a wedge of muenster cheese~
+Long     A large wedge of muenster cheese is lying here on the ground.~
+Action   %s scarf$q $p without stopping to breathe.  Wow.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 11 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24880
+Keywords monterey jack cheese wheel marketplace~
+Type     food~
+Short    a wheel of Monterey Jack cheese~
+Long     A yummy-looking wheel of Monterey Jack cheese lies here on the ground.~
+Action   %s roll$q $p on the ground before eating it.  Yum.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 11 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24881
+Keywords bag mozzarella cheese marketplace~
+Type     food~
+Short    a bag of shredded mozzarella cheese~
+Long     A large quantity of shredded mozzarella cheese is here in a bag.~
+Action   %s dump$q the contents of $p down the proverbial hatch.~
+WFlags   take~
+Values   55 0 0 0 0 0
+Stats    1 11 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24882
+Keywords ice cream vanilla marketplace~
+Type     food~
+Short    a bowl of vanilla ice cream~
+Long     A large bowl lies here, filled with a few scoops of vanilla ice cream.~
+Action   %s eat$q several spoonfuls from $p.~
+WFlags   take~
+Values   50 0 0 0 0 0
+Stats    2 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24883
+Keywords ice cream chocolate marketplace~
+Type     food~
+Short    a bowl of chocolate ice cream~
+Long     A large bowl lies here, filled with a few scoops of chocolate ice cream.~
+Action   %s slurp$q $p completely clean.~
+WFlags   take~
+Values   50 0 0 0 0 0
+Stats    2 10 1 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24884
+Keywords flamberge sword two-handed~
+Type     weapon~
+Short    a flamberge~
+Long     A massive, fearsome-looking, two-handed sword lies here on the ground.~
+Flags    antimage antithief anticleric antivampire antidruid~
+WFlags   take wield~
+Values   0 0 0 3 0 0
+Stats    15 800000 14464 0 0
+Affect       -1 -1 -5 18 0
+Affect       -1 -1 5 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24885
+Keywords slave crown~
+Type     armor~
+Short    the Slave Crown~
+Long     An ordinary-looking crown with a blood red stone lies here.~
+Flags    evil magic nodrop~
+WFlags   take head~
+Values   -20 0 0 0 0 0
+Stats    1 13 1 0 0
+Affect       -1 -1 -20 3 0
+Affect       -1 -1 -20 4 0
+Affect       -1 -1 -20 2 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24887
+Keywords storm giant beard~
+Type     armor~
+Short    a storm giant beard~
+Long     A large mass of thick violet hair lies here on the ground.~
+WFlags   take body~
+Values   0 0 0 0 0 0
+Stats    2 5000 500 0 0
+Affect       -1 -1 3 1 0
+Affect       -1 -1 -5 23 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24888
+Keywords club gigantic~
+Type     weapon~
+Short    a gigantic club~
+Long     A ridiculously big club lies here on the ground.  Good luck picking it up.~
+WFlags   take wield~
+Values   0 0 0 8 0 0
+Stats    25 500 50 0 0
+Affect       -1 -1 10 17 0
+Affect       -1 -1 5 19 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24889
+Keywords lifeless body corpse~
+Type     container~
+Short    the drained body~
+Long     A dead human with a horrified look on his pale face lies here.~
+WFlags   take~
+Values   0 0 0 0 0 0
+Stats    100 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24890
+Keywords body corpse dead lizardman~
+Type     container~
+Short    the drained lizardman body~
+Long     A lizardman corpse lies here, its scales seeming somehow pale.~
+WFlags   take~
+Values   0 0 0 0 0 0
+Stats    100 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24891
+Keywords mind flayer tentacle~
+Type     armor~
+Short    a mind flayer tentacle~
+Long     The severed tentacle of a mind flayer lies here on the ground.~
+WFlags   take wrist~
+Values   0 0 0 0 0 0
+Stats    1 1000000 -31072 0 0
+Affect       -1 -1 2 3 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24892
+Keywords mind flayer robe~
+Type     armor~
+Short    a mind flayer's robe~
+Long     An exotic-looking robe lies here, its inside covered with slime.~
+WFlags   take about~
+Values   0 0 0 0 0 0
+Stats    1 10000 1000 0 0
+Affect       -1 -1 1 3 0
+Affect       -1 -1 100 13 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24893
+Keywords cards deck~
+Type     wand~
+Short    a deck of cards~
+Long     An old, beat-up deck of cards lies here on the ground.~
+WFlags   take hold~
+Values   20 13 5 -1 0 0
+Stats    1 10000 1000 0 0
+Spells   'charm person'
+#ENDOBJECT
+
+#OBJECT
+Vnum     24894
+Keywords visor clear~
+Type     armor~
+Short    a clear visor~
+Long     A flimsy-looking visor lies here crumpled on the ground.~
+WFlags   take head~
+Values   0 0 0 0 0 0
+Stats    1 1000 100 0 0
+Affect       -1 -1 2 4 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24895
+Keywords chest dusty~
+Type     container~
+Short    a dusty chest~
+Long     An old, dusty-looking chest sits here, covered with cobwebs and blood.~
+Values   200 1 24816 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24896
+Keywords lake blood red~
+Type     blood~
+Short    the lake of blood~
+Long     The lake of blood you just crawled out of is as still as death here.~
+Values   5 40 0 1 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24897
+Keywords tree lemon~
+Type     container~
+Short    a lemon tree~
+Long     A brilliant yellow tree, covered with lemons, grows eagerly here.~
+Flags    glow~
+Values   10000 0 0 0 0 0
+Stats    10000 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24898
+Keywords lemon tiny~
+Type     food~
+Short    a tiny lemon~
+Long     A perfectly formed lemon lies here on the ground.~
+WFlags   take~
+Values   80 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     24899
+Keywords glass wine~
+Type     drinkcon~
+Short    a glass of violet wine~
+Long     A violet crystal glass of exquisite wine stands here.~
+WFlags   take~
+Values   4 4 2 0 0 0
+Stats    1 15 1 0 0
+#ENDOBJECT
+
+#ROOM
+Vnum     24800
+Name     Entrance to the Darkhaven Art Gallery~
+Sector   city~
+Flags    indoors~
+Desc     The change in atmosphere as you step through the doors into the gallery is 
 striking.  Far from the tumult outside, the interior of the building is 
 remarkably serene.  The body of the gallery is north of here, past a
 busy-looking receptionist sitting at her desk.
 ~
-0 8 1
-D0
+#EXIT
+Direction north~
+ToRoom    24801
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    21021
+Desc      Law Street lies to the south.
 ~
-~
-0 -1 24801
-D2
-Law Street lies to the south.
-~
-~
-0 -1 21021
-S
-#24801
-Receptionist's Desk~
-A sign hanging from the ceiling says :
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24801
+Name     Receptionist's Desk~
+Sector   city~
+Flags    indoors~
+Desc     A sign hanging from the ceiling says :
  
 "ADMISSION : 100 GOLD"
  
@@ -2172,307 +3367,411 @@ Apparently, this is the main entrance to the gallery.  You can see various
 paintings lining the walls far to the north, and two rooms containing 
 important-looking art closer that way.
 ~
-0 8 1
-D0
-~
-entrance hallway passage room~
-1063 24800 24804
-D2
-~
-~
-0 -1 24800
-D3
-~
-~
-0 -1 24802
-R M 0 24800 1 24801
-R D 0 24801 0 2
-S
-#24802
-Curator's Desk~
-Without a doubt, this is the messiest desk you've ever laid eyes on.  
+#EXIT
+Direction north~
+ToRoom    24804
+Key       24800
+Keywords  entrance hallway passage room~
+Flags     isdoor closed locked pickproof nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24800
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24802
+#ENDEXIT
+
+Reset M 0 24800 1 24801
+Reset D 0 24801 0 2
+#ENDROOM
+
+#ROOM
+Vnum     24802
+Name     Curator's Desk~
+Sector   city~
+Flags    indoors~
+Desc     Without a doubt, this is the messiest desk you've ever laid eyes on.  
 Hundreds of loose documents (most of them with an outrageously high price at 
 the bottom) litter the surface.  More than a few lie on the floor.  A 
 nameplate is unobscured by the mountain of paper, however.
 ~
-0 8 1
-D1
+#EXIT
+Direction east~
+ToRoom    24801
+#ENDEXIT
+
+Reset M 0 24801 1 24802
+#EXDESC
+ExDescKey    nameplate desk~
+ExDesc       The gold nameplate says "MICHAEL COSNER - CURATOR"
 ~
-~
-0 -1 24801
-R M 0 24801 1 24802
-E
-nameplate desk~
-The gold nameplate says "MICHAEL COSNER - CURATOR"
-~
-S
-#24803
-Dracolithos' Treasure Vault~
-This place seems remarkably cool, and there is (thank the gods) a cool, clear 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24803
+Name     Dracolithos' Treasure Vault~
+Sector   city~
+Flags    indoors nosummon noastral~
+Desc     This place seems remarkably cool, and there is (thank the gods) a cool, clear 
 fountain flowing in front of you.  A few chests line the room, some of them 
 with cobwebs on them, some with bloodstains.
 ~
-0 3145736 1
-D2
-~
-~
-0 -1 24848
-R T 5 1 5 24803
-R O 0 24895 1 24803
-S
-#24804
-Outside the Art of the Year Rooms~
-This room exists only to lead you to the east and west.  West leads to the 
+#EXIT
+Direction south~
+ToRoom    24848
+#ENDEXIT
+
+Reset T 5 1 5 24803
+Reset O 0 24895 1 24803
+#ENDROOM
+
+#ROOM
+Vnum     24804
+Name     Outside the Art of the Year Rooms~
+Sector   city~
+Flags    indoors~
+Desc     This room exists only to lead you to the east and west.  West leads to the 
 year's featured painting, and east is the year's featured sculpture.  They 
 both look equally fascinating.  The hallway leads north to the rest of the 
 gallery.
 ~
-0 8 1
-D0
-~
-~
-0 -1 24807
-D1
-~
-~
-0 -1 24806
-D2
-~
-~
-35 24800 24801
-D3
-~
-~
-0 -1 24805
-S
-#24805
-Painting of the Year~
-The painting of the year has definitely earned its title.  The ice-capped 
+#EXIT
+Direction north~
+ToRoom    24807
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24806
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24801
+Key       24800
+Flags     isdoor closed pickproof~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24805
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24805
+Name     Painting of the Year~
+Sector   city~
+Flags    nomob indoors~
+Desc     The painting of the year has definitely earned its title.  The ice-capped 
 mountains are painted in such detail that you could probably count the 
 individual snowflakes if you had a mind to.  Actually, that seems like a good 
 idea.  One...two...three...hmm.  There must be an easier way to do this.
  
 A small card by the painting says : 25.50
 ~
-0 12 1
-D1
-~
-~
-0 -1 24804
-D3
-~
-painting~
-1 -1 24831
-S
-#24806
-Sculpture of the Year~
-Ugh.  What an ugly sculpture.  If the artist was trying to make this thing 
+#EXIT
+Direction east~
+ToRoom    24804
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24831
+Keywords  painting~
+Flags     isdoor~
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24806
+Name     Sculpture of the Year~
+Sector   city~
+Flags    indoors~
+Desc     Ugh.  What an ugly sculpture.  If the artist was trying to make this thing 
 beautiful, he should be executed.  The monochromaticity of the bronze only 
 adds to this hideous beast's ugliness, with its lower jaw jutting out, its 
 too-long, twisted horns, and generally stupid appearance.  Yeccch.
  
 A sign on the wall says : 30.40
 ~
-0 8 1
-D3
-~
-~
-0 -1 24804
-R M 0 24803 1 24806
-S
-#24807
-By the "Wasteland" Painting~
-You are standing before an amazingly detailed painting of a completely barren 
+#EXIT
+Direction west~
+ToRoom    24804
+#ENDEXIT
+
+Reset M 0 24803 1 24806
+#ENDROOM
+
+#ROOM
+Vnum     24807
+Name     By the "Wasteland" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     You are standing before an amazingly detailed painting of a completely barren 
 wasteland.  No plants.  No animals.  No water.  No nothing.  You don't envy 
 anyone who would be in THAT scene.
  
 A small card by the painting says : 45.50
 ~
-0 12 1
-D0
-~
-painting~
-1027 -1 24815
-D1
-~
-~
-0 -1 24808
-D2
-~
-~
-0 -1 24804
-D3
-~
-~
-0 -1 24814
-R D 0 24807 0 1
-S
-#24808
-By the "Canine Recreation" Painting~
-Ah, now THIS is a familiar work of art.  It shows five dogs, each wearing a 
+#EXIT
+Direction north~
+ToRoom    24815
+Keywords  painting~
+Flags     isdoor closed nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24808
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24804
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24814
+#ENDEXIT
+
+Reset D 0 24807 0 1
+#ENDROOM
+
+#ROOM
+Vnum     24808
+Name     By the "Canine Recreation" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     Ah, now THIS is a familiar work of art.  It shows five dogs, each wearing a 
 strange visor of transparent material.  The dogs are playing a game as old as 
 time itself.  Smoke hovers in the air above the green table.  How rustic.
  
 A small card by the painting says : 5.10
 ~
-0 12 1
-D0
-~
-~
-0 -1 24809
-D1
-~
-painting~
-3 -1 24816
-D3
-~
-~
-0 -1 24807
-R D 0 24808 1 1
-S
-#24809
-By the "Spectrum" Painting~
-This seems like an ordinary painting.  It simply shows the colors of the 
+#EXIT
+Direction north~
+ToRoom    24809
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24816
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24807
+#ENDEXIT
+
+Reset D 0 24808 1 1
+#ENDROOM
+
+#ROOM
+Vnum     24809
+Name     By the "Spectrum" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     This seems like an ordinary painting.  It simply shows the colors of the 
 rainbow, from red to violet, with black and white on the top and bottom, 
 respectively.  The colors are the most vibrant you have ever seen.
  
 A small card by the painting says : 30.40
 ~
-0 12 1
-D0
-~
-~
-0 -1 24810
-D2
-~
-~
-0 -1 24808
-D3
-~
-painting~
-3 -1 24817
-R D 0 24809 3 1
-S
-#24810
-By the "Still Life of Monarchy" Painting~
-This painting is the most uninteresting one you've seen so far.  It shows a 
+#EXIT
+Direction north~
+ToRoom    24810
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24808
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24817
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset D 0 24809 3 1
+#ENDROOM
+
+#ROOM
+Vnum     24810
+Name     By the "Still Life of Monarchy" Painting~
+Sector   city~
+Flags    indoors~
+Desc     This painting is the most uninteresting one you've seen so far.  It shows a 
 picture of King Welmar sitting on his throne.  Nothing to get excited about.  
 You can almost see the old man's face twist into a disdainful sneer.
  
 A small card by the painting says : 15.35
 ~
-0 8 1
-D0
-~
-painting~
-3 -1 24818
-D2
-~
-~
-0 -1 24809
-D3
-~
-~
-0 -1 24811
-R D 0 24810 0 1
-S
-#24811
-By the "Arena of Valorous Combat" Painting~
-Thousands of cheering fans make up the border of this painting.  Their 
+#EXIT
+Direction north~
+ToRoom    24818
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24809
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24811
+#ENDEXIT
+
+Reset D 0 24810 0 1
+#ENDROOM
+
+#ROOM
+Vnum     24811
+Name     By the "Arena of Valorous Combat" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     Thousands of cheering fans make up the border of this painting.  Their 
 attention appears to be focused on the two gargantuan barbarians in the 
 center of the arena.  There are also numerous gladiatorial contests 
 surrounding the main attraction.
  
 A small card by the painting says : 25.30
 ~
-0 12 1
-D1
-~
-~
-0 -1 24810
-D2
-~
-painting~
-3 -1 24819
-D3
-~
-~
-0 -1 24812
-R D 0 24811 2 1
-S
-#24812
-By the "Tea Party" Painting~
-A few rich-looking, well-to-do nobles sit at a table in the painting.  Their 
+#EXIT
+Direction east~
+ToRoom    24810
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24819
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24812
+#ENDEXIT
+
+Reset D 0 24811 2 1
+#ENDROOM
+
+#ROOM
+Vnum     24812
+Name     By the "Tea Party" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     A few rich-looking, well-to-do nobles sit at a table in the painting.  Their 
 capes are frozen in mid-flow, probably due to an invisible breeze, and the 
 ladies' dresses are slightly green on the bottom from grass stains.  All 
 their backs are to you, making their faces hidden from view.
  
 A small card by the painting says : 25.45
 ~
-0 12 1
-D1
-~
-~
-0 -1 24811
-D2
-~
-~
-0 -1 24813
-D3
-~
-painting~
-3 -1 24820
-R D 0 24812 3 1
-S
-#24813
-By the "Loss" Painting~
-What a morbid painting!  Depicted on the wall in front of you is a large 
+#EXIT
+Direction east~
+ToRoom    24811
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24813
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24820
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset D 0 24812 3 1
+#ENDROOM
+
+#ROOM
+Vnum     24813
+Name     By the "Loss" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     What a morbid painting!  Depicted on the wall in front of you is a large 
 graveyard, with quite a few stones.  A new arrival is on the way, apparently, 
 as a large group of people are gathered around an open grave.  How depressing.
  
 A small card by the painting says : 45.50
 ~
-0 12 1
-D0
-~
-~
-0 -1 24812
-D1
-~
-painting~
-3 -1 24821
-D2
-~
-~
-0 -1 24814
-R D 0 24813 1 1
-S
-#24814
-By the "Urban Jungle" Painting~
-You've never seen so much food in your life.  Each of the four food groups 
+#EXIT
+Direction north~
+ToRoom    24812
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24821
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24814
+#ENDEXIT
+
+Reset D 0 24813 1 1
+#ENDROOM
+
+#ROOM
+Vnum     24814
+Name     By the "Urban Jungle" Painting~
+Sector   city~
+Flags    nomob indoors~
+Desc     You've never seen so much food in your life.  Each of the four food groups 
 are represented quite spectacularly.  From baker to butcher to ice cream 
 maker, to grocer to fruit dealer, the amount of fare is astounding.
  
 A small card by the painting says : N/A
 ~
-0 12 1
-D0
-~
-~
-0 -1 24813
-D1
-~
-~
-0 -1 24807
-D2
-~
-painting~
-3 -1 24822
-R D 0 24814 2 1
-S
-#24815
-Oops~
-Perhaps coming through this painting wasn't such a good idea.  You look 
+#EXIT
+Direction north~
+ToRoom    24813
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24807
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24822
+Keywords  painting~
+Flags     isdoor closed~
+#ENDEXIT
+
+Reset D 0 24814 2 1
+#ENDROOM
+
+#ROOM
+Vnum     24815
+Name     Oops~
+Sector   desert~
+Flags    nomob norecall nosummon noastral~
+Desc     Perhaps coming through this painting wasn't such a good idea.  You look 
 around and see nothing but cracked soil.  Everywhere.  You quickly decide to 
 go back the way you came, and spin around to jump back through the portal.
  
@@ -2481,956 +3780,1207 @@ It's not there.
 Quickly taking stock of your options, you decide to begin the trek to find a 
 way out of here.  NOW.
 ~
-0 3153924 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24816
-Dogs Playing Poker~
-The array of multicolored chips on the table here are enough to make any 
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24816
+Name     Dogs Playing Poker~
+Sector   city~
+Flags    nomob indoors~
+Desc     The array of multicolored chips on the table here are enough to make any 
 being rich, be it canine or human or elf.  The smoke in the air is quite 
 thick, and you can't suppress a cough as it fills your lungs.  Well, now that 
 you're here, maybe you'd like to play a few hands.
 ~
-0 12 1
-D3
-~
-~
-33 -1 24808
-R O 0 24893 1 24816
-R M 0 24838 1 24816
-  R E 1 24894 1 6
-R M 0 24839 1 24816
-  R E 1 24894 1 6
-R M 0 24840 1 24816
-  R E 1 24894 1 6
-R M 0 24841 1 24816
-  R E 1 24894 1 6
-R M 0 24842 1 24816
-  R E 1 24894 1 6
-S
-#24817
-Green~
-You are floating in a vast space of green.  Waves of sea green.  Hovering 
+#EXIT
+Direction west~
+ToRoom    24808
+Flags     isdoor pickproof~
+#ENDEXIT
+
+Reset O 0 24893 1 24816
+Reset M 0 24838 1 24816
+  Reset E 1 24894 1 6
+Reset M 0 24839 1 24816
+  Reset E 1 24894 1 6
+Reset M 0 24840 1 24816
+  Reset E 1 24894 1 6
+Reset M 0 24841 1 24816
+  Reset E 1 24894 1 6
+Reset M 0 24842 1 24816
+  Reset E 1 24894 1 6
+#ENDROOM
+
+#ROOM
+Vnum     24817
+Name     Green~
+Sector   air~
+Desc     You are floating in a vast space of green.  Waves of sea green.  Hovering 
 carpets of hunter green.  Every shade of green ever created occupies your 
 field of vision.  This makes the rain forest seem like a drab grey.  All 
 kinds of plant life flourish around you, seeming to thrive on the verdant 
 atmosphere.
 ~
-0 0 9
-D1
-~
-~
-0 -1 24823
-D3
-~
-~
-0 -1 24824
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24805 1 24817
-  R E 1 24804 1 16
-E
-plant plants~
-These plants are more exotic than you would have expected to see in midair.
+#EXIT
+Direction east~
+ToRoom    24823
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24824
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24805 1 24817
+  Reset E 1 24804 1 16
+#EXDESC
+ExDescKey    plant plants~
+ExDesc       These plants are more exotic than you would have expected to see in midair.
 Of course, midair plants are not easily found, but that's neither here nor
 there.
 ~
-S
-#24818
-Welmar's Left Foot~
-Perhaps this painting was just a wee bit more interesting than it looked.  
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24818
+Name     Welmar's Left Foot~
+Sector   city~
+Flags    nomob indoors~
+Desc     Perhaps this painting was just a wee bit more interesting than it looked.  
 You are standing at the foot of King Welmar.  A three-hundred-foot tall King 
 Welmar.  His foot alone is as big as ten of you!  You can see his huge toes 
 (each bigger than your head) wiggling around in his sandals.  Evidently today 
 was his pedicure.
 ~
-0 12 1
-D2
-~
-~
-33 -1 24810
-D4
-~
-~
-0 -1 24849
-R M 0 24814 1 24818
-S
-#24819
-The Arena~
-The painting you saw appears to be quite outdated.  Almost all the fans have 
+#EXIT
+Direction south~
+ToRoom    24810
+Flags     isdoor pickproof~
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24849
+#ENDEXIT
+
+Reset M 0 24814 1 24818
+#ENDROOM
+
+#ROOM
+Vnum     24819
+Name     The Arena~
+Sector   city~
+Desc     The painting you saw appears to be quite outdated.  Almost all the fans have 
 left, except for a few seated, robed figures, all intensely concentrating.  
 Some of them notice you and slowly fade into nothingness as you watch.  The 
 wave of a facial tentacle gives their identity away.
 ~
-0 0 1
-D1
-~
-~
-0 -1 24870
-D3
-~
-~
-0 -1 24871
-D4
-~
-~
-0 -1 24872
-R M 0 24836 1 24819
-  R E 1 24887 1 5
-  R E 1 24888 1 16
-  R E 1 24885 1 6
-R M 0 24835 1 24819
-  R E 1 24885 1 6
-  R E 1 24884 1 16
-S
-#24820
-The Tea Party~
-Now that you're in the scene, something seems horribly wrong.  The air stinks 
+#EXIT
+Direction east~
+ToRoom    24870
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24871
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24872
+#ENDEXIT
+
+Reset M 0 24836 1 24819
+  Reset E 1 24887 1 5
+  Reset E 1 24888 1 16
+  Reset E 1 24885 1 6
+Reset M 0 24835 1 24819
+  Reset E 1 24885 1 6
+  Reset E 1 24884 1 16
+#ENDROOM
+
+#ROOM
+Vnum     24820
+Name     The Tea Party~
+Sector   city~
+Flags    nomob~
+Desc     Now that you're in the scene, something seems horribly wrong.  The air stinks 
 of death and decay.  You can faintly recall where you've encountered this 
 stench before, but it escapes you at the mom--that's it!  A graveyard!  The 
 color drains from your face as you hear tormented moans all around you.
 ~
-0 4 1
-D0
-~
-~
-0 -1 24857
-D1
-~
-~
-33 -1 24812
-R M 0 24822 1 24820
-  R E 1 24817 1 12
-R M 0 24823 1 24820
-R M 0 24824 1 24820
-  R E 1 24817 1 12
-  R E 1 24818 1 6
-S
-#24821
-The Funeral~
-A few dozen people gather around an open grave here, sniffling and wiping 
+#EXIT
+Direction north~
+ToRoom    24857
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24812
+Flags     isdoor pickproof~
+#ENDEXIT
+
+Reset M 0 24822 1 24820
+  Reset E 1 24817 1 12
+Reset M 0 24823 1 24820
+Reset M 0 24824 1 24820
+  Reset E 1 24817 1 12
+  Reset E 1 24818 1 6
+#ENDROOM
+
+#ROOM
+Vnum     24821
+Name     The Funeral~
+Sector   city~
+Flags    nomob~
+Desc     A few dozen people gather around an open grave here, sniffling and wiping 
 their eyes.  A priest solemnly eulogizes the new occupant.  Or it seems as 
 though he is.  His lips are moving, but you don't hear anything.  As you 
 watch, the priest, and then the rest of the mourners shimmer and fade into 
 nothingness, leaving only yourself with an open grave.  *gulp*
 ~
-0 4 1
-D5
-~
-~
-0 -1 24864
-S
-#24822
-Danishes N Donuts~
-The freshly baked bread in the back of this store makes your mouth start to 
+#EXIT
+Direction down~
+ToRoom    24864
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24822
+Name     Danishes N Donuts~
+Sector   city~
+Flags    nomob~
+Desc     The freshly baked bread in the back of this store makes your mouth start to 
 water in anticipation.  The selection beneath the display case is astounding.
 The fare ranges from omelettes to muffins to freshly popped popcorn.  They 
 all look incredibly appetizing.
 ~
-0 4 1
-D0
-~
-~
-33 -1 24814
-D1
-~
-~
-0 -1 24867
-R M 0 24853 1 24822
-  R G 1 24844 1
-  R G 1 24845 1
-  R G 1 24846 1
-  R G 1 24847 1
-  R G 1 24848 1
-  R G 1 24849 1
-  R G 1 24850 1
-  R G 1 24851 1
-  R G 1 24852 1
-  R G 1 24854 1
-  R G 1 24855 1
-S
-#24823
-Blue~
-The blue sky has never been this clear that YOU've ever seen.  You can see 
+#EXIT
+Direction north~
+ToRoom    24814
+Flags     isdoor pickproof~
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24867
+#ENDEXIT
+
+Reset M 0 24853 1 24822
+  Reset G 1 24844 1
+  Reset G 1 24845 1
+  Reset G 1 24846 1
+  Reset G 1 24847 1
+  Reset G 1 24848 1
+  Reset G 1 24849 1
+  Reset G 1 24850 1
+  Reset G 1 24851 1
+  Reset G 1 24852 1
+  Reset G 1 24854 1
+  Reset G 1 24855 1
+#ENDROOM
+
+#ROOM
+Vnum     24823
+Name     Blue~
+Sector   air~
+Desc     The blue sky has never been this clear that YOU've ever seen.  You can see 
 for miles...at least you think it's miles.  There's no landmark to judge 
 distance by.  Sky as far as the eye can see around you, and a deep blue ocean 
 beneath you.  Blue jays and midnight blue dragonflies hover around you.
 ~
-0 0 9
-D1
-~
-~
-0 -1 24825
-D3
-~
-~
-0 -1 24817
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24806 1 24823
-  R E 1 24805 1 16
-R M 0 24843 2 24823
-R M 0 24843 2 24823
-R M 0 24844 2 24823
-R M 0 24844 2 24823
-S
-#24824
-Yellow~
-Sunlight envelops you as you find yourself standing on a seemingly boundless 
+#EXIT
+Direction east~
+ToRoom    24825
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24817
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24806 1 24823
+  Reset E 1 24805 1 16
+Reset M 0 24843 2 24823
+Reset M 0 24843 2 24823
+Reset M 0 24844 2 24823
+Reset M 0 24844 2 24823
+#ENDROOM
+
+#ROOM
+Vnum     24824
+Name     Yellow~
+Sector   field~
+Desc     Sunlight envelops you as you find yourself standing on a seemingly boundless 
 field of yellow.  The sun dominates the sky, easily a hundred times larger 
 than usual.  Golden trees make up a forest all around you, with lemons and 
 bananas hanging from every tree.
 ~
-0 0 2
-D1
-~
-~
-0 -1 24817
-D3
-~
-~
-0 -1 24826
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24807 1 24824
-  R E 1 24803 1 16
-R O 0 24897 1 24824
-  R P 0 24898 1 24897
-R O 0 24898 1 24824
-E
-sun sky~
-The sun stretches as far as your peripheral vision can see, almost occupying
+#EXIT
+Direction east~
+ToRoom    24817
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24826
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24807 1 24824
+  Reset E 1 24803 1 16
+Reset O 0 24897 1 24824
+  Reset P 0 24898 1 24897
+Reset O 0 24898 1 24824
+#EXDESC
+ExDescKey    sun sky~
+ExDesc       The sun stretches as far as your peripheral vision can see, almost occupying
 the entire sky.  Strangely, though, it is not hot.  It's actually pleasantly
 warm.  Ahhhhhhhh.
 ~
-S
-#24825
-Indigo~
-You just missed the dusk here, apparently.  The sky is a thick dark blue, 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24825
+Name     Indigo~
+Sector   field~
+Desc     You just missed the dusk here, apparently.  The sky is a thick dark blue, 
 with a hint of violet.  The moon is not out tonight, leaving you with a clear 
 view of the night sky.  Numerous trees surround you, laden with blueberries 
 larger than any berries you've seen.  A small pond lies quietly off in the 
 distance, undisturbed by the wind that ruffles your clothes and hair.
 ~
-0 0 2
-D1
-~
-~
-0 -1 24827
-D3
-~
-~
-0 -1 24823
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24808 1 24825
-  R E 1 24806 1 16
-E
-pond~
-The dark blue sky reflects onto the pond beautifully, and its cool waters
+#EXIT
+Direction east~
+ToRoom    24827
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24823
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24808 1 24825
+  Reset E 1 24806 1 16
+#EXDESC
+ExDescKey    pond~
+ExDesc       The dark blue sky reflects onto the pond beautifully, and its cool waters
 entice you.  Feel like a swim?  Too bad.  You wouldn't be able to reach it.
 ~
-S
-#24826
-Orange~
-You find yourself walking through a beautiful forest.  Somehow the season has 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24826
+Name     Orange~
+Sector   forest~
+Desc     You find yourself walking through a beautiful forest.  Somehow the season has 
 changed to fall, as evidenced by the numerous hues of orange on the leaves of 
 the trees.  The dirt you stand on is a deep reddish orange, with many paw 
 prints lining the path.  The bark of the trees has somehow been changed into 
 a very rich brown-tinged orange.
 ~
-0 0 3
-D1
-~
-~
-0 -1 24824
-D3
-~
-~
-0 -1 24828
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24809 1 24826
-  R E 1 24802 1 16
-R M 0 24833 1 24826
-S
-#24827
-Violet~
-The waning dusk turns the lake you are standing in into a picture of the 
+#EXIT
+Direction east~
+ToRoom    24824
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24828
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24809 1 24826
+  Reset E 1 24802 1 16
+Reset M 0 24833 1 24826
+#ENDROOM
+
+#ROOM
+Vnum     24827
+Name     Violet~
+Sector   field~
+Desc     The waning dusk turns the lake you are standing in into a picture of the 
 deepest purple.  Light reflecting off the lake turns all the colors around 
 you into progressive shades of the same color, including the grapevines in 
 the distance.  A table is set up on the shore, draped in a violet tablecloth.
 ~
-0 0 2
-D3
-~
-~
-0 -1 24825
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24810 1 24827
-  R E 1 24807 1 16
-  R G 1 24899 1
-R O 0 24899 1 24827
-R O 0 24899 2 24827
-S
-#24828
-Red~
-Horror dawns on you as you realize what the thick red liquid you're wading in 
+#EXIT
+Direction west~
+ToRoom    24825
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24810 1 24827
+  Reset E 1 24807 1 16
+  Reset G 1 24899 1
+Reset O 0 24899 1 24827
+Reset O 0 24899 2 24827
+#ENDROOM
+
+#ROOM
+Vnum     24828
+Name     Red~
+Sector   forest~
+Desc     Horror dawns on you as you realize what the thick red liquid you're wading in 
 is.  You quickly scramble out of it and take in your surroundings.  The sky 
 is the light red of sunrise.  The blood you were just swimming in drips off 
 your equipment onto the brick path under your feet.  The sunlight bathes the 
 nearby trees in red, matching the color of the leaves.
 ~
-0 0 3
-D1
-~
-~
-0 -1 24826
-D4
-~
-~
-0 -1 24829
-D5
-~
-~
-0 -1 24830
-R M 0 24811 1 24828
-  R E 1 24801 1 16
-R O 0 24896 1 24828
-S
-#24829
-White~
-The brightness that encompasses you makes everything you've ever seen seem 
+#EXIT
+Direction east~
+ToRoom    24826
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24829
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24830
+#ENDEXIT
+
+Reset M 0 24811 1 24828
+  Reset E 1 24801 1 16
+Reset O 0 24896 1 24828
+#ENDROOM
+
+#ROOM
+Vnum     24829
+Name     White~
+Sector   air~
+Desc     The brightness that encompasses you makes everything you've ever seen seem 
 dim and diluted by comparison.  Everywhere you turn, you can see nothing but 
 white.  Closing your eyes doesn't help; the afterimage is just as bad.  There 
 is no horizon; no floor, no ceiling, no walls.  Panic wells up in you as you 
 lose track of the exit.  You spin around and look in all directions, quickly 
 realizing that, for once in your life, your sense of direction is totally gone.
 ~
-0 0 9
-D5
-~
-~
-0 -1 24809
-R M 0 24812 1 24829
-  R E 1 24808 1 16
-S
-#24830
-Black~
-Your light source does nothing to penetrate the thick, silent darkness around 
+#EXIT
+Direction down~
+ToRoom    24809
+#ENDEXIT
+
+Reset M 0 24812 1 24829
+  Reset E 1 24808 1 16
+#ENDROOM
+
+#ROOM
+Vnum     24830
+Name     Black~
+Sector   air~
+Desc     Your light source does nothing to penetrate the thick, silent darkness around 
 you.  The only thing that gives you ANY sense of direction is the division of 
 blackness; there are actually deeper shades of black than what you saw when 
 you first arrived here, evidenced by the horizon of absolute darkness in the 
 distance.  The "sky" is actually a lighter shade of black than the "ground" 
 here.  You wonder how this is possible.
 ~
-0 0 9
-D4
-~
-~
-0 -1 24809
-R M 0 24813 1 24830
-  R E 1 24809 1 16
-S
-#24831
-High above Icewind Dale~
-Two things immediately strike you as you step onto the top of this mountain.  
+#EXIT
+Direction up~
+ToRoom    24809
+#ENDEXIT
+
+Reset M 0 24813 1 24830
+  Reset E 1 24809 1 16
+#ENDROOM
+
+#ROOM
+Vnum     24831
+Name     High above Icewind Dale~
+Sector   mountain~
+Flags    nomob~
+Desc     Two things immediately strike you as you step onto the top of this mountain.  
 How beautiful the view is, with the mountains almost touching the sky, their 
 snow-capped peaks untouched by any creature, and how COLD it is!  Yikes!  
 You'd best get moving if you want your blood to stay in liquid form.
 ~
-0 4 5
-D1
-~
-~
-33 -1 24805
-D5
-~
-~
-0 -1 24832
-S
-#24832
-Trudging along in Icewind Dale~
-Hmm.  There goes your way back up.  The mountain is virtually unclimbable from
+#EXIT
+Direction east~
+ToRoom    24805
+Flags     isdoor pickproof~
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24832
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24832
+Name     Trudging along in Icewind Dale~
+Sector   mountain~
+Flags    nomob~
+Desc     Hmm.  There goes your way back up.  The mountain is virtually unclimbable from
 here.  Looks like the only way out now is to the east, towards a huge glacier
 far in the distance.  Your slowly numbing legs scream for action.  Time to get
 moving before they fall off.
 ~
-0 4 5
-D1
-~
-~
-0 -1 24833
-R M 0 24827 3 24832
-R M 0 24826 2 24832
-S
-#24833
-Within Sight of the Reghed Glacier~
-The huge glacier looming in the distance is even bigger than you thought, now
+#EXIT
+Direction east~
+ToRoom    24833
+#ENDEXIT
+
+Reset M 0 24827 3 24832
+Reset M 0 24826 2 24832
+#ENDROOM
+
+#ROOM
+Vnum     24833
+Name     Within Sight of the Reghed Glacier~
+Sector   mountain~
+Flags    nomob~
+Desc     The huge glacier looming in the distance is even bigger than you thought, now
 that you are nearing it.  Something seems odd about the glacier, but you can't
 stop to figure it out now.  It's either move or freeze.  The glacier awaits, as
 does glory.  You can also see a long path to the north that eventually leads 
 to a huge rocky cliff.
 ~
-0 4 5
-D1
-~
-~
-0 -1 24834
-D3
-~
-~
-0 -1 24832
-R M 0 24827 3 24833
-S
-#24834
-At the Base of the Reghed Glacier~
-Well, whatever was abnormal about this glacier seems to have vanished now that
+#EXIT
+Direction east~
+ToRoom    24834
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24832
+#ENDEXIT
+
+Reset M 0 24827 3 24833
+#ENDROOM
+
+#ROOM
+Vnum     24834
+Name     At the Base of the Reghed Glacier~
+Sector   mountain~
+Flags    nomob~
+Desc     Well, whatever was abnormal about this glacier seems to have vanished now that
 you're this close to it.  The surface of the glacier is an impregnable wall of
 deep-frozen ice.  Seemingly impregnable.  You didn't come all this way just to
 look at a glacier.  Perhaps there's something else of interest here...
 ~
-0 4 5
-D1
-~
-crack~
-1035 -1 24835
-D3
-~
-~
-0 -1 24833
-R M 0 24827 3 24834
-R M 0 24826 2 24834
-R D 0 24834 1 1
-E
-glacier mountain wall~
-The glacier does indeed look impenetrable.  It'd be a cold day in hell before
+#EXIT
+Direction east~
+ToRoom    24835
+Keywords  crack~
+Flags     isdoor closed secret nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24833
+#ENDEXIT
+
+Reset M 0 24827 3 24834
+Reset M 0 24826 2 24834
+Reset D 0 24834 1 1
+#EXDESC
+ExDescKey    glacier mountain wall~
+ExDesc       The glacier does indeed look impenetrable.  It'd be a cold day in hell before
 you found any way inside of it.  No pun intended.  Hmm.  Well, actually, now
 that you're looking REALLY hard, you can see some sort of depression at the
 base of the mountain.  Probably just a trick of the imagination, though.
 ~
-E
-base~
-There is a rather large crack at the base of the glacier.  So large, in fact,
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    base~
+ExDesc       There is a rather large crack at the base of the glacier.  So large, in fact,
 that you'd probably be able to fit through it with a bit of help.
 ~
-S
-#24835
-The Shores of Evermelt~
-The cold temperature no longer seems incapacitating by this warm pool.  In 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24835
+Name     The Shores of Evermelt~
+Sector   city~
+Flags    nomob indoors~
+Desc     The cold temperature no longer seems incapacitating by this warm pool.  In 
 fact, you could stay here for quite a while if you had a mind to.  Steam 
 billows off the surface of the pool in great clouds.  You have heard legends 
 of what lies beyond the pool.  Care to find out if they're true?
 ~
-0 12 1
-D3
-~
-~
-35 -1 24834
-D5
-~
-pool evermelt water~
-1057 24821 24836
-R O 0 24820 1 24835
-R D 0 24835 3 1
-S
-#24836
-Swimming in Evermelt~
-The water is remarkably warm down here.  The steam rising off the surface 
+#EXIT
+Direction west~
+ToRoom    24834
+Flags     isdoor closed pickproof~
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24836
+Key       24821
+Keywords  pool evermelt water~
+Flags     isdoor pickproof nopassdoor~
+#ENDEXIT
+
+Reset O 0 24820 1 24835
+Reset D 0 24835 3 1
+#ENDROOM
+
+#ROOM
+Vnum     24836
+Name     Swimming in Evermelt~
+Sector   water_swim~
+Flags    nomob indoors~
+Desc     The water is remarkably warm down here.  The steam rising off the surface 
 above you doesn't do justice to the toasty feeling flowing through your 
 veins.  Remaining down here would be a bad idea, though...if you get to used 
 to this temperature, you'll turn into an icicle seconds after getting out.
 ~
-0 12 6
-D0
-~
-~
-0 -1 24837
-D4
-~
-~
-0 -1 24835
-S
-#24837
-Swept Along by the Current~
-Hmm.  The current feels a lot stronger than it felt a few seconds ago.  In 
+#EXIT
+Direction north~
+ToRoom    24837
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24835
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24837
+Name     Swept Along by the Current~
+Sector   water_swim~
+Flags    nomob indoors~
+Desc     Hmm.  The current feels a lot stronger than it felt a few seconds ago.  In 
 fact, it's doubtful you could make it back to where you just were those few 
 seconds ago.  Might as well enjoy the ride now.
 ~
-0 12 6
-D0
-~
-~
-0 -1 24838
-S
-#24838
-Still Lost in the Current~
-Your lungs are screaming for air now.  It takes all of your years of 
+#EXIT
+Direction north~
+ToRoom    24838
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24838
+Name     Still Lost in the Current~
+Sector   water_swim~
+Flags    nomob indoors~
+Desc     Your lungs are screaming for air now.  It takes all of your years of 
 experience as an adventurer to keep from gulping in a mouthful of water.  
 Perhaps now would be a good time to find some oxygen, before you find 
 something less pleasant--death.
 ~
-0 12 6
-D0
-~
-~
-0 -1 24839
-S
-#24839
-The Waterfall (!!)~
-Uh-oh.  Time to act quick.  Just to your north, you hear the telltale roar of 
+#EXIT
+Direction north~
+ToRoom    24839
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24839
+Name     The Waterfall (!!)~
+Sector   water_swim~
+Flags    nomob indoors~
+Desc     Uh-oh.  Time to act quick.  Just to your north, you hear the telltale roar of 
 water falling into a lower pool.  And from the sound of it, that pool is 
 quite a ways away.  Frantically looking around for a way out of this, you spy 
 a few icicles above you.  Maybe that's your ticket out of this mess.  It 
 probably would be a good idea to grab one before you go over the falls north.
 ~
-0 12 6
-D0
-If you go this way, death is assured.  The fall is quite far.
+#EXIT
+Direction north~
+ToRoom    24858
+Desc      If you go this way, death is assured.  The fall is quite far.
 ~
-~
-0 -1 24858
-D4
-~
-~
-0 -1 24859
-S
-#24840
-Lost in the barren wasteland~
-Your throat constricts involuntarily as a huge wave of thirst overwhelms 
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24859
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24840
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     Your throat constricts involuntarily as a huge wave of thirst overwhelms 
 you.  It doesn't look like there's any way out of this godforsaken place.  
 You promise yourself that if you ever see a painting of a wasteland, you'll 
 stay the hell away from it.
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24841
-D3
-~
-~
-0 -1 24840
-S
-#24841
-Lost in the barren wasteland~
-The lack of moisture in your throat fits nicely with the look of this place.  
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24841
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24841
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     The lack of moisture in your throat fits nicely with the look of this place.  
 You're beginning to wonder if there is a way out of this place, or if the 
 gods have cursed you to a slow, agonizing death.
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24842
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24842
-Lost in the barren wasteland~
-You can feel the heat of the sun overhead beating down on your already burned 
+#EXIT
+Direction north~
+ToRoom    24842
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24842
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     You can feel the heat of the sun overhead beating down on your already burned 
 skin.  What a way to go.  There's not even anyone, anyTHING around to notice 
 you expire.  You thought your death would bring more fanfare than this.
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24843
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24843
-Lost in the barren wasteland~
-*pant* *pant* This is not good.  Although you feel like you're making 
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24843
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24843
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     *pant* *pant* This is not good.  Although you feel like you're making 
 progress in this accursed place, you still don't see any change in 
 atmosphere.  That could be what is causing you to panic.  Or perhaps it's 
 because you can feel your brain frying.
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24844
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24844
-Lost in the barren wasteland~
-You whistle a little tune that has no melody to yourself as you trudge 
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24844
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24844
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     You whistle a little tune that has no melody to yourself as you trudge 
 further along in this place.  Relief seems close at hand, but not by much.  
 Your grip on sanity is starting to loosen.  Time to leave.  Now.
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24845
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24845
-Lost in the barren wasteland~
-Your heart skips a beat as you see a huge pond in the distance.  You run 
+#EXIT
+Direction north~
+ToRoom    24845
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24845
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    norecall nosummon noastral~
+Desc     Your heart skips a beat as you see a huge pond in the distance.  You run 
 towards it, without caring what happens to you and your equipment.  You reach 
 the shore and dive in...
  
 Only to land headfirst on more of the cracked, dry, hard ground you've been 
 destroying your footgear on for the last hour.  *groan*
 ~
-0 3153920 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24846
-D3
-~
-~
-0 -1 24840
-S
-#24846
-Lost in the barren wasteland~
-Perhaps that dog over there can tell you how to get out of here.  Or maybe 
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24846
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24846
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    nomob nosummon noastral~
+Desc     Perhaps that dog over there can tell you how to get out of here.  Or maybe 
 that purple zorgflatz to your left.  Wait a minute--what's a zorgflatz?  
 Dimly you realize that to stay in this hell means a fate worse than death.  
 Insanity.  This may be your last hope of escape.
 ~
-0 3145732 10
-D0
-~
-~
-0 -1 24840
-D1
-~
-~
-0 -1 24847
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24847
-Lost in the barren wasteland~
-Doo de doo de doo de doo...la de da de da...you've never been so happy.  The 
+#EXIT
+Direction north~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24847
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24847
+Name     Lost in the barren wasteland~
+Sector   desert~
+Flags    nomob norecall nosummon noastral~
+Desc     Doo de doo de doo de doo...la de da de da...you've never been so happy.  The 
 pack of purple zorgflatzes that guards your dreams is right on your tail, but 
 you're happy, happy, happy!!  (You're also on the edge of insanity.  Be 
 careful)
 ~
-0 3153924 10
-D0
-~
-~
-0 -1 24848
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-S
-#24848
-The Edge of the Barren Wasteland~
-By all the gods!  It's the edge of this accursed, blasted land!  Yippee!!  
+#EXIT
+Direction north~
+ToRoom    24848
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24848
+Name     The Edge of the Barren Wasteland~
+Sector   desert~
+Flags    nomob norecall nosummon noastral~
+Desc     By all the gods!  It's the edge of this accursed, blasted land!  Yippee!!  
 Yeehaa!  Alri--uh-oh.  Your elation evaporates in the blink of an eye, 
 quickly replaced by dread, as you look more closely at the pile of white 
 powder right next to you.  Sniffing carefully, you discover that it is 
 powdered bone!  What could have crushed THIS many bones, into THIS fine a 
 substance.  You have a sick feeling you might just find out.
 ~
-0 3153924 10
-D0
-~
-~
-0 -1 24803
-D1
-~
-~
-0 -1 24840
-D2
-~
-~
-0 -1 24840
-D3
-~
-~
-0 -1 24840
-R M 0 24821 1 24848
-S
-#24849
-Welmar's Left Knee~
-The old king's knee is pretty bony, but there is a good deal of muscle 
+#EXIT
+Direction north~
+ToRoom    24803
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24840
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24840
+#ENDEXIT
+
+Reset M 0 24821 1 24848
+#ENDROOM
+
+#ROOM
+Vnum     24849
+Name     Welmar's Left Knee~
+Sector   city~
+Flags    indoors~
+Desc     The old king's knee is pretty bony, but there is a good deal of muscle 
 beneath.  The old codger has, after all, seen his share of adventuring.  But 
 these knees creak from arthritis when they move.  Doesn't look like his 
 majesty will be doing any strenuous activity today.
 ~
-0 8 1
-D3
-~
-~
-0 -1 24850
-D5
-~
-~
-0 -1 24818
-S
-#24850
-Welmar's Lower Torso~
-Now that you're here, you realize you don't feel like spending too much time 
+#EXIT
+Direction west~
+ToRoom    24850
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24818
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24850
+Name     Welmar's Lower Torso~
+Sector   city~
+Flags    indoors~
+Desc     Now that you're here, you realize you don't feel like spending too much time 
 near the waist of a seventy-year-old man.  Ugh.  Welmar doesn't have a 
 queen.  You wonder how the old man can keep such a sunny outlook on life 
 without any female companionship.  Or maybe that's what the guards are for...
 ~
-0 8 1
-D1
-~
-~
-0 -1 24849
-D3
-~
-~
-0 -1 24851
-D4
-~
-~
-0 -1 24853
-S
-#24851
-Welmar's Right Knee~
-His majesty's right knee is covered by his opulent robe, but if it's like the 
+#EXIT
+Direction east~
+ToRoom    24849
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24851
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24853
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24851
+Name     Welmar's Right Knee~
+Sector   city~
+Flags    indoors~
+Desc     His majesty's right knee is covered by his opulent robe, but if it's like the 
 rest of his skin, it's probably pretty pale and splotchy.  Why his subjects 
 choose to follow the old man is a mystery to you.  He doesn't look very 
 authoritative from down here.
 ~
-0 8 1
-D1
-~
-~
-0 -1 24850
-D5
-~
-~
-0 -1 24852
-S
-#24852
-Welmar's Right Foot~
-King Welmar's right foot is as exquisitely pedicured as his left.  It looks 
+#EXIT
+Direction east~
+ToRoom    24850
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24852
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24852
+Name     Welmar's Right Foot~
+Sector   city~
+Flags    indoors~
+Desc     King Welmar's right foot is as exquisitely pedicured as his left.  It looks 
 as though he hasn't made any pilgrimages recently.  Or ever will.  Welmar 
 gets carried wherever he goes now.  Ah, the life of a king.  Sounds pretty 
 boring.
 ~
-0 8 1
-D4
-~
-~
-0 -1 24851
-R M 0 24815 1 24852
-S
-#24853
-Welmar's Chest~
-Despite the years of inactivity, Welmar's chest remains finely muscled.  
+#EXIT
+Direction up~
+ToRoom    24851
+#ENDEXIT
+
+Reset M 0 24815 1 24852
+#ENDROOM
+
+#ROOM
+Vnum     24853
+Name     Welmar's Chest~
+Sector   city~
+Flags    indoors~
+Desc     Despite the years of inactivity, Welmar's chest remains finely muscled.  
 However, it is not the same type of muscle that he used to possess.  Welmar 
 used to make the ladies swoon with his displays of strength.  Now his only 
 strength comes from the inside.  You begin to understand why he is respected.
 ~
-0 8 1
-D1
-~
-~
-0 -1 24855
-D3
-~
-~
-0 -1 24856
-D4
-~
-~
-0 -1 24854
-D5
-~
-~
-0 -1 24850
-S
-#24854
-Welmar's Head~
-Welmar's white beard chokes you as you walk around on his face.  his 
+#EXIT
+Direction east~
+ToRoom    24855
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24856
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24854
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24850
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24854
+Name     Welmar's Head~
+Sector   city~
+Flags    indoors~
+Desc     Welmar's white beard chokes you as you walk around on his face.  his 
 aristocratic nose is a hundred times as intimidating at this size.  You could 
 probably fetch a pretty hefty price for that nose.  Assuming, of course, his 
 Majesty would part with it.  You could always...convince him.
 ~
-0 8 1
-D5
-~
-~
-0 -1 24853
-R M 0 24818 1 24854
-R M 0 24819 1 24854
-R M 0 24820 1 24854
-S
-#24855
-Welmar's Left Arm~
-The old man's arm still has a few corded muscles deep beneath the skin, 
+#EXIT
+Direction down~
+ToRoom    24853
+#ENDEXIT
+
+Reset M 0 24818 1 24854
+Reset M 0 24819 1 24854
+Reset M 0 24820 1 24854
+#ENDROOM
+
+#ROOM
+Vnum     24855
+Name     Welmar's Left Arm~
+Sector   city~
+Flags    indoors~
+Desc     The old man's arm still has a few corded muscles deep beneath the skin, 
 although they have long since atrophied due to inactivity.  You feel 
 relatively certain you could put him down in an arm-wrestling contest.
 ~
-0 8 1
-D3
-~
-~
-0 -1 24853
-R M 0 24817 1 24855
-S
-#24856
-Welmar's Right Arm~
-This arm doesn't get much activity nowadays.  Welmar only uses it to 
+#EXIT
+Direction west~
+ToRoom    24853
+#ENDEXIT
+
+Reset M 0 24817 1 24855
+#ENDROOM
+
+#ROOM
+Vnum     24856
+Name     Welmar's Right Arm~
+Sector   city~
+Flags    indoors~
+Desc     This arm doesn't get much activity nowadays.  Welmar only uses it to 
 gesticulate feebly with his golden sceptre.  Of course, doing anything with a 
 sceptre THAT big would require you to either be this Welmar's size, or to get 
 a few thousand giant strength spells cast on you.  Neither seems to be an 
 option.
 ~
-0 8 1
-D1
-~
-~
-0 -1 24853
-R M 0 24816 1 24856
-S
-#24857
-The Head of the Table~
-Several exotic-looking glasses line the table here, all of them empty.  One 
+#EXIT
+Direction east~
+ToRoom    24853
+#ENDEXIT
+
+Reset M 0 24816 1 24856
+#ENDROOM
+
+#ROOM
+Vnum     24857
+Name     The Head of the Table~
+Sector   field~
+Flags    nomob~
+Desc     Several exotic-looking glasses line the table here, all of them empty.  One 
 of them has a familiar reddish tinge in the bottom.  It looks like...blood!  
 What kind of fiend would drink a glass of blood?  Looking at a half-eaten 
 piece of bread on the table, you realize exactly what kind of fiend would.  
 The two small holes in the top of the bread gives it away.  Vampire.
 ~
-0 4 2
-D2
-~
-~
-0 -1 24820
-R M 0 24825 1 24857
-  R E 1 24819 1 17
-S
-#24858
-Over the Falls~
-Your failure to find a handhold on the icicles also means the failure of all 
+#EXIT
+Direction south~
+ToRoom    24820
+#ENDEXIT
+
+Reset M 0 24825 1 24857
+  Reset E 1 24819 1 17
+#ENDROOM
+
+#ROOM
+Vnum     24858
+Name     Over the Falls~
+Sector   city~
+Flags    nomob~
+Desc     Your failure to find a handhold on the icicles also means the failure of all 
 your life functions.  You are thrown over the side...
  
  
@@ -3439,63 +4989,83 @@ your life functions.  You are thrown over the side...
  
 And land on the rocks below.
 ~
-0 4 1
-> entry_prog 100~
-if isaffected($n) == Flying
+#MUDPROG
+Progtype  entry_prog~
+Arglist   100~
+Comlist   if isaffected($n) == Flying
 else
 mpdamage $n 85
 endif
 ~
-|
-S
-#24859
-Hugging the Icicle~
-Your lungs eagerly gulp in air as you cling for dear life to the icicle.
+#ENDPROG
+
+#ENDROOM
+
+#ROOM
+Vnum     24859
+Name     Hugging the Icicle~
+Sector   mountain~
+Flags    nomob indoors~
+Desc     Your lungs eagerly gulp in air as you cling for dear life to the icicle.
 Thankfully, your almost numb hands remembered how to grip, although the grip 
 is a tenuous one.  It looks like you can swing yourself down to the shore of 
 the raging river.
 ~
-0 12 5
-D5
-~
-~
-0 -1 24860
-S
-#24860
-On the Riverbank~
-You land on the solid ice painfully.  Your ordeal with Evermelt is at an end, 
+#EXIT
+Direction down~
+ToRoom    24860
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24860
+Name     On the Riverbank~
+Sector   field~
+Flags    nomob indoors~
+Desc     You land on the solid ice painfully.  Your ordeal with Evermelt is at an end, 
 finally.  However, another ordeal appears to be awaiting you to the west.  
 The rhythmic breathing you hear from that direction easily drowns out the 
 roaring of the waterfall behind you.  Torn between self-preservation and 
 curiousity, you stand indecisively.
 ~
-0 12 2
-D3
-~
-~
-0 -1 24861
-S
-#24861
-The Tunnel to...?~
-All is silent now except the heavy breathing coming from the north.  You can 
+#EXIT
+Direction west~
+ToRoom    24861
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24861
+Name     The Tunnel to...?~
+Sector   field~
+Flags    nomob indoors tunnel~
+Desc     All is silent now except the heavy breathing coming from the north.  You can 
 see light glinting off some material in the large cavern, but the rest of
 the room is obscured.  Your legs feel frozen in place, but the sound from the 
 north is so intriguing...
 ~
-0 268 2
-D0
-To the north is Icingdeath's Lair...are you sure you want to go that way?
+#EXIT
+Direction north~
+ToRoom    24862
+Desc      To the north is Icingdeath's Lair...are you sure you want to go that way?
 ~
-~
-0 -1 24862
-D1
-~
-~
-0 -1 24860
-S
-#24862
-The Lair of Ingeloakastimizilian~
-The treasure all around you is utterly astounding.  Not the amount of it, of 
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24860
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24862
+Name     The Lair of Ingeloakastimizilian~
+Sector   city~
+Flags    nomob indoors~
+Desc     The treasure all around you is utterly astounding.  Not the amount of it, of 
 course.  You have seen more treasure in other lairs.  It's the way the 
 coins, gems, weapons, and other fascinating items are frozen to the floor.  
 Looking around, you see other things frozen to the floor.  A human, dressed 
@@ -3504,47 +5074,57 @@ forever locked in his throat.  The entire floor is covered with some form of
 treasure or life, or what USED to be life before Ingeloakastimizilian 
 destroyed it.
 ~
-0 12 1
-D2
-~
-~
-0 -1 24861
-D4
-~
-~
-0 -1 24863
-R M 0 24828 1 24862
-  R E 1 24824 1 5
-  R E 1 24825 1 7
-  R E 1 24826 1 10
-  R E 1 24827 1 19
-  R E 1 24858 1 16
-  R E 1 24857 1 17
-  R E 1 24828 1 9
-  R E 1 24856 1 8
-  R E 1 24829 1 6
-  R E 1 24830 1 13
-S
-#24863
-On top of the Reghed Glacier~
-Now what?  You're on top of the biggest glacier in all the Realms, with no 
+#EXIT
+Direction south~
+ToRoom    24861
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24863
+#ENDEXIT
+
+Reset M 0 24828 1 24862
+  Reset E 1 24824 1 5
+  Reset E 1 24825 1 7
+  Reset E 1 24826 1 10
+  Reset E 1 24827 1 19
+  Reset E 1 24858 1 16
+  Reset E 1 24857 1 17
+  Reset E 1 24828 1 9
+  Reset E 1 24856 1 8
+  Reset E 1 24829 1 6
+  Reset E 1 24830 1 13
+#ENDROOM
+
+#ROOM
+Vnum     24863
+Name     On top of the Reghed Glacier~
+Sector   mountain~
+Flags    nomob~
+Desc     Now what?  You're on top of the biggest glacier in all the Realms, with no 
 way to go but down, back into Icingdeath's lair.  As you sink into 
 despondency, you hear a low hum above you.  You look up and see...the 
 portal!  You can make it back to the Art Gallery!
 ~
-0 4 5
-D4
-~
-~
-0 -1 24805
-D5
-~
-~
-0 -1 24862
-S
-#24864
-The Grave~
-As you step down into the soft dirt, a chill passes through your bones.  You 
+#EXIT
+Direction up~
+ToRoom    24805
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24862
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24864
+Name     The Grave~
+Sector   field~
+Flags    nomob tunnel~
+Desc     As you step down into the soft dirt, a chill passes through your bones.  You 
 look around for the source of the feeling, everything goes dark.  The earth 
 has sealed above you!  The only sound now is your breathing, which is becoming
 more and more rapid.  Trying to collect your thoughts, you notice something 
@@ -3552,35 +5132,46 @@ unusual about this pit.  There are cobwebs on every surface around here, almost
 as if this grave has been closed for years.  The only exception is the south 
 wall, which is completely clean.
 ~
-0 260 2
-D2
-~
-wall dirt~
-1033 -1 24865
-S
-#24865
-Lair of Aram-Dol~
-You now realize why this area was perfectly clean.  The walls in this room, 
+#EXIT
+Direction south~
+ToRoom    24865
+Keywords  wall dirt~
+Flags     isdoor secret nopassdoor~
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24865
+Name     Lair of Aram-Dol~
+Sector   field~
+Flags    nomob tunnel~
+Desc     You now realize why this area was perfectly clean.  The walls in this room, 
 as well as the floor, are solid stone.  There are corpses strewn about the 
 room, most with a horrified look on their face.  Whatever killed them must 
 have given them one hell of a scare.  You've heard tales of underground stone 
 lairs, and combined with the many corpses strewn about, everything starts to 
 fall into place.  This is the lair of a lich.
 ~
-0 260 2
-D0
-~
-~
-0 -1 24864
-D4
-~
-~
-0 -1 24813
-R M 0 24829 1 24865
-S
-#24866
-Death~
-..Everything begins to fade to black.
+#EXIT
+Direction north~
+ToRoom    24864
+#ENDEXIT
+
+#EXIT
+Direction up~
+ToRoom    24813
+#ENDEXIT
+
+Reset M 0 24829 1 24865
+#ENDROOM
+
+#ROOM
+Vnum     24866
+Name     Death~
+Sector   city~
+Flags    nomob indoors~
+Desc     ..Everything begins to fade to black.
  
 You feel yourself leaving your body... rising up into the air, you feel
 more free than you have ever felt before...
@@ -3589,439 +5180,493 @@ However, before your deity comes to collect your soul, you feel a strange
 pulling sensation as strange and colorful mists swirl around you...
  
 ~
-0 12 1
-S
-#24867
-Ye Olde Meat Shoppe~
-Entering this store, you're reminded of how long it has been since you've had 
+#ENDROOM
+
+#ROOM
+Vnum     24867
+Name     Ye Olde Meat Shoppe~
+Sector   city~
+Flags    nomob~
+Desc     Entering this store, you're reminded of how long it has been since you've had 
 a good steak.  The cuts of meat hanging from hooks in the back remind you, 
 however.  You can see large sides of beef, medium-sized veal cutlets, and a 
 few other tasty delectables.
 ~
-0 4 1
-D1
-~
-~
-0 -1 24868
-D3
-~
-~
-0 -1 24822
-R M 0 24851 1 24867
-  R G 1 24831 1
-  R G 1 24832 1
-  R G 1 24833 1
-  R G 1 24834 1
-  R G 1 24835 1
-  R G 1 24836 1
-  R G 1 24837 1
-  R G 1 24838 1
-  R G 1 24839 1
-  R G 1 24840 1
-  R G 1 24841 1
-  R G 1 24842 1
-  R G 1 24843 1
-S
-#24868
-Fruits R Us~
-Every fruit ever to grace a tree in all the Realms is displayed here in front
+#EXIT
+Direction east~
+ToRoom    24868
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24822
+#ENDEXIT
+
+Reset M 0 24851 1 24867
+  Reset G 1 24831 1
+  Reset G 1 24832 1
+  Reset G 1 24833 1
+  Reset G 1 24834 1
+  Reset G 1 24835 1
+  Reset G 1 24836 1
+  Reset G 1 24837 1
+  Reset G 1 24838 1
+  Reset G 1 24839 1
+  Reset G 1 24840 1
+  Reset G 1 24841 1
+  Reset G 1 24842 1
+  Reset G 1 24843 1
+#ENDROOM
+
+#ROOM
+Vnum     24868
+Name     Fruits R Us~
+Sector   city~
+Flags    nomob~
+Desc     Every fruit ever to grace a tree in all the Realms is displayed here in front
 of you.  Apples, oranges, kiwis, melons, everything.  Vegetables completely 
 occupy another container next to the fruit.  This one is filled with corn, 
 zucchini, and other healthy foods.
 ~
-0 4 1
-D1
-~
-~
-0 -1 24869
-D3
-~
-~
-0 -1 24867
-R M 0 24854 1 24868
-  R G 1 24872 1
-  R G 1 24871 1
-  R G 1 24870 1
-  R G 1 24869 1
-  R G 1 24868 1
-  R G 1 24867 1
-  R G 1 24866 1
-  R G 1 24865 1
-  R G 1 24864 1
-  R G 1 24863 1
-  R G 1 24862 1
-  R G 1 24861 1
-  R G 1 24873 1
-  R G 1 24860 1
-S
-#24869
-Goodbody Dairy~
-You vow to never even think about anything bovine once leaving this place.  
+#EXIT
+Direction east~
+ToRoom    24869
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24867
+#ENDEXIT
+
+Reset M 0 24854 1 24868
+  Reset G 1 24872 1
+  Reset G 1 24871 1
+  Reset G 1 24870 1
+  Reset G 1 24869 1
+  Reset G 1 24868 1
+  Reset G 1 24867 1
+  Reset G 1 24866 1
+  Reset G 1 24865 1
+  Reset G 1 24864 1
+  Reset G 1 24863 1
+  Reset G 1 24862 1
+  Reset G 1 24861 1
+  Reset G 1 24873 1
+  Reset G 1 24860 1
+#ENDROOM
+
+#ROOM
+Vnum     24869
+Name     Goodbody Dairy~
+Sector   city~
+Flags    nomob~
+Desc     You vow to never even think about anything bovine once leaving this place.  
 Every milk and cheese product you can imagine lies here, carefully kept cool 
 by a bluish-white glow.  A sign says, "ALL PRODUCTS KEPT REFRIGERATED".  
 You'll have to ask the local scholar what ree-frigg-er-ated means sometime.  
 It sounds dangerous.  But the food is so enticing...
 ~
-0 4 1
-D3
-~
-~
-0 -1 24868
-R M 0 24852 1 24869
-  R G 1 24874 1
-  R G 1 24875 1
-  R G 1 24876 1
-  R G 1 24877 1
-  R G 1 24878 1
-  R G 1 24879 1
-  R G 1 24880 1
-  R G 1 24881 1
-  R G 1 24882 1
-  R G 1 24883 1
-S
-#24870
-The Arena~
-As you step near the two humanoids fighting in this section of the arena, 
+#EXIT
+Direction west~
+ToRoom    24868
+#ENDEXIT
+
+Reset M 0 24852 1 24869
+  Reset G 1 24874 1
+  Reset G 1 24875 1
+  Reset G 1 24876 1
+  Reset G 1 24877 1
+  Reset G 1 24878 1
+  Reset G 1 24879 1
+  Reset G 1 24880 1
+  Reset G 1 24881 1
+  Reset G 1 24882 1
+  Reset G 1 24883 1
+#ENDROOM
+
+#ROOM
+Vnum     24870
+Name     The Arena~
+Sector   city~
+Desc     As you step near the two humanoids fighting in this section of the arena, 
 they both grow limp and collapse, their eyes rolling back in their heads.  By 
 the time you reach them, they are both quite dead.  Looking up in the stands, 
 you see one of the mind flayers gurgle something to his companion, and they 
 both disappear suddenly.
 ~
-0 0 1
-D3
-~
-~
-0 -1 24819
-R O 0 24889 1 24870
-  R P 0 24885 1 24889
-R O 0 24890 1 24870
-  R P 0 24885 1 24890
-S
-#24871
-The Arena~
-Before you can get near the lizardman and warrior, they fall down in a heap 
+#EXIT
+Direction west~
+ToRoom    24819
+#ENDEXIT
+
+Reset O 0 24889 1 24870
+  Reset P 0 24885 1 24889
+Reset O 0 24890 1 24870
+  Reset P 0 24885 1 24890
+#ENDROOM
+
+#ROOM
+Vnum     24871
+Name     The Arena~
+Sector   city~
+Desc     Before you can get near the lizardman and warrior, they fall down in a heap 
 together, both quite dead.  They didn't kill each other, so what could have 
 possibly killed them?  Hmm.  This is unlike anything you've ever seen 
 before.  They don't look like they had any history of coronary trouble...how
 utterly puzzling.
 ~
-0 0 1
-D1
-~
-~
-0 -1 24819
-R O 0 24890 1 24871
-  R P 0 24885 1 24890
-R O 0 24889 1 24871
-  R P 0 24885 1 24889
-S
-#24872
-In the Stands~
-As you climb up into the seating section, what few remaining illithids you 
+#EXIT
+Direction east~
+ToRoom    24819
+#ENDEXIT
+
+Reset O 0 24890 1 24871
+  Reset P 0 24885 1 24890
+Reset O 0 24889 1 24871
+  Reset P 0 24885 1 24889
+#ENDROOM
+
+#ROOM
+Vnum     24872
+Name     In the Stands~
+Sector   city~
+Desc     As you climb up into the seating section, what few remaining illithids you 
 could see disappear suddenly.  Ignoring the yawning portal above you (which 
 leads back to the gallery, incidentally), you look around for an explanation 
 as to where the brain feeders could have gone.
 ~
-0 0 1
-D4
-~
-~
-0 -1 24811
-D5
-~
-~
-0 -1 24819
-R M 0 24837 3 24872
-  R E 1 24892 1 12
-R M 0 24837 3 24872
-  R E 1 24892 1 12
-R M 0 24837 3 24872
-  R E 1 24892 1 12
-S
-#24873
-Floating in a void~
-~
-0 4 1
-S
-#24874
-Floating in a void~
-~
-0 4 1
-S
-#24875
-Floating in a void~
-~
-0 4 1
-S
-#24880
-Floating in a void~
-~
-0 1073741828 1
-S
-#24884
-Floating in a void~
-~
-0 1073741828 1
-S
-#24885
-Floating in a void~
-~
-0 1073741828 1
-S
-#24886
-Floating in a void~
-~
-0 4 1
-S
-#24891
-Tex's Room~
-Nothing too remarkable about this room, other than a stolen lounge table and 
+#EXIT
+Direction up~
+ToRoom    24811
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24819
+#ENDEXIT
+
+Reset M 0 24837 3 24872
+  Reset E 1 24892 1 12
+Reset M 0 24837 3 24872
+  Reset E 1 24892 1 12
+Reset M 0 24837 3 24872
+  Reset E 1 24892 1 12
+#ENDROOM
+
+#ROOM
+Vnum     24873
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24874
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24875
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24880
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24884
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24885
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24886
+Name     Floating in a void~
+Sector   city~
+Flags    nomob~
+#ENDROOM
+
+#ROOM
+Vnum     24891
+Name     Tex's Room~
+Sector   city~
+Flags    indoors noastral~
+Desc     Nothing too remarkable about this room, other than a stolen lounge table and 
 an interesting poster.  perhaps that's why Tex is ALWAYS in Grant and Seguin's
 room.
 ~
-0 2097160 1
-D3
-~
-~
-0 -1 24893
-E
-poster~
-The poster has five women with flags on their bikini tops.  It says on the
+#EXIT
+Direction west~
+ToRoom    24893
+#ENDEXIT
+
+#EXDESC
+ExDescKey    poster~
+ExDesc       The poster has five women with flags on their bikini tops.  It says on the
 bottom, "WORLD CUPS".  How...liberating.
 ~
-S
-#24892
-Aaron and Rob's room~
-So the rumors are true.  Aaron's side of the room IS always messy.  And today 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24892
+Name     Aaron and Rob's room~
+Sector   city~
+Flags    indoors noastral~
+Desc     So the rumors are true.  Aaron's side of the room IS always messy.  And today 
 is no exception.  Aaron's side is covered with clothes and papers, and the 
 everpresent brown beanbag chair.  Rob's side is spotless, as usual, except for
 a broken bottle of Snapple on the floor.  Neither of them are on the MUD, 
 though.  They're not as addicted as the rest of us.
 ~
-0 2097160 1
-D1
-~
-~
-0 -1 24893
-S
-#24893
-Outside 305 and 310~
-You stand between two open doorways.  They both lead to triples.  Ordinarily, 
+#EXIT
+Direction east~
+ToRoom    24893
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24893
+Name     Outside 305 and 310~
+Sector   city~
+Flags    indoors noastral~
+Desc     You stand between two open doorways.  They both lead to triples.  Ordinarily, 
 it would be quite cramped.  But Rob and Aaron did a pretty good job of making 
 Huguley move, so they've only got the two of them in there.  Plus, Tex and his
 roommate managed to only ahve the two of them in there.  Lucky bastards.
 ~
-0 2097160 1
-D1
-~
-~
-0 -1 24891
-D3
-~
-~
-0 -1 24892
-S
-#24894
-Still in the hallway~
-To the west is Vu's room.  He's gone through four roommates already, and he 
+#EXIT
+Direction east~
+ToRoom    24891
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24892
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24894
+Name     Still in the hallway~
+Sector   city~
+Flags    indoors noastral~
+Desc     To the west is Vu's room.  He's gone through four roommates already, and he 
 doesn't appear to mind.  He's got quite a setup behind that door.  The other
 three doors are a mystery, though.  No idea who lives in them.
 ~
-0 2097160 1
-D0
-~
-~
-0 -1 24895
-D1
-~
-'pair of doors'~
-1063 -1 24894
-D2
-~
-~
-0 -1 24893
-D3
-~
-'pair of doors'~
-1063 -1 24894
-S
-#24895
-Walking down the hallway~
-You are outside four locked rooms.  One is blaring Stone Temple Pilots.  The 
+#EXIT
+Direction north~
+ToRoom    24895
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24894
+Keywords  'pair of doors'~
+Flags     isdoor closed locked pickproof nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24893
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24894
+Keywords  'pair of doors'~
+Flags     isdoor closed locked pickproof nopassdoor~
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24895
+Name     Walking down the hallway~
+Sector   city~
+Flags    indoors noastral~
+Desc     You are outside four locked rooms.  One is blaring Stone Temple Pilots.  The 
 same Stone Temple Pilots song they've been playing the entire year.  The room 
 next to that one on the west wall is the R.A.'s room.  No one has any idea 
 who lives through the two doors on the east wall.  The hallway continues to 
 the south, or back to outside MUD Central to the north.
 ~
-0 2097160 1
-D0
-~
-~
-0 -1 24898
-D1
-~
-'pair of doors'~
-1063 -1 24894
-D2
-~
-~
-0 -1 24894
-D3
-~
-'pair of doors'~
-1063 -1 24894
-S
-#24896
-223 Rasche Hall~
-This is Scott and Matt's room.  You wouldn't know who Matt is.  He's never on 
+#EXIT
+Direction north~
+ToRoom    24898
+#ENDEXIT
+
+#EXIT
+Direction east~
+ToRoom    24894
+Keywords  'pair of doors'~
+Flags     isdoor closed locked pickproof nopassdoor~
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24894
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24894
+Keywords  'pair of doors'~
+Flags     isdoor closed locked pickproof nopassdoor~
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24896
+Name     223 Rasche Hall~
+Sector   city~
+Flags    indoors noastral~
+Desc     This is Scott and Matt's room.  You wouldn't know who Matt is.  He's never on 
 the MUD.  There is a big computer under Scott's loft, the most powerful 
 computer that's used for MUDding among the circle of friends.  The room is 
 spotless, since any of the commanding officers in Echo Company could burst in 
 for inspection at any time.  Sounds like an exciting life.
 ~
-0 2097160 1
-D4
-~
-~
-0 -1 24899
-S
-#24897
-Forrester and Cox's Room~
-Quite an interesting design.  A closet door stretches between the two lofts 
+#EXIT
+Direction up~
+ToRoom    24899
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24897
+Name     Forrester and Cox's Room~
+Sector   city~
+Flags    indoors noastral~
+Desc     Quite an interesting design.  A closet door stretches between the two lofts 
 in this poorly lit room.  A stereo on said closet door is playing 96.3 ROV FM.
 Cox's computer is on, of course (never, NEVER turn off a UNIX computer), 
 while Forrester's computer has the Warp screen saver on.  There are several 
 boxes stapled to Cox's loft.
 ~
-0 2097160 1
-D3
-You can leave this messy-ass room and go out into the hall to your west.
+#EXIT
+Direction west~
+ToRoom    24898
+Desc      You can leave this messy-ass room and go out into the hall to your west.
 ~
-~
-0 -1 24898
-E
-computer computers~
-Cox has four windows open on the screen.  The joy of owning an X Windows 
+#ENDEXIT
+
+#EXDESC
+ExDescKey    computer computers~
+ExDesc       Cox has four windows open on the screen.  The joy of owning an X Windows 
 system.  You wonder how he can keep track of everything.  Forrester's screen 
 saver has a password, though.  Good luck getting in.
 ~
-E
-box boxes loft~
-Cox's loft has food boxes stapled to it!  What a weirdo!
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    box boxes loft~
+ExDesc       Cox's loft has food boxes stapled to it!  What a weirdo!
 ~
-S
-#24898
-The Third Floor Miles Hallway~
-To your west is Grant and Seguin's room, and east is Forrester and Cox's 
+#ENDEXDESC
+
+#ENDROOM
+
+#ROOM
+Vnum     24898
+Name     The Third Floor Miles Hallway~
+Sector   city~
+Flags    indoors noastral~
+Desc     To your west is Grant and Seguin's room, and east is Forrester and Cox's 
 room.  The other two doors here are closed and locked, though.  Brett, 
 Jeremy, Dave, and the other Jeremy don't take too kindly to visitors. Way down
 the hall to the south are two more open doors.
 ~
-0 2097160 1
-D1
-~
-~
-0 -1 24897
-D2
-~
-~
-0 -1 24895
-D3
-~
-~
-0 -1 24899
-S
-#24899
-Grant and Seguin's Room~
-This is a pretty cool room.  It has two lofts, numerous posters on the wall, 
+#EXIT
+Direction east~
+ToRoom    24897
+#ENDEXIT
+
+#EXIT
+Direction south~
+ToRoom    24895
+#ENDEXIT
+
+#EXIT
+Direction west~
+ToRoom    24899
+#ENDEXIT
+
+#ENDROOM
+
+#ROOM
+Vnum     24899
+Name     Grant and Seguin's Room~
+Sector   city~
+Flags    indoors noastral~
+Desc     This is a pretty cool room.  It has two lofts, numerous posters on the wall, 
 two computers, and one hell of an entertainment center.  Faith No More plays 
 loudly from the four speakers in the room, and a paused game of Final Fantasy 
 III is on the TV.  Care to relax for a bit?
 ~
-0 2097160 1
-D1
-You can leave the twins' room and go out into the hall to the east.
+#EXIT
+Direction east~
+ToRoom    24898
+Desc      You can leave the twins' room and go out into the hall to the east.
 ~
-~
-0 -1 24898
-D5
-~
-~
-0 -1 24896
-E
-loft lofts~
-The lofts are quite different in appearance.  Seguin's is quite sturday and 
+#ENDEXIT
+
+#EXIT
+Direction down~
+ToRoom    24896
+#ENDEXIT
+
+#EXDESC
+ExDescKey    loft lofts~
+ExDesc       The lofts are quite different in appearance.  Seguin's is quite sturday and 
 clean, while Grant's is unmade and wobbly.
 ~
-E
-desk desks~
-Another contrast.  Seguin's is perfectly organized, Grant's is perfectly 
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    desk desks~
+ExDesc       Another contrast.  Seguin's is perfectly organized, Grant's is perfectly 
 messy.  Rather appropriate, actually.
 ~
-E
-tv television~
-Looks like Seguin has finally caught up to Grant in Final Fantasy III.  He's 
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    tv television~
+ExDesc       Looks like Seguin has finally caught up to Grant in Final Fantasy III.  He's 
 at the last fight.  As you watch, the Blitz guy does a Bum Rush on Kefka.
 ~
-E
-computer computers~
-Somehow Grant and Seguin have figured out a way to be on the MUD at the same 
+#ENDEXDESC
+
+#EXDESC
+ExDescKey    computer computers~
+ExDesc       Somehow Grant and Seguin have figured out a way to be on the MUD at the same 
 time.  And, of course, they both are.  Grant is building, while Seguin is 
 bitching about losing another apple of discord.
 ~
-S
-#0
+#ENDEXDESC
 
+#ENDROOM
 
-#SHOPS
- 24801    0  0  0  0  0   120  90         0 23    ; the Art Gallery's curator
- 24830   19 17 26  0  0   120  90         0 23    ; the butcher
- 24831   19 17 26  0  0   120  90         0 23    ; the baker
- 24832   19 17 26  0  0   120  90         0 23    ; the fruit stand vendor
- 24834   19 17 26  0  0   120  90         0 23    ; the dimpled milkmaid
- 24851   19 17 26  0  0   120  90         0 23    ; the butcher
- 24852   19 17 26  0  0   120  90         0 23    ; the dimpled milkmaid
- 24853   19 17 26  0  0   120  90         0 23    ; the baker
- 24854   19 17 26  0  0   120  90         0 23    ; the fruit stand vendor
-0
-
-
-#REPAIRS
-0
-
-
-#SPECIALS
-M  24804 spec_breath_lightning
-M  24814 spec_guard
-M  24815 spec_guard
-M  24820 spec_cast_mage
-M  24821 spec_breath_gas
-M  24823 spec_poison
-M  24825 spec_cast_undead
-M  24828 spec_breath_frost
-M  24829 spec_cast_mage
-M  24830 spec_guard
-M  24831 spec_guard
-M  24832 spec_guard
-M  24834 spec_guard
-M  24845 spec_guard
-M  24846 spec_guard
-M  24847 spec_guard
-M  24848 spec_guard
-M  24850 spec_guard
-M  24851 spec_executioner
-M  24852 spec_executioner
-M  24853 spec_executioner
-M  24854 spec_executioner
-M  24892 spec_guard
-M  24893 spec_guard
-M  24894 spec_guard
-M  24895 spec_guard
-M  24896 spec_guard
-M  24897 spec_guard
-M  24898 spec_guard
-M  24899 spec_guard
-S
-
-
-#$
+#ENDAREA

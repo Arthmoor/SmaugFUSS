@@ -15,92 +15,93 @@ Expbase     1350
 Affected    0
 Resist	 0
 Suscept	 0
+Skill 'aggressive style' 1 60
+Skill 'aid' 16 90
 Skill 'aqua breath' 14 80
 Skill 'armor' 2 90
+Skill 'berserk style' 38 40
 Skill 'bless' 16 95
 Skill 'blindness' 30 90
+Skill 'bludgeons' 1 75
 Skill 'cause critical' 17 95
 Skill 'cause serious' 9 95
 Skill 'charm person' 27 90
 Skill 'chill touch' 5 95
+Skill 'common' 1 99
 Skill 'continual light' 3 90
+Skill 'cook' 1 95
 Skill 'create food' 4 95
 Skill 'create spring' 6 95
 Skill 'create water' 5 95
+Skill 'cuff' 10 90
 Skill 'cure light' 9 75
+Skill 'defensive style' 4 85
 Skill 'detect hidden' 18 95
 Skill 'detect invis' 12 95
 Skill 'detect magic' 8 95
+Skill 'dig' 2 85
+Skill 'disenchant weapon' 27 90
 Skill 'dispel magic' 13 75
+Skill 'dual wield' 17 80
+Skill 'dwarven' 1 99
 Skill 'earthquake' 10 90
+Skill 'elvish' 1 99
 Skill 'enchant weapon' 27 90
 Skill 'energy drain' 14 90
-Skill 'faerie fire' 34 95
-Skill 'fireshield' 40 95
-Skill 'float' 11 95
-Skill 'fly' 24 95
-Skill 'harm' 26 95
-Skill 'helical flow' 42 85
-Skill 'identify' 16 90
-Skill 'inner warmth' 20 90
-Skill 'invis' 12 95
-Skill 'lightning bolt' 10 90
-Skill 'locate object' 25 90
-Skill 'midas touch' 14 95
-Skill 'nostrum' 29 95
-Skill 'pass door' 47 95
-Skill 'poison' 19 90
-Skill 'refresh' 8 85
-Skill 'remove invis' 13 85
-Skill 'sanctuary' 35 95
-Skill 'scorching surge' 28 95
-Skill 'shield' 23 90
-Skill 'shocking grasp' 7 90
-Skill 'sleep' 18 85
-Skill 'spiral blast' 46 95
-Skill 'stone skin' 37 95
-Skill 'weaken' 7 80
-Skill 'word of recall' 24 95
-Skill 'aggressive style' 1 60
-Skill 'aid' 16 90
-Skill 'berserk style' 38 40
-Skill 'cook' 1 95
-Skill 'cuff' 10 90
-Skill 'defensive style' 4 85
-Skill 'dig' 2 85
-Skill 'dual wield' 17 80
 Skill 'enhanced damage' 22 75
 Skill 'evasive style' 1 90
-Skill 'fourth attack' 41 95
-Skill 'hide' 17 90
-Skill 'kick' 4 90
-Skill 'meditate' 12 95
-Skill 'mount' 6 95
-Skill 'parry' 22 95
-Skill 'rescue' 14 50
-Skill 'scan' 3 85
-Skill 'search' 10 80
-Skill 'second attack' 15 33
-Skill 'sneak' 15 90
-Skill 'standard style' 1 70
-Skill 'strike' 15 90
-Skill 'third attack' 31 66
-Skill 'bludgeons' 1 75
+Skill 'faerie fire' 34 95
+Skill 'fireshield' 40 95
 Skill 'flexible arms' 1 95
-Skill 'long blades' 1 45
-Skill 'pugilism' 1 90
-Skill 'short blades' 1 85
-Skill 'talonous arms' 1 40
-Skill 'common' 1 99
-Skill 'dwarven' 1 99
-Skill 'elvish' 1 99
+Skill 'float' 11 95
+Skill 'fly' 24 95
+Skill 'fourth attack' 41 95
 Skill 'gith' 1 99
 Skill 'goblin' 1 99
 Skill 'halfling' 1 99
+Skill 'harm' 26 95
+Skill 'helical flow' 42 85
+Skill 'hide' 17 90
+Skill 'identify' 16 90
+Skill 'inner warmth' 20 90
+Skill 'invis' 12 95
+Skill 'kick' 4 90
+Skill 'lightning bolt' 10 90
+Skill 'locate object' 25 90
+Skill 'long blades' 1 45
+Skill 'meditate' 12 95
+Skill 'midas touch' 14 95
+Skill 'mount' 6 95
+Skill 'nostrum' 29 95
 Skill 'ogre' 1 99
 Skill 'orcish' 1 99
+Skill 'parry' 22 95
+Skill 'pass door' 47 95
 Skill 'pixie' 1 99
+Skill 'poison' 19 90
+Skill 'pugilism' 1 90
+Skill 'refresh' 8 85
+Skill 'remove invis' 13 85
+Skill 'rescue' 14 50
+Skill 'sanctuary' 35 95
+Skill 'scan' 3 85
+Skill 'scorching surge' 28 95
+Skill 'search' 10 80
+Skill 'second attack' 15 33
+Skill 'shield' 23 90
+Skill 'shocking grasp' 7 90
+Skill 'short blades' 1 85
+Skill 'sleep' 18 85
+Skill 'sneak' 15 90
+Skill 'spiral blast' 46 95
+Skill 'standard style' 1 70
+Skill 'stone skin' 37 95
+Skill 'strike' 15 90
+Skill 'talonous arms' 1 40
+Skill 'third attack' 31 66
 Skill 'trollese' 1 99
+Skill 'weaken' 7 80
+Skill 'word of recall' 24 95
 Title
 Man~
 Woman~

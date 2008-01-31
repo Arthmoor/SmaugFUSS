@@ -21,6 +21,7 @@
 #include <time.h>
 #include <sys/stat.h>
 #include "mud.h"
+#include "mapper.h"
 #include "sha256.h"
 
 /*
@@ -82,6 +83,183 @@ char *const where_name[] = {
    "<BUG Inform Nivek>  "
 };
 
+/*
+StarMap was written by Nebseni of Clandestine MUD and ported to Smaug
+by Desden, el Chaman Tibetano.
+*/
+
+#define NUM_DAYS 35
+/* Match this to the number of days per month; this is the moon cycle */
+#define NUM_MONTHS 17
+/* Match this to the number of months defined in month_name[].  */
+#define MAP_WIDTH 72
+#define MAP_HEIGHT 8
+/* Should be the string length and number of the constants below.*/
+
+const char *star_map[] = {
+   "                                               C. C.                  g*",
+   "    O:       R*        G*    G.  W* W. W.          C. C.    Y* Y. Y.    ",
+   "  O*.                c.          W.W.     W.            C.       Y..Y.  ",
+   "O.O. O.              c.  G..G.           W:      B*                   Y.",
+   "     O.    c.     c.                     W. W.                  r*    Y.",
+   "     O.c.     c.      G.             P..     W.        p.      Y.   Y:  ",
+   "        c.                    G*    P.  P.           p.  p:     Y.   Y. ",
+   "                 b*             P.: P*                 p.p:             "
+};
+
+/****************** CONSTELLATIONS and STARS *****************************
+  Cygnus     Mars        Orion      Dragon       Cassiopeia          Venus
+           Ursa Ninor                           Mercurius     Pluto    
+               Uranus              Leo                Crown       Raptor
+*************************************************************************/
+
+const char *sun_map[] = {
+   "\\`|'/",
+   "- O -",
+   "/.|.\\"
+};
+
+const char *moon_map[] = {
+   " @@@ ",
+   "@@@@@",
+   " @@@ "
+};
+
+void look_sky( CHAR_DATA * ch )
+{
+   char buf[MAX_STRING_LENGTH];
+   char buf2[4];
+   int starpos, sunpos, moonpos, moonphase, i, linenum, precip;
+
+   send_to_pager( "You gaze up towards the heavens and see:\r\n", ch );
+
+   precip = ( ch->in_room->area->weather->precip + 3 * weath_unit - 1 ) / weath_unit;
+   if( precip > 1 )
+   {
+      send_to_char( "There are some clouds in the sky so you cannot see anything else.\r\n", ch );
+      return;
+   }
+   sunpos = ( MAP_WIDTH * ( 24 - time_info.hour ) / 24 );
+   moonpos = ( sunpos + time_info.day * MAP_WIDTH / NUM_DAYS ) % MAP_WIDTH;
+   if( ( moonphase = ( ( ( ( MAP_WIDTH + moonpos - sunpos ) % MAP_WIDTH ) + ( MAP_WIDTH / 16 ) ) * 8 ) / MAP_WIDTH ) > 4 )
+      moonphase -= 8;
+   starpos = ( sunpos + MAP_WIDTH * time_info.month / NUM_MONTHS ) % MAP_WIDTH;
+   /*
+    * The left end of the star_map will be straight overhead at midnight during month 0 
+    */
+
+   for( linenum = 0; linenum < MAP_HEIGHT; linenum++ )
+   {
+      if( ( time_info.hour >= 6 && time_info.hour <= 18 ) && ( linenum < 3 || linenum >= 6 ) )
+         continue;
+
+      mudstrlcpy( buf, " ", MAX_STRING_LENGTH );
+
+      /*
+       * for ( i = MAP_WIDTH/4; i <= 3*MAP_WIDTH/4; i++)
+       */
+      for( i = 1; i <= MAP_WIDTH; i++ )
+      {
+         /*
+          * plot moon on top of anything else...unless new moon & no eclipse 
+          */
+         if( ( time_info.hour >= 6 && time_info.hour <= 18 )   /* daytime? */
+             && ( moonpos >= MAP_WIDTH / 4 - 2 ) && ( moonpos <= 3 * MAP_WIDTH / 4 + 2 )  /* in sky? */
+             && ( i >= moonpos - 2 ) && ( i <= moonpos + 2 )   /* is this pixel near moon? */
+             && ( ( sunpos == moonpos && time_info.hour == 12 ) || moonphase != 0 ) /*no eclipse */
+             && ( moon_map[linenum - 3][i + 2 - moonpos] == '@' ) )
+         {
+            if( ( moonphase < 0 && i - 2 - moonpos >= moonphase ) || ( moonphase > 0 && i + 2 - moonpos <= moonphase ) )
+               mudstrlcat( buf, "&W@", MAX_STRING_LENGTH );
+            else
+               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         }
+         else if( ( linenum >= 3 ) && ( linenum < 6 ) && /* nighttime */
+                  ( moonpos >= MAP_WIDTH / 4 - 2 ) && ( moonpos <= 3 * MAP_WIDTH / 4 + 2 )   /* in sky? */
+                  && ( i >= moonpos - 2 ) && ( i <= moonpos + 2 ) /* is this pixel near moon? */
+                  && ( moon_map[linenum - 3][i + 2 - moonpos] == '@' ) )
+         {
+            if( ( moonphase < 0 && i - 2 - moonpos >= moonphase ) || ( moonphase > 0 && i + 2 - moonpos <= moonphase ) )
+               mudstrlcat( buf, "&W@", MAX_STRING_LENGTH );
+            else
+               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         }
+         else  /* plot sun or stars */
+         {
+            if( time_info.hour >= 6 && time_info.hour <= 18 )  /* daytime */
+            {
+               if( i >= sunpos - 2 && i <= sunpos + 2 )
+               {
+                  snprintf( buf2, 4, "&Y%c", sun_map[linenum - 3][i + 2 - sunpos] );
+                  mudstrlcat( buf, buf2, MAX_STRING_LENGTH );
+               }
+               else
+                  mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+            }
+            else
+            {
+               switch ( star_map[linenum][( MAP_WIDTH + i - starpos ) % MAP_WIDTH] )
+               {
+                  default:
+                     mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+                     break;
+                  case ':':
+                     mudstrlcat( buf, ":", MAX_STRING_LENGTH );
+                     break;
+                  case '.':
+                     mudstrlcat( buf, ".", MAX_STRING_LENGTH );
+                     break;
+                  case '*':
+                     mudstrlcat( buf, "*", MAX_STRING_LENGTH );
+                     break;
+                  case 'G':
+                     mudstrlcat( buf, "&G ", MAX_STRING_LENGTH );
+                     break;
+                  case 'g':
+                     mudstrlcat( buf, "&g ", MAX_STRING_LENGTH );
+                     break;
+                  case 'R':
+                     mudstrlcat( buf, "&R ", MAX_STRING_LENGTH );
+                     break;
+                  case 'r':
+                     mudstrlcat( buf, "&r ", MAX_STRING_LENGTH );
+                     break;
+                  case 'C':
+                     mudstrlcat( buf, "&C ", MAX_STRING_LENGTH );
+                     break;
+                  case 'O':
+                     mudstrlcat( buf, "&O ", MAX_STRING_LENGTH );
+                     break;
+                  case 'B':
+                     mudstrlcat( buf, "&B ", MAX_STRING_LENGTH );
+                     break;
+                  case 'P':
+                     mudstrlcat( buf, "&P ", MAX_STRING_LENGTH );
+                     break;
+                  case 'W':
+                     mudstrlcat( buf, "&W ", MAX_STRING_LENGTH );
+                     break;
+                  case 'b':
+                     mudstrlcat( buf, "&b ", MAX_STRING_LENGTH );
+                     break;
+                  case 'p':
+                     mudstrlcat( buf, "&p ", MAX_STRING_LENGTH );
+                     break;
+                  case 'Y':
+                     mudstrlcat( buf, "&Y ", MAX_STRING_LENGTH );
+                     break;
+                  case 'c':
+                     mudstrlcat( buf, "&c ", MAX_STRING_LENGTH );
+                     break;
+               }
+            }
+         }
+      }
+      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+      send_to_pager( buf, ch );
+   }
+}
+
 char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
 {
    static char buf[MAX_STRING_LENGTH];
@@ -113,7 +291,6 @@ char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
             && IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) ) )
       mudstrlcat( buf, "(Flaming White) ", MAX_STRING_LENGTH );
 
-
    if( ch->Class == CLASS_PALADIN
        && ( IS_OBJ_STAT( obj, ITEM_ANTI_EVIL ) && IS_OBJ_STAT( obj, ITEM_ANTI_NEUTRAL )
             && !IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) ) )
@@ -127,7 +304,7 @@ char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
             && IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) ) )
       mudstrlcat( buf, "(Smouldering Grey-White) ", MAX_STRING_LENGTH );
 
-   if( IS_AFFECTED( ch, AFF_DETECT_MAGIC ) && IS_OBJ_STAT( obj, ITEM_MAGIC ) )
+   if( ( IS_AFFECTED( ch, AFF_DETECT_MAGIC ) || xIS_SET( ch->act, PLR_HOLYLIGHT ) ) && IS_OBJ_STAT( obj, ITEM_MAGIC ) )
       mudstrlcat( buf, "(Magical) ", MAX_STRING_LENGTH );
    if( !glowsee && IS_OBJ_STAT( obj, ITEM_GLOW ) )
       mudstrlcat( buf, "(Glowing) ", MAX_STRING_LENGTH );
@@ -139,7 +316,7 @@ char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
       mudstrlcat( buf, "(Buried) ", MAX_STRING_LENGTH );
    if( IS_IMMORTAL( ch ) && IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
       mudstrlcat( buf, "(PROTO) ", MAX_STRING_LENGTH );
-   if( IS_AFFECTED( ch, AFF_DETECTTRAPS ) && is_trapped( obj ) )
+   if( ( IS_AFFECTED( ch, AFF_DETECTTRAPS ) || xIS_SET( ch->act, PLR_HOLYLIGHT ) ) && is_trapped( obj ) )
       mudstrlcat( buf, "(Trap) ", MAX_STRING_LENGTH );
 
    if( fShort )
@@ -257,7 +434,6 @@ char *hallucinated_object( int ms, bool fShort )
    return "Whoa!!!";
 }
 
-
 /* This is the punct snippet from Desden el Chaman Tibetano - Nov 1998
    Email: jlalbatros@mx2.redestb.es
 */
@@ -286,7 +462,6 @@ char *num_punct( int foo )
    buf_new[index_new] = '\0';
    return buf_new;
 }
-
 
 /*
  * Show a list to a character.
@@ -556,6 +731,7 @@ void show_visible_affects_to_char( CHAR_DATA * victim, CHAR_DATA * ch )
 
 void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
 {
+   TIMER *timer;
    char buf[MAX_STRING_LENGTH];
    char buf1[MAX_STRING_LENGTH];
 
@@ -569,11 +745,13 @@ void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
       else if( !IS_AFFECTED( victim, AFF_POSSESS ) )
          mudstrlcat( buf, "(Switched) ", MAX_STRING_LENGTH );
    }
+
    if( IS_NPC( victim ) && IS_AFFECTED( victim, AFF_POSSESS ) && IS_IMMORTAL( ch ) && victim->desc )
    {
       snprintf( buf1, MAX_STRING_LENGTH, "(%s)", victim->desc->original->name );
       mudstrlcat( buf, buf1, MAX_STRING_LENGTH );
    }
+
    if( !IS_NPC( victim ) && xIS_SET( victim->act, PLR_AFK ) )
       mudstrlcat( buf, "[AFK] ", MAX_STRING_LENGTH );
 
@@ -586,7 +764,6 @@ void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
          snprintf( buf1, MAX_STRING_LENGTH, "(Mobinvis %d) ", victim->mobinvis );
       mudstrlcat( buf, buf1, MAX_STRING_LENGTH );
    }
-
 
    if( !IS_NPC( victim ) )
    {
@@ -675,110 +852,126 @@ void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
    if( !IS_NPC( victim ) && !xIS_SET( ch->act, PLR_BRIEF ) )
       mudstrlcat( buf, victim->pcdata->title, MAX_STRING_LENGTH );
 
-   switch ( victim->position )
+   if( ( timer = get_timerptr( victim, TIMER_DO_FUN ) ) != NULL )
    {
-      case POS_DEAD:
-         mudstrlcat( buf, " is DEAD!!", MAX_STRING_LENGTH );
-         break;
-      case POS_MORTAL:
-         mudstrlcat( buf, " is mortally wounded.", MAX_STRING_LENGTH );
-         break;
-      case POS_INCAP:
-         mudstrlcat( buf, " is incapacitated.", MAX_STRING_LENGTH );
-         break;
-      case POS_STUNNED:
-         mudstrlcat( buf, " is lying here stunned.", MAX_STRING_LENGTH );
-         break;
-      case POS_SLEEPING:
-         if( ch->position == POS_SITTING || ch->position == POS_RESTING )
-            mudstrlcat( buf, " is sleeping nearby.", MAX_STRING_LENGTH );
-         else
-            mudstrlcat( buf, " is deep in slumber here.", MAX_STRING_LENGTH );
-         break;
-      case POS_RESTING:
-         if( ch->position == POS_RESTING )
-            mudstrlcat( buf, " is sprawled out alongside you.", MAX_STRING_LENGTH );
-         else if( ch->position == POS_MOUNTED )
-            mudstrlcat( buf, " is sprawled out at the foot of your mount.", MAX_STRING_LENGTH );
-         else
-            mudstrlcat( buf, " is sprawled out here.", MAX_STRING_LENGTH );
-         break;
-      case POS_SITTING:
-         if( ch->position == POS_SITTING )
-            mudstrlcat( buf, " sits here with you.", MAX_STRING_LENGTH );
-         else if( ch->position == POS_RESTING )
-            mudstrlcat( buf, " sits nearby as you lie around.", MAX_STRING_LENGTH );
-         else
-            mudstrlcat( buf, " sits upright here.", MAX_STRING_LENGTH );
-         break;
-      case POS_STANDING:
-         if( IS_IMMORTAL( victim ) )
-            mudstrlcat( buf, " is here before you.", MAX_STRING_LENGTH );
-         else
-            if( ( victim->in_room->sector_type == SECT_UNDERWATER )
-                && !IS_AFFECTED( victim, AFF_AQUA_BREATH ) && !IS_NPC( victim ) )
-            mudstrlcat( buf, " is drowning here.", MAX_STRING_LENGTH );
-         else if( victim->in_room->sector_type == SECT_UNDERWATER )
-            mudstrlcat( buf, " is here in the water.", MAX_STRING_LENGTH );
-         else
-            if( ( victim->in_room->sector_type == SECT_OCEANFLOOR )
-                && !IS_AFFECTED( victim, AFF_AQUA_BREATH ) && !IS_NPC( victim ) )
-            mudstrlcat( buf, " is drowning here.", MAX_STRING_LENGTH );
-         else if( victim->in_room->sector_type == SECT_OCEANFLOOR )
-            mudstrlcat( buf, " is standing here in the water.", MAX_STRING_LENGTH );
-         else if( IS_AFFECTED( victim, AFF_FLOATING ) || IS_AFFECTED( victim, AFF_FLYING ) )
-            mudstrlcat( buf, " is hovering here.", MAX_STRING_LENGTH );
-         else
-            mudstrlcat( buf, " is standing here.", MAX_STRING_LENGTH );
-         break;
-      case POS_SHOVE:
-         mudstrlcat( buf, " is being shoved around.", MAX_STRING_LENGTH );
-         break;
-      case POS_DRAG:
-         mudstrlcat( buf, " is being dragged around.", MAX_STRING_LENGTH );
-         break;
-      case POS_MOUNTED:
-         mudstrlcat( buf, " is here, upon ", MAX_STRING_LENGTH );
-         if( !victim->mount )
-            mudstrlcat( buf, "thin air???", MAX_STRING_LENGTH );
-         else if( victim->mount == ch )
-            mudstrlcat( buf, "your back.", MAX_STRING_LENGTH );
-         else if( victim->in_room == victim->mount->in_room )
-         {
-            mudstrlcat( buf, PERS( victim->mount, ch ), MAX_STRING_LENGTH );
-            mudstrlcat( buf, ".", MAX_STRING_LENGTH );
-         }
-         else
-            mudstrlcat( buf, "someone who left??", MAX_STRING_LENGTH );
-         break;
-      case POS_FIGHTING:
-      case POS_EVASIVE:
-      case POS_DEFENSIVE:
-      case POS_AGGRESSIVE:
-      case POS_BERSERK:
-         mudstrlcat( buf, " is here, fighting ", MAX_STRING_LENGTH );
-         if( !victim->fighting )
-         {
-            mudstrlcat( buf, "thin air???", MAX_STRING_LENGTH );
-
-            /*
-             * some bug somewhere.... kinda hackey fix -h 
-             */
-            if( !victim->mount )
-               victim->position = POS_STANDING;
+      if( timer->do_fun == do_cast )
+         mudstrlcat( buf, " is here chanting.", MAX_STRING_LENGTH );
+      else if( timer->do_fun == do_dig )
+         mudstrlcat( buf, " is here digging.", MAX_STRING_LENGTH );
+      else if( timer->do_fun == do_search )
+         mudstrlcat( buf, " is searching the area for something.", MAX_STRING_LENGTH );
+      else if( timer->do_fun == do_detrap )
+         mudstrlcat( buf, " is working with the trap here.", MAX_STRING_LENGTH );
+      else
+         mudstrlcat( buf, " is looking rather lost.", MAX_STRING_LENGTH );
+   }
+   else
+   {
+      switch ( victim->position )
+      {
+         case POS_DEAD:
+            mudstrlcat( buf, " is DEAD!!", MAX_STRING_LENGTH );
+            break;
+         case POS_MORTAL:
+            mudstrlcat( buf, " is mortally wounded.", MAX_STRING_LENGTH );
+            break;
+         case POS_INCAP:
+            mudstrlcat( buf, " is incapacitated.", MAX_STRING_LENGTH );
+            break;
+         case POS_STUNNED:
+            mudstrlcat( buf, " is lying here stunned.", MAX_STRING_LENGTH );
+            break;
+         case POS_SLEEPING:
+            if( ch->position == POS_SITTING || ch->position == POS_RESTING )
+               mudstrlcat( buf, " is sleeping nearby.", MAX_STRING_LENGTH );
             else
-               victim->position = POS_MOUNTED;
-         }
-         else if( who_fighting( victim ) == ch )
-            mudstrlcat( buf, "YOU!", MAX_STRING_LENGTH );
-         else if( victim->in_room == victim->fighting->who->in_room )
-         {
-            mudstrlcat( buf, PERS( victim->fighting->who, ch ), MAX_STRING_LENGTH );
-            mudstrlcat( buf, ".", MAX_STRING_LENGTH );
-         }
-         else
-            mudstrlcat( buf, "someone who left??", MAX_STRING_LENGTH );
-         break;
+               mudstrlcat( buf, " is deep in slumber here.", MAX_STRING_LENGTH );
+            break;
+         case POS_RESTING:
+            if( ch->position == POS_RESTING )
+               mudstrlcat( buf, " is sprawled out alongside you.", MAX_STRING_LENGTH );
+            else if( ch->position == POS_MOUNTED )
+               mudstrlcat( buf, " is sprawled out at the foot of your mount.", MAX_STRING_LENGTH );
+            else
+               mudstrlcat( buf, " is sprawled out here.", MAX_STRING_LENGTH );
+            break;
+         case POS_SITTING:
+            if( ch->position == POS_SITTING )
+               mudstrlcat( buf, " sits here with you.", MAX_STRING_LENGTH );
+            else if( ch->position == POS_RESTING )
+               mudstrlcat( buf, " sits nearby as you lie around.", MAX_STRING_LENGTH );
+            else
+               mudstrlcat( buf, " sits upright here.", MAX_STRING_LENGTH );
+            break;
+         case POS_STANDING:
+            if( IS_IMMORTAL( victim ) )
+               mudstrlcat( buf, " is here before you.", MAX_STRING_LENGTH );
+            else
+               if( ( victim->in_room->sector_type == SECT_UNDERWATER )
+                   && !IS_AFFECTED( victim, AFF_AQUA_BREATH ) && !IS_NPC( victim ) )
+               mudstrlcat( buf, " is drowning here.", MAX_STRING_LENGTH );
+            else if( victim->in_room->sector_type == SECT_UNDERWATER )
+               mudstrlcat( buf, " is here in the water.", MAX_STRING_LENGTH );
+            else
+               if( ( victim->in_room->sector_type == SECT_OCEANFLOOR )
+                   && !IS_AFFECTED( victim, AFF_AQUA_BREATH ) && !IS_NPC( victim ) )
+               mudstrlcat( buf, " is drowning here.", MAX_STRING_LENGTH );
+            else if( victim->in_room->sector_type == SECT_OCEANFLOOR )
+               mudstrlcat( buf, " is standing here in the water.", MAX_STRING_LENGTH );
+            else if( IS_AFFECTED( victim, AFF_FLOATING ) || IS_AFFECTED( victim, AFF_FLYING ) )
+               mudstrlcat( buf, " is hovering here.", MAX_STRING_LENGTH );
+            else
+               mudstrlcat( buf, " is standing here.", MAX_STRING_LENGTH );
+            break;
+         case POS_SHOVE:
+            mudstrlcat( buf, " is being shoved around.", MAX_STRING_LENGTH );
+            break;
+         case POS_DRAG:
+            mudstrlcat( buf, " is being dragged around.", MAX_STRING_LENGTH );
+            break;
+         case POS_MOUNTED:
+            mudstrlcat( buf, " is here, upon ", MAX_STRING_LENGTH );
+            if( !victim->mount )
+               mudstrlcat( buf, "thin air???", MAX_STRING_LENGTH );
+            else if( victim->mount == ch )
+               mudstrlcat( buf, "your back.", MAX_STRING_LENGTH );
+            else if( victim->in_room == victim->mount->in_room )
+            {
+               mudstrlcat( buf, PERS( victim->mount, ch ), MAX_STRING_LENGTH );
+               mudstrlcat( buf, ".", MAX_STRING_LENGTH );
+            }
+            else
+               mudstrlcat( buf, "someone who left??", MAX_STRING_LENGTH );
+            break;
+         case POS_FIGHTING:
+         case POS_EVASIVE:
+         case POS_DEFENSIVE:
+         case POS_AGGRESSIVE:
+         case POS_BERSERK:
+            mudstrlcat( buf, " is here, fighting ", MAX_STRING_LENGTH );
+            if( !victim->fighting )
+            {
+               mudstrlcat( buf, "thin air???", MAX_STRING_LENGTH );
+
+               /*
+                * some bug somewhere.... kinda hackey fix -h 
+                */
+               if( !victim->mount )
+                  victim->position = POS_STANDING;
+               else
+                  victim->position = POS_MOUNTED;
+            }
+            else if( who_fighting( victim ) == ch )
+               mudstrlcat( buf, "YOU!", MAX_STRING_LENGTH );
+            else if( victim->in_room == victim->fighting->who->in_room )
+            {
+               mudstrlcat( buf, PERS( victim->fighting->who, ch ), MAX_STRING_LENGTH );
+               mudstrlcat( buf, ".", MAX_STRING_LENGTH );
+            }
+            else
+               mudstrlcat( buf, "someone who left??", MAX_STRING_LENGTH );
+            break;
+      }
    }
 
    mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
@@ -787,8 +980,6 @@ void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
    show_visible_affects_to_char( victim, ch );
    return;
 }
-
-
 
 void show_char_to_char_1( CHAR_DATA * victim, CHAR_DATA * ch )
 {
@@ -962,6 +1153,64 @@ int get_door( char *arg )
    return door;
 }
 
+void print_compass( CHAR_DATA * ch )
+{
+   EXIT_DATA *pexit;
+   int exit_info[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+   static char *const exit_colors[] = { "&w", "&Y", "&C", "&b", "&w", "&R" };
+   for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )
+   {
+      if( !pexit->to_room || IS_SET( pexit->exit_info, EX_HIDDEN ) ||
+          ( IS_SET( pexit->exit_info, EX_SECRET ) && IS_SET( pexit->exit_info, EX_CLOSED ) ) )
+         continue;
+      if( IS_SET( pexit->exit_info, EX_WINDOW ) )
+         exit_info[pexit->vdir] = 2;
+      else if( IS_SET( pexit->exit_info, EX_SECRET ) )
+         exit_info[pexit->vdir] = 3;
+      else if( IS_SET( pexit->exit_info, EX_CLOSED ) )
+         exit_info[pexit->vdir] = 4;
+      else if( IS_SET( pexit->exit_info, EX_LOCKED ) )
+         exit_info[pexit->vdir] = 5;
+      else
+         exit_info[pexit->vdir] = 1;
+   }
+   set_char_color( AT_RMNAME, ch );
+   ch_printf_color( ch, "\r\n%-50s         %s%s    %s%s    %s%s\r\n",
+                    ch->in_room->name,
+                    exit_colors[exit_info[DIR_NORTHWEST]], exit_info[DIR_NORTHWEST] ? "NW" : "- ",
+                    exit_colors[exit_info[DIR_NORTH]], exit_info[DIR_NORTH] ? "N" : "-",
+                    exit_colors[exit_info[DIR_NORTHEAST]], exit_info[DIR_NORTHEAST] ? "NE" : " -" );
+   if( IS_IMMORTAL( ch ) && xIS_SET( ch->act, PLR_ROOMVNUM ) )
+      ch_printf_color( ch, "&w-<---- &YVnum: %6d &w----------------------------->-        ", ch->in_room->vnum );
+   else
+      send_to_char_color( "&w-<----------------------------------------------->-        ", ch );
+   ch_printf_color( ch, "%s%s&w<-%s%s&w-&W(*)&w-%s%s&w->%s%s\r\n", exit_colors[exit_info[DIR_WEST]],
+                    exit_info[DIR_WEST] ? "W" : "-", exit_colors[exit_info[DIR_UP]], exit_info[DIR_UP] ? "U" : "-",
+                    exit_colors[exit_info[DIR_DOWN]], exit_info[DIR_DOWN] ? "D" : "-", exit_colors[exit_info[DIR_EAST]],
+                    exit_info[DIR_EAST] ? "E" : "-" );
+   ch_printf_color( ch, "                                                           %s%s    %s%s    %s%s\r\n\r\n",
+                    exit_colors[exit_info[DIR_SOUTHWEST]], exit_info[DIR_SOUTHWEST] ? "SW" : "- ",
+                    exit_colors[exit_info[DIR_SOUTH]], exit_info[DIR_SOUTH] ? "S" : "-",
+                    exit_colors[exit_info[DIR_SOUTHEAST]], exit_info[DIR_SOUTHEAST] ? "SE" : " -" );
+   return;
+}
+
+char *roomdesc( CHAR_DATA * ch )
+{
+   static char rdesc[MAX_STRING_LENGTH];
+
+   rdesc[0] = '\0';
+
+   if( !xIS_SET( ch->act, PLR_BRIEF ) )
+   {
+      if( ch->in_room->description && ch->in_room->description[0] != '\0' )
+         mudstrlcat( rdesc, ch->in_room->description, MAX_STRING_LENGTH );
+   }
+   if( rdesc[0] == '\0' )
+      mudstrlcpy( rdesc, "(Not set)", MAX_STRING_LENGTH );
+   return rdesc;
+}
+
 void do_look( CHAR_DATA * ch, char *argument )
 {
    char arg[MAX_INPUT_LENGTH], arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
@@ -1010,19 +1259,42 @@ void do_look( CHAR_DATA * ch, char *argument )
       /*
        * 'look' or 'look auto' 
        */
-      set_char_color( AT_RMNAME, ch );
-      send_to_char( ch->in_room->name, ch );
-      send_to_char( "\r\n", ch );
+      if( xIS_SET( ch->act, PLR_COMPASS ) )
+         print_compass( ch );
+      else
+      {
+         set_char_color( AT_RMNAME, ch );
+         send_to_char( ch->in_room->name, ch );
+         send_to_char( "\r\n", ch );
+      }
       set_char_color( AT_RMDESC, ch );
 
       if( arg1[0] == '\0' || ( !IS_NPC( ch ) && !xIS_SET( ch->act, PLR_BRIEF ) ) )
-         send_to_char( ch->in_room->description, ch );
+      {
+         if( xIS_SET( ch->act, PLR_AUTOMAP ) )
+            draw_room_map( ch, roomdesc( ch ) );
+         else
+            send_to_char( roomdesc( ch ), ch );
+      }
 
-      if( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AUTOEXIT ) )
+      /*
+       * Added AUTOMAP check because it shows them next to the map now if its active 
+       */
+      if( !IS_NPC( ch ) && ( xIS_SET( ch->act, PLR_AUTOEXIT ) && !xIS_SET( ch->act, PLR_AUTOMAP ) ) )
          do_exits( ch, "auto" );
 
       show_list_to_char( ch->in_room->first_content, ch, FALSE, FALSE );
       show_char_to_char( ch->in_room->first_person, ch );
+      return;
+   }
+
+   if( !str_cmp( arg1, "sky" ) || !str_cmp( arg1, "stars" ) )
+   {
+      if( !IS_OUTSIDE( ch ) )
+         send_to_char( "You can't see the sky indoors.\r\n", ch );
+      else
+         look_sky( ch );
+
       return;
    }
 
@@ -1102,10 +1374,12 @@ void do_look( CHAR_DATA * ch, char *argument )
                break;
             }
 
-            ch_printf( ch, "It's %s full of a %s liquid.\r\n",
-                       obj->value[1] < obj->value[0] / 4
-                       ? "less than" :
-                       obj->value[1] < 3 * obj->value[0] / 4 ? "about" : "more than", liq_table[obj->value[2]].liq_color );
+            {
+               LIQ_TABLE *liq = get_liq_vnum( obj->value[2] );
+               ch_printf( ch, "It's %s full of a %s liquid.\r\n",
+                          obj->value[1] < obj->value[0] / 4
+                          ? "less than" : obj->value[1] < 3 * obj->value[0] / 4 ? "about" : "more than", liq->color );
+            }
 
             if( EXA_prog_trigger )
                oprog_examine_trigger( ch, obj );
@@ -1174,11 +1448,25 @@ void do_look( CHAR_DATA * ch, char *argument )
          if( ( IS_SET( pexit->exit_info, EX_SECRET ) || IS_SET( pexit->exit_info, EX_DIG ) ) && door != -1 )
             send_to_char( "Nothing special there.\r\n", ch );
          else
-            act( AT_PLAIN, "The $d is closed.", ch, NULL, pexit->keyword, TO_CHAR );
+         {
+            if( pexit->keyword[strlen( pexit->keyword ) - 1] == 's'
+                || ( pexit->keyword[strlen( pexit->keyword ) - 1] == '\''
+                     && pexit->keyword[strlen( pexit->keyword ) - 2] == 's' ) )
+               act( AT_PLAIN, "The $d are closed.", ch, NULL, pexit->keyword, TO_CHAR );
+            else
+               act( AT_PLAIN, "The $d is closed.", ch, NULL, pexit->keyword, TO_CHAR );
+         }
          return;
       }
       if( IS_SET( pexit->exit_info, EX_BASHED ) )
-         act( AT_RED, "The $d has been bashed from its hinges!", ch, NULL, pexit->keyword, TO_CHAR );
+      {
+         if( pexit->keyword[strlen( pexit->keyword ) - 1] == 's'
+             || ( pexit->keyword[strlen( pexit->keyword ) - 1] == '\''
+                  && pexit->keyword[strlen( pexit->keyword ) - 2] == 's' ) )
+            act( AT_PLAIN, "The $d have been bashed from their hinges.", ch, NULL, pexit->keyword, TO_CHAR );
+         else
+            act( AT_PLAIN, "The $d has been bashed from its hinges.", ch, NULL, pexit->keyword, TO_CHAR );
+      }
 
       if( pexit->description && pexit->description[0] != '\0' )
          send_to_char( pexit->description, ch );
@@ -1333,7 +1621,6 @@ void do_look( CHAR_DATA * ch, char *argument )
    }
 
    send_to_char( "You do not see that here.\r\n", ch );
-   return;
 }
 
 void show_race_line( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -1354,7 +1641,6 @@ void show_race_line( CHAR_DATA * ch, CHAR_DATA * victim )
       ch_printf( ch, "You are %d'%d\" and weigh %d pounds.\r\n", feet, inches, victim->weight );
       return;
    }
-
 }
 
 void show_condition( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -1363,10 +1649,9 @@ void show_condition( CHAR_DATA * ch, CHAR_DATA * victim )
    int percent;
 
    if( victim->max_hit > 0 )
-      percent = ( 100 * victim->hit ) / victim->max_hit;
+      percent = ( int )( ( 100.0 * ( double )( victim->hit ) ) / ( double )( victim->max_hit ) );
    else
       percent = -1;
-
 
    if( victim != ch )
    {
@@ -1423,7 +1708,6 @@ void show_condition( CHAR_DATA * ch, CHAR_DATA * victim )
 
    buf[0] = UPPER( buf[0] );
    send_to_char( buf, ch );
-   return;
 }
 
 /* A much simpler version of look, this function will show you only
@@ -1934,7 +2218,7 @@ HELP_DATA *get_help( CHAR_DATA * ch, char *argument )
    if( argument[0] == '\0' )
       argument = "summary";
 
-   if( isdigit( argument[0] ) )
+   if( isdigit( argument[0] ) && !is_number( argument ) )
    {
       lev = number_argument( argument, argnew );
       argument = argnew;
@@ -1986,46 +2270,119 @@ void do_laws( CHAR_DATA * ch, char *argument )
 /*
  * Now this is cleaner
  */
+/* Updated do_help command provided by Remcon of The Lands of Pabulum 03/20/2004 */
 void do_help( CHAR_DATA * ch, char *argument )
 {
    HELP_DATA *pHelp;
+   char *keyword;
+   char arg[MAX_INPUT_LENGTH];
+   char oneword[MAX_STRING_LENGTH], lastmatch[MAX_STRING_LENGTH];
+   short matched = 0, checked = 0, totalmatched = 0, found = 0;
+   bool uselevel = FALSE;
+   int value = 0;
 
-   set_pager_color( AT_HELP, ch );
+   set_pager_color( AT_NOTE, ch );
 
-   if( ( pHelp = get_help( ch, argument ) ) == NULL )
+   if( !argument || argument[0] == '\0' )
+      argument = "summary";
+   if( !( pHelp = get_help( ch, argument ) ) )
    {
-      send_to_char( "No help on that word.\r\n", ch );
+      pager_printf( ch, "No help on \'%s\' found.\r\n", argument );
+      /*
+       * Get an arg incase they do a number seperate 
+       */
+      one_argument( argument, arg );
+      /*
+       * See if arg is a number if so update argument 
+       */
+      if( is_number( arg ) )
+      {
+         argument = one_argument( argument, arg );
+         if( argument && argument[0] != '\0' )
+         {
+            value = atoi( arg );
+            uselevel = TRUE;
+         }
+         else  /* If no more argument put arg as argument */
+            argument = arg;
+      }
+      if( value > 0 )
+         pager_printf( ch, "Checking for suggested helps that are level %d.\r\n", value );
+      send_to_pager( "Suggested Help Files:\r\n", ch );
+      strncpy( lastmatch, " ", MAX_STRING_LENGTH );
+      for( pHelp = first_help; pHelp; pHelp = pHelp->next )
+      {
+         matched = 0;
+         if( !pHelp || !pHelp->keyword || pHelp->keyword[0] == '\0' || pHelp->level > get_trust( ch ) )
+            continue;
+         /*
+          * Check arg if its avaliable 
+          */
+         if( uselevel && pHelp->level != value )
+            continue;
+         keyword = pHelp->keyword;
+         while( keyword && keyword[0] != '\0' )
+         {
+            matched = 0;   /* Set to 0 for each time we check lol */
+            keyword = one_argument( keyword, oneword );
+            /*
+             * Lets check only up to 10 spots
+             */
+            for( checked = 0; checked <= 10; checked++ )
+            {
+               if( !oneword[checked] || !argument[checked] )
+                  break;
+               if( LOWER( oneword[checked] ) == LOWER( argument[checked] ) )
+                  matched++;
+            }
+            if( ( matched > 1 && matched > ( checked / 2 ) ) || ( matched > 0 && checked < 2 ) )
+            {
+               pager_printf( ch, " %-20s ", oneword );
+               if( ++found % 4 == 0 )
+               {
+                  found = 0;
+                  send_to_pager( "\r\n", ch );
+               }
+               strncpy( lastmatch, oneword, MAX_STRING_LENGTH );
+               totalmatched++;
+               break;
+            }
+         }
+      }
+      if( found != 0 )
+         send_to_pager( "\r\n", ch );
+      if( totalmatched == 0 )
+      {
+         send_to_pager( "No suggested help files.\r\n", ch );
+         return;
+      }
+      if( totalmatched == 1 && lastmatch != NULL && lastmatch && lastmatch[0] != '\0' && str_cmp( lastmatch, argument ) )
+      {
+         send_to_pager( "Opening only suggested helpfile.\r\n", ch );
+         do_help( ch, lastmatch );
+         return;
+      }
       return;
    }
-
    /*
-    * Make newbies do a help start. --Shaddai 
+    * Make newbies do a help start. --Shaddai
     */
    if( !IS_NPC( ch ) && !str_cmp( argument, "start" ) )
       SET_BIT( ch->pcdata->flags, PCFLAG_HELPSTART );
 
-   set_pager_color( AT_HELP, ch );
+   if( IS_IMMORTAL( ch ) )
+      pager_printf( ch, "Help level: %d\r\n", pHelp->level );
 
-   if( pHelp->level >= 0 && str_cmp( argument, "imotd" ) )
-   {
-      send_to_pager( pHelp->keyword, ch );
-      send_to_pager( "\r\n", ch );
-   }
+   set_pager_color( AT_NOTE, ch );
 
    /*
     * Strip leading '.' to allow initial blanks.
     */
    if( pHelp->text[0] == '.' )
-      send_to_pager_color( pHelp->text + 1, ch );
+      send_to_pager( pHelp->text + 1, ch );
    else
-      send_to_pager_color( pHelp->text, ch );
+      send_to_pager( pHelp->text, ch );
    return;
-}
-
-void do_news( CHAR_DATA * ch, char *argument )
-{
-   set_pager_color( AT_NOTE, ch );
-   do_help( ch, "news" );
 }
 
 extern char *help_greeting;   /* so we can edit the greeting online */
@@ -2161,7 +2518,7 @@ void do_hset( CHAR_DATA * ch, char *argument )
       rename( "help.are", "help.are.bak" );
       if( ( fpout = fopen( "help.are", "w" ) ) == NULL )
       {
-         bug( "%s", "hset save: cant open help.are" );
+         bug( "%s: cant open help.are", __FUNCTION__ );
          perror( "help.are" );
          return;
       }
@@ -2172,6 +2529,7 @@ void do_hset( CHAR_DATA * ch, char *argument )
 
       fprintf( fpout, "0 $~\n\n\n#$\n" );
       fclose( fpout );
+      fpout = NULL;
       send_to_char( "Saved.\r\n", ch );
       return;
    }
@@ -3026,7 +3384,6 @@ void do_who( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
 void do_compare( CHAR_DATA * ch, char *argument )
 {
    char arg1[MAX_INPUT_LENGTH];
@@ -3121,8 +3478,6 @@ void do_compare( CHAR_DATA * ch, char *argument )
    act( AT_PLAIN, msg, ch, obj1, obj2, TO_CHAR );
    return;
 }
-
-
 
 void do_where( CHAR_DATA * ch, char *argument )
 {
@@ -3270,35 +3625,54 @@ void do_consider( CHAR_DATA * ch, char *argument )
 
 void do_practice( CHAR_DATA * ch, char *argument )
 {
+   CHAR_DATA *mob;
    char buf[MAX_STRING_LENGTH];
    int sn;
 
    if( IS_NPC( ch ) )
       return;
 
-/*
-    if ( ch->level < 2 )
-    {
-	send_to_char(
-	"You must be second level to practice.  Seek out monsters to kill!\r\n",
-	    ch );
-	return;
-    }
-*/
+   for( mob = ch->in_room->first_person; mob; mob = mob->next_in_room )
+      if( IS_NPC( mob ) && xIS_SET( mob->act, ACT_PRACTICE ) )
+         break;
+
    if( argument[0] == '\0' )
    {
       int col;
       short lasttype, cnt;
+      bool is_ok;
 
       col = cnt = 0;
       lasttype = SKILL_SPELL;
       set_pager_color( AT_MAGIC, ch );
-      for( sn = 0; sn < top_sn; sn++ )
-      {
-         if( !skill_table[sn]->name )
-            break;
 
-         if( strcmp( skill_table[sn]->name, "reserved" ) == 0 && ( IS_IMMORTAL( ch ) || CAN_CAST( ch ) ) )
+      for( sn = 0; sn < num_skills; ++sn )
+      {
+         const SKILLTYPE *skill;
+         int normalSn;
+
+         // the first num_sorted_skills are sorted by type, so we don't want
+         // to index into skill_table -- that is sorted alphabetically -- so
+         // we need to do the following dance to check if we are in the
+         // sorted section or the unsorted section.
+         if( sn < num_sorted_skills )
+         {
+            skill = skill_table_bytype[sn];
+
+            // we are looping over the skills sorted by type.
+            // So, we need to get the normal sn as well.
+            normalSn = skill_lookup( skill->name );
+         }
+         else
+         {
+            skill = skill_table[sn];
+            normalSn = sn;
+         }
+
+         if( !skill || !skill->name || skill->name[0] == '\0' )
+            continue;
+
+         if( strcmp( skill->name, "reserved" ) == 0 && ( IS_IMMORTAL( ch ) || CAN_CAST( ch ) ) )
          {
             if( col % 3 != 0 )
                send_to_pager( "\r\n", ch );
@@ -3307,7 +3681,8 @@ void do_practice( CHAR_DATA * ch, char *argument )
                                  ch );
             col = 0;
          }
-         if( skill_table[sn]->type != lasttype )
+
+         if( skill->type != lasttype )
          {
             if( !cnt )
                send_to_pager( "                                   (none)\r\n", ch );
@@ -3316,29 +3691,42 @@ void do_practice( CHAR_DATA * ch, char *argument )
             set_pager_color( AT_MAGIC, ch );
             pager_printf_color( ch,
                                 " ----------------------------------&C%ss&B----------------------------------\r\n",
-                                skill_tname[skill_table[sn]->type] );
+                                skill_tname[skill->type] );
             col = cnt = 0;
          }
-         lasttype = skill_table[sn]->type;
+         lasttype = skill->type;
 
          if( !IS_IMMORTAL( ch )
-             && ( skill_table[sn]->guild != CLASS_NONE
-                  && ( !IS_GUILDED( ch ) || ( ch->pcdata->clan->Class != skill_table[sn]->guild ) ) ) )
+             && ( skill->guild != CLASS_NONE && ( !IS_GUILDED( ch ) || ( ch->pcdata->clan->Class != skill->guild ) ) ) )
             continue;
 
-         if( ch->level < skill_table[sn]->skill_level[ch->Class]
-             || ( !IS_IMMORTAL( ch ) && skill_table[sn]->skill_level[ch->Class] == 0 ) )
-            continue;
+         if( mob )
+         {
+            if( skill->skill_level[mob->Class] > mob->level && skill->race_level[mob->race] > mob->level )
+               continue;
+         }
+         else
+         {
+            is_ok = FALSE;
 
-         if( ch->pcdata->learned[sn] <= 0 && SPELL_FLAG( skill_table[sn], SF_SECRETSKILL ) )
+            if( ch->level >= skill->skill_level[ch->Class] )
+               is_ok = TRUE;
+            if( ch->level >= skill->race_level[ch->race] )
+               is_ok = TRUE;
+
+            if( !is_ok )
+               continue;
+         }
+
+         if( ch->pcdata->learned[sn] <= 0 && SPELL_FLAG( skill, SF_SECRETSKILL ) )
             continue;
 
          ++cnt;
          set_pager_color( AT_MAGIC, ch );
-         pager_printf( ch, "%20.20s", skill_table[sn]->name );
-         if( ch->pcdata->learned[sn] > 0 )
+         pager_printf( ch, "%20.20s", skill->name );
+         if( ch->pcdata->learned[normalSn] > 0 )
             set_pager_color( AT_SCORE, ch );
-         pager_printf( ch, " %3d%% ", ch->pcdata->learned[sn] );
+         pager_printf( ch, " %3d%% ", ch->pcdata->learned[normalSn] );
          if( ++col % 3 == 0 )
             send_to_pager( "\r\n", ch );
       }
@@ -3350,7 +3738,6 @@ void do_practice( CHAR_DATA * ch, char *argument )
    }
    else
    {
-      CHAR_DATA *mob;
       int adept;
       bool can_prac = TRUE;
 
@@ -3359,10 +3746,6 @@ void do_practice( CHAR_DATA * ch, char *argument )
          send_to_char( "In your dreams, or what?\r\n", ch );
          return;
       }
-
-      for( mob = ch->in_room->first_person; mob; mob = mob->next_in_room )
-         if( IS_NPC( mob ) && xIS_SET( mob->act, ACT_PRACTICE ) )
-            break;
 
       if( !mob )
       {
@@ -3379,10 +3762,7 @@ void do_practice( CHAR_DATA * ch, char *argument )
       sn = skill_lookup( argument );
 
       if( can_prac && ( ( sn == -1 ) || ( !IS_NPC( ch ) && ch->level < skill_table[sn]->skill_level[ch->Class]
-/* OUT FOR THIS PORT -SHADDAI
-                    &&  ch->level < skill_table[sn]->race_level[ch->race]  
-*/
-                         ) ) )
+                                          && ch->level < skill_table[sn]->race_level[ch->race] ) ) )
       {
          act( AT_TELL, "$n tells you 'You're not ready to learn that yet...'", mob, NULL, ch, TO_VICT );
          return;
@@ -3469,7 +3849,6 @@ void do_practice( CHAR_DATA * ch, char *argument )
    }
    return;
 }
-
 
 void do_wimpy( CHAR_DATA * ch, char *argument )
 {
@@ -3602,8 +3981,6 @@ void do_password( CHAR_DATA * ch, char *argument )
    return;
 }
 
-
-
 void do_socials( CHAR_DATA * ch, char *argument )
 {
    int iHash;
@@ -3623,7 +4000,6 @@ void do_socials( CHAR_DATA * ch, char *argument )
       send_to_pager( "\r\n", ch );
    return;
 }
-
 
 void do_commands( CHAR_DATA * ch, char *argument )
 {
@@ -3924,10 +4300,8 @@ void do_channels( CHAR_DATA * ch, char *argument )
 
       send_to_char( "Ok.\r\n", ch );
    }
-
    return;
 }
-
 
 /*
  * display WIZLIST file						-Thoric
@@ -3962,7 +4336,7 @@ void do_config( CHAR_DATA * ch, char *argument )
       set_char_color( AT_DGREEN, ch );
       send_to_char( "Display:   ", ch );
       set_char_color( AT_GREY, ch );
-      ch_printf( ch, "%-12s   %-12s   %-12s   %-12s\r\n           %-12s   %-12s   %-12s   %-12s",
+      ch_printf( ch, "%-12s   %-12s   %-12s   %-12s\r\n           %-12s   %-12s   %-12s   %-12s\r\n           %-12s   %-12s",
                  IS_SET( ch->pcdata->flags, PCFLAG_PAGERON ) ? "[+] PAGER"
                  : "[-] pager",
                  IS_SET( ch->pcdata->flags, PCFLAG_GAG ) ? "[+] GAG"
@@ -3976,7 +4350,11 @@ void do_config( CHAR_DATA * ch, char *argument )
                  xIS_SET( ch->act, PLR_PROMPT ) ? "[+] PROMPT"
                  : "[-] prompt",
                  xIS_SET( ch->act, PLR_ANSI ) ? "[+] ANSI"
-                 : "[-] ansi", xIS_SET( ch->act, PLR_RIP ) ? "[+] RIP" : "[-] rip" );
+                 : "[-] ansi",
+                 xIS_SET( ch->act, PLR_RIP ) ? "[+] RIP"
+                 : "[-] rip",
+                 xIS_SET( ch->act, PLR_COMPASS ) ? "[+] COMPASS"
+                 : "[-] compass", xIS_SET( ch->act, PLR_AUTOMAP ) ? "[+] AUTOMAP" : "[-] automap" );
       set_char_color( AT_DGREEN, ch );
       send_to_char( "\r\n\r\nAuto:      ", ch );
       set_char_color( AT_GREY, ch );
@@ -4075,6 +4453,10 @@ void do_config( CHAR_DATA * ch, char *argument )
          bit = PLR_ANSI;
       else if( !str_prefix( arg + 1, "rip" ) )
          bit = PLR_RIP;
+      else if( !str_prefix( arg + 1, "compass" ) )
+         bit = PLR_COMPASS;
+      else if( !str_prefix( arg + 1, "automap" ) )
+         bit = PLR_AUTOMAP;
 /*	else if ( !str_prefix( arg+1, "flee"     ) ) bit = PLR_FLEE; */
       else if( !str_prefix( arg + 1, "nice" ) )
          bit = PLR_NICE;
@@ -4129,7 +4511,6 @@ void do_config( CHAR_DATA * ch, char *argument )
          return;
       }
    }
-
    return;
 }
 
@@ -4138,54 +4519,7 @@ void do_credits( CHAR_DATA * ch, char *argument )
    do_help( ch, "credits" );
 }
 
-
 extern int top_area;
-
-/*
-void do_areas( CHAR_DATA *ch, char *argument )
-{
-    AREA_DATA *pArea1;
-    AREA_DATA *pArea2;
-    int iArea;
-    int iAreaHalf;
-
-    iAreaHalf = (top_area + 1) / 2;
-    pArea1    = first_area;
-    pArea2    = first_area;
-    for ( iArea = 0; iArea < iAreaHalf; iArea++ )
-	pArea2 = pArea2->next;
-
-    for ( iArea = 0; iArea < iAreaHalf; iArea++ )
-    {
-	ch_printf( ch, "%-39s%-39s\r\n",
-	    pArea1->name, pArea2 ? pArea2->name : "" );
-	pArea1 = pArea1->next;
-	if ( pArea2 )
-	    pArea2 = pArea2->next;
-    }
-
-    return;
-}
-*/
-
-/* 
- * New do_areas with soft/hard level ranges 
-void do_areas( CHAR_DATA *ch, char *argument )
-{
-    AREA_DATA *pArea;
-
-    set_pager_color( AT_PLAIN, ch );
-    send_to_pager("\r\n   Author    |             Area                     | Recommended |  Enforced\r\n", ch);
-    send_to_pager("-------------+--------------------------------------+-------------+-----------\r\n", ch);
-
-    for ( pArea = first_area; pArea; pArea = pArea->next )
-	pager_printf(ch, "%-12s | %-36s | %4d - %-4d | %3d - %-3d \r\n", 
-	 	pArea->author, pArea->name, pArea->low_soft_range, 
-		pArea->hi_soft_range, pArea->low_hard_range, 
-		pArea->hi_hard_range);
-    return;
-}
-*/
 
 /*
  * New do_areas, written by Fireblade, last modified - 4/27/97
@@ -4282,7 +4616,6 @@ void do_areas( CHAR_DATA * ch, char *argument )
                        pArea->low_soft_range, pArea->hi_soft_range, pArea->low_hard_range, pArea->hi_hard_range );
       }
    }
-   return;
 }
 
 void do_afk( CHAR_DATA * ch, char *argument )
@@ -4303,7 +4636,6 @@ void do_afk( CHAR_DATA * ch, char *argument )
       act( AT_GREY, "$n is now afk.", ch, NULL, NULL, TO_CANSEE );
       return;
    }
-
 }
 
 void do_slist( CHAR_DATA * ch, char *argument )
@@ -4348,80 +4680,114 @@ void do_slist( CHAR_DATA * ch, char *argument )
    {
       lFound = 0;
       snprintf( skn, MAX_INPUT_LENGTH, "%s", "Spell" );
-      for( sn = 0; sn < top_sn; sn++ )
+      for( sn = 0; sn < num_skills; ++sn )
       {
-         if( !skill_table[sn]->name )
-            break;
+         const SKILLTYPE *skill;
+         int normalSn;
 
-         if( skill_table[sn]->type != lasttype )
+         // the first num_sorted_skills are sorted by type, so we don't want
+         // to index into skill_table -- that is sorted alphabetically -- so
+         // we need to do the following dance to check if we are in the 
+         // sorted section or the unsorted section.
+         if( sn < num_sorted_skills )
          {
-            lasttype = skill_table[sn]->type;
+            skill = skill_table_bytype[sn];
+
+            // we are looping over the skills sorted by type.
+            // So, we need to get the normal sn as well.
+            normalSn = skill_lookup( skill->name );
+         }
+         else
+         {
+            skill = skill_table[sn];
+            normalSn = sn;
+         }
+
+         if( !skill || !skill->name || skill->name[0] == '\0' )
+            continue;
+
+         if( skill->type != lasttype )
+         {
+            lasttype = skill->type;
             mudstrlcpy( skn, skill_tname[lasttype], MAX_INPUT_LENGTH );
          }
 
-         if( ch->pcdata->learned[sn] <= 0 && SPELL_FLAG( skill_table[sn], SF_SECRETSKILL ) )
+         if( ch->pcdata->learned[normalSn] <= 0 && SPELL_FLAG( skill, SF_SECRETSKILL ) )
             continue;
 
-         if( i == skill_table[sn]->skill_level[ch->Class] )
+         if( i == skill->skill_level[ch->Class] || i == skill->race_level[ch->race] )
          {
             if( !lFound )
             {
                lFound = 1;
                pager_printf( ch, "Level %d\r\n", i );
             }
-            switch ( skill_table[sn]->minimum_position )
+
+            switch ( skill->minimum_position )
             {
                default:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "Invalid" );
-                  bug( "do_slist: skill with invalid minpos, skill=%s", skill_table[sn]->name );
+                  bug( "%s: skill with invalid minpos, skill=%s", __FUNCTION__, skill->name );
                   break;
+
                case POS_DEAD:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "any" );
                   break;
+
                case POS_MORTAL:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "mortally wounded" );
                   break;
+
                case POS_INCAP:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "incapacitated" );
                   break;
+
                case POS_STUNNED:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "stunned" );
                   break;
+
                case POS_SLEEPING:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "sleeping" );
                   break;
+
                case POS_RESTING:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "resting" );
                   break;
+
                case POS_STANDING:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "standing" );
                   break;
+
                case POS_FIGHTING:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "fighting" );
                   break;
+
                case POS_EVASIVE:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "fighting (evasive)" ); /* Fighting style support -haus */
                   break;
+
                case POS_DEFENSIVE:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "fighting (defensive)" );
                   break;
+
                case POS_AGGRESSIVE:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "fighting (aggressive)" );
                   break;
+
                case POS_BERSERK:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "fighting (berserk)" );
                   break;
                case POS_MOUNTED:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "mounted" );
                   break;
+
                case POS_SITTING:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "sitting" );
                   break;
             }
 
             pager_printf( ch, "%7s: %20.20s \t Current: %-3d Max: %-3d  MinPos: %s \r\n",
-                          skn, skill_table[sn]->name,
-                          ch->pcdata->learned[sn], skill_table[sn]->skill_adept[ch->Class], buf );
+                          skn, skill->name, ch->pcdata->learned[normalSn], skill->skill_adept[ch->Class], buf );
          }
       }
    }
@@ -4732,17 +5098,9 @@ void do_ignore( CHAR_DATA * ch, char *argument )
 
       /*
        * if there wasn't a match check to see if the name   
-       */
-      /*
        * is valid. This if-statement may seem like overkill 
-       */
-      /*
        * but it is intended to prevent people from doing the
-       */
-      /*
        * spam and log thing while still allowing ya to      
-       */
-      /*
        * ignore new chars without pfiles yet...             
        */
       if( stat( fname, &fst ) == -1 &&
@@ -4767,8 +5125,6 @@ void do_ignore( CHAR_DATA * ch, char *argument )
 
       /*
        * If its valid and the list size limit has not been 
-       */
-      /*
        * reached create a node and at it to the list       
        */
       if( i < MAX_IGN )
@@ -4814,7 +5170,6 @@ bool is_ignoring( CHAR_DATA * ch, CHAR_DATA * ign_ch )
 }
 
 /* Version info -- Scryn */
-
 void do_version( CHAR_DATA * ch, char *argument )
 {
    if( IS_NPC( ch ) )

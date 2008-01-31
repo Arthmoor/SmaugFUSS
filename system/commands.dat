@@ -198,6 +198,14 @@ Log         0
 End
 
 #COMMAND
+Name        alinks~
+Code        do_alinks
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
 Name        buy~
 Code        do_buy
 Position    106
@@ -331,6 +339,14 @@ Name        bolt~
 Code        do_bolt
 Position    100
 Level       0
+Log         0
+End
+
+#COMMAND
+Name        chess~
+Code        do_chess
+Position    100
+Level       10
 Log         0
 End
 
@@ -876,6 +892,14 @@ Log         0
 End
 
 #COMMAND
+Name        findexit~
+Code        do_findexit
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
 Name        get~
 Code        do_get
 Position    106
@@ -1273,6 +1297,14 @@ Name        laws~
 Code        do_laws
 Position    100
 Level       1
+Log         0
+End
+
+#COMMAND
+Name        mpoowner~
+Code        do_mpoowner
+Position    100
+Level       0
 Log         0
 End
 
@@ -1946,6 +1978,38 @@ Log         0
 End
 
 #COMMAND
+Name        mphate~
+Code        do_mphate
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        mphunt~
+Code        do_mphunt
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        mpfear~
+Code        do_mpfear
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        mix~
+Code        do_mix
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
 Name        north~
 Code        do_north
 Position    112
@@ -2059,27 +2123,19 @@ Log         1
 End
 
 #COMMAND
-Name        news~
-Code        do_news
-Position    100
-Level       1
-Log         0
-End
-
-#COMMAND
-Name        newscore~
-Code        do_newscore
-Position    100
-Level       63
-Log         0
-End
-
-#COMMAND
 Name        nuisance~
 Code        do_nuisance
 Position    100
 Level       54
 Log         1
+End
+
+#COMMAND
+Name        oowner~
+Code        do_oowner
+Position    100
+Level       59
+Log         0
 End
 
 #COMMAND
@@ -2361,6 +2417,14 @@ Code        do_qpstat
 Position    100
 Level       51
 Log         0
+End
+
+#COMMAND
+Name        renumber~
+Code        do_renumber
+Position    100
+Level       55
+Log         1
 End
 
 #COMMAND
@@ -2655,6 +2719,14 @@ End
 #COMMAND
 Name        revert~
 Code        do_revert
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        roster~
+Code        do_roster
 Position    100
 Level       0
 Log         0
@@ -3128,6 +3200,38 @@ Log         0
 End
 
 #COMMAND
+Name        showliquid~
+Code        do_showliquid
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        setliquid~
+Code        do_setliquid
+Position    100
+Level       56
+Log         0
+End
+
+#COMMAND
+Name        showmixture~
+Code        do_showmixture
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        setmixture~
+Code        do_setmixture
+Position    100
+Level       56
+Log         0
+End
+
+#COMMAND
 Name        tell~
 Code        do_tell
 Position    106
@@ -3310,6 +3414,14 @@ Name        version~
 Code        do_version
 Position    100
 Level       0
+Log         0
+End
+
+#COMMAND
+Name        vstat~
+Code        do_vstat
+Position    100
+Level       54
 Log         0
 End
 

@@ -42,6 +42,7 @@ static OBJ_DATA *rgObjNest[MAX_NEST];
 
 bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length );
 bool write_to_descriptor_old( int desc, char *txt, int length );
+void update_room_reset( CHAR_DATA *ch, bool setting );
 
 extern ROOM_INDEX_DATA *room_index_hash[MAX_KEY_HASH];
 
@@ -59,6 +60,8 @@ void save_mobile( FILE * fp, CHAR_DATA * mob )
    fprintf( fp, "Vnum	%d\n", mob->pIndexData->vnum );
    fprintf( fp, "Level   %d\n", mob->level );
    fprintf( fp, "Gold	%d\n", mob->gold );
+   fprintf( fp, "Resetvnum %d\n", mob->resetvnum );
+   fprintf( fp, "Resetnum  %d\n", mob->resetnum );
    if( mob->in_room )
    {
       if( xIS_SET( mob->act, ACT_SENTINEL ) )
@@ -115,7 +118,6 @@ void save_mobile( FILE * fp, CHAR_DATA * mob )
    re_equip_char( mob );
 
    fprintf( fp, "%s", "EndMobile\n\n" );
-   return;
 }
 
 void save_world( void )
@@ -146,7 +148,7 @@ void save_world( void )
          if( pRoomIndex )
          {
             if( !pRoomIndex->first_content   /* Skip room if nothing in it */
-                || IS_SET( pRoomIndex->room_flags, ROOM_CLANSTOREROOM ) /* These rooms save on their own */
+                || xIS_SET( pRoomIndex->room_flags, ROOM_CLANSTOREROOM )   /* These rooms save on their own */
                 )
                continue;
 
@@ -328,6 +330,7 @@ CHAR_DATA *load_mobile( FILE * fp )
                   pRoomIndex = get_room_index( ROOM_VNUM_LIMBO );
                char_to_room( mob, pRoomIndex );
                mob->tempnum = -9998;   /* Yet another hackish fix! */
+               update_room_reset( mob, false );
                return mob;
             }
             if( !str_cmp( word, "End" ) ) /* End of object, need to ignore this. sometimes they creep in there somehow -- Scion */
@@ -387,6 +390,8 @@ CHAR_DATA *load_mobile( FILE * fp )
 
          case 'R':
             KEY( "Room", inroom, fread_number( fp ) );
+            KEY( "Resetvnum", mob->resetvnum, fread_number( fp ) );
+            KEY( "Resetnum", mob->resetnum, fread_number( fp ) );
             break;
 
          case 'S':
@@ -450,7 +455,7 @@ void read_obj_file( char *dirname, char *filename )
 
          if( letter != '#' )
          {
-            bug( "%s", "read_obj_file: # not found." );
+            bug( "%s: # not found.", __FUNCTION__ );
             break;
          }
 
@@ -461,7 +466,7 @@ void read_obj_file( char *dirname, char *filename )
             break;
          else
          {
-            bug( "read_obj_file: bad section: %s", word );
+            bug( "%s: bad section: %s", __FUNCTION__, word );
             break;
          }
       }

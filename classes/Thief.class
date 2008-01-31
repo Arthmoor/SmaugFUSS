@@ -20,8 +20,10 @@ Skill 'aid' 18 70
 Skill 'backstab' 1 95
 Skill 'bash' 49 60
 Skill 'berserk style' 33 45
+Skill 'bludgeons' 1 40
 Skill 'circle' 25 95
 Skill 'climb' 1 85
+Skill 'common' 1 99
 Skill 'cook' 1 95
 Skill 'defensive style' 1 95
 Skill 'detrap' 16 85
@@ -29,47 +31,45 @@ Skill 'dig' 2 90
 Skill 'disarm' 10 90
 Skill 'dodge' 1 95
 Skill 'dual wield' 40 85
+Skill 'dwarven' 1 99
+Skill 'elvish' 1 99
 Skill 'enhanced damage' 44 55
 Skill 'evasive style' 2 95
+Skill 'flexible arms' 1 95
 Skill 'fourth attack' 47 30
+Skill 'gith' 1 99
+Skill 'goblin' 1 99
 Skill 'gouge' 20 95
+Skill 'halfling' 1 99
 Skill 'headbutt' 20 60
 Skill 'hide' 1 85
 Skill 'knee' 15 70
 Skill 'leap' 20 95
+Skill 'long blades' 1 80
 Skill 'mount' 5 85
+Skill 'ogre' 1 99
+Skill 'orcish' 1 99
 Skill 'peek' 1 95
 Skill 'pick lock' 1 95
+Skill 'pixie' 1 99
 Skill 'poison weapon' 27 85
+Skill 'pugilism' 1 85
 Skill 'punch' 30 50
 Skill 'scan' 7 90
 Skill 'search' 3 85
 Skill 'second attack' 10 90
+Skill 'short blades' 1 95
 Skill 'sneak' 1 95
 Skill 'spinkick' 19 90
 Skill 'standard style' 1 85
 Skill 'steal' 1 95
 Skill 'swipe' 10 85
+Skill 'talonous arms' 1 80
 Skill 'third attack' 33 70
 Skill 'track' 15 85
+Skill 'trollese' 1 99
 Skill 'tumble' 46 95
 Skill 'vault' 25 90
-Skill 'bludgeons' 1 40
-Skill 'flexible arms' 1 95
-Skill 'long blades' 1 80
-Skill 'pugilism' 1 85
-Skill 'short blades' 1 95
-Skill 'talonous arms' 1 80
-Skill 'common' 1 99
-Skill 'dwarven' 1 99
-Skill 'elvish' 1 99
-Skill 'gith' 1 99
-Skill 'goblin' 1 99
-Skill 'halfling' 1 99
-Skill 'ogre' 1 99
-Skill 'orcish' 1 99
-Skill 'pixie' 1 99
-Skill 'trollese' 1 99
 Title
 Man~
 Woman~

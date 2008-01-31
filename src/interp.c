@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			 Command interpretation module			    *
+ *                       Command interpretation module                      *
  ****************************************************************************/
 
 #include <ctype.h>
@@ -21,13 +21,13 @@
 #include <time.h>
 #include <sys/time.h>
 #include "mud.h"
+#include "news.h"
 
 /*
  * Externals
  */
-void refresh_page( CHAR_DATA * ch );
 void subtract_times( struct timeval *etime, struct timeval *sttime );
-bool check_social( CHAR_DATA * ch, char *command, char *argument );
+bool check_social( CHAR_DATA * ch, const char *command, char *argument );
 char *check_cmd_flags( CHAR_DATA * ch, CMDTYPE * cmd );
 
 /*
@@ -85,6 +85,7 @@ bool check_pos( CHAR_DATA * ch, short position )
                send_to_char( "No way!  You are still fighting!\r\n", ch );
             }
             break;
+
          case POS_DEFENSIVE:
             if( position <= POS_EVASIVE )
             {
@@ -95,6 +96,7 @@ bool check_pos( CHAR_DATA * ch, short position )
                send_to_char( "No way!  You are still fighting!\r\n", ch );
             }
             break;
+
          case POS_AGGRESSIVE:
             if( position <= POS_EVASIVE )
             {
@@ -105,6 +107,7 @@ bool check_pos( CHAR_DATA * ch, short position )
                send_to_char( "No way!  You are still fighting!\r\n", ch );
             }
             break;
+
          case POS_BERSERK:
             if( position <= POS_EVASIVE )
             {
@@ -115,6 +118,7 @@ bool check_pos( CHAR_DATA * ch, short position )
                send_to_char( "No way!  You are still fighting!\r\n", ch );
             }
             break;
+
          case POS_EVASIVE:
             send_to_char( "No way!  You are still fighting!\r\n", ch );
             break;
@@ -229,6 +233,7 @@ void interpret( CHAR_DATA * ch, char *argument )
    char logline[MAX_INPUT_LENGTH];
    char logname[MAX_INPUT_LENGTH];
    char log_buf[MAX_STRING_LENGTH];
+   char *origarg = argument;
    char *buf;
    TIMER *timer = NULL;
    CMDTYPE *cmd = NULL;
@@ -238,18 +243,18 @@ void interpret( CHAR_DATA * ch, char *argument )
    struct timeval time_used;
    long tmptime;
 
-
    if( !ch )
    {
-      bug( "%s", "interpret: null ch!" );
+      bug( "%s: null ch!", __FUNCTION__ );
       return;
    }
 
    if( !ch->in_room )
    {
-      bug( "%s", "interpret: null in_room!" );
+      bug( "%s: null in_room!", __FUNCTION__ );
       return;
    }
+
    found = FALSE;
    if( ch->substate == SUB_REPEATCMD )
    {
@@ -258,7 +263,7 @@ void interpret( CHAR_DATA * ch, char *argument )
       if( ( fun = ch->last_cmd ) == NULL )
       {
          ch->substate = SUB_NONE;
-         bug( "%s", "interpret: SUB_REPEATCMD with NULL last_cmd" );
+         bug( "%s: SUB_REPEATCMD with NULL last_cmd", __FUNCTION__ );
          return;
       }
       else
@@ -283,7 +288,7 @@ void interpret( CHAR_DATA * ch, char *argument )
          if( !found )
          {
             cmd = NULL;
-            bug( "%s", "interpret: SUB_REPEATCMD: last_cmd invalid" );
+            bug( "%s: SUB_REPEATCMD: last_cmd invalid", __FUNCTION__ );
             return;
          }
          snprintf( logline, MAX_INPUT_LENGTH, "(%s) %s", cmd->name, argument );
@@ -297,7 +302,7 @@ void interpret( CHAR_DATA * ch, char *argument )
        */
       if( !argument || !strcmp( argument, "" ) )
       {
-         bug( "%s", "interpret: null argument!" );
+         bug( "%s: null argument!", __FUNCTION__ );
          return;
       }
 
@@ -363,9 +368,6 @@ void interpret( CHAR_DATA * ch, char *argument )
       if( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AFK ) && ( str_cmp( command, "AFK" ) ) )
       {
          xREMOVE_BIT( ch->act, PLR_AFK );
-/*
-     	    act( AT_GREY, "$n is no longer afk.", ch, NULL, NULL, TO_ROOM );
-*/
          act( AT_GREY, "$n is no longer afk.", ch, NULL, NULL, TO_CANSEE );
       }
    }
@@ -390,7 +392,6 @@ void interpret( CHAR_DATA * ch, char *argument )
       else if( IS_SET( ch->pcdata->flags, PCFLAG_WATCH ) )
          write_watch_files( ch, NULL, logline );
    }
-
 
    if( ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_LOG ) )
        || fLogAll || loglvl == LOG_BUILD || loglvl == LOG_HIGH || loglvl == LOG_ALWAYS )
@@ -452,7 +453,11 @@ void interpret( CHAR_DATA * ch, char *argument )
     */
    if( !found )
    {
-      if( !check_skill( ch, command, argument ) && !check_social( ch, command, argument )
+      if( !check_skill( ch, command, argument ) && !check_ability( ch, command, argument )   // Racial Abilities Support - Kayle 7-8-07
+          && !rprog_command_trigger( ch, origarg )
+          && !mprog_command_trigger( ch, origarg )
+          && !oprog_command_trigger( ch, origarg )
+          && !check_social( ch, command, argument ) && !news_cmd_hook( ch, command, argument )
 #ifdef IMC
           && !imc_command_hook( ch, command, argument )
 #endif
@@ -588,7 +593,7 @@ SOCIALTYPE *find_social( const char *command )
    return NULL;
 }
 
-bool check_social( CHAR_DATA * ch, char *command, char *argument )
+bool check_social( CHAR_DATA * ch, const char *command, char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim, *victim_next;

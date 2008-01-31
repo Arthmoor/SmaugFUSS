@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			 Low-level communication module			    *
+ *                      Low-level communication module                      *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -88,15 +88,11 @@ void free_councils( void );
 void free_specfuns( void );
 void free_all_reserved( void );
 
-const char echo_off_str[] = { IAC, WILL, TELOPT_ECHO, '\0' };
-const char echo_on_str[] = { IAC, WONT, TELOPT_ECHO, '\0' };
-const char go_ahead_str[] = { IAC, GA, '\0' };
+const char echo_off_str[] = { ( char )IAC, ( char )WILL, TELOPT_ECHO, '\0' };
+const char echo_on_str[] = { ( char )IAC, ( char )WONT, TELOPT_ECHO, '\0' };
+const char go_ahead_str[] = { ( char )IAC, ( char )GA, '\0' };
 
-void auth_maxdesc args( ( int *md, fd_set * ins, fd_set * outs, fd_set * excs ) );
-void auth_check args( ( fd_set * ins, fd_set * outs, fd_set * excs ) );
-void set_auth args( ( DESCRIPTOR_DATA * d ) );
-void kill_auth args( ( DESCRIPTOR_DATA * d ) );
-void save_sysdata args( ( SYSTEM_DATA sys ) );
+void save_sysdata( SYSTEM_DATA sys );
 
 /*
  * Global variables.
@@ -109,7 +105,6 @@ DESCRIPTOR_DATA *d_next;   /* Next descriptor in loop */
 int num_descriptors;
 bool mud_down; /* Shutdown       */
 bool service_shut_down; /* Shutdown by operator closing down service */
-bool wizlock;  /* Game is wizlocked    */
 time_t boot_time;
 HOUR_MIN_SEC set_boot_time_struct;
 HOUR_MIN_SEC *set_boot_time;
@@ -138,20 +133,19 @@ bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length );
 /*
  * Other local functions (OS-independent).
  */
-bool check_parse_name args( ( char *name, bool newchar ) );
-bool check_reconnect args( ( DESCRIPTOR_DATA * d, char *name, bool fConn ) );
-bool check_playing args( ( DESCRIPTOR_DATA * d, char *name, bool kick ) );
-int main args( ( int argc, char **argv ) );
-void nanny args( ( DESCRIPTOR_DATA * d, char *argument ) );
-bool flush_buffer args( ( DESCRIPTOR_DATA * d, bool fPrompt ) );
-void read_from_buffer args( ( DESCRIPTOR_DATA * d ) );
-void stop_idling args( ( CHAR_DATA * ch ) );
-void free_desc args( ( DESCRIPTOR_DATA * d ) );
-void display_prompt args( ( DESCRIPTOR_DATA * d ) );
-void set_pager_input args( ( DESCRIPTOR_DATA * d, char *argument ) );
-bool pager_output args( ( DESCRIPTOR_DATA * d ) );
-
-void mail_count args( ( CHAR_DATA * ch ) );
+bool check_parse_name( char *name, bool newchar );
+bool check_reconnect( DESCRIPTOR_DATA * d, char *name, bool fConn );
+bool check_playing( DESCRIPTOR_DATA * d, char *name, bool kick );
+int main( int argc, char **argv );
+void nanny( DESCRIPTOR_DATA * d, char *argument );
+bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt );
+void read_from_buffer( DESCRIPTOR_DATA * d );
+void stop_idling( CHAR_DATA * ch );
+void free_desc( DESCRIPTOR_DATA * d );
+void display_prompt( DESCRIPTOR_DATA * d );
+void set_pager_input( DESCRIPTOR_DATA * d, char *argument );
+bool pager_output( DESCRIPTOR_DATA * d );
+void mail_count( CHAR_DATA * ch );
 
 int port;
 
@@ -163,9 +157,6 @@ int port;
 void cleanup_memory( void )
 {
    int hash, loopa;
-#ifdef OLD_CRYPT
-   char *cryptstr;
-#endif
    CHAR_DATA *character;
    OBJ_DATA *object;
    DESCRIPTOR_DATA *desc, *desc_next;
@@ -174,11 +165,6 @@ void cleanup_memory( void )
    fprintf( stdout, "%s", "IMC2 Data.\n" );
    free_imcdata( TRUE );
    imc_delete_info(  );
-#endif
-#ifdef I3
-   fprintf( stdout, "%s", "I3 Data.\n" );
-   free_i3data( TRUE );
-   destroy_I3_mud( this_i3mud );
 #endif
 
    fprintf( stdout, "%s", "Project Data.\n" );
@@ -198,14 +184,6 @@ void cleanup_memory( void )
     */
    fprintf( stdout, "%s", "Commands.\n" );
    free_commands(  );
-
-#ifdef MULTIPORT
-   /*
-    * Shell Commands 
-    */
-   fprintf( stdout, "%s", "Shell Commands.\n" );
-   free_shellcommands(  );
-#endif
 
    /*
     * Deities 
@@ -294,6 +272,12 @@ void cleanup_memory( void )
       UNLINK( desc, first_descriptor, last_descriptor, next, prev );
       free_desc( desc );
    }
+
+   /*
+    * Liquids 
+    */
+   fprintf( stdout, "%s", "Liquid Table.\n" );
+   free_liquiddata(  );
 
    /*
     * Races 
@@ -386,12 +370,6 @@ void cleanup_memory( void )
     */
    fprintf( stdout, "%s", "Globals.\n" );
    DISPOSE( ranged_target_name );
-
-#ifdef OLD_CRYPT
-   fprintf( stdout, "%s", "Disposing of crypt.\n" );
-   cryptstr = crypt( "cleaning", "$1$Cleanup" );
-   free( cryptstr );
-#endif
 
    fprintf( stdout, "%s", "Checking string hash for leftovers.\n" );
    {
@@ -1189,14 +1167,15 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    {
       DESCRIPTOR_DATA *dp, *dn;
       bug( "Close_socket: %s desc:%p != first_desc:%p and desc->prev = NULL!",
-           ch ? ch->name : d->host, dclose, first_descriptor );
+           ch ? ch->name : d->host, ( void * )dclose, ( void * )first_descriptor );
       dp = NULL;
       for( d = first_descriptor; d; d = dn )
       {
          dn = d->next;
          if( d == dclose )
          {
-            bug( "Close_socket: %s desc:%p found, prev should be:%p, fixing.", ch ? ch->name : d->host, dclose, dp );
+            bug( "Close_socket: %s desc:%p found, prev should be:%p, fixing.", ch ? ch->name : d->host, ( void * )dclose,
+                 ( void * )dp );
             dclose->prev = dp;
             break;
          }
@@ -1204,22 +1183,24 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->prev )
       {
-         bug( "Close_socket: %s desc:%p could not be found!.", ch ? ch->name : dclose->host, dclose );
+         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
+
    if( !dclose->next && dclose != last_descriptor )
    {
       DESCRIPTOR_DATA *dp, *dn;
       bug( "Close_socket: %s desc:%p != last_desc:%p and desc->next = NULL!",
-           ch ? ch->name : d->host, dclose, last_descriptor );
+           ch ? ch->name : d->host, ( void * )dclose, ( void * )last_descriptor );
       dn = NULL;
       for( d = last_descriptor; d; d = dp )
       {
          dp = d->prev;
          if( d == dclose )
          {
-            bug( "Close_socket: %s desc:%p found, next should be:%p, fixing.", ch ? ch->name : d->host, dclose, dn );
+            bug( "%s: %s desc:%p found, next should be:%p, fixing.", __FUNCTION__, ch ? ch->name : d->host, ( void * )dclose,
+                 ( void * )dn );
             dclose->next = dn;
             break;
          }
@@ -1227,7 +1208,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->next )
       {
-         bug( "Close_socket: %s desc:%p could not be found!.", ch ? ch->name : dclose->host, dclose );
+         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
@@ -1235,6 +1216,16 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    if( dclose->character )
    {
       log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "Closing link to %s.", ch->pcdata->filename );
+
+      if( dclose->connected == CON_EDITING )
+      {
+         if( ch->last_cmd )
+            ch->last_cmd( ch, "" );
+         else
+            stop_editing( ch );
+         dclose->connected = CON_PLAYING;
+      }
+
       if( dclose->connected == CON_PLAYING || dclose->connected == CON_EDITING )
       {
          act( AT_ACTION, "$n has lost $s link.", ch, NULL, NULL, TO_CANSEE );
@@ -1801,749 +1792,843 @@ void show_title( DESCRIPTOR_DATA * d )
    d->connected = CON_PRESS_ENTER;
 }
 
+void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   bool fOld, chk;
+   char buf[MAX_STRING_LENGTH];
+
+   ch = d->character;
+
+   if( argument[0] == '\0' )
+   {
+      close_socket( d, FALSE );
+      return;
+   }
+
+   argument[0] = UPPER( argument[0] );
+
+   /*
+    * Old players can keep their characters. -- Alty
+    */
+   if( !check_parse_name( argument, ( d->newstate != 0 ) ) )
+   {
+      write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
+      return;
+   }
+
+   if( !str_cmp( argument, "New" ) )
+   {
+      if( d->newstate == 0 )
+      {
+         /*
+          * New player
+          */
+         /*
+          * Don't allow new players if DENY_NEW_PLAYERS is true
+          */
+         if( sysdata.DENY_NEW_PLAYERS == TRUE )
+         {
+            write_to_buffer( d, "The mud is currently preparing for a reboot.\r\n", 0 );
+            write_to_buffer( d, "New players are not accepted during this time.\r\n", 0 );
+            write_to_buffer( d, "Please try again in a few minutes.\r\n", 0 );
+            close_socket( d, FALSE );
+         }
+         write_to_buffer( d, "\r\nChoosing a name is one of the most important parts of this game...\r\n"
+                          "Make sure to pick a name appropriate to the character you are going\r\n"
+                          "to role play, and be sure that it suits a medieval theme.\r\n"
+                          "If the name you select is not acceptable, you will be asked to choose\r\n"
+                          "another one.\r\n\r\nPlease choose a name for your character: ", 0 );
+         d->newstate++;
+         d->connected = CON_GET_NAME;
+         return;
+      }
+      else
+      {
+         write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
+         return;
+      }
+   }
+
+   if( check_playing( d, argument, FALSE ) == BERR )
+   {
+      write_to_buffer( d, "Name: ", 0 );
+      return;
+   }
+
+   fOld = load_char_obj( d, argument, TRUE, FALSE );
+   if( !d->character )
+   {
+      log_printf( "Bad player file %s@%s.", argument, d->host );
+      write_to_buffer( d, "Your playerfile is corrupt...Please notify Thoric@mud.compulink.com.\r\n", 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+   ch = d->character;
+   if( check_bans( ch, BAN_SITE ) )
+   {
+      write_to_buffer( d, "Your site has been banned from this Mud.\r\n", 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+
+   if( fOld )
+   {
+      if( check_bans( ch, BAN_CLASS ) )
+      {
+         write_to_buffer( d, "Your class has been banned from this Mud.\r\n", 0 );
+         close_socket( d, FALSE );
+         return;
+      }
+      if( check_bans( ch, BAN_RACE ) )
+      {
+         write_to_buffer( d, "Your race has been banned from this Mud.\r\n", 0 );
+         close_socket( d, FALSE );
+         return;
+      }
+   }
+   if( xIS_SET( ch->act, PLR_DENY ) )
+   {
+      log_printf_plus( LOG_COMM, sysdata.log_level, "Denying access to %s@%s.", argument, d->host );
+      if( d->newstate != 0 )
+      {
+         write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
+         d->connected = CON_GET_NAME;
+         d->character->desc = NULL;
+         free_char( d->character ); /* Big Memory Leak before --Shaddai */
+         d->character = NULL;
+         return;
+      }
+      write_to_buffer( d, "You are denied access.\r\n", 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+   /*
+    *  Make sure the immortal host is from the correct place.
+    *  Shaddai
+    */
+
+   if( IS_IMMORTAL( ch ) && sysdata.check_imm_host && !check_immortal_domain( ch, d->host ) )
+   {
+      log_printf_plus( LOG_COMM, sysdata.log_level, "%s's char being hacked from %s.", argument, d->host );
+      write_to_buffer( d, "This hacking attempt has been logged.\r\n", 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+
+
+   chk = check_reconnect( d, argument, FALSE );
+   if( chk == BERR )
+      return;
+
+   if( chk )
+   {
+      fOld = TRUE;
+   }
+   else
+   {
+      if( sysdata.wizlock && !IS_IMMORTAL( ch ) )
+      {
+         write_to_buffer( d, "The game is wizlocked. Only immortals can connect now.\r\n", 0 );
+         write_to_buffer( d, "Please try back later.\r\n", 0 );
+         close_socket( d, FALSE );
+         return;
+      }
+   }
+
+   if( fOld )
+   {
+      if( d->newstate != 0 )
+      {
+         write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
+         d->connected = CON_GET_NAME;
+         d->character->desc = NULL;
+         free_char( d->character ); /* Big Memory Leak before --Shaddai */
+         d->character = NULL;
+         return;
+      }
+      /*
+       * Old player
+       */
+      write_to_buffer( d, "Password: ", 0 );
+      write_to_buffer( d, echo_off_str, 0 );
+      d->connected = CON_GET_OLD_PASSWORD;
+      return;
+   }
+   else
+   {
+      /*
+       * if ( !check_parse_name( argument ) )
+       * {
+       * write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
+       * return;
+       * }
+       */
+
+      if( d->newstate == 0 )
+      {
+         /*
+          * No such player
+          */
+         write_to_buffer( d,
+                          "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ",
+                          0 );
+         d->connected = CON_GET_NAME;
+         d->character->desc = NULL;
+         free_char( d->character ); /* Big Memory Leak before --Shaddai */
+         d->character = NULL;
+         return;
+      }
+
+      snprintf( buf, MAX_STRING_LENGTH, "Did I get that right, %s (Y/N)? ", argument );
+      write_to_buffer( d, buf, 0 );
+      d->connected = CON_CONFIRM_NEW_NAME;
+      return;
+   }
+}
+
+void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char buf[MAX_STRING_LENGTH];
+   bool fOld, chk;
+
+   ch = d->character;
+   write_to_buffer( d, "\r\n", 2 );
+
+   if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
+   {
+      write_to_buffer( d, "Wrong password, disconnecting.\r\n", 0 );
+      /*
+       * clear descriptor pointer to get rid of bug message in log
+       */
+      d->character->desc = NULL;
+      close_socket( d, FALSE );
+      return;
+   }
+
+   write_to_buffer( d, echo_on_str, 0 );
+
+   if( check_playing( d, ch->pcdata->filename, TRUE ) )
+      return;
+
+   chk = check_reconnect( d, ch->pcdata->filename, TRUE );
+   if( chk == BERR )
+   {
+      if( d->character && d->character->desc )
+         d->character->desc = NULL;
+      close_socket( d, FALSE );
+      return;
+   }
+   if( chk == TRUE )
+      return;
+
+   mudstrlcpy( buf, ch->pcdata->filename, MAX_STRING_LENGTH );
+   d->character->desc = NULL;
+   free_char( d->character );
+   d->character = NULL;
+   fOld = load_char_obj( d, buf, FALSE, FALSE );
+   ch = d->character;
+   if( ch->position == POS_FIGHTING
+       || ch->position == POS_EVASIVE
+       || ch->position == POS_DEFENSIVE || ch->position == POS_AGGRESSIVE || ch->position == POS_BERSERK )
+      ch->position = POS_STANDING;
+
+   log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s (%s) has connected.", ch->name, d->host );
+   show_title( d );
+}
+
+void nanny_confirm_new_name( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char buf[MAX_STRING_LENGTH];
+
+   ch = d->character;
+
+   switch ( *argument )
+   {
+      case 'y':
+      case 'Y':
+         snprintf( buf, MAX_STRING_LENGTH,
+                   "\r\nMake sure to use a password that won't be easily guessed by someone else."
+                   "\r\nPick a good password for %s: %s", ch->name, echo_off_str );
+         write_to_buffer( d, buf, 0 );
+         d->connected = CON_GET_NEW_PASSWORD;
+         break;
+
+      case 'n':
+      case 'N':
+         write_to_buffer( d, "Ok, what IS it, then? ", 0 );
+         /*
+          * clear descriptor pointer to get rid of bug message in log
+          */
+         d->character->desc = NULL;
+         free_char( d->character );
+         d->character = NULL;
+         d->connected = CON_GET_NAME;
+         break;
+
+      default:
+         write_to_buffer( d, "Please type Yes or No. ", 0 );
+         break;
+   }
+}
+
+void nanny_get_new_password( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char *pwdnew;
+
+   ch = d->character;
+   write_to_buffer( d, "\r\n", 2 );
+
+   if( strlen( argument ) < 5 )
+   {
+      write_to_buffer( d, "Password must be at least five characters long.\r\nPassword: ", 0 );
+      return;
+   }
+
+   if( argument[0] == '!' )
+   {
+      send_to_char( "New password cannot begin with the '!' character.", ch );
+      return;
+   }
+   pwdnew = sha256_crypt( argument );  /* SHA-256 Encryption */
+   DISPOSE( ch->pcdata->pwd );
+   ch->pcdata->pwd = str_dup( pwdnew );
+   write_to_buffer( d, "\r\nPlease retype the password to confirm: ", 0 );
+   d->connected = CON_CONFIRM_NEW_PASSWORD;
+}
+
+void nanny_confirm_new_password( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+
+   ch = d->character;
+   write_to_buffer( d, "\r\n", 2 );
+
+   if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
+   {
+      write_to_buffer( d, "Passwords don't match.\r\nRetype password: ", 0 );
+      d->connected = CON_GET_NEW_PASSWORD;
+      return;
+   }
+
+   write_to_buffer( d, echo_on_str, 0 );
+   write_to_buffer( d, "\r\nWhat is your sex (M/F/N)? ", 0 );
+   d->connected = CON_GET_NEW_SEX;
+}
+
+void nanny_get_new_sex( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char buf[MAX_STRING_LENGTH];
+   int iClass;
+
+   ch = d->character;
+
+   switch ( argument[0] )
+   {
+      case 'm':
+      case 'M':
+         ch->sex = SEX_MALE;
+         break;
+      case 'f':
+      case 'F':
+         ch->sex = SEX_FEMALE;
+         break;
+      case 'n':
+      case 'N':
+         ch->sex = SEX_NEUTRAL;
+         break;
+      default:
+         write_to_buffer( d, "That's not a sex.\r\nWhat IS your sex? ", 0 );
+         return;
+   }
+
+   write_to_buffer( d, "\r\nSelect a class, or type help [class] to learn more about that class.\r\n[", 0 );
+   buf[0] = '\0';
+
+   for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
+   {
+      if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
+      {
+         if( iClass > 0 )
+         {
+            if( strlen( buf ) + strlen( class_table[iClass]->who_name ) > 77 )
+            {
+               mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+               write_to_buffer( d, buf, 0 );
+               buf[0] = '\0';
+            }
+            else
+               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         }
+         mudstrlcat( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
+      }
+   }
+   mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
+   write_to_buffer( d, buf, 0 );
+   d->connected = CON_GET_NEW_CLASS;
+}
+
+void nanny_get_new_class( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char buf[MAX_STRING_LENGTH];
+   char arg[MAX_STRING_LENGTH];
+   int iClass, iRace;
+
+   ch = d->character;
+   argument = one_argument( argument, arg );
+
+   if( !str_cmp( arg, "help" ) )
+   {
+
+      for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
+      {
+         if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
+         {
+            if( toupper( argument[0] ) == toupper( class_table[iClass]->who_name[0] )
+                && !str_prefix( argument, class_table[iClass]->who_name ) )
+            {
+               do_help( ch, argument );
+               write_to_buffer( d, "Please choose a class: ", 0 );
+               return;
+            }
+         }
+      }
+      write_to_buffer( d, "No such help topic.  Please choose a class: ", 0 );
+      return;
+   }
+
+   for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
+   {
+      if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
+      {
+         if( toupper( arg[0] ) == toupper( class_table[iClass]->who_name[0] )
+             && !str_prefix( arg, class_table[iClass]->who_name ) )
+         {
+            ch->Class = iClass;
+            break;
+         }
+      }
+   }
+
+   if( iClass == MAX_PC_CLASS
+       || !class_table[iClass]->who_name
+       || class_table[iClass]->who_name[0] == '\0' || !str_cmp( class_table[iClass]->who_name, "unused" ) )
+   {
+      write_to_buffer( d, "That's not a class.\r\nWhat IS your class? ", 0 );
+      return;
+   }
+
+
+   if( check_bans( ch, BAN_CLASS ) )
+   {
+      write_to_buffer( d, "That class is not currently avaiable.\r\nWhat IS your class? ", 0 );
+      return;
+   }
+
+   write_to_buffer( d, "\r\nYou may choose from the following races, or type help [race] to learn more:\r\n[", 0 );
+   buf[0] = '\0';
+   for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
+   {
+      if( iRace != RACE_VAMPIRE
+          && race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
+          && !IS_SET( race_table[iRace]->class_restriction, 1 << ch->Class )
+          && str_cmp( race_table[iRace]->race_name, "unused" ) )
+      {
+         if( iRace > 0 )
+         {
+            if( strlen( buf ) + strlen( race_table[iRace]->race_name ) > 77 )
+            {
+               mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+               write_to_buffer( d, buf, 0 );
+               buf[0] = '\0';
+            }
+            else
+               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         }
+         mudstrlcat( buf, race_table[iRace]->race_name, MAX_STRING_LENGTH );
+      }
+   }
+   mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
+   write_to_buffer( d, buf, 0 );
+   d->connected = CON_GET_NEW_RACE;
+}
+
+void nanny_get_new_race( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char arg[MAX_STRING_LENGTH];
+   int iRace;
+
+   ch = d->character;
+   argument = one_argument( argument, arg );
+   if( !str_cmp( arg, "help" ) )
+   {
+      for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
+      {
+         if( toupper( argument[0] ) == toupper( race_table[iRace]->race_name[0] )
+             && !str_prefix( argument, race_table[iRace]->race_name ) )
+         {
+            do_help( ch, argument );
+            write_to_buffer( d, "Please choose a race: ", 0 );
+            return;
+         }
+      }
+      write_to_buffer( d, "No help on that topic.  Please choose a race: ", 0 );
+      return;
+   }
+
+
+   for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
+   {
+      if( toupper( arg[0] ) == toupper( race_table[iRace]->race_name[0] )
+          && !str_prefix( arg, race_table[iRace]->race_name ) )
+      {
+         ch->race = iRace;
+         break;
+      }
+   }
+
+   if( iRace == MAX_PC_RACE
+       || !race_table[iRace]->race_name || race_table[iRace]->race_name[0] == '\0'
+       || iRace == RACE_VAMPIRE
+       || IS_SET( race_table[iRace]->class_restriction, 1 << ch->Class )
+       || !str_cmp( race_table[iRace]->race_name, "unused" ) )
+   {
+      write_to_buffer( d, "That's not a race.\r\nWhat IS your race? ", 0 );
+      return;
+   }
+
+   if( check_bans( ch, BAN_RACE ) )
+   {
+      write_to_buffer( d, "That race is not currently available.\r\nWhat is your race? ", 0 );
+      return;
+   }
+
+   write_to_buffer( d, "\r\nWould you like RIP, ANSI or no graphic/color support, (R/A/N)? ", 0 );
+   d->connected = CON_GET_WANT_RIPANSI;
+}
+
+void nanny_get_want_ripansi( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char log_buf[MAX_STRING_LENGTH];
+
+   ch = d->character;
+
+   switch ( argument[0] )
+   {
+      case 'r':
+      case 'R':
+         xSET_BIT( ch->act, PLR_RIP );
+         xSET_BIT( ch->act, PLR_ANSI );
+         break;
+      case 'a':
+      case 'A':
+         xSET_BIT( ch->act, PLR_ANSI );
+         break;
+      case 'n':
+      case 'N':
+         break;
+      default:
+         write_to_buffer( d, "Invalid selection.\r\nRIP, ANSI or NONE? ", 0 );
+         return;
+   }
+   snprintf( log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s.", ch->name, d->host,
+             race_table[ch->race]->race_name, class_table[ch->Class]->who_name );
+   log_string_plus( log_buf, LOG_COMM, sysdata.log_level );
+   to_channel( log_buf, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL );
+   write_to_buffer( d, "Press [ENTER] ", 0 );
+   show_title( d );
+   ch->level = 0;
+   ch->position = POS_STANDING;
+   d->connected = CON_PRESS_ENTER;
+   set_pager_color( AT_PLAIN, ch );
+}
+
+void nanny_press_enter( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+
+   ch = d->character;
+
+   if( chk_watch( get_trust( ch ), ch->name, d->host ) ) /*  --Gorog */
+      SET_BIT( ch->pcdata->flags, PCFLAG_WATCH );
+   else
+      REMOVE_BIT( ch->pcdata->flags, PCFLAG_WATCH );
+
+   if( ch->position == POS_MOUNTED )
+      ch->position = POS_STANDING;
+
+   set_pager_color( AT_PLAIN, ch );
+   if( xIS_SET( ch->act, PLR_RIP ) )
+      send_rip_screen( ch );
+   if( xIS_SET( ch->act, PLR_ANSI ) )
+      send_to_pager( "\033[2J", ch );
+   else
+      send_to_pager( "\014", ch );
+   if( IS_IMMORTAL( ch ) )
+      do_help( ch, "imotd" );
+   if( ch->level == LEVEL_AVATAR )
+      do_help( ch, "amotd" );
+   if( ch->level < LEVEL_AVATAR && ch->level > 0 )
+      do_help( ch, "motd" );
+   if( ch->level == 0 )
+      do_help( ch, "nmotd" );
+   send_to_pager( "\r\nPress [ENTER] ", ch );
+   d->connected = CON_READ_MOTD;
+}
+
+void nanny_read_motd( DESCRIPTOR_DATA * d, char *argument )
+{
+   CHAR_DATA *ch;
+   char buf[MAX_STRING_LENGTH];
+   ch = d->character;
+
+   {
+      char motdbuf[MAX_STRING_LENGTH];
+
+      snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
+      write_to_buffer( d, motdbuf, 0 );
+   }
+   add_char( ch );
+   d->connected = CON_PLAYING;
+
+   if( ch->level == 0 )
+   {
+      OBJ_DATA *obj;
+      int iLang, uLang;
+
+      ch->pcdata->clan = NULL;
+      switch ( class_table[ch->Class]->attr_prime )
+      {
+         case APPLY_STR:
+            ch->perm_str = 16;
+            break;
+         case APPLY_INT:
+            ch->perm_int = 16;
+            break;
+         case APPLY_WIS:
+            ch->perm_wis = 16;
+            break;
+         case APPLY_DEX:
+            ch->perm_dex = 16;
+            break;
+         case APPLY_CON:
+            ch->perm_con = 16;
+            break;
+         case APPLY_CHA:
+            ch->perm_cha = 16;
+            break;
+         case APPLY_LCK:
+            ch->perm_lck = 16;
+            break;
+      }
+
+      ch->perm_str += race_table[ch->race]->str_plus;
+      ch->perm_int += race_table[ch->race]->int_plus;
+      ch->perm_wis += race_table[ch->race]->wis_plus;
+      ch->perm_dex += race_table[ch->race]->dex_plus;
+      ch->perm_con += race_table[ch->race]->con_plus;
+      ch->perm_cha += race_table[ch->race]->cha_plus;
+      ch->affected_by = race_table[ch->race]->affected;
+      ch->perm_lck += race_table[ch->race]->lck_plus;
+
+      ch->armor += race_table[ch->race]->ac_plus;
+      ch->alignment += race_table[ch->race]->alignment;
+      ch->attacks = race_table[ch->race]->attacks;
+      ch->defenses = race_table[ch->race]->defenses;
+      ch->saving_poison_death = race_table[ch->race]->saving_poison_death;
+      ch->saving_wand = race_table[ch->race]->saving_wand;
+      ch->saving_para_petri = race_table[ch->race]->saving_para_petri;
+      ch->saving_breath = race_table[ch->race]->saving_breath;
+      ch->saving_spell_staff = race_table[ch->race]->saving_spell_staff;
+
+      ch->height =
+         number_range( ( int )( race_table[ch->race]->height * .9 ), ( int )( race_table[ch->race]->height * 1.1 ) );
+      ch->weight =
+         number_range( ( int )( race_table[ch->race]->weight * .9 ), ( int )( race_table[ch->race]->weight * 1.1 ) );
+
+      if( ch->Class == CLASS_PALADIN )
+         ch->alignment = 1000;
+
+      if( ( iLang = skill_lookup( "common" ) ) < 0 )
+         bug( "%s", "Nanny: cannot find common language." );
+      else
+         ch->pcdata->learned[iLang] = 100;
+
+      /*
+       * Give them their racial languages 
+       */
+      if( race_table[ch->race] )
+      {
+         for( iLang = 0; lang_array[iLang] != LANG_UNKNOWN; iLang++ )
+         {
+            if( IS_SET( race_table[ch->race]->language, 1 << iLang ) )
+            {
+               if( ( uLang = skill_lookup( lang_names[iLang] ) ) < 0 )
+                  bug( "%s: cannot find racial language [%s].", __FUNCTION__, lang_names[iLang] );
+               else
+                  ch->pcdata->learned[uLang] = 100;
+            }
+         }
+      }
+
+      /*
+       * ch->resist           += race_table[ch->race]->resist;    drats
+       */
+      /*
+       * ch->susceptible     += race_table[ch->race]->suscept;    drats
+       */
+
+      reset_colors( ch );
+      name_stamp_stats( ch );
+
+      ch->level = 1;
+      ch->exp = 0;
+      ch->max_hit += race_table[ch->race]->hit;
+      ch->max_mana += race_table[ch->race]->mana;
+      ch->hit = UMAX( 1, ch->max_hit );
+      ch->mana = UMAX( 1, ch->max_mana );
+      ch->move = ch->max_move;
+      snprintf( buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0] );
+      set_title( ch, buf );
+
+      /*
+       * Added by Narn.  Start new characters with autoexit and autgold
+       * already turned on.  Very few people don't use those.
+       */
+      xSET_BIT( ch->act, PLR_AUTOGOLD );
+      xSET_BIT( ch->act, PLR_AUTOEXIT );
+
+      /*
+       * Added by Brittany, Nov 24/96.  The object is the adventurer's guide
+       * to the realms of despair, part of Academy.are.
+       */
+      {
+         OBJ_INDEX_DATA *obj_ind = get_obj_index( 10333 );
+         if( obj_ind != NULL )
+         {
+            obj = create_object( obj_ind, 0 );
+            obj_to_char( obj, ch );
+            equip_char( ch, obj, WEAR_HOLD );
+         }
+      }
+      if( !sysdata.WAIT_FOR_AUTH )
+         char_to_room( ch, get_room_index( ROOM_VNUM_SCHOOL ) );
+      else
+      {
+         char_to_room( ch, get_room_index( ROOM_AUTH_START ) );
+         ch->pcdata->auth_state = 0;
+         SET_BIT( ch->pcdata->flags, PCFLAG_UNAUTHED );
+      }
+   }
+   else if( !IS_IMMORTAL( ch ) && ch->pcdata->release_date > 0 && ch->pcdata->release_date > current_time )
+   {
+      if( ch->in_room->vnum == 6 || ch->in_room->vnum == 8 || ch->in_room->vnum == 1206 )
+         char_to_room( ch, ch->in_room );
+      else
+         char_to_room( ch, get_room_index( 8 ) );
+   }
+   else if( ch->in_room && ( IS_IMMORTAL( ch ) || !xIS_SET( ch->in_room->room_flags, ROOM_PROTOTYPE ) ) )
+   {
+      char_to_room( ch, ch->in_room );
+   }
+   else if( IS_IMMORTAL( ch ) )
+   {
+      char_to_room( ch, get_room_index( ROOM_VNUM_CHAT ) );
+   }
+   else
+   {
+      char_to_room( ch, get_room_index( ROOM_VNUM_TEMPLE ) );
+   }
+
+
+   if( get_timer( ch, TIMER_SHOVEDRAG ) > 0 )
+      remove_timer( ch, TIMER_SHOVEDRAG );
+
+   if( get_timer( ch, TIMER_PKILLED ) > 0 )
+      remove_timer( ch, TIMER_PKILLED );
+
+   act( AT_ACTION, "$n has entered the game.", ch, NULL, NULL, TO_CANSEE );
+   if( ch->pcdata->pet )
+   {
+      act( AT_ACTION, "$n returns to $s master from the Void.", ch->pcdata->pet, NULL, ch, TO_NOTVICT );
+      act( AT_ACTION, "$N returns with you to the realms.", ch, NULL, ch->pcdata->pet, TO_CHAR );
+   }
+   do_look( ch, "auto" );
+   mail_count( ch );
+
+   if( !ch->was_in_room && ch->in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
+      ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
+   else if( ch->was_in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
+      ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
+   else if( !ch->was_in_room )
+      ch->was_in_room = ch->in_room;
+}
+
 /*
  * Deal with sockets that haven't logged in yet.
  */
 void nanny( DESCRIPTOR_DATA * d, char *argument )
 {
-   char buf[MAX_STRING_LENGTH];
-   char arg[MAX_STRING_LENGTH];
-   char log_buf[MAX_STRING_LENGTH];
-   CHAR_DATA *ch;
-   char *pwdnew;
-   int iClass, iRace;
-   bool fOld, chk;
-
    while( isspace( *argument ) )
       argument++;
 
-   ch = d->character;
-
    switch ( d->connected )
    {
-
       default:
-         bug( "Nanny: bad d->connected %d.", d->connected );
+         bug( "%s: bad d->connected %d.", __FUNCTION__, d->connected );
          close_socket( d, TRUE );
          return;
 
       case CON_GET_NAME:
-         if( argument[0] == '\0' )
-         {
-            close_socket( d, FALSE );
-            return;
-         }
-
-         argument[0] = UPPER( argument[0] );
-
-         /*
-          * Old players can keep their characters. -- Alty 
-          */
-         if( !check_parse_name( argument, ( d->newstate != 0 ) ) )
-         {
-            write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
-            return;
-         }
-
-         if( !str_cmp( argument, "New" ) )
-         {
-            if( d->newstate == 0 )
-            {
-               /*
-                * New player 
-                */
-               /*
-                * Don't allow new players if DENY_NEW_PLAYERS is true 
-                */
-               if( sysdata.DENY_NEW_PLAYERS == TRUE )
-               {
-                  write_to_buffer( d, "The mud is currently preparing for a reboot.\r\n", 0 );
-                  write_to_buffer( d, "New players are not accepted during this time.\r\n", 0 );
-                  write_to_buffer( d, "Please try again in a few minutes.\r\n", 0 );
-                  close_socket( d, FALSE );
-               }
-               write_to_buffer( d, "\r\nChoosing a name is one of the most important parts of this game...\r\n"
-                                "Make sure to pick a name appropriate to the character you are going\r\n"
-                                "to role play, and be sure that it suits a medieval theme.\r\n"
-                                "If the name you select is not acceptable, you will be asked to choose\r\n"
-                                "another one.\r\n\r\nPlease choose a name for your character: ", 0 );
-               d->newstate++;
-               d->connected = CON_GET_NAME;
-               return;
-            }
-            else
-            {
-               write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
-               return;
-            }
-         }
-
-         if( check_playing( d, argument, FALSE ) == BERR )
-         {
-            write_to_buffer( d, "Name: ", 0 );
-            return;
-         }
-
-         fOld = load_char_obj( d, argument, TRUE, FALSE );
-         if( !d->character )
-         {
-            log_printf( "Bad player file %s@%s.", argument, d->host );
-            write_to_buffer( d, "Your playerfile is corrupt...Please notify Thoric@mud.compulink.com.\r\n", 0 );
-            close_socket( d, FALSE );
-            return;
-         }
-         ch = d->character;
-         if( check_bans( ch, BAN_SITE ) )
-         {
-            write_to_buffer( d, "Your site has been banned from this Mud.\r\n", 0 );
-            close_socket( d, FALSE );
-            return;
-         }
-
-         if( fOld )
-         {
-            if( check_bans( ch, BAN_CLASS ) )
-            {
-               write_to_buffer( d, "Your class has been banned from this Mud.\r\n", 0 );
-               close_socket( d, FALSE );
-               return;
-            }
-            if( check_bans( ch, BAN_RACE ) )
-            {
-               write_to_buffer( d, "Your race has been banned from this Mud.\r\n", 0 );
-               close_socket( d, FALSE );
-               return;
-            }
-         }
-
-         if( xIS_SET( ch->act, PLR_DENY ) )
-         {
-            log_printf_plus( LOG_COMM, sysdata.log_level, "Denying access to %s@%s.", argument, d->host );
-            if( d->newstate != 0 )
-            {
-               write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
-               d->connected = CON_GET_NAME;
-               d->character->desc = NULL;
-               free_char( d->character ); /* Big Memory Leak before --Shaddai */
-               d->character = NULL;
-               return;
-            }
-            write_to_buffer( d, "You are denied access.\r\n", 0 );
-            close_socket( d, FALSE );
-            return;
-         }
-         /*
-          *  Make sure the immortal host is from the correct place.
-          *  Shaddai
-          */
-
-         if( IS_IMMORTAL( ch ) && sysdata.check_imm_host && !check_immortal_domain( ch, d->host ) )
-         {
-            log_printf_plus( LOG_COMM, sysdata.log_level, "%s's char being hacked from %s.", argument, d->host );
-            write_to_buffer( d, "This hacking attempt has been logged.\r\n", 0 );
-            close_socket( d, FALSE );
-            return;
-         }
-
-
-         chk = check_reconnect( d, argument, FALSE );
-         if( chk == BERR )
-            return;
-
-         if( chk )
-         {
-            fOld = TRUE;
-         }
-         else
-         {
-            if( wizlock && !IS_IMMORTAL( ch ) )
-            {
-               write_to_buffer( d, "The game is wizlocked.  Only immortals can connect now.\r\n", 0 );
-               write_to_buffer( d, "Please try back later.\r\n", 0 );
-               close_socket( d, FALSE );
-               return;
-            }
-         }
-
-         if( fOld )
-         {
-            if( d->newstate != 0 )
-            {
-               write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
-               d->connected = CON_GET_NAME;
-               d->character->desc = NULL;
-               free_char( d->character ); /* Big Memory Leak before --Shaddai */
-               d->character = NULL;
-               return;
-            }
-            /*
-             * Old player 
-             */
-            write_to_buffer( d, "Password: ", 0 );
-            write_to_buffer( d, echo_off_str, 0 );
-            d->connected = CON_GET_OLD_PASSWORD;
-            return;
-         }
-         else
-         {
-            /*
-             * if ( !check_parse_name( argument ) )
-             * {
-             * write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
-             * return;
-             * }
-             */
-
-            if( d->newstate == 0 )
-            {
-               /*
-                * No such player 
-                */
-               write_to_buffer( d,
-                                "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ",
-                                0 );
-               d->connected = CON_GET_NAME;
-               d->character->desc = NULL;
-               free_char( d->character ); /* Big Memory Leak before --Shaddai */
-               d->character = NULL;
-               return;
-            }
-
-            snprintf( buf, MAX_STRING_LENGTH, "Did I get that right, %s (Y/N)? ", argument );
-            write_to_buffer( d, buf, 0 );
-            d->connected = CON_CONFIRM_NEW_NAME;
-            return;
-         }
+         nanny_get_name( d, argument );
          break;
 
       case CON_GET_OLD_PASSWORD:
-         write_to_buffer( d, "\r\n", 2 );
-
-         if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
-         {
-            write_to_buffer( d, "Wrong password, disconnecting.\r\n", 0 );
-            /*
-             * clear descriptor pointer to get rid of bug message in log 
-             */
-            d->character->desc = NULL;
-            close_socket( d, FALSE );
-            return;
-         }
-
-         write_to_buffer( d, echo_on_str, 0 );
-
-         if( check_playing( d, ch->pcdata->filename, TRUE ) )
-            return;
-
-         chk = check_reconnect( d, ch->pcdata->filename, TRUE );
-         if( chk == BERR )
-         {
-            if( d->character && d->character->desc )
-               d->character->desc = NULL;
-            close_socket( d, FALSE );
-            return;
-         }
-         if( chk == TRUE )
-            return;
-
-         mudstrlcpy( buf, ch->pcdata->filename, MAX_STRING_LENGTH );
-         d->character->desc = NULL;
-         free_char( d->character );
-         d->character = NULL;
-         fOld = load_char_obj( d, buf, FALSE, FALSE );
-         ch = d->character;
-         if( ch->position == POS_FIGHTING
-             || ch->position == POS_EVASIVE
-             || ch->position == POS_DEFENSIVE || ch->position == POS_AGGRESSIVE || ch->position == POS_BERSERK )
-            ch->position = POS_STANDING;
-
-         log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s (%s) has connected.", ch->name, d->host );
-         show_title( d );
+         nanny_get_old_password( d, argument );
          break;
 
       case CON_CONFIRM_NEW_NAME:
-         switch ( *argument )
-         {
-            case 'y':
-            case 'Y':
-               snprintf( buf, MAX_STRING_LENGTH,
-                         "\r\nMake sure to use a password that won't be easily guessed by someone else."
-                         "\r\nPick a good password for %s: %s", ch->name, echo_off_str );
-               write_to_buffer( d, buf, 0 );
-               d->connected = CON_GET_NEW_PASSWORD;
-               break;
-
-            case 'n':
-            case 'N':
-               write_to_buffer( d, "Ok, what IS it, then? ", 0 );
-               /*
-                * clear descriptor pointer to get rid of bug message in log 
-                */
-               d->character->desc = NULL;
-               free_char( d->character );
-               d->character = NULL;
-               d->connected = CON_GET_NAME;
-               break;
-
-            default:
-               write_to_buffer( d, "Please type Yes or No. ", 0 );
-               break;
-         }
+         nanny_confirm_new_name( d, argument );
          break;
 
       case CON_GET_NEW_PASSWORD:
-         write_to_buffer( d, "\r\n", 2 );
-
-         if( strlen( argument ) < 5 )
-         {
-            write_to_buffer( d, "Password must be at least five characters long.\r\nPassword: ", 0 );
-            return;
-         }
-
-         if( argument[0] == '!' )
-         {
-            send_to_char( "New password cannot begin with the '!' character.", ch );
-            return;
-         }
-         pwdnew = sha256_crypt( argument );  /* SHA-256 Encryption */
-         DISPOSE( ch->pcdata->pwd );
-         ch->pcdata->pwd = str_dup( pwdnew );
-         write_to_buffer( d, "\r\nPlease retype the password to confirm: ", 0 );
-         d->connected = CON_CONFIRM_NEW_PASSWORD;
+         nanny_get_new_password( d, argument );
          break;
 
       case CON_CONFIRM_NEW_PASSWORD:
-         write_to_buffer( d, "\r\n", 2 );
-
-         if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
-         {
-            write_to_buffer( d, "Passwords don't match.\r\nRetype password: ", 0 );
-            d->connected = CON_GET_NEW_PASSWORD;
-            return;
-         }
-
-         write_to_buffer( d, echo_on_str, 0 );
-         write_to_buffer( d, "\r\nWhat is your sex (M/F/N)? ", 0 );
-         d->connected = CON_GET_NEW_SEX;
+         nanny_confirm_new_password( d, argument );
          break;
 
       case CON_GET_NEW_SEX:
-         switch ( argument[0] )
-         {
-            case 'm':
-            case 'M':
-               ch->sex = SEX_MALE;
-               break;
-            case 'f':
-            case 'F':
-               ch->sex = SEX_FEMALE;
-               break;
-            case 'n':
-            case 'N':
-               ch->sex = SEX_NEUTRAL;
-               break;
-            default:
-               write_to_buffer( d, "That's not a sex.\r\nWhat IS your sex? ", 0 );
-               return;
-         }
-
-         write_to_buffer( d, "\r\nSelect a class, or type help [class] to learn more about that class.\r\n[", 0 );
-         buf[0] = '\0';
-
-         for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
-         {
-            if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
-            {
-               if( iClass > 0 )
-               {
-                  if( strlen( buf ) + strlen( class_table[iClass]->who_name ) > 77 )
-                  {
-                     mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
-                     write_to_buffer( d, buf, 0 );
-                     buf[0] = '\0';
-                  }
-                  else
-                     mudstrlcat( buf, " ", MAX_STRING_LENGTH );
-               }
-               mudstrlcat( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
-            }
-         }
-         mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
-         write_to_buffer( d, buf, 0 );
-         d->connected = CON_GET_NEW_CLASS;
+         nanny_get_new_sex( d, argument );
          break;
 
       case CON_GET_NEW_CLASS:
-         argument = one_argument( argument, arg );
-
-         if( !str_cmp( arg, "help" ) )
-         {
-
-            for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
-            {
-               if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
-               {
-                  if( toupper( argument[0] ) == toupper( class_table[iClass]->who_name[0] )
-                      && !str_prefix( argument, class_table[iClass]->who_name ) )
-                  {
-                     do_help( ch, argument );
-                     write_to_buffer( d, "Please choose a class: ", 0 );
-                     return;
-                  }
-               }
-            }
-            write_to_buffer( d, "No such help topic.  Please choose a class: ", 0 );
-            return;
-         }
-
-         for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
-         {
-            if( class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0' )
-            {
-               if( toupper( arg[0] ) == toupper( class_table[iClass]->who_name[0] )
-                   && !str_prefix( arg, class_table[iClass]->who_name ) )
-               {
-                  ch->Class = iClass;
-                  break;
-               }
-            }
-         }
-
-         if( iClass == MAX_PC_CLASS
-             || !class_table[iClass]->who_name
-             || class_table[iClass]->who_name[0] == '\0' || !str_cmp( class_table[iClass]->who_name, "unused" ) )
-         {
-            write_to_buffer( d, "That's not a class.\r\nWhat IS your class? ", 0 );
-            return;
-         }
-
-
-         if( check_bans( ch, BAN_CLASS ) )
-         {
-            write_to_buffer( d, "That class is not currently avaiable.\r\nWhat IS your class? ", 0 );
-            return;
-         }
-
-         write_to_buffer( d, "\r\nYou may choose from the following races, or type help [race] to learn more:\r\n[", 0 );
-         buf[0] = '\0';
-         for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
-         {
-            if( iRace != RACE_VAMPIRE
-                && race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
-                && !IS_SET( race_table[iRace]->class_restriction, 1 << ch->Class )
-                && str_cmp( race_table[iRace]->race_name, "unused" ) )
-            {
-               if( iRace > 0 )
-               {
-                  if( strlen( buf ) + strlen( race_table[iRace]->race_name ) > 77 )
-                  {
-                     mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
-                     write_to_buffer( d, buf, 0 );
-                     buf[0] = '\0';
-                  }
-                  else
-                     mudstrlcat( buf, " ", MAX_STRING_LENGTH );
-               }
-               mudstrlcat( buf, race_table[iRace]->race_name, MAX_STRING_LENGTH );
-            }
-         }
-         mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
-         write_to_buffer( d, buf, 0 );
-         d->connected = CON_GET_NEW_RACE;
+         nanny_get_new_class( d, argument );
          break;
 
       case CON_GET_NEW_RACE:
-         argument = one_argument( argument, arg );
-         if( !str_cmp( arg, "help" ) )
-         {
-            for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
-            {
-               if( toupper( argument[0] ) == toupper( race_table[iRace]->race_name[0] )
-                   && !str_prefix( argument, race_table[iRace]->race_name ) )
-               {
-                  do_help( ch, argument );
-                  write_to_buffer( d, "Please choose a race: ", 0 );
-                  return;
-               }
-            }
-            write_to_buffer( d, "No help on that topic.  Please choose a race: ", 0 );
-            return;
-         }
-
-
-         for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
-         {
-            if( toupper( arg[0] ) == toupper( race_table[iRace]->race_name[0] )
-                && !str_prefix( arg, race_table[iRace]->race_name ) )
-            {
-               ch->race = iRace;
-               break;
-            }
-         }
-
-         if( iRace == MAX_PC_RACE
-             || !race_table[iRace]->race_name || race_table[iRace]->race_name[0] == '\0'
-             || iRace == RACE_VAMPIRE
-             || IS_SET( race_table[iRace]->class_restriction, 1 << ch->Class )
-             || !str_cmp( race_table[iRace]->race_name, "unused" ) )
-         {
-            write_to_buffer( d, "That's not a race.\r\nWhat IS your race? ", 0 );
-            return;
-         }
-         if( check_bans( ch, BAN_RACE ) )
-         {
-            write_to_buffer( d, "That race is not currently available.\r\nWhat is your race? ", 0 );
-            return;
-         }
-
-         write_to_buffer( d, "\r\nWould you like RIP, ANSI or no graphic/color support, (R/A/N)? ", 0 );
-         d->connected = CON_GET_WANT_RIPANSI;
+         nanny_get_new_race( d, argument );
          break;
 
       case CON_GET_WANT_RIPANSI:
-         switch ( argument[0] )
-         {
-            case 'r':
-            case 'R':
-               xSET_BIT( ch->act, PLR_RIP );
-               xSET_BIT( ch->act, PLR_ANSI );
-               break;
-            case 'a':
-            case 'A':
-               xSET_BIT( ch->act, PLR_ANSI );
-               break;
-            case 'n':
-            case 'N':
-               break;
-            default:
-               write_to_buffer( d, "Invalid selection.\r\nRIP, ANSI or NONE? ", 0 );
-               return;
-         }
-         snprintf( log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s.", ch->name, d->host,
-                   race_table[ch->race]->race_name, class_table[ch->Class]->who_name );
-         log_string_plus( log_buf, LOG_COMM, sysdata.log_level );
-         to_channel( log_buf, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL );
-         write_to_buffer( d, "Press [ENTER] ", 0 );
-         show_title( d );
-         ch->level = 0;
-         ch->position = POS_STANDING;
-         d->connected = CON_PRESS_ENTER;
-         set_pager_color( AT_PLAIN, ch );
-         return;
+         nanny_get_want_ripansi( d, argument );
          break;
 
       case CON_PRESS_ENTER:
-         if( chk_watch( get_trust( ch ), ch->name, d->host ) ) /*  --Gorog */
-            SET_BIT( ch->pcdata->flags, PCFLAG_WATCH );
-         else
-            REMOVE_BIT( ch->pcdata->flags, PCFLAG_WATCH );
-
-         if( ch->position == POS_MOUNTED )
-            ch->position = POS_STANDING;
-
-         set_pager_color( AT_PLAIN, ch );
-         if( xIS_SET( ch->act, PLR_RIP ) )
-            send_rip_screen( ch );
-         if( xIS_SET( ch->act, PLR_ANSI ) )
-            send_to_pager( "\033[2J", ch );
-         else
-            send_to_pager( "\014", ch );
-         if( IS_IMMORTAL( ch ) )
-            do_help( ch, "imotd" );
-         if( ch->level == LEVEL_AVATAR )
-            do_help( ch, "amotd" );
-         if( ch->level < LEVEL_AVATAR && ch->level > 0 )
-            do_help( ch, "motd" );
-         if( ch->level == 0 )
-            do_help( ch, "nmotd" );
-         send_to_pager( "\r\nPress [ENTER] ", ch );
-         d->connected = CON_READ_MOTD;
+         nanny_press_enter( d, argument );
          break;
 
       case CON_READ_MOTD:
-      {
-         char motdbuf[MAX_STRING_LENGTH];
-
-         snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
-         write_to_buffer( d, motdbuf, 0 );
-      }
-         add_char( ch );
-         d->connected = CON_PLAYING;
-
-         if( ch->level == 0 )
-         {
-            OBJ_DATA *obj;
-            int iLang, uLang;
-
-            ch->pcdata->clan = NULL;
-            switch ( class_table[ch->Class]->attr_prime )
-            {
-               case APPLY_STR:
-                  ch->perm_str = 16;
-                  break;
-               case APPLY_INT:
-                  ch->perm_int = 16;
-                  break;
-               case APPLY_WIS:
-                  ch->perm_wis = 16;
-                  break;
-               case APPLY_DEX:
-                  ch->perm_dex = 16;
-                  break;
-               case APPLY_CON:
-                  ch->perm_con = 16;
-                  break;
-               case APPLY_CHA:
-                  ch->perm_cha = 16;
-                  break;
-               case APPLY_LCK:
-                  ch->perm_lck = 16;
-                  break;
-            }
-
-            ch->perm_str += race_table[ch->race]->str_plus;
-            ch->perm_int += race_table[ch->race]->int_plus;
-            ch->perm_wis += race_table[ch->race]->wis_plus;
-            ch->perm_dex += race_table[ch->race]->dex_plus;
-            ch->perm_con += race_table[ch->race]->con_plus;
-            ch->perm_cha += race_table[ch->race]->cha_plus;
-            ch->affected_by = race_table[ch->race]->affected;
-            ch->perm_lck += race_table[ch->race]->lck_plus;
-
-            ch->armor += race_table[ch->race]->ac_plus;
-            ch->alignment += race_table[ch->race]->alignment;
-            ch->attacks = race_table[ch->race]->attacks;
-            ch->defenses = race_table[ch->race]->defenses;
-            ch->saving_poison_death = race_table[ch->race]->saving_poison_death;
-            ch->saving_wand = race_table[ch->race]->saving_wand;
-            ch->saving_para_petri = race_table[ch->race]->saving_para_petri;
-            ch->saving_breath = race_table[ch->race]->saving_breath;
-            ch->saving_spell_staff = race_table[ch->race]->saving_spell_staff;
-
-            ch->height =
-               number_range( ( int )( race_table[ch->race]->height * .9 ), ( int )( race_table[ch->race]->height * 1.1 ) );
-            ch->weight =
-               number_range( ( int )( race_table[ch->race]->weight * .9 ), ( int )( race_table[ch->race]->weight * 1.1 ) );
-
-            if( ch->Class == CLASS_PALADIN )
-               ch->alignment = 1000;
-
-            if( ( iLang = skill_lookup( "common" ) ) < 0 )
-               bug( "%s", "Nanny: cannot find common language." );
-            else
-               ch->pcdata->learned[iLang] = 100;
-
-            /*
-             * Give them their racial languages 
-             */
-            if( race_table[ch->race] )
-            {
-               for( iLang = 0; lang_array[iLang] != LANG_UNKNOWN; iLang++ )
-               {
-                  if( IS_SET( race_table[ch->race]->language, 1 << iLang ) )
-                  {
-                     if( ( uLang = skill_lookup( lang_names[iLang] ) ) < 0 )
-                        bug( "%s: cannot find racial language [%s].", __FUNCTION__, lang_names[iLang] );
-                     else
-                        ch->pcdata->learned[uLang] = 100;
-                  }
-               }
-            }
-
-            /*
-             * ch->resist           += race_table[ch->race]->resist;    drats 
-             */
-            /*
-             * ch->susceptible     += race_table[ch->race]->suscept;    drats 
-             */
-
-            reset_colors( ch );
-            name_stamp_stats( ch );
-
-            ch->level = 1;
-            ch->exp = 0;
-            ch->max_hit += race_table[ch->race]->hit;
-            ch->max_mana += race_table[ch->race]->mana;
-            ch->hit = UMAX( 1, ch->max_hit );
-            ch->mana = UMAX( 1, ch->max_mana );
-            ch->move = ch->max_move;
-            snprintf( buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0] );
-            set_title( ch, buf );
-
-            /*
-             * Added by Narn.  Start new characters with autoexit and autgold
-             * already turned on.  Very few people don't use those. 
-             */
-            xSET_BIT( ch->act, PLR_AUTOGOLD );
-            xSET_BIT( ch->act, PLR_AUTOEXIT );
-
-            /*
-             * Added by Brittany, Nov 24/96.  The object is the adventurer's guide
-             * to the realms of despair, part of Academy.are. 
-             */
-            {
-               OBJ_INDEX_DATA *obj_ind = get_obj_index( 10333 );
-               if( obj_ind != NULL )
-               {
-                  obj = create_object( obj_ind, 0 );
-                  obj_to_char( obj, ch );
-                  equip_char( ch, obj, WEAR_HOLD );
-               }
-            }
-            if( !sysdata.WAIT_FOR_AUTH )
-               char_to_room( ch, get_room_index( ROOM_VNUM_SCHOOL ) );
-            else
-            {
-               char_to_room( ch, get_room_index( ROOM_AUTH_START ) );
-               ch->pcdata->auth_state = 0;
-               SET_BIT( ch->pcdata->flags, PCFLAG_UNAUTHED );
-            }
-         }
-         else if( !IS_IMMORTAL( ch ) && ch->pcdata->release_date > 0 && ch->pcdata->release_date > current_time )
-         {
-            if( ch->in_room->vnum == 6 || ch->in_room->vnum == 8 || ch->in_room->vnum == 1206 )
-               char_to_room( ch, ch->in_room );
-            else
-               char_to_room( ch, get_room_index( 8 ) );
-         }
-         else if( ch->in_room && ( IS_IMMORTAL( ch ) || !IS_SET( ch->in_room->room_flags, ROOM_PROTOTYPE ) ) )
-         {
-            char_to_room( ch, ch->in_room );
-         }
-         else if( IS_IMMORTAL( ch ) )
-         {
-            char_to_room( ch, get_room_index( ROOM_VNUM_CHAT ) );
-         }
-         else
-         {
-            char_to_room( ch, get_room_index( ROOM_VNUM_TEMPLE ) );
-         }
-
-
-         if( get_timer( ch, TIMER_SHOVEDRAG ) > 0 )
-            remove_timer( ch, TIMER_SHOVEDRAG );
-
-         if( get_timer( ch, TIMER_PKILLED ) > 0 )
-            remove_timer( ch, TIMER_PKILLED );
-
-         act( AT_ACTION, "$n has entered the game.", ch, NULL, NULL, TO_CANSEE );
-         if( ch->pcdata->pet )
-         {
-            act( AT_ACTION, "$n returns to $s master from the Void.", ch->pcdata->pet, NULL, ch, TO_NOTVICT );
-            act( AT_ACTION, "$N returns with you to the realms.", ch, NULL, ch->pcdata->pet, TO_CHAR );
-         }
-         do_look( ch, "auto" );
-         mail_count( ch );
-
-         if( !ch->was_in_room && ch->in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
-            ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
-         else if( ch->was_in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
-            ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
-         else if( !ch->was_in_room )
-            ch->was_in_room = ch->in_room;
-
+         nanny_read_motd( d, argument );
          break;
-
    }
 
    return;
@@ -2558,7 +2643,6 @@ bool is_reserved_name( char *name )
          return TRUE;
    return FALSE;
 }
-
 
 /*
  * Parse a name for acceptability.
@@ -2968,8 +3052,17 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, void *arg1
 void act( short AType, const char *format, CHAR_DATA * ch, void *arg1, void *arg2, int type )
 {
    char *txt;
+   const char *str;
    CHAR_DATA *to;
    CHAR_DATA *vch = ( CHAR_DATA * ) arg2;
+#define ACTF_NONE 0
+#define ACTF_TXT  BV00
+#define ACTF_CH   BV01
+#define ACTF_OBJ  BV02
+
+   OBJ_DATA *obj1 = ( OBJ_DATA * ) arg1;
+   OBJ_DATA *obj2 = ( OBJ_DATA * ) arg2;
+   int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
    /*
     * Discard null and zero-length messages.
@@ -2981,6 +3074,74 @@ void act( short AType, const char *format, CHAR_DATA * ch, void *arg1, void *arg
    {
       bug( "Act: null ch. (%s)", format );
       return;
+   }
+
+   // Do some proper type checking here..  Sort of.  We base it on the $* params.
+   // This is kinda lame really, but I suppose in some weird sense it beats having
+   // to pass like 8 different NULL parameters every time we need to call act()..
+   for( str = format; *str; ++str )
+   {
+      if( *str == '$' )
+      {
+         if( !*++str )
+            break;
+         switch ( *str )
+         {
+            default:
+               bug( "Act: bad code %c for format %s.", *str, format );
+               break;
+
+            case 't':
+               flags1 |= ACTF_TXT;
+               obj1 = NULL;
+               break;
+
+            case 'T':
+            case 'd':
+               flags2 |= ACTF_TXT;
+               vch = NULL;
+               obj2 = NULL;
+               break;
+
+            case 'n':
+            case 'e':
+            case 'm':
+            case 's':
+            case 'q':
+               break;
+
+            case 'N':
+            case 'E':
+            case 'M':
+            case 'S':
+            case 'Q':
+               flags2 |= ACTF_CH;
+               obj2 = NULL;
+               break;
+
+            case 'p':
+               flags1 |= ACTF_OBJ;
+               break;
+
+            case 'P':
+               flags2 |= ACTF_OBJ;
+               vch = NULL;
+               break;
+         }
+      }
+   }
+
+   if( flags1 != ACTF_NONE && flags1 != ACTF_TXT && flags1 != ACTF_CH && flags1 != ACTF_OBJ )
+   {
+      bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      obj1 = NULL;
+   }
+
+   if( flags2 != ACTF_NONE && flags2 != ACTF_TXT && flags2 != ACTF_CH && flags2 != ACTF_OBJ )
+   {
+      bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      vch = NULL;
+      obj2 = NULL;
    }
 
    if( !ch->in_room )
@@ -3417,7 +3578,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   break;
                case 'F':
                   if( IS_IMMORTAL( och ) )
-                     snprintf( pbuf, MAX_STRING_LENGTH, "%s", flag_string( ch->in_room->room_flags, r_flags ) );
+                     snprintf( pbuf, MAX_STRING_LENGTH, "%s", ext_flag_string( &ch->in_room->room_flags, r_flags ) );
                   break;
                case 'R':
                   if( xIS_SET( och->act, PLR_ROOMVNUM ) )

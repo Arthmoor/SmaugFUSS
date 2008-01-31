@@ -10,79 +10,79 @@ Thac0       18
 Thac32      6
 Hpmin       12
 Hpmax       15
-Mana        2
+Mana        1
 Expbase     1500
 Affected    0
 Resist	 0
 Suscept	 0
+Skill 'aggressive style' 8 95
+Skill 'aid' 10 80
 Skill 'aqua breath' 18 85
 Skill 'armor' 1 90
 Skill 'benefic aura' 30 85
+Skill 'berserk style' 46 40
 Skill 'bethsaidean touch' 9 75
 Skill 'bless' 5 90
+Skill 'bludgeons' 1 95
+Skill 'climb' 4 80
+Skill 'common' 1 99
 Skill 'continual light' 5 85
+Skill 'cook' 1 95
 Skill 'create food' 2 80
 Skill 'create water' 2 80
 Skill 'cure light' 4 90
+Skill 'defensive style' 23 70
 Skill 'detect evil' 7 60
 Skill 'detect hidden' 9 75
 Skill 'detect poison' 7 60
-Skill 'dispel evil' 15 90
-Skill 'expurgation' 13 85
-Skill 'float' 12 75
-Skill 'fortify' 39 75
-Skill 'hezekiahs cure' 13 85
-Skill 'identify' 16 75
-Skill 'know alignment' 14 50
-Skill 'refresh' 3 80
-Skill 'remove curse' 18 85
-Skill 'resilience' 42 70
-Skill 'sacral divinity' 35 75
-Skill 'shield' 39 85
-Skill 'solomonic invocation' 9 95
-Skill 'stone skin' 42 75
-Skill 'word of recall' 15 90
-Skill 'aggressive style' 8 95
-Skill 'aid' 10 80
-Skill 'berserk style' 46 40
-Skill 'climb' 4 80
-Skill 'cook' 1 95
-Skill 'defensive style' 23 70
 Skill 'dig' 4 85
+Skill 'dispel evil' 15 90
 Skill 'dodge' 12 75
 Skill 'dual wield' 17 90
-Skill 'enhanced damage' 1 90
-Skill 'evasive style' 14 70
-Skill 'fifth attack' 50 49
-Skill 'fourth attack' 37 75
-Skill 'lunge' 20 95
-Skill 'mount' 3 90
-Skill 'parry' 1 90
-Skill 'punch' 25 90
-Skill 'punt' 15 95
-Skill 'rescue' 9 80
-Skill 'search' 11 95
-Skill 'second attack' 10 90
-Skill 'spurn' 10 85
-Skill 'standard style' 1 95
-Skill 'tend' 45 90
-Skill 'third attack' 20 90
-Skill 'bludgeons' 1 95
-Skill 'flexible arms' 1 35
-Skill 'long blades' 1 95
-Skill 'pugilism' 1 60
-Skill 'short blades' 1 60
-Skill 'talonous arms' 1 50
-Skill 'common' 1 99
 Skill 'dwarven' 1 99
 Skill 'elvish' 1 99
+Skill 'enhanced damage' 1 90
+Skill 'evasive style' 14 70
+Skill 'expurgation' 13 85
+Skill 'fifth attack' 50 49
+Skill 'flexible arms' 1 35
+Skill 'float' 12 75
+Skill 'fortify' 39 75
+Skill 'fourth attack' 37 75
 Skill 'gith' 1 99
 Skill 'goblin' 1 99
 Skill 'halfling' 1 99
+Skill 'hezekiahs cure' 13 85
+Skill 'identify' 16 75
+Skill 'know alignment' 14 50
+Skill 'long blades' 1 95
+Skill 'lunge' 20 95
+Skill 'mount' 3 90
 Skill 'ogre' 1 99
 Skill 'orcish' 1 99
+Skill 'parry' 1 90
 Skill 'pixie' 1 99
+Skill 'pugilism' 1 60
+Skill 'punch' 25 90
+Skill 'punt' 15 95
+Skill 'refresh' 3 80
+Skill 'remove curse' 18 85
+Skill 'rescue' 9 80
+Skill 'resilience' 42 70
+Skill 'sacral divinity' 35 75
+Skill 'search' 11 95
+Skill 'second attack' 10 90
+Skill 'shield' 39 85
+Skill 'short blades' 1 60
+Skill 'solomonic invocation' 9 95
+Skill 'spurn' 10 85
+Skill 'standard style' 1 95
+Skill 'stone skin' 42 75
+Skill 'talonous arms' 1 50
+Skill 'tend' 45 90
+Skill 'third attack' 20 90
 Skill 'trollese' 1 99
+Skill 'word of recall' 15 90
 Title
 Man~
 Woman~

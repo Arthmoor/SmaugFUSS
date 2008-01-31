@@ -24,13 +24,9 @@ DEITY_DATA *first_deity;
 DEITY_DATA *last_deity;
 
 /* local routines */
-
-void fread_deity args( ( DEITY_DATA * deity, FILE * fp ) );
-bool load_deity_file args( ( const char *deityfile ) );
-void write_deity_list args( ( void ) );
-int get_risflag args( ( char *flag ) );
-int get_npc_race args( ( char *type ) );
-int get_pc_race args( ( char *type ) );
+void fread_deity( DEITY_DATA * deity, FILE * fp );
+bool load_deity_file( const char *deityfile );
+void write_deity_list( void );
 
 void free_deity( DEITY_DATA * deity )
 {
@@ -85,7 +81,6 @@ void write_deity_list(  )
 }
 
 /* Save a deity's data to its data file */
-
 void save_deity( DEITY_DATA * deity )
 {
    FILE *fp;
@@ -93,7 +88,7 @@ void save_deity( DEITY_DATA * deity )
 
    if( !deity )
    {
-      bug( "%s", "save_deity: null deity pointer!" );
+      bug( "%s: null deity pointer!", __FUNCTION__ );
       return;
    }
 
@@ -324,7 +319,6 @@ bool load_deity_file( const char *deityfile )
 }
 
 /* Load in all the deity files */
-
 void load_deity(  )
 {
    FILE *fpList;
@@ -419,6 +413,41 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    if( !deity )
    {
       send_to_char( "No such deity.\r\n", ch );
+      return;
+   }
+
+   /*
+    * Remove the deity from all online players - everything under the IF
+    * statement is a copy from do_devote for "none" so we remove all affects
+    */
+   if( !str_cmp( arg2, "delete" ) )
+   {
+      CHAR_DATA *vch;
+
+      for( vch = first_char; vch; vch = vch->next )
+      {
+         set_char_color( AT_RED, vch );
+
+         if( !IS_NPC( vch ) )
+         {
+            if( vch->pcdata->deity == deity )
+            {
+               ch_printf( ch, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name );
+
+               xREMOVE_BITS( vch->affected_by, vch->pcdata->deity->affected );
+               REMOVE_BIT( vch->resistant, vch->pcdata->deity->element );
+               REMOVE_BIT( vch->susceptible, vch->pcdata->deity->suscept );
+               vch->pcdata->deity = NULL;
+               STRFREE( vch->pcdata->deity_name );
+               vch->pcdata->deity_name = STRALLOC( "" );
+               save_char_obj( vch );
+            }
+         }
+      }
+
+      free_deity( deity );
+      write_deity_list(  );
+      send_to_char( "Deity deleted.\r\n", ch );
       return;
    }
 
@@ -707,7 +736,6 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
       return;
    }
 
-
    if( !str_cmp( arg2, "npcrace" ) )
    {
       value = get_npc_race( argument );
@@ -859,7 +887,7 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
          else
          {
             value = get_aflag( arg3 );
-            if( value < 0 || value > MAX_BITS )
+            if( value < 0 || value >= MAX_BITS )
                ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
             else
             {
@@ -878,7 +906,6 @@ void do_setdeity( CHAR_DATA * ch, char *argument )
    do_setdeity( ch, "" );
    return;
 }
-
 
 void do_showdeity( CHAR_DATA * ch, char *argument )
 {
@@ -1054,26 +1081,6 @@ void do_devote( CHAR_DATA * ch, char *argument )
          return;
       }
    }
-/*
-    if ( ch->pcdata->deity )
-    {
-	AFFECT_DATA af;
-	--ch->pcdata->deity->worshippers;
-	ch->pcdata->favor = -2500;
-	send_to_char( "A terrible curse afflicts you as you forsake a deity!\r\n", ch );
-	xREMOVE_BITs( ch->affected_by, ch->pcdata->deity->affected );
-	REMOVE_BIT( ch->resistant, ch->pcdata->deity->element );
-
-	affect_strip( ch, gsn_blindness );
-	af.type		= gsn_blindness;
-	af.location	= APPLY_HITROLL;
-	af.modifier	= -4;
-	af.duration	= 50 * DUR_CONV;
-	af.bitvector	= AFF_BLIND;
-	affect_to_char( ch, &af );
-	save_deity(ch->pcdata->deity);
-    }	
-*/
 
    STRFREE( ch->pcdata->deity_name );
    ch->pcdata->deity_name = QUICKLINK( deity->name );
@@ -1096,7 +1103,6 @@ void do_devote( CHAR_DATA * ch, char *argument )
    save_char_obj( ch );
    return;
 }
-
 
 void do_deities( CHAR_DATA * ch, char *argument )
 {
@@ -1165,7 +1171,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( IS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
          send_to_char( "You cannot supplicate in a storage room.\r\n", ch );
          return;
@@ -1178,7 +1184,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
          if( obj->in_room && !str_cmp( buf2, obj->short_descr ) && ( obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC ) )
          {
             found = TRUE;
-            if( IS_SET( obj->in_room->room_flags, ROOM_NOSUPPLICATE ) )
+            if( xIS_SET( obj->in_room->room_flags, ROOM_NOSUPPLICATE ) )
             {
                act( AT_MAGIC, "The image of your corpse appears, but suddenly wavers away.", ch, NULL, NULL, TO_CHAR );
                return;
@@ -1187,6 +1193,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
             act( AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, NULL, NULL, TO_ROOM );
             obj_from_room( obj );
             obj = obj_to_room( obj, ch->in_room );
+            xREMOVE_BIT( obj->extra_flags, ITEM_BURIED );
          }
       }
 
@@ -1357,7 +1364,7 @@ void do_supplicate( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( IS_SET( ch->in_room->room_flags, ROOM_NOSUPPLICATE ) )
+      if( xIS_SET( ch->in_room->room_flags, ROOM_NOSUPPLICATE ) )
       {
          send_to_char( "You have been forsaken!\r\n", ch );
          return;

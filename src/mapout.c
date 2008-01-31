@@ -360,7 +360,7 @@ int add_new_room_to_map( CHAR_DATA * ch, char code )
          location->area = ch->pcdata->area;
          location->name = STRALLOC( "Newly Created Room" );
          location->description = STRALLOC( "Newly Created Room\r\n" );
-         location->room_flags = ROOM_PROTOTYPE;
+         xSET_BIT( location->room_flags, ROOM_PROTOTYPE );
          location->light = 0;
          if( code == 'I' )
             location->sector_type = SECT_INSIDE;

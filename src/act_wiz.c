@@ -25,9 +25,6 @@
 #include "mud.h"
 #include "sha256.h"
 
-int get_langnum( char *flag );
-int get_langflag( char *flag );
-
 #define RESTORE_INTERVAL 21600
 
 char *const save_flag[] = { "death", "kill", "passwd", "drop", "put", "give", "auto", "zap",
@@ -36,6 +33,7 @@ char *const save_flag[] = { "death", "kill", "passwd", "drop", "put", "give", "a
    "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
 
+void save_sysdata( SYSTEM_DATA sys );
 
 /* from reset.c */
 int generate_itemlevel( AREA_DATA * pArea, OBJ_INDEX_DATA * pObjIndex );
@@ -46,11 +44,6 @@ bool check_parse_name( char *name, bool newchar );
 
 /* from boards.c */
 void note_attach( CHAR_DATA * ch );
-
-/* from build.c */
-int get_risflag( char *flag );
-int get_defenseflag( char *flag );
-int get_attackflag( char *flag );
 
 /* from tables.c */
 void write_race_file( int ra );
@@ -1262,7 +1255,7 @@ void transfer_char( CHAR_DATA * ch, CHAR_DATA * victim, ROOM_INDEX_DATA * locati
    /*
     * If victim not in area's level range, do not transfer 
     */
-   if( IS_NPC( ch ) && !in_hard_range( victim, location->area ) && !IS_SET( location->room_flags, ROOM_PROTOTYPE ) )
+   if( IS_NPC( ch ) && !in_hard_range( victim, location->area ) && !xIS_SET( location->room_flags, ROOM_PROTOTYPE ) )
       return;
 
    if( victim->fighting )
@@ -1688,7 +1681,7 @@ void do_rstat( CHAR_DATA * ch, char *argument )
    send_to_char( "\r\n", ch );
    if( location->tele_delay > 0 || location->tele_vnum > 0 )
       ch_printf_color( ch, "&cTeleDelay: &R%d   &cTeleVnum: &R%d\r\n", location->tele_delay, location->tele_vnum );
-   ch_printf_color( ch, "&cRoom flags: &w%s\r\n", flag_string( location->room_flags, r_flags ) );
+   ch_printf_color( ch, "&cRoom flags: &w%s\r\n", ext_flag_string( &location->room_flags, r_flags ) );
    ch_printf_color( ch, "&cDescription:\r\n&w%s", location->description );
    if( location->first_extradesc )
    {
@@ -1705,6 +1698,17 @@ void do_rstat( CHAR_DATA * ch, char *argument )
    }
    for( paf = location->first_affect; paf; paf = paf->next )
       ch_printf_color( ch, "&cAffect: &w%s &cby &w%d.\r\n", affect_loc_name( paf->location ), paf->modifier );
+
+   send_to_char( "&cPermanent affects: &w", ch );
+   if( !ch->in_room->first_permaffect )
+      send_to_char( "None\r\n", ch );
+   else
+   {
+      send_to_char( "\r\n", ch );
+
+      for( paf = location->first_permaffect; paf; paf = paf->next )
+         showaffect( ch, paf );
+   }
 
    send_to_char_color( "&cCharacters: &w", ch );
    for( rch = location->first_person; rch; rch = rch->next_in_room )
@@ -1771,8 +1775,10 @@ void do_ostat( CHAR_DATA * ch, char *argument )
    ch_printf_color( ch, "&cTopSerial#: &w%d\r\n", cur_obj_serial );
    ch_printf_color( ch, "&cShort description: &C%s\r\n", obj->short_descr );
    ch_printf_color( ch, "&cLong description : &C%s\r\n", obj->description );
-   if( obj->action_desc[0] != '\0' )
+   if( obj->action_desc && obj->action_desc[0] != '\0' )
       ch_printf_color( ch, "&cAction description: &w%s\r\n", obj->action_desc );
+   if( IS_OBJ_STAT( obj, ITEM_PERSONAL ) && obj->owner && obj->owner[0] != '\0' )
+      ch_printf_color( ch, "&cOwner: &Y%s\r\n", obj->owner );
    ch_printf_color( ch, "&cWear flags : &w%s\r\n", flag_string( obj->wear_flags, w_flags ) );
    ch_printf_color( ch, "&cExtra flags: &w%s\r\n", ext_flag_string( &obj->extra_flags, o_flags ) );
    ch_printf_color( ch, "&cMagic flags: &w%s\r\n", magic_bit_name( obj->magic_flags ) );
@@ -1828,6 +1834,94 @@ void do_ostat( CHAR_DATA * ch, char *argument )
    return;
 }
 
+void do_vstat( CHAR_DATA * ch, char *argument )
+{
+   VARIABLE_DATA *vd;
+   CHAR_DATA *victim;
+
+   if( argument[0] == '\0' )
+   {
+      send_to_char( "Vstat whom?\r\n", ch );
+      return;
+   }
+
+   if( !( victim = get_char_world( ch, argument ) ) )
+   {
+      send_to_char( "They aren't here.\r\n", ch );
+      return;
+   }
+
+   if( get_trust( ch ) < get_trust( victim ) )
+   {
+      send_to_char( "Their godly glow prevents you from getting a good look.\r\n", ch );
+      return;
+   }
+
+   if( !victim->variables )
+   {
+      send_to_char( "They have no variables currently assigned to them.\r\n", ch );
+      return;
+   }
+
+   pager_printf( ch, "\r\n&cName: &C%-20s &cRoom : &w%-10d", victim->name,
+                 victim->in_room == NULL ? 0 : victim->in_room->vnum );
+   pager_printf( ch, "\r\n&cVariables:\r\n" );
+
+   /*
+    * Variables:
+    * Vnum:           Tag:                 Type:     Timer:
+    * Flags:
+    * Data:
+    */
+   for( vd = victim->variables; vd; vd = vd->next )
+   {
+      pager_printf( ch, "  &cVnum: &W%-10d &cTag: &W%-15s &cTimer: &W%d\r\n", vd->vnum, vd->tag, vd->timer );
+      pager_printf( ch, "  &cType: " );
+      if( vd->data )
+      {
+         switch ( vd->type )
+         {
+            case vtSTR:
+               if( vd->data )
+                  pager_printf( ch, "&CString     &cData: &W%s", ( char * )vd->data );
+               break;
+
+            case vtINT:
+               if( vd->data )
+                  pager_printf( ch, "&CInteger    &cData: &W%ld", ( long )vd->data );
+               break;
+
+            case vtXBIT:
+               if( vd->data )
+               {
+                  char buf[MAX_STRING_LENGTH];
+                  int started = 0;
+                  int x;
+
+                  buf[0] = '\0';
+                  for( x = MAX_BITS; x > 0; --x )
+                  {
+                     if( !started && xIS_SET( *( EXT_BV * ) vd->data, x ) )
+                        started = x;
+                  }
+
+                  for( x = 1; x <= started; x++ )
+                     strcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 " );
+
+                  if( buf[0] != '\0' )
+                     buf[strlen( buf ) - 1] = '\0';
+                  pager_printf( ch, "&CXBIT       &cData: &w[&W%s&w]", buf );
+               }
+               break;
+         }
+      }
+      else
+         send_to_pager( "&CNo Data", ch );
+
+      send_to_pager( "\r\n\r\n", ch );
+   }
+   return;
+}
 
 void do_mstat( CHAR_DATA * ch, char *argument )
 {
@@ -1839,6 +1933,7 @@ void do_mstat( CHAR_DATA * ch, char *argument )
    AFFECT_DATA *paf;
    CHAR_DATA *victim;
    SKILLTYPE *skill;
+   VARIABLE_DATA *vd;
    int x;
 
    set_pager_color( AT_CYAN, ch );
@@ -2041,6 +2136,7 @@ void do_mstat( CHAR_DATA * ch, char *argument )
       pager_printf_color( ch, "&cAttacks    : &w%s\r\n", ext_flag_string( &victim->attacks, attack_flags ) );
       pager_printf_color( ch, "&cDefenses   : &w%s\r\n", ext_flag_string( &victim->defenses, defense_flags ) );
    }
+
    for( paf = victim->first_affect; paf; paf = paf->next )
    {
       if( ( skill = get_skilltype( paf->type ) ) != NULL )
@@ -2050,7 +2146,52 @@ void do_mstat( CHAR_DATA * ch, char *argument )
                              skill->name,
                              affect_loc_name( paf->location ),
                              paf->modifier, paf->duration, affect_bit_name( &paf->bitvector ) );
-      send_to_char( "\r\n", ch );
+      send_to_pager( "\r\n", ch );
+   }
+
+   if( victim->variables )
+   {
+      send_to_pager( "&cVariables  : &w", ch );
+      for( vd = victim->variables; vd; vd = vd->next )
+      {
+         pager_printf( ch, "%s:%d", vd->tag, vd->vnum );
+         switch ( vd->type )
+         {
+            case vtSTR:
+               if( vd->data )
+                  pager_printf( ch, "=%s", ( char * )vd->data );
+               break;
+
+            case vtINT:
+               if( vd->data )
+                  pager_printf( ch, "=%ld", ( long )vd->data );
+               break;
+
+            case vtXBIT:
+               if( vd->data )
+               {
+                  char buf[MAX_STRING_LENGTH];
+                  int started = 0;
+
+                  buf[0] = '\0';
+                  for( x = MAX_BITS; x > 0; --x )
+                  {
+                     if( !started && xIS_SET( *( EXT_BV * ) vd->data, x ) )
+                        started = x;
+                  }
+
+                  for( x = 1; x <= started; x++ )
+                     strcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 " );
+
+                  if( buf[0] != '\0' )
+                     buf[strlen( buf ) - 1] = '\0';
+                  pager_printf( ch, "=[%s]", buf );
+               }
+         }
+         if( vd->next )
+            send_to_pager( "  ", ch );
+      }
+      send_to_pager( "\r\n", ch );
    }
    return;
 }
@@ -2424,7 +2565,6 @@ void do_bodybag( CHAR_DATA * ch, char *argument )
    return;
 }
 
-#if 0
 /* New owhere by Altrag, 03/14/96 */
 void do_owhere( CHAR_DATA * ch, char *argument )
 {
@@ -2512,7 +2652,154 @@ void do_owhere( CHAR_DATA * ch, char *argument )
       pager_printf( ch, "%d matches.\r\n", icnt );
    return;
 }
-#endif
+
+/*
+ * "Claim" an object.  Will allow an immortal to "grab" an object no matter
+ * where it is hiding.  ie: from a player's inventory, from deep inside
+ * a container, from a mobile, from anywhere.			-Thoric
+ */
+void do_oclaim( CHAR_DATA * ch, char *argument )
+{
+   char arg[MAX_INPUT_LENGTH];
+   char arg1[MAX_INPUT_LENGTH];
+   char arg2[MAX_INPUT_LENGTH];
+
+   char arg3[MAX_INPUT_LENGTH];
+   char *who = NULL;
+   CHAR_DATA *vch = NULL;
+   OBJ_DATA *obj;
+   bool silently = FALSE, found = FALSE;
+   int number, count, vnum;
+
+   number = number_argument( argument, arg );
+   argument = arg;
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+   argument = one_argument( argument, arg3 );
+
+   if( arg1[0] == '\0' )
+   {
+      send_to_char( "Syntax: oclaim <object> [from who] [+silent]\r\n", ch );
+      return;
+   }
+   if( arg3[0] == '\0' )
+   {
+      if( arg2[0] != '\0' )
+      {
+         if( !str_cmp( arg2, "+silent" ) )
+            silently = TRUE;
+         else
+            who = arg2;
+      }
+   }
+   else
+   {
+      who = arg2;
+      if( !str_cmp( arg3, "+silent" ) )
+         silently = TRUE;
+   }
+
+   if( who )
+   {
+      if( ( vch = get_char_world( ch, who ) ) == NULL )
+      {
+         send_to_pager( "They aren't here.\n\r", ch );
+         return;
+      }
+      if( get_trust( ch ) < get_trust( vch ) && !IS_NPC( vch ) )
+      {
+         act( AT_TELL, "$n tells you, 'Keep your hands to yourself!'", vch, NULL, ch, TO_VICT );
+         return;
+      }
+   }
+
+   if( is_number( arg1 ) )
+      vnum = atoi( arg1 );
+   else
+      vnum = -1;
+
+   count = 0;
+   for( obj = first_object; obj; obj = obj->next )
+   {
+      if( can_see_obj( ch, obj )
+          && ( obj->pIndexData->vnum == vnum || nifty_is_name( arg1, obj->name ) ) && ( !vch || vch == carried_by( obj ) ) )
+         if( ( count += obj->count ) >= number )
+         {
+            found = TRUE;
+            break;
+         }
+   }
+   if( !found && vnum != -1 )
+   {
+      send_to_char( "You can't find that.\r\n", ch );
+      return;
+   }
+
+   count = 0;
+   for( obj = first_object; obj; obj = obj->next )
+   {
+      if( can_see_obj( ch, obj )
+          && ( obj->pIndexData->vnum == vnum || nifty_is_name_prefix( arg1, obj->name ) )
+          && ( !vch || vch == carried_by( obj ) ) )
+         if( ( count += obj->count ) >= number )
+         {
+            found = TRUE;
+            break;
+         }
+   }
+
+   if( !found )
+   {
+      send_to_char( "You can't find that.\r\n", ch );
+      return;
+   }
+
+   if( !vch && ( vch = carried_by( obj ) ) != NULL )
+   {
+      if( get_trust( ch ) < get_trust( vch ) && !IS_NPC( vch ) )
+      {
+         act( AT_TELL, "$n tells you, 'Keep your hands off $p!  It's mine.'", vch, obj, ch, TO_VICT );
+         act( AT_IMMORT, "$n tried to lay claim to $p from your possession!", vch, obj, ch, TO_CHAR );
+         return;
+      }
+   }
+
+   separate_obj( obj );
+   if( obj->item_type == ITEM_PORTAL )
+      remove_portal( obj );
+
+   if( obj->carried_by )
+      obj_from_char( obj );
+   else if( obj->in_room )
+      obj_from_room( obj );
+   else if( obj->in_obj )
+      obj_from_obj( obj );
+
+   obj_to_char( obj, ch );
+   if( vch )
+   {
+      if( !silently )
+      {
+         act( AT_IMMORT, "$n claims $p from you!", ch, obj, vch, TO_VICT );
+         act( AT_IMMORT, "$n claims $p from $N!", ch, obj, vch, TO_NOTVICT );
+         act( AT_IMMORT, "You claim $p from $N!", ch, obj, vch, TO_CHAR );
+      }
+      else
+         act( AT_IMMORT, "You silently claim $p from $N.", ch, obj, vch, TO_CHAR );
+   }
+   else
+   {
+      if( !silently )
+      {
+         /*
+          * notify people in the room... (not done yet) 
+          */
+         act( AT_IMMORT, "You claim $p!", ch, obj, NULL, TO_CHAR );
+      }
+      else
+         act( AT_IMMORT, "You silently claim $p.", ch, obj, NULL, TO_CHAR );
+   }
+}
 
 void do_reboo( CHAR_DATA * ch, char *argument )
 {
@@ -2879,31 +3166,29 @@ void do_minvoke( CHAR_DATA * ch, char *argument )
 
 void do_oinvoke( CHAR_DATA * ch, char *argument )
 {
-   char arg1[MAX_INPUT_LENGTH];
-   char arg2[MAX_INPUT_LENGTH];
+   char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
    OBJ_INDEX_DATA *pObjIndex;
    OBJ_DATA *obj;
-   int vnum;
-   int level;
+   int vnum, level, quantity = 1;
 
    set_char_color( AT_IMMORT, ch );
 
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
+   argument = one_argument( argument, arg3 );
    if( arg1[0] == '\0' )
    {
-      send_to_char( "Syntax: oinvoke <vnum> <level>.\r\n", ch );
+      send_to_char( "Syntax: oinvoke <vnum> <level> <quantity>\r\n", ch );
       return;
    }
+
    if( arg2[0] == '\0' )
-   {
       level = get_trust( ch );
-   }
    else
    {
       if( !is_number( arg2 ) )
       {
-         send_to_char( "Syntax:  oinvoke <vnum> <level>\r\n", ch );
+         send_to_char( "Syntax: oinvoke <vnum> <level>\r\n", ch );
          return;
       }
       level = atoi( arg2 );
@@ -2913,6 +3198,24 @@ void do_oinvoke( CHAR_DATA * ch, char *argument )
          return;
       }
    }
+
+   if( arg3[0] != '\0' )
+   {
+      if( !is_number( arg3 ) )
+      {
+         send_to_char( "Syntax: oinvoke <vnum> <level> <quantity>\r\n", ch );
+         return;
+      }
+
+      quantity = atoi( arg3 );
+
+      if( quantity < 1 || quantity > MAX_OINVOKE_QUANTITY )
+      {
+         ch_printf( ch, "You must oinvoke between 1 and %d items.\r\n", MAX_OINVOKE_QUANTITY );
+         return;
+      }
+   }
+
    if( !is_number( arg1 ) )
    {
       char arg[MAX_INPUT_LENGTH];
@@ -2956,7 +3259,8 @@ void do_oinvoke( CHAR_DATA * ch, char *argument )
          return;
       }
    }
-   if( ( pObjIndex = get_obj_index( vnum ) ) == NULL )
+
+   if( !( pObjIndex = get_obj_index( vnum ) ) )
    {
       send_to_char( "No object has that vnum.\r\n", ch );
       return;
@@ -2976,20 +3280,28 @@ void do_oinvoke( CHAR_DATA * ch, char *argument )
    }
 
    obj = create_object( pObjIndex, level );
-   if( CAN_WEAR( obj, ITEM_TAKE ) )
+
+   if( quantity > 1 && ( !IS_OBJ_STAT( obj, ITEM_MULTI_INVOKE ) ) )
    {
-      obj = obj_to_char( obj, ch );
+      send_to_char( "This item can not be invoked in quantities greater than 1.\r\n", ch );
+      return;
    }
+   else
+      obj->count = quantity;
+
+   if( CAN_WEAR( obj, ITEM_TAKE ) )
+      obj = obj_to_char( obj, ch );
    else
    {
       obj = obj_to_room( obj, ch->in_room );
       act( AT_IMMORT, "$n fashions $p from ether!", ch, obj, NULL, TO_ROOM );
    }
+
    /*
     * I invoked what? --Blodkai 
     */
-   ch_printf_color( ch, "&YYou invoke %s (&W#%d &Y- &W%s &Y- &Wlvl %d&Y)\r\n",
-                    pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name, obj->level );
+   ch_printf_color( ch, "&YYou invoke %s (&W#%d &Y- &W%s &Y- &Wlvl %d &Y- &Wqty %d&Y)\r\n",
+                    pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name, obj->level, quantity );
    return;
 }
 
@@ -2998,6 +3310,7 @@ void do_purge( CHAR_DATA * ch, char *argument )
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
    OBJ_DATA *obj;
+   CLAN_DATA *clan;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -3025,6 +3338,16 @@ void do_purge( CHAR_DATA * ch, char *argument )
 
       act( AT_IMMORT, "$n purges the room!", ch, NULL, NULL, TO_ROOM );
       act( AT_IMMORT, "You have purged the room!", ch, NULL, NULL, TO_CHAR );
+
+      /*
+       * Clan storeroom check 
+       */
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      {
+         for( clan = first_clan; clan; clan = clan->next )
+            if( clan->storeroom == ch->in_room->vnum )
+               save_clan_storeroom( ch, clan );
+      }
       return;
    }
    victim = NULL;
@@ -3051,6 +3374,16 @@ void do_purge( CHAR_DATA * ch, char *argument )
       act( AT_IMMORT, "$n purges $p.", ch, obj, NULL, TO_ROOM );
       act( AT_IMMORT, "You make $p disappear in a puff of smoke!", ch, obj, NULL, TO_CHAR );
       extract_obj( obj );
+
+      /*
+       * Clan storeroom check 
+       */
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      {
+         for( clan = first_clan; clan; clan = clan->next )
+            if( clan->storeroom == ch->in_room->vnum )
+               save_clan_storeroom( ch, clan );
+      }
       return;
    }
 
@@ -3077,6 +3410,7 @@ void do_low_purge( CHAR_DATA * ch, char *argument )
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
    OBJ_DATA *obj;
+   CLAN_DATA *clan;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -3101,6 +3435,16 @@ void do_low_purge( CHAR_DATA * ch, char *argument )
       act( AT_IMMORT, "$n purges $p!", ch, obj, NULL, TO_ROOM );
       act( AT_IMMORT, "You make $p disappear in a puff of smoke!", ch, obj, NULL, TO_CHAR );
       extract_obj( obj );
+
+      /*
+       * Clan storeroom check 
+       */
+      if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+      {
+         for( clan = first_clan; clan; clan = clan->next )
+            if( clan->storeroom == ch->in_room->vnum )
+               save_clan_storeroom( ch, clan );
+      }
       return;
    }
 
@@ -3170,7 +3514,7 @@ void do_balzhur( CHAR_DATA * ch, char *argument )
    victim->max_hit = 10;
    victim->max_mana = 100;
    victim->max_move = 100;
-   for( sn = 0; sn < top_sn; sn++ )
+   for( sn = 0; sn < num_skills; ++sn )
       victim->pcdata->learned[sn] = 0;
    victim->practice = 0;
    victim->hit = victim->max_hit;
@@ -3320,7 +3664,7 @@ void do_advance( CHAR_DATA * ch, char *argument )
       victim->max_hit = 20;
       victim->max_mana = 100;
       victim->max_move = 100;
-      for( sn = 0; sn < top_sn; sn++ )
+      for( sn = 0; sn < num_skills; ++sn )
          victim->pcdata->learned[sn] = 0;
       victim->practice = 0;
       victim->hit = victim->max_hit;
@@ -3545,7 +3889,7 @@ void do_immortalize( CHAR_DATA * ch, char *argument )
       {
          int sn;
 
-         for( sn = 0; sn < top_sn; sn++ )
+         for( sn = 0; sn < num_skills; ++sn )
             if( skill_table[sn]->guild == victim->pcdata->clan->Class && skill_table[sn]->name != NULL )
                victim->pcdata->learned[sn] = 0;
       }
@@ -3660,9 +4004,9 @@ void do_scatter( CHAR_DATA * ch, char *argument )
    {
       pRoomIndex = get_room_index( number_range( 0, MAX_VNUM ) );
       if( pRoomIndex )
-         if( !IS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL ) && !IS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE ) )
+         if( !xIS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL ) && !xIS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE ) )
             break;
    }
    if( victim->fighting )
@@ -3728,9 +4072,9 @@ void do_strew( CHAR_DATA * ch, char *argument )
    {
       pRoomIndex = get_room_index( number_range( 0, MAX_VNUM ) );
       if( pRoomIndex )
-         if( !IS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
-             && !IS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL ) && !IS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE ) )
+         if( !xIS_SET( pRoomIndex->room_flags, ROOM_PRIVATE )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_SOLITARY )
+             && !xIS_SET( pRoomIndex->room_flags, ROOM_NO_ASTRAL ) && !xIS_SET( pRoomIndex->room_flags, ROOM_PROTOTYPE ) )
             break;
    }
    if( !str_cmp( arg2, "inventory" ) )
@@ -4381,15 +4725,15 @@ void save_watchlist( void )
 
 void do_wizlock( CHAR_DATA * ch, char *argument )
 {
-   extern bool wizlock;
-   wizlock = !wizlock;
+   sysdata.wizlock = !sysdata.wizlock;
 
    set_char_color( AT_DANGER, ch );
 
-   if( wizlock )
+   if( sysdata.wizlock )
       send_to_char( "Game wizlocked.\r\n", ch );
    else
       send_to_char( "Game un-wizlocked.\r\n", ch );
+   save_sysdata( sysdata );
    return;
 }
 
@@ -4736,7 +5080,7 @@ void do_mortalize( CHAR_DATA * ch, char *argument )
       victim->max_hit = 800;
       victim->max_mana = 800;
       victim->max_move = 800;
-      for( sn = 0; sn < top_sn; sn++ )
+      for( sn = 0; sn < num_skills; ++sn )
          victim->pcdata->learned[sn] = 0;
       victim->practice = 0;
       victim->hit = victim->max_hit;
@@ -5917,8 +6261,6 @@ void do_for( CHAR_DATA * ch, char *argument )
    }  /* if strchr */
 }  /* do_for */
 
-void save_sysdata args( ( SYSTEM_DATA sys ) );
-
 void do_cset( CHAR_DATA * ch, char *argument )
 {
    char arg[MAX_STRING_LENGTH];
@@ -5964,7 +6306,6 @@ void do_cset( CHAR_DATA * ch, char *argument )
       pager_printf_color( ch, "&wSaving Pets is:                &W%s\r\n", ( sysdata.save_pets ) ? "ON" : "off" );
       pager_printf_color( ch, "  &wPkill looting is:             &W%s\r\n", ( sysdata.pk_loot ) ? "ON" : "off" );
       pager_printf_color( ch, "  &wSave flags: &W%s\r\n", flag_string( sysdata.save_flags, save_flag ) );
-      pager_printf_color( ch, "  &wIdents retries: &W%d\r\n", sysdata.ident_retries );
       return;
    }
 
@@ -6138,18 +6479,6 @@ void do_cset( CHAR_DATA * ch, char *argument )
    {
       sysdata.dam_mob_vs_mob = level;
       send_to_char( "Ok.\r\n", ch );
-      return;
-   }
-
-   if( !str_cmp( arg, "ident_retries" ) || !str_cmp( arg, "ident" ) )
-   {
-      sysdata.ident_retries = level;
-      if( level > 20 )
-         send_to_char( "Caution:  This setting may cause the game to lag.\r\n", ch );
-      else if( level <= 0 )
-         send_to_char( "Ident lookups turned off.\r\n", ch );
-      else
-         send_to_char( "Ok.\r\n", ch );
       return;
    }
 
@@ -7277,13 +7606,13 @@ void do_showclass( CHAR_DATA * ch, char *argument )
 
       low = UMAX( 0, atoi( arg2 ) );
       hi = URANGE( low, atoi( argument ), MAX_LEVEL );
-      for( x = low; x <= hi; x++ )
+      for( x = low; x <= hi; ++x )
       {
          set_pager_color( AT_LBLUE, ch );
          pager_printf( ch, "Male: %-30s Female: %s\r\n", title_table[cl][x][0], title_table[cl][x][1] );
          cnt = 0;
          set_pager_color( AT_BLUE, ch );
-         for( y = gsn_first_spell; y < gsn_top_sn; y++ )
+         for( y = 0; y < num_skills; ++y )
             if( skill_table[y]->skill_level[cl] == x )
             {
                pager_printf( ch, "  %-7s %-19s%3d     ",
@@ -7422,7 +7751,7 @@ void do_setclass( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      for( i = 0; i < MAX_PC_CLASS; i++ )
+      for( i = 0; i < MAX_PC_CLASS; ++i )
          fprintf( fpList, "%s.class\n", class_table[i]->who_name );
 
       fprintf( fpList, "%s", "$\n" );
@@ -7477,7 +7806,7 @@ void do_setclass( CHAR_DATA * ch, char *argument )
       if( !is_valid_filename( ch, CLASS_DIR, buf ) )
          return;
 
-      for( i = 0; i < MAX_PC_CLASS && class_table[i]; i++ )
+      for( i = 0; i < MAX_PC_CLASS && class_table[i]; ++i )
       {
          if( !class_table[i]->who_name )
             continue;
@@ -7509,7 +7838,7 @@ void do_setclass( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      for( i = 0; i < MAX_PC_CLASS; i++ )
+      for( i = 0; i < MAX_PC_CLASS; ++i )
          fprintf( fpList, "%s%s.class\n", CLASS_DIR, class_table[i]->who_name );
 
       fprintf( fpList, "%s", "$\n" );
@@ -7529,7 +7858,7 @@ void do_setclass( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg2 );
          value = get_aflag( arg2 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg2 );
          else
             xTOGGLE_BIT( Class->affected, value );
@@ -7865,7 +8194,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
          bug( "%s", "Error opening racelist." );
          return;
       }
-      for( i = 0; i < MAX_PC_RACE; i++ )
+      for( i = 0; i < MAX_PC_RACE; ++i )
          fprintf( fpList, "%s.race\n", race_table[i]->race_name );
       fprintf( fpList, "%s", "$\n" );
       fclose( fpList );
@@ -7897,7 +8226,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
       if( !is_valid_filename( ch, RACE_DIR, buf ) )
          return;
 
-      for( i = 0; i < MAX_PC_RACE && race_table[i]; i++ )
+      for( i = 0; i < MAX_PC_RACE && race_table[i]; ++i )
       {
          if( !race_table[i]->race_name )
             continue;
@@ -7919,7 +8248,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
 
       snprintf( race->race_name, 16, "%s", capitalize( argument ) );
       write_race_file( ra );
-      for( i = 0; i < MAX_PC_RACE; i++ )
+      for( i = 0; i < MAX_PC_RACE; ++i )
          fprintf( fpList, "%s.race\n", race_table[i]->race_name );
       fprintf( fpList, "%s", "$\n" );
       fclose( fpList );
@@ -8002,7 +8331,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_aflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( race->affected, value );
@@ -8078,7 +8407,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg2, "classes" ) )
    {
-      for( i = 0; i < MAX_CLASS; i++ )
+      for( i = 0; i < MAX_CLASS; ++i )
       {
          if( !str_cmp( argument, class_table[i]->who_name ) )
          {
@@ -8122,7 +8451,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_defenseflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( race->defenses, value );
@@ -8145,7 +8474,7 @@ void do_setrace( CHAR_DATA * ch, char *argument )
       {
          argument = one_argument( argument, arg3 );
          value = get_attackflag( arg3 );
-         if( value < 0 || value > MAX_BITS )
+         if( value < 0 || value >= MAX_BITS )
             ch_printf( ch, "Unknown flag: %s\r\n", arg3 );
          else
             xTOGGLE_BIT( race->attacks, value );
@@ -10214,5 +10543,65 @@ void do_vassign( CHAR_DATA * ch, char *argument )
    set_char_color( AT_IMMORT, ch );
    ch_printf( ch, "Vnum range set for %s and initialized.\r\n", victim->name );
 
+   return;
+}
+
+/*
+ * oowner will make an item owned by a player so only that player can use it.
+ * Shaddai
+ */
+void do_oowner( CHAR_DATA * ch, char *argument )
+{
+   OBJ_DATA *obj;
+   CHAR_DATA *victim = NULL;
+   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH];
+
+   if( IS_NPC( ch ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' || arg2[0] == '\0' )
+   {
+      send_to_char( "Syntax: oowner <object> <player|none>\r\n", ch );
+      return;
+   }
+
+   if( str_cmp( arg2, "none" ) && ( victim = get_char_world( ch, arg2 ) ) == NULL )
+   {
+      send_to_char( "No such player is in the game.\r\n", ch );
+      return;
+   }
+
+   if( ( obj = get_obj_here( ch, arg1 ) ) == NULL )
+   {
+      send_to_char( "No such object exists.\r\n", ch );
+      return;
+   }
+
+   separate_obj( obj );
+
+   if( !str_cmp( "none", arg2 ) )
+   {
+      STRFREE( obj->owner );
+      obj->owner = STRALLOC( "" );
+      xREMOVE_BIT( obj->extra_flags, ITEM_PERSONAL );
+      send_to_char( "Done.\r\n", ch );
+      return;
+   }
+
+   if( IS_NPC( victim ) )
+   {
+      send_to_char( "A mob can't be an owner of an item.\r\n", ch );
+      return;
+   }
+   STRFREE( obj->owner );
+   obj->owner = STRALLOC( victim->name );
+   xSET_BIT( obj->extra_flags, ITEM_PERSONAL );
+   send_to_char( "Done.\r\n", ch );
    return;
 }

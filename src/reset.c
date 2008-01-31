@@ -13,7 +13,7 @@
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
  *                  Game Reset Handler and Editing Module                   *
- *                         Smaug FUSS 1.6 Version                           *
+ *                         SmaugFUSS 1.8 Version                            *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -502,7 +502,7 @@ void reset_room( ROOM_INDEX_DATA * room )
    OBJ_INDEX_DATA *pObjIndex = NULL, *pObjToIndex;
    EXIT_DATA *pexit;
    char *filename = room->area->filename;
-   int level = 0, n, num = 0, lastnest;
+   int level = 0, n, num = 0, lastnest, onreset = 0;
 
    mob = NULL;
    obj = NULL;
@@ -512,6 +512,7 @@ void reset_room( ROOM_INDEX_DATA * room )
    level = 0;
    for( pReset = room->first_reset; pReset; pReset = pReset->next )
    {
+      ++onreset;
       switch ( pReset->command )
       {
          default:
@@ -529,7 +530,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                bug( "%s: %s: 'M': bad room vnum %d.", __FUNCTION__, filename, pReset->arg3 );
                continue;
             }
-            if( pMobIndex->count >= pReset->arg2 )
+            if( !pReset->sreset )
             {
                mob = NULL;
                break;
@@ -538,11 +539,14 @@ void reset_room( ROOM_INDEX_DATA * room )
             {
                ROOM_INDEX_DATA *pRoomPrev = get_room_index( pReset->arg3 - 1 );
 
-               if( pRoomPrev && IS_SET( pRoomPrev->room_flags, ROOM_PET_SHOP ) )
+               if( pRoomPrev && xIS_SET( pRoomPrev->room_flags, ROOM_PET_SHOP ) )
                   xSET_BIT( mob->act, ACT_PET );
             }
             if( room_is_dark( pRoomIndex ) )
                xSET_BIT( mob->affected_by, AFF_INFRARED );
+            mob->resetvnum = pRoomIndex->vnum;
+            mob->resetnum = onreset;
+            pReset->sreset = false;
             char_to_room( mob, pRoomIndex );
             level = URANGE( 0, mob->level - 2, LEVEL_AVATAR );
 
@@ -550,6 +554,7 @@ void reset_room( ROOM_INDEX_DATA * room )
             {
                for( tReset = pReset->first_reset; tReset; tReset = tReset->next_reset )
                {
+                  ++onreset;
                   switch ( tReset->command )
                   {
                      case 'G':
@@ -598,6 +603,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                               int iNest;
                               to_obj = lastobj;
 
+                              ++onreset;
                               switch ( gReset->command )
                               {
                                  case 'H':
@@ -718,6 +724,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                   int iNest;
 
                   to_obj = lastobj;
+                  ++onreset;
 
                   switch ( tReset->command )
                   {
@@ -951,6 +958,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
 
    letter = UPPER( letter );
    pReset = make_reset( letter, extra, arg1, arg2, arg3 );
+   pReset->sreset = TRUE;
    switch ( letter )
    {
       case 'M':
@@ -1315,4 +1323,51 @@ void do_reset( CHAR_DATA * ch, char *argument )
    }
    do_reset( ch, "" );
    return;
+}
+
+/* Update the mobile resets to let it know to reset it again */
+void update_room_reset( CHAR_DATA *ch, bool setting )
+{
+   ROOM_INDEX_DATA *room;
+   RESET_DATA *pReset, *tReset, *pReset_next, *tReset_next, *gReset, *gReset_next;
+   int nfind = 0;
+
+   if( !ch )
+      return;
+
+   if( !( room = get_room_index( ch->resetvnum ) ) )
+      return;
+
+   for( pReset = room->first_reset; pReset; pReset = pReset_next )
+   {
+      pReset_next = pReset->next;
+
+      if( ++nfind == ch->resetnum )
+      {
+         pReset->sreset = setting;
+         return;
+      }
+
+      for( tReset = pReset->first_reset; tReset; tReset = tReset_next )
+      {
+         tReset_next = tReset->next_reset;
+
+         if( ++nfind == ch->resetnum )
+         {
+            tReset->sreset = setting;
+            return;
+         }
+
+         for( gReset = tReset->first_reset; gReset; gReset = gReset_next )
+         {
+            gReset_next = gReset->next_reset;
+
+            if( ++nfind == ch->resetnum )
+            {
+               gReset->sreset = setting;
+               return;
+            }
+         }
+      }
+   }
 }
