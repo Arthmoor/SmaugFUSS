@@ -31,6 +31,7 @@
 #define dlopen( libname, flags ) LoadLibrary( (libname) )
 #endif
 #include "mud.h"
+#include "mssp.h"
 #include "news.h"
 
 void init_supermob( void );
@@ -70,18 +71,11 @@ EXTRACT_CHAR_DATA *extracted_char_queue;
 
 CHAR_DATA *first_char;
 CHAR_DATA *last_char;
-char *help_greeting;
+const char *help_greeting;
 
 OBJ_DATA *first_object;
 OBJ_DATA *last_object;
 TIME_INFO_DATA time_info;
-WEATHER_DATA weather_info;
-
-int weath_unit;   /* global weather param */
-int rand_factor;
-int climate_factor;
-int neigh_factor;
-int max_vector;
 
 int cur_qobjs;
 int cur_qchars;
@@ -89,6 +83,7 @@ int nummobsloaded;
 int numobjsloaded;
 int physicalobjects;
 int last_pkroom;
+time_t mud_start_time;
 
 MAP_INDEX_DATA *first_map; /* maps */
 
@@ -274,6 +269,7 @@ void load_climate( AREA_DATA * tarea, FILE * fp ); /* FB */
 void load_neighbor( AREA_DATA * tarea, FILE * fp );
 void load_buildlist( void );
 bool load_systemdata( SYSTEM_DATA * sys );
+void save_sysdata( SYSTEM_DATA sys );
 void load_version( AREA_DATA * tarea, FILE * fp );
 void load_watchlist( void );
 void load_reserved( void );
@@ -293,7 +289,7 @@ void load_corpses( void );
 void renumber_put_resets( ROOM_INDEX_DATA * room );
 void wipe_resets( ROOM_INDEX_DATA * room );
 
-void shutdown_mud( char *reason )
+void shutdown_mud( const char *reason )
 {
    FILE *fp;
 
@@ -332,6 +328,8 @@ void boot_db( bool fCopyOver )
 
    log_string( "Loading commands..." );
    load_commands(  );
+
+   mud_start_time = current_time;
 
    log_string( "Loading spec_funs..." );
    load_specfuns(  );
@@ -373,12 +371,21 @@ void boot_db( bool fCopyOver )
    sysdata.save_pets = 0;
    sysdata.pk_loot = 1;
    sysdata.wizlock = FALSE;
+   sysdata.secpertick = 70;
+   sysdata.pulsepersec = 4;
+   sysdata.hoursperday = 24;
+   sysdata.daysperweek = 7;
+   sysdata.dayspermonth = 31;
+   sysdata.monthsperyear = 17;
    sysdata.save_flags = SV_DEATH | SV_PASSCHG | SV_AUTO | SV_PUT | SV_DROP | SV_GIVE | SV_AUCTION | SV_ZAPDROP | SV_IDLE;
    if( !load_systemdata( &sysdata ) )
    {
       log_string( "Not found.  Creating new configuration." );
       sysdata.alltimemax = 0;
       sysdata.mud_name = str_dup( "(Name not set)" );
+      update_timers(  );
+      update_calendar(  );
+      save_sysdata( sysdata );
    }
 
    log_string( "Loading socials" );
@@ -420,6 +427,9 @@ void boot_db( bool fCopyOver )
 
    log_string( "Making wizlist" );
    make_wizlist(  );
+
+   log_string( "Loading MSSP Data..." );
+   load_mssp_data( );
 
    fBootDb = TRUE;
 
@@ -477,12 +487,6 @@ void boot_db( bool fCopyOver )
    for( x = 0; x < AUCTION_MEM; x++ )
       auction->history[x] = NULL;
 
-   weath_unit = 10;
-   rand_factor = 2;
-   climate_factor = 1;
-   neigh_factor = 3;
-   max_vector = weath_unit * 3;
-
    for( wear = 0; wear < MAX_WEAR; wear++ )
       for( x = 0; x < MAX_LAYERS; x++ )
          save_equipment[wear][x] = NULL;
@@ -499,41 +503,39 @@ void boot_db( bool fCopyOver )
    {
       long lhour, lday, lmonth;
 
-      log_string( "Setting time and weather" );
+      log_string( "Setting time and weather." );
 
-      lhour = ( current_time - 650336715 ) / ( PULSE_TICK / PULSE_PER_SECOND );
-      time_info.hour = lhour % 24;
-      lday = lhour / 24;
-      time_info.day = lday % 35;
-      lmonth = lday / 35;
-      time_info.month = lmonth % 17;
-      time_info.year = lmonth / 17;
+      if( !load_timedata(  ) )   /* Loads time from stored file if TRUE - Samson 1-21-99 */
+      {
+         boot_log( "Resetting mud time based on current system time." );
+         lhour = ( current_time - 650336715 ) / ( sysdata.pulsetick / sysdata.pulsepersec );
+         time_info.hour = lhour % sysdata.hoursperday;
+         lday = lhour / sysdata.hoursperday;
+         time_info.day = lday % sysdata.dayspermonth;
+         lmonth = lday / sysdata.dayspermonth;
+         time_info.month = lmonth % sysdata.monthsperyear;
+         time_info.year = lmonth / sysdata.monthsperyear;
+      }
 
-      if( time_info.hour < 5 )
+      if( time_info.hour < sysdata.hoursunrise )
          time_info.sunlight = SUN_DARK;
-      else if( time_info.hour < 6 )
+      else if( time_info.hour < sysdata.hourdaybegin )
          time_info.sunlight = SUN_RISE;
-      else if( time_info.hour < 19 )
+      else if( time_info.hour < sysdata.hoursunset )
          time_info.sunlight = SUN_LIGHT;
-      else if( time_info.hour < 20 )
+      else if( time_info.hour < sysdata.hournightbegin )
          time_info.sunlight = SUN_SET;
       else
          time_info.sunlight = SUN_DARK;
-
-      /*
-       * weather_info.change  = 0;
-       * weather_info.mmhg = 960;
-       * if ( time_info.month >= 7 && time_info.month <=12 )
-       * weather_info.mmhg += number_range( 1, 50 );
-       * else
-       * weather_info.mmhg += number_range( 1, 80 );
-       * 
-       * if ( weather_info.mmhg <=  980 ) weather_info.sky = SKY_LIGHTNING;
-       * else if ( weather_info.mmhg <= 1000 ) weather_info.sky = SKY_RAINING;
-       * else if ( weather_info.mmhg <= 1020 ) weather_info.sky = SKY_CLOUDY;
-       * else                                  weather_info.sky = SKY_CLOUDLESS;
-       */
    }
+
+   if( !load_weathermap(  ) )
+   {
+      InitializeWeatherMap(  );
+   }
+
+   log_string( "Loading holiday chart..." ); /* Samson 5-13-99 */
+   load_holidays(  );
 
    log_string( "Loading DNS cache..." );  /* Samson 1-30-02 */
    load_dns(  );
@@ -736,17 +738,9 @@ void boot_db( bool fCopyOver )
    MOBtrigger = TRUE;
 
    /*
-    * Initialize area weather data 
-    */
-   load_weatherdata(  );
-   init_area_weather(  );
-
-   /*
     * Initialize chess board stuff 
     */
    init_chess(  );
-
-   return;
 }
 
 /*
@@ -776,24 +770,8 @@ AREA_DATA *load_area( FILE * fp, int aversion )
    pArea->low_hard_range = 0;
    pArea->hi_hard_range = MAX_LEVEL;
    pArea->spelllimit = 0;
-
-   /*
-    * initialize weather data - FB 
-    */
-   CREATE( pArea->weather, WEATHER_DATA, 1 );
-   pArea->weather->temp = 0;
-   pArea->weather->precip = 0;
-   pArea->weather->wind = 0;
-   pArea->weather->temp_vector = 0;
-   pArea->weather->precip_vector = 0;
-   pArea->weather->wind_vector = 0;
-   pArea->weather->climate_temp = 2;
-   pArea->weather->climate_precip = 2;
-   pArea->weather->climate_wind = 2;
-   pArea->weather->first_neighbor = NULL;
-   pArea->weather->last_neighbor = NULL;
-   pArea->weather->echo = NULL;
-   pArea->weather->echo_color = AT_GREY;
+   pArea->weatherx = 0;
+   pArea->weathery = 0;
 
    LINK( pArea, first_area, last_area, next, prev );
    top_area++;
@@ -807,7 +785,6 @@ AREA_DATA *load_area( FILE * fp, int aversion )
 void load_version( AREA_DATA * tarea, FILE * fp )
 {
    tarea->version = fread_number( fp );
-   return;
 }
 
 /*
@@ -830,7 +807,6 @@ void load_author( AREA_DATA * tarea, FILE * fp )
    if( tarea->author )
       STRFREE( tarea->author );
    tarea->author = fread_string( fp );
-   return;
 }
 
 /*
@@ -853,7 +829,6 @@ void load_credits( AREA_DATA * tarea, FILE * fp )
    if( tarea->credits )
       STRFREE( tarea->credits );
    tarea->credits = fread_string( fp );
-   return;
 }
 
 /*
@@ -875,7 +850,6 @@ void load_economy( AREA_DATA * tarea, FILE * fp )
 
    tarea->high_economy = fread_number( fp );
    tarea->low_economy = fread_number( fp );
-   return;
 }
 
 /* Reset Message Load, Rennard */
@@ -896,7 +870,6 @@ void load_resetmsg( AREA_DATA * tarea, FILE * fp )
    if( tarea->resetmsg )
       DISPOSE( tarea->resetmsg );
    tarea->resetmsg = fread_string_nohash( fp );
-   return;
 }
 
 /*
@@ -925,7 +898,6 @@ void load_flags( AREA_DATA * tarea, FILE * fp )
    tarea->reset_frequency = x2;
    if( x2 )
       tarea->age = x2;
-   return;
 }
 
 /*
@@ -999,7 +971,6 @@ void load_helps( FILE * fp )
          help_greeting = pHelp->text;
       add_help( pHelp );
    }
-   return;
 }
 
 /*
@@ -1094,8 +1065,10 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
       pMobIndex->long_descr = fread_string( fp );
       pMobIndex->description = fread_string( fp );
 
-      pMobIndex->long_descr[0] = UPPER( pMobIndex->long_descr[0] );
-      pMobIndex->description[0] = UPPER( pMobIndex->description[0] );
+      // well, it's pretty nasty to cast, but we know that we own this
+      // memory because we just created it.
+      ((char*)pMobIndex->long_descr)[0] = UPPER( pMobIndex->long_descr[0] );
+      ((char*)pMobIndex->description)[0] = UPPER( pMobIndex->description[0] );
 
       pMobIndex->act = fread_bitvector( fp );
       xSET_BIT( pMobIndex->act, ACT_IS_NPC );
@@ -1460,7 +1433,9 @@ void load_objects( AREA_DATA * tarea, FILE * fp )
       /*
        * pObjIndex->short_descr[0]  = LOWER(pObjIndex->short_descr[0]);
        */
-      pObjIndex->description[0] = UPPER( pObjIndex->description[0] );
+
+      // we just created this, so we know we can touch the string
+      ((char*)pObjIndex->description)[0] = UPPER( pObjIndex->description[0] );
 
       pObjIndex->item_type = fread_number( fp );
       pObjIndex->extra_flags = fread_bitvector( fp );
@@ -2380,60 +2355,23 @@ void load_ranges( AREA_DATA * tarea, FILE * fp )
 }
 
 /*
- * Load climate information for the area
- * Last modified: July 13, 1997
- * Fireblade
+ * With the new Weather System, these are unneeded as the weather is it's own
+ * entity seperated from everything else. - Kayle 10-17-07
  */
 void load_climate( AREA_DATA * tarea, FILE * fp )
 {
-   if( !tarea )
-   {
-      bug( "load_climate: no #AREA seen yet" );
-      if( fBootDb )
-      {
-         shutdown_mud( "No #AREA" );
-         exit( 1 );
-      }
-      else
-         return;
-   }
-
-   tarea->weather->climate_temp = fread_number( fp );
-   tarea->weather->climate_precip = fread_number( fp );
-   tarea->weather->climate_wind = fread_number( fp );
-
-   return;
+   fread_number( fp );
+   fread_number( fp );
+   fread_number( fp );
 }
 
 /*
- * Load data for a neghboring weather system
- * Last modified: July 13, 1997
- * Fireblade
+ * With the new Weather System, these are unneeded as the weather is it's own
+ * entity seperated from everything else. - Kayle 10-17-07
  */
 void load_neighbor( AREA_DATA * tarea, FILE * fp )
 {
-   NEIGHBOR_DATA *tnew;
-
-   if( !tarea )
-   {
-      bug( "load_neighbor: no #AREA seen yet." );
-      if( fBootDb )
-      {
-         shutdown_mud( "No #AREA" );
-         exit( 1 );
-      }
-      else
-         return;
-   }
-
-   CREATE( tnew, NEIGHBOR_DATA, 1 );
-   tnew->next = NULL;
-   tnew->prev = NULL;
-   tnew->address = NULL;
-   tnew->name = fread_string( fp );
-   LINK( tnew, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
-
-   return;
+   fread_flagstring( fp );
 }
 
 /*
@@ -3176,7 +3114,7 @@ void free_char( CHAR_DATA * ch )
 /*
  * Get an extra description from a list.
  */
-char *get_extra_descr( const char *name, EXTRA_DESCR_DATA * ed )
+const char *get_extra_descr( const char *name, EXTRA_DESCR_DATA * ed )
 {
    for( ; ed; ed = ed->next )
       if( is_name( name, ed->keyword ) )
@@ -3417,7 +3355,7 @@ bool is_valid_filename( CHAR_DATA * ch, const char *direct, const char *filename
 }
 
 /* Read a string from file and return it */
-char *fread_flagstring( FILE * fp )
+const char *fread_flagstring( FILE * fp )
 {
    static char flagstring[MAX_STRING_LENGTH];
    char *plast;
@@ -3488,7 +3426,7 @@ char *fread_flagstring( FILE * fp )
 /*
  * Read a string from file fp
  */
-char *fread_string( FILE * fp )
+const char *fread_string( FILE * fp )
 {
    char buf[MAX_STRING_LENGTH];
    char *plast;
@@ -3787,7 +3725,7 @@ char *fread_word( FILE * fp )
    return NULL;
 }
 
-void do_memory( CHAR_DATA * ch, char *argument )
+void do_memory( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    int hash;
@@ -4011,6 +3949,21 @@ void smash_tilde( char *str )
    return;
 }
 
+const char* smash_tilde( const char *str )
+{
+    static char buf[MAX_STRING_LENGTH];
+    mudstrlcpy( buf, str, MAX_STRING_LENGTH );
+    smash_tilde( buf );
+    return buf;
+}
+
+char* smash_tilde_copy( const char *str )
+{
+    char* result = strdup(str);
+    smash_tilde(result);
+    return result;
+}
+
 /*
  * Encodes the tildes in a string.				-Thoric
  * Used for player-entered strings that go into disk files.
@@ -4024,7 +3977,7 @@ void hide_tilde( char *str )
    return;
 }
 
-char *show_tilde( char *str )
+const char *show_tilde( const char *str )
 {
    static char buf[MAX_STRING_LENGTH];
    char *bufptr;
@@ -4234,7 +4187,7 @@ bool isavowel( char letter )
 /*
  * Shove either "a " or "an " onto the beginning of a string	-Thoric
  */
-char *aoran( const char *str )
+const char *aoran( const char *str )
 {
    static char temp[MAX_STRING_LENGTH];
 
@@ -4256,7 +4209,7 @@ char *aoran( const char *str )
 /*
  * Append a string to a file.
  */
-void append_file( CHAR_DATA * ch, char *file, char *str )
+void append_file( CHAR_DATA * ch, const char *file, const char *str )
 {
    FILE *fp;
 
@@ -4279,7 +4232,7 @@ void append_file( CHAR_DATA * ch, char *file, char *str )
 /*
  * Append a string to a file.
  */
-void append_to_file( char *file, char *str )
+void append_to_file( const char *file, const char *str )
 {
    FILE *fp;
 
@@ -4378,7 +4331,7 @@ void boot_log( const char *str, ... )
 /*
  * Dump a text file to a player, a line at a time		-Thoric
  */
-void show_file( CHAR_DATA * ch, char *filename )
+void show_file( CHAR_DATA * ch, const char *filename )
 {
    FILE *fp;
    char buf[MAX_STRING_LENGTH];
@@ -4412,7 +4365,7 @@ void show_file( CHAR_DATA * ch, char *filename )
 /*
  * Show the boot log file					-Thoric
  */
-void do_dmesg( CHAR_DATA * ch, char *argument )
+void do_dmesg( CHAR_DATA* ch, const char* argument)
 {
    set_pager_color( AT_LOG, ch );
    show_file( ch, BOOTLOG_FILE );
@@ -4708,7 +4661,7 @@ void make_wizlist(  )
    last_wiz = NULL;
 }
 
-void do_makewizlist( CHAR_DATA * ch, char *argument )
+void do_makewizlist( CHAR_DATA* ch, const char* argument)
 {
    make_wizlist(  );
 }
@@ -4716,7 +4669,7 @@ void do_makewizlist( CHAR_DATA * ch, char *argument )
 /* mud prog functions */
 
 /* This routine reads in scripts of MUDprograms from a file */
-int mprog_name_to_type( char *name )
+int mprog_name_to_type( const char *name )
 {
    if( !str_cmp( name, "in_file_prog" ) )
       return IN_FILE_PROG;
@@ -4795,7 +4748,7 @@ int mprog_name_to_type( char *name )
    return ( ERROR_PROG );
 }
 
-void mobprog_file_read( MOB_INDEX_DATA * mob, char *f )
+void mobprog_file_read( MOB_INDEX_DATA * mob, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -4910,7 +4863,7 @@ void mprog_read_programs( FILE * fp, MOB_INDEX_DATA * mob )
  */
 
 /* This routine reads in scripts of OBJprograms from a file */
-void objprog_file_read( OBJ_INDEX_DATA * obj, char *f )
+void objprog_file_read( OBJ_INDEX_DATA * obj, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -5025,7 +4978,7 @@ void oprog_read_programs( FILE * fp, OBJ_INDEX_DATA * obj )
  */
 
 /* This routine reads in scripts of OBJprograms from a file */
-void roomprog_file_read( ROOM_INDEX_DATA * room, char *f )
+void roomprog_file_read( ROOM_INDEX_DATA * room, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -5447,7 +5400,7 @@ ROOM_INDEX_DATA *make_room( int vnum, AREA_DATA * area )
  * Create a new INDEX object (for online building)		-Thoric
  * Option to clone an existing index object.
  */
-OBJ_INDEX_DATA *make_object( int vnum, int cvnum, char *name )
+OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
 {
    OBJ_INDEX_DATA *pObjIndex, *cObjIndex;
    char buf[MAX_STRING_LENGTH];
@@ -5471,8 +5424,10 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, char *name )
       snprintf( buf, MAX_STRING_LENGTH, "Some god dropped a newly created %s here.", name );
       pObjIndex->description = STRALLOC( buf );
       pObjIndex->action_desc = STRALLOC( "" );
-      pObjIndex->short_descr[0] = LOWER( pObjIndex->short_descr[0] );
-      pObjIndex->description[0] = UPPER( pObjIndex->description[0] );
+
+      // it's safe to cast these because we just created the object
+      ((char*)pObjIndex->short_descr)[0] = LOWER( pObjIndex->short_descr[0] );
+      ((char*)pObjIndex->description)[0] = UPPER( pObjIndex->description[0] );
       pObjIndex->item_type = ITEM_TRASH;
       xCLEAR_BITS( pObjIndex->extra_flags );
       xSET_BIT( pObjIndex->extra_flags, ITEM_PROTOTYPE );
@@ -5539,7 +5494,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, char *name )
  * Create a new INDEX mobile (for online building)		-Thoric
  * Option to clone an existing index mobile.
  */
-MOB_INDEX_DATA *make_mobile( int vnum, int cvnum, char *name )
+MOB_INDEX_DATA *make_mobile( int vnum, int cvnum, const char *name )
 {
    MOB_INDEX_DATA *pMobIndex, *cMobIndex;
    char buf[MAX_STRING_LENGTH];
@@ -5561,9 +5516,10 @@ MOB_INDEX_DATA *make_mobile( int vnum, int cvnum, char *name )
       snprintf( buf, MAX_STRING_LENGTH, "Some god abandoned a newly created %s here.\r\n", name );
       pMobIndex->long_descr = STRALLOC( buf );
       pMobIndex->description = STRALLOC( "" );
-      pMobIndex->short_descr[0] = LOWER( pMobIndex->short_descr[0] );
-      pMobIndex->long_descr[0] = UPPER( pMobIndex->long_descr[0] );
-      pMobIndex->description[0] = UPPER( pMobIndex->description[0] );
+      // it's safe to cast these because we just created the object
+      ((char*)pMobIndex->short_descr)[0] = LOWER( pMobIndex->short_descr[0] );
+      ((char*)pMobIndex->long_descr)[0] = UPPER( pMobIndex->long_descr[0] );
+      ((char*)pMobIndex->description)[0] = UPPER( pMobIndex->description[0] );
       xCLEAR_BITS( pMobIndex->act );
       xSET_BIT( pMobIndex->act, ACT_IS_NPC );
       xSET_BIT( pMobIndex->act, ACT_PROTOTYPE );
@@ -5605,7 +5561,7 @@ MOB_INDEX_DATA *make_mobile( int vnum, int cvnum, char *name )
       pMobIndex->resistant = 0;
       pMobIndex->immune = 0;
       pMobIndex->susceptible = 0;
-      pMobIndex->numattacks = 0;
+      pMobIndex->numattacks = 1;
       xCLEAR_BITS( pMobIndex->attacks );
       xCLEAR_BITS( pMobIndex->defenses );
    }
@@ -5930,7 +5886,7 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
          case 'F':
             if( !str_cmp( word, "Flags" ) )
             {
-               char *exitflags = NULL;
+               const char *exitflags = NULL;
                char flag[MAX_INPUT_LENGTH];
                int value;
 
@@ -5976,7 +5932,7 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
    return;
 }
 
-void rprog_file_read( ROOM_INDEX_DATA * prog_target, char *f )
+void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -6224,7 +6180,7 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
          case 'F':
             if( !str_cmp( word, "Flags" ) )
             {
-               char *roomflags = NULL;
+               const char *roomflags = NULL;
                char flag[MAX_INPUT_LENGTH];
                int value;
 
@@ -6341,7 +6297,7 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
    }
 }
 
-void oprog_file_read( OBJ_INDEX_DATA * prog_target, char *f )
+void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -6583,7 +6539,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
          case 'F':
             if( !str_cmp( word, "Flags" ) )
             {
-               char *eflags = fread_flagstring( fp );
+               const char *eflags = fread_flagstring( fp );
 
                while( eflags[0] != '\0' )
                {
@@ -6741,7 +6697,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
          case 'W':
             if( !str_cmp( word, "WFlags" ) )
             {
-               char *wflags = fread_flagstring( fp );
+               const char *wflags = fread_flagstring( fp );
 
                while( wflags[0] != '\0' )
                {
@@ -6759,7 +6715,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
    }
 }
 
-void mprog_file_read( MOB_INDEX_DATA * prog_target, char *f )
+void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
 {
    MPROG_DATA *mprg = NULL;
    char MUDProgfile[256];
@@ -6979,7 +6935,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
          case 'A':
             if( !str_cmp( word, "Actflags" ) )
             {
-               char *actflags = NULL;
+               const char *actflags = NULL;
 
                actflags = fread_flagstring( fp );
 
@@ -6997,7 +6953,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Affected" ) )
             {
-               char *affectflags = NULL;
+               const char *affectflags = NULL;
 
                affectflags = fread_flagstring( fp );
 
@@ -7015,7 +6971,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Attacks" ) )
             {
-               char *attacks = fread_flagstring( fp );
+               const char *attacks = fread_flagstring( fp );
 
                while( attacks[0] != '\0' )
                {
@@ -7052,7 +7008,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
          case 'B':
             if( !str_cmp( word, "Bodyparts" ) )
             {
-               char *bodyparts = fread_flagstring( fp );
+               const char *bodyparts = fread_flagstring( fp );
 
                while( bodyparts[0] != '\0' )
                {
@@ -7086,7 +7042,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
          case 'D':
             if( !str_cmp( word, "Defenses" ) )
             {
-               char *defenses = fread_flagstring( fp );
+               const char *defenses = fread_flagstring( fp );
 
                while( defenses[0] != '\0' )
                {
@@ -7135,7 +7091,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
          case 'I':
             if( !str_cmp( word, "Immune" ) )
             {
-               char *immune = fread_flagstring( fp );
+               const char *immune = fread_flagstring( fp );
 
                while( immune[0] != '\0' )
                {
@@ -7211,7 +7167,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Resist" ) )
             {
-               char *resist = fread_flagstring( fp );
+               const char *resist = fread_flagstring( fp );
 
                while( resist[0] != '\0' )
                {
@@ -7271,7 +7227,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Speaks" ) )
             {
-               char *speaks = fread_flagstring( fp );
+               const char *speaks = fread_flagstring( fp );
 
                while( speaks[0] != '\0' )
                {
@@ -7290,7 +7246,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Speaking" ) )
             {
-               char *speaking = fread_flagstring( fp );
+               const char *speaking = fread_flagstring( fp );
 
                while( speaking[0] != '\0' )
                {
@@ -7309,7 +7265,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Specfun" ) )
             {
-               char *temp = fread_flagstring( fp );
+               const char *temp = fread_flagstring( fp );
                if( !pMobIndex )
                {
                   bug( "%s: Specfun: Invalid mob vnum!", __FUNCTION__ );
@@ -7390,7 +7346,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
             if( !str_cmp( word, "Suscept" ) )
             {
-               char *suscep = fread_flagstring( fp );
+               const char *suscep = fread_flagstring( fp );
 
                while( suscep[0] != '\0' )
                {
@@ -7494,13 +7450,6 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
 
          case 'C':
             KEY( "Credits", tarea->credits, fread_string( fp ) );
-            if( !str_cmp( word, "Climate" ) )
-            {
-               tarea->weather->climate_temp = fread_number( fp );
-               tarea->weather->climate_precip = fread_number( fp );
-               tarea->weather->climate_wind = fread_number( fp );
-               break;
-            }
             break;
 
          case 'E':
@@ -7515,7 +7464,7 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
          case 'F':
             if( !str_cmp( word, "Flags" ) )
             {
-               char *areaflags = NULL;
+               const char *areaflags = NULL;
                char flag[MAX_INPUT_LENGTH];
                int value;
 
@@ -7536,16 +7485,6 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
 
          case 'N':
             KEY( "Name", tarea->name, fread_string_nohash( fp ) );
-            if( !str_cmp( word, "Neighbor" ) )
-            {
-               NEIGHBOR_DATA *tnew;
-
-               CREATE( tnew, NEIGHBOR_DATA, 1 );
-               tnew->address = NULL;
-               tnew->name = fread_string( fp );
-               LINK( tnew, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
-               break;
-            }
             break;
 
          case 'R':
@@ -7577,6 +7516,11 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
          case 'V':
             KEY( "Version", tarea->version, fread_number( fp ) );
             break;
+
+         case 'W':
+            KEY( "WeatherX", tarea->weatherx, fread_number( fp ) );
+            KEY( "WeatherY", tarea->weathery, fread_number( fp ) );
+            break;
       }
    }
 }
@@ -7595,6 +7539,7 @@ AREA_DATA *create_area( void )
    pArea->credits = NULL;
    pArea->filename = str_dup( strArea );
    pArea->age = 15;
+   pArea->reset_frequency = 15;
    pArea->nplayer = 0;
    pArea->low_r_vnum = 0;
    pArea->low_o_vnum = 0;
@@ -7607,25 +7552,10 @@ AREA_DATA *create_area( void )
    pArea->low_hard_range = 0;
    pArea->hi_hard_range = MAX_LEVEL;
    pArea->spelllimit = 0;
-
-   /*
-    * initialize weather data - FB 
-    */
-   CREATE( pArea->weather, WEATHER_DATA, 1 );
-   pArea->weather->temp = 0;
-   pArea->weather->precip = 0;
-   pArea->weather->wind = 0;
-   pArea->weather->temp_vector = 0;
-   pArea->weather->precip_vector = 0;
-   pArea->weather->wind_vector = 0;
-   pArea->weather->climate_temp = 2;
-   pArea->weather->climate_precip = 2;
-   pArea->weather->climate_wind = 2;
-   pArea->weather->first_neighbor = NULL;
-   pArea->weather->last_neighbor = NULL;
-   pArea->weather->echo = NULL;
-   pArea->weather->echo_color = AT_GREY;
+   pArea->weatherx = 0;
+   pArea->weathery = 0;
    pArea->version = 1;
+
    LINK( pArea, first_area, last_area, next, prev );
    ++top_area;
    return pArea;
@@ -7845,7 +7775,7 @@ void load_reserved( void )
    DISPOSE( res->name );
    DISPOSE( res );
    fclose( fp );
-   return;
+   fp = NULL;
 }
 
 /* Build list of in_progress areas.  Do not load areas.
@@ -7874,7 +7804,7 @@ void load_buildlist( void )
          snprintf( buf, MAX_STRING_LENGTH, "%s%s", GOD_DIR, dentry->d_name );
          if( !( fp = fopen( buf, "r" ) ) )
          {
-            bug( "Load_buildlist: invalid file" );
+            bug( "%s: invalid file", __FUNCTION__ );
             perror( buf );
             dentry = readdir( dp );
             continue;
@@ -7895,7 +7825,7 @@ void load_buildlist( void )
 
             fgets( line, 80, fp );
             sscanf( line, "%s %d %d", word, &low, &hi );
-            if( !strcmp( word, "Level" ) )
+            if( !str_cmp( word, "Level" ) )
             {
                if( low < LEVEL_IMMORTAL )
                {
@@ -7903,20 +7833,21 @@ void load_buildlist( void )
                   badfile = TRUE;
                }
             }
-            if( !strcmp( word, "RoomRange" ) )
+            if( !str_cmp( word, "RoomRange" ) )
                rlow = low, rhi = hi;
-            else if( !strcmp( word, "MobRange" ) )
+            else if( !str_cmp( word, "MobRange" ) )
                mlow = low, mhi = hi;
-            else if( !strcmp( word, "ObjRange" ) )
+            else if( !str_cmp( word, "ObjRange" ) )
                olow = low, ohi = hi;
          }
          fclose( fp );
+         fp = NULL;
          if( rlow && rhi && !badfile )
          {
             snprintf( buf, MAX_STRING_LENGTH, "%s%s.are", BUILD_DIR, dentry->d_name );
             if( !( fp = fopen( buf, "r" ) ) )
             {
-               bug( "Load_buildlist: cannot open area file for read" );
+               bug( "%s: cannot open area file for read", __FUNCTION__ );
                perror( buf );
                dentry = readdir( dp );
                continue;
@@ -7925,8 +7856,9 @@ void load_buildlist( void )
             mudstrlcpy( word, fread_word( fp ), MAX_INPUT_LENGTH );
             if( word[0] != '#' || strcmp( &word[1], "AREA" ) )
             {
-               snprintf( buf, MAX_STRING_LENGTH, "Make_buildlist: %s.are: no #AREA found.", dentry->d_name );
+               snprintf( buf, MAX_STRING_LENGTH, "%s: %s.are: no #AREA found.", __FUNCTION__, dentry->d_name );
                fclose( fp );
+               fp = NULL;
                dentry = readdir( dp );
                continue;
             }
@@ -7942,6 +7874,7 @@ void load_buildlist( void )
             pArea->name = str_dup( buf );
 #endif
             fclose( fp );
+            fp = NULL;
             pArea->low_r_vnum = rlow;
             pArea->hi_r_vnum = rhi;
             pArea->low_m_vnum = mlow;
@@ -7952,22 +7885,10 @@ void load_buildlist( void )
             pArea->hi_soft_range = -1;
             pArea->low_hard_range = -1;
             pArea->hi_hard_range = -1;
-
-            CREATE( pArea->weather, WEATHER_DATA, 1 );   /* FB */
-            pArea->weather->temp = 0;
-            pArea->weather->precip = 0;
-            pArea->weather->wind = 0;
-            pArea->weather->temp_vector = 0;
-            pArea->weather->precip_vector = 0;
-            pArea->weather->wind_vector = 0;
-            pArea->weather->climate_temp = 2;
-            pArea->weather->climate_precip = 2;
-            pArea->weather->climate_wind = 2;
-            pArea->weather->first_neighbor = NULL;
-            pArea->weather->last_neighbor = NULL;
-            pArea->weather->echo = NULL;
-            pArea->weather->echo_color = AT_GREY;
+            pArea->weatherx = 0;
+            pArea->weathery = 0;
             pArea->first_room = pArea->last_room = NULL;
+
             SET_BIT( pArea->flags, AFLAG_PROTOTYPE );
             LINK( pArea, first_build, last_build, next, prev );
             fprintf( stderr, "%-14s: Rooms: %5d - %-5d Objs: %5d - %-5d "
@@ -8119,7 +8040,7 @@ void sort_area( AREA_DATA * pArea, bool proto )
  * Display vnums currently assigned to areas		-Altrag & Thoric
  * Sorted, and flagged if loaded.
  */
-void show_vnums( CHAR_DATA * ch, int low, int high, bool proto, bool shownl, char *loadst, char *notloadst )
+void show_vnums( CHAR_DATA * ch, int low, int high, bool proto, bool shownl, const char *loadst, const char *notloadst )
 {
    AREA_DATA *pArea, *first_sort;
    int count, loaded;
@@ -8158,7 +8079,7 @@ void show_vnums( CHAR_DATA * ch, int low, int high, bool proto, bool shownl, cha
 /*
  * Shows prototype vnums ranges, and if loaded
  */
-void do_vnums( CHAR_DATA * ch, char *argument )
+void do_vnums( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8180,7 +8101,7 @@ void do_vnums( CHAR_DATA * ch, char *argument )
 /*
  * Shows installed areas, sorted.  Mark unloaded areas with an X
  */
-void do_zones( CHAR_DATA * ch, char *argument )
+void do_zones( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8202,7 +8123,7 @@ void do_zones( CHAR_DATA * ch, char *argument )
 /*
  * Show prototype areas, sorted.  Only show loaded areas
  */
-void do_newzones( CHAR_DATA * ch, char *argument )
+void do_newzones( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8281,11 +8202,18 @@ void save_sysdata( SYSTEM_DATA sys )
       fprintf( fp, "MorphOpt       %d\n", sys.morph_opt );
       fprintf( fp, "PetSave	     %d\n", sys.save_pets );
       fprintf( fp, "Pkloot	     %d\n", sys.pk_loot );
+      fprintf( fp, "Maxholiday     %d\n", sys.maxholiday );
+      fprintf( fp, "Secpertick     %d\n", sys.secpertick );
+      fprintf( fp, "Pulsepersec    %d\n", sys.pulsepersec );
+      fprintf( fp, "Hoursperday    %d\n", sys.hoursperday );
+      fprintf( fp, "Daysperweek    %d\n", sys.daysperweek );
+      fprintf( fp, "Dayspermonth   %d\n", sys.dayspermonth );
+      fprintf( fp, "Monthsperyear  %d\n", sys.monthsperyear );
       fprintf( fp, "End\n\n" );
       fprintf( fp, "#END\n" );
    }
    fclose( fp );
-   return;
+   fp = NULL;
 }
 
 void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
@@ -8328,6 +8256,8 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             KEY( "Dammobvsplr", sys->dam_mob_vs_plr, fread_number( fp ) );
             KEY( "Dammobvsmob", sys->dam_mob_vs_mob, fread_number( fp ) );
             KEY( "Dodgemod", sys->dodge_mod, fread_number( fp ) );
+            KEY( "Daysperweek", sys->daysperweek, fread_number( fp ) );
+            KEY( "Dayspermonth", sys->dayspermonth, fread_number( fp ) );
             break;
 
          case 'E':
@@ -8355,6 +8285,7 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
          case 'H':
             KEY( "Highplayers", sys->alltimemax, fread_number( fp ) );
             KEY( "Highplayertime", sys->time_of_max, fread_string_nohash( fp ) );
+            KEY( "Hoursperday", sys->hoursperday, fread_number( fp ) );
             break;
 
          case 'L':
@@ -8362,6 +8293,8 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             break;
 
          case 'M':
+            KEY( "Maxholiday", sys->maxholiday, fread_number( fp ) );	
+            KEY( "Monthsperyear", sys->monthsperyear, fread_number( fp ) );
             KEY( "MorphOpt", sys->morph_opt, fread_number( fp ) );
             KEY( "Msetplayer", sys->level_mset_player, fread_number( fp ) );
             KEY( "MudName", sys->mud_name, fread_string_nohash( fp ) );
@@ -8381,6 +8314,7 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             KEY( "PetSave", sys->save_pets, fread_number( fp ) );
             KEY( "Pkloot", sys->pk_loot, fread_number( fp ) );
             KEY( "Protoflag", sys->level_modify_proto, fread_number( fp ) );
+            KEY( "Pulsepersec", sys->pulsepersec, fread_number( fp ) );
             break;
 
          case 'R':
@@ -8393,6 +8327,7 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             KEY( "Stunregular", sys->stun_regular, fread_number( fp ) );
             KEY( "Saveflags", sys->save_flags, fread_number( fp ) );
             KEY( "Savefreq", sys->save_frequency, fread_number( fp ) );
+            KEY( "Secpertick", sys->secpertick, fread_number( fp ) );
             break;
 
          case 'T':
@@ -8460,6 +8395,8 @@ bool load_systemdata( SYSTEM_DATA * sys )
       }
       fclose( fp );
       fp = NULL;
+      update_timers(  );
+      update_calendar(  );
    }
 
    if( !sysdata.guild_overseer )
@@ -8524,7 +8461,7 @@ void load_watchlist( void )
 
 /* Check to make sure range of vnums is free - Scryn 2/27/96 */
 
-void do_check_vnums( CHAR_DATA * ch, char *argument )
+void do_check_vnums( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    AREA_DATA *pArea;
@@ -8726,8 +8663,6 @@ void do_check_vnums( CHAR_DATA * ch, char *argument )
             ch_printf( ch, "Objects: %5d - %-5d\r\n", pArea->low_o_vnum, pArea->hi_o_vnum );
       }
    }
-
-   return;
 }
 
 /*
@@ -8746,191 +8681,6 @@ void do_check_vnums( CHAR_DATA * ch, char *argument )
  */
 void tail_chain( void )
 {
-   return;
-}
-
-
-/*
- * Initialize the weather for all the areas
- * Last Modified: July 21, 1997
- * Fireblade
- */
-void init_area_weather(  )
-{
-   AREA_DATA *pArea;
-   NEIGHBOR_DATA *neigh;
-   NEIGHBOR_DATA *next_neigh;
-
-   for( pArea = first_area; pArea; pArea = pArea->next )
-   {
-      int cf;
-
-      /*
-       * init temp and temp vector 
-       */
-      cf = pArea->weather->climate_temp - 2;
-      pArea->weather->temp = number_range( -weath_unit, weath_unit ) + cf * number_range( 0, weath_unit );
-      pArea->weather->temp_vector = cf + number_range( -rand_factor, rand_factor );
-
-      /*
-       * init precip and precip vector 
-       */
-      cf = pArea->weather->climate_precip - 2;
-      pArea->weather->precip = number_range( -weath_unit, weath_unit ) + cf * number_range( 0, weath_unit );
-      pArea->weather->precip_vector = cf + number_range( -rand_factor, rand_factor );
-
-      /*
-       * init wind and wind vector 
-       */
-      cf = pArea->weather->climate_wind - 2;
-      pArea->weather->wind = number_range( -weath_unit, weath_unit ) + cf * number_range( 0, weath_unit );
-      pArea->weather->wind_vector = cf + number_range( -rand_factor, rand_factor );
-
-      /*
-       * check connections between neighbors 
-       */
-      for( neigh = pArea->weather->first_neighbor; neigh; neigh = next_neigh )
-      {
-         AREA_DATA *tarea;
-         NEIGHBOR_DATA *tneigh;
-
-         /*
-          * get the address if needed 
-          */
-         if( !neigh->address )
-            neigh->address = get_area( neigh->name );
-
-         /*
-          * area does not exist 
-          */
-         if( !neigh->address )
-         {
-            tneigh = neigh;
-            next_neigh = tneigh->next;
-            UNLINK( tneigh, pArea->weather->first_neighbor, pArea->weather->last_neighbor, next, prev );
-            STRFREE( tneigh->name );
-            DISPOSE( tneigh );
-            fold_area( pArea, pArea->filename, FALSE );
-            continue;
-         }
-
-         /*
-          * make sure neighbors both point to each other 
-          */
-         tarea = neigh->address;
-         for( tneigh = tarea->weather->first_neighbor; tneigh; tneigh = tneigh->next )
-         {
-            if( !strcmp( pArea->name, tneigh->name ) )
-               break;
-         }
-
-         if( !tneigh )
-         {
-            CREATE( tneigh, NEIGHBOR_DATA, 1 );
-            tneigh->name = STRALLOC( pArea->name );
-            LINK( tneigh, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
-            fold_area( tarea, tarea->filename, FALSE );
-         }
-
-         tneigh->address = pArea;
-
-         next_neigh = neigh->next;
-      }
-   }
-
-   return;
-}
-
-/*
- * Load weather data from appropriate file in system dir
- * Last Modified: July 24, 1997
- * Fireblade
- */
-void load_weatherdata(  )
-{
-   char filename[MAX_INPUT_LENGTH];
-   FILE *fp;
-
-   snprintf( filename, MAX_INPUT_LENGTH, "%sweather.dat", SYSTEM_DIR );
-
-   if( ( fp = fopen( filename, "r" ) ) != NULL )
-   {
-      for( ;; )
-      {
-         char letter;
-         char *word;
-
-         letter = fread_letter( fp );
-
-         if( letter != '#' )
-         {
-            bug( "%s: # not found", __FUNCTION__ );
-            return;
-         }
-
-         word = fread_word( fp );
-
-         if( !str_cmp( word, "RANDOM" ) )
-            rand_factor = fread_number( fp );
-         else if( !str_cmp( word, "CLIMATE" ) )
-            climate_factor = fread_number( fp );
-         else if( !str_cmp( word, "NEIGHBOR" ) )
-            neigh_factor = fread_number( fp );
-         else if( !str_cmp( word, "UNIT" ) )
-         {
-            int unit = fread_number( fp );
-
-            if( unit == 0 )
-               unit = 1;
-
-            weath_unit = unit;
-         }
-         else if( !str_cmp( word, "MAXVECTOR" ) )
-            max_vector = fread_number( fp );
-         else if( !str_cmp( word, "END" ) )
-         {
-            fclose( fp );
-            break;
-         }
-         else
-         {
-            bug( "load_weatherdata: unknown field" );
-            fclose( fp );
-            break;
-         }
-      }
-   }
-
-   return;
-}
-
-/*
- * Write data for global weather parameters
- * Last Modified: July 24, 1997
- * Fireblade
- */
-void save_weatherdata(  )
-{
-   char filename[MAX_INPUT_LENGTH];
-   FILE *fp;
-
-   snprintf( filename, MAX_INPUT_LENGTH, "%sweather.dat", SYSTEM_DIR );
-
-   if( ( fp = fopen( filename, "w" ) ) != NULL )
-   {
-      fprintf( fp, "#RANDOM %d\n", rand_factor );
-      fprintf( fp, "#CLIMATE %d\n", climate_factor );
-      fprintf( fp, "#NEIGHBOR %d\n", neigh_factor );
-      fprintf( fp, "#UNIT %d\n", weath_unit );
-      fprintf( fp, "#MAXVECTOR %d\n", max_vector );
-      fprintf( fp, "#END\n" );
-      fclose( fp );
-   }
-   else
-   {
-      bug( "%s: could not open file", __FUNCTION__ );
-   }
-
    return;
 }
 
@@ -9419,7 +9169,7 @@ void add_loginmsg( char *name, short type, char *argument )
    return;
 }
 
-char *const login_msg[] = {
+const char *const login_msg[] = {
 /*0*/ "",
 /*1*/ "\r\n&GYou did not have enough money for the residence you bid on.\r\n"
       "It has been readded to the auction and you've been penalized.\r\n",

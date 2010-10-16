@@ -20,8 +20,8 @@
 #define TELOPT_COMPRESS2 86
 #define COMPRESS_BUF_SIZE MAX_STRING_LENGTH
 
-extern char will_compress2_str[];
-extern char start_compress2_str[];
+extern const unsigned char will_compress2_str[];
+extern const unsigned char start_compress2_str[];
 
 bool compressStart( DESCRIPTOR_DATA * d );
 bool compressEnd( DESCRIPTOR_DATA * d );

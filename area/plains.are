@@ -3,9 +3,10 @@
 Version      1
 Name         Plains of the North~
 Author       Copper~
+WeatherX     0
+WeatherY     0
 Ranges       1 20 0 60
 Economy      0 4835660
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE

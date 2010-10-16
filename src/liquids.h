@@ -73,9 +73,9 @@ typedef enum
 
 struct liquid_table
 {
-   char *name;
-   char *shortdesc;
-   char *color;
+   const char *name;
+   const char *shortdesc;
+   const char *color;
    int vnum;
    int type;
    int mod[MAX_CONDS];
@@ -85,7 +85,7 @@ struct mixture_list
 {
    MIX_TABLE *next;
    MIX_TABLE *prev;
-   char *name;
+   const char *name;
    int data[3];
    bool object;
 };

@@ -28,6 +28,7 @@
 #include <sys/wait.h>
 #include "mud.h"
 #include "mccp.h"
+#include "mssp.h"
 #include "sha256.h"
 
 /*
@@ -88,9 +89,9 @@ void free_councils( void );
 void free_specfuns( void );
 void free_all_reserved( void );
 
-const char echo_off_str[] = { ( char )IAC, ( char )WILL, TELOPT_ECHO, '\0' };
-const char echo_on_str[] = { ( char )IAC, ( char )WONT, TELOPT_ECHO, '\0' };
-const char go_ahead_str[] = { ( char )IAC, ( char )GA, '\0' };
+const unsigned char echo_off_str[] = { IAC, WILL, TELOPT_ECHO, '\0' };
+const unsigned char echo_on_str[] = { IAC, WONT, TELOPT_ECHO, '\0' };
+const unsigned char go_ahead_str[] = { IAC, GA, '\0' };
 
 void save_sysdata( SYSTEM_DATA sys );
 
@@ -119,7 +120,8 @@ fd_set in_set; /* Set of desc's for reading  */
 fd_set out_set;   /* Set of desc's for writing  */
 fd_set exc_set;   /* Set of desc's with errors  */
 int maxdesc;
-char *alarm_section = "(unknown)";
+const char *alarm_section = "(unknown)";
+bool winter_freeze = FALSE;
 
 /*
  * OS-dependent local functions.
@@ -128,14 +130,14 @@ void game_loop( void );
 int init_socket( int mudport );
 void new_descriptor( int new_desc );
 bool read_from_descriptor( DESCRIPTOR_DATA * d );
-bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length );
+bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
 
 /*
  * Other local functions (OS-independent).
  */
-bool check_parse_name( char *name, bool newchar );
-bool check_reconnect( DESCRIPTOR_DATA * d, char *name, bool fConn );
-bool check_playing( DESCRIPTOR_DATA * d, char *name, bool kick );
+bool check_parse_name( const char *name, bool newchar );
+bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn );
+bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick );
 int main( int argc, char **argv );
 void nanny( DESCRIPTOR_DATA * d, char *argument );
 bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt );
@@ -323,6 +325,10 @@ void cleanup_memory( void )
     */
    fprintf( stdout, "%s", "Auction.\n" );
    DISPOSE( auction );
+
+   // MSSP Info
+   fprintf( stdout, "%s", "MSSP Info.\n" );
+   free_mssp_info();
 
    /*
     * System Data 
@@ -624,6 +630,19 @@ static void SegVio()
 }
 */
 
+int child_exit_status = 0;
+
+static void clean_up_child_process( int signal_number )
+{
+   /* Clean up the child process. */
+   int status;
+
+   wait( &status );
+
+   /* Store its exit status in a global variable. */
+   child_exit_status = status;
+}
+
 /*
  * LAG alarm!							-Thoric
  */
@@ -658,7 +677,7 @@ bool check_bad_desc( int desc )
 /*
  * Determine whether this player is to be watched  --Gorog
  */
-bool chk_watch( short player_level, char *player_name, char *player_site )
+bool chk_watch( short player_level, const char *player_name, const char *player_site )
 {
    WATCH_DATA *pw;
 /*
@@ -740,6 +759,7 @@ void game_loop( void )
 #ifndef WIN32
    signal( SIGPIPE, SIG_IGN );
    signal( SIGALRM, caught_alarm );
+   signal( SIGCHLD, clean_up_child_process );
 #endif
 
    /*
@@ -1063,7 +1083,7 @@ void new_descriptor( int new_desc )
    /*
     * MCCP Compression 
     */
-   write_to_buffer( dnew, will_compress2_str, 0 );
+   write_to_buffer( dnew, (const char *)will_compress2_str, 0 );
 
    /*
     * Send the greeting.
@@ -1096,12 +1116,12 @@ void new_descriptor( int new_desc )
 
 void free_desc( DESCRIPTOR_DATA * d )
 {
+   compressEnd( d );
    close( d->descriptor );
    STRFREE( d->host );
    DISPOSE( d->outbuf );
    if( d->pagebuf )
       DISPOSE( d->pagebuf );
-   compressEnd( d );
    DISPOSE( d->mccp );
    DISPOSE( d );
    return;
@@ -1320,8 +1340,6 @@ bool read_from_descriptor( DESCRIPTOR_DATA * d )
    return TRUE;
 }
 
-
-
 /*
  * Transfer one line from input buffer to input line.
  */
@@ -1500,7 +1518,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
       }
 
       if( xIS_SET( ch->act, PLR_TELNET_GA ) )
-         write_to_buffer( d, go_ahead_str, 0 );
+         write_to_buffer( d, (const char *)go_ahead_str, 0 );
    }
 
    /*
@@ -1550,7 +1568,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
 /*
  * Append onto an output buffer.
  */
-void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, unsigned int length )
+void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 {
    if( !d )
    {
@@ -1625,7 +1643,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, unsigned int length 
 * Updated to run with the block checks by Orion... if it doesn't work, blame
 * him.;P -Orion
 */
-bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length )
+bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length )
 {
    int iStart = 0;
    int nWrite = 0;
@@ -1731,7 +1749,7 @@ bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length )
  * Added block checking to prevent random booting of the descriptor. Thanks go
  * out to Rustry for his suggestions. -Orion
  */
-bool write_to_descriptor_old( int desc, char *txt, int length )
+bool write_to_descriptor_old( int desc, const char *txt, int length )
 {
    int iStart = 0;
    int nWrite = 0;
@@ -1807,6 +1825,15 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    }
 
    argument[0] = UPPER( argument[0] );
+
+   if( !str_cmp( argument, "MSSP-REQUEST" ) )
+   {
+      send_mssp_data( d );
+      //Uncomment below if you want to know when an MSSP request occurs
+      //log_printf( "IP: %s requested MSSP data!", d->host );
+      close_socket( d, FALSE );
+      return;
+   }
 
    /*
     * Old players can keep their characters. -- Alty
@@ -1951,7 +1978,7 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
        * Old player
        */
       write_to_buffer( d, "Password: ", 0 );
-      write_to_buffer( d, echo_off_str, 0 );
+      write_to_buffer( d, (const char *)echo_off_str, 0 );
       d->connected = CON_GET_OLD_PASSWORD;
       return;
    }
@@ -2007,7 +2034,7 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
       return;
    }
 
-   write_to_buffer( d, echo_on_str, 0 );
+   write_to_buffer( d, (const char *)echo_on_str, 0 );
 
    if( check_playing( d, ch->pcdata->filename, TRUE ) )
       return;
@@ -2114,7 +2141,7 @@ void nanny_confirm_new_password( DESCRIPTOR_DATA * d, char *argument )
       return;
    }
 
-   write_to_buffer( d, echo_on_str, 0 );
+   write_to_buffer( d, (const char *)echo_on_str, 0 );
    write_to_buffer( d, "\r\nWhat is your sex (M/F/N)? ", 0 );
    d->connected = CON_GET_NEW_SEX;
 }
@@ -2172,7 +2199,7 @@ void nanny_get_new_sex( DESCRIPTOR_DATA * d, char *argument )
    d->connected = CON_GET_NEW_CLASS;
 }
 
-void nanny_get_new_class( DESCRIPTOR_DATA * d, char *argument )
+void nanny_get_new_class( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
@@ -2258,7 +2285,7 @@ void nanny_get_new_class( DESCRIPTOR_DATA * d, char *argument )
    d->connected = CON_GET_NEW_RACE;
 }
 
-void nanny_get_new_race( DESCRIPTOR_DATA * d, char *argument )
+void nanny_get_new_race( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char arg[MAX_STRING_LENGTH];
@@ -2313,7 +2340,7 @@ void nanny_get_new_race( DESCRIPTOR_DATA * d, char *argument )
    d->connected = CON_GET_WANT_RIPANSI;
 }
 
-void nanny_get_want_ripansi( DESCRIPTOR_DATA * d, char *argument )
+void nanny_get_want_ripansi( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char log_buf[MAX_STRING_LENGTH];
@@ -2350,7 +2377,7 @@ void nanny_get_want_ripansi( DESCRIPTOR_DATA * d, char *argument )
    set_pager_color( AT_PLAIN, ch );
 }
 
-void nanny_press_enter( DESCRIPTOR_DATA * d, char *argument )
+void nanny_press_enter( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
 
@@ -2383,7 +2410,7 @@ void nanny_press_enter( DESCRIPTOR_DATA * d, char *argument )
    d->connected = CON_READ_MOTD;
 }
 
-void nanny_read_motd( DESCRIPTOR_DATA * d, char *argument )
+void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
@@ -2495,6 +2522,14 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, char *argument )
       ch->hit = UMAX( 1, ch->max_hit );
       ch->mana = UMAX( 1, ch->max_mana );
       ch->move = ch->max_move;
+      /*
+       * Set player birthday to current mud day, -17 years - Samson 10-25-99
+       */
+      ch->pcdata->day = time_info.day;
+      ch->pcdata->month = time_info.month;
+      ch->pcdata->year = time_info.year - 17;
+      ch->pcdata->age = 17;
+      ch->pcdata->age_bonus = 0;
       snprintf( buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0] );
       set_title( ch, buf );
 
@@ -2634,7 +2669,7 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
    return;
 }
 
-bool is_reserved_name( char *name )
+bool is_reserved_name( const char *name )
 {
    RESERVE_DATA *res;
 
@@ -2647,7 +2682,7 @@ bool is_reserved_name( char *name )
 /*
  * Parse a name for acceptability.
  */
-bool check_parse_name( char *name, bool newchar )
+bool check_parse_name( const char *name, bool newchar )
 {
    /*
     * Names checking should really only be done on new characters, otherwise
@@ -2681,7 +2716,7 @@ bool check_parse_name( char *name, bool newchar )
     * Lock out IllIll twits.
     */
    {
-      char *pc;
+      const char *pc;
       bool fIll;
 
       fIll = TRUE;
@@ -2709,7 +2744,7 @@ bool check_parse_name( char *name, bool newchar )
 /*
  * Look for link-dead player to reconnect.
  */
-bool check_reconnect( DESCRIPTOR_DATA * d, char *name, bool fConn )
+bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
 {
    CHAR_DATA *ch;
 
@@ -2762,7 +2797,7 @@ bool check_reconnect( DESCRIPTOR_DATA * d, char *name, bool fConn )
 /*
  * Check if already playing.
  */
-bool check_playing( DESCRIPTOR_DATA * d, char *name, bool kick )
+bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
 {
    CHAR_DATA *ch;
    DESCRIPTOR_DATA *dold;
@@ -2855,7 +2890,7 @@ void stop_idling( CHAR_DATA * ch )
  * like "Your long dark blade".  The object name isn't always appropriate
  * since it contains keywords that may not look proper.		-Thoric
  */
-char *myobj( OBJ_DATA * obj )
+const char *myobj( OBJ_DATA * obj )
 {
    if( !str_prefix( "a ", obj->short_descr ) )
       return obj->short_descr + 2;
@@ -2869,7 +2904,7 @@ char *myobj( OBJ_DATA * obj )
 }
 
 
-char *obj_short( OBJ_DATA * obj )
+const char *obj_short( OBJ_DATA * obj )
 {
    static char buf[MAX_STRING_LENGTH];
 
@@ -2883,7 +2918,7 @@ char *obj_short( OBJ_DATA * obj )
 
 #define NAME(ch)        ( IS_NPC(ch) ? ch->short_descr : ch->name )
 
-char *MORPHNAME( CHAR_DATA * ch )
+const char *MORPHNAME( CHAR_DATA * ch )
 {
    if( ch->morph && ch->morph->morph && ch->morph->morph->short_desc != NULL )
       return ch->morph->morph->short_desc;
@@ -2891,26 +2926,32 @@ char *MORPHNAME( CHAR_DATA * ch )
       return NAME( ch );
 }
 
-char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, void *arg1, void *arg2, int flags )
+char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void *arg1, const void *arg2, int flags )
 {
-   static char *const he_she[] = { "it", "he", "she" };
-   static char *const him_her[] = { "it", "him", "her" };
-   static char *const his_her[] = { "its", "his", "her" };
+   static const char *const he_she[] = { "it", "he", "she" };
+   static const char *const him_her[] = { "it", "him", "her" };
+   static const char *const his_her[] = { "its", "his", "her" };
    static char buf[MAX_STRING_LENGTH];
    char fname[MAX_INPUT_LENGTH];
-   char temp[MAX_STRING_LENGTH];
    char *point = buf;
+   char temp[MSL];
    const char *str = format;
    const char *i;
+   bool should_upper = false;
    CHAR_DATA *vch = ( CHAR_DATA * ) arg2;
    OBJ_DATA *obj1 = ( OBJ_DATA * ) arg1;
    OBJ_DATA *obj2 = ( OBJ_DATA * ) arg2;
 
    if( str[0] == '$' )
-      DONT_UPPER = FALSE;
+      DONT_UPPER = false;
 
    while( *str != '\0' )
    {
+      if( *str == '.' || *str == '?' || *str == '!' )
+         should_upper = true;
+      else if( should_upper == true && !isspace( *str ) && *str != '$' )
+         should_upper = false;
+
       if( *str != '$' )
       {
          *point++ = *str++;
@@ -2931,101 +2972,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, void *arg1
                bug( "Act: bad code %c.", *str );
                i = " <@@@> ";
                break;
-            case 't':
-               i = ( char * )arg1;
-               break;
-            case 'T':
-               i = ( char * )arg2;
-               break;
-            case 'n':
-               if( ch->morph == NULL )
-                  i = ( to ? PERS( ch, to ) : NAME( ch ) );
-               else if( !IS_SET( flags, STRING_IMM ) )
-                  i = ( to ? MORPHPERS( ch, to ) : MORPHNAME( ch ) );
-               else
-               {
-                  snprintf( temp, MAX_STRING_LENGTH, "(MORPH) %s", ( to ? PERS( ch, to ) : NAME( ch ) ) );
-                  i = temp;
-               }
-               break;
-            case 'N':
-               if( vch->morph == NULL )
-                  i = ( to ? PERS( vch, to ) : NAME( vch ) );
-               else if( !IS_SET( flags, STRING_IMM ) )
-                  i = ( to ? MORPHPERS( vch, to ) : MORPHNAME( vch ) );
-               else
-               {
-                  snprintf( temp, MAX_STRING_LENGTH, "(MORPH) %s", ( to ? PERS( vch, to ) : NAME( vch ) ) );
-                  i = temp;
-               }
-               break;
 
-            case 'e':
-               if( ch->sex > 2 || ch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
-                  i = "it";
-               }
-               else
-                  i = he_she[URANGE( 0, ch->sex, 2 )];
-               break;
-            case 'E':
-               if( vch->sex > 2 || vch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
-                  i = "it";
-               }
-               else
-                  i = he_she[URANGE( 0, vch->sex, 2 )];
-               break;
-            case 'm':
-               if( ch->sex > 2 || ch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
-                  i = "it";
-               }
-               else
-                  i = him_her[URANGE( 0, ch->sex, 2 )];
-               break;
-            case 'M':
-               if( vch->sex > 2 || vch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
-                  i = "it";
-               }
-               else
-                  i = him_her[URANGE( 0, vch->sex, 2 )];
-               break;
-            case 's':
-               if( ch->sex > 2 || ch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
-                  i = "its";
-               }
-               else
-                  i = his_her[URANGE( 0, ch->sex, 2 )];
-               break;
-            case 'S':
-               if( vch->sex > 2 || vch->sex < 0 )
-               {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
-                  i = "its";
-               }
-               else
-                  i = his_her[URANGE( 0, vch->sex, 2 )];
-               break;
-            case 'q':
-               i = ( to == ch ) ? "" : "s";
-               break;
-            case 'Q':
-               i = ( to == ch ) ? "your" : his_her[URANGE( 0, ch->sex, 2 )];
-               break;
-            case 'p':
-               i = ( !to || can_see_obj( to, obj1 ) ? obj_short( obj1 ) : "something" );
-               break;
-            case 'P':
-               i = ( !to || can_see_obj( to, obj2 ) ? obj_short( obj2 ) : "something" );
-               break;
             case 'd':
                if( !arg2 || ( ( char * )arg2 )[0] == '\0' )
                   i = "door";
@@ -3035,23 +2982,175 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, void *arg1
                   i = fname;
                }
                break;
+
+            case 'e':
+               if( ch->sex > 2 || ch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ?
+                   !can_see( to, ch ) ? "It" : capitalize( he_she[URANGE( 0, ch->sex, 2 )] ) :
+                   !can_see( to, ch ) ? "it" : he_she[URANGE( 0, ch->sex, 2 )];
+               break;
+
+            case 'E':
+               if( vch->sex > 2 || vch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ?
+                   !can_see( to, vch ) ? "It" : capitalize( he_she[URANGE( 0, vch->sex, 2 )] ) :
+                   !can_see( to, vch ) ? "it" : he_she[URANGE( 0, vch->sex, 2 )];
+               break;
+
+            case 'm':
+               if( ch->sex > 2 || ch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ?
+                   !can_see( to, ch ) ? "It" : capitalize( him_her[URANGE( 0, ch->sex, 2 )] ) :
+                   !can_see( to, ch ) ? "it" : him_her[URANGE( 0, ch->sex, 2 )];
+               break;
+
+            case 'M':
+               if( vch->sex > 2 || vch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ?
+                   !can_see( to, vch ) ? "It" : capitalize( him_her[URANGE( 0, vch->sex, 2 )] ) :
+                   !can_see( to, vch ) ? "it" : him_her[URANGE( 0, vch->sex, 2 )];
+               break;
+
+            case 'n':
+               if( !can_see( to, ch ) )
+                  i = "Someone";
+               else
+               {
+                  snprintf( temp, sizeof( temp ), "%s", ( to ? PERS( ch, to ) : NAME( ch ) ) );
+                  i = temp;
+               }
+               break;
+
+            case 'N':
+               if( !can_see( to, vch ) )
+                  i = "Someone";
+               else
+               {
+                  snprintf( temp, sizeof( temp ), "%s", ( to ? PERS( vch, to ) : NAME( vch ) ) );
+                  i = temp;
+               }
+               break;
+
+            case 'p':
+               if( !obj1 )
+               {
+                  bug( "act_string: $p used with NULL obj1!" );
+                  i = "something";
+               }
+               else
+                  i = should_upper ? ( ( !to || can_see_obj( to, obj1 ) ) ? capitalize( obj_short( obj1 ) ) : "Something" )
+                                     :( ( !to || can_see_obj( to, obj1 ) ) ? obj_short( obj1 ) : "something" );
+               break;
+
+            case 'P':
+               if( !obj2 )
+               {
+                  bug( "act_string: $P used with NULL obj2!" );
+                  i = "something";
+               }
+               else
+                  i = should_upper ? (  !to || can_see_obj( to, obj2 ) ? capitalize( obj_short( obj2 ) ) : "Something" )
+                                     :(  !to || can_see_obj( to, obj2 ) ? obj_short( obj2 ) : "something" );
+               break;
+
+            case 'q':
+               i = ( to == ch ) ? "" : "s";
+               break;
+            case 'Q':
+               i = ( to == ch ) ? "your" : his_her[URANGE( 0, ch->sex, 2 )];
+               break;
+
+            case 's':
+               if( ch->sex > 2 || ch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ? 
+                   !can_see( to, ch ) ? "It" : capitalize( his_her[URANGE( 0, ch->sex, 2 )] ) :
+                   !can_see( to, ch ) ? "it" : his_her[URANGE( 0, ch->sex, 2 )];
+               break;
+
+            case 'S':
+               if( vch->sex > 2 || vch->sex < 0 )
+               {
+                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  i = should_upper ? "It" : "it";
+               }
+               else
+                  i = should_upper ? 
+                   !can_see( to, vch ) ? "It" : capitalize( his_her[URANGE( 0, vch->sex, 2 )] ) :
+                   !can_see( to, vch ) ? "it" : his_her[URANGE( 0, vch->sex, 2 )];
+               break;
+
+            case 't':
+               i = ( char * )arg1;
+               break;
+
+            case 'T':
+               i = ( char * )arg2;
+               break;
          }
       }
       ++str;
       while( ( *point = *i ) != '\0' )
          ++point, ++i;
    }
-   mudstrlcpy( point, "\r\n", MAX_STRING_LENGTH );
+   mudstrlcpy( point, "\r\n", MSL );
    if( !DONT_UPPER )
-      buf[0] = UPPER( buf[0] );
+   {
+      bool bUppercase = true;     //Always uppercase first letter
+      char *astr = buf;
+      for( char c = *astr; c; c= *++astr )
+      {
+          if( c == '&' )
+          {
+               //Color Code
+               c = *++astr;     //Read Color Code
+               if( c == '[' )
+               {
+                    //Extended color code, skip until ']'
+                    do { c = *++astr; } while ( c && c != ']' );
+               }
+
+               if( !c )
+                   break;
+          }
+          else if( bUppercase && isalpha( c ) )
+          {
+               *astr = toupper(c);
+               bUppercase = false;
+          }
+     }
+   }
    return buf;
 }
-
 #undef NAME
 
-void act( short AType, const char *format, CHAR_DATA * ch, void *arg1, void *arg2, int type )
+void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, const void *arg2, int type )
 {
-   char *txt;
+   const char *txt;
    const char *str;
    CHAR_DATA *to;
    CHAR_DATA *vch = ( CHAR_DATA * ) arg2;
@@ -3060,8 +3159,8 @@ void act( short AType, const char *format, CHAR_DATA * ch, void *arg1, void *arg
 #define ACTF_CH   BV01
 #define ACTF_OBJ  BV02
 
-   OBJ_DATA *obj1 = ( OBJ_DATA * ) arg1;
-   OBJ_DATA *obj2 = ( OBJ_DATA * ) arg2;
+   const OBJ_DATA *obj1 = ( const OBJ_DATA * ) arg1;
+   const OBJ_DATA *obj2 = ( const OBJ_DATA * ) arg2;
    int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
    /*
@@ -3232,8 +3331,9 @@ void act( short AType, const char *format, CHAR_DATA * ch, void *arg1, void *arg
    return;
 }
 
-void do_name( CHAR_DATA * ch, char *argument )
+void do_name( CHAR_DATA* ch, const char* argument)
 {
+   char ucase_argument[MAX_STRING_LENGTH];
    char fname[1024];
    struct stat fst;
    CHAR_DATA *tmp;
@@ -3244,15 +3344,16 @@ void do_name( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   argument[0] = UPPER( argument[0] );
+   mudstrlcpy( ucase_argument, argument, MAX_STRING_LENGTH );
+   ucase_argument[0] = UPPER( argument[0] );
 
-   if( !check_parse_name( argument, TRUE ) )
+   if( !check_parse_name( ucase_argument, TRUE ) )
    {
       send_to_char( "Illegal name, try another.\r\n", ch );
       return;
    }
 
-   if( !str_cmp( ch->name, argument ) )
+   if( !str_cmp( ch->name, ucase_argument ) )
    {
       send_to_char( "That's already your name!\r\n", ch );
       return;
@@ -3270,7 +3371,7 @@ void do_name( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   snprintf( fname, 1024, "%s%c/%s", PLAYER_DIR, tolower( argument[0] ), capitalize( argument ) );
+   snprintf( fname, 1024, "%s%c/%s", PLAYER_DIR, tolower( ucase_argument[0] ), capitalize( ucase_argument ) );
    if( stat( fname, &fst ) != -1 )
    {
       send_to_char( "That name is already taken.  Please choose another.\r\n", ch );
@@ -3278,9 +3379,9 @@ void do_name( CHAR_DATA * ch, char *argument )
    }
 
    STRFREE( ch->name );
-   ch->name = STRALLOC( argument );
+   ch->name = STRALLOC( ucase_argument );
    STRFREE( ch->pcdata->filename );
-   ch->pcdata->filename = STRALLOC( argument );
+   ch->pcdata->filename = STRALLOC( ucase_argument );
    send_to_char( "Your name has been changed.  Please apply again.\r\n", ch );
    ch->pcdata->auth_state = 0;
    return;
@@ -3620,7 +3721,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   break;
             }
             if( pstat != 0x80000000 )
-               snprintf( pbuf, MAX_STRING_LENGTH, "%d", pstat );
+               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%d", pstat );
             pbuf += strlen( pbuf );
             break;
       }
@@ -3640,7 +3741,7 @@ void set_pager_input( DESCRIPTOR_DATA * d, char *argument )
 
 bool pager_output( DESCRIPTOR_DATA * d )
 {
-   register char *last;
+   register const char *last;
    CHAR_DATA *ch;
    int pclines;
    register int lines;

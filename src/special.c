@@ -112,7 +112,7 @@ void load_specfuns( void )
 }
 
 /* Simple validation function to be sure a function can be used on mobs */
-bool validate_spec_fun( char *name )
+bool validate_spec_fun( const char *name )
 {
    SPEC_LIST *specfun;
 
@@ -127,7 +127,7 @@ bool validate_spec_fun( char *name )
 /*
  * Given a name, return the appropriate spec_fun.
  */
-SPEC_FUN *spec_lookup( char *name )
+SPEC_FUN *spec_lookup( const char *name )
 {
    void *funHandle;
 #if !defined(WIN32)
@@ -194,7 +194,7 @@ void summon_if_hating( CHAR_DATA * ch )
 /*
  * Core procedure for dragons.
  */
-bool dragon( CHAR_DATA * ch, char *fspell_name )
+bool dragon( CHAR_DATA * ch, const char *fspell_name )
 {
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
@@ -369,7 +369,7 @@ bool spec_cast_cleric( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
-   char *spell;
+   const char *spell;
    int sn;
 
    summon_if_hating( ch );
@@ -455,7 +455,7 @@ bool spec_cast_mage( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
-   char *spell;
+   const char *spell;
    int sn;
 
    summon_if_hating( ch );
@@ -540,7 +540,7 @@ bool spec_cast_undead( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
-   char *spell;
+   const char *spell;
    int sn;
 
    summon_if_hating( ch );
@@ -618,7 +618,7 @@ bool spec_executioner( CHAR_DATA * ch )
    MOB_INDEX_DATA *cityguard;
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
-   char *crime;
+   const char *crime;
 
    if( !IS_AWAKE( ch ) || ch->fighting )
       return FALSE;
@@ -714,7 +714,7 @@ bool spec_guard( CHAR_DATA * ch )
    CHAR_DATA *victim;
    CHAR_DATA *v_next;
    CHAR_DATA *ech;
-   char *crime;
+   const char *crime;
    int max_evil;
 
    if( !IS_AWAKE( ch ) || ch->fighting )

@@ -23,7 +23,7 @@
 /* Externals */
 extern int top_reset;
 
-int get_trapflag( char *flag );
+int get_trapflag( const char *flag );
 
 /*
  * Find some object with a given index data.
@@ -376,7 +376,7 @@ void wipe_area_resets( AREA_DATA * area )
 }
 
 /* Function modified from original form - Samson */
-void do_instaroom( CHAR_DATA * ch, char *argument )
+void do_instaroom( CHAR_DATA* ch, const char* argument)
 {
    bool dodoors;
 
@@ -405,7 +405,7 @@ void do_instaroom( CHAR_DATA * ch, char *argument )
 }
 
 /* Function modified from original form - Samson */
-void do_instazone( CHAR_DATA * ch, char *argument )
+void do_instazone( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *pArea;
    ROOM_INDEX_DATA *pRoom;
@@ -501,7 +501,7 @@ void reset_room( ROOM_INDEX_DATA * room )
    MOB_INDEX_DATA *pMobIndex = NULL;
    OBJ_INDEX_DATA *pObjIndex = NULL, *pObjToIndex;
    EXIT_DATA *pexit;
-   char *filename = room->area->filename;
+   const char *filename = room->area->filename;
    int level = 0, n, num = 0, lastnest, onreset = 0;
 
    mob = NULL;
@@ -890,7 +890,6 @@ void reset_room( ROOM_INDEX_DATA * room )
             break;
       }
    }
-   return;
 }
 
 void reset_area( AREA_DATA * area )
@@ -940,7 +939,6 @@ void renumber_put_resets( ROOM_INDEX_DATA * room )
             break;
       }
    }
-   return;
 }
 
 /*
@@ -959,6 +957,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
    letter = UPPER( letter );
    pReset = make_reset( letter, extra, arg1, arg2, arg3 );
    pReset->sreset = TRUE;
+
    switch ( letter )
    {
       case 'M':
@@ -1017,7 +1016,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
    return pReset;
 }
 
-RESET_DATA *find_oreset( ROOM_INDEX_DATA * room, char *oname )
+RESET_DATA *find_oreset( ROOM_INDEX_DATA * room, const char *oname )
 {
    RESET_DATA *pReset;
    OBJ_INDEX_DATA *pobj;
@@ -1041,7 +1040,7 @@ RESET_DATA *find_oreset( ROOM_INDEX_DATA * room, char *oname )
    return NULL;
 }
 
-void do_reset( CHAR_DATA * ch, char *argument )
+void do_reset( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 

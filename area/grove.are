@@ -3,9 +3,10 @@
 Version      1
 Name         Holy Grove~
 Author       Alfa~
+WeatherX     0
+WeatherY     0
 Ranges       5 20 0 60
 Economy      0 2452038
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE

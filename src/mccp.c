@@ -18,7 +18,7 @@
 /*
  * mccp.c - support functions for mccp (the Mud Client Compression Protocol)
  *
- * see http://mccp.afkmud.com
+ * see http://mccp.smaugmuds.org
  *
  * Copyright (c) 1999, Oliver Jowett <oliver@randomly.org>.
  *
@@ -51,10 +51,10 @@
 #define ENOSR 63
 #endif
 
-char will_compress2_str[] = { ( char )IAC, ( char )WILL, TELOPT_COMPRESS2, '\0' };
-char start_compress2_str[] = { ( char )IAC, ( char )SB, TELOPT_COMPRESS2, ( char )IAC, ( char )SE, '\0' };
+const unsigned char will_compress2_str[] = { IAC, WILL, TELOPT_COMPRESS2, '\0' };
+const unsigned char start_compress2_str[] = { IAC, SB, TELOPT_COMPRESS2, IAC, SE, '\0' };
 
-bool write_to_descriptor( DESCRIPTOR_DATA * d, char *txt, int length );
+bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
 
 bool process_compressed( DESCRIPTOR_DATA * d )
 {
@@ -129,7 +129,7 @@ bool compressStart( DESCRIPTOR_DATA * d )
       return FALSE;
    }
 
-   write_to_descriptor( d, start_compress2_str, 0 );
+   write_to_descriptor( d, (const char *)start_compress2_str, 0 );
 
    d->can_compress = TRUE;
    d->mccp->out_compress = s;
@@ -147,11 +147,8 @@ bool compressEnd( DESCRIPTOR_DATA * d )
    d->mccp->out_compress->avail_in = 0;
    d->mccp->out_compress->next_in = dummy;
 
-   if( deflate( d->mccp->out_compress, Z_FINISH ) != Z_STREAM_END )
-      return FALSE;
-
-   if( !process_compressed( d ) )   /* try to send any residual data */
-      return FALSE;
+   if( deflate( d->mccp->out_compress, Z_FINISH ) == Z_STREAM_END )
+      process_compressed( d );   /* try to send any residual data */
 
    deflateEnd( d->mccp->out_compress );
    DISPOSE( d->mccp->out_compress_buf );
@@ -160,7 +157,7 @@ bool compressEnd( DESCRIPTOR_DATA * d )
    return TRUE;
 }
 
-void do_compress( CHAR_DATA * ch, char *argument )
+void do_compress( CHAR_DATA* ch, const char* argument)
 {
    if( !ch->desc )
    {

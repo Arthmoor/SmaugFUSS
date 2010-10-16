@@ -19,7 +19,7 @@
 
 extern int top_affect;
 
-void do_mpmset( CHAR_DATA * ch, char *argument )
+void do_mpmset( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -555,7 +555,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          STRFREE( victim->pcdata->deity_name );
          victim->pcdata->deity_name = STRALLOC( "" );
@@ -994,7 +994,7 @@ void do_mpmset( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_mposet( CHAR_DATA * ch, char *argument )
+void do_mposet( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];

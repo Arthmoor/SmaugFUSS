@@ -183,7 +183,7 @@ int find_first_step( ROOM_INDEX_DATA * src, ROOM_INDEX_DATA * target, int maxdis
 }
 
 
-void do_track( CHAR_DATA * ch, char *argument )
+void do_track( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *vict;
    char arg[MAX_INPUT_LENGTH];

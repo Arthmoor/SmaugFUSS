@@ -27,7 +27,7 @@
 /*
  * Needed in the do_ignore function. -Orion
  */
-bool check_parse_name( char *name, bool newchar );
+bool check_parse_name( const char *name, bool newchar );
 
 /*
  * Local functions.
@@ -51,7 +51,7 @@ bool EXA_prog_trigger = TRUE;
  * --Shaddai
  */
 
-char *const where_name[] = {
+const char *const where_name[] = {
    "<used as light>     ",
    "<worn on finger>    ",
    "<worn on finger>    ",
@@ -127,18 +127,19 @@ const char *moon_map[] = {
 
 void look_sky( CHAR_DATA * ch )
 {
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
    char buf[MAX_STRING_LENGTH];
    char buf2[4];
-   int starpos, sunpos, moonpos, moonphase, i, linenum, precip;
+   int starpos, sunpos, moonpos, moonphase, i, linenum;
 
    send_to_pager( "You gaze up towards the heavens and see:\r\n", ch );
 
-   precip = ( ch->in_room->area->weather->precip + 3 * weath_unit - 1 ) / weath_unit;
-   if( precip > 1 )
+   if( isModeratelyCloudy( getCloudCover( cell ) ) )
    {
-      send_to_char( "There are some clouds in the sky so you cannot see anything else.\r\n", ch );
+      send_to_char( "There are too many clouds in the sky so you cannot see anything else.\r\n", ch );
       return;
    }
+
    sunpos = ( MAP_WIDTH * ( 24 - time_info.hour ) / 24 );
    moonpos = ( sunpos + time_info.day * MAP_WIDTH / NUM_DAYS ) % MAP_WIDTH;
    if( ( moonphase = ( ( ( ( MAP_WIDTH + moonpos - sunpos ) % MAP_WIDTH ) + ( MAP_WIDTH / 16 ) ) * 8 ) / MAP_WIDTH ) > 4 )
@@ -340,7 +341,7 @@ char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
  * Some increasingly freaky hallucinated objects		-Thoric
  * (Hats off to Albert Hoffman's "problem child")
  */
-char *hallucinated_object( int ms, bool fShort )
+const char *hallucinated_object( int ms, bool fShort )
 {
    int sms = URANGE( 1, ( ms + 10 ) / 5, 20 );
 
@@ -1124,7 +1125,7 @@ bool check_blind( CHAR_DATA * ch )
 /*
  * Returns classical DIKU door direction based on text in arg	-Thoric
  */
-int get_door( char *arg )
+int get_door( const char *arg )
 {
    int door;
 
@@ -1157,7 +1158,7 @@ void print_compass( CHAR_DATA * ch )
 {
    EXIT_DATA *pexit;
    int exit_info[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-   static char *const exit_colors[] = { "&w", "&Y", "&C", "&b", "&w", "&R" };
+   static const char *const exit_colors[] = { "&w", "&Y", "&C", "&b", "&w", "&R" };
    for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )
    {
       if( !pexit->to_room || IS_SET( pexit->exit_info, EX_HIDDEN ) ||
@@ -1211,14 +1212,14 @@ char *roomdesc( CHAR_DATA * ch )
    return rdesc;
 }
 
-void do_look( CHAR_DATA * ch, char *argument )
+void do_look( CHAR_DATA * ch, const char *argument )
 {
    char arg[MAX_INPUT_LENGTH], arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
    EXIT_DATA *pexit;
    CHAR_DATA *victim;
    OBJ_DATA *obj;
    ROOM_INDEX_DATA *original;
-   char *pdesc;
+   const char *pdesc;
    short door;
    int number, cnt;
 
@@ -1715,7 +1716,7 @@ the condition of a mob or pc, or if used without an argument, the
 same you would see if you enter the room and have config +brief.
 -- Narn, winter '96
 */
-void do_glance( CHAR_DATA * ch, char *argument )
+void do_glance( CHAR_DATA * ch, const char *argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1791,7 +1792,7 @@ void do_glance( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_examine( CHAR_DATA * ch, char *argument )
+void do_examine( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -2032,7 +2033,7 @@ void do_examine( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_exits( CHAR_DATA * ch, char *argument )
+void do_exits( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    EXIT_DATA *pexit;
@@ -2088,126 +2089,11 @@ void do_exits( CHAR_DATA * ch, char *argument )
    return;
 }
 
-char *const day_name[] = {
-   "the Moon", "the Bull", "Deception", "Thunder", "Freedom",
-   "the Great Gods", "the Sun"
-};
-
-char *const month_name[] = {
-   "Winter", "the Winter Wolf", "the Frost Giant", "the Old Forces",
-   "the Grand Struggle", "the Spring", "Nature", "Futility", "the Dragon",
-   "the Sun", "the Heat", "the Battle", "the Dark Shades", "the Shadows",
-   "the Long Shadows", "the Ancient Darkness", "the Great Evil"
-};
-
-void do_time( CHAR_DATA * ch, char *argument )
-{
-   extern char str_boot_time[];
-   extern char reboot_time[];
-   char *suf;
-   int day;
-
-   day = time_info.day + 1;
-
-   if( day > 4 && day < 20 )
-      suf = "th";
-   else if( day % 10 == 1 )
-      suf = "st";
-   else if( day % 10 == 2 )
-      suf = "nd";
-   else if( day % 10 == 3 )
-      suf = "rd";
-   else
-      suf = "th";
-
-   set_char_color( AT_YELLOW, ch );
-   ch_printf( ch,
-              "It is %d o'clock %s, Day of %s, %d%s the Month of %s.\r\n"
-              "The mud started up at:    %s\r"
-              "The system time (E.S.T.): %s\r"
-              "Next Reboot is set for:   %s\r",
-              ( time_info.hour % 12 == 0 ) ? 12 : time_info.hour % 12,
-              time_info.hour >= 12 ? "pm" : "am",
-              day_name[day % 7],
-              day, suf, month_name[time_info.month], str_boot_time, ( char * )ctime( &current_time ), reboot_time );
-
-   return;
-}
-
-/*
-void do_weather( CHAR_DATA *ch, char *argument )
-{
-    static char * const sky_look[4] =
-    {
-	"cloudless",
-	"cloudy",
-	"rainy",
-	"lit by flashes of lightning"
-    };
-
-    if ( !IS_OUTSIDE(ch) )
-    {
-	send_to_char( "You can't see the sky from here.\r\n", ch );
-	return;
-    }
-
-    set_char_color( AT_BLUE, ch );
-    ch_printf( ch, "The sky is %s and %s.\r\n",
-	sky_look[weather_info.sky],
-	weather_info.change >= 0
-	? "a warm southerly breeze blows"
-	: "a cold northern gust blows"
-	);
-    return;
-}
-*/
-
-/*
- * Produce a description of the weather based on area weather using
- * the following sentence format:
- *		<combo-phrase> and <single-phrase>.
- * Where the combo-phrase describes either the precipitation and
- * temperature or the wind and temperature. The single-phrase
- * describes either the wind or precipitation depending upon the
- * combo-phrase.
- * Last Modified: July 31, 1997
- * Fireblade - Under Construction
- */
-void do_weather( CHAR_DATA * ch, char *argument )
-{
-   char *combo, *single;
-   int temp, precip, wind;
-
-   if( !IS_OUTSIDE( ch ) )
-   {
-      ch_printf( ch, "You can't see the sky from here.\r\n" );
-      return;
-   }
-
-   temp = ( ch->in_room->area->weather->temp + 3 * weath_unit - 1 ) / weath_unit;
-   precip = ( ch->in_room->area->weather->precip + 3 * weath_unit - 1 ) / weath_unit;
-   wind = ( ch->in_room->area->weather->wind + 3 * weath_unit - 1 ) / weath_unit;
-
-   if( precip >= 3 )
-   {
-      combo = preciptemp_msg[precip][temp];
-      single = wind_msg[wind];
-   }
-   else
-   {
-      combo = windtemp_msg[wind][temp];
-      single = precip_msg[precip];
-   }
-
-   set_char_color( AT_BLUE, ch );
-   ch_printf( ch, "%s and %s.\r\n", combo, single );
-}
-
 /*
  * Moved into a separate function so it can be used for other things
  * ie: online help editing				-Thoric
  */
-HELP_DATA *get_help( CHAR_DATA * ch, char *argument )
+HELP_DATA *get_help( CHAR_DATA * ch, const char *argument )
 {
    char argall[MAX_INPUT_LENGTH];
    char argone[MAX_INPUT_LENGTH];
@@ -2254,7 +2140,7 @@ HELP_DATA *get_help( CHAR_DATA * ch, char *argument )
 /*
  * LAWS command
  */
-void do_laws( CHAR_DATA * ch, char *argument )
+void do_laws( CHAR_DATA* ch, const char* argument)
 {
    char buf[1024];
 
@@ -2271,10 +2157,10 @@ void do_laws( CHAR_DATA * ch, char *argument )
  * Now this is cleaner
  */
 /* Updated do_help command provided by Remcon of The Lands of Pabulum 03/20/2004 */
-void do_help( CHAR_DATA * ch, char *argument )
+void do_help( CHAR_DATA* ch, const char* argument)
 {
    HELP_DATA *pHelp;
-   char *keyword;
+   const char *keyword;
    char arg[MAX_INPUT_LENGTH];
    char oneword[MAX_STRING_LENGTH], lastmatch[MAX_STRING_LENGTH];
    short matched = 0, checked = 0, totalmatched = 0, found = 0;
@@ -2356,7 +2242,7 @@ void do_help( CHAR_DATA * ch, char *argument )
          send_to_pager( "No suggested help files.\r\n", ch );
          return;
       }
-      if( totalmatched == 1 && lastmatch != NULL && lastmatch && lastmatch[0] != '\0' && str_cmp( lastmatch, argument ) )
+      if( totalmatched == 1 && lastmatch[0] != '\0' && str_cmp( lastmatch, argument ) )
       {
          send_to_pager( "Opening only suggested helpfile.\r\n", ch );
          do_help( ch, lastmatch );
@@ -2385,7 +2271,7 @@ void do_help( CHAR_DATA * ch, char *argument )
    return;
 }
 
-extern char *help_greeting;   /* so we can edit the greeting online */
+extern const char *help_greeting;   /* so we can edit the greeting online */
 
 void free_help( HELP_DATA * pHelp )
 {
@@ -2411,7 +2297,7 @@ void free_helps( void )
 /*
  * Help editor							-Thoric
  */
-void do_hedit( CHAR_DATA * ch, char *argument )
+void do_hedit( CHAR_DATA* ch, const char* argument)
 {
    HELP_DATA *pHelp;
 
@@ -2480,25 +2366,27 @@ void do_hedit( CHAR_DATA * ch, char *argument )
 /*
  * Stupid leading space muncher fix				-Thoric
  */
-char *help_fix( char *text )
+const char *help_fix( const char *text )
 {
    char *fixed;
 
    if( !text )
       return "";
+
    fixed = strip_cr( text );
    if( fixed[0] == ' ' )
       fixed[0] = '.';
    return fixed;
 }
 
-void do_hset( CHAR_DATA * ch, char *argument )
+void do_hset( CHAR_DATA* ch, const char* argument)
 {
    HELP_DATA *pHelp;
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
 
-   smash_tilde( argument );
+   argument = smash_tilde_copy( argument );
+
    argument = one_argument( argument, arg1 );
    if( arg1[0] == '\0' )
    {
@@ -2585,7 +2473,7 @@ void do_hset( CHAR_DATA * ch, char *argument )
    do_hset( ch, "" );
 }
 
-void do_hl( CHAR_DATA * ch, char *argument )
+void do_hl( CHAR_DATA* ch, const char* argument)
 {
    send_to_char( "If you want to use HLIST, spell it out.\r\n", ch );
    return;
@@ -2596,13 +2484,13 @@ void do_hl( CHAR_DATA * ch, char *argument )
  * Idea suggested by Gorog
  * prefix keyword indexing added by Fireblade
  */
-void do_hlist( CHAR_DATA * ch, char *argument )
+void do_hlist( CHAR_DATA* ch, const char* argument)
 {
    int min, max, minlimit, maxlimit, cnt;
    char arg[MAX_INPUT_LENGTH];
    HELP_DATA *help;
    bool minfound, maxfound;
-   char *idx;
+   const char *idx;
 
    maxlimit = get_trust( ch );
    minlimit = maxlimit >= LEVEL_GREATER ? -1 : 0;
@@ -2819,14 +2707,14 @@ void create_whogr( CHAR_DATA * looker )
       }
 }
 
-void do_who( CHAR_DATA * ch, char *argument )
+void do_who( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char clan_name[MAX_INPUT_LENGTH];
    char council_name[MAX_INPUT_LENGTH];
    char invis_str[MAX_INPUT_LENGTH];
    char char_name[MAX_INPUT_LENGTH];
-   char *extra_title;
+   const char *extra_title;
    char class_text[MAX_INPUT_LENGTH];
    struct whogr_s *whogr, *whogr_p;
    DESCRIPTOR_DATA *d;
@@ -3384,7 +3272,7 @@ void do_who( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_compare( CHAR_DATA * ch, char *argument )
+void do_compare( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -3392,7 +3280,7 @@ void do_compare( CHAR_DATA * ch, char *argument )
    OBJ_DATA *obj2;
    int value1;
    int value2;
-   char *msg;
+   const char *msg;
 
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
@@ -3479,7 +3367,7 @@ void do_compare( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_where( CHAR_DATA * ch, char *argument )
+void do_where( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3546,11 +3434,11 @@ void do_where( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_consider( CHAR_DATA * ch, char *argument )
+void do_consider( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
-   char *msg;
+   const char *msg;
    int diff;
 
    one_argument( argument, arg );
@@ -3623,7 +3511,7 @@ void do_consider( CHAR_DATA * ch, char *argument )
  */
 #define CANT_PRAC "Tongue"
 
-void do_practice( CHAR_DATA * ch, char *argument )
+void do_practice( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *mob;
    char buf[MAX_STRING_LENGTH];
@@ -3850,7 +3738,7 @@ void do_practice( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_wimpy( CHAR_DATA * ch, char *argument )
+void do_wimpy( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    int wimpy;
@@ -3889,7 +3777,7 @@ void do_wimpy( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_password( CHAR_DATA * ch, char *argument )
+void do_password( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
    char *pArg, *pwdnew;
@@ -3943,7 +3831,6 @@ void do_password( CHAR_DATA * ch, char *argument )
    if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
       send_to_char( "Syntax: password <new> <again>.\r\n", ch );
-      send_to_char( "Syntax: password <new> <again>.\r\n", ch );
       return;
    }
 
@@ -3978,10 +3865,9 @@ void do_password( CHAR_DATA * ch, char *argument )
    else
       log_printf( "%s changing thier password with no descriptor!", ch->name );
    send_to_char( "Ok.\r\n", ch );
-   return;
 }
 
-void do_socials( CHAR_DATA * ch, char *argument )
+void do_socials( CHAR_DATA* ch, const char* argument)
 {
    int iHash;
    int col = 0;
@@ -4001,7 +3887,7 @@ void do_socials( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_commands( CHAR_DATA * ch, char *argument )
+void do_commands( CHAR_DATA* ch, const char* argument)
 {
    int col;
    bool found;
@@ -4047,7 +3933,7 @@ void do_commands( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_channels( CHAR_DATA * ch, char *argument )
+void do_channels( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    one_argument( argument, arg );
@@ -4306,7 +4192,7 @@ void do_channels( CHAR_DATA * ch, char *argument )
 /*
  * display WIZLIST file						-Thoric
  */
-void do_wizlist( CHAR_DATA * ch, char *argument )
+void do_wizlist( CHAR_DATA* ch, const char* argument)
 {
    set_pager_color( AT_IMMORT, ch );
    show_file( ch, WIZLIST_FILE );
@@ -4316,7 +4202,7 @@ void do_wizlist( CHAR_DATA * ch, char *argument )
  * Contributed by Grodyn.
  * Display completely overhauled, 2/97 -- Blodkai
  */
-void do_config( CHAR_DATA * ch, char *argument )
+void do_config( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -4514,7 +4400,7 @@ void do_config( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_credits( CHAR_DATA * ch, char *argument )
+void do_credits( CHAR_DATA* ch, const char* argument)
 {
    do_help( ch, "credits" );
 }
@@ -4532,11 +4418,11 @@ extern int top_area;
  *           area old        ->      list areas in order loaded
  *
  */
-void do_areas( CHAR_DATA * ch, char *argument )
+void do_areas( CHAR_DATA* ch, const char* argument)
 {
-   char *header_string1 = "\r\n   Author    |             Area" "                     | " "Recommended |  Enforced\r\n";
-   char *header_string2 = "-------------+-----------------" "---------------------+----" "---------+-----------\r\n";
-   char *print_string = "%-12s | %-36s | %4d - %-4d | %3d - " "%-3d \r\n";
+   const char *header_string1 = "\r\n   Author    |             Area" "                     | " "Recommended |  Enforced\r\n";
+   const char *header_string2 = "-------------+-----------------" "---------------------+----" "---------+-----------\r\n";
+   const char *print_string = "%-12s | %-36s | %4d - %-4d | %3d - " "%-3d \r\n";
 
    AREA_DATA *pArea;
    int lower_bound = 0;
@@ -4618,7 +4504,7 @@ void do_areas( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_afk( CHAR_DATA * ch, char *argument )
+void do_afk( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
       return;
@@ -4638,7 +4524,7 @@ void do_afk( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_slist( CHAR_DATA * ch, char *argument )
+void do_slist( CHAR_DATA* ch, const char* argument)
 {
    int sn, i, lFound;
    char skn[MAX_INPUT_LENGTH];
@@ -4794,7 +4680,7 @@ void do_slist( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_whois( CHAR_DATA * ch, char *argument )
+void do_whois( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *victim;
    char buf[MAX_STRING_LENGTH];
@@ -4835,7 +4721,7 @@ void do_whois( CHAR_DATA * ch, char *argument )
                  victim->sex == SEX_FEMALE ? "female" : "neutral",
                  victim->level,
                  capitalize( race_table[victim->race]->race_name ),
-                 class_table[victim->Class]->who_name, get_age( victim ) );
+                 class_table[victim->Class]->who_name, calculate_age( victim ) );
 
    pager_printf( ch, " %s is a %sdeadly player",
                  victim->sex == SEX_MALE ? "He" :
@@ -4933,7 +4819,7 @@ void do_whois( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_pager( CHAR_DATA * ch, char *argument )
+void do_pager( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -4983,7 +4869,7 @@ void do_pager( CHAR_DATA * ch, char *argument )
  * Last Modified: June 26, 1997
  * - Fireblade
  */
-void do_ignore( CHAR_DATA * ch, char *argument )
+void do_ignore( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    IGNORE_DATA *temp, *next;
@@ -5170,7 +5056,7 @@ bool is_ignoring( CHAR_DATA * ch, CHAR_DATA * ign_ch )
 }
 
 /* Version info -- Scryn */
-void do_version( CHAR_DATA * ch, char *argument )
+void do_version( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
       return;

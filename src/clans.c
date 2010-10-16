@@ -30,7 +30,7 @@ void fread_council args( ( COUNCIL_DATA * council, FILE * fp ) );
 bool load_council_file args( ( const char *councilfile ) );
 void write_council_list args( ( void ) );
 
-void add_roster( CLAN_DATA * clan, char *name, int Class, int level, int kills, int deaths )
+void add_roster( CLAN_DATA * clan, const char *name, int Class, int level, int kills, int deaths )
 {
    ROSTER_DATA *roster;
 
@@ -45,7 +45,7 @@ void add_roster( CLAN_DATA * clan, char *name, int Class, int level, int kills, 
    return;
 }
 
-void remove_roster( CLAN_DATA * clan, char *name )
+void remove_roster( CLAN_DATA * clan, const char *name )
 {
    ROSTER_DATA *roster;
 
@@ -99,7 +99,7 @@ void remove_all_rosters( CLAN_DATA * clan )
    }
 }
 
-void do_roster( CHAR_DATA * ch, char *argument )
+void do_roster( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *clan;
    ROSTER_DATA *roster;
@@ -202,7 +202,7 @@ void fread_memberlist( CLAN_DATA * clan, FILE * fp )
          case 'C':
             if( !str_cmp( word, "Class" ) )
             {
-               char *temp = fread_string( fp );
+               const char *temp = fread_string( fp );
                int Class = get_npc_class( temp );
 
                if( Class < 0 || Class >= MAX_NPC_CLASS )
@@ -310,7 +310,7 @@ void free_councils( void )
 /*
  * Get pointer to clan structure from clan name.
  */
-CLAN_DATA *get_clan( char *name )
+CLAN_DATA *get_clan( const char *name )
 {
    CLAN_DATA *clan;
 
@@ -320,7 +320,7 @@ CLAN_DATA *get_clan( char *name )
    return NULL;
 }
 
-COUNCIL_DATA *get_council( char *name )
+COUNCIL_DATA *get_council( const char *name )
 {
    COUNCIL_DATA *council;
 
@@ -1051,7 +1051,7 @@ void load_councils(  )
    return;
 }
 
-void do_make( CHAR_DATA * ch, char *argument )
+void do_make( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_INDEX_DATA *pObjIndex;
@@ -1123,7 +1123,7 @@ void do_make( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_induct( CHAR_DATA * ch, char *argument )
+void do_induct( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1138,7 +1138,7 @@ void do_induct( CHAR_DATA * ch, char *argument )
    clan = ch->pcdata->clan;
 
    if( ( ch->pcdata && ch->pcdata->bestowments
-         && is_name( "induct", ch->pcdata->bestowments ) )
+         && is_name( "caninduct", ch->pcdata->bestowments ) )
        || !str_cmp( ch->name, clan->deity )
        || !str_cmp( ch->name, clan->leader ) || !str_cmp( ch->name, clan->number1 ) || !str_cmp( ch->name, clan->number2 ) )
       ;
@@ -1262,7 +1262,7 @@ void do_induct( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_council_induct( CHAR_DATA * ch, char *argument )
+void do_council_induct( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1345,7 +1345,7 @@ bool can_outcast( CLAN_DATA * clan, CHAR_DATA * ch, CHAR_DATA * victim )
    return TRUE;
 }
 
-void do_outcast( CHAR_DATA * ch, char *argument )
+void do_outcast( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1361,7 +1361,7 @@ void do_outcast( CHAR_DATA * ch, char *argument )
    clan = ch->pcdata->clan;
 
    if( ( ch->pcdata && ch->pcdata->bestowments
-         && is_name( "outcast", ch->pcdata->bestowments ) )
+         && is_name( "canoutcast", ch->pcdata->bestowments ) )
        || !str_cmp( ch->name, clan->deity )
        || !str_cmp( ch->name, clan->leader ) || !str_cmp( ch->name, clan->number1 ) || !str_cmp( ch->name, clan->number2 ) )
       ;
@@ -1485,7 +1485,7 @@ void do_outcast( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_council_outcast( CHAR_DATA * ch, char *argument )
+void do_council_outcast( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1559,7 +1559,7 @@ void do_council_outcast( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_setclan( CHAR_DATA * ch, char *argument )
+void do_setclan( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -1925,7 +1925,7 @@ void do_setclan( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_setcouncil( CHAR_DATA * ch, char *argument )
+void do_setcouncil( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2084,7 +2084,7 @@ void do_setcouncil( CHAR_DATA * ch, char *argument )
  * Added multiple levels on pkills and pdeaths. -- Shaddai
  */
 
-void do_showclan( CHAR_DATA * ch, char *argument )
+void do_showclan( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *clan;
 
@@ -2142,7 +2142,7 @@ void do_showclan( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_showcouncil( CHAR_DATA * ch, char *argument )
+void do_showcouncil( CHAR_DATA* ch, const char* argument)
 {
    COUNCIL_DATA *council;
 
@@ -2176,7 +2176,7 @@ void do_showcouncil( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_makeclan( CHAR_DATA * ch, char *argument )
+void do_makeclan( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *clan;
 
@@ -2217,7 +2217,7 @@ void do_makeclan( CHAR_DATA * ch, char *argument )
    clan->badge = STRALLOC( "" );
 }
 
-void do_makecouncil( CHAR_DATA * ch, char *argument )
+void do_makecouncil( CHAR_DATA* ch, const char* argument)
 {
    char filename[256];
    COUNCIL_DATA *council;
@@ -2246,7 +2246,7 @@ void do_makecouncil( CHAR_DATA * ch, char *argument )
  * Added multiple level pkill and pdeath support. --Shaddai
  */
 
-void do_clans( CHAR_DATA * ch, char *argument )
+void do_clans( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *clan;
    int count = 0;
@@ -2304,7 +2304,7 @@ void do_clans( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_orders( CHAR_DATA * ch, char *argument )
+void do_orders( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *order;
    int count = 0;
@@ -2355,7 +2355,7 @@ void do_orders( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_councils( CHAR_DATA * ch, char *argument )
+void do_councils( CHAR_DATA* ch, const char* argument)
 {
    COUNCIL_DATA *council;
 
@@ -2394,7 +2394,7 @@ void do_councils( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_guilds( CHAR_DATA * ch, char *argument )
+void do_guilds( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    CLAN_DATA *guild;
@@ -2446,7 +2446,7 @@ void do_guilds( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_victories( CHAR_DATA * ch, char *argument )
+void do_victories( CHAR_DATA* ch, const char* argument)
 {
    char filename[256];
 
@@ -2482,7 +2482,7 @@ void do_victories( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_shove( CHAR_DATA * ch, char *argument )
+void do_shove( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2685,7 +2685,7 @@ void do_shove( CHAR_DATA * ch, char *argument )
       add_timer( ch, TIMER_SHOVEDRAG, 10, NULL, 0 );
 }
 
-void do_drag( CHAR_DATA * ch, char *argument )
+void do_drag( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];

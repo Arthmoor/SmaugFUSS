@@ -3,9 +3,10 @@
 Version      1
 Name         Haon Dor~
 Author       Diku~
+WeatherX     0
+WeatherY     0
 Ranges       5 10 0 60
 Economy      0 3643376
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -36,10 +37,12 @@ Speaking   common~
 Immune     sleep charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   8~
-Comlist   , cleaves a small tree in two with one mighty blow.
-mpasound The sound of an axe blade plunging into soft wood can be heard.
+Progtype  entry_prog~
+Arglist   100~
+Comlist   if name($n) == fat worm
+  , brings a leather-booted foot down atop a fat worm!
+  mpkill $n
+endif
 ~
 #ENDPROG
 
@@ -54,12 +57,10 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  entry_prog~
-Arglist   100~
-Comlist   if name($n) == fat worm
-  , brings a leather-booted foot down atop a fat worm!
-  mpkill $n
-endif
+Progtype  rand_prog~
+Arglist   8~
+Comlist   , cleaves a small tree in two with one mighty blow.
+mpasound The sound of an axe blade plunging into soft wood can be heard.
 ~
 #ENDPROG
 
@@ -350,15 +351,15 @@ Speaking   common pixie~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   14~
-Comlist   poke $r
+Arglist   16~
+Comlist   giggle
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   16~
-Comlist   giggle
+Arglist   14~
+Comlist   poke $r
 ~
 #ENDPROG
 
@@ -430,47 +431,6 @@ Immune     charm~
 Attacks    claws poison~
 Defenses   dodge~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   mpe With a grotesque gurgle, $I burps forth a glob of white goo.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   mpasound Thundering in the woods, a great croak-like boom rumbles through you.
-mpe _gre $I inflates its throat and releases a mind-rattling croak!
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is DEAD!!~
-Comlist   , bellows a crazed croak of triumph!
-if isnpc($n)
-  mpe $I playfully squishes $N's corpse into the mud with a pudgy claw.
-else
-  mpe $I playfully squishes $n's corpse into the mud with a pudgy claw.
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  speech_prog~
-Arglist   ribbit~
-Comlist   mpe $I apparently didn't think that was all that funny...
-if isnpc($n)
-  mpe _gre $I smacks $N with a huge claw!
-else
-  mea $n _gre $I smacks you with a huge claw, sending you flying!
-  mer $n _gre $I smacks $n with a huge claw, sending him $m flying!
-endif
-murder $n
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if name($n) == fat worm
@@ -490,6 +450,47 @@ else
     endif
   endif
 endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  speech_prog~
+Arglist   ribbit~
+Comlist   mpe $I apparently didn't think that was all that funny...
+if isnpc($n)
+  mpe _gre $I smacks $N with a huge claw!
+else
+  mea $n _gre $I smacks you with a huge claw, sending you flying!
+  mer $n _gre $I smacks $n with a huge claw, sending him $m flying!
+endif
+murder $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p is DEAD!!~
+Comlist   , bellows a crazed croak of triumph!
+if isnpc($n)
+  mpe $I playfully squishes $N's corpse into the mud with a pudgy claw.
+else
+  mpe $I playfully squishes $n's corpse into the mud with a pudgy claw.
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   3~
+Comlist   mpasound Thundering in the woods, a great croak-like boom rumbles through you.
+mpe _gre $I inflates its throat and releases a mind-rattling croak!
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   3~
+Comlist   mpe With a grotesque gurgle, $I burps forth a glob of white goo.
 ~
 #ENDPROG
 

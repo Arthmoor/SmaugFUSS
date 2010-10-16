@@ -3,9 +3,10 @@
 Version      1
 Name         Darkhaven Art Gallery~
 Author       Zaknafein~
+WeatherX     0
+WeatherY     0
 Ranges       10 50 0 60
 Economy      0 94935260
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -35,33 +36,20 @@ Speaking   common~
 Immune     sleep charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  fight_prog~
+Progtype  rand_prog~
+Arglist   15~
+Comlist   sit
+, hums happily to herself.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  bribe_prog~
 Arglist   100~
-Comlist   mpat 3 c heal
-if isnpc($n)
-  mppurge $n
-else
-  say The Gods do not wish my soul to pass on to the next Reality.
-  mpforce $n flee
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  speech_prog~
-Arglist   fuck shit goddam bitch ass~
-Comlist   sigh
-say PLEASE watch your language in here.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p north.~
-Comlist   stand
-close n
-lock n
-sit
+Comlist   mpoload 24800 1
+mpjunk all.coins
+give key $n
+say Thank you, $n, and enjoy your visit
 ~
 #ENDPROG
 
@@ -79,20 +67,33 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  bribe_prog~
-Arglist   100~
-Comlist   mpoload 24800 1
-mpjunk all.coins
-give key $n
-say Thank you, $n, and enjoy your visit
+Progtype  act_prog~
+Arglist   p north.~
+Comlist   stand
+close n
+lock n
+sit
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   sit
-, hums happily to herself.
+Progtype  speech_prog~
+Arglist   fuck shit goddam bitch ass~
+Comlist   sigh
+say PLEASE watch your language in here.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   100~
+Comlist   mpat 3 c heal
+if isnpc($n)
+  mppurge $n
+else
+  say The Gods do not wish my soul to pass on to the next Reality.
+  mpforce $n flee
+endif
 ~
 #ENDPROG
 
@@ -564,17 +565,17 @@ Speaks     common halfling~
 Speaking   halfling~
 Attacks    kick~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpgoto 4
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
 Arglist   defend_foot~
 Comlist   mpgoto rightfoot
   mpkill $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
 #ENDPROG
 
@@ -603,17 +604,17 @@ Speaks     common halfling~
 Speaking   halfling~
 Attacks    kick~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpgoto 4
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
 Arglist   defend_foot~
 Comlist   mpgoto leftfoot
   mpkill $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
 #ENDPROG
 
@@ -641,18 +642,18 @@ Speaks     common halfling~
 Speaking   halfling~
 Attacks    punch~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpgoto 4
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
 Arglist   defend_me~
 Comlist   mpgoto $n
   mpecho Welmar's Right Hand comes to the rescue!
   mpkill $n 
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
 #ENDPROG
 
@@ -680,18 +681,18 @@ Speaks     common halfling~
 Speaking   halfling~
 Attacks    punch~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpgoto 4
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
 Arglist   defend_me~
 Comlist   mpgoto $n
   mpecho Welmar's Left Hand comes to the rescue!
   mpkill $n 
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpgoto 4
 ~
 #ENDPROG
 
@@ -823,8 +824,27 @@ Attacks    bite claws tail~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   mpat 3 c heal
+Arglist   8~
+Comlist   emote snorts, sending sand clouds swirling.
+hide
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   mpecho As you trudge along, the sand all around you begins to swirl upward.
+mpecho This is unlike any dust storm you've ever seen, though.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 24816
+mpecho The insubstantial form of Dracolithos finally returns from whence
+mpecho it came:  dust.  All that remains is a simple band of fire-blown
+mpecho glass, pitted and etched by time and driven sand.
 ~
 #ENDPROG
 
@@ -840,28 +860,9 @@ mpat 3 c heal
 #ENDPROG
 
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpoload 24816
-mpecho The insubstantial form of Dracolithos finally returns from whence
-mpecho it came:  dust.  All that remains is a simple band of fire-blown
-mpecho glass, pitted and etched by time and driven sand.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   mpecho As you trudge along, the sand all around you begins to swirl upward.
-mpecho This is unlike any dust storm you've ever seen, though.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  rand_prog~
-Arglist   8~
-Comlist   emote snorts, sending sand clouds swirling.
-hide
+Arglist   5~
+Comlist   mpat 3 c heal
 ~
 #ENDPROG
 
@@ -1005,16 +1006,16 @@ Speaks     common~
 Speaking   common~
 Defenses   dodge~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   20~
-Comlist   kick
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 24821
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpoload 24821
+Progtype  fight_prog~
+Arglist   20~
+Comlist   kick
 ~
 #ENDPROG
 
@@ -1084,11 +1085,9 @@ Suscept    fire~
 Attacks    trip~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpecho Icingdeath shudders once as blood trickles out of his nostrils.  He
-  mpecho gathers his lungs for one final breath of frost, but all that comes
-  mpecho out is a mildly nippy cough.  His head crashes to the floor.
+Progtype  rand_prog~
+Arglist   25~
+Comlist   mpforce all shiver
 ~
 #ENDPROG
 
@@ -1108,9 +1107,11 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   25~
-Comlist   mpforce all shiver
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho Icingdeath shudders once as blood trickles out of his nostrils.  He
+  mpecho gathers his lungs for one final breath of frost, but all that comes
+  mpecho out is a mildly nippy cough.  His head crashes to the floor.
 ~
 #ENDPROG
 
@@ -1144,6 +1145,14 @@ Saves      0 0 0 0 67
 Speaks     common halfling~
 Speaking   halfling~
 #MUDPROG
+Progtype  fight_prog~
+Arglist   25~
+Comlist   mpecho Aram-Dol grabs your arm!
+  c 'energy drain' $n
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho Aram-Dol emits a terrifying scream as he crumbles into dust.  All
@@ -1152,14 +1161,6 @@ mpoload 24823 40
 drop decay
 mpoload 24822 40
 drop crown
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  fight_prog~
-Arglist   25~
-Comlist   mpecho Aram-Dol grabs your arm!
-  c 'energy drain' $n
 ~
 #ENDPROG
 

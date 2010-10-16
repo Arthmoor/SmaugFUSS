@@ -138,7 +138,7 @@ int fread_imm_host( FILE * fp, IMMORTAL_HOST * data )
    }
 }
 
-bool check_immortal_domain( CHAR_DATA * ch, char *host )
+bool check_immortal_domain( CHAR_DATA * ch, const char *host )
 {
    bool found = FALSE;
    IMMORTAL_HOST *temp;
@@ -178,7 +178,7 @@ bool check_immortal_domain( CHAR_DATA * ch, char *host )
       return FALSE;
 }
 
-void do_add_imm_host( CHAR_DATA * ch, char *argument )
+void do_add_imm_host( CHAR_DATA* ch, const char* argument)
 {
    char type[MAX_INPUT_LENGTH];
    char arg1[MAX_INPUT_LENGTH];

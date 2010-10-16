@@ -3,11 +3,12 @@
 Version      1
 Name         Shattered Refuge~
 Author       Seccunda~
+WeatherX     0
+WeatherY     0
 Ranges       5 20 0 60
 Economy      0 22706892
 ResetMsg     The earth rumbles with the after-affects of another experiment gone awry...~
 ResetFreq    10
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -105,15 +106,15 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   shake $r
+Arglist   5~
+Comlist   sing
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   sing
+Arglist   2~
+Comlist   shake $r
 ~
 #ENDPROG
 
@@ -250,6 +251,16 @@ Bodyparts  head arms legs heart guts hands feet ear eye claws horns~
 Attacks    claws~
 Defenses   dodge~
 #MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   say Who goes there?
+mpechoat $n The troll says 'No one crosses my bridge without paying!
+mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
+mpechoat $n The troll pushes you backwards.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  bribe_prog~
 Arglist   500~
 Comlist   if isfight($n)
@@ -263,16 +274,6 @@ mpechoat $n The troll moves and you walk west across the bridge.
 mptransfer $n 1547
 mpjunk coins
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   say Who goes there?
-mpechoat $n The troll says 'No one crosses my bridge without paying!
-mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
-mpechoat $n The troll pushes you backwards.
 ~
 #ENDPROG
 
@@ -567,15 +568,15 @@ Attacks    trip~
 Defenses   dodge disarm~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   1~
-Comlist   drool
+Arglist   2~
+Comlist   grunt
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   grunt
+Arglist   1~
+Comlist   drool
 ~
 #ENDPROG
 
@@ -666,15 +667,15 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   curse
+Arglist   5~
+Comlist   grumble
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   grumble
+Arglist   2~
+Comlist   curse
 ~
 #ENDPROG
 
@@ -832,15 +833,15 @@ Attacks    kick~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   fart
+Arglist   4~
+Comlist   burp
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   4~
-Comlist   burp
+Arglist   2~
+Comlist   fart
 ~
 #ENDPROG
 
@@ -971,17 +972,17 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   8~
-Comlist   grumble
-say I shall never keep up with this paperwork.
+Arglist   4~
+Comlist   say Filing, filing, and more filing. Must they keep notes on everything?
+mpecho You hear the parchments crumple as the reception continues to file.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   4~
-Comlist   say Filing, filing, and more filing. Must they keep notes on everything?
-mpecho You hear the parchments crumple as the reception continues to file.
+Arglist   8~
+Comlist   grumble
+say I shall never keep up with this paperwork.
 ~
 #ENDPROG
 
@@ -1018,14 +1019,14 @@ Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
 Arglist   3~
-Comlist   smile
+Comlist   whistle
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
 Arglist   3~
-Comlist   whistle
+Comlist   smile
 ~
 #ENDPROG
 
@@ -1128,15 +1129,15 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   say Even at your young age, you should be planning future creations.
+Arglist   3~
+Comlist   snap
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   3~
-Comlist   snap
+Arglist   2~
+Comlist   say Even at your young age, you should be planning future creations.
 ~
 #ENDPROG
 
@@ -1209,15 +1210,15 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   wink $r
+Arglist   5~
+Comlist   giggle
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   giggle
+Arglist   2~
+Comlist   wink $r
 ~
 #ENDPROG
 
@@ -1252,15 +1253,15 @@ Attacks    trip~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   bounce
+Arglist   5~
+Comlist   smile $r
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   smile $r
+Arglist   2~
+Comlist   bounce
 ~
 #ENDPROG
 
@@ -1324,19 +1325,19 @@ Speaking   common~
 Attacks    feed~
 Defenses   dodge~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   mpecho You feel an odd chill run down your spine.
-say One day my darkness will not be contained in this small room.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho Thank you $n, you have freed me from this prison.
 mpecho The shadow becomes clear, then is gone!
 mpgoto 199
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   3~
+Comlist   mpecho You feel an odd chill run down your spine.
+say One day my darkness will not be contained in this small room.
 ~
 #ENDPROG
 
@@ -1371,12 +1372,22 @@ Immune     sleep charm~
 Attacks    claws~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
+Progtype  all_greet_prog~
 Arglist   100~
-Comlist   mpecho The troll falls to the ground, mortally hit.
-mpecho Gasping, he says, "This ends nothing. I will have final victory."
-mpecho With a shudder, the troll expires in death.
-mpoload 1546 1
+Comlist   say Who goes there?
+mpechoat $n The troll says 'No one crosses my bridge without paying!
+mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
+mpechoat $n The troll pushes you backwards.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   100~
+Comlist   if isnpc($n)
+ mer $n The troll sneers in contempt and takes a mighty swing.
+ mpdamage $n 30000
+endif
 ~
 #ENDPROG
 
@@ -1401,22 +1412,12 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  fight_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   if isnpc($n)
- mer $n The troll sneers in contempt and takes a mighty swing.
- mpdamage $n 30000
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   say Who goes there?
-mpechoat $n The troll says 'No one crosses my bridge without paying!
-mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
-mpechoat $n The troll pushes you backwards.
+Comlist   mpecho The troll falls to the ground, mortally hit.
+mpecho Gasping, he says, "This ends nothing. I will have final victory."
+mpecho With a shudder, the troll expires in death.
+mpoload 1546 1
 ~
 #ENDPROG
 
@@ -1451,12 +1452,22 @@ Immune     sleep charm~
 Attacks    claws~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
+Progtype  all_greet_prog~
 Arglist   100~
-Comlist   mpecho The troll falls to the ground, mortally hit.
-mpecho Gasping, he says, "This ends nothing. I will have final victory."
-mpecho With a shudder, the troll expires in death.
-mpoload 1547 1
+Comlist   say Who goes there?
+mpechoat $n The troll says 'No one crosses my bridge without paying!
+mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
+mpechoat $n The troll pushes you backwards.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   100~
+Comlist   if isnpc($n)
+ mer $n The troll sneers in contempt and takes a mighty swing.
+ mpdamage $n 30000
+endif
 ~
 #ENDPROG
 
@@ -1480,22 +1491,12 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  fight_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   if isnpc($n)
- mer $n The troll sneers in contempt and takes a mighty swing.
- mpdamage $n 30000
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   say Who goes there?
-mpechoat $n The troll says 'No one crosses my bridge without paying!
-mpechoat $n The fee is 500 in gold! Only by my death may you pass for free!
-mpechoat $n The troll pushes you backwards.
+Comlist   mpecho The troll falls to the ground, mortally hit.
+mpecho Gasping, he says, "This ends nothing. I will have final victory."
+mpecho With a shudder, the troll expires in death.
+mpoload 1547 1
 ~
 #ENDPROG
 
@@ -1567,15 +1568,15 @@ Bodyparts  head arms legs heart guts hands feet ear eye~
 Defenses   dodge disarm~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   1~
-Comlist   grope self
+Arglist   2~
+Comlist   burp
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   2~
-Comlist   burp
+Arglist   1~
+Comlist   grope self
 ~
 #ENDPROG
 
@@ -2231,6 +2232,14 @@ the quill is a cut piece of clear crystal. The quill looks dry and unused.
 #ENDEXDESC
 
 #MUDPROG
+Progtype  get_prog~
+Arglist   100~
+Comlist   mpechoat $n A small flash of light sparks forth as you touch the pen.
+mpechoaround $n A small flash of light sparks forth as $n touches the pen.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  use_prog~
 Arglist   100~
 Comlist   mpechoat $n You wince as the pen tip springs out pricking your hand.
@@ -2239,14 +2248,6 @@ mpechoat $n A small amount of your blood is drawn up into the pen.
 mpechoat $n The pen lights with a spectral fire, fed by your blood.
 mpechoaround $n The pen lights with a spectral fire as blood courses inside.
 mpdamage $n 10
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  get_prog~
-Arglist   100~
-Comlist   mpechoat $n A small flash of light sparks forth as you touch the pen.
-mpechoaround $n A small flash of light sparks forth as $n touches the pen.
 ~
 #ENDPROG
 

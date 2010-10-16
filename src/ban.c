@@ -150,7 +150,7 @@ void fread_ban( FILE * fp, int type )
          if( pban->name[i] == '@' )
          {
             char *temp;
-            char *temp2;
+            const char *temp2;
 
             temp = str_dup( pban->name );
             temp[i] = '\0';
@@ -250,7 +250,7 @@ void save_banlist( void )
  * change here.		Shaddai
  */
 
-void do_ban( CHAR_DATA * ch, char *argument )
+void do_ban( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -480,7 +480,7 @@ void do_ban( CHAR_DATA * ch, char *argument )
  * Allow a already banned site/class or race.  Shaddai
  */
 
-void do_allow( CHAR_DATA * ch, char *argument )
+void do_allow( CHAR_DATA* ch, const char* argument)
 {
    BAN_DATA *pban;
    char arg1[MAX_INPUT_LENGTH];
@@ -625,7 +625,7 @@ void do_allow( CHAR_DATA * ch, char *argument )
 /* 
  *  Sets the warn flag on bans.
  */
-void do_warn( CHAR_DATA * ch, char *argument )
+void do_warn( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_STRING_LENGTH];
    char arg2[MAX_STRING_LENGTH];
@@ -755,7 +755,7 @@ void do_warn( CHAR_DATA * ch, char *argument )
  *  This actually puts the new ban into the proper linked list and
  *  initializes its data.  Shaddai
  */
-int add_ban( CHAR_DATA * ch, char *arg1, char *arg2, int btime, int type )
+int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int type )
 {
    char arg[MAX_STRING_LENGTH];
    char buf[MAX_STRING_LENGTH];

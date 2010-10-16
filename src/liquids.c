@@ -50,16 +50,22 @@
 #define NULLSTR(str)         (!str || str[0] == '\0')
 #endif
 
+// macro to be used when we know that the string is non-null
+// (to avoid compiler warnings)
+#ifndef EMPTYSTR
+#define EMPTYSTR(str)         (str[0] == '\0')
+#endif
+
 /* globals */
 LIQ_TABLE *liquid_table[MAX_LIQUIDS];
 MIX_TABLE *first_mixture;
 MIX_TABLE *last_mixture;
 
-char *const liquid_types[LIQTYPE_TOP] = {
+const char *const liquid_types[LIQTYPE_TOP] = {
    "Beverage", "Alcohol", "Poison", "Blood"
 };
 
-char *const mod_types[MAX_CONDS] = {
+const char *const mod_types[MAX_CONDS] = {
    "Drunk", "Full", "Thirst", "Bloodthirst"
 };
 
@@ -407,7 +413,7 @@ static int figure_liq_vnum( void )
 }
 
 /* lookup func for liquids      -Nopey */
-LIQ_TABLE *get_liq( char *str )
+LIQ_TABLE *get_liq( const char *str )
 {
    int i;
 
@@ -432,7 +438,7 @@ LIQ_TABLE *get_liq_vnum( int vnum )
 }
 
 /* lookup func for mixtures      -Nopey */
-MIX_TABLE *get_mix( char *str )
+MIX_TABLE *get_mix( const char *str )
 {
    MIX_TABLE *mix = NULL;
 
@@ -444,7 +450,7 @@ MIX_TABLE *get_mix( char *str )
 }
 
 /* Function to display liquid list. - Tarl 9 Jan 03 */
-void do_showliquid( CHAR_DATA * ch, char *argument )
+void do_showliquid( CHAR_DATA* ch, const char* argument)
 {
    LIQ_TABLE *liq = NULL;
    int i;
@@ -491,7 +497,7 @@ void do_showliquid( CHAR_DATA * ch, char *argument )
 }
 
 /* olc function for liquids   -Nopey */
-void do_setliquid( CHAR_DATA * ch, char *argument )
+void do_setliquid( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -504,7 +510,7 @@ void do_setliquid( CHAR_DATA * ch, char *argument )
    smash_tilde( argument );
    argument = one_argument( argument, arg );
 
-   if( NULLSTR( arg ) )
+   if( EMPTYSTR( arg ) )
    {
       send_to_char( "Syntax: setliquid <vnum> <field> <value>\r\n"
                     "        setliquid create <name>\r\n" "        setliquid delete <vnum>\r\n", ch );
@@ -596,7 +602,7 @@ void do_setliquid( CHAR_DATA * ch, char *argument )
       LIQ_TABLE *liq = NULL;
 
       argument = one_argument( argument, arg2 );
-      if( NULLSTR( arg2 ) )
+      if( EMPTYSTR( arg2 ) )
       {
          send_to_char( "Syntax: setliquid <vnum> <field> <value>\r\n", ch );
          send_to_char( " Fields being one of the following:\r\n" " name color shortdesc drunk thrist blood full\r\n", ch );
@@ -666,7 +672,7 @@ void do_setliquid( CHAR_DATA * ch, char *argument )
       {
          int i;
          bool found = FALSE;
-         static char *const arg_names[MAX_CONDS] = { "drunk", "full", "thirst", "blood" };
+         static const char *const arg_names[MAX_CONDS] = { "drunk", "full", "thirst", "blood" };
 
          if( NULLSTR( argument ) )
          {
@@ -756,7 +762,7 @@ void displaymixture( CHAR_DATA * ch, MIX_TABLE * mix )
 }
 
 /* Function for showmixture - Tarl 9 Jan 03 */
-void do_showmixture( CHAR_DATA * ch, char *argument )
+void do_showmixture( CHAR_DATA* ch, const char* argument)
 {
    MIX_TABLE *mix = NULL;
 
@@ -794,7 +800,7 @@ void do_showmixture( CHAR_DATA * ch, char *argument )
 }
 
 /* olc funciton for mixtures  -Nopey */
-void do_setmixture( CHAR_DATA * ch, char *argument )
+void do_setmixture( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    LIQ_TABLE *liq = NULL;
@@ -808,7 +814,7 @@ void do_setmixture( CHAR_DATA * ch, char *argument )
    smash_tilde( argument );
    argument = one_argument( argument, arg );
 
-   if( NULLSTR( arg ) )
+   if( EMPTYSTR( arg ) )
    {
       send_to_char( "Syntax: setmixture create <name>\r\n"
                     "        setmixture delete <name>\r\n"
@@ -903,7 +909,7 @@ void do_setmixture( CHAR_DATA * ch, char *argument )
       char arg2[MAX_INPUT_LENGTH];
       MIX_TABLE *mix = NULL;
 
-      if( NULLSTR( arg ) || ( ( mix = get_mix( arg ) ) == NULL ) )
+      if( EMPTYSTR( arg ) || ( ( mix = get_mix( arg ) ) == NULL ) )
       {
          send_to_char( "Syntax: setmixture <mixname> <field> <value>\r\n", ch );
          send_to_char( " Fields being one of the following:\r\n" " name vnum1 vnum2 into object\r\n", ch );
@@ -1113,7 +1119,7 @@ LIQ_TABLE *liqobj_can_mix( OBJ_DATA * iObj, OBJ_DATA * oLiq )
 }
 
 /* the actual -mix- funciton  -Nopey */
-void do_mix( CHAR_DATA * ch, char *argument )
+void do_mix( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *iObj, *tObj = NULL;
@@ -1122,7 +1128,7 @@ void do_mix( CHAR_DATA * ch, char *argument )
    /*
     * null arguments 
     */
-   if( NULLSTR( arg ) || NULLSTR( argument ) )
+   if( EMPTYSTR( arg ) || NULLSTR( argument ) )
    {
       send_to_char( "What would you like to mix together?\r\n", ch );
       return;
@@ -1196,7 +1202,7 @@ void do_mix( CHAR_DATA * ch, char *argument )
 }
 
 /* modified do_drink function -Nopey */
-void do_drink( CHAR_DATA * ch, char *argument )
+void do_drink( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1480,7 +1486,7 @@ void do_drink( CHAR_DATA * ch, char *argument )
 }
 
 /* standard liquid functions           -Nopey */
-void do_fill( CHAR_DATA * ch, char *argument )
+void do_fill( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1687,7 +1693,7 @@ void do_fill( CHAR_DATA * ch, char *argument )
       OBJ_DATA *otmp, *otmp_next;
       char name[MAX_INPUT_LENGTH];
       CHAR_DATA *gch;
-      char *pd;
+      const char *pd;
       bool found = FALSE;
 
       if( source == obj )
@@ -1893,7 +1899,7 @@ void do_fill( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_empty( CHAR_DATA * ch, char *argument )
+void do_empty( CHAR_DATA* ch, const char* argument)
 {
    OBJ_DATA *obj;
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
@@ -1903,7 +1909,7 @@ void do_empty( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg2, "into" ) && argument[0] != '\0' )
       argument = one_argument( argument, arg2 );
 
-   if( !arg1 || arg1[0] == '\0' )
+   if( EMPTYSTR(arg1) )
    {
       send_to_char( "Empty what?\r\n", ch );
       return;
@@ -1958,7 +1964,7 @@ void do_empty( CHAR_DATA * ch, char *argument )
             send_to_char( "It's already empty.\r\n", ch );
             return;
          }
-         if( !arg2 || arg2[0] == '\0' )
+         if( EMPTYSTR(arg2) )
          {
             if( xIS_SET( ch->in_room->room_flags, ROOM_NODROP ) || xIS_SET( ch->act, PLR_LITTERBUG ) )
             {

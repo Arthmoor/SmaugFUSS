@@ -25,7 +25,7 @@
 /*
  * External functions
  */
-void write_corpses( CHAR_DATA * ch, char *name, OBJ_DATA * objrem );
+void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem );
 
 /*
  * how resistant an object is to damage				-Thoric
@@ -235,7 +235,7 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
    return;
 }
 
-void do_get( CHAR_DATA * ch, char *argument )
+void do_get( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -407,7 +407,7 @@ void do_get( CHAR_DATA * ch, char *argument )
          {
             char name[MAX_INPUT_LENGTH];
             CHAR_DATA *gch;
-            char *pd;
+            const char *pd;
 
             if( IS_NPC( ch ) )
             {
@@ -495,7 +495,7 @@ void do_get( CHAR_DATA * ch, char *argument )
          if( !obj )
          {
             act( AT_PLAIN, IS_OBJ_STAT( container, ITEM_COVERING ) ?
-                 "I see nothing like that beneath the $T." : "I see nothing like that in the $T.", ch, NULL, arg2, TO_CHAR );
+               "I see nothing like that beneath the $T." : "I see nothing like that in the $T.", ch, NULL, container->short_descr, TO_CHAR );
             return;
          }
          separate_obj( obj );
@@ -571,19 +571,19 @@ void do_get( CHAR_DATA * ch, char *argument )
             if( fAll )
             {
                if( container->item_type == ITEM_KEYRING && !IS_OBJ_STAT( container, ITEM_COVERING ) )
-                  act( AT_PLAIN, "The $T holds no keys.", ch, NULL, arg2, TO_CHAR );
+                  act( AT_PLAIN, "The $T holds no keys.", ch, NULL, container->short_descr, TO_CHAR );
                else
                   act( AT_PLAIN, IS_OBJ_STAT( container, ITEM_COVERING ) ?
-                       "I see nothing beneath the $T." : "I see nothing in the $T.", ch, NULL, arg2, TO_CHAR );
+                       "I see nothing beneath the $T." : "I see nothing in the $T.", ch, NULL, container->short_descr, TO_CHAR );
             }
             else
             {
                if( container->item_type == ITEM_KEYRING && !IS_OBJ_STAT( container, ITEM_COVERING ) )
-                  act( AT_PLAIN, "The $T does not hold that key.", ch, NULL, arg2, TO_CHAR );
+                  act( AT_PLAIN, "The $T does not hold that key.", ch, NULL, container->short_descr, TO_CHAR );
                else
                   act( AT_PLAIN, IS_OBJ_STAT( container, ITEM_COVERING ) ?
                        "I see nothing like that beneath the $T." :
-                       "I see nothing like that in the $T.", ch, NULL, arg2, TO_CHAR );
+                       "I see nothing like that in the $T.", ch, NULL, container->short_descr, TO_CHAR );
             }
          }
          else
@@ -603,7 +603,7 @@ void do_get( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_put( CHAR_DATA * ch, char *argument )
+void do_put( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -875,7 +875,7 @@ void do_put( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_drop( CHAR_DATA * ch, char *argument )
+void do_drop( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1074,7 +1074,7 @@ void do_drop( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_give( CHAR_DATA * ch, char *argument )
+void do_give( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2014,7 +2014,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
    }
 }
 
-void do_wear( CHAR_DATA * ch, char *argument )
+void do_wear( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2070,7 +2070,7 @@ void do_wear( CHAR_DATA * ch, char *argument )
 
 
 
-void do_remove( CHAR_DATA * ch, char *argument )
+void do_remove( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj, *obj_next;
@@ -2114,7 +2114,7 @@ void do_remove( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_bury( CHAR_DATA * ch, char *argument )
+void do_bury( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2197,7 +2197,7 @@ void do_bury( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_sacrifice( CHAR_DATA * ch, char *argument )
+void do_sacrifice( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH];
@@ -2272,7 +2272,7 @@ void do_sacrifice( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_brandish( CHAR_DATA * ch, char *argument )
+void do_brandish( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *vch;
    CHAR_DATA *vch_next;
@@ -2361,7 +2361,7 @@ void do_brandish( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_zap( CHAR_DATA * ch, char *argument )
+void do_zap( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2495,7 +2495,7 @@ void save_clan_storeroom( CHAR_DATA * ch, CLAN_DATA * clan )
 }
 
 /* put an item on auction, or see the stats on the current item or bet */
-void do_auction( CHAR_DATA * ch, char *argument )
+void do_auction( CHAR_DATA* ch, const char* argument)
 {
    OBJ_DATA *obj;
    char arg1[MAX_INPUT_LENGTH];
@@ -3034,12 +3034,12 @@ void obj_fall( OBJ_DATA * obj, bool through )
 /* Reworked recursive_note_find to fix crash bug when the note was left 
  * blank.  7/6/98 -- Shaddai
  */
-OBJ_DATA *recursive_note_find( OBJ_DATA * obj, char *argument )
+OBJ_DATA *recursive_note_find( OBJ_DATA * obj, const char *argument )
 {
    OBJ_DATA *returned_obj;
    bool match = TRUE;
-   char *argcopy;
-   char *subject;
+   const char *argcopy;
+   const char *subject;
 
    char arg[MAX_INPUT_LENGTH];
    char subj[MAX_STRING_LENGTH];
@@ -3092,7 +3092,7 @@ OBJ_DATA *recursive_note_find( OBJ_DATA * obj, char *argument )
    return recursive_note_find( obj->next_content, argument );
 }
 
-void do_findnote( CHAR_DATA * ch, char *argument )
+void do_findnote( CHAR_DATA* ch, const char* argument)
 {
    OBJ_DATA *obj;
 
@@ -3129,7 +3129,7 @@ const char *get_chance_verb( OBJ_DATA * obj )
    return ( obj->action_desc[0] != '\0' ) ? obj->action_desc : "roll$q";
 }
 
-char *get_ed_number( OBJ_DATA * obj, int number )
+const char *get_ed_number( OBJ_DATA * obj, int number )
 {
    EXTRA_DESCR_DATA *ed;
    int count;
@@ -3143,7 +3143,7 @@ char *get_ed_number( OBJ_DATA * obj, int number )
    return NULL;
 }
 
-void do_rolldie( CHAR_DATA * ch, char *argument )
+void do_rolldie( CHAR_DATA* ch, const char* argument)
 {
    OBJ_DATA *die;
 
@@ -3232,7 +3232,7 @@ void do_rolldie( CHAR_DATA * ch, char *argument )
 
       if( die->value[1] == 1 )
       {
-         char *face_name = get_ed_number( die, current_roll );
+         const char *face_name = get_ed_number( die, current_roll );
          if( face_name )
          {
             char *face_name_copy = strdup( face_name );  /* Since I want to tokenize without modifying the original string */

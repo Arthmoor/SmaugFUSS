@@ -125,7 +125,7 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
    OBJ_DATA *obj_next;
-   char *name;
+   const char *name;
 
    if( IS_NPC( ch ) )
    {

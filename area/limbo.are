@@ -3,14 +3,13 @@
 Version      1
 Name         Limbo~
 Author       RoD~
+WeatherX     0
+WeatherY     0
 Ranges       0 60 0 60
 Economy      0 33928447
 ResetMsg     A dim pulse of light filters through the swirling mists.~
 ResetFreq    60
 Flags        noteleport~
-Climate      2 2 2
-Neighbor     Gods~
-Neighbor     Darkhaven Academy~
 #ENDAREADATA
 
 #MOBILE
@@ -40,15 +39,15 @@ Attacks    claws~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   mpe To escape Limbo, type a command or say "return" ...
+Arglist   50~
+Comlist   mpat 4 mppurge
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   50~
-Comlist   mpat 4 mppurge
+Arglist   5~
+Comlist   mpe To escape Limbo, type a command or say "return" ...
 ~
 #ENDPROG
 
@@ -80,86 +79,13 @@ Speaks     common~
 Speaking   common~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bashes against~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p shivers and~
-Comlist   cast 'cure poison' $n
-mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p wears~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p wields~
-Comlist   mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is DEAD!!~
+Arglist   p disappears in a column of divine power.~
 Comlist   if inroom($i) == 6
-   mptransfer 0.$n 6
-  else
+  mptransfer 0.$n 6
+  mpforce 0.$n look
+else
   mptransfer 0.$n 8
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is suffering from lack of blood!~
-Comlist   mpforce $n drink blood
-mprestore $n 500
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   1~
-Comlist   if isimmort($r)
-else
-  if class($r) == vampire
-    mpforce $r drink blood
-    mprestore $r 100
-  endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is mortally wounded, and will die soon, if not aided.~
-Comlist   mprestore $n 1000
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p is incapacitated, and will die slowly soon if not aided.~
-Comlist   mprestore $n 1000
 ~
 #ENDPROG
 
@@ -184,13 +110,86 @@ endif
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p disappears in a column of divine power.~
-Comlist   if inroom($i) == 6
-  mptransfer 0.$n 6
-  mpforce 0.$n look
+Arglist   p is incapacitated, and will die slowly soon if not aided.~
+Comlist   mprestore $n 1000
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p is mortally wounded, and will die soon, if not aided.~
+Comlist   mprestore $n 1000
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   1~
+Comlist   if isimmort($r)
 else
+  if class($r) == vampire
+    mpforce $r drink blood
+    mprestore $r 100
+  endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p is suffering from lack of blood!~
+Comlist   mpforce $n drink blood
+mprestore $n 500
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p is DEAD!!~
+Comlist   if inroom($i) == 6
+   mptransfer 0.$n 6
+  else
   mptransfer 0.$n 8
 endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p wields~
+Comlist   mprestore $n 500
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p wears~
+Comlist   mprestore $n 500
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p shivers and~
+Comlist   cast 'cure poison' $n
+mprestore $n 500
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bashes against~
+Comlist   mprestore $n 500
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mprestore $n 500
 ~
 #ENDPROG
 
@@ -266,19 +265,18 @@ Attacks    punch kick trip harm fireball~
 Defenses   dodge~
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   c teleport
-mpasound You feel the power of an immortal close by...
-mpe With a clap of thunder, Fharlangan strides out of a cloud of lightning.
-if level($r) == 2
-  mpadvance $r 3
-  mea $r You have been chosen by me to carry my word throughout the Realms!
-  mer $r $I points an aged finger at $r, who suddenly looks different!
-  c bless $n
-  c refresh $n
-  c 'heal' $n
-  c sanc $n
-endif
+Arglist   3~
+Comlist   mpat 3 c heal
+, mumbles and runs his hands over his arms.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   wear all
+drop all.ball
+drop all.mushroom
 ~
 #ENDPROG
 
@@ -294,18 +292,19 @@ mpdamage $n 500
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   10~
-Comlist   wear all
-drop all.ball
-drop all.mushroom
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   mpat 3 c heal
-, mumbles and runs his hands over his arms.
+Arglist   5~
+Comlist   c teleport
+mpasound You feel the power of an immortal close by...
+mpe With a clap of thunder, Fharlangan strides out of a cloud of lightning.
+if level($r) == 2
+  mpadvance $r 3
+  mea $r You have been chosen by me to carry my word throughout the Realms!
+  mer $r $I points an aged finger at $r, who suddenly looks different!
+  c bless $n
+  c refresh $n
+  c 'heal' $n
+  c sanc $n
+endif
 ~
 #ENDPROG
 
@@ -563,10 +562,11 @@ Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 Immune     sleep~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpecho The spirit of the avatar rises skyward to be joined with its master,
-mpecho while its corporeal form falls lifelessly to the ground.
+Progtype  speech_prog~
+Arglist   depart~
+Comlist   bow
+, disappears in a puff of smoke.
+mpgoto 4
 ~
 #ENDPROG
 
@@ -579,11 +579,10 @@ mpgoto 4
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   depart~
-Comlist   bow
-, disappears in a puff of smoke.
-mpgoto 4
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho The spirit of the avatar rises skyward to be joined with its master,
+mpecho while its corporeal form falls lifelessly to the ground.
 ~
 #ENDPROG
 
@@ -613,22 +612,6 @@ Speaking   elvish dwarven~
 Immune     sleep charm paralysis~
 Defenses   parry dodge~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if sex($n) == 1
-say Ah, bonjour monsieur $n, welcome to the Chateau L'amour!
-wink
-say If you wish to dine, please speak up sir.
-endif
-if sex($n) == 2
-say ooOOooOOooOOoo la la! Welcome madame $n!
-hand $n
-say If you wish to dine madame, just say so.
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  speech_prog~
 Arglist   p i wish to dine~
 Comlist   if sex($n) == 1
@@ -652,6 +635,22 @@ mpclosepassage 72 7
 mpat 73 say Ah, here is a table for two.
 mpat 73 say Enjoy your dinner madame.
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if sex($n) == 1
+say Ah, bonjour monsieur $n, welcome to the Chateau L'amour!
+wink
+say If you wish to dine, please speak up sir.
+endif
+if sex($n) == 2
+say ooOOooOOooOOoo la la! Welcome madame $n!
+hand $n
+say If you wish to dine madame, just say so.
 endif
 ~
 #ENDPROG
@@ -683,12 +682,14 @@ Immune     sleep charm paralysis~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  speech_prog~
-Arglist   waiter!~
+Arglist   p I wish to go to the room~
 Comlist   if ispc($n)
-say Ah bonjour! welcome to the Chateau "Cabaret"
-say Our special this evening is fillet mignon...
-say If you want this delectable entree, just say so.
-smile
+ooo
+say Ah yes, right this way.
+mpopenpassage 73 74 4
+mpforce $n u
+mpclosepassage 73 4
+mpat 74 say Enjoy!
 endif
 ~
 #ENDPROG
@@ -709,14 +710,12 @@ wink
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p I wish to go to the room~
+Arglist   waiter!~
 Comlist   if ispc($n)
-ooo
-say Ah yes, right this way.
-mpopenpassage 73 74 4
-mpforce $n u
-mpclosepassage 73 4
-mpat 74 say Enjoy!
+say Ah bonjour! welcome to the Chateau "Cabaret"
+say Our special this evening is fillet mignon...
+say If you want this delectable entree, just say so.
+smile
 endif
 ~
 #ENDPROG
@@ -746,17 +745,17 @@ Speaks     common~
 Speaking   common~
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p get paper~
-Comlist   mpe _yel The Albatross rushes quickly to fetch the paper.
-mpoload 31985
+Arglist   p get mail~
+Comlist   mpe _yel The Albatross runs to the post office to fetch the mail.
+mpoload 21048
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p get mail~
-Comlist   mpe _yel The Albatross runs to the post office to fetch the mail.
-mpoload 21048
+Arglist   p get paper~
+Comlist   mpe _yel The Albatross rushes quickly to fetch the paper.
+mpoload 31985
 ~
 #ENDPROG
 
@@ -1897,11 +1896,11 @@ Reset M 0 1 1 2
 Reset O 0 22 1 2
 Reset O 0 60 1 2
 #MUDPROG
-Progtype  act_prog~
-Arglist   is~
-Comlist   mpmset $n full 50
-mpmset $n thirst 100
-mprestore $n 2
+Progtype  speech_prog~
+Arglist   p return~
+Comlist   if level($n) > 1
+  mptrans $n 21001
+endif
 ~
 #ENDPROG
 
@@ -1915,11 +1914,11 @@ mprestore $n 2
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p return~
-Comlist   if level($n) > 1
-  mptrans $n 21001
-endif
+Progtype  act_prog~
+Arglist   is~
+Comlist   mpmset $n full 50
+mpmset $n thirst 100
+mprestore $n 2
 ~
 #ENDPROG
 
@@ -2537,18 +2536,18 @@ ToRoom    36
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2584,18 +2583,18 @@ ToRoom    37
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2625,18 +2624,18 @@ ToRoom    30
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2672,18 +2671,18 @@ ToRoom    37
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2713,18 +2712,18 @@ ToRoom    37
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2760,18 +2759,18 @@ ToRoom    37
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2801,18 +2800,18 @@ ToRoom    36
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2848,18 +2847,18 @@ ToRoom    37
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -2929,11 +2928,12 @@ ToRoom    36
 #ENDEXIT
 
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
-mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
-mpechoaround $n Tokens of favor from an appreciative crowd.
+Progtype  speech_prog~
+Arglist   p return~
+Comlist   if isfight($n)
+else
+  mptrans $n 21001
+endif
 ~
 #ENDPROG
 
@@ -2945,12 +2945,11 @@ Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p return~
-Comlist   if isfight($n)
-else
-  mptrans $n 21001
-endif
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
+mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
+mpechoaround $n Tokens of favor from an appreciative crowd.
 ~
 #ENDPROG
 
@@ -2976,18 +2975,18 @@ Flags     climb~
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -3013,18 +3012,18 @@ Flags     climb~
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -3049,18 +3048,18 @@ ToRoom    38
 #ENDEXIT
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   15~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpecho A deafening clamor of gleeful shouts rain down from above!
 mpechoaround $n Trinkets, spittle and half-eaten food pelt down on your head.
 mpechoaround $n Tokens of favor from an appreciative crowd.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   15~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -3121,9 +3120,10 @@ Logs are extremely helpful.
 #ENDEXDESC
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   20~
-Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
+Progtype  speech_prog~
+Arglist   p I wish to go~
+Comlist   mptransfer $n 21000
+mpat 21000 mpforce $n look
 ~
 #ENDPROG
 
@@ -3147,10 +3147,9 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p I wish to go~
-Comlist   mptransfer $n 21000
-mpat 21000 mpforce $n look
+Progtype  rand_prog~
+Arglist   20~
+Comlist   mpe A slow chant floats down to you: "Two men enter ... one man leaves."
 ~
 #ENDPROG
 
@@ -3186,19 +3185,6 @@ ToRoom    36
 #ENDEXIT
 
 #MUDPROG
-Progtype  entry_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-or isnpc($n)
-else
-  mpforce $n config -autoloot
-  mpforce $n channel +yell
-  mpechoat $n Do not alter your autoloot configuration until duel is complete.
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  leave_prog~
 Arglist   100~
 Comlist   if isimmort($n)
@@ -3228,6 +3214,19 @@ else
   if class($n) == cleric
     mpforce $n yell Let the melee begin!
   endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  entry_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+or isnpc($n)
+else
+  mpforce $n config -autoloot
+  mpforce $n channel +yell
+  mpechoat $n Do not alter your autoloot configuration until duel is complete.
 endif
 ~
 #ENDPROG
@@ -3264,19 +3263,6 @@ ToRoom    29
 #ENDEXIT
 
 #MUDPROG
-Progtype  entry_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-or isnpc($n)
-else
-  mpforce $n config -autoloot
-  mpforce $n channel +yell
-  mpechoat $n Do not alter your autoloot configuration until duel is complete.
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  leave_prog~
 Arglist   100~
 Comlist   if isimmort($n)
@@ -3306,6 +3292,19 @@ else
   if class($n) == cleric
     mpforce $n yell Let the melee begin!
   endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  entry_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+or isnpc($n)
+else
+  mpforce $n config -autoloot
+  mpforce $n channel +yell
+  mpechoat $n Do not alter your autoloot configuration until duel is complete.
 endif
 ~
 #ENDPROG
@@ -3576,23 +3575,18 @@ ExDesc       /:""|                 .****,
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p Please be seated.~
+Arglist   p prepare wedding~
 Comlist   if isimmort($n)
-  mpforce all sit
-  mpat 3001 mppurge lever
-  mpat 21000 mppurge lever
+  mpat 21000 mpoload 62
+  mpat 3001 mpoload 62
 endif
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 24854
-mea 0.$n The caterer quietly brings you a piece of cake and retires to the
-mea 0.$n back of the cathedral.
-give cake 0.$n
-mpforce 0.$n eat cake
+Progtype  speech_prog~
+Arglist   p I do~
+Comlist   mpe _whi Songs of rejoice fill the air as the choir lifts its voice in praise.
 ~
 #ENDPROG
 
@@ -3608,18 +3602,23 @@ mpforce 0.$n drink water
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p I do~
-Comlist   mpe _whi Songs of rejoice fill the air as the choir lifts its voice in praise.
+Progtype  act_prog~
+Arglist   p is starved~
+Comlist   mpoload 24854
+mea 0.$n The caterer quietly brings you a piece of cake and retires to the
+mea 0.$n back of the cathedral.
+give cake 0.$n
+mpforce 0.$n eat cake
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p prepare wedding~
+Arglist   p Please be seated.~
 Comlist   if isimmort($n)
-  mpat 21000 mpoload 62
-  mpat 3001 mpoload 62
+  mpforce all sit
+  mpat 3001 mppurge lever
+  mpat 21000 mppurge lever
 endif
 ~
 #ENDPROG
@@ -4075,16 +4074,16 @@ Desc      An extravagant grove awaits two lovers...
 
 Reset O 0 72 1 70
 #MUDPROG
-Progtype  rand_prog~
-Arglist   70~
-Comlist   mpe _lbl The ballad of chirping birds reverberates throughout your ears...
+Progtype  entry_prog~
+Arglist   100~
+Comlist   mea 0.$n _lbl The ballad of chirping birds reverberates throughout your ears...
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  entry_prog~
-Arglist   100~
-Comlist   mea 0.$n _lbl The ballad of chirping birds reverberates throughout your ears...
+Progtype  rand_prog~
+Arglist   70~
+Comlist   mpe _lbl The ballad of chirping birds reverberates throughout your ears...
 ~
 #ENDPROG
 
@@ -4190,6 +4189,15 @@ for.....discussing your financial terms.
 ~
 Reset O 0 75 1 74
 #MUDPROG
+Progtype  speech_prog~
+Arglist   return~
+Comlist   if ispc($n)
+mptrans $n 21001
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if sex($n) == 2
@@ -4205,15 +4213,6 @@ mpoload 74
 mpat 74 drop boxers
 mpforce $n get boxers
 mpforce $n wear boxers
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  speech_prog~
-Arglist   return~
-Comlist   if ispc($n)
-mptrans $n 21001
 endif
 ~
 #ENDPROG

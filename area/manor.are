@@ -3,10 +3,11 @@
 Version      1
 Name         Tullfuhrzky Manor~
 Author       Cedrick~
+WeatherX     0
+WeatherY     0
 Ranges       0 10 0 60
 Economy      0 59671270
 ResetFreq    10
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -37,6 +38,27 @@ Bodyparts  head guts long_tongue tail~
 Resist     pierce poison~
 Attacks    bite~
 #MUDPROG
+Progtype  greet_prog~
+Arglist   85~
+Comlist   mpechoat $n The python hisses blindly at you.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   emote hisses, flicking its tongue out.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   40~
+Comlist   emote rears back to strike.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   if level($n) > 19
@@ -49,27 +71,6 @@ else
   mpoload 2414
   mpoload 2415
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  fight_prog~
-Arglist   40~
-Comlist   emote rears back to strike.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   emote hisses, flicking its tongue out.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
-Arglist   85~
-Comlist   mpechoat $n The python hisses blindly at you.
 ~
 #ENDPROG
 
@@ -101,17 +102,11 @@ Speaking   common~
 Bodyparts  head legs heart brains guts feet ear tail claws~
 Suscept    sleep~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   35~
-Comlist   snarl
-growl $n
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   growl
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpechoat $n The collie is not too happy to see you.
+bark $n
+snarl $n
 ~
 #ENDPROG
 
@@ -123,11 +118,17 @@ Comlist   mpecho The dog scratches her ears.
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   mpechoat $n The collie is not too happy to see you.
-bark $n
-snarl $n
+Progtype  rand_prog~
+Arglist   5~
+Comlist   growl
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   35~
+Comlist   snarl
+growl $n
 ~
 #ENDPROG
 
@@ -191,14 +192,9 @@ Speaks     elvish ogre rodent insectoid dragon halfling clan~
 Speaking   common elvish ogre orcish rodent mammal spiritual magical goblin god clan~
 Bodyparts  head legs tail claws~
 #MUDPROG
-Progtype  death_prog~
+Progtype  greet_prog~
 Arglist   100~
-Comlist   if level($n) > 14
-  mpecho Thhe savage attack has reduced the corpse to shreds.
-else
-  mpecho The final blow detaches some of the rat's skin from its body.
-  mpoload 2447
-endif
+Comlist   mpecho $I hisses at you.
 ~
 #ENDPROG
 
@@ -210,9 +206,14 @@ Comlist   mpecho The rat hisses and squeals.
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   mpecho $I hisses at you.
+Comlist   if level($n) > 14
+  mpecho Thhe savage attack has reduced the corpse to shreds.
+else
+  mpecho The final blow detaches some of the rat's skin from its body.
+  mpoload 2447
+endif
 ~
 #ENDPROG
 
@@ -243,11 +244,23 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
-Progtype  death_prog~
+Progtype  greet_prog~
 Arglist   100~
-Comlist   if level($n) > 14
-  mpecho The savagery of the attack reduces some of $I's belongings to scrap.
-  mpjunk 'smoking jacket'
+Comlist   mpechoat $n Grandpa squints in your direction.
+say Who are you?  I don't know you.
+if rand(50)
+  mpechoat $n Grandpa tries to hit you with his book!
+  mpechoaround $n Grandpa tries to hit $n with a book!
+  if rand(50)
+    mpechoat $n That hurt!
+    mpechoaround $n Grandpa smacks $n right in the face!
+    mpdamage $n 3
+  else
+    mpechoat $n You duck out of the way just in time!
+    mpechoaround $n $n ducks just in time.
+  endif
+else
+  snarl $n 
 endif
 ~
 #ENDPROG
@@ -272,23 +285,11 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   mpechoat $n Grandpa squints in your direction.
-say Who are you?  I don't know you.
-if rand(50)
-  mpechoat $n Grandpa tries to hit you with his book!
-  mpechoaround $n Grandpa tries to hit $n with a book!
-  if rand(50)
-    mpechoat $n That hurt!
-    mpechoaround $n Grandpa smacks $n right in the face!
-    mpdamage $n 3
-  else
-    mpechoat $n You duck out of the way just in time!
-    mpechoaround $n $n ducks just in time.
-  endif
-else
-  snarl $n 
+Comlist   if level($n) > 14
+  mpecho The savagery of the attack reduces some of $I's belongings to scrap.
+  mpjunk 'smoking jacket'
 endif
 ~
 #ENDPROG
@@ -321,6 +322,26 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
+Progtype  greet_prog~
+Arglist   100~
+Comlist   if ispc($n)
+  say Hey, $n, either help me or get out of here.
+  mpechoat $n The cook shoves a mop at you.
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   grumble
+say Overworked...underpaid.
+sigh
+close cabinet
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  fight_prog~
 Arglist   60~
 Comlist   if rand(50)
@@ -341,26 +362,6 @@ mpechoaround $n The cook swings an elbow at $n, but misses.
 endif
 else
 mpecho The cook is starting to look tired.
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   grumble
-say Overworked...underpaid.
-sigh
-close cabinet
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   if ispc($n)
-  say Hey, $n, either help me or get out of here.
-  mpechoat $n The cook shoves a mop at you.
 endif
 ~
 #ENDPROG
@@ -417,10 +418,18 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
-Progtype  death_prog~
+Progtype  greet_prog~
 Arglist   100~
-Comlist   mpechoat $n The child looks up at you, draws his last breath, and dies.
-mpechoaround $n The child looks up at $n, draws his last breath, and dies.
+Comlist   hug $n
+mpechoat $n The child looks innocently up at you.
+say Hello!
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   emote splashes water around.
 ~
 #ENDPROG
 
@@ -438,18 +447,10 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   emote splashes water around.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   hug $n
-mpechoat $n The child looks innocently up at you.
-say Hello!
+Comlist   mpechoat $n The child looks up at you, draws his last breath, and dies.
+mpechoaround $n The child looks up at $n, draws his last breath, and dies.
 ~
 #ENDPROG
 
@@ -481,9 +482,18 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   mpecho The baby crawls around.
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpechoat $n The baby looks up at you.
+smile $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   55~
+Comlist   scream
+cry
 ~
 #ENDPROG
 
@@ -499,18 +509,9 @@ mpat $n mpforce $n say Help!
 #ENDPROG
 
 #MUDPROG
-Progtype  fight_prog~
-Arglist   55~
-Comlist   scream
-cry
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   mpechoat $n The baby looks up at you.
-smile $n
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpecho The baby crawls around.
 ~
 #ENDPROG
 
@@ -542,6 +543,17 @@ Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear~
 Attacks    kick~
 #MUDPROG
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpechoat $n Robert looks at you.
+say Hello.  Would you like to see one of my paintings?
+smile
+mpechoat $n Robert thrusts a painting in your face.
+mpechoaround $n Robert shoves a painting at $n
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  fight_prog~
 Arglist   45~
 Comlist   if rand(50) 
@@ -557,17 +569,6 @@ else
     mpechoat $n $I looks at you, wondering why you have decided to hurt him.
   endif
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   mpechoat $n Robert looks at you.
-say Hello.  Would you like to see one of my paintings?
-smile
-mpechoat $n Robert thrusts a painting in your face.
-mpechoaround $n Robert shoves a painting at $n
 ~
 #ENDPROG
 
@@ -626,10 +627,32 @@ Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 Immune     charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   if level($n) > 19
-  mpjunk ring
+Progtype  fight_prog~
+Arglist   50~
+Comlist   , snarls in rage.
+if rand(60)
+  mpechoat $n Master Tullfuhrzky swings his cane at your head!
+  mpechoaround $n $I swings his cane at $n's head!
+  if rand(80)
+    mpechoat $n His strike glances off your shoulder
+    mpechoaround $n His strike glances off $n's shoulder. 
+    mpdamage $n 15
+  else
+    if rand(45)
+      mpechoat $n His strike bashes you in the face!
+      mpechoaround $n His strike bashes $n in the face!
+      mpdamage $n 20
+    else
+      if rand(20)
+        mpechoat $n His strike nails you in the skull!
+        mpechoaround $n His strike nails $n in the skull!
+        mpdamage $n 35
+      endif
+    endif
+  endif
+else
+  mpechoat $n Master Tullfuhrzky misses you with his cane.
+  mpechoaround $n $I misses $n with his cane.
 endif
 ~
 #ENDPROG
@@ -660,32 +683,10 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  fight_prog~
-Arglist   50~
-Comlist   , snarls in rage.
-if rand(60)
-  mpechoat $n Master Tullfuhrzky swings his cane at your head!
-  mpechoaround $n $I swings his cane at $n's head!
-  if rand(80)
-    mpechoat $n His strike glances off your shoulder
-    mpechoaround $n His strike glances off $n's shoulder. 
-    mpdamage $n 15
-  else
-    if rand(45)
-      mpechoat $n His strike bashes you in the face!
-      mpechoaround $n His strike bashes $n in the face!
-      mpdamage $n 20
-    else
-      if rand(20)
-        mpechoat $n His strike nails you in the skull!
-        mpechoaround $n His strike nails $n in the skull!
-        mpdamage $n 35
-      endif
-    endif
-  endif
-else
-  mpechoat $n Master Tullfuhrzky misses you with his cane.
-  mpechoaround $n $I misses $n with his cane.
+Progtype  death_prog~
+Arglist   100~
+Comlist   if level($n) > 19
+  mpjunk ring
 endif
 ~
 #ENDPROG
@@ -721,6 +722,30 @@ Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 Immune     charm~
 Attacks    punch~
 #MUDPROG
+Progtype  fight_prog~
+Arglist   30~
+Comlist   if rand(50)
+  yell Joshua!  Children!  Help me!
+else
+  say Get AWAY from me!
+  glare $n
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpechoat $n With her dying breath, Lady Tullfuhrzky looks you in the eye and
+mpechoat $n says, "Please, tell my children..."
+if level($n) > 19
+  mpecho The brutality of the attack reduces $I's belongings to scraps.
+  mpjunk all
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  greet_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -739,30 +764,6 @@ Comlist   if ispc($n)
     mpechoat $n You dodge out of the way just in time.
     mpechoaround $n $n dodges Lady Tullfhurzky's kick!
   endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpechoat $n With her dying breath, Lady Tullfuhrzky looks you in the eye and
-mpechoat $n says, "Please, tell my children..."
-if level($n) > 19
-  mpecho The brutality of the attack reduces $I's belongings to scraps.
-  mpjunk all
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  fight_prog~
-Arglist   30~
-Comlist   if rand(50)
-  yell Joshua!  Children!  Help me!
-else
-  say Get AWAY from me!
-  glare $n
 endif
 ~
 #ENDPROG
@@ -795,17 +796,13 @@ Speaks     common~
 Speaking   common~
 Defenses   dodge~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   mpecho You feel something brush past you.
-mpat 3 c invis
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   4~
-Comlist   mpecho You sense a presence moving about the room.
+Progtype  act_prog~
+Arglist   p gets a panther-crested shield from a rotting corpse.~
+Comlist   say $n, you have INVADED my privacy.
+vis
+mpecho The spirit of the corpse fades into existance.
+say You die!
+mpkill $n
 ~
 #ENDPROG
 
@@ -820,13 +817,17 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   p gets a panther-crested shield from a rotting corpse.~
-Comlist   say $n, you have INVADED my privacy.
-vis
-mpecho The spirit of the corpse fades into existance.
-say You die!
-mpkill $n
+Progtype  rand_prog~
+Arglist   4~
+Comlist   mpecho You sense a presence moving about the room.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpecho You feel something brush past you.
+mpat 3 c invis
 ~
 #ENDPROG
 
@@ -885,11 +886,19 @@ Immune     charm~
 Attacks    bite kick~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   if level($n) > 29
-  mpecho The corpse of this once fearsome man now lies mangled.
-  mpjunk all
+Progtype  fight_prog~
+Arglist   40~
+Comlist   if rand(50)
+  mpechoat $n The torturer snarls angrily as he tries to destroy you.
+else
+  mpechoat $n The torturer cracks his whip at your face, but misses.
+endif
+if rand(70)
+else
+  say You think you're pretty tough, hotshot?
+  if rand(50)
+    say I shall bury you in an unmarked grave, coward.
+  endif
 endif
 ~
 #ENDPROG
@@ -907,19 +916,11 @@ mpkill $n
 #ENDPROG
 
 #MUDPROG
-Progtype  fight_prog~
-Arglist   40~
-Comlist   if rand(50)
-  mpechoat $n The torturer snarls angrily as he tries to destroy you.
-else
-  mpechoat $n The torturer cracks his whip at your face, but misses.
-endif
-if rand(70)
-else
-  say You think you're pretty tough, hotshot?
-  if rand(50)
-    say I shall bury you in an unmarked grave, coward.
-  endif
+Progtype  death_prog~
+Arglist   100~
+Comlist   if level($n) > 29
+  mpecho The corpse of this once fearsome man now lies mangled.
+  mpjunk all
 endif
 ~
 #ENDPROG
@@ -954,14 +955,14 @@ Bodyparts  head legs heart brains guts eye tail~
 #MUDPROG
 Progtype  rand_prog~
 Arglist   4~
-Comlist   nuzzle $n
+Comlist   mpecho The horse swishes its tail.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
 Arglist   4~
-Comlist   mpecho The horse swishes its tail.
+Comlist   nuzzle $n
 ~
 #ENDPROG
 
@@ -1070,9 +1071,10 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   35~
-Comlist   yell $n is killing children!  Help me!
+Progtype  greet_prog~
+Arglist   100~
+Comlist   mpechoat $n The little boy is terrified of you.
+cringe $n
 ~
 #ENDPROG
 
@@ -1089,10 +1091,9 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   mpechoat $n The little boy is terrified of you.
-cringe $n
+Progtype  fight_prog~
+Arglist   35~
+Comlist   yell $n is killing children!  Help me!
 ~
 #ENDPROG
 
@@ -1175,27 +1176,10 @@ Immune     charm~
 Attacks    kick~
 ShopData   0 0 0 0 0 150 90 0 23
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if isnpc($n)
-else
-  mpechoaround $n The gardener looks at $n.
-  if rand(50)
-    say Greetings, $n, please have a seat and examine my produce.
-    smile $n
-  else
-    bow $n
-    say Hello, $n, please sit down.
-  endif 
-endif
-mpechoat $n The gardener motions for you to sit.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   emote starts tilling the soil.
+Progtype  act_prog~
+Arglist   p sits down.~
+Comlist   say Here is what I have to offer you.  Please, take your time.
+mpforce $n list
 ~
 #ENDPROG
 
@@ -1213,10 +1197,27 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   p sits down.~
-Comlist   say Here is what I have to offer you.  Please, take your time.
-mpforce $n list
+Progtype  rand_prog~
+Arglist   5~
+Comlist   emote starts tilling the soil.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if isnpc($n)
+else
+  mpechoaround $n The gardener looks at $n.
+  if rand(50)
+    say Greetings, $n, please have a seat and examine my produce.
+    smile $n
+  else
+    bow $n
+    say Hello, $n, please sit down.
+  endif 
+endif
+mpechoat $n The gardener motions for you to sit.
 ~
 #ENDPROG
 

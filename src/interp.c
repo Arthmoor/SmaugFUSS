@@ -27,7 +27,7 @@
  * Externals
  */
 void subtract_times( struct timeval *etime, struct timeval *sttime );
-bool check_social( CHAR_DATA * ch, const char *command, char *argument );
+bool check_social( CHAR_DATA * ch, const char *command, const char *argument );
 char *check_cmd_flags( CHAR_DATA * ch, CMDTYPE * cmd );
 
 /*
@@ -168,7 +168,7 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
 /* sorted by imm name */
    if( cmd )
    {
-      char *cur_imm;
+      const char *cur_imm;
       bool found;
 
       pw = first_watch;
@@ -221,6 +221,13 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
    }
 
    return;
+}
+
+void interpret( CHAR_DATA * ch, const char* argument)
+{
+    char* temp = strdup(argument);
+    interpret(ch, temp);
+    free(temp);
 }
 
 /*
@@ -479,7 +486,8 @@ void interpret( CHAR_DATA * ch, char *argument )
                   send_to_char( "You cannot do that here.\r\n", ch );
                return;
             }
-            move_char( ch, pexit, 0 );
+            if( check_pos( ch, POS_STANDING ) )
+               move_char( ch, pexit, 0 );
             return;
          }
          send_to_char( "Huh?\r\n", ch );
@@ -593,7 +601,7 @@ SOCIALTYPE *find_social( const char *command )
    return NULL;
 }
 
-bool check_social( CHAR_DATA * ch, const char *command, char *argument )
+bool check_social( CHAR_DATA * ch, const char *command, const char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim, *victim_next;
@@ -770,7 +778,7 @@ bool check_social( CHAR_DATA * ch, const char *command, char *argument )
 /*
  * Return true if an argument is completely numeric.
  */
-bool is_number( char *arg )
+bool is_number( const char *arg )
 {
    bool first = TRUE;
    if( *arg == '\0' )
@@ -794,18 +802,23 @@ bool is_number( char *arg )
 /*
  * Given a string like 14.foo, return 14 and 'foo'
  */
-int number_argument( char *argument, char *arg )
+int number_argument( const char *argument, char *arg )
 {
-   char *pdot;
+   const char *pdot;
    int number;
 
    for( pdot = argument; *pdot != '\0'; pdot++ )
    {
       if( *pdot == '.' )
       {
-         *pdot = '\0';
-         number = atoi( argument );
-         *pdot = '.';
+         char* numPortion = (char*) malloc(pdot-argument+1);
+         memcpy(numPortion, argument, pdot-argument);
+         numPortion[pdot-argument] = '\0';
+
+         number = atoi( numPortion );
+
+         free(numPortion);
+
          strcpy( arg, pdot + 1 );
          return number;
       }
@@ -815,11 +828,16 @@ int number_argument( char *argument, char *arg )
    return 1;
 }
 
+char *one_argument( char *argument, char *arg_first )
+{
+    return (char*) one_argument((const char*) argument, arg_first);
+}
+
 /*
  * Pick off one argument from a string and return the rest.
  * Understands quotes. No longer mangles case either. That used to be annoying.
  */
-char *one_argument( char *argument, char *arg_first )
+const char *one_argument( const char *argument, char *arg_first )
 {
    char cEnd;
    int count;
@@ -857,7 +875,7 @@ char *one_argument( char *argument, char *arg_first )
  * Understands quotes.  Delimiters = { ' ', '-' }
  * No longer mangles case either. That used to be annoying.
  */
-char *one_argument2( char *argument, char *arg_first )
+const char *one_argument2( const char *argument, char *arg_first )
 {
    char cEnd;
    short count;
@@ -896,7 +914,7 @@ char *one_argument2( char *argument, char *arg_first )
    return argument;
 }
 
-void do_timecmd( CHAR_DATA * ch, char *argument )
+void do_timecmd( CHAR_DATA* ch, const char* argument)
 {
    struct timeval sttime;
    struct timeval etime;

@@ -3,11 +3,11 @@
 Version      1
 Name         Gods~
 Author       ROD~
+WeatherX     0
+WeatherY     0
 Ranges       0 60 0 60
 Economy      0 45000000
 ResetMsg     A low humming noise can be heard.~
-Climate      2 2 2
-Neighbor     Limbo~
 #ENDAREADATA
 
 #MOBILE

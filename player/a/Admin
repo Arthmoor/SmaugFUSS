@@ -1,12 +1,13 @@
 #PLAYER
-Version      4
+Version      5
 Name         Admin~
 Sex          1
 Class        5
 Race         1
+Age          0 23 9 605
 Languages    -1 1
 Level        65
-Played       68951
+Played       68995
 Room         1200
 HpManaMove   24 24 145 145 110 110
 Gold         10000
@@ -39,7 +40,7 @@ IllegalPK    0
 AttrPerm     10 14 16 16 11 16 12
 AttrMod      0 0 0 0 0 0 0
 Condition    0 48 40 10
-Site         (Link-Dead)
+Site         66.218.49.118
 Spell        100 'acetum primus'
 Spell        100 'acid blast'
 Spell        100 'acid breath'

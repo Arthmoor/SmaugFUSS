@@ -3,11 +3,12 @@
 Version      1
 Name         Dwarven Daycare~
 Author       Sandman~
+WeatherX     0
+WeatherY     0
 Ranges       1 5 0 60
 Economy      0 19976800
 ResetMsg     You hear a small child scream for his mommy.~
 ResetFreq    5
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -979,14 +980,14 @@ Desc      You see a small passage.
 
 #EXIT
 Direction south~
-ToRoom    6612
+ToRoom    6614
 Desc      You see a small passage.
 ~
 #ENDEXIT
 
 #EXIT
 Direction west~
-ToRoom    6614
+ToRoom    6612
 Desc      You see a small passage.
 ~
 #ENDEXIT
@@ -1005,14 +1006,14 @@ adjusting to it.
 ~
 #EXIT
 Direction south~
-ToRoom    6616
+ToRoom    6613
 Desc      You see a small passage.
 ~
 #ENDEXIT
 
 #EXIT
 Direction west~
-ToRoom    6613
+ToRoom    6616
 Desc      You see a small passage.
 ~
 #ENDEXIT
@@ -1031,14 +1032,14 @@ adjusting to it.
 ~
 #EXIT
 Direction north~
-ToRoom    6616
+ToRoom    6613
 Desc      You see a small passage.
 ~
 #ENDEXIT
 
 #EXIT
 Direction east~
-ToRoom    6613
+ToRoom    6616
 Desc      You see a small passage.
 ~
 #ENDEXIT
@@ -1057,14 +1058,14 @@ adjusting to it.
 ~
 #EXIT
 Direction north~
-ToRoom    6614
+ToRoom    6615
 Desc      You see a small passage.
 ~
 #ENDEXIT
 
 #EXIT
 Direction south~
-ToRoom    6615
+ToRoom    6614
 Desc      You see a small passage.
 ~
 #ENDEXIT

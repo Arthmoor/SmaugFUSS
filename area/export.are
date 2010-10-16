@@ -3,10 +3,11 @@
 Version      1
 Name         Dragon Exports~
 Author       Sandman~
+WeatherX     0
+WeatherY     0
 Ranges       5 25 0 60
 Economy      0 6672836
 ResetMsg     A hollow chant can be heard from somewhere far below...~
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -40,17 +41,23 @@ Immune     sleep charm~
 Attacks    trip~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
+Progtype  all_greet_prog~
 Arglist   100~
-Comlist   if rand(33)
-mpoload 9825 1
-mpecho Kylara gasps as the life drains from her body.
-mpecho as she falls the the ground, a key is dropped from her hand.
-drop key
+Comlist   if level($n) >= 51
 else
-cackle
-say Now you cannot pass, I take the door key with me into my next life!
-mpecho Kylara takes a last glance at the painting on the west wall.
+if isnpc($n)
+say We do not allow your type in here $n!
+mpforce $n south
+else
+if isgood($n)
+smile $n
+mpechoat $n Kylara says 'You may find this place distasteful. However,
+mpechoat $n if you know the password, I shall unlock the door for you.'
+else
+mpechoat $n Kylara says 'Ah yes, you are exactly the type they look for here.
+mpechoat $n If you know the password, I shall unlock the door for you.'
+endif
+endif
 endif
 ~
 #ENDPROG
@@ -71,23 +78,17 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  all_greet_prog~
+Progtype  death_prog~
 Arglist   100~
-Comlist   if level($n) >= 51
+Comlist   if rand(33)
+mpoload 9825 1
+mpecho Kylara gasps as the life drains from her body.
+mpecho as she falls the the ground, a key is dropped from her hand.
+drop key
 else
-if isnpc($n)
-say We do not allow your type in here $n!
-mpforce $n south
-else
-if isgood($n)
-smile $n
-mpechoat $n Kylara says 'You may find this place distasteful. However,
-mpechoat $n if you know the password, I shall unlock the door for you.'
-else
-mpechoat $n Kylara says 'Ah yes, you are exactly the type they look for here.
-mpechoat $n If you know the password, I shall unlock the door for you.'
-endif
-endif
+cackle
+say Now you cannot pass, I take the door key with me into my next life!
+mpecho Kylara takes a last glance at the painting on the west wall.
 endif
 ~
 #ENDPROG
@@ -231,6 +232,14 @@ Immune     charm~
 Attacks    bite~
 Defenses   dodge~
 #MUDPROG
+Progtype  rand_prog~
+Arglist   20~
+Comlist   close n
+close e
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if isnpc($n)
@@ -240,14 +249,6 @@ else
   cackle
   c flamestrike $n
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   20~
-Comlist   close n
-close e
 ~
 #ENDPROG
 
@@ -279,23 +280,9 @@ Speaks     pixie~
 Speaking   common pixie~
 Bodyparts  head arms legs guts hands feet ear eye~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   cry
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   4~
-Comlist   say Please let me go! Please! I am only 14, I am too young to die!
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   6~
-Comlist   sniff
+Progtype  death_prog~
+Arglist   100~
+Comlist   scream
 ~
 #ENDPROG
 
@@ -310,9 +297,23 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   scream
+Progtype  rand_prog~
+Arglist   6~
+Comlist   sniff
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   4~
+Comlist   say Please let me go! Please! I am only 14, I am too young to die!
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   cry
 ~
 #ENDPROG
 
@@ -469,29 +470,9 @@ Immune     charm~
 Attacks    kick~
 Defenses   dodge curelight~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p frowns at what you did.~
-Comlist   if name($n) == Moretta
-say Watch your attitude wench, or you will find yourself out of a job.
-say Only by MY grace do you even remain, such a high horse you ride.
-grin $n
-else
-glare $n
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p you feel cold to your bones.~
-Comlist   if name($n) == Gemma coordinator
-grovel Gemma
-say I can not help myself, your beauty overtakes my senses.
-say I will try harder. If only you were not so fetching in that dress.
-sigh gemma
-else
-growl $n
-endif
+Progtype  rand_prog~
+Arglist   5~
+Comlist   close east
 ~
 #ENDPROG
 
@@ -528,9 +509,29 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   close east
+Progtype  act_prog~
+Arglist   p you feel cold to your bones.~
+Comlist   if name($n) == Gemma coordinator
+grovel Gemma
+say I can not help myself, your beauty overtakes my senses.
+say I will try harder. If only you were not so fetching in that dress.
+sigh gemma
+else
+growl $n
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p frowns at what you did.~
+Comlist   if name($n) == Moretta
+say Watch your attitude wench, or you will find yourself out of a job.
+say Only by MY grace do you even remain, such a high horse you ride.
+grin $n
+else
+glare $n
+endif
 ~
 #ENDPROG
 
@@ -566,27 +567,56 @@ Bodyparts  head arms legs guts hands feet ear eye~
 Attacks    trip~
 Defenses   dodge~
 #MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpecho Moretta kneels and begins to scrub the floor.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   mpecho Moretta stands on her tip-toes, trying to clean the ceiling.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  act_prog~
-Arglist   p you.  Have a good journey.~
-Comlist   if name($n) == Fandarel boss
-say Very well, sir.
-grumble
-south
+Arglist   p spanks you playfully.  OUCH!~
+Comlist   if name($n) == Jerint sales director
+growl jerint
+say If not for me, this place would crumble about your very ears!
+mpecho Moretta arranges the items on the shelves as she dusts.
+say I'll be leaving now, try not to be so messy, Jerint.
+poke jerint
 else
-smile $n
-say Good bye to you $n.
+say Hey now, do I look like that type o'girl to ya?
 endif
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p stares at you, fuming with rage!~
-Comlist   if name($n) == Fandarel boss
-say Oh, pardon me. I thought you were alone.
-frown
+Arglist   p smiles at you.~
+Comlist   if name($n) == Jerint sales director
+say Good! I hope it bruised you. Stop giving me such grief!
+wave jerint
+east
+south
 else
-shiver $n
+nod $n
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p nudges you.~
+Comlist   if name($n) == Belesdan director
+say You know I am always careful with things, even if they are yours.
+frown $n
+else
+say Hey now, don't go pushing me around.
 endif
 ~
 #ENDPROG
@@ -609,56 +639,27 @@ endif
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p nudges you.~
-Comlist   if name($n) == Belesdan director
-say You know I am always careful with things, even if they are yours.
-frown $n
+Arglist   p stares at you, fuming with rage!~
+Comlist   if name($n) == Fandarel boss
+say Oh, pardon me. I thought you were alone.
+frown
 else
-say Hey now, don't go pushing me around.
+shiver $n
 endif
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p smiles at you.~
-Comlist   if name($n) == Jerint sales director
-say Good! I hope it bruised you. Stop giving me such grief!
-wave jerint
-east
+Arglist   p you.  Have a good journey.~
+Comlist   if name($n) == Fandarel boss
+say Very well, sir.
+grumble
 south
 else
-nod $n
+smile $n
+say Good bye to you $n.
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p spanks you playfully.  OUCH!~
-Comlist   if name($n) == Jerint sales director
-growl jerint
-say If not for me, this place would crumble about your very ears!
-mpecho Moretta arranges the items on the shelves as she dusts.
-say I'll be leaving now, try not to be so messy, Jerint.
-poke jerint
-else
-say Hey now, do I look like that type o'girl to ya?
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   mpecho Moretta stands on her tip-toes, trying to clean the ceiling.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   mpecho Moretta kneels and begins to scrub the floor.
 ~
 #ENDPROG
 
@@ -695,54 +696,29 @@ Immune     charm~
 Attacks    kick trip~
 Defenses   dodge~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p whistles at the sight of you.~
-Comlist   if name($n) == Fandarel boss
-mpecho Gemma stands up quickly, and straightens her dress.
-gasp fandarel
-say Good day, Mr. Fandarel.
-south
-else
-blush $n
-endif
+Progtype  rand_prog~
+Arglist   5~
+Comlist   mpecho Gemma rustles some papers in an attempt to put them in order.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   sigh
+say I really wish Fandarel would be more organized.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p winks suggestively at you.~
-Comlist   if name($n) == Fandarel boss
-groan
-say Please, Fandarel, I want to keep our relationship professional.
-say I came by to see if you had any new papers that require processing.
+Arglist   p smiles at you.~
+Comlist   if name($n) == Jerint sales director
+chuckle
+say Ah, Jerint, you know Fandarel would fire me if I ever slowed.
+wink $n
+else
 smile $n
-else
-blush $n
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p Touching, huh?~
-Comlist   if name($n) == Belesdan director
-say I am not going to take this from you, Belesdan.
-say I get it enough from your Uncle Fandarel.  Cad must be a family trait.
-snarl Belesdan
-west
-else
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p Such an effect on people!~
-Comlist   if name($n) == Belesdan director
-say Belesdan, I have asked you several times not to call me dear.
-glare Belesdan
-else
-say Oh, sorry $n, I did not mean to embarass you.
 endif
 ~
 #ENDPROG
@@ -764,29 +740,54 @@ endif
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p smiles at you.~
-Comlist   if name($n) == Jerint sales director
-chuckle
-say Ah, Jerint, you know Fandarel would fire me if I ever slowed.
-wink $n
+Arglist   p Such an effect on people!~
+Comlist   if name($n) == Belesdan director
+say Belesdan, I have asked you several times not to call me dear.
+glare Belesdan
 else
-smile $n
+say Oh, sorry $n, I did not mean to embarass you.
 endif
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   sigh
-say I really wish Fandarel would be more organized.
+Progtype  act_prog~
+Arglist   p Touching, huh?~
+Comlist   if name($n) == Belesdan director
+say I am not going to take this from you, Belesdan.
+say I get it enough from your Uncle Fandarel.  Cad must be a family trait.
+snarl Belesdan
+west
+else
+endif
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   mpecho Gemma rustles some papers in an attempt to put them in order.
+Progtype  act_prog~
+Arglist   p winks suggestively at you.~
+Comlist   if name($n) == Fandarel boss
+groan
+say Please, Fandarel, I want to keep our relationship professional.
+say I came by to see if you had any new papers that require processing.
+smile $n
+else
+blush $n
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p whistles at the sight of you.~
+Comlist   if name($n) == Fandarel boss
+mpecho Gemma stands up quickly, and straightens her dress.
+gasp fandarel
+say Good day, Mr. Fandarel.
+south
+else
+blush $n
+endif
 ~
 #ENDPROG
 
@@ -823,59 +824,6 @@ Bodyparts  head arms legs guts hands feet ear eye~
 Attacks    kick~
 Defenses   dodge~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpoload 9865 10
-mpoload 9866 10
-mpoload 9866 10
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   mpoload 9865 7
-mpoload 9866 7
-fill pipe nip
-tamp pipe
-light pipe
-smoke pipe
-empty pipe
-mpjunk pipe
- 
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   frowns.~
-Comlist   if name($n) == Moretta
-say Well, get about your work and be quick about it. I will not wait all day.
-mpecho Moretta dusts the desk quickly, then empties the ashtray.
-say Thats enough for now girl. You can finish after this meeting is done.
-wave Moretta
-else
-say Hrmph, don't be frowning in here.
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p smiles at you.~
-Comlist   if name($n) == Gemma coordinator
-say Well yes, Gemma, I have a few items for you.
-mpecho Fandarel holds out a few papers, but drops them as Gemma grabs for them.
-say Oh dear, clumsy me. Please get those for me.
-mpecho Gemma bends down and begins to collect the scattered papers.
-whistle gemma
-else
-grin $n
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if name($n) == Gemma coordinator
@@ -901,6 +849,59 @@ endif
 endif
 endif
 endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p smiles at you.~
+Comlist   if name($n) == Gemma coordinator
+say Well yes, Gemma, I have a few items for you.
+mpecho Fandarel holds out a few papers, but drops them as Gemma grabs for them.
+say Oh dear, clumsy me. Please get those for me.
+mpecho Gemma bends down and begins to collect the scattered papers.
+whistle gemma
+else
+grin $n
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   frowns.~
+Comlist   if name($n) == Moretta
+say Well, get about your work and be quick about it. I will not wait all day.
+mpecho Moretta dusts the desk quickly, then empties the ashtray.
+say Thats enough for now girl. You can finish after this meeting is done.
+wave Moretta
+else
+say Hrmph, don't be frowning in here.
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   mpoload 9865 7
+mpoload 9866 7
+fill pipe nip
+tamp pipe
+light pipe
+smoke pipe
+empty pipe
+mpjunk pipe
+ 
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 9865 10
+mpoload 9866 10
+mpoload 9866 10
 ~
 #ENDPROG
 
@@ -942,29 +943,13 @@ Suscept    cold~
 Attacks    trip~
 Defenses   dodge~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   close door
-lock door
-close secret
-lock secret
-mpechoat $n Wilam says 'Welcome to my chamber of torture.. How may I hurt you?'
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpecho Wilam drops a hunk of metal on the ground.
-mpecho Wilam kicks the key, and it skitters across the floor, out of sight.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  rand_prog~
-Arglist   1~
-Comlist   cackle
-say No one leaves this room as long as I live and breathe!
+Arglist   6~
+Comlist   close door
+close secret
+lock door
+lock secret
+mpjunk all
 ~
 #ENDPROG
 
@@ -981,12 +966,28 @@ endif
 
 #MUDPROG
 Progtype  rand_prog~
-Arglist   6~
+Arglist   1~
+Comlist   cackle
+say No one leaves this room as long as I live and breathe!
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpecho Wilam drops a hunk of metal on the ground.
+mpecho Wilam kicks the key, and it skitters across the floor, out of sight.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
 Comlist   close door
-close secret
 lock door
+close secret
 lock secret
-mpjunk all
+mpechoat $n Wilam says 'Welcome to my chamber of torture.. How may I hurt you?'
 ~
 #ENDPROG
 
@@ -1030,33 +1031,6 @@ Attacks    punch kick trip gouge~
 Defenses   parry dodge heal curelight~
 ShopData   0 0 0 0 0 120 90 0 23
 #MUDPROG
-Progtype  act_prog~
-Arglist   p pokes you in the ribs.~
-Comlist   if name($n) == Moretta
-say Ouch! Wench, that tickles. Now get outta here and bug someone else.
-smile Moretta
-else
-poke $n
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p winks suggestively at you.~
-Comlist   if name($n) == Gemma coordinator
-sigh
-say You may be right there, lass, sad to say.
-say Maybe he shall lighten his mood as he gains years.
-say Ah well, have a good day, Gemma!
-wave Gemma
-else
-say My, you are a flirt, $n!
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if name($n) == Gemma coordinator
@@ -1078,6 +1052,33 @@ say Welcome to my shop $n. What may I interest you in today?
 endif
 endif
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p winks suggestively at you.~
+Comlist   if name($n) == Gemma coordinator
+sigh
+say You may be right there, lass, sad to say.
+say Maybe he shall lighten his mood as he gains years.
+say Ah well, have a good day, Gemma!
+wave Gemma
+else
+say My, you are a flirt, $n!
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p pokes you in the ribs.~
+Comlist   if name($n) == Moretta
+say Ouch! Wench, that tickles. Now get outta here and bug someone else.
+smile Moretta
+else
+poke $n
 endif
 ~
 #ENDPROG
@@ -1188,18 +1189,18 @@ Defenses   dodge curecritical dispelevil sanctuary~
 ShopData   26 0 0 0 0 205 200 0 23
 #MUDPROG
 Progtype  rand_prog~
-Arglist   5~
-Comlist   , runs a blackened tongue over his rotting teeth, then grins.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
 Arglist   25~
 Comlist   if goldamt($i) > 50000
 mpat 5475 drop 40000 coins
 mpat 5475 mppurge coins
 endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   5~
+Comlist   , runs a blackened tongue over his rotting teeth, then grins.
 ~
 #ENDPROG
 

@@ -51,14 +51,14 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data );
 void translate_objvals( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_data, bool verbose );
 void translate_exits( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bool verbose );
 void warn_progs( CHAR_DATA * ch, int low, int high, AREA_DATA * area, RENUMBER_AREA * r_area );
-void warn_in_prog( CHAR_DATA * ch, int low, int high, char *where, int vnum, MPROG_DATA * mprog, RENUMBER_AREA * r_area );
+void warn_in_prog( CHAR_DATA * ch, int low, int high, const char *where, int vnum, MPROG_DATA * mprog, RENUMBER_AREA * r_area );
 
 /* from db.c */
 extern ROOM_INDEX_DATA *room_index_hash[MAX_KEY_HASH];
 extern MOB_INDEX_DATA *mob_index_hash[MAX_KEY_HASH];
 extern OBJ_INDEX_DATA *obj_index_hash[MAX_KEY_HASH];
 
-void do_renumber( CHAR_DATA * ch, char *argument )
+void do_renumber( CHAR_DATA* ch, const char* argument)
 {
    RENUMBER_AREA *r_area;
    AREA_DATA *area;
@@ -779,9 +779,9 @@ void warn_progs( CHAR_DATA * ch, int low, int high, AREA_DATA * area, RENUMBER_A
 
 
 
-void warn_in_prog( CHAR_DATA * ch, int low, int high, char *where, int vnum, MPROG_DATA * mprog, RENUMBER_AREA * r_area )
+void warn_in_prog( CHAR_DATA * ch, int low, int high, const char *where, int vnum, MPROG_DATA * mprog, RENUMBER_AREA * r_area )
 {
-   char *p, *start_number, cTmp;
+   const char *p, *start_number;
    int num;
 
    p = mprog->comlist;
@@ -792,10 +792,12 @@ void warn_in_prog( CHAR_DATA * ch, int low, int high, char *where, int vnum, MPR
          start_number = p;
          while( isdigit( *p ) && *p )
             p++;
-         cTmp = *p;
-         *p = 0;
-         num = atoi( start_number );
-         *p = cTmp;
+
+         char* temp = (char*) malloc((p - start_number + 1) * sizeof(char));
+         memcpy(temp, start_number, p - start_number + 1);
+         num = atoi( temp );
+         free(temp);
+
          if( num >= low && num <= high )
          {
             pager_printf( ch,
@@ -820,10 +822,10 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
     * similar code, i just made this array that tells the
     * code what to do. it's pretty straightforward 
     */
-   char *action_table[] = { "Mm1r3", "Oo1r3", "Ho1", "Po1o3",
+   const char *action_table[] = { "Mm1r3", "Oo1r3", "Ho1", "Po1o3",
       "Go1", "Eo1", "Dr1", "Rr1", NULL
    };
-   char *p;
+   const char *p;
    RENUMBER_DATA *r_table;
    int *parg, new_vnum, i;
 

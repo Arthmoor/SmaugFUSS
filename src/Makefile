@@ -18,7 +18,7 @@ EXPORT_SYMBOLS = -export-dynamic
 #IMC2 - Comment out to disable IMC2 support
 IMC = 1
 
-W_FLAGS = -Wall -Werror -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls -Wconversion
+W_FLAGS = -Wall -Werror -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls
 
 C_FLAGS = -g2 $(W_FLAGS) $(SOLARIS_FLAG) $(PROF) $(EXPORT_SYMBOLS)
 L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
@@ -26,12 +26,12 @@ L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
 D_FLAGS = -g2 -O $(PROF) $(SOLARIS_LINK)
 
 C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c boards.c \
-          build.c chess.c clans.c color.c comm.c comments.c const.c db.c deity.c \
+          build.c calendar.c chess.c clans.c color.c comm.c comments.c const.c db.c deity.c \
           dns.c fight.c handler.c hashstr.c hint.c hotboot.c imm_host.c interp.c \
           liquids.c magic.c makeobjs.c mapout.c mapper.c mccp.c \
-          misc.c mpxset.c mud_comm.c mud_prog.c news.c planes.c player.c polymorph.c \
+          misc.c mpxset.c mssp.c mud_comm.c mud_prog.c news.c planes.c player.c polymorph.c \
           renumber.c reset.c save.c services.c sha256.c shops.c skills.c special.c tables.c \
-          track.c update.c variables.c
+          track.c update.c variables.c weather.c
 
 ifdef IMC
    C_FILES := imc.c $(C_FILES)

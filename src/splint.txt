@@ -1,0 +1,381 @@
+mud.h:344: Name ECHOTAR_ALL is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:345: Name ECHOTAR_PC is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:346: Name ECHOTAR_IMM is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+hotboot.h:31: Name EXE_FILE is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1873: Name EX_ISDOOR is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1874: Name EX_CLOSED is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1875: Name EX_LOCKED is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1876: Name EX_SECRET is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1877: Name EX_SWIM is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1878: Name EX_PICKPROOF is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1879: Name EX_FLY is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1880: Name EX_CLIMB is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1881: Name EX_DIG is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1882: Name EX_EATKEY is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1883: Name EX_NOPASSDOOR is reserved for future library extensions.
+    Macros beginning with E and a digit or uppercase letter may be added to
+    <errno.h>. (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1884: Name EX_HIDDEN is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1885: Name EX_PASSAGE is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1886: Name EX_PORTAL is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1887: Name EX_RES1 is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1888: Name EX_RES2 is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1889: Name EX_xCLIMB is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1890: Name EX_xENTER is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1891: Name EX_xLEAVE is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1892: Name EX_xAUTO is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1893: Name EX_NOFLEE is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1894: Name EX_xSEARCHABLE is reserved for future library extensions.
+    Macros beginning with E and a digit or uppercase letter may be added to
+    <errno.h>. (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1895: Name EX_BASHED is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1896: Name EX_BASHPROOF is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1897: Name EX_NOMOB is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1898: Name EX_WINDOW is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1899: Name EX_xLOOK is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1900: Name EX_ISBOLT is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:1901: Name EX_BOLTED is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:3298: Name EXIT is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:4277: Name EDD is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:4279: Name ED is reserved for future library extensions. Macros beginning
+    with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:4947: Name ERROR_PROG is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:4964: Name ENTER_PROG is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+act_info.c:21: Include file <sys/stat.h> matches the name of a POSIX library,
+    but the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+  Header name matches a POSIX header, but the POSIX library is not selected.
+  (Use -warnposixheaders to inhibit warning)
+sha256.h:30: Name _SHA256_H_ is in the implementation name space (any
+    identifier beginning with underscore and either an uppercase letter or
+    another underscore is always reserved for any use)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+sha256.h:31: Include file <sys/types.h> matches the name of a POSIX library,
+    but the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+act_wiz.c:21: Include file <sys/stat.h> matches the name of a POSIX library,
+    but the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+act_wiz.c:23: Include file <unistd.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+boards.c:21: Include file <sys/stat.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+build.c:19: Include file <unistd.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+calendar.c:33: Include file <sys/stat.h> matches the name of a POSIX library,
+    but the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+calendar.c:34: Include file <dirent.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+calendar.c:35: Include file <unistd.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+chess.h:20: Name __CHESS_H__ is in the implementation name space (any
+    identifier beginning with underscore and either an uppercase letter or
+    another underscore is always reserved for any use)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+imc.h:12: Name __IMC2_H__ is in the implementation name space (any identifier
+    beginning with underscore and either an uppercase letter or another
+    underscore is always reserved for any use)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+imccfg.h:6: Name __IMC2CFG_H__ is in the implementation name space (any
+    identifier beginning with underscore and either an uppercase letter or
+    another underscore is always reserved for any use)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+color.c:65: Include file <dirent.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:18: Include file <sys/stat.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:24: Include file <fcntl.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:26: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:27: Include file <sys/wait.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:56: Include file <sys/socket.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:57: Include file <netinet/in.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+comm.c:62: Include file <netdb.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+db.c:23: Include file <sys/stat.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+db.c:24: Include file <dirent.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+db.c:25: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+dns.c:31: Include file <sys/types.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+dns.c:32: Include file <sys/wait.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+dns.c:33: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+hotboot.c:26: Include file <dirent.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+hotboot.c:27: Include file <unistd.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imc.c:15: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imc.c:17: Include file <fcntl.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imc.c:32: Include file <sys/socket.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imc.c:33: Include file <netinet/in.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imc.c:35: Include file <netdb.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+imm_host.c:20: Include file <unistd.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+mccp.c:31: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+resolver.c:41: Include file <netdb.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+save.c:21: Include file <sys/stat.h> matches the name of a POSIX library, but
+    the POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+save.c:22: Include file <dirent.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+save.c:23: Include file <unistd.h> matches the name of a POSIX library, but the
+    POSIX library is not being used.  Consider using +posixlib or
+    +posixstrictlib to select the POSIX library, or -warnposix to suppress this
+    message.
+mud.h:95:36: Name EXTRACT_CHAR_DATA is reserved for future library extensions.
+    Macros beginning with E and a digit or uppercase letter may be added to
+    <errno.h>. (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:100:26: Name EXIT_DATA is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:101:33: Name EXTRA_DESCR_DATA is reserved for future library extensions.
+    Macros beginning with E and a digit or uppercase letter may be added to
+    <errno.h>. (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:127:28: Name EDITOR_DATA is reserved for future library extensions.
+    Macros beginning with E and a digit or uppercase letter may be added to
+    <errno.h>. (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)
+mud.h:143:35: Name EXT_BV is reserved for future library extensions. Macros
+    beginning with E and a digit or uppercase letter may be added to <errno.h>.
+    (ISO99:7.26.3)
+  External name is reserved for system use by ISO C99 standard. (Use either
+  -isoreserved or -namechecks to inhibit warning)

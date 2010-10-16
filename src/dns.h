@@ -31,8 +31,8 @@ struct dns_data
 {
    DNS_DATA *next;
    DNS_DATA *prev;
-   char *ip;
-   char *name;
+   const char *ip;
+   const char *name;
    time_t time;
 };
 

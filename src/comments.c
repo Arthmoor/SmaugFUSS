@@ -61,7 +61,7 @@ void comment_remove( CHAR_DATA * victim, NOTE_DATA * pnote )
    return;
 }
 
-void do_comment( CHAR_DATA * ch, char *argument )
+void do_comment( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg1[MAX_INPUT_LENGTH];

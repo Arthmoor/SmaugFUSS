@@ -49,10 +49,10 @@ struct news_data
 {
    NEWS *next;
    NEWS *prev;
-   char *title;
-   char *name;
-   char *post;
-   char *date;
+   const char *title;
+   const char *name;
+   const char *post;
+   const char *date;
    int number;
    int type;
 };
@@ -64,9 +64,9 @@ struct news_type
    NEWS *last_news;
    NEWS_TYPE *next;
    NEWS_TYPE *prev;
-   char *header;
-   char *cmd_name;
-   char *name;
+   const char *header;
+   const char *cmd_name;
+   const char *name;
    int vnum;
    short level;
 };
@@ -75,8 +75,8 @@ extern NEWS_TYPE *first_news_type;
 extern NEWS_TYPE *last_news_type;
 
 /* news.c */
-NEWS *grab_news( NEWS_TYPE * type, char *str );
-NEWS_TYPE *figure_type( char *str );
+NEWS *grab_news( NEWS_TYPE * type, const char *str );
+NEWS_TYPE *figure_type( const char *str );
 void display_news( CHAR_DATA * ch, NEWS * news, NEWS_TYPE * type );
 void renumber_news( void );
 void save_news( void );

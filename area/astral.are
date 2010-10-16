@@ -3,10 +3,11 @@
 Version      1
 Name         The Astral Plane~
 Author       Andi~
+WeatherX     0
+WeatherY     0
 Ranges       15 35 0 60
 Economy      0 2064393
 ResetMsg     The astral field glitters with a thousand points of light for a moment...~
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -40,37 +41,20 @@ Immune     charm~
 Attacks    punch trip curse fireball~
 Defenses   parry dodge disarm~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   40~
-Comlist   if level($n) < 30
-say You should not have toyed with my powers!
-c ear
-c fire
-c blind
-else
-mpechoat $n The guardian chants a strange phrase and points at you...
-mpechoaround $n The guardian chants a strange phrase and points at $n...
-mpdamage $n 100
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  speech_prog~
-Arglist   p i wish to enter the astral plane.~
+Progtype  greet_prog~
+Arglist   100~
 Comlist   if level($n) < 10
-, gives you an irritated glare but makes no action.
+say You may not pass $n, for you will only
+say find death beyond this gate.
 else
 if level($n) > 35
-say $n, you shall not enter while I exist...
+say You are too mighty, $n. I will not allow
+say you to pass and tamper with the balance of the
+say astral plane.
+, firmly grips a pearl wand and points it at you...
 else
-say So be it!
-mpecho A rolling thunder booms as the gate to the astral plane opens!
-un n
-op n
-mpforce $n north
-close n
-lock n
+say Though it be foolish, if you wish to enter the
+say astral plane, you have but to say so...
 endif
 endif
 ~
@@ -98,21 +82,38 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
-Arglist   100~
+Progtype  speech_prog~
+Arglist   p i wish to enter the astral plane.~
 Comlist   if level($n) < 10
-say You may not pass $n, for you will only
-say find death beyond this gate.
+, gives you an irritated glare but makes no action.
 else
 if level($n) > 35
-say You are too mighty, $n. I will not allow
-say you to pass and tamper with the balance of the
-say astral plane.
-, firmly grips a pearl wand and points it at you...
+say $n, you shall not enter while I exist...
 else
-say Though it be foolish, if you wish to enter the
-say astral plane, you have but to say so...
+say So be it!
+mpecho A rolling thunder booms as the gate to the astral plane opens!
+un n
+op n
+mpforce $n north
+close n
+lock n
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   40~
+Comlist   if level($n) < 30
+say You should not have toyed with my powers!
+c ear
+c fire
+c blind
+else
+mpechoat $n The guardian chants a strange phrase and points at you...
+mpechoaround $n The guardian chants a strange phrase and points at $n...
+mpdamage $n 100
 endif
 ~
 #ENDPROG
@@ -517,6 +518,18 @@ Immune     charm nonmagic~
 Attacks    gouge fireball~
 Defenses   dodge disarm~
 #MUDPROG
+Progtype  fight_prog~
+Arglist   50~
+Comlist   , prays a mantra to his Queen for aid.
+mpechoat $n Suddenly, floating haunting eyes appear and gaze at you.  Two bolts
+mpechoat $n of blazing blue lightning erupt from them, striking you!
+mpechoaround $n of blazing blue lightning erupt from them, striking $n!
+c lightning $n
+c lightning $n
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   if rand(60)
@@ -530,18 +543,6 @@ mpecho With his dying words, the warlock recites a powerful scroll...
 mpjunk all.scroll
 mpdamage $r 100
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  fight_prog~
-Arglist   50~
-Comlist   , prays a mantra to his Queen for aid.
-mpechoat $n Suddenly, floating haunting eyes appear and gaze at you.  Two bolts
-mpechoat $n of blazing blue lightning erupt from them, striking you!
-mpechoaround $n of blazing blue lightning erupt from them, striking $n!
-c lightning $n
-c lightning $n
 ~
 #ENDPROG
 
@@ -581,11 +582,15 @@ Suscept    fire blunt~
 Attacks    claws trip gouge drain poison~
 Defenses   parry dodge disarm~
 #MUDPROG
-Progtype  greet_prog~
-Arglist   60~
-Comlist   say Yes...more souls to dine on at my leisure!
-mpecho Deadly flames erupt from the lich-queen's fingers!
-c 'burning hands' $n
+Progtype  death_prog~
+Arglist   100~
+Comlist   mptransfer $n 878
+mpgoto 878
+mpecho As the killing blow destroys the lich-queen's corporeal form, wisps
+mpecho of her spirit arise from the floor.  A haunting voice whispers words
+mpecho of a spidery language and the floor suddenly cracks and opens.  You
+mpecho fall through the chasm about the altar into a swirling field of
+mpecho blackness, the cackles of a witch following your descent...
 ~
 #ENDPROG
 
@@ -609,15 +614,11 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mptransfer $n 878
-mpgoto 878
-mpecho As the killing blow destroys the lich-queen's corporeal form, wisps
-mpecho of her spirit arise from the floor.  A haunting voice whispers words
-mpecho of a spidery language and the floor suddenly cracks and opens.  You
-mpecho fall through the chasm about the altar into a swirling field of
-mpecho blackness, the cackles of a witch following your descent...
+Progtype  greet_prog~
+Arglist   60~
+Comlist   say Yes...more souls to dine on at my leisure!
+mpecho Deadly flames erupt from the lich-queen's fingers!
+c 'burning hands' $n
 ~
 #ENDPROG
 
@@ -658,25 +659,26 @@ Suscept    electricity energy blunt~
 Attacks    punch kick bash gouge weaken~
 Defenses   parry dodge disarm~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   50~
-Comlist   say If only I could die.  This place allows none of my kind peace!
-mpecho With unparalleled rage, Lady Gith summons forth a torrent of acid!
-c 'acid blast' $n
-c 'acid blast' $n
+Progtype  greet_prog~
+Arglist   75~
+Comlist   cry
+say There is no hope for my people.  Though you have defeated their 
+say horrible leader, she will return...
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p I wish to leave this lair of despair.~
-Comlist   nod
-say Goodbye, $n...
-mpechoaround $n White light flows from Gith's outstretched fingers and
-mpechoaround $n swirls about $n.
-mpechoat $n White light flows from Gith's outstretched fingers and
-mpechoat $n swirls about you.
-mptransfer $n 21000
+Progtype  rand_prog~
+Arglist   3~
+Comlist   , weeps softly.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   say If you wish to leave this lair of despair, you have but to say
+say so.  Only my brethren and I are truly chained here...
 ~
 #ENDPROG
 
@@ -699,26 +701,25 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   say If you wish to leave this lair of despair, you have but to say
-say so.  Only my brethren and I are truly chained here...
+Progtype  speech_prog~
+Arglist   p I wish to leave this lair of despair.~
+Comlist   nod
+say Goodbye, $n...
+mpechoaround $n White light flows from Gith's outstretched fingers and
+mpechoaround $n swirls about $n.
+mpechoat $n White light flows from Gith's outstretched fingers and
+mpechoat $n swirls about you.
+mptransfer $n 21000
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   , weeps softly.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  greet_prog~
-Arglist   75~
-Comlist   cry
-say There is no hope for my people.  Though you have defeated their 
-say horrible leader, she will return...
+Progtype  fight_prog~
+Arglist   50~
+Comlist   say If only I could die.  This place allows none of my kind peace!
+mpecho With unparalleled rage, Lady Gith summons forth a torrent of acid!
+c 'acid blast' $n
+c 'acid blast' $n
 ~
 #ENDPROG
 
@@ -1344,16 +1345,6 @@ strange magical power...
 #ENDEXDESC
 
 #MUDPROG
-Progtype  repair_prog~
-Arglist   100~
-Comlist   mpecho Though the dress has been sewn together, the magical threads which
-mpecho gave it life have been severed and it decays to nothing...
-mpforce $n drop dress
-mpforce $n sac dress
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  damage_prog~
 Arglist   100~
 Comlist   mpecho As the magical dress is damaged, mystic powers are released from
@@ -1361,6 +1352,16 @@ mpecho the black silk and begin swirling about $n's form...
 c fires $n
 c ices $n
 c sanc $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  repair_prog~
+Arglist   100~
+Comlist   mpecho Though the dress has been sewn together, the magical threads which
+mpecho gave it life have been severed and it decays to nothing...
+mpforce $n drop dress
+mpforce $n sac dress
 ~
 #ENDPROG
 

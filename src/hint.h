@@ -25,7 +25,7 @@ struct hint_data
 {
    HINT_DATA *next;
    HINT_DATA *prev;
-   char *text;
+   const char *text;
    int low;
    int high;
 };
@@ -34,5 +34,5 @@ extern HINT_DATA *hint;
 extern HINT_DATA *first_hint;
 extern HINT_DATA *last_hint;
 
-char *get_hint( int level );
+const char *get_hint( int level );
 void hint_update( void );

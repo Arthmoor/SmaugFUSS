@@ -3,9 +3,10 @@
 Version      1
 Name         Miden'nir~
 Author       Copper~
+WeatherX     0
+WeatherY     0
 Ranges       5 15 0 60
 Economy      0 35006290
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -123,10 +124,9 @@ Attacks    trip~
 Defenses   parry dodge~
 ShopData   17 0 0 0 0 130 90 7 21
 #MUDPROG
-Progtype  speech_prog~
-Arglist   yup yes uh-huh yawp yesireebob~
-Comlist   tell $n Aye? Did ya find it to yer likin'?
-wink $n
+Progtype  greet_prog~
+Arglist   100~
+Comlist   tell $n Have ye tasted my specialized green beverage, $n?
 ~
 #ENDPROG
 
@@ -140,9 +140,10 @@ tell $n Ye must try it, 'tis the best green winter ale in these parts...
 #ENDPROG
 
 #MUDPROG
-Progtype  greet_prog~
-Arglist   100~
-Comlist   tell $n Have ye tasted my specialized green beverage, $n?
+Progtype  speech_prog~
+Arglist   yup yes uh-huh yawp yesireebob~
+Comlist   tell $n Aye? Did ya find it to yer likin'?
+wink $n
 ~
 #ENDPROG
 
@@ -736,6 +737,13 @@ ExDesc       The sign, covered with a strange green substance, reads:
 #ENDEXDESC
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   3~
+Comlist   mpecho The wind whistles through the unstable planks of the rickety bridge.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   p I seek the ruins~
 Comlist   if ispc($n)
@@ -749,13 +757,6 @@ Comlist   if ispc($n)
    mea 0.$n _red It is surely a realm in which you would perish...
  endif
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   3~
-Comlist   mpecho The wind whistles through the unstable planks of the rickety bridge.
 ~
 #ENDPROG
 

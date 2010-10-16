@@ -3,9 +3,10 @@
 Version      1
 Name         Dwarven Village~
 Author       Raff~
+WeatherX     0
+WeatherY     0
 Ranges       10 35 0 60
 Economy      0 13141784
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE

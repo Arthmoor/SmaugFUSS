@@ -37,7 +37,7 @@ SKILLTYPE *skill_table[MAX_SKILL];
 const SKILLTYPE *skill_table_bytype[MAX_SKILL];
 struct class_type *class_table[MAX_CLASS];
 RACE_TYPE *race_table[MAX_RACE];
-char *title_table[MAX_CLASS][MAX_LEVEL + 1][2];
+const char *title_table[MAX_CLASS][MAX_LEVEL + 1][2];
 SKILLTYPE *herb_table[MAX_HERB];
 SKILLTYPE *disease_table[MAX_DISEASE];
 
@@ -46,7 +46,7 @@ LANG_DATA *last_lang;
 
 const char *skill_tname[] = { "unknown", "Spell", "Skill", "Weapon", "Tongue", "Herb", "Racial", "Disease" };
 
-SPELL_FUN *spell_function( char *name )
+SPELL_FUN *spell_function( const char *name )
 {
    void *funHandle;
 #if !defined(WIN32)
@@ -64,7 +64,7 @@ SPELL_FUN *spell_function( char *name )
    return ( SPELL_FUN * ) funHandle;
 }
 
-DO_FUN *skill_function( char *name )
+DO_FUN *skill_function( const char *name )
 {
    void *funHandle;
 #if !defined(WIN32)
@@ -452,7 +452,7 @@ bool load_race_file( const char *fname )
 {
    char buf[MAX_STRING_LENGTH];
    const char *word;
-   char *race_name = NULL;
+   const char *race_name = NULL;
    bool fMatch;
    struct race_type *race;
    int ra = -1;
@@ -941,7 +941,7 @@ void save_socials(  )
    fclose( fpout );
 }
 
-int get_skill( char *skilltype )
+int get_skill( const char *skilltype )
 {
    if( !str_cmp( skilltype, "Racial" ) )
       return SKILL_RACIAL;

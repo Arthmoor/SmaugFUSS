@@ -2504,7 +2504,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
    if( IS_NPC( ch ) || IS_NPC( victim ) )
       return FALSE;
 
-   if( get_age( ch ) < 18 || ch->level < 5 )
+   if( calculate_age( ch ) < 18 || ch->level < 5 )
    {
       if( show_messg )
       {
@@ -2514,7 +2514,7 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
       return TRUE;
    }
 
-   if( get_age( victim ) < 18 || victim->level < 5 )
+   if( calculate_age( victim ) < 18 || victim->level < 5 )
    {
       if( show_messg )
       {
@@ -3135,7 +3135,7 @@ int part_vnums[] = { 12,   /* Head */
 };
 
 /* Messages for flinging off the various bodyparts */
-char *part_messages[] = {
+const char *part_messages[] = {
    "$n's severed head plops from its neck.",
    "$n's arm is sliced from $s dead body.",
    "$n's leg is sliced from $s dead body.",
@@ -3178,13 +3178,13 @@ char *part_messages[] = {
 void death_cry( CHAR_DATA * ch )
 {
    ROOM_INDEX_DATA *was_in_room;
-   char *msg;
+   const char *msg;
    EXIT_DATA *pexit;
    int vnum, shift, cindex, i;
 
    if( !ch )
    {
-      bug( "%s", "DEATH_CRY: null ch!" );
+      bug( "%s: null ch!", __FUNCTION__ );
       return;
    }
 
@@ -3203,13 +3203,13 @@ void death_cry( CHAR_DATA * ch )
          msg = "$n hits the ground ... DEAD.";
          break;
       case 2:
-         msg = "$n catches $s guts in $s hands as they pour through $s fatal" " wound!";
+         msg = "$n catches $s guts in $s hands as they pour through $s fatal wound!";
          break;
       case 3:
          msg = "$n splatters blood on your armor.";
          break;
       case 4:
-         msg = "$n gasps $s last breath and blood spurts out of $s " "mouth and ears.";
+         msg = "$n gasps $s last breath and blood spurts out of $s mouth and ears.";
          break;
       case 5:
          shift = number_range( 0, 31 );
@@ -3241,11 +3241,11 @@ void death_cry( CHAR_DATA * ch )
    {
       char buf[MAX_STRING_LENGTH];
       OBJ_DATA *obj;
-      char *name;
+      const char *name;
 
       if( !get_obj_index( vnum ) )
       {
-         bug( "%s", "death_cry: invalid vnum" );
+         bug( "%s: invalid vnum", __FUNCTION__ );
          return;
       }
 
@@ -3281,8 +3281,6 @@ void death_cry( CHAR_DATA * ch )
       }
    }
    ch->in_room = was_in_room;
-
-   return;
 }
 
 OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -3811,7 +3809,7 @@ void dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 }
 #endif
 
-void do_kill( CHAR_DATA * ch, char *argument )
+void do_kill( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3888,13 +3886,13 @@ void do_kill( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_murde( CHAR_DATA * ch, char *argument )
+void do_murde( CHAR_DATA* ch, const char* argument)
 {
    send_to_char( "If you want to MURDER, spell it out.\r\n", ch );
    return;
 }
 
-void do_murder( CHAR_DATA * ch, char *argument )
+void do_murder( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -4019,7 +4017,7 @@ bool check_illegal_pk( CHAR_DATA * ch, CHAR_DATA * victim )
    return FALSE;
 }
 
-void do_flee( CHAR_DATA * ch, char *argument )
+void do_flee( CHAR_DATA* ch, const char* argument)
 {
    ROOM_INDEX_DATA *was_in;
    ROOM_INDEX_DATA *now_in;
@@ -4121,13 +4119,13 @@ void do_flee( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_sla( CHAR_DATA * ch, char *argument )
+void do_sla( CHAR_DATA* ch, const char* argument)
 {
    send_to_char( "If you want to SLAY, spell it out.\r\n", ch );
    return;
 }
 
-void do_slay( CHAR_DATA * ch, char *argument )
+void do_slay( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *victim;
    char arg[MAX_INPUT_LENGTH];

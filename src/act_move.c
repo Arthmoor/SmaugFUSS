@@ -26,7 +26,7 @@ const short movement_loss[SECT_MAX] = {
    1, 2, 2, 3, 4, 6, 4, 1, 6, 10, 6, 5, 7, 4
 };
 
-char *const dir_name[] = {
+const char *const dir_name[] = {
    "north", "east", "south", "west", "up", "down",
    "northeast", "northwest", "southeast", "southwest", "somewhere"
 };
@@ -45,7 +45,7 @@ const short rev_dir[] = {
  */
 OBJ_DATA *has_key( CHAR_DATA * ch, int key );
 
-char *const sect_names[SECT_MAX][2] = {
+const char *const sect_names[SECT_MAX][2] = {
    {"In a room", "inside"}, {"In a city", "cities"},
    {"In a field", "fields"}, {"In a forest", "forests"},
    {"hill", "hills"}, {"On a mountain", "mountains"},
@@ -59,7 +59,7 @@ const int sent_total[SECT_MAX] = {
    3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1
 };
 
-char *const room_sents[SECT_MAX][25] = {
+const char *const room_sents[SECT_MAX][25] = {
    {
     "rough hewn walls of granite with the occasional spider crawling around",
     "signs of a recent battle from the bloodstains on the floor",
@@ -217,7 +217,7 @@ void decorate_room( ROOM_INDEX_DATA * room )
    int iRand, len;
    int previous[8];
    int sector = room->sector_type;
-   char *pre = "You notice ", *post = ".";
+   const char *pre = "You notice ", *post = ".";
 
    if( room->name )
       STRFREE( room->name );
@@ -374,7 +374,7 @@ void clear_vrooms(  )
    }
 }
 
-char *rev_exit( short vdir )
+const char *rev_exit( short vdir )
 {
    switch ( vdir )
    {
@@ -617,8 +617,8 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
    ROOM_INDEX_DATA *from_room;
    OBJ_DATA *boat;
    char buf[MAX_STRING_LENGTH];
-   char *txt;
-   char *dtxt;
+   const char *txt;
+   const char *dtxt;
    ch_ret retcode;
    short door, distance;
    bool drunk = FALSE;
@@ -1258,67 +1258,67 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
    return retcode;
 }
 
-void do_north( CHAR_DATA * ch, char *argument )
+void do_north( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_NORTH ), 0 );
    return;
 }
 
-void do_east( CHAR_DATA * ch, char *argument )
+void do_east( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_EAST ), 0 );
    return;
 }
 
-void do_south( CHAR_DATA * ch, char *argument )
+void do_south( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_SOUTH ), 0 );
    return;
 }
 
-void do_west( CHAR_DATA * ch, char *argument )
+void do_west( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_WEST ), 0 );
    return;
 }
 
-void do_up( CHAR_DATA * ch, char *argument )
+void do_up( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_UP ), 0 );
    return;
 }
 
-void do_down( CHAR_DATA * ch, char *argument )
+void do_down( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_DOWN ), 0 );
    return;
 }
 
-void do_northeast( CHAR_DATA * ch, char *argument )
+void do_northeast( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_NORTHEAST ), 0 );
    return;
 }
 
-void do_northwest( CHAR_DATA * ch, char *argument )
+void do_northwest( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_NORTHWEST ), 0 );
    return;
 }
 
-void do_southeast( CHAR_DATA * ch, char *argument )
+void do_southeast( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_SOUTHEAST ), 0 );
    return;
 }
 
-void do_southwest( CHAR_DATA * ch, char *argument )
+void do_southwest( CHAR_DATA* ch, const char* argument)
 {
    move_char( ch, get_exit( ch->in_room, DIR_SOUTHWEST ), 0 );
    return;
 }
 
-EXIT_DATA *find_door( CHAR_DATA * ch, char *arg, bool quiet )
+EXIT_DATA *find_door( CHAR_DATA * ch, const char *arg, bool quiet )
 {
    EXIT_DATA *pexit;
    int door;
@@ -1411,7 +1411,7 @@ void toggle_bexit_flag( EXIT_DATA * pexit, int flag )
       TOGGLE_BIT( pexit_rev->exit_info, flag );
 }
 
-void do_open( CHAR_DATA * ch, char *argument )
+void do_open( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1519,7 +1519,7 @@ void do_open( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_close( CHAR_DATA * ch, char *argument )
+void do_close( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1637,7 +1637,7 @@ OBJ_DATA *has_key( CHAR_DATA * ch, int key )
    return NULL;
 }
 
-void do_lock( CHAR_DATA * ch, char *argument )
+void do_lock( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj, *key;
@@ -1749,7 +1749,7 @@ void do_lock( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_unlock( CHAR_DATA * ch, char *argument )
+void do_unlock( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj, *key;
@@ -1874,7 +1874,7 @@ void do_unlock( CHAR_DATA * ch, char *argument )
 /*
  * This function bolts a door. Written by Blackmane
  */
-void do_bolt( CHAR_DATA * ch, char *argument )
+void do_bolt( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    EXIT_DATA *pexit;
@@ -1934,7 +1934,7 @@ void do_bolt( CHAR_DATA * ch, char *argument )
 /*
  * This function unbolts a door.  Written by Blackmane
  */
-void do_unbolt( CHAR_DATA * ch, char *argument )
+void do_unbolt( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    EXIT_DATA *pexit;
@@ -1991,7 +1991,7 @@ void do_unbolt( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_bashdoor( CHAR_DATA * ch, char *argument )
+void do_bashdoor( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
    char arg[MAX_INPUT_LENGTH];
@@ -2021,7 +2021,7 @@ void do_bashdoor( CHAR_DATA * ch, char *argument )
       ROOM_INDEX_DATA *to_room;
       EXIT_DATA *pexit_rev;
       int schance;
-      char *keyword;
+      const char *keyword;
 
       if( !IS_SET( pexit->exit_info, EX_CLOSED ) )
       {
@@ -2090,7 +2090,7 @@ void do_bashdoor( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_stand( CHAR_DATA * ch, char *argument )
+void do_stand( CHAR_DATA* ch, const char* argument)
 {
    switch ( ch->position )
    {
@@ -2134,7 +2134,7 @@ void do_stand( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_sit( CHAR_DATA * ch, char *argument )
+void do_sit( CHAR_DATA* ch, const char* argument)
 {
    switch ( ch->position )
    {
@@ -2180,7 +2180,7 @@ void do_sit( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_rest( CHAR_DATA * ch, char *argument )
+void do_rest( CHAR_DATA* ch, const char* argument)
 {
    switch ( ch->position )
    {
@@ -2229,7 +2229,7 @@ void do_rest( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_sleep( CHAR_DATA * ch, char *argument )
+void do_sleep( CHAR_DATA* ch, const char* argument)
 {
    switch ( ch->position )
    {
@@ -2293,7 +2293,7 @@ void do_sleep( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_wake( CHAR_DATA * ch, char *argument )
+void do_wake( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2414,7 +2414,7 @@ void teleport( CHAR_DATA * ch, int room, int flags )
 /*
  * "Climb" in a certain direction.				-Thoric
  */
-void do_climb( CHAR_DATA * ch, char *argument )
+void do_climb( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
    bool found;
@@ -2444,7 +2444,7 @@ void do_climb( CHAR_DATA * ch, char *argument )
 /*
  * "enter" something (moves through an exit)			-Thoric
  */
-void do_enter( CHAR_DATA * ch, char *argument )
+void do_enter( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
    bool found;
@@ -2482,7 +2482,7 @@ void do_enter( CHAR_DATA * ch, char *argument )
 /*
  * Leave through an exit.					-Thoric
  */
-void do_leave( CHAR_DATA * ch, char *argument )
+void do_leave( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
    bool found;
@@ -2544,8 +2544,8 @@ ch_ret pullcheck( CHAR_DATA * ch, int pulse )
    bool move = FALSE, moveobj = TRUE, showroom = TRUE;
    int pullfact, pull;
    int resistance;
-   char *tochar = NULL, *toroom = NULL, *objmsg = NULL;
-   char *destrm = NULL, *destob = NULL, *dtxt = "somewhere";
+   const char *tochar = NULL, *toroom = NULL, *objmsg = NULL;
+   const char *destrm = NULL, *destob = NULL, *dtxt = "somewhere";
 
    if( ( room = ch->in_room ) == NULL )
    {

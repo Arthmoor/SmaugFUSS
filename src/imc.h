@@ -1,10 +1,10 @@
 /* IMC2 Freedom Client - Developed by Mud Domain.
  *
- * Copyright ©2004 by Roger Libiez ( Samson )
+ * Copyright ©2004-2008 by Roger Libiez ( Samson )
  * Contributions by Johnathan Walker ( Xorith ), Copyright ©2004
  * Additional contributions by Jesse Defer ( Garil ), Copyright ©2004
  * Additional contributions by Rogel, Copyright ©2004
- * Comments and suggestions welcome: http://www.mudbytes.net/index.php?a=forum&f=31
+ * Comments and suggestions welcome: http://www.mudbytes.net/imc2-support-forum
  * License terms are available in the imc2freedom.license file.
  */
 
@@ -15,7 +15,7 @@
  * This name was chosen to represent the ideals of not only the code, but of the
  * network which spawned it.
  */
-#define IMC_VERSION_STRING "IMC2 Freedom CL-2.1a "
+#define IMC_VERSION_STRING "IMC2 Freedom CL-2.2 "
 #define IMC_VERSION 2
 
 /* Number of entries to keep in the channel histories */
@@ -127,7 +127,7 @@ do                            \
 {                             \
    if((point))                \
    {                          \
-      free((point));          \
+      free( (void*) (point));          \
       (point) = NULL;         \
    }                          \
 } while(0)
@@ -211,11 +211,11 @@ typedef struct imc_cmd_alias IMC_ALIAS;   /* Big, bad, bloated command alias thi
 typedef struct imc_packet_handler IMC_PHANDLER; /* custom packet handlers added dynamically */
 typedef struct who_template WHO_TEMPLATE; /* The who templates */
 
-typedef void IMC_FUN( CHAR_DATA * ch, char *argument );
-#define IMC_CMD( name ) void (name)( CHAR_DATA *ch, char *argument )
+typedef void IMC_FUN( CHAR_DATA * ch, const char *argument );
+#define IMC_CMD( name ) void (name)( CHAR_DATA *ch, const char *argument )
 
-typedef void PACKET_FUN( IMC_PACKET * q, char *packet );
-#define PFUN( name ) void (name)( IMC_PACKET *q, char *packet )
+typedef void PACKET_FUN( IMC_PACKET * q, const char *packet );
+#define PFUN( name ) void (name)( IMC_PACKET *q, const char *packet )
 
 extern REMOTEINFO *first_rinfo;
 extern REMOTEINFO *last_rinfo;
@@ -413,7 +413,7 @@ struct who_template
    char *master;
 };
 
-bool imc_command_hook( CHAR_DATA * ch, char *command, char *argument );
+bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument );
 void imc_hotboot( void );
 void imc_startup( bool force, int desc, bool connected );
 void imc_shutdown( bool reconnect );

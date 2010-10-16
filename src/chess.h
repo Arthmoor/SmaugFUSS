@@ -21,8 +21,8 @@
 
 struct game_board_data
 {
-   char *player1;
-   char *player2;
+   const char *player1;
+   const char *player2;
    int board[8][8];
    int turn;
    int type;

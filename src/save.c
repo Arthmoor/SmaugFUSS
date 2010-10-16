@@ -26,8 +26,9 @@
 
 /*
  * Increment with every major format change.
+ * Upped to 5 for addition of new Age Setup. -Kayle 1/22/08
  */
-#define SAVEVERSION 4
+#define SAVEVERSION 5
 
 /*
  * Array to keep track of equipment temporarily. - Thoric
@@ -45,7 +46,7 @@ void fwrite_comments( CHAR_DATA * ch, FILE * fp );
 void fread_comment( CHAR_DATA * ch, FILE * fp );
 void fwrite_variables( CHAR_DATA * ch, FILE * fp );
 void fread_variable( CHAR_DATA * ch, FILE * fp );
-bool check_parse_name( char *name, bool newchar );
+bool check_parse_name( const char *name, bool newchar );
 void fwrite_fuss_exdesc( FILE * fpout, EXTRA_DESCR_DATA * ed );
 void fwrite_fuss_affect( FILE * fp, AFFECT_DATA * paf );
 
@@ -211,6 +212,26 @@ void re_equip_char( CHAR_DATA * ch )
    }
 }
 
+short find_old_age( CHAR_DATA * ch )
+{
+   short age;
+
+   if( IS_NPC( ch ) )
+      return -1;
+
+   age = ch->played / 86400;   /* Calculate realtime number of days played */
+
+   age = age / 7; /* Calculates rough estimate on number of mud years played */
+
+   age += 17;  /* Add 17 years, new characters begin at 17. */
+
+   ch->pcdata->day = ( number_range( 1, sysdata.dayspermonth ) - 1 );   /* Assign random day of birth */
+   ch->pcdata->month = ( number_range( 1, sysdata.monthsperyear ) - 1 );   /* Assign random month of birth */
+   ch->pcdata->year = time_info.year - age;  /* Assign birth year based on calculations above */
+
+   return age;
+}
+
 /*
  * Save a character and inventory.
  * Would be cool to save NPC's too for quest purposes,
@@ -338,6 +359,8 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
    fprintf( fp, "Sex          %d\n", ch->sex );
    fprintf( fp, "Class        %d\n", ch->Class );
    fprintf( fp, "Race         %d\n", ch->race );
+   fprintf( fp, "Age          %d %d %d %d\n",
+            ch->pcdata->age_bonus, ch->pcdata->day, ch->pcdata->month, ch->pcdata->year );
    fprintf( fp, "Languages    %d %d\n", ch->speaks, ch->speaking );
    fprintf( fp, "Level        %d\n", ch->level );
    fprintf( fp, "Played       %d\n", ch->played + ( int )( current_time - ch->logon ) );
@@ -469,6 +492,7 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
    fprintf( fp, "MKills       %d\n", ch->pcdata->mkills );
    fprintf( fp, "MDeaths      %d\n", ch->pcdata->mdeaths );
    fprintf( fp, "IllegalPK    %d\n", ch->pcdata->illegal_pk );
+   fprintf( fp, "Timezone     %d\n", ch->pcdata->timezone );
    fprintf( fp, "AttrPerm     %d %d %d %d %d %d %d\n",
             ch->perm_str, ch->perm_int, ch->perm_wis, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck );
 
@@ -915,6 +939,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
       ch->pcdata->o_range_lo = 0;
       ch->pcdata->o_range_hi = 0;
       ch->pcdata->wizinvis = 0;
+      ch->pcdata->timezone = -1;
    }
    else
    {
@@ -1093,6 +1118,24 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                LINK( paf, ch->first_affect, ch->last_affect, next, prev );
                fMatch = TRUE;
                break;
+            }
+
+            if( file_ver < 5 )
+               find_old_age( ch );
+            else
+            {
+               if( !str_cmp( word, "Age" ) )
+               {
+                  line = fread_line( fp );
+                  x1 = x2 = x3 = x4 = 0;
+                  sscanf( line, "%d %d %d %d", &x1, &x2, &x3, &x4 );
+                  ch->pcdata->age_bonus = x1;
+                  ch->pcdata->day = x2;
+                  ch->pcdata->month = x3;
+                  ch->pcdata->year = x4;
+                  fMatch = TRUE;
+                  break;
+               }
             }
 
             if( !strcmp( word, "AttrMod" ) )
@@ -1298,7 +1341,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
          case 'I':
             if( !strcmp( word, "Ignored" ) )
             {
-               char *temp;
+               const char *temp;
                char fname[1024];
                struct stat fst;
                int ign;
@@ -1711,7 +1754,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                   if( ch->speaking == 0 )
                      ch->speaking = ~0;
 
-                  CREATE( ch->pcdata->tell_history, char *, 26 );
+                  CREATE( ch->pcdata->tell_history, const char *, 26 );
                   for( i = 0; i < 26; i++ )
                      ch->pcdata->tell_history[i] = NULL;
                }
@@ -1765,6 +1808,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                break;
             }
             KEY( "Trust", ch->trust, fread_number( fp ) );
+            KEY( "Timezone", ch->pcdata->timezone, fread_number( fp )); 
             /*
              * Let no character be trusted higher than one below maxlevel -- Narn 
              */
@@ -1939,16 +1983,10 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                if( !fNest || !fVnum )
                {
                   if( obj->name )
-                     bug( "Fread_obj: %s incomplete object.", obj->name );
+                     bug( "%s: %s incomplete object.", __FUNCTION__, obj->name );
                   else
-                     bug( "%s", "Fread_obj: incomplete object." );
-                  if( obj->name )
-                     STRFREE( obj->name );
-                  if( obj->description )
-                     STRFREE( obj->description );
-                  if( obj->short_descr )
-                     STRFREE( obj->short_descr );
-                  DISPOSE( obj );
+                     bug( "%s: incomplete object.", __FUNCTION__ );
+                  free_obj( obj );
                   return;
                }
                else
@@ -2222,7 +2260,7 @@ void set_alarm( long seconds )
 /*
  * Based on last time modified, show when a player was last on	-Thoric
  */
-void do_last( CHAR_DATA * ch, char *argument )
+void do_last( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -2247,7 +2285,7 @@ void do_last( CHAR_DATA * ch, char *argument )
  * Added support for removeing so we could take out the write_corpses
  * so we could take it out of the save_char_obj function. --Shaddai
  */
-void write_corpses( CHAR_DATA * ch, char *name, OBJ_DATA * objrem )
+void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem )
 {
    OBJ_DATA *corpse;
    FILE *fp = NULL;

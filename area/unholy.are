@@ -3,11 +3,12 @@
 Version      1
 Name         Unholy Grounds~
 Author       Eldaera~
+WeatherX     0
+WeatherY     0
 Ranges       5 15 0 60
 Economy      0 1323238
 ResetMsg     The grief of mourners is audible throughout the burial ground...~
 ResetFreq    10
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -629,18 +630,18 @@ Flags    metal~
 Values   0 0 0 0 0 0
 Stats    1000 0 0 0 0
 #MUDPROG
-Progtype  pull_prog~
-Arglist   100~
-Comlist   mpasound The loud bell cries out for those lost to this world.
-mpecho The loud bell cries out for those lost to this world.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  push_prog~
 Arglist   100~
 Comlist   mpasound The mournful toll of a bell announces the death of another soul.
 mpecho The mournful toll of a bell announces the death of another soul.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  pull_prog~
+Arglist   100~
+Comlist   mpasound The loud bell cries out for those lost to this world.
+mpecho The loud bell cries out for those lost to this world.
 ~
 #ENDPROG
 

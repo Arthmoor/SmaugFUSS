@@ -24,16 +24,16 @@
 /*
  *  Locals
  */
-char *tiny_affect_loc_name( int location );
+const char *tiny_affect_loc_name( int location );
 
-void do_gold( CHAR_DATA * ch, char *argument )
+void do_gold( CHAR_DATA* ch, const char* argument)
 {
    set_char_color( AT_GOLD, ch );
    ch_printf( ch, "You have %s gold pieces.\r\n", num_punct( ch->gold ) );
    return;
 }
 
-void do_worth( CHAR_DATA * ch, char *argument )
+void do_worth( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
@@ -139,30 +139,51 @@ void do_worth( CHAR_DATA * ch, char *argument )
 /*
  * New score command by Haus
  */
-void do_score( CHAR_DATA * ch, char *argument )
+void do_score( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    AFFECT_DATA *paf;
    int iLang;
+   /*const char *suf;
+   short day;
 
-   if( IS_NPC( ch ) )
-   {
-      do_oldscore( ch, argument );
-      return;
-   }
+   day = ch->pcdata->day + 1;
+
+   if( day > 4 && day < 20 )
+      suf = "th";
+   else if( day % 10 == 1 )
+      suf = "st";
+   else if( day % 10 == 2 )
+      suf = "nd";
+   else if( day % 10 == 3 )
+      suf = "rd";
+   else
+      suf = "th";
+   * - Uncomment this if you want Birthdays dispayed on score for players - Kayle 1/22/08
+   */
+
    set_pager_color( AT_SCORE, ch );
 
-   pager_printf( ch, "\r\nScore for %s%s.\r\n", ch->name, ch->pcdata->title );
+   pager_printf( ch, "\r\nScore for %s%s.\r\n", ch->name, IS_NPC(ch) ? "" : ch->pcdata->title );
    if( get_trust( ch ) != ch->level )
       pager_printf( ch, "You are trusted at level %d.\r\n", get_trust( ch ) );
 
    send_to_pager( "----------------------------------------------------------------------------\r\n", ch );
 
-   pager_printf( ch, "LEVEL: %-3d         Race : %-10.10s        Played: %d hours\r\n",
-                 ch->level, capitalize( get_race( ch ) ), ( get_age( ch ) - 17 ) * 2 );
+   /*if( time_info.day == ch->pcdata->day && time_info.month == ch->pcdata->month )
+      send_to_char( "Today is your birthday!\r\n", ch );
+   else
+      ch_printf( ch, "Your birthday is: Day of %s, %d%s day in the Month of %s, in the year %d.\r\n",
+                 day_name[ch->pcdata->day % sysdata.daysperweek], day, suf, month_name[ch->pcdata->month], ch->pcdata->year );
+   send_to_pager( "----------------------------------------------------------------------------\r\n", ch );
+   * - Uncomment this if you want players to see their birthday's on score. - Kayle 1/22/08
+   */
+
+   pager_printf( ch, "LEVEL: %-3d         Race : %-10.10s        Played: %ld hours\r\n",
+                 ch->level, capitalize( get_race( ch ) ), ( long int )GET_TIME_PLAYED( ch ) );
 
    pager_printf( ch, "YEARS: %-6d      Class: %-11.11s       Log In: %s\r",
-                 get_age( ch ), capitalize( get_class( ch ) ), ctime( &( ch->logon ) ) );
+                 calculate_age( ch ), capitalize( get_class( ch ) ), ctime( &( ch->logon ) ) );
 
    if( ch->level >= 15 || IS_PKILL( ch ) )
    {
@@ -585,439 +606,10 @@ void do_score( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_newscore( CHAR_DATA * ch, char *argument )
-{
-   char buf[MAX_STRING_LENGTH];
-   char arg[MAX_INPUT_LENGTH];
-   AFFECT_DATA *paf;
-
-   if( IS_NPC( ch ) )
-   {
-      do_oldscore( ch, argument );
-      return;
-   }
-   set_pager_color( AT_SCORE, ch );
-
-   pager_printf_color( ch, "\r\n&C%s%s.\r\n", ch->name, ch->pcdata->title );
-   if( get_trust( ch ) != ch->level )
-      pager_printf( ch, "You are trusted at level %d.\r\n", get_trust( ch ) );
-
-   send_to_pager_color( "&W----------------------------------------------------------------------------\r\n", ch );
-
-   pager_printf_color( ch, "Level: &W%-3d         &CRace : &W%-10.10s        &CPlayed: &W%d &Chours\r\n",
-                       ch->level, capitalize( get_race( ch ) ), ( get_age( ch ) - 17 ) * 2 );
-   pager_printf_color( ch, "&CYears: &W%-6d      &CClass: &W%-11.11s       &CLog In: %s\r",
-                       get_age( ch ), capitalize( get_class( ch ) ), ctime( &( ch->logon ) ) );
-
-   if( ch->level >= 15 || IS_PKILL( ch ) )
-   {
-      pager_printf_color( ch, "&CSTR  : &W%2.2d&C(&w%2.2d&C)    HitRoll: &R%-4d               &CSaved: %s\r",
-                          get_curr_str( ch ), ch->perm_str, GET_HITROLL( ch ),
-                          ch->save_time ? ctime( &( ch->save_time ) ) : "no save this session\n" );
-
-      pager_printf_color( ch, "&CINT  : &W%2.2d&C(&w%2.2d&C)    DamRoll: &R%-4d                &CTime: %s\r",
-                          get_curr_int( ch ), ch->perm_int, GET_DAMROLL( ch ), ctime( &current_time ) );
-   }
-   else
-   {
-      pager_printf_color( ch, "&CSTR  : &W%2.2d&C(&w%2.2d&C)                               Saved:  %s\r",
-                          get_curr_str( ch ), ch->perm_str, ch->save_time ? ctime( &( ch->save_time ) ) : "no\n" );
-
-      pager_printf_color( ch, "&CINT  : &W%2.2d&C(&w%2.2d&C)                               Time:   %s\r",
-                          get_curr_int( ch ), ch->perm_int, ctime( &current_time ) );
-   }
-
-   if( GET_AC( ch ) >= 101 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the rags of a beggar" );
-   else if( GET_AC( ch ) >= 80 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "improper for adventure" );
-   else if( GET_AC( ch ) >= 55 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "shabby and threadbare" );
-   else if( GET_AC( ch ) >= 40 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "of poor quality" );
-   else if( GET_AC( ch ) >= 20 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "scant protection" );
-   else if( GET_AC( ch ) >= 10 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "that of a knave" );
-   else if( GET_AC( ch ) >= 0 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "moderately crafted" );
-   else if( GET_AC( ch ) >= -10 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "well crafted" );
-   else if( GET_AC( ch ) >= -20 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the envy of squires" );
-   else if( GET_AC( ch ) >= -40 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "excellently crafted" );
-   else if( GET_AC( ch ) >= -60 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the envy of knights" );
-   else if( GET_AC( ch ) >= -80 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the envy of barons" );
-   else if( GET_AC( ch ) >= -100 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the envy of dukes" );
-   else if( GET_AC( ch ) >= -200 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "the envy of emperors" );
-   else
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "that of an avatar" );
-   if( ch->level > 24 )
-      pager_printf_color( ch, "&CWIS  : &W%2.2d&C(&w%2.2d&C)      Armor: &W%-d; %s\r\n",
-                          get_curr_wis( ch ), ch->perm_wis, GET_AC( ch ), buf );
-   else
-      pager_printf_color( ch, "&CWIS  : &W%2.2d&C(&w%2.2d&C)      Armor: &W%s \r\n", get_curr_wis( ch ), ch->perm_wis, buf );
-
-   if( ch->alignment > 900 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "devout" );
-   else if( ch->alignment > 700 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "noble" );
-   else if( ch->alignment > 350 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "honorable" );
-   else if( ch->alignment > 100 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "worthy" );
-   else if( ch->alignment > -100 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "neutral" );
-   else if( ch->alignment > -350 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "base" );
-   else if( ch->alignment > -700 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "evil" );
-   else if( ch->alignment > -900 )
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "ignoble" );
-   else
-      snprintf( buf, MAX_STRING_LENGTH, "%s", "fiendish" );
-   if( ch->level < 10 )
-      pager_printf_color( ch, "&CDEX  : &W%2.2d&C(&w%2.2d&C)      Align: &W%-20.20s    &CItems:  &W%d (max %d)\r\n",
-                          get_curr_dex( ch ), ch->perm_dex, buf, ch->carry_number, can_carry_n( ch ) );
-   else
-      pager_printf_color( ch, "&CDEX  : &W%2.2d&C(&w%2.2d&C)      Align: &W%4d; %-14.14s   &CItems:  &W%d &w(max %d)\r\n",
-                          get_curr_dex( ch ), ch->perm_dex, ch->alignment, buf, ch->carry_number, can_carry_n( ch ) );
-
-   switch ( ch->position )
-   {
-      case POS_DEAD:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "slowly decomposing" );
-         break;
-      case POS_MORTAL:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "mortally wounded" );
-         break;
-      case POS_INCAP:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "incapacitated" );
-         break;
-      case POS_STUNNED:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "stunned" );
-         break;
-      case POS_SLEEPING:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "sleeping" );
-         break;
-      case POS_RESTING:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "resting" );
-         break;
-      case POS_STANDING:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "standing" );
-         break;
-      case POS_FIGHTING:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "fighting" );
-         break;
-      case POS_EVASIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "fighting (evasive)" );   /* Fighting style support -haus */
-         break;
-      case POS_DEFENSIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "fighting (defensive)" );
-         break;
-      case POS_AGGRESSIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "fighting (aggressive)" );
-         break;
-      case POS_BERSERK:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "fighting (berserk)" );
-         break;
-      case POS_MOUNTED:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "mounted" );
-         break;
-      case POS_SITTING:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "sitting" );
-         break;
-   }
-   pager_printf_color( ch, "&CCON  : &W%2.2d&C(&w%2.2d&C)      Pos'n: &W%-21.21s  &CWeight: &W%d &w(max %d)\r\n",
-                       get_curr_con( ch ), ch->perm_con, buf, ch->carry_weight, can_carry_w( ch ) );
-
-
-   /*
-    * Fighting style support -haus
-    */
-   pager_printf_color( ch, "&CCHA  : &W%2.2d&C(&w%2.2d&C)      Wimpy: &Y%-5d      ",
-                       get_curr_cha( ch ), ch->perm_cha, ch->wimpy );
-
-   switch ( ch->style )
-   {
-      case STYLE_EVASIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "evasive" );
-         break;
-      case STYLE_DEFENSIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "defensive" );
-         break;
-      case STYLE_AGGRESSIVE:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "aggressive" );
-         break;
-      case STYLE_BERSERK:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "berserk" );
-         break;
-      default:
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "standard" );
-         break;
-   }
-   pager_printf_color( ch, "\r\n&CLCK  : &W%2.2d&C(&w%2.2d&C)      Style: &W%-10.10s\r\n",
-                       get_curr_lck( ch ), ch->perm_lck, buf );
-
-   pager_printf_color( ch, "&CGlory: &W%d&C/&w%d\r\n", ch->pcdata->quest_curr, ch->pcdata->quest_accum );
-
-   pager_printf_color( ch,
-                       "&CPRACT: &W%3d         &CHitpoints: &G%-5d &Cof &g%5d   &CPager: (&W%c&C) &W%3d    &CAutoExit(&W%c&C)\r\n",
-                       ch->practice, ch->hit, ch->max_hit, IS_SET( ch->pcdata->flags, PCFLAG_PAGERON ) ? 'X' : ' ',
-                       ch->pcdata->pagerlen, xIS_SET( ch->act, PLR_AUTOEXIT ) ? 'X' : ' ' );
-
-   if( IS_VAMPIRE( ch ) )
-      pager_printf_color( ch,
-                          "&CEXP  : &W%-9d       &CBlood: &R%-5d &Cof &r%5d   &CMKills:  &W%5d    &CAutoLoot(&W%c&C)\r\n",
-                          ch->exp, ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->pcdata->mkills,
-                          xIS_SET( ch->act, PLR_AUTOLOOT ) ? 'X' : ' ' );
-   else if( ch->Class == CLASS_WARRIOR )
-      pager_printf_color( ch, "&CEXP  : &W%-9d                               &CMKills:  &W%5d    &CAutoLoot(&W%c&C)\r\n",
-                          ch->exp, ch->pcdata->mkills, xIS_SET( ch->act, PLR_AUTOLOOT ) ? 'X' : ' ' );
-   else
-      pager_printf_color( ch,
-                          "&CEXP  : &W%-9d        &CMana: &B%-5d &Cof &b%5d   &CMKills:  &W%5d    &CAutoLoot(&W%c&C)\r\n",
-                          ch->exp, ch->mana, ch->max_mana, ch->pcdata->mkills, xIS_SET( ch->act,
-                                                                                        PLR_AUTOLOOT ) ? 'X' : ' ' );
-
-   pager_printf_color( ch, "&CGOLD : &Y%-13s    &CMove: &W%-5d &Cof &w%5d   &CMdeaths: &W%5d    &CAutoSac (&W%c&C)\r\n",
-                       num_punct( ch->gold ), ch->move, ch->max_move, ch->pcdata->mdeaths, xIS_SET( ch->act,
-                                                                                                    PLR_AUTOSAC ) ? 'X' :
-                       ' ' );
-
-   if( !IS_NPC( ch ) && ch->pcdata->condition[COND_DRUNK] > 10 )
-      send_to_pager( "You are drunk.\r\n", ch );
-   if( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] == 0 )
-      send_to_pager( "You are in danger of dehydrating.\r\n", ch );
-   if( !IS_NPC( ch ) && ch->pcdata->condition[COND_FULL] == 0 )
-      send_to_pager( "You are starving to death.\r\n", ch );
-   if( ch->position != POS_SLEEPING )
-      switch ( ch->mental_state / 10 )
-      {
-         default:
-            send_to_pager( "You're completely messed up!\r\n", ch );
-            break;
-         case -10:
-            send_to_pager( "You're barely conscious.\r\n", ch );
-            break;
-         case -9:
-            send_to_pager( "You can barely keep your eyes open.\r\n", ch );
-            break;
-         case -8:
-            send_to_pager( "You're extremely drowsy.\r\n", ch );
-            break;
-         case -7:
-            send_to_pager( "You feel very unmotivated.\r\n", ch );
-            break;
-         case -6:
-            send_to_pager( "You feel sedated.\r\n", ch );
-            break;
-         case -5:
-            send_to_pager( "You feel sleepy.\r\n", ch );
-            break;
-         case -4:
-            send_to_pager( "You feel tired.\r\n", ch );
-            break;
-         case -3:
-            send_to_pager( "You could use a rest.\r\n", ch );
-            break;
-         case -2:
-            send_to_pager( "You feel a little under the weather.\r\n", ch );
-            break;
-         case -1:
-            send_to_pager( "You feel fine.\r\n", ch );
-            break;
-         case 0:
-            send_to_pager( "You feel great.\r\n", ch );
-            break;
-         case 1:
-            send_to_pager( "You feel energetic.\r\n", ch );
-            break;
-         case 2:
-            send_to_pager( "Your mind is racing.\r\n", ch );
-            break;
-         case 3:
-            send_to_pager( "You can't think straight.\r\n", ch );
-            break;
-         case 4:
-            send_to_pager( "Your mind is going 100 miles an hour.\r\n", ch );
-            break;
-         case 5:
-            send_to_pager( "You're high as a kite.\r\n", ch );
-            break;
-         case 6:
-            send_to_pager( "Your mind and body are slipping apart.\r\n", ch );
-            break;
-         case 7:
-            send_to_pager( "Reality is slipping away.\r\n", ch );
-            break;
-         case 8:
-            send_to_pager( "You have no idea what is real, and what is not.\r\n", ch );
-            break;
-         case 9:
-            send_to_pager( "You feel immortal.\r\n", ch );
-            break;
-         case 10:
-            send_to_pager( "You are a Supreme Entity.\r\n", ch );
-            break;
-      }
-   else if( ch->mental_state > 45 )
-      send_to_pager( "Your sleep is filled with strange and vivid dreams.\r\n", ch );
-   else if( ch->mental_state > 25 )
-      send_to_pager( "Your sleep is uneasy.\r\n", ch );
-   else if( ch->mental_state < -35 )
-      send_to_pager( "You are deep in a much needed sleep.\r\n", ch );
-   else if( ch->mental_state < -25 )
-      send_to_pager( "You are in deep slumber.\r\n", ch );
-/*  send_to_pager("Languages: ", ch );
-    for ( iLang = 0; lang_array[iLang] != LANG_UNKNOWN; iLang++ )
-	if ( knows_language( ch, lang_array[iLang], ch )
-	||  (IS_NPC(ch) && ch->speaks == 0) )
-	{
-	    if ( lang_array[iLang] & ch->speaking
-	    ||  (IS_NPC(ch) && !ch->speaking) )
-		set_pager_color( AT_RED, ch );
-	    send_to_pager( lang_names[iLang], ch );
-	    send_to_pager( " ", ch );
-	    set_pager_color( AT_SCORE, ch );
-	}
-    send_to_pager( "\r\n", ch );
-*/
-   if( ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0' )
-      pager_printf_color( ch, "&CYou are bestowed with the command(s): &Y%s\r\n", ch->pcdata->bestowments );
-
-   if( ch->morph && ch->morph->morph )
-   {
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      if( IS_IMMORTAL( ch ) )
-         pager_printf( ch, "Morphed as (%d) %s with a timer of %d.\r\n",
-                       ch->morph->morph->vnum, ch->morph->morph->short_desc, ch->morph->timer );
-      else
-         pager_printf( ch, "You are morphed into a %s.\r\n", ch->morph->morph->short_desc );
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-   }
-   if( CAN_PKILL( ch ) )
-   {
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      pager_printf_color( ch, "&CPKILL DATA:  Pkills (&W%d&C)     Illegal Pkills (&W%d&C)     Pdeaths (&W%d&C)\r\n",
-                          ch->pcdata->pkills, ch->pcdata->illegal_pk, ch->pcdata->pdeaths );
-   }
-   if( ch->pcdata->clan && ch->pcdata->clan->clan_type != CLAN_ORDER && ch->pcdata->clan->clan_type != CLAN_GUILD )
-   {
-/*
-	send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch);
-*/
-      pager_printf_color( ch, "&CCLAN STATS:  &W%-14.14s  &CClan AvPkills : &W%-5d  &CClan NonAvpkills : &W%-5d\r\n",
-                          ch->pcdata->clan->name, ch->pcdata->clan->pkills[5],
-                          ( ch->pcdata->clan->pkills[0] + ch->pcdata->clan->pkills[1] +
-                            ch->pcdata->clan->pkills[2] + ch->pcdata->clan->pkills[3] + ch->pcdata->clan->pkills[4] ) );
-      pager_printf_color( ch, "&C                             Clan AvPdeaths: &W%-5d  &CClan NonAvpdeaths: &W%-5d\r\n",
-                          ch->pcdata->clan->pdeaths[5],
-                          ( ch->pcdata->clan->pdeaths[0] + ch->pcdata->clan->pdeaths[1] +
-                            ch->pcdata->clan->pdeaths[2] + ch->pcdata->clan->pdeaths[3] + ch->pcdata->clan->pdeaths[4] ) );
-   }
-   if( ch->pcdata->deity )
-   {
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      if( ch->pcdata->favor > 2250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "loved" );
-      else if( ch->pcdata->favor > 2000 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "cherished" );
-      else if( ch->pcdata->favor > 1750 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "honored" );
-      else if( ch->pcdata->favor > 1500 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "praised" );
-      else if( ch->pcdata->favor > 1250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "favored" );
-      else if( ch->pcdata->favor > 1000 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "respected" );
-      else if( ch->pcdata->favor > 750 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "liked" );
-      else if( ch->pcdata->favor > 250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "tolerated" );
-      else if( ch->pcdata->favor > -250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "ignored" );
-      else if( ch->pcdata->favor > -750 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "shunned" );
-      else if( ch->pcdata->favor > -1000 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "disliked" );
-      else if( ch->pcdata->favor > -1250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "dishonored" );
-      else if( ch->pcdata->favor > -1500 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "disowned" );
-      else if( ch->pcdata->favor > -1750 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "abandoned" );
-      else if( ch->pcdata->favor > -2000 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "despised" );
-      else if( ch->pcdata->favor > -2250 )
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "hated" );
-      else
-         snprintf( buf, MAX_STRING_LENGTH, "%s", "damned" );
-      pager_printf_color( ch, "&CDeity:  &W%-20s &CFavor:  &W%s&C\r\n", ch->pcdata->deity->name, buf );
-   }
-   if( ch->pcdata->clan && ch->pcdata->clan->clan_type == CLAN_ORDER )
-   {
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      pager_printf_color( ch, "&COrder:  &W%-20s  &COrder Mkills:  &W%-6d   &COrder MDeaths:  &W%-6d\r\n",
-                          ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths );
-   }
-   if( ch->pcdata->clan && ch->pcdata->clan->clan_type == CLAN_GUILD )
-   {
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      pager_printf_color( ch, "&CGuild:  &W%-20s  &CGuild Mkills:  &W%-6d   &CGuild MDeaths:  &W%-6d\r\n",
-                          ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths );
-   }
-   argument = one_argument( argument, arg );
-   if( ch->first_affect && !str_cmp( arg, "affects" ) )
-   {
-      int i;
-      SKILLTYPE *sktmp;
-
-      i = 0;
-      send_to_pager_color( "&W----------------------------------------------------------------------------&C\r\n", ch );
-      send_to_pager_color( "AFFECT DATA:                            ", ch );
-      for( paf = ch->first_affect; paf; paf = paf->next )
-      {
-         if( ( sktmp = get_skilltype( paf->type ) ) == NULL )
-            continue;
-         if( ch->level < 20 )
-         {
-            pager_printf_color( ch, "&C[&W%-34.34s&C]    ", sktmp->name );
-            if( i == 0 )
-               i = 2;
-            if( ( ++i % 3 ) == 0 )
-               send_to_pager( "\r\n", ch );
-         }
-         if( ch->level >= 20 )
-         {
-            if( paf->modifier == 0 )
-               pager_printf_color( ch, "&C[&W%-24.24s;%5d &Crds]    ", sktmp->name, paf->duration );
-            else if( paf->modifier > 999 )
-               pager_printf_color( ch, "&C[&W%-15.15s; %7.7s;%5d &Crds]    ",
-                                   sktmp->name, tiny_affect_loc_name( paf->location ), paf->duration );
-            else
-               pager_printf_color( ch, "&C[&W%-11.11s;%+-3.3d %7.7s;%5d &Crds]    ",
-                                   sktmp->name, paf->modifier, tiny_affect_loc_name( paf->location ), paf->duration );
-            if( i == 0 )
-               i = 1;
-            if( ( ++i % 2 ) == 0 )
-               send_to_pager( "\r\n", ch );
-         }
-      }
-   }
-   send_to_pager( "\r\n", ch );
-   return;
-}
-
 /*
  * Return ascii name of an affect location.
  */
-char *tiny_affect_loc_name( int location )
+const char *tiny_affect_loc_name( int location )
 {
    switch ( location )
    {
@@ -1179,7 +771,7 @@ char *tiny_affect_loc_name( int location )
    return "(?)";
 }
 
-char *get_class( CHAR_DATA * ch )
+const char *get_class( CHAR_DATA * ch )
 {
    if( IS_NPC( ch ) && ch->Class < MAX_NPC_CLASS && ch->Class >= 0 )
       return ( npc_class[ch->Class] );
@@ -1189,7 +781,7 @@ char *get_class( CHAR_DATA * ch )
 }
 
 
-char *get_race( CHAR_DATA * ch )
+const char *get_race( CHAR_DATA * ch )
 {
    if( ch->race < MAX_PC_RACE && ch->race >= 0 )
       return ( race_table[ch->race]->race_name );
@@ -1198,268 +790,10 @@ char *get_race( CHAR_DATA * ch )
    return ( "Unknown" );
 }
 
-void do_oldscore( CHAR_DATA * ch, char *argument )
-{
-   AFFECT_DATA *paf;
-   SKILLTYPE *skill;
-
-   set_pager_color( AT_SCORE, ch );
-   pager_printf( ch,
-                 "You are %s%s, level %d, %d years old (%d hours).\r\n",
-                 ch->name, IS_NPC( ch ) ? "" : ch->pcdata->title, ch->level, get_age( ch ), ( get_age( ch ) - 17 ) * 2 );
-
-   if( get_trust( ch ) != ch->level )
-      pager_printf( ch, "You are trusted at level %d.\r\n", get_trust( ch ) );
-
-   if( IS_NPC( ch ) && xIS_SET( ch->act, ACT_MOBINVIS ) )
-      pager_printf( ch, "You are mobinvis at level %d.\r\n", ch->mobinvis );
-
-   if( !IS_NPC( ch ) && IS_VAMPIRE( ch ) )
-      pager_printf( ch,
-                    "You have %d/%d hit, %d/%d blood level, %d/%d movement, %d practices.\r\n",
-                    ch->hit, ch->max_hit,
-                    ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->practice );
-   else
-      pager_printf( ch,
-                    "You have %d/%d hit, %d/%d mana, %d/%d movement, %d practices.\r\n",
-                    ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->practice );
-
-   pager_printf( ch,
-                 "You are carrying %d/%d items with weight %d/%d kg.\r\n",
-                 ch->carry_number, can_carry_n( ch ), ch->carry_weight, can_carry_w( ch ) );
-
-   pager_printf( ch,
-                 "Str: %d  Int: %d  Wis: %d  Dex: %d  Con: %d  Cha: %d  Lck: %d.\r\n",
-                 get_curr_str( ch ),
-                 get_curr_int( ch ),
-                 get_curr_wis( ch ), get_curr_dex( ch ), get_curr_con( ch ), get_curr_cha( ch ), get_curr_lck( ch ) );
-
-   pager_printf( ch, "You have scored %s exp, and have ", num_punct( ch->exp ) );
-   pager_printf( ch, "%s gold coins.\r\n", num_punct( ch->gold ) );
-
-
-   if( !IS_NPC( ch ) )
-      pager_printf( ch,
-                    "You have achieved %d glory during your life, and currently have %d.\r\n",
-                    ch->pcdata->quest_accum, ch->pcdata->quest_curr );
-
-   pager_printf( ch,
-                 "Autoexit: %s   Autoloot: %s   Autosac: %s   Autogold: %s\r\n",
-                 ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AUTOEXIT ) ) ? "yes" : "no",
-                 ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AUTOLOOT ) ) ? "yes" : "no",
-                 ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AUTOSAC ) ) ? "yes" : "no",
-                 ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_AUTOGOLD ) ) ? "yes" : "no" );
-
-   pager_printf( ch, "Wimpy set to %d hit points.\r\n", ch->wimpy );
-
-   if( !IS_NPC( ch ) )
-   {
-      if( ch->pcdata->condition[COND_DRUNK] > 10 )
-         send_to_pager( "You are drunk.\r\n", ch );
-      if( ch->pcdata->condition[COND_THIRST] == 0 )
-         send_to_pager( "You are thirsty.\r\n", ch );
-      if( ch->pcdata->condition[COND_FULL] == 0 )
-         send_to_pager( "You are hungry.\r\n", ch );
-   }
-
-   switch ( ch->mental_state / 10 )
-   {
-      default:
-         send_to_pager( "You're completely messed up!\r\n", ch );
-         break;
-      case -10:
-         send_to_pager( "You're barely conscious.\r\n", ch );
-         break;
-      case -9:
-         send_to_pager( "You can barely keep your eyes open.\r\n", ch );
-         break;
-      case -8:
-         send_to_pager( "You're extremely drowsy.\r\n", ch );
-         break;
-      case -7:
-         send_to_pager( "You feel very unmotivated.\r\n", ch );
-         break;
-      case -6:
-         send_to_pager( "You feel sedated.\r\n", ch );
-         break;
-      case -5:
-         send_to_pager( "You feel sleepy.\r\n", ch );
-         break;
-      case -4:
-         send_to_pager( "You feel tired.\r\n", ch );
-         break;
-      case -3:
-         send_to_pager( "You could use a rest.\r\n", ch );
-         break;
-      case -2:
-         send_to_pager( "You feel a little under the weather.\r\n", ch );
-         break;
-      case -1:
-         send_to_pager( "You feel fine.\r\n", ch );
-         break;
-      case 0:
-         send_to_pager( "You feel great.\r\n", ch );
-         break;
-      case 1:
-         send_to_pager( "You feel energetic.\r\n", ch );
-         break;
-      case 2:
-         send_to_pager( "Your mind is racing.\r\n", ch );
-         break;
-      case 3:
-         send_to_pager( "You can't think straight.\r\n", ch );
-         break;
-      case 4:
-         send_to_pager( "Your mind is going 100 miles an hour.\r\n", ch );
-         break;
-      case 5:
-         send_to_pager( "You're high as a kite.\r\n", ch );
-         break;
-      case 6:
-         send_to_pager( "Your mind and body are slipping appart.\r\n", ch );
-         break;
-      case 7:
-         send_to_pager( "Reality is slipping away.\r\n", ch );
-         break;
-      case 8:
-         send_to_pager( "You have no idea what is real, and what is not.\r\n", ch );
-         break;
-      case 9:
-         send_to_pager( "You feel immortal.\r\n", ch );
-         break;
-      case 10:
-         send_to_pager( "You are a Supreme Entity.\r\n", ch );
-         break;
-   }
-
-   switch ( ch->position )
-   {
-      case POS_DEAD:
-         send_to_pager( "You are DEAD!!\r\n", ch );
-         break;
-      case POS_MORTAL:
-         send_to_pager( "You are mortally wounded.\r\n", ch );
-         break;
-      case POS_INCAP:
-         send_to_pager( "You are incapacitated.\r\n", ch );
-         break;
-      case POS_STUNNED:
-         send_to_pager( "You are stunned.\r\n", ch );
-         break;
-      case POS_SLEEPING:
-         send_to_pager( "You are sleeping.\r\n", ch );
-         break;
-      case POS_RESTING:
-         send_to_pager( "You are resting.\r\n", ch );
-         break;
-      case POS_STANDING:
-         send_to_pager( "You are standing.\r\n", ch );
-         break;
-      case POS_FIGHTING:
-         send_to_pager( "You are fighting.\r\n", ch );
-         break;
-      case POS_MOUNTED:
-         send_to_pager( "Mounted.\r\n", ch );
-         break;
-      case POS_SHOVE:
-         send_to_pager( "Being shoved.\r\n", ch );
-         break;
-      case POS_DRAG:
-         send_to_pager( "Being dragged.\r\n", ch );
-         break;
-   }
-
-   if( ch->level >= 25 )
-      pager_printf( ch, "AC: %d.  ", GET_AC( ch ) );
-
-   send_to_pager( "You are ", ch );
-   if( GET_AC( ch ) >= 101 )
-      send_to_pager( "WORSE than naked!\r\n", ch );
-   else if( GET_AC( ch ) >= 80 )
-      send_to_pager( "naked.\r\n", ch );
-   else if( GET_AC( ch ) >= 60 )
-      send_to_pager( "wearing clothes.\r\n", ch );
-   else if( GET_AC( ch ) >= 40 )
-      send_to_pager( "slightly armored.\r\n", ch );
-   else if( GET_AC( ch ) >= 20 )
-      send_to_pager( "somewhat armored.\r\n", ch );
-   else if( GET_AC( ch ) >= 0 )
-      send_to_pager( "armored.\r\n", ch );
-   else if( GET_AC( ch ) >= -20 )
-      send_to_pager( "well armored.\r\n", ch );
-   else if( GET_AC( ch ) >= -40 )
-      send_to_pager( "strongly armored.\r\n", ch );
-   else if( GET_AC( ch ) >= -60 )
-      send_to_pager( "heavily armored.\r\n", ch );
-   else if( GET_AC( ch ) >= -80 )
-      send_to_pager( "superbly armored.\r\n", ch );
-   else if( GET_AC( ch ) >= -100 )
-      send_to_pager( "divinely armored.\r\n", ch );
-   else
-      send_to_pager( "invincible!\r\n", ch );
-
-   if( ch->level >= 15 || IS_PKILL( ch ) )
-      pager_printf( ch, "Hitroll: %d  Damroll: %d.\r\n", GET_HITROLL( ch ), GET_DAMROLL( ch ) );
-
-   if( ch->level >= 10 )
-      pager_printf( ch, "Alignment: %d.  ", ch->alignment );
-
-   send_to_pager( "You are ", ch );
-   if( ch->alignment > 900 )
-      send_to_pager( "angelic.\r\n", ch );
-   else if( ch->alignment > 700 )
-      send_to_pager( "saintly.\r\n", ch );
-   else if( ch->alignment > 350 )
-      send_to_pager( "good.\r\n", ch );
-   else if( ch->alignment > 100 )
-      send_to_pager( "kind.\r\n", ch );
-   else if( ch->alignment > -100 )
-      send_to_pager( "neutral.\r\n", ch );
-   else if( ch->alignment > -350 )
-      send_to_pager( "mean.\r\n", ch );
-   else if( ch->alignment > -700 )
-      send_to_pager( "evil.\r\n", ch );
-   else if( ch->alignment > -900 )
-      send_to_pager( "demonic.\r\n", ch );
-   else
-      send_to_pager( "satanic.\r\n", ch );
-
-   if( ch->first_affect )
-   {
-      send_to_pager( "You are affected by:\r\n", ch );
-      for( paf = ch->first_affect; paf; paf = paf->next )
-         if( ( skill = get_skilltype( paf->type ) ) != NULL )
-         {
-            pager_printf( ch, "Spell: '%s'", skill->name );
-
-            if( ch->level >= 20 )
-               pager_printf( ch,
-                             " modifies %s by %d for %d rounds",
-                             affect_loc_name( paf->location ), paf->modifier, paf->duration );
-
-            send_to_pager( ".\r\n", ch );
-         }
-   }
-
-   if( !IS_NPC( ch ) && IS_IMMORTAL( ch ) )
-   {
-      pager_printf( ch, "\r\nWizInvis level: %d   WizInvis is %s\r\n",
-                    ch->pcdata->wizinvis, xIS_SET( ch->act, PLR_WIZINVIS ) ? "ON" : "OFF" );
-      if( ch->pcdata->r_range_lo && ch->pcdata->r_range_hi )
-         pager_printf( ch, "Room Range: %d - %d\r\n", ch->pcdata->r_range_lo, ch->pcdata->r_range_hi );
-      if( ch->pcdata->o_range_lo && ch->pcdata->o_range_hi )
-         pager_printf( ch, "Obj Range : %d - %d\r\n", ch->pcdata->o_range_lo, ch->pcdata->o_range_hi );
-      if( ch->pcdata->m_range_lo && ch->pcdata->m_range_hi )
-         pager_printf( ch, "Mob Range : %d - %d\r\n", ch->pcdata->m_range_lo, ch->pcdata->m_range_hi );
-   }
-
-   return;
-}
-
 /*								-Thoric
  * Display your current exp, level, and surrounding level exp requirements
  */
-void do_level( CHAR_DATA * ch, char *argument )
+void do_level( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
@@ -1482,7 +816,7 @@ void do_level( CHAR_DATA * ch, char *argument )
 }
 
 /* 1997, Blodkai */
-void do_remains( CHAR_DATA * ch, char *argument )
+void do_remains( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    OBJ_DATA *obj;
@@ -1525,7 +859,7 @@ void do_remains( CHAR_DATA * ch, char *argument )
 }
 
 /* Affects-at-a-glance, Blodkai */
-void do_affected( CHAR_DATA * ch, char *argument )
+void do_affected( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    AFFECT_DATA *paf;
@@ -1590,7 +924,7 @@ void do_affected( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_inventory( CHAR_DATA * ch, char *argument )
+void do_inventory( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *victim;
 
@@ -1614,7 +948,7 @@ void do_inventory( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_equipment( CHAR_DATA * ch, char *argument )
+void do_equipment( CHAR_DATA* ch, const char* argument)
 {
    OBJ_DATA *obj;
    int iWear;
@@ -1647,17 +981,15 @@ void do_equipment( CHAR_DATA * ch, char *argument )
 
    if( !found )
       send_to_char( "Nothing.\r\n", ch );
-
-   return;
 }
 
-void set_title( CHAR_DATA * ch, char *title )
+void set_title( CHAR_DATA * ch, const char *title )
 {
    char buf[MAX_STRING_LENGTH];
 
    if( IS_NPC( ch ) )
    {
-      bug( "%s", "Set_title: NPC." );
+      bug( "%s: NPC.", __FUNCTION__ );
       return;
    }
 
@@ -1671,12 +1003,9 @@ void set_title( CHAR_DATA * ch, char *title )
 
    STRFREE( ch->pcdata->title );
    ch->pcdata->title = STRALLOC( buf );
-   return;
 }
 
-
-
-void do_title( CHAR_DATA * ch, char *argument )
+void do_title( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
       return;
@@ -1700,16 +1029,16 @@ void do_title( CHAR_DATA * ch, char *argument )
       return;
    }
 
-   if( strlen( argument ) > 50 )
-      argument[50] = '\0';
+   char title[50];
+   mudstrlcpy(title, argument, 50);
 
-   smash_tilde( argument );
-   set_title( ch, argument );
+   smash_tilde( title );
+   set_title( ch, title );
    send_to_char( "Ok.\r\n", ch );
 }
 
 
-void do_homepage( CHAR_DATA * ch, char *argument )
+void do_homepage( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
 
@@ -1758,7 +1087,7 @@ void do_homepage( CHAR_DATA * ch, char *argument )
 /*
  * Set your personal description				-Thoric
  */
-void do_description( CHAR_DATA * ch, char *argument )
+void do_description( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
    {
@@ -1797,7 +1126,7 @@ void do_description( CHAR_DATA * ch, char *argument )
 }
 
 /* Ripped off do_description for whois bio's -- Scryn*/
-void do_bio( CHAR_DATA * ch, char *argument )
+void do_bio( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
    {
@@ -1844,7 +1173,7 @@ void do_bio( CHAR_DATA * ch, char *argument )
  * New stat and statreport command coded by Morphina
  * Bug fixes by Shaddai
  */
-void do_statreport( CHAR_DATA * ch, char *argument )
+void do_statreport( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
 
@@ -1889,7 +1218,7 @@ void do_statreport( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_stat( CHAR_DATA * ch, char *argument )
+void do_stat( CHAR_DATA* ch, const char* argument)
 {
    if( IS_NPC( ch ) )
    {
@@ -1915,7 +1244,7 @@ void do_stat( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_report( CHAR_DATA * ch, char *argument )
+void do_report( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_INPUT_LENGTH];
 
@@ -1952,7 +1281,7 @@ void do_report( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_fprompt( CHAR_DATA * ch, char *argument )
+void do_fprompt( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -1979,8 +1308,9 @@ void do_fprompt( CHAR_DATA * ch, char *argument )
    ch_printf( ch, "%s\r\n", !str_cmp( ch->pcdata->fprompt, "" ) ? "(default prompt)" : ch->pcdata->fprompt );
    if( ch->pcdata->fprompt )
       STRFREE( ch->pcdata->fprompt );
-   if( strlen( argument ) > 128 )
-      argument[128] = '\0';
+
+   char prompt[128];
+   mudstrlcpy(prompt, argument, 128);
 
    /*
     * Can add a list of pre-set prompts here if wanted.. perhaps
@@ -1989,11 +1319,11 @@ void do_fprompt( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "default" ) )
       ch->pcdata->fprompt = STRALLOC( "" );
    else
-      ch->pcdata->fprompt = STRALLOC( argument );
+      ch->pcdata->fprompt = STRALLOC( prompt );
    return;
 }
 
-void do_prompt( CHAR_DATA * ch, char *argument )
+void do_prompt( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -2020,8 +1350,9 @@ void do_prompt( CHAR_DATA * ch, char *argument )
    ch_printf( ch, "%s\r\n", !str_cmp( ch->pcdata->prompt, "" ) ? "(default prompt)" : ch->pcdata->prompt );
    if( ch->pcdata->prompt )
       STRFREE( ch->pcdata->prompt );
-   if( strlen( argument ) > 128 )
-      argument[128] = '\0';
+
+   char prompt[128];
+   mudstrlcpy(prompt, argument, 128);
 
    /*
     * Can add a list of pre-set prompts here if wanted.. perhaps
@@ -2030,6 +1361,6 @@ void do_prompt( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "default" ) )
       ch->pcdata->prompt = STRALLOC( "" );
    else
-      ch->pcdata->prompt = STRALLOC( argument );
+      ch->pcdata->prompt = STRALLOC( prompt );
    return;
 }

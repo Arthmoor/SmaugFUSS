@@ -38,13 +38,8 @@ void drunk_randoms( CHAR_DATA * ch );
 void hallucinations( CHAR_DATA * ch );
 void subtract_times( struct timeval *etime, struct timeval *sttime );
 
-/* weather functions - FB */
-void adjust_vectors( WEATHER_DATA * weather );
-void get_weather_echo( WEATHER_DATA * weather );
-void get_time_echo( WEATHER_DATA * weather );
-
 /* From interp.c */
-bool check_social( CHAR_DATA * ch, const char *command, char *argument );
+bool check_social( CHAR_DATA * ch, const char *command, const char *argument );
 
 /*
  * Global Variables
@@ -822,6 +817,54 @@ void mobile_update( void )
    trworld_dispose( &lc );
 }
 
+/* Anything that should be updating based on time should go here - like hunger/thirst for one */
+void char_calendar_update( void )
+{
+   CHAR_DATA *ch;
+   TRV_WORLD *lc;
+
+   lc = trworld_create( TR_CHAR_WORLD_BACK );
+   for( ch = last_char; ch; ch = trvch_wnext( lc ) )
+   {
+      if( !IS_NPC( ch ) && !IS_IMMORTAL( ch ) )
+      {
+         gain_condition( ch, COND_DRUNK, -1 );
+
+         /*
+          * Newbies won't starve now - Samson 10-2-98 
+          */
+         if( ch->in_room && ch->level > 3 )
+            gain_condition( ch, COND_FULL, -1 + race_table[ch->race]->hunger_mod );
+
+         /*
+          * Newbies won't dehydrate now - Samson 10-2-98 
+          */
+         if( ch->in_room && ch->level > 3 )
+         {
+            int sector;
+
+            sector = ch->in_room->sector_type;
+
+            switch ( sector )
+            {
+               default:
+                  gain_condition( ch, COND_THIRST, -1 + race_table[ch->race]->thirst_mod );
+                  break;
+               case SECT_DESERT:
+                  gain_condition( ch, COND_THIRST, -3 + race_table[ch->race]->thirst_mod );
+                  break;
+               case SECT_UNDERWATER:
+               case SECT_OCEANFLOOR:
+                  if( number_bits( 1 ) == 0 )
+                     gain_condition( ch, COND_THIRST, -1 + race_table[ch->race]->thirst_mod );
+                  break;
+            }
+         }
+      }
+   }
+   trworld_dispose( &lc );
+}
+
 /*
  * Update all chars, including mobs.
  * This function is performance sensitive.
@@ -1060,22 +1103,6 @@ void char_update( void )
             gain_condition( ch, COND_THIRST, value );
             gain_condition( ch, COND_FULL, --value );
          }
-
-         if( ch->in_room )
-            switch ( ch->in_room->sector_type )
-            {
-               default:
-                  gain_condition( ch, COND_THIRST, -1 + race_table[ch->race]->thirst_mod );
-                  break;
-               case SECT_DESERT:
-                  gain_condition( ch, COND_THIRST, -3 + race_table[ch->race]->thirst_mod );
-                  break;
-               case SECT_UNDERWATER:
-               case SECT_OCEANFLOOR:
-                  if( number_bits( 1 ) == 0 )
-                     gain_condition( ch, COND_THIRST, -1 + race_table[ch->race]->thirst_mod );
-                  break;
-            }
       }
 
       if( !IS_NPC( ch ) && !IS_IMMORTAL( ch ) && ch->pcdata->release_date > 0 && ch->pcdata->release_date <= current_time )
@@ -1270,7 +1297,7 @@ void obj_update( void )
    for( obj = last_object; obj; obj = trvobj_wnext( lc ) )
    {
       CHAR_DATA *rch;
-      char *message;
+      const char *message;
 
       set_cur_obj( obj );
 
@@ -1323,7 +1350,7 @@ void obj_update( void )
          {
             char buf[MAX_STRING_LENGTH];
             char name[MAX_STRING_LENGTH];
-            char *bufptr;
+            const char *bufptr;
 
             bufptr = one_argument( obj->short_descr, name );
             bufptr = one_argument( bufptr, name );
@@ -1797,7 +1824,7 @@ void hallucinations( CHAR_DATA * ch )
 {
    if( ch->mental_state >= 30 && number_bits( 5 - ( ch->mental_state >= 50 ) - ( ch->mental_state >= 75 ) ) == 0 )
    {
-      char *t;
+      const char *t;
 
       switch ( number_range( 1, UMIN( 21, ( ch->mental_state + 5 ) / 5 ) ) )
       {
@@ -1931,6 +1958,7 @@ void update_handler( void )
    static int pulse_violence;
    static int pulse_point;
    static int pulse_second;
+   static int pulse_time;
    struct timeval sttime;
    struct timeval etime;
 
@@ -1959,13 +1987,19 @@ void update_handler( void )
       violence_update(  );
    }
 
+   if( --pulse_time <= 0 )
+   {
+      pulse_time = sysdata.pulsecalendar;
+      char_calendar_update(  );
+   }
+
    if( --pulse_point <= 0 )
    {
       pulse_point = number_range( ( int )( PULSE_TICK * 0.75 ), ( int )( PULSE_TICK * 1.25 ) );
 
       auth_update(  );  /* Gorog */
-      time_update(  );
-      weather_update(  );
+      time_update(  );  /* If looking for slower passing time, move this to just above char_calendar_update(  ); */
+      UpdateWeather(  ); /* New Weather Updater -Kayle */
       hint_update(  );
       char_update(  );
       obj_update(  );
@@ -2003,9 +2037,7 @@ void update_handler( void )
       timechar = NULL;
    }
    tail_chain(  );
-   return;
 }
-
 
 void remove_portal( OBJ_DATA * portal )
 {
@@ -2047,13 +2079,11 @@ void remove_portal( OBJ_DATA * portal )
       bug( "%s", "remove_portal: toRoom is NULL" );
 
    extract_exit( fromRoom, pexit );
-
-   return;
 }
 
 void reboot_check( time_t reset )
 {
-   static char *tmsg[] = { "You feel the ground shake as the end comes near!",
+   static const char *tmsg[] = { "You feel the ground shake as the end comes near!",
       "Lightning crackles in the sky above!",
       "Crashes of thunder sound across the land!",
       "The sky has suddenly turned midnight black.",
@@ -2114,7 +2144,6 @@ void reboot_check( time_t reset )
       --trun;
       return;
    }
-   return;
 }
 
 /* the auction update*/
@@ -2242,551 +2271,155 @@ void subtract_times( struct timeval *etime, struct timeval *sttime )
       etime->tv_usec += 1000000;
       etime->tv_sec--;
    }
-   return;
-}
-
-/*
- * Function to update weather vectors according to climate
- * settings, random effects, and neighboring areas.
- * Last modified: July 18, 1997
- * - Fireblade
- */
-void adjust_vectors( WEATHER_DATA * weather )
-{
-   NEIGHBOR_DATA *neigh;
-   double dT, dP, dW;
-
-   if( !weather )
-   {
-      bug( "%s: NULL weather data.", __FUNCTION__ );
-      return;
-   }
-
-   dT = 0;
-   dP = 0;
-   dW = 0;
-
-   /*
-    * Add in random effects 
-    */
-   dT += number_range( -rand_factor, rand_factor );
-   dP += number_range( -rand_factor, rand_factor );
-   dW += number_range( -rand_factor, rand_factor );
-
-   /*
-    * Add in climate effects
-    */
-   dT += climate_factor * ( ( ( weather->climate_temp - 2 ) * weath_unit ) - ( weather->temp ) ) / weath_unit;
-   dP += climate_factor * ( ( ( weather->climate_precip - 2 ) * weath_unit ) - ( weather->precip ) ) / weath_unit;
-   dW += climate_factor * ( ( ( weather->climate_wind - 2 ) * weath_unit ) - ( weather->wind ) ) / weath_unit;
-
-   /*
-    * Add in effects from neighboring areas 
-    */
-   for( neigh = weather->first_neighbor; neigh; neigh = neigh->next )
-   {
-      /*
-       * see if we have the area cache'd already 
-       */
-      if( !neigh->address )
-      {
-         /*
-          * try and find address for area 
-          */
-         neigh->address = get_area( neigh->name );
-
-         /*
-          * if couldn't find area ditch the neigh 
-          */
-         if( !neigh->address )
-         {
-            NEIGHBOR_DATA *temp;
-            bug( "%s", "adjust_weather: invalid area name." );
-            temp = neigh->prev;
-            UNLINK( neigh, weather->first_neighbor, weather->last_neighbor, next, prev );
-            STRFREE( neigh->name );
-            DISPOSE( neigh );
-            neigh = temp;
-            continue;
-         }
-      }
-
-      dT += ( neigh->address->weather->temp - weather->temp ) / neigh_factor;
-      dP += ( neigh->address->weather->precip - weather->precip ) / neigh_factor;
-      dW += ( neigh->address->weather->wind - weather->wind ) / neigh_factor;
-   }
-
-   /*
-    * now apply the effects to the vectors 
-    */
-   weather->temp_vector += ( int )dT;
-   weather->precip_vector += ( int )dP;
-   weather->wind_vector += ( int )dW;
-
-   /*
-    * Make sure they are within the right range 
-    */
-   weather->temp_vector = URANGE( -max_vector, weather->temp_vector, max_vector );
-   weather->precip_vector = URANGE( -max_vector, weather->precip_vector, max_vector );
-   weather->wind_vector = URANGE( -max_vector, weather->wind_vector, max_vector );
-
-   return;
-}
-
-/*
- * function updates weather for each area
- * Last Modified: July 31, 1997
- * Fireblade
- */
-void weather_update(  )
-{
-   AREA_DATA *pArea;
-   DESCRIPTOR_DATA *d;
-   int limit;
-
-   limit = 3 * weath_unit;
-
-   for( pArea = first_area; pArea; pArea = ( pArea == last_area ) ? first_build : pArea->next )
-   {
-      /*
-       * Apply vectors to fields 
-       */
-      pArea->weather->temp += pArea->weather->temp_vector;
-      pArea->weather->precip += pArea->weather->precip_vector;
-      pArea->weather->wind += pArea->weather->wind_vector;
-
-      /*
-       * Make sure they are within the proper range 
-       */
-      pArea->weather->temp = URANGE( -limit, pArea->weather->temp, limit );
-      pArea->weather->precip = URANGE( -limit, pArea->weather->precip, limit );
-      pArea->weather->wind = URANGE( -limit, pArea->weather->wind, limit );
-
-      /*
-       * get an appropriate echo for the area 
-       */
-      get_weather_echo( pArea->weather );
-   }
-
-   for( pArea = first_area; pArea; pArea = ( pArea == last_area ) ? first_build : pArea->next )
-   {
-      adjust_vectors( pArea->weather );
-   }
-
-   /*
-    * display the echo strings to the appropriate players 
-    */
-   for( d = first_descriptor; d; d = d->next )
-   {
-      WEATHER_DATA *weath;
-
-      if( d->connected == CON_PLAYING &&
-          IS_OUTSIDE( d->character ) && !NO_WEATHER_SECT( d->character->in_room->sector_type ) && IS_AWAKE( d->character ) )
-      {
-         weath = d->character->in_room->area->weather;
-         if( !weath->echo )
-            continue;
-         set_char_color( weath->echo_color, d->character );
-         send_to_char( weath->echo, d->character );
-      }
-   }
-   return;
-}
-
-/*
- * get weather echo messages according to area weather...
- * stores echo message in weath_data.... must be called before
- * the vectors are adjusted
- * Last Modified: August 10, 1997
- * Fireblade
- */
-void get_weather_echo( WEATHER_DATA * weath )
-{
-   int n;
-   int temp, precip, wind;
-   int dT, dP, dW;
-   int tindex, pindex, windex;
-
-   /*
-    * set echo to be nothing 
-    */
-   weath->echo = NULL;
-   weath->echo_color = AT_GREY;
-
-   /*
-    * get the random number 
-    */
-   n = number_bits( 2 );
-
-   /*
-    * variables for convenience 
-    */
-   temp = weath->temp;
-   precip = weath->precip;
-   wind = weath->wind;
-
-   dT = weath->temp_vector;
-   dP = weath->precip_vector;
-   dW = weath->wind_vector;
-
-   tindex = ( temp + 3 * weath_unit - 1 ) / weath_unit;
-   pindex = ( precip + 3 * weath_unit - 1 ) / weath_unit;
-   windex = ( wind + 3 * weath_unit - 1 ) / weath_unit;
-
-   /*
-    * get the echo string... mainly based on precip 
-    */
-   switch ( pindex )
-   {
-      case 0:
-         if( precip - dP > -2 * weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The clouds disappear.\r\n",
-               "The clouds disappear.\r\n",
-               "The sky begins to break through the clouds.\r\n",
-               "The clouds are slowly evaporating.\r\n"
-            };
-
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_WHITE;
-         }
-         break;
-
-      case 1:
-         if( precip - dP <= -2 * weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The sky is getting cloudy.\r\n",
-               "The sky is getting cloudy.\r\n",
-               "Light clouds cast a haze over the sky.\r\n",
-               "Billows of clouds spread through the sky.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_GREY;
-         }
-         break;
-
-      case 2:
-         if( precip - dP > 0 )
-         {
-            if( tindex > 1 )
-            {
-               char *echo_strings[4] = {
-                  "The rain stops.\r\n",
-                  "The rain stops.\r\n",
-                  "The rainstorm tapers off.\r\n",
-                  "The rain's intensity breaks.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_CYAN;
-            }
-            else
-            {
-               char *echo_strings[4] = {
-                  "The snow stops.\r\n",
-                  "The snow stops.\r\n",
-                  "The snow showers taper off.\r\n",
-                  "The snow flakes disappear from the sky.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_WHITE;
-            }
-         }
-         break;
-
-      case 3:
-         if( precip - dP <= 0 )
-         {
-            if( tindex > 1 )
-            {
-               char *echo_strings[4] = {
-                  "It starts to rain.\r\n",
-                  "It starts to rain.\r\n",
-                  "A droplet of rain falls upon you.\r\n",
-                  "The rain begins to patter.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_CYAN;
-            }
-            else
-            {
-               char *echo_strings[4] = {
-                  "It starts to snow.\r\n",
-                  "It starts to snow.\r\n",
-                  "Crystal flakes begin to fall from the " "sky.\r\n",
-                  "Snow flakes drift down from the clouds.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_WHITE;
-            }
-         }
-         else if( tindex < 2 && temp - dT > -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The temperature drops and the rain becomes a light snow.\r\n",
-               "The temperature drops and the rain becomes a light snow.\r\n",
-               "Flurries form as the rain freezes.\r\n",
-               "Large snow flakes begin to fall with the rain.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_WHITE;
-         }
-         else if( tindex > 1 && temp - dT <= -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The snow flurries are gradually replaced by pockets of rain.\r\n",
-               "The snow flurries are gradually replaced by pockets of rain.\r\n",
-               "The falling snow turns to a cold drizzle.\r\n",
-               "The snow turns to rain as the air warms.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_CYAN;
-         }
-         break;
-
-      case 4:
-         if( precip - dP > 2 * weath_unit )
-         {
-            if( tindex > 1 )
-            {
-               char *echo_strings[4] = {
-                  "The lightning has stopped.\r\n",
-                  "The lightning has stopped.\r\n",
-                  "The sky settles, and the thunder surrenders.\r\n",
-                  "The lightning bursts fade as the storm weakens.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_GREY;
-            }
-         }
-         else if( tindex < 2 && temp - dT > -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The cold rain turns to snow.\r\n",
-               "The cold rain turns to snow.\r\n",
-               "Snow flakes begin to fall amidst the rain.\r\n",
-               "The driving rain begins to freeze.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_WHITE;
-         }
-         else if( tindex > 1 && temp - dT <= -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The snow becomes a freezing rain.\r\n",
-               "The snow becomes a freezing rain.\r\n",
-               "A cold rain beats down on you as the snow begins to melt.\r\n",
-               "The snow is slowly replaced by a heavy rain.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_CYAN;
-         }
-         break;
-
-      case 5:
-         if( precip - dP <= 2 * weath_unit )
-         {
-            if( tindex > 1 )
-            {
-               char *echo_strings[4] = {
-                  "Lightning flashes in the sky.\r\n",
-                  "Lightning flashes in the sky.\r\n",
-                  "A flash of lightning splits the sky.\r\n",
-                  "The sky flashes, and the ground trembles with thunder.\r\n"
-               };
-               weath->echo = echo_strings[n];
-               weath->echo_color = AT_YELLOW;
-            }
-         }
-         else if( tindex > 1 && temp - dT <= -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The sky rumbles with thunder as the snow changes to rain.\r\n",
-               "The sky rumbles with thunder as the snow changes to rain.\r\n",
-               "The falling turns to freezing rain amidst flashes of lightning.\r\n",
-               "The falling snow begins to melt as thunder crashes overhead.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_WHITE;
-         }
-         else if( tindex < 2 && temp - dT > -weath_unit )
-         {
-            char *echo_strings[4] = {
-               "The lightning stops as the rainstorm becomes a blinding blizzard.\r\n",
-               "The lightning stops as the rainstorm becomes a blinding blizzard.\r\n",
-               "The thunder dies off as the pounding rain turns to heavy snow.\r\n",
-               "The cold rain turns to snow and the lightning stops.\r\n"
-            };
-            weath->echo = echo_strings[n];
-            weath->echo_color = AT_CYAN;
-         }
-         break;
-
-      default:
-         bug( "%s: invalid precip index", __FUNCTION__ );
-         weath->precip = 0;
-         break;
-   }
-
-   return;
-}
-
-/*
- * get echo messages according to time changes...
- * some echoes depend upon the weather so an echo must be
- * found for each area
- * Last Modified: August 10, 1997
- * Fireblade
- */
-void get_time_echo( WEATHER_DATA * weath )
-{
-   int n;
-   int pindex;
-
-   n = number_bits( 2 );
-   pindex = ( weath->precip + 3 * weath_unit - 1 ) / weath_unit;
-   weath->echo = NULL;
-   weath->echo_color = AT_GREY;
-
-   switch ( time_info.hour )
-   {
-      case 5:
-      {
-         char *echo_strings[4] = {
-            "The day has begun.\r\n",
-            "The day has begun.\r\n",
-            "The sky slowly begins to glow.\r\n",
-            "The sun slowly embarks upon a new day.\r\n"
-         };
-         time_info.sunlight = SUN_RISE;
-         weath->echo = echo_strings[n];
-         weath->echo_color = AT_YELLOW;
-         break;
-      }
-      case 6:
-      {
-         char *echo_strings[4] = {
-            "The sun rises in the east.\r\n",
-            "The sun rises in the east.\r\n",
-            "The hazy sun rises over the horizon.\r\n",
-            "Day breaks as the sun lifts into the sky.\r\n"
-         };
-         time_info.sunlight = SUN_LIGHT;
-         weath->echo = echo_strings[n];
-         weath->echo_color = AT_ORANGE;
-         break;
-      }
-      case 12:
-      {
-         if( pindex > 0 )
-         {
-            weath->echo = "It's noon.\r\n";
-         }
-         else
-         {
-            char *echo_strings[2] = {
-               "The intensity of the sun heralds the noon hour.\r\n",
-               "The sun's bright rays beat down upon your shoulders.\r\n"
-            };
-            weath->echo = echo_strings[n % 2];
-         }
-         time_info.sunlight = SUN_LIGHT;
-         weath->echo_color = AT_WHITE;
-         break;
-      }
-      case 19:
-      {
-         char *echo_strings[4] = {
-            "The sun slowly disappears in the west.\r\n",
-            "The reddish sun sets past the horizon.\r\n",
-            "The sky turns a reddish orange as the sun ends its journey.\r\n",
-            "The sun's radiance dims as it sinks in the sky.\r\n"
-         };
-         time_info.sunlight = SUN_SET;
-         weath->echo = echo_strings[n];
-         weath->echo_color = AT_RED;
-         break;
-      }
-      case 20:
-      {
-         if( pindex > 0 )
-         {
-            char *echo_strings[2] = {
-               "The night begins.\r\n",
-               "Twilight descends around you.\r\n"
-            };
-            weath->echo = echo_strings[n % 2];
-         }
-         else
-         {
-            char *echo_strings[2] = {
-               "The moon's gentle glow diffuses through the night sky.\r\n",
-               "The night sky gleams with glittering starlight.\r\n"
-            };
-            weath->echo = echo_strings[n % 2];
-         }
-         time_info.sunlight = SUN_DARK;
-         weath->echo_color = AT_DBLUE;
-         break;
-      }
-   }
-
-   return;
 }
 
 /*
  * update the time
  */
-void time_update(  )
+void time_update( void )
 {
-   AREA_DATA *pArea;
    DESCRIPTOR_DATA *d;
-   WEATHER_DATA *weath;
+   int n;
+   const char *echo; /* echo string */
+   int echo_color;   /* color for the echo */
 
-   switch ( ++time_info.hour )
+   n = number_bits( 2 );
+   echo = NULL;
+   echo_color = AT_GREY;
+
+   ++time_info.hour; 
+
+   if( time_info.hour == sysdata.hourdaybegin || time_info.hour == sysdata.hoursunrise
+       || time_info.hour == sysdata.hournoon || time_info.hour == sysdata.hoursunset
+       || time_info.hour == sysdata.hournightbegin )
    {
-      case 5:
-      case 6:
-      case 12:
-      case 19:
-      case 20:
-         for( pArea = first_area; pArea; pArea = ( pArea == last_area ) ? first_build : pArea->next )
+      for( d = first_descriptor; d; d = d->next )
+      {
+         if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) && IS_AWAKE( d->character ) )
          {
-            get_time_echo( pArea->weather );
-         }
+            struct WeatherCell *cell = getWeatherCell( d->character->in_room->area );
 
-         for( d = first_descriptor; d; d = d->next )
-         {
-            if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) && IS_AWAKE( d->character ) )
+            switch( time_info.hour )
             {
-               weath = d->character->in_room->area->weather;
-               if( !weath->echo )
-                  continue;
-               set_char_color( weath->echo_color, d->character );
-               send_to_char( weath->echo, d->character );
+               case 6:
+               {
+                  const char *echo_strings[4] = {
+                     "The day has begun.\r\n",
+                     "The day has begun.\r\n",
+                     "The sky slowly begins to glow.\r\n",
+                     "The sun slowly embarks upon a new day.\r\n"
+                  };
+                  time_info.sunlight = SUN_RISE;
+                  echo = echo_strings[n];
+                  echo_color = AT_YELLOW;
+                  break;
+               }
+
+               case 7:
+               {
+                  const char *echo_strings[4] = {
+                     "The sun rises in the east.\r\n",
+                     "The sun rises in the east.\r\n",
+                     "The hazy sun rises over the horizon.\r\n",
+                     "Day breaks as the sun lifts into the sky.\r\n"
+                  };
+                  time_info.sunlight = SUN_LIGHT;
+                  echo = echo_strings[n];
+                  echo_color = AT_ORANGE;
+                  break;
+               }
+
+               case 12:
+               {
+                  if( getCloudCover( cell ) > 21 )
+                  {
+                     echo = "It's noon.\r\n";
+                  }
+                  else
+                  {
+                     const char *echo_strings[2] = {
+                        "The intensity of the sun heralds the noon hour.\r\n",
+                        "The sun's bright rays beat down upon your shoulders.\r\n"
+                     };
+
+                     echo = echo_strings[n % 2];
+                  }
+                  time_info.sunlight = SUN_LIGHT;
+                  echo_color = AT_WHITE;
+                  break;
+               }
+
+               case 18:
+               {
+                  const char *echo_strings[4] = {
+                     "The sun slowly disappears in the west.\r\n",
+                     "The reddish sun sets past the horizon.\r\n",
+                     "The sky turns a reddish orange as the sun ends its journey.\r\n",
+                     "The sun's radiance dims as it sinks in the sky.\r\n"
+                  };
+                  time_info.sunlight = SUN_SET;
+                  echo = echo_strings[n];
+                  echo_color = AT_RED;
+                  break;
+               }
+
+               case 19:
+               {
+                  if( getCloudCover( cell ) > 21 )
+                  {
+                     const char *echo_strings[2] = {
+                        "The night begins.\r\n",
+                        "Twilight descends around you.\r\n"
+                     };
+
+                     echo = echo_strings[n % 2];
+                  }
+                  else
+                  {
+                     const char *echo_strings[2] = {
+                        "The moon's gentle glow diffuses through the night sky.\r\n",
+                        "The night sky gleams with glittering starlight.\r\n"
+                     };
+
+                     echo = echo_strings[n % 2];
+                  }
+                  time_info.sunlight = SUN_DARK;
+                  echo_color = AT_DBLUE;
+                  break;
+               }
             }
+
+            if( !echo )
+               continue;
+            set_char_color( echo_color, d->character );
+            send_to_char( echo, d->character );
          }
-         break;
-      case 24:
-         time_info.hour = 0;
-         ++time_info.day;
-         break;
+      }
    }
 
-   if( time_info.day >= 30 )
+   if( time_info.hour == sysdata.hourmidnight )
+   {
+      time_info.hour = 0;
+      time_info.day++;
+      RandomizeCells(  );
+   }
+
+   if( time_info.day >= sysdata.dayspermonth )
    {
       time_info.day = 0;
-      ++time_info.month;
+      time_info.month++;
    }
 
-   if( time_info.month >= 17 )
+   if( time_info.month >= sysdata.monthsperyear )
    {
       time_info.month = 0;
-      ++time_info.year;
+      time_info.year++;
    }
-
-   return;
+   calc_season(  );  /* Samson 5-6-99 */
+   /*
+    * Save game world time - Samson 1-21-99 
+    */
+   save_timedata(  );
 }
 
 void hint_update(  )
@@ -2809,5 +2442,4 @@ void hint_update(  )
          }
       }
    }
-   return;
 }

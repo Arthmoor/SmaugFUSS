@@ -33,37 +33,37 @@ REL_DATA *last_relation = NULL;
 bool check_area_conflict( AREA_DATA * carea, int low_range, int hi_range );
 char *sprint_reset( RESET_DATA * pReset, short *num );
 void fix_exits( void );
-bool validate_spec_fun( char *name );
+bool validate_spec_fun( const char *name );
 
 /*
  * Exit Pull/push types
  * (water, air, earth, fire)
  */
-char *const ex_pmisc[] = { "undefined", "vortex", "vacuum", "slip", "ice", "mysterious" };
+const char *const ex_pmisc[] = { "undefined", "vortex", "vacuum", "slip", "ice", "mysterious" };
 
-char *const ex_pwater[] = { "current", "wave", "whirlpool", "geyser" };
+const char *const ex_pwater[] = { "current", "wave", "whirlpool", "geyser" };
 
-char *const ex_pair[] = { "wind", "storm", "coldwind", "breeze" };
+const char *const ex_pair[] = { "wind", "storm", "coldwind", "breeze" };
 
-char *const ex_pearth[] = { "landslide", "sinkhole", "quicksand", "earthquake" };
+const char *const ex_pearth[] = { "landslide", "sinkhole", "quicksand", "earthquake" };
 
-char *const ex_pfire[] = { "lava", "hotair" };
+const char *const ex_pfire[] = { "lava", "hotair" };
 
-char *const ex_flags[] = {
+const char *const ex_flags[] = {
    "isdoor", "closed", "locked", "secret", "swim", "pickproof", "fly", "climb",
    "dig", "eatkey", "nopassdoor", "hidden", "passage", "portal", "r1", "r2",
    "can_climb", "can_enter", "can_leave", "auto", "noflee", "searchable",
    "bashed", "bashproof", "nomob", "window", "can_look", "isbolt", "bolted"
 };
 
-char *const sec_flags[] = {
+const char *const sec_flags[] = {
    "inside", "city", "field", "forest", "hills", "mountain", "water_swim",
    "water_noswim", "underwater", "air", "desert", "dunno", "oceanfloor",
    "underground", "lava", "swamp", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
    "r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16"
 };
 
-char *const r_flags[] = {
+const char *const r_flags[] = {
    "dark", "death", "nomob", "indoors", "lawful", "neutral", "chaotic",
    "nomagic", "tunnel", "private", "safe", "solitary", "petshop", "norecall",
    "donation", "nodropall", "silence", "logspeech", "nodrop", "clanstoreroom",
@@ -71,7 +71,7 @@ char *const r_flags[] = {
    "nosupplicate", "arena", "nomissile", "r4", "r5", "prototype", "dnd", "bfs_mark"
 };
 
-char *const o_flags[] = {
+const char *const o_flags[] = {
    "glow", "hum", "dark", "loyal", "evil", "invis", "magic", "nodrop", "bless",
    "antigood", "antievil", "antineutral", "noremove", "inventory",
    "antimage", "antithief", "antiwarrior", "anticleric", "organic", "metal",
@@ -87,28 +87,28 @@ char *const mag_flags[] = {
 };
 */
 
-char *const w_flags[] = {
+const char *const w_flags[] = {
    "take", "finger", "neck", "body", "head", "legs", "feet", "hands", "arms",
    "shield", "about", "waist", "wrist", "wield", "hold", "_dual_", "ears", "eyes",
    "missile", "back", "face", "ankle", "r4", "r5", "r6",
    "r7", "r8", "r9", "r10", "r11", "r12", "r13"
 };
 
-char *const item_w_flags[] = {
+const char *const item_w_flags[] = {
    "take", "finger", "finger", "neck", "neck", "body", "head", "legs", "feet",
    "hands", "arms", "shield", "about", "waist", "wrist", "wrist", "wield",
    "hold", "dual", "ears", "eyes", "missile", "back", "face", "ankle", "ankle",
    "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12", "r13"
 };
 
-char *const area_flags[] = {
+const char *const area_flags[] = {
    "nopkill", "freekill", "noteleport", "spelllimit", "prototype", "r5", "r6", "r7", "r8",
    "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17",
    "r18", "r19", "r20", "r21", "r22", "r23", "r24",
    "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
 
-char *const o_types[] = {
+const char *const o_types[] = {
    "none", "light", "scroll", "wand", "staff", "weapon", "_fireweapon", "_missile",
    "treasure", "armor", "potion", "_worn", "furniture", "trash", "_oldtrap",
    "container", "_note", "drinkcon", "key", "food", "money", "pen", "boat",
@@ -120,7 +120,7 @@ char *const o_types[] = {
    "salve", "cook", "keyring", "odor", "chance", "mix"
 };
 
-char *const a_types[] = {
+const char *const a_types[] = {
    "none", "strength", "dexterity", "intelligence", "wisdom", "constitution",
    "sex", "class", "level", "age", "height", "weight", "mana", "hit", "move",
    "gold", "experience", "armor", "hitroll", "damroll", "save_poison", "save_rod",
@@ -134,7 +134,7 @@ char *const a_types[] = {
    "roomlight", "televnum", "teledelay"
 };
 
-char *const a_flags[] = {
+const char *const a_flags[] = {
    "blind", "invisible", "detect_evil", "detect_invis", "detect_magic",
    "detect_hidden", "hold", "sanctuary", "faerie_fire", "infrared", "curse",
    "_flaming", "poison", "protect", "_paralysis", "sneak", "hide", "sleep",
@@ -144,7 +144,7 @@ char *const a_flags[] = {
    "venomshield"
 };
 
-char *const act_flags[] = {
+const char *const act_flags[] = {
    "npc", "sentinel", "scavenger", "r1", "r2", "aggressive", "stayarea",
    "wimpy", "pet", "train", "practice", "immortal", "deadly", "polyself",
    "meta_aggr", "guardian", "running", "nowander", "mountable", "mounted",
@@ -152,7 +152,7 @@ char *const act_flags[] = {
    "pacifist", "noattack", "annoying", "statshield", "prototype"
 };
 
-char *const pc_flags[] = {
+const char *const pc_flags[] = {
    "r1", "deadly", "unauthed", "norecall", "nointro", "gag", "retired", "guest",
 /* changed "r8" to "" so players on watch can't see it  -- Gorog */
    "nosummon", "pager", "notitled", "groupwho", "diagnose", "highgag", "",
@@ -160,7 +160,7 @@ char *const pc_flags[] = {
    "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
 
-char *const plr_flags[] = {
+const char *const plr_flags[] = {
    "npc", "boughtpet", "shovedrag", "autoexits", "autoloot", "autosac", "blank",
    "outcast", "brief", "combine", "prompt", "telnet_ga", "holylight",
    "wizinvis", "roomvnum", "silence", "noemote", "attacker", "notell", "log",
@@ -168,34 +168,34 @@ char *const plr_flags[] = {
    "flee", "autogold", "automap", "afk", "invisprompt", "compass"
 };
 
-char *const trap_flags[] = {
+const char *const trap_flags[] = {
    "room", "obj", "enter", "leave", "open", "close", "get", "put", "pick",
    "unlock", "north", "south", "east", "west", "up", "down", "examine",
    "northeast", "northwest", "southeast", "southwest", "r6", "r7", "r8",
    "r9", "r10", "r11", "r12", "r13", "r14", "r15"
 };
 
-char *const cmd_flags[] = {
+const char *const cmd_flags[] = {
    "possessed", "polymorphed", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
    "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17", "r18", "r19",
    "r20", "r21", "r22", "r23", "r24", "r25", "r26", "r27", "r28", "r29", "r30"
 };
 
-char *const wear_locs[] = {
+const char *const wear_locs[] = {
    "light", "finger1", "finger2", "neck1", "neck2", "body", "head", "legs",
    "feet", "hands", "arms", "shield", "about", "waist", "wrist1", "wrist2",
    "wield", "hold", "dual_wield", "ears", "eyes", "missile_wield", "back",
    "face", "ankle1", "ankle2"
 };
 
-char *const ris_flags[] = {
+const char *const ris_flags[] = {
    "fire", "cold", "electricity", "energy", "blunt", "pierce", "slash", "acid",
    "poison", "drain", "sleep", "charm", "hold", "nonmagic", "plus1", "plus2",
    "plus3", "plus4", "plus5", "plus6", "magic", "paralysis", "r1", "r2", "r3",
    "r4", "r5", "r6", "r7", "r8", "r9", "r10"
 };
 
-char *const trig_flags[] = {
+const char *const trig_flags[] = {
    "up", "unlock", "lock", "d_north", "d_south", "d_east", "d_west", "d_up",
    "d_down", "door", "container", "open", "close", "passage", "oload", "mload",
    "teleport", "teleportall", "teleportplus", "death", "cast", "fakeblade",
@@ -203,7 +203,7 @@ char *const trig_flags[] = {
    "showroomdesc", "autoreturn", "r2", "r3"
 };
 
-char *const part_flags[] = {
+const char *const part_flags[] = {
    "head", "arms", "legs", "heart", "brains", "guts", "hands", "feet", "fingers",
    "ear", "eye", "long_tongue", "eyestalks", "tentacles", "fins", "wings",
    "tail", "scales", "claws", "fangs", "horns", "tusks", "tailattack",
@@ -211,7 +211,7 @@ char *const part_flags[] = {
    "r1", "r2"
 };
 
-char *const attack_flags[] = {
+const char *const attack_flags[] = {
    "bite", "claws", "tail", "sting", "punch", "kick", "trip", "bash", "stun",
    "gouge", "backstab", "feed", "drain", "firebreath", "frostbreath",
    "acidbreath", "lightnbreath", "gasbreath", "poison", "nastypoison", "gaze",
@@ -219,20 +219,20 @@ char *const attack_flags[] = {
    "flamestrike", "harm", "fireball", "colorspray", "weaken", "spiralblast"
 };
 
-char *const defense_flags[] = {
+const char *const defense_flags[] = {
    "parry", "dodge", "heal", "curelight", "cureserious", "curecritical",
    "dispelmagic", "dispelevil", "sanctuary", "fireshield", "shockshield",
    "shield", "bless", "stoneskin", "teleport", "monsum1", "monsum2", "monsum3",
    "monsum4", "disarm", "iceshield", "grip", "truesight", "acidmist", "venomshield"
 };
 
-char *const npc_position[] = {
+const char *const npc_position[] = {
    "dead", "mortal", "incapacitated", "stunned", "sleeping",
    "resting", "sitting", "berserk", "aggressive", "fighting", "defensive",
    "evasive", "standing", "mounted", "shove", "drag"
 };
 
-char *const npc_sex[] = {
+const char *const npc_sex[] = {
    "neuter", "male", "female"
 };
 
@@ -249,7 +249,7 @@ char *const npc_sex[] = {
  *  hour and time, rand and randiw, speech and speechiw
  * 
  */
-char *const mprog_flags[] = {
+const char *const mprog_flags[] = {
    "act", "speech", "rand", "fight", "death", "hitprcnt", "entry", "greet",
    "allgreet", "give", "bribe", "hour", "time", "wear", "remove", "sac",
    "look", "exa", "zap", "get", "drop", "damage", "repair", "randiw",
@@ -257,7 +257,7 @@ char *const mprog_flags[] = {
    "sell", "tell", "command"
 };
 
-char *flag_string( int bitvector, char *const flagarray[] )
+const char *flag_string( int bitvector, const char *const flagarray[] )
 {
    static char buf[MAX_STRING_LENGTH];
    int x;
@@ -279,7 +279,7 @@ char *flag_string( int bitvector, char *const flagarray[] )
    return buf;
 }
 
-char *ext_flag_string( EXT_BV * bitvector, char *const flagarray[] )
+const char *ext_flag_string( EXT_BV * bitvector, const char *const flagarray[] )
 {
    static char buf[MAX_STRING_LENGTH];
    int x;
@@ -441,7 +441,7 @@ bool can_medit( CHAR_DATA * ch, MOB_INDEX_DATA * mob )
    return FALSE;
 }
 
-int get_otype( char *type )
+int get_otype( const char *type )
 {
    unsigned int x;
 
@@ -451,7 +451,7 @@ int get_otype( char *type )
    return -1;
 }
 
-int get_aflag( char *flag )
+int get_aflag( const char *flag )
 {
    unsigned int x;
 
@@ -461,7 +461,7 @@ int get_aflag( char *flag )
    return -1;
 }
 
-int get_trapflag( char *flag )
+int get_trapflag( const char *flag )
 {
    size_t x;
 
@@ -471,7 +471,7 @@ int get_trapflag( char *flag )
    return -1;
 }
 
-int get_atype( char *type )
+int get_atype( const char *type )
 {
    unsigned int x;
 
@@ -481,7 +481,7 @@ int get_atype( char *type )
    return -1;
 }
 
-int get_npc_class( char *Class )
+int get_npc_class( const char *Class )
 {
    unsigned int x;
 
@@ -491,7 +491,7 @@ int get_npc_class( char *Class )
    return -1;
 }
 
-int get_npc_race( char *type )
+int get_npc_race( const char *type )
 {
    unsigned int x;
 
@@ -501,7 +501,7 @@ int get_npc_race( char *type )
    return -1;
 }
 
-int get_pc_class( char *Class )
+int get_pc_class( const char *Class )
 {
    int x;
 
@@ -511,7 +511,7 @@ int get_pc_class( char *Class )
    return -1;
 }
 
-int get_pc_race( char *type )
+int get_pc_race( const char *type )
 {
    int i;
 
@@ -521,7 +521,7 @@ int get_pc_race( char *type )
    return -1;
 }
 
-int get_wearloc( char *type )
+int get_wearloc( const char *type )
 {
    unsigned int x;
 
@@ -531,7 +531,7 @@ int get_wearloc( char *type )
    return -1;
 }
 
-int get_secflag( char *flag )
+int get_secflag( const char *flag )
 {
    unsigned int x;
 
@@ -541,7 +541,7 @@ int get_secflag( char *flag )
    return -1;
 }
 
-int get_exflag( char *flag )
+int get_exflag( const char *flag )
 {
    unsigned int x;
 
@@ -551,7 +551,7 @@ int get_exflag( char *flag )
    return -1;
 }
 
-int get_pulltype( char *type )
+int get_pulltype( const char *type )
 {
    unsigned int x;
 
@@ -577,7 +577,7 @@ int get_pulltype( char *type )
    return -1;
 }
 
-int get_rflag( char *flag )
+int get_rflag( const char *flag )
 {
    unsigned int x;
 
@@ -587,7 +587,7 @@ int get_rflag( char *flag )
    return -1;
 }
 
-int get_mpflag( char *flag )
+int get_mpflag( const char *flag )
 {
    unsigned int x;
 
@@ -597,7 +597,7 @@ int get_mpflag( char *flag )
    return -1;
 }
 
-int get_oflag( char *flag )
+int get_oflag( const char *flag )
 {
    unsigned int x;
 
@@ -607,7 +607,7 @@ int get_oflag( char *flag )
    return -1;
 }
 
-int get_areaflag( char *flag )
+int get_areaflag( const char *flag )
 {
    unsigned int x;
 
@@ -617,7 +617,7 @@ int get_areaflag( char *flag )
    return -1;
 }
 
-int get_wflag( char *flag )
+int get_wflag( const char *flag )
 {
    unsigned int x;
 
@@ -627,7 +627,7 @@ int get_wflag( char *flag )
    return -1;
 }
 
-int get_actflag( char *flag )
+int get_actflag( const char *flag )
 {
    unsigned int x;
 
@@ -637,7 +637,7 @@ int get_actflag( char *flag )
    return -1;
 }
 
-int get_pcflag( char *flag )
+int get_pcflag( const char *flag )
 {
    unsigned int x;
 
@@ -647,7 +647,7 @@ int get_pcflag( char *flag )
    return -1;
 }
 
-int get_plrflag( char *flag )
+int get_plrflag( const char *flag )
 {
    unsigned int x;
 
@@ -657,7 +657,7 @@ int get_plrflag( char *flag )
    return -1;
 }
 
-int get_risflag( char *flag )
+int get_risflag( const char *flag )
 {
    unsigned int x;
 
@@ -670,7 +670,7 @@ int get_risflag( char *flag )
 /*
  * For use with cedit --Shaddai
  */
-int get_cmdflag( char *flag )
+int get_cmdflag( const char *flag )
 {
    unsigned int x;
 
@@ -680,7 +680,7 @@ int get_cmdflag( char *flag )
    return -1;
 }
 
-int get_trigflag( char *flag )
+int get_trigflag( const char *flag )
 {
    unsigned int x;
 
@@ -690,7 +690,7 @@ int get_trigflag( char *flag )
    return -1;
 }
 
-int get_partflag( char *flag )
+int get_partflag( const char *flag )
 {
    unsigned int x;
 
@@ -700,7 +700,7 @@ int get_partflag( char *flag )
    return -1;
 }
 
-int get_attackflag( char *flag )
+int get_attackflag( const char *flag )
 {
    unsigned int x;
 
@@ -710,7 +710,7 @@ int get_attackflag( char *flag )
    return -1;
 }
 
-int get_defenseflag( char *flag )
+int get_defenseflag( const char *flag )
 {
    unsigned int x;
 
@@ -720,7 +720,7 @@ int get_defenseflag( char *flag )
    return -1;
 }
 
-int get_langflag( char *flag )
+int get_langflag( const char *flag )
 {
    unsigned int x;
 
@@ -730,7 +730,7 @@ int get_langflag( char *flag )
    return LANG_UNKNOWN;
 }
 
-int get_langnum( char *flag )
+int get_langnum( const char *flag )
 {
    unsigned int x;
 
@@ -740,7 +740,7 @@ int get_langnum( char *flag )
    return -1;
 }
 
-int get_npc_position( char *position )
+int get_npc_position( const char *position )
 {
    size_t x;
 
@@ -750,7 +750,7 @@ int get_npc_position( char *position )
    return -1;
 }
 
-int get_npc_sex( char *sex )
+int get_npc_sex( const char *sex )
 {
    size_t x;
 
@@ -763,13 +763,16 @@ int get_npc_sex( char *sex )
 /*
  * Remove carriage returns from a line
  */
-char *strip_cr( char *str )
+char *strip_cr( const char *str )
 {
    static char newstr[MAX_STRING_LENGTH];
    int i, j;
 
    if( !str || str[0] == '\0' )
-      return "";
+   {
+      newstr[0] = '\0';
+      return newstr;
+   }
 
    for( i = j = 0; str[i] != '\0'; i++ )
       if( str[i] != '\r' )
@@ -809,7 +812,7 @@ void smush_tilde( char *str )
 }
 
 
-void start_editing( CHAR_DATA * ch, char *data )
+void start_editing( CHAR_DATA * ch, const char *data )
 {
    EDITOR_DATA *edit;
    short lines, size, lpos;
@@ -899,7 +902,7 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
    {
       mudstrlcpy( tmp, ch->editor->line[x], 100 );
       len = strlen( tmp );
-      if( tmp && tmp[len - 1] == '~' )
+      if( tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
          mudstrlcat( tmp, "\n", 100 );
@@ -909,7 +912,7 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
    return str_dup( buf );
 }
 
-char *copy_buffer( CHAR_DATA * ch )
+const char *copy_buffer( CHAR_DATA * ch )
 {
    char buf[MAX_STRING_LENGTH];
    char tmp[100];
@@ -932,7 +935,7 @@ char *copy_buffer( CHAR_DATA * ch )
    {
       mudstrlcpy( tmp, ch->editor->line[x], 100 );
       len = strlen( tmp );
-      if( tmp && tmp[len - 1] == '~' )
+      if( tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
          mudstrlcat( tmp, "\n", 100 );
@@ -959,7 +962,7 @@ void stop_editing( CHAR_DATA * ch )
    ch->desc->connected = CON_PLAYING;
 }
 
-void do_goto( CHAR_DATA * ch, char *argument )
+void do_goto( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    ROOM_INDEX_DATA *location, *in_room;
@@ -1083,7 +1086,7 @@ void do_goto( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_mset( CHAR_DATA * ch, char *argument )
+void do_mset( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -1097,7 +1100,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
    int value;
    int minattr, maxattr;
    bool lockvictim;
-   char *origarg = argument;
+   const char *origarg = argument;
 
    set_char_color( AT_PLAIN, ch );
 
@@ -1120,7 +1123,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
       case SUB_MOB_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s", "do_mset: sub_mob_desc: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -1937,7 +1940,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          send_to_char( "Names can not be set to an empty string.\r\n", ch );
          return;
@@ -1987,7 +1990,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          /*
           * Crash bug fix, oops guess I should have caught this one :)
@@ -2093,7 +2096,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          if( victim->pcdata->deity )
          {
@@ -2146,7 +2149,7 @@ void do_mset( CHAR_DATA * ch, char *argument )
          return;
       }
 
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          if( victim->pcdata->council )
          {
@@ -3105,14 +3108,14 @@ void do_mset( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_oset( CHAR_DATA * ch, char *argument )
+void do_oset( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH], outbuf[MAX_STRING_LENGTH];
    OBJ_DATA *obj, *tmpobj;
    EXTRA_DESCR_DATA *ed;
    bool lockobj;
-   char *origarg = argument;
+   const char *origarg = argument;
 
    int value, tmp;
 
@@ -3138,7 +3141,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       case SUB_OBJ_EXTRA:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s: sub_obj_extra: NULL ch->dest_buf", __FUNCTION__ );
             ch->substate = SUB_NONE;
             return;
@@ -3161,7 +3164,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       case SUB_OBJ_LONG:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s: sub_obj_long: NULL ch->dest_buf", __FUNCTION__ );
             ch->substate = SUB_NONE;
             return;
@@ -3398,7 +3401,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg2, "ed" ) )
    {
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          send_to_char( "Syntax: oset <object> ed <keywords>\r\n", ch );
          return;
@@ -3435,7 +3438,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
 
    if( !str_cmp( arg2, "rmed" ) )
    {
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
       {
          send_to_char( "Syntax: oset <object> rmed <keywords>\r\n", ch );
          return;
@@ -3695,7 +3698,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
       if( !can_omodify( ch, obj ) )
          return;
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' || !argument || argument[0] == 0 )
+      if( arg2[0] == '\0' || !argument || argument[0] == 0 )
       {
          send_to_char( "Usage: oset <object> affect <field> <value>\r\n", ch );
          return;
@@ -4055,7 +4058,7 @@ void do_oset( CHAR_DATA * ch, char *argument )
 }
 
 /* rdig command by Dracones */
-void do_rdig( CHAR_DATA * ch, char *argument )
+void do_rdig( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char tmpcmd[MAX_INPUT_LENGTH];
@@ -4079,7 +4082,7 @@ void do_rdig( CHAR_DATA * ch, char *argument )
 
    argument = one_argument( argument, arg );
 
-   if( !arg || arg[0] == '\0' )
+   if( arg[0] == '\0' )
    {
       send_to_char( "Dig out a new room or dig into an existing room.\r\n", ch );
       send_to_char( "Usage: rdig <dir>\r\n", ch );
@@ -4150,7 +4153,7 @@ void do_rdig( CHAR_DATA * ch, char *argument )
 }
 
 /* rgrid command by Dracones */
-void do_rgrid( CHAR_DATA * ch, char *argument )
+void do_rgrid( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -4172,7 +4175,7 @@ void do_rgrid( CHAR_DATA * ch, char *argument )
    argument = one_argument( argument, arg2 );
    argument = one_argument( argument, arg3 );
 
-   if( !arg || arg[0] == '\0' )
+   if( arg[0] == '\0' )
    {
       send_to_char( "Create a block of rooms.\r\n", ch );
       send_to_char( "Usage: rgrid <x> <y> <z>\r\n", ch );
@@ -4360,7 +4363,7 @@ void do_rgrid( CHAR_DATA * ch, char *argument )
 /*
  * Returns value 0 - 9 based on directional text.
  */
-int get_dir( char *txt )
+int get_dir( const char *txt )
 {
    int edir;
    char c1, c2;
@@ -4455,7 +4458,7 @@ int get_dir( char *txt )
 /*
  * Crash fix and name support by Shaddai 
  */
-void add_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffect, char *argument )
+void add_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffect, const char *argument )
 {
    AFFECT_DATA *paf;
    char arg2[MAX_INPUT_LENGTH];
@@ -4464,7 +4467,7 @@ void add_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffe
    bool found = FALSE;
 
    argument = one_argument( argument, arg2 );
-   if( !arg2 || arg2[0] == '\0' || !argument || argument[0] == '\0' )
+   if( arg2[0] == '\0' || !argument || argument[0] == '\0' )
    {
       if( !indexaffect )
          send_to_char( "Usage: redit affect <field> <value>\r\n", ch );
@@ -4497,7 +4500,7 @@ void add_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffe
    }
    else if( loc == APPLY_RESISTANT || loc == APPLY_IMMUNE || loc == APPLY_SUSCEPTIBLE )
    {
-      char *ris = argument;
+      const char *ris = argument;
       char flag[MAX_INPUT_LENGTH];
 
       bitv = 0;
@@ -4564,7 +4567,7 @@ void add_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffe
    return;
 }
 
-void remove_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffect, char *argument )
+void remove_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexaffect, const char *argument )
 {
    AFFECT_DATA *paf, *paf_next;
    short loc = atoi( argument );
@@ -4643,7 +4646,7 @@ void remove_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexa
    return;
 }
 
-void do_redit( CHAR_DATA * ch, char *argument )
+void do_redit( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -4654,7 +4657,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    EXIT_DATA *xit, *texit;
    int value;
    int edir = 0, ekey, evnum;
-   char *origarg = argument;
+   const char *origarg = argument;
 
    set_char_color( AT_PLAIN, ch );
    if( !ch->desc )
@@ -5056,7 +5059,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
 
       argument = one_argument( argument, arg2 );
       argument = one_argument( argument, arg3 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Create, change or remove an exit.\r\n", ch );
          send_to_char( "Usage: redit exit <dir> [room] [flags] [key] [keywords]\r\n", ch );
@@ -5077,7 +5080,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
             numnotdir = TRUE;
             break;
       }
-      if( !arg3 || arg3[0] == '\0' )
+      if( arg3[0] == '\0' )
          evnum = 0;
       else
          evnum = atoi( arg3 );
@@ -5142,7 +5145,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
          }
       }
       argument = one_argument( argument, arg3 );
-      if( arg3 && arg3[0] != '\0' )
+      if( arg3[0] != '\0' )
          xit->exit_info = atoi( arg3 );
       if( argument && argument[0] != '\0' )
       {
@@ -5178,7 +5181,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
 
       argument = one_argument( argument, arg2 );
       argument = one_argument( argument, arg3 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Create, change or remove a two-way exit.\r\n", ch );
          send_to_char( "Usage: redit bexit <dir> [room] [flags] [key] [keywords]\r\n", ch );
@@ -5249,7 +5252,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
       int pt;
 
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          ch_printf( ch, "Set the %s between this room, and the destination room.\r\n", arg );
          ch_printf( ch, "Usage: redit %s <dir> <type>\r\n", arg );
@@ -5283,7 +5286,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "pull" ) )
    {
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Set the 'pull' between this room, and the destination room.\r\n", ch );
          send_to_char( "Usage: redit pull <dir> <force (0 to 100)>\r\n", ch );
@@ -5312,7 +5315,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "push" ) )
    {
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Set the 'push' away from the destination room in the opposite direction.\r\n", ch );
          send_to_char( "Usage: redit push <dir> <force (0 to 100)>\r\n", ch );
@@ -5341,7 +5344,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "exdistance" ) )
    {
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Set the distance (in rooms) between this room, and the destination room.\r\n", ch );
          send_to_char( "Usage: redit exdistance <dir> [distance]\r\n", ch );
@@ -5370,7 +5373,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    if( !str_cmp( arg, "exdesc" ) )
    {
       argument = one_argument( argument, arg2 );
-      if( !arg2 || arg2[0] == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "Create or clear a description for an exit.\r\n", ch );
          send_to_char( "Usage: redit exdesc <dir> [description]\r\n", ch );
@@ -5418,7 +5421,7 @@ void do_redit( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_ocreate( CHAR_DATA * ch, char *argument )
+void do_ocreate( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -5494,7 +5497,7 @@ void do_ocreate( CHAR_DATA * ch, char *argument )
                     pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name );
 }
 
-void do_mcreate( CHAR_DATA * ch, char *argument )
+void do_mcreate( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -5649,7 +5652,8 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       {
          char word1[MAX_INPUT_LENGTH];
          char word2[MAX_INPUT_LENGTH];
-         char *sptr, *wptr, *lwptr;
+         const char *sptr;
+         char *wptr, *lwptr;
          int count, wordln, word2ln, lineln;
 
          sptr = one_argument( argument, word1 );
@@ -5879,7 +5883,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       if( strlen( argument ) > 79 )
       {
          strncpy( buf, argument, 79 );
-         buf[79] = 0;
+         buf[79] = '\0';
          send_to_char( "(Long line trimmed)\r\n> ", ch );
       }
       else
@@ -5943,21 +5947,6 @@ void assign_area( CHAR_DATA * ch )
          tarea->age = 0;
          tarea->nplayer = 0;
 
-         CREATE( tarea->weather, WEATHER_DATA, 1 );   /* FB */
-         tarea->weather->temp = 0;
-         tarea->weather->precip = 0;
-         tarea->weather->wind = 0;
-         tarea->weather->temp_vector = 0;
-         tarea->weather->precip_vector = 0;
-         tarea->weather->wind_vector = 0;
-         tarea->weather->climate_temp = 2;
-         tarea->weather->climate_precip = 2;
-         tarea->weather->climate_wind = 2;
-         tarea->weather->first_neighbor = NULL;
-         tarea->weather->last_neighbor = NULL;
-         tarea->weather->echo = NULL;
-         tarea->weather->echo_color = AT_GREY;
-
          created = TRUE;
       }
       else
@@ -5976,7 +5965,7 @@ void assign_area( CHAR_DATA * ch )
    }
 }
 
-void do_aassign( CHAR_DATA * ch, char *argument )
+void do_aassign( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
    AREA_DATA *tarea, *tmp;
@@ -6050,7 +6039,7 @@ void do_aassign( CHAR_DATA * ch, char *argument )
 }
 
 
-EXTRA_DESCR_DATA *SetRExtra( ROOM_INDEX_DATA * room, char *keywords )
+EXTRA_DESCR_DATA *SetRExtra( ROOM_INDEX_DATA * room, const char *keywords )
 {
    EXTRA_DESCR_DATA *ed;
 
@@ -6070,7 +6059,7 @@ EXTRA_DESCR_DATA *SetRExtra( ROOM_INDEX_DATA * room, char *keywords )
    return ed;
 }
 
-bool DelRExtra( ROOM_INDEX_DATA * room, char *keywords )
+bool DelRExtra( ROOM_INDEX_DATA * room, const char *keywords )
 {
    EXTRA_DESCR_DATA *rmed;
 
@@ -6089,7 +6078,7 @@ bool DelRExtra( ROOM_INDEX_DATA * room, char *keywords )
    return TRUE;
 }
 
-EXTRA_DESCR_DATA *SetOExtra( OBJ_DATA * obj, char *keywords )
+EXTRA_DESCR_DATA *SetOExtra( OBJ_DATA * obj, const char *keywords )
 {
    EXTRA_DESCR_DATA *ed;
 
@@ -6109,7 +6098,7 @@ EXTRA_DESCR_DATA *SetOExtra( OBJ_DATA * obj, char *keywords )
    return ed;
 }
 
-bool DelOExtra( OBJ_DATA * obj, char *keywords )
+bool DelOExtra( OBJ_DATA * obj, const char *keywords )
 {
    EXTRA_DESCR_DATA *rmed;
 
@@ -6128,7 +6117,7 @@ bool DelOExtra( OBJ_DATA * obj, char *keywords )
    return TRUE;
 }
 
-EXTRA_DESCR_DATA *SetOExtraProto( OBJ_INDEX_DATA * obj, char *keywords )
+EXTRA_DESCR_DATA *SetOExtraProto( OBJ_INDEX_DATA * obj, const char *keywords )
 {
    EXTRA_DESCR_DATA *ed;
 
@@ -6148,7 +6137,7 @@ EXTRA_DESCR_DATA *SetOExtraProto( OBJ_INDEX_DATA * obj, char *keywords )
    return ed;
 }
 
-bool DelOExtraProto( OBJ_INDEX_DATA * obj, char *keywords )
+bool DelOExtraProto( OBJ_INDEX_DATA * obj, const char *keywords )
 {
    EXTRA_DESCR_DATA *rmed;
 
@@ -6303,7 +6292,7 @@ void fwrite_fuss_room( FILE * fpout, ROOM_INDEX_DATA * room, bool install )
       for( victim = room->first_person; victim; victim = vnext )
       {
          vnext = victim->next_in_room;
-         if( IS_NPC( victim ) )
+         if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
             extract_char( victim, TRUE );
       }
 
@@ -6311,7 +6300,8 @@ void fwrite_fuss_room( FILE * fpout, ROOM_INDEX_DATA * room, bool install )
       for( obj = room->first_content; obj; obj = obj_next )
       {
          obj_next = obj->next_content;
-         extract_obj( obj );
+         if( xIS_SET( obj->extra_flags, ITEM_PROTOTYPE ) )
+            extract_obj( obj );
       }
    }
 
@@ -6551,8 +6541,6 @@ void fwrite_fuss_mobile( FILE * fpout, MOB_INDEX_DATA * pMobIndex, bool install 
 
 void fwrite_area_header( FILE * fpout, AREA_DATA * tarea, bool install )
 {
-   NEIGHBOR_DATA *neigh;
-
    if( install )
       REMOVE_BIT( tarea->flags, AFLAG_PROTOTYPE );
 
@@ -6560,6 +6548,8 @@ void fwrite_area_header( FILE * fpout, AREA_DATA * tarea, bool install )
    fprintf( fpout, "Version      %d\n", tarea->version );
    fprintf( fpout, "Name         %s~\n", tarea->name );
    fprintf( fpout, "Author       %s~\n", tarea->author );
+   fprintf( fpout, "WeatherX     %d\n", tarea->weatherx );
+   fprintf( fpout, "WeatherY     %d\n", tarea->weathery );
    if( tarea->credits && tarea->credits[0] != '\0' )
       fprintf( fpout, "Credits      %s~\n", tarea->credits );
    fprintf( fpout, "Ranges       %d %d %d %d\n",
@@ -6575,18 +6565,6 @@ void fwrite_area_header( FILE * fpout, AREA_DATA * tarea, bool install )
 
    if( tarea->flags )
       fprintf( fpout, "Flags        %s~\n", flag_string( tarea->flags, area_flags ) );
-
-   /*
-    * Climate info - FB 
-    */
-   fprintf( fpout, "Climate      %d %d %d\n", tarea->weather->climate_temp, tarea->weather->climate_precip,
-            tarea->weather->climate_wind );
-
-   /*
-    * neighboring weather systems - FB 
-    */
-   for( neigh = tarea->weather->first_neighbor; neigh; neigh = neigh->next )
-      fprintf( fpout, "Neighbor     %s~\n", neigh->name );
 
    fprintf( fpout, "%s", "#ENDAREADATA\n\n" );
 }
@@ -6654,7 +6632,6 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
    AFFECT_DATA *paf;
    SHOP_DATA *pShop;
    REPAIR_DATA *pRepair;
-   NEIGHBOR_DATA *neigh;
    char buf[MAX_STRING_LENGTH];
    FILE *fpout;
    int vnum;
@@ -6691,18 +6668,6 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
       fprintf( fpout, "#FLAGS\n%d\n\n", tarea->flags );
 
    fprintf( fpout, "#ECONOMY %d %d\n\n", tarea->high_economy, tarea->low_economy );
-
-   /*
-    * Climate info - FB 
-    */
-   fprintf( fpout, "#CLIMATE %d %d %d\n\n", tarea->weather->climate_temp,
-            tarea->weather->climate_precip, tarea->weather->climate_wind );
-
-   /*
-    * neighboring weather systems - FB 
-    */
-   for( neigh = tarea->weather->first_neighbor; neigh; neigh = neigh->next )
-      fprintf( fpout, "#NEIGHBOR %s~\n\n", neigh->name );
 
    /*
     * save mobiles 
@@ -7161,7 +7126,7 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
    return;
 }
 
-void do_savearea( CHAR_DATA * ch, char *argument )
+void do_savearea( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
    char filename[256];
@@ -7225,7 +7190,7 @@ void do_savearea( CHAR_DATA * ch, char *argument )
    send_to_char( "Done.\r\n", ch );
 }
 
-void do_loadarea( CHAR_DATA * ch, char *argument )
+void do_loadarea( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
    char filename[256];
@@ -7314,7 +7279,7 @@ void do_loadarea( CHAR_DATA * ch, char *argument )
  *
  * NOTE: Use of this command is not recommended.		-Thoric
  */
-void do_unfoldarea( CHAR_DATA * ch, char *argument )
+void do_unfoldarea( CHAR_DATA* ch, const char* argument)
 {
 
    set_char_color( AT_IMMORT, ch );
@@ -7333,7 +7298,7 @@ void do_unfoldarea( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_foldarea( CHAR_DATA * ch, char *argument )
+void do_foldarea( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
 
@@ -7365,7 +7330,6 @@ void do_foldarea( CHAR_DATA * ch, char *argument )
       }
    }
    send_to_char( "No such area exists.\r\n", ch );
-   return;
 }
 
 extern int top_area;
@@ -7392,7 +7356,7 @@ void write_area_list( void )
  * A complicated to use command as it currently exists.		-Thoric
  * Once area->author and area->name are cleaned up... it will be easier
  */
-void do_installarea( CHAR_DATA * ch, char *argument )
+void do_installarea( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
    char arg[MAX_INPUT_LENGTH];
@@ -7491,7 +7455,7 @@ void do_installarea( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_astat( CHAR_DATA * ch, char *argument )
+void do_astat( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
    bool proto, found;
@@ -7550,6 +7514,7 @@ void do_astat( CHAR_DATA * ch, char *argument )
                     tarea->name, tarea->filename, proto ? "yes" : "no", tarea->author );
    ch_printf_color( ch, "&wAge: &W%-3d  &wCurrent number of players: &W%-3d  &wMax players: &W%d\r\n",
                     tarea->age, tarea->nplayer, tarea->max_players );
+   ch_printf_color( ch, "&wWeather: X Coord: &W%-3d  &w Y Coord: &W%-3d\r\n", tarea->weatherx, tarea->weathery );
    if( !proto )
    {
       if( tarea->high_economy )
@@ -7586,7 +7551,7 @@ bool check_for_area_conflicts( AREA_DATA * carea, int lo, int hi )
    return FALSE;
 }
 
-void do_aset( CHAR_DATA * ch, char *argument )
+void do_aset( CHAR_DATA* ch, const char* argument)
 {
    AREA_DATA *tarea;
    char arg1[MAX_INPUT_LENGTH];
@@ -7607,6 +7572,8 @@ void do_aset( CHAR_DATA * ch, char *argument )
       send_to_char( "  low_room hi_room low_obj hi_obj low_mob hi_mob\r\n", ch );
       send_to_char( "  name filename low_soft hi_soft low_hard hi_hard\r\n", ch );
       send_to_char( "  author credits resetmsg resetfreq flags\r\n", ch );
+      if( get_trust( ch ) >= LEVEL_ASCENDANT )
+		send_to_char( "  weatherx weathery\r\n", ch );
       return;
    }
 
@@ -7700,6 +7667,30 @@ void do_aset( CHAR_DATA * ch, char *argument )
    {
       tarea->high_economy = vnum;
       send_to_char( "Done.\r\n", ch );
+      return;
+   }
+
+   if( !str_cmp( arg2, "weatherx" ) )
+   {
+      if( get_trust( ch ) < LEVEL_ASCENDANT )
+         send_to_char( "I don't recognize that field. Please double check.\r\n",ch );
+      else
+      {
+         tarea->weatherx = vnum;
+         send_to_char( "Done.\r\n", ch );
+      }
+      return;
+   }
+
+   if( !str_cmp( arg2, "weathery" ) )
+   {
+      if( get_trust( ch ) < LEVEL_ASCENDANT )
+         send_to_char( "I don't recognize that field. Please double check.\r\n", ch );
+      else
+      {
+         tarea->weathery = vnum;
+         send_to_char( "Done.\r\n", ch );
+      }
       return;
    }
 
@@ -7925,7 +7916,7 @@ void do_aset( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_rlist( CHAR_DATA * ch, char *argument )
+void do_rlist( CHAR_DATA* ch, const char* argument)
 {
    ROOM_INDEX_DATA *room;
    int vnum;
@@ -7998,7 +7989,7 @@ void do_rlist( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_olist( CHAR_DATA * ch, char *argument )
+void do_olist( CHAR_DATA* ch, const char* argument)
 {
    OBJ_INDEX_DATA *obj;
    int vnum;
@@ -8056,7 +8047,7 @@ void do_olist( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_mlist( CHAR_DATA * ch, char *argument )
+void do_mlist( CHAR_DATA* ch, const char* argument)
 {
    MOB_INDEX_DATA *mob;
    int vnum;
@@ -8110,7 +8101,7 @@ void do_mlist( CHAR_DATA * ch, char *argument )
    }
 }
 
-void mpedit( CHAR_DATA * ch, MPROG_DATA * mprg, int mptype, char *argument )
+void mpedit( CHAR_DATA * ch, MPROG_DATA * mprg, int mptype, const char *argument )
 {
    if( mptype != -1 )
    {
@@ -8130,7 +8121,7 @@ void mpedit( CHAR_DATA * ch, MPROG_DATA * mprg, int mptype, char *argument )
 /*
  * Mobprogram editing - cumbersome				-Thoric
  */
-void do_mpedit( CHAR_DATA * ch, char *argument )
+void do_mpedit( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8164,7 +8155,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s", "do_mpedit: sub_mprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -8453,7 +8444,7 @@ void do_mpedit( CHAR_DATA * ch, char *argument )
    do_mpedit( ch, "" );
 }
 
-void do_opedit( CHAR_DATA * ch, char *argument )
+void do_opedit( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8487,7 +8478,7 @@ void do_opedit( CHAR_DATA * ch, char *argument )
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -8758,7 +8749,7 @@ void rpedit( CHAR_DATA * ch, MPROG_DATA * mprg, int mptype, char *argument )
    return;
 }
 
-void do_rpedit( CHAR_DATA * ch, char *argument )
+void do_rpedit( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8790,7 +8781,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.fussproject.org\r\n", ch );
+            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -9017,7 +9008,7 @@ void do_rpedit( CHAR_DATA * ch, char *argument )
    do_rpedit( ch, "" );
 }
 
-void do_rdelete( CHAR_DATA * ch, char *argument )
+void do_rdelete( CHAR_DATA* ch, const char* argument)
 {
    ROOM_INDEX_DATA *location;
 
@@ -9058,7 +9049,7 @@ void do_rdelete( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_odelete( CHAR_DATA * ch, char *argument )
+void do_odelete( CHAR_DATA* ch, const char* argument)
 {
    OBJ_INDEX_DATA *obj;
    int vnum;
@@ -9106,7 +9097,7 @@ void do_odelete( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_mdelete( CHAR_DATA * ch, char *argument )
+void do_mdelete( CHAR_DATA* ch, const char* argument)
 {
    MOB_INDEX_DATA *mob;
    int vnum;
@@ -9170,7 +9161,7 @@ void mpcopy( MPROG_DATA * source, MPROG_DATA * destination )
    destination->next = NULL;
 }
 
-void do_opcopy( CHAR_DATA * ch, char *argument )
+void do_opcopy( CHAR_DATA* ch, const char* argument)
 {
    char sobj[MAX_INPUT_LENGTH];
    char prog[MAX_INPUT_LENGTH];
@@ -9353,7 +9344,7 @@ void do_opcopy( CHAR_DATA * ch, char *argument )
    do_opcopy( ch, "" );
 }
 
-void do_mpcopy( CHAR_DATA * ch, char *argument )
+void do_mpcopy( CHAR_DATA* ch, const char* argument)
 {
    char smob[MAX_INPUT_LENGTH];
    char prog[MAX_INPUT_LENGTH];
@@ -9539,7 +9530,7 @@ void do_mpcopy( CHAR_DATA * ch, char *argument )
    do_mpcopy( ch, "" );
 }
 
-void do_rpcopy( CHAR_DATA * ch, char *argument )
+void do_rpcopy( CHAR_DATA* ch, const char* argument)
 {
    char sroom[MAX_INPUT_LENGTH];
    char prog[MAX_INPUT_LENGTH];
@@ -9697,268 +9688,6 @@ void do_rpcopy( CHAR_DATA * ch, char *argument )
 }
 
 /*
- * function to allow modification of an area's climate
- * Last modified: July 15, 1997
- * Fireblade
- */
-void do_climate( CHAR_DATA * ch, char *argument )
-{
-   char arg[MAX_INPUT_LENGTH];
-   AREA_DATA *area;
-
-   /*
-    * Little error checking 
-    */
-   if( !ch )
-   {
-      bug( "do_climate: NULL character." );
-      return;
-   }
-   else if( !ch->in_room )
-   {
-      bug( "do_climate: character not in a room." );
-      return;
-   }
-   else if( !ch->in_room->area )
-   {
-      bug( "do_climate: character not in an area." );
-      return;
-   }
-   else if( !ch->in_room->area->weather )
-   {
-      bug( "do_climate: area with NULL weather data." );
-      return;
-   }
-
-   set_char_color( AT_BLUE, ch );
-
-   area = ch->in_room->area;
-
-   argument = strlower( argument );
-   argument = one_argument( argument, arg );
-
-   /*
-    * Display current climate settings 
-    */
-   if( arg[0] == '\0' )
-   {
-      NEIGHBOR_DATA *neigh;
-
-      ch_printf( ch, "%s:\r\n", area->name );
-      ch_printf( ch, "\tTemperature:\t%s\r\n", temp_settings[area->weather->climate_temp] );
-      ch_printf( ch, "\tPrecipitation:\t%s\r\n", precip_settings[area->weather->climate_precip] );
-      ch_printf( ch, "\tWind:\t\t%s\r\n", wind_settings[area->weather->climate_wind] );
-
-      if( area->weather->first_neighbor )
-         ch_printf( ch, "\r\nNeighboring weather systems:\r\n" );
-
-      for( neigh = area->weather->first_neighbor; neigh; neigh = neigh->next )
-      {
-         ch_printf( ch, "\t%s\r\n", neigh->name );
-      }
-
-      return;
-   }
-   /*
-    * set climate temperature 
-    */
-   else if( !str_cmp( arg, "temp" ) )
-   {
-      int i;
-      argument = one_argument( argument, arg );
-
-      for( i = 0; i < MAX_CLIMATE; i++ )
-      {
-         if( str_cmp( arg, temp_settings[i] ) )
-            continue;
-
-         area->weather->climate_temp = i;
-         ch_printf( ch, "The climate temperature " "for %s is now %s.\r\n", area->name, temp_settings[i] );
-         break;
-      }
-
-      if( i == MAX_CLIMATE )
-      {
-         ch_printf( ch, "Possible temperature " "settings:\r\n" );
-         for( i = 0; i < MAX_CLIMATE; i++ )
-         {
-            ch_printf( ch, "\t%s\r\n", temp_settings[i] );
-         }
-      }
-
-      return;
-   }
-   /*
-    * set climate precipitation 
-    */
-   else if( !str_cmp( arg, "precip" ) )
-   {
-      int i;
-      argument = one_argument( argument, arg );
-
-      for( i = 0; i < MAX_CLIMATE; i++ )
-      {
-         if( str_cmp( arg, precip_settings[i] ) )
-            continue;
-
-         area->weather->climate_precip = i;
-         ch_printf( ch, "The climate precipitation " "for %s is now %s.\r\n", area->name, precip_settings[i] );
-         break;
-      }
-
-      if( i == MAX_CLIMATE )
-      {
-         ch_printf( ch, "Possible precipitation " "settings:\r\n" );
-         for( i = 0; i < MAX_CLIMATE; i++ )
-         {
-            ch_printf( ch, "\t%s\r\n", precip_settings[i] );
-         }
-      }
-
-      return;
-   }
-   /*
-    * set climate wind 
-    */
-   else if( !str_cmp( arg, "wind" ) )
-   {
-      int i;
-      argument = one_argument( argument, arg );
-
-      for( i = 0; i < MAX_CLIMATE; i++ )
-      {
-         if( str_cmp( arg, wind_settings[i] ) )
-            continue;
-
-         area->weather->climate_wind = i;
-         ch_printf( ch, "The climate wind for %s " "is now %s.\r\n", area->name, wind_settings[i] );
-         break;
-      }
-
-      if( i == MAX_CLIMATE )
-      {
-         ch_printf( ch, "Possible wind settings:\r\n" );
-         for( i = 0; i < MAX_CLIMATE; i++ )
-         {
-            ch_printf( ch, "\t%s\r\n", wind_settings[i] );
-         }
-      }
-
-      return;
-   }
-   /*
-    * add or remove neighboring weather systems 
-    */
-   else if( !str_cmp( arg, "neighbor" ) )
-   {
-      NEIGHBOR_DATA *neigh;
-      AREA_DATA *tarea;
-
-      if( argument[0] == '\0' )
-      {
-         ch_printf( ch, "Add or remove which area?\r\n" );
-         return;
-      }
-
-      /*
-       * look for a matching list item 
-       */
-      for( neigh = area->weather->first_neighbor; neigh; neigh = neigh->next )
-      {
-         if( nifty_is_name( argument, neigh->name ) )
-            break;
-      }
-
-      /*
-       * if the a matching list entry is found, remove it 
-       */
-      if( neigh )
-      {
-         /*
-          * look for the neighbor area in question 
-          */
-         if( !( tarea = neigh->address ) )
-            tarea = get_area( neigh->name );
-
-         /*
-          * if there is an actual neighbor area 
-          */
-         /*
-          * remove its entry to this area 
-          */
-         if( tarea )
-         {
-            NEIGHBOR_DATA *tneigh;
-
-            tarea = neigh->address;
-            for( tneigh = tarea->weather->first_neighbor; tneigh; tneigh = tneigh->next )
-            {
-               if( !strcmp( area->name, tneigh->name ) )
-                  break;
-            }
-
-            UNLINK( tneigh, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
-            STRFREE( tneigh->name );
-            DISPOSE( tneigh );
-         }
-
-         UNLINK( neigh, area->weather->first_neighbor, area->weather->last_neighbor, next, prev );
-         ch_printf( ch, "The weather in %s and %s " "no longer affect each other.\r\n", neigh->name, area->name );
-         STRFREE( neigh->name );
-         DISPOSE( neigh );
-      }
-      /*
-       * otherwise add an entry 
-       */
-      else
-      {
-         tarea = get_area( argument );
-
-         if( !tarea )
-         {
-            ch_printf( ch, "No such area exists.\r\n" );
-            return;
-         }
-         else if( tarea == area )
-         {
-            ch_printf( ch, "%s already affects its " "own weather.\r\n", area->name );
-            return;
-         }
-
-         /*
-          * add the entry 
-          */
-         CREATE( neigh, NEIGHBOR_DATA, 1 );
-         neigh->name = STRALLOC( tarea->name );
-         neigh->address = tarea;
-         LINK( neigh, area->weather->first_neighbor, area->weather->last_neighbor, next, prev );
-
-         /*
-          * add an entry to the neighbor's list 
-          */
-         CREATE( neigh, NEIGHBOR_DATA, 1 );
-         neigh->name = STRALLOC( area->name );
-         neigh->address = area;
-         LINK( neigh, tarea->weather->first_neighbor, tarea->weather->last_neighbor, next, prev );
-
-         ch_printf( ch, "The weather in %s and %s now " "affect one another.\r\n", tarea->name, area->name );
-      }
-
-      return;
-   }
-   else
-   {
-      ch_printf( ch, "Climate may only be followed by one " "of the following fields:\r\n" );
-      ch_printf( ch, "\ttemp\r\n" );
-      ch_printf( ch, "\tprecip\r\n" );
-      ch_printf( ch, "\twind\r\n" );
-      ch_printf( ch, "\tneighbor\r\n" );
-
-      return;
-   }
-}
-
-/*
  * Relations created to fix a crash bug with oset on and rset on
  * code by: gfinello@mail.karmanet.it
  */
@@ -10036,7 +9765,7 @@ void RelDestroy( relation_type tp, void *actor, void *subject )
       }
 }
 
-void do_findexit( CHAR_DATA * ch, char *argument )
+void do_findexit( CHAR_DATA* ch, const char* argument)
 {
    ROOM_INDEX_DATA *room;
    EXIT_DATA *pexit;
@@ -10046,7 +9775,7 @@ void do_findexit( CHAR_DATA * ch, char *argument )
    char arg3[MAX_INPUT_LENGTH];
    AREA_DATA *tarea;
 
-   static char *dir_text[] = { "n", "e", "s", "w", "u", "d", "ne", "nw", "se", "sw", "?" };
+   static const char *dir_text[] = { "n", "e", "s", "w", "u", "d", "ne", "nw", "se", "sw", "?" };
 
    set_pager_color( AT_PLAIN, ch );
 
@@ -10129,9 +9858,9 @@ void do_findexit( CHAR_DATA * ch, char *argument )
  * Modified to include a "reverse" option similar to Smaug 1.8, plus provided
  * a colorized version.  Slightly reworked the logic too. - Luc 06/2007
  */
-void do_alinks( CHAR_DATA * ch, char *argument )
+void do_alinks( CHAR_DATA* ch, const char* argument)
 {
-   static char *dirs[] = { "n", "e", "s", "w", "u", "d", "ne", "nw", "se", "sw", "--" };
+   static const char *dirs[] = { "n", "e", "s", "w", "u", "d", "ne", "nw", "se", "sw", "--" };
    char buf[MAX_INPUT_LENGTH];
    AREA_DATA *area;
    AREA_DATA *target;

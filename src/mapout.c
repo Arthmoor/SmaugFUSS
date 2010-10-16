@@ -63,7 +63,7 @@ struct map_stuff
 };
 
 /* Lets make it check the map and make sure it uses [ ] instead of [] */
-char *check_map( char *str )
+const char *check_map( const char *str )
 {
    static char newstr[MAX_STRING_LENGTH];
    int i, j;
@@ -135,7 +135,8 @@ void map_stats( CHAR_DATA * ch, int *rooms, int *rows, int *cols )
 {
    int row, col, n;
    int leftmost, rightmost;
-   char *l, c;
+   const char *l;
+   char c;
 
    if( !ch->pnote )
    {
@@ -196,7 +197,7 @@ void map_stats( CHAR_DATA * ch, int *rooms, int *rows, int *cols )
    return;
 }
 
-void do_mapout( CHAR_DATA * ch, char *argument )
+void do_mapout( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *map_obj;   /* an obj made with map as an ed */
@@ -420,10 +421,11 @@ int num_rooms_avail( CHAR_DATA * ch )
 void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 {
    struct map_stuff map[49][78]; /* size of edit buffer */
-   char *newmap;
-   int row, col, i, n, x, y, tvnum, proto_vnum, leftmost, rightmost;
+   const char *newmap;
+   int row, col, i, n, x, y, tvnum, proto_vnum = 0, leftmost, rightmost;
    int newx, newy;
-   char *l, c;
+   const char *l;
+   char c;
    ROOM_INDEX_DATA *newrm;
    MAP_INDEX_DATA *map_index = NULL, *tmp;
    EXIT_DATA *xit;   /* these are for exits */

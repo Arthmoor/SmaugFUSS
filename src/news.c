@@ -46,10 +46,10 @@ static char local_buf[MAX_INPUT_LENGTH];
 int top_news_type;
 
 /* the lovely; and useful; command table */
-char *news_command_table[NEWS_MAX_TYPES];
+const char *news_command_table[NEWS_MAX_TYPES];
 
 /* olc editnews command */
-void do_editnews( CHAR_DATA * ch, char *argument )
+void do_editnews( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -388,7 +388,7 @@ void do_editnews( CHAR_DATA * ch, char *argument )
 
 /* figure the type of a newstype by the vnum
  * or by the cmd_name off the news_cmd_table -Nopey */
-NEWS_TYPE *figure_type( char *str )
+NEWS_TYPE *figure_type( const char *str )
 {
    if( is_number( str ) )
    {
@@ -422,7 +422,7 @@ NEWS_TYPE *figure_type( char *str )
 }
 
 /* Snatch news up from the linked list */
-NEWS *grab_news( NEWS_TYPE * type, char *str )
+NEWS *grab_news( NEWS_TYPE * type, const char *str )
 {
    NEWS *news = NULL;
 

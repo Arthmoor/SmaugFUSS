@@ -3,9 +3,10 @@
 Version      1
 Name         Sewer~
 Author       Diku~
+WeatherX     0
+WeatherY     0
 Ranges       5 30 0 60
 Economy      0 7253836
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -364,6 +365,14 @@ Immune     fire sleep charm~
 Suscept    cold~
 Attacks    bite claws~
 #MUDPROG
+Progtype  rand_prog~
+Arglist   10~
+Comlist   mpasound Something nearby bellows angrily.
+mpecho The beast bellows angrily, then snorts and closes its eyes once more.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if isnpc($n)
@@ -371,14 +380,6 @@ or isimmort($n)
 else
   c flamestrike $n
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   10~
-Comlist   mpasound Something nearby bellows angrily.
-mpecho The beast bellows angrily, then snorts and closes its eyes once more.
 ~
 #ENDPROG
 

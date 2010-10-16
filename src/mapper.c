@@ -447,14 +447,30 @@ int get_line( char *desc, size_t max_len )
     */
    for( i = 0; i <= strlen( desc ); ++i )
    {
-      /*
-       * Here you need to skip your color sequences 
-       */
-      ++j;
+      char dst[20];
+      int vislen;
 
+      switch ( desc[i] )
+      {
+         case '&':  /* NORMAL, Foreground colour */
+         case '^':  /* BACKGROUND colour */
+         case '}':  /* BLINK Foreground colour */
+            *dst = '\0';
+            vislen = 0;
+            i += colorcode( &desc[i], dst, NULL, 20, &vislen ); /* Skip input token */
+            j += vislen; /* Count output token length */
+            break;   /* this was missing - if you have issues, remove it */
+
+         default:   /* No conversion, just count */
+            ++j;
+            break;
+      }
+      
       if( j > max_len )
          break;
    }
+
+   
 
    /*
     * End point is now in i, find the nearest space 

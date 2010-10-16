@@ -3,11 +3,12 @@
 Version      1
 Name         New Darkhaven~
 Author       Rennard~
+WeatherX     0
+WeatherY     0
 Ranges       0 60 0 60
 Economy      0 78988646
 ResetMsg     The bells of the cathedral toll the passing of time.~
 Flags        nopkill~
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -630,6 +631,18 @@ Immune     sleep charm nonmagic magic paralysis~
 Attacks    punch kick~
 Defenses   parry dodge~
 #MUDPROG
+Progtype  speech_prog~
+Arglist   leave exit~
+Comlist   if inroom($i) == 21146
+if inroom($n) == 21146
+  mptransfer $n 21069
+  mpat $n mea $n The innkeeper leads you out.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  bribe_prog~
 Arglist   200~
 Comlist   if inroom($i) == 21069
@@ -639,18 +652,6 @@ Comlist   if inroom($i) == 21069
   mpat $n mea $n The innkeeper points you down the hall.
   mpat $n say When you wan'na leave, just tell me.
   mppurge coins
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  speech_prog~
-Arglist   leave exit~
-Comlist   if inroom($i) == 21146
-if inroom($n) == 21146
-  mptransfer $n 21069
-  mpat $n mea $n The innkeeper leads you out.
-endif
 endif
 ~
 #ENDPROG
@@ -962,25 +963,19 @@ Speaks     common~
 Speaking   common~
 Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if name($n) == dog stray
-  emote pets the dog.
-  mpforce stray lick beggar
-  say That's a good boy, here's a small treat.
-  mpecho The beggar tosses a scrap of meat across the road.
-  mpecho The stray quickly chases after it, eager to fill his belly.
-else
-  say Could you spare a few coins please?
-  beg $n
-endif
+Progtype  bribe_prog~
+Arglist   10~
+Comlist   say Thank you for such a worthy donation.
+thank $n
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   5~
-Comlist   , rummages in one of many pouches, searching for gold no doubt.
+Progtype  bribe_prog~
+Arglist   100~
+Comlist   say I cannot express my gratitude in words $n!
+kis $n
+say If only others were so generous.
 ~
 #ENDPROG
 
@@ -996,19 +991,25 @@ mpat 21194 mpforce cleric mpat beggarprog mppurge beggarprog
 #ENDPROG
 
 #MUDPROG
-Progtype  bribe_prog~
-Arglist   100~
-Comlist   say I cannot express my gratitude in words $n!
-kis $n
-say If only others were so generous.
+Progtype  rand_prog~
+Arglist   5~
+Comlist   , rummages in one of many pouches, searching for gold no doubt.
 ~
 #ENDPROG
 
 #MUDPROG
-Progtype  bribe_prog~
-Arglist   10~
-Comlist   say Thank you for such a worthy donation.
-thank $n
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if name($n) == dog stray
+  emote pets the dog.
+  mpforce stray lick beggar
+  say That's a good boy, here's a small treat.
+  mpecho The beggar tosses a scrap of meat across the road.
+  mpecho The stray quickly chases after it, eager to fill his belly.
+else
+  say Could you spare a few coins please?
+  beg $n
+endif
 ~
 #ENDPROG
 
@@ -1210,17 +1211,17 @@ Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 Immune     sleep charm~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un w
-op w
+Arglist   20~
+Comlist   close w
+lock w
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close w
-lock w
+Arglist   6~
+Comlist   un w
+op w
 ~
 #ENDPROG
 
@@ -1253,17 +1254,17 @@ Immune     sleep charm~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un e
-op e
+Arglist   20~
+Comlist   close e
+lock e
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close e
-lock e
+Arglist   6~
+Comlist   un e
+op e
 ~
 #ENDPROG
 
@@ -1296,17 +1297,17 @@ Immune     sleep charm~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un n
-op n
+Arglist   20~
+Comlist   close n
+lock n
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close n
-lock n
+Arglist   6~
+Comlist   un n
+op n
 ~
 #ENDPROG
 
@@ -1339,17 +1340,17 @@ Immune     sleep charm~
 Defenses   parry~
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close s
-lock s
+Arglist   6~
+Comlist   unlock s
+op s
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   unlock s
-op s
+Arglist   20~
+Comlist   close s
+lock s
 ~
 #ENDPROG
 
@@ -1382,17 +1383,17 @@ Immune     sleep charm~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un e
-op e
+Arglist   20~
+Comlist   close e
+lock e
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close e
-lock e
+Arglist   6~
+Comlist   un e
+op e
 ~
 #ENDPROG
 
@@ -1426,17 +1427,17 @@ Immune     sleep charm~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un w
-op w
+Arglist   20~
+Comlist   close w
+lock w
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close w
-lock w
+Arglist   6~
+Comlist   un w
+op w
 ~
 #ENDPROG
 
@@ -1468,17 +1469,17 @@ Bodyparts  head arms legs heart brains guts hands feet fingers ear eye~
 Immune     sleep charm~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un s
-op s
+Arglist   20~
+Comlist   close s
+lock s
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close s
-lock s
+Arglist   6~
+Comlist   un s
+op s
 ~
 #ENDPROG
 
@@ -1511,18 +1512,18 @@ Immune     sleep charm~
 Defenses   parry dodge~
 #MUDPROG
 Progtype  time_prog~
-Arglist   6~
-Comlist   un n
-op n
+Arglist   20~
+Comlist   close n
+lock n
+close manhole
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  time_prog~
-Arglist   20~
-Comlist   close n
-lock n
-close manhole
+Arglist   6~
+Comlist   un n
+op n
 ~
 #ENDPROG
 
@@ -1828,20 +1829,8 @@ Speaking   common~
 Immune     sleep charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   25~
-Comlist   if isnpc($n)
-else
-  mpechoat $n A man hidden in the shadows beckons you over to him.
-  tell $n I have some information which may be of some value...
-  tell $n And for a price I will perhaps share it with you.
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  speech_prog~
-Arglist   p how much~
+Arglist   p what price?~
 Comlist   if isnpc($n)
 else
   mpechoat $n The dark figure stares unflinchingly into your eyes.
@@ -1853,13 +1842,14 @@ endif
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p what price~
+Arglist   p how much?~
 Comlist   if isnpc($n)
 else
   mpechoat $n The dark figure stares unflinchingly into your eyes.
   mpechoaround $n $I draws close to $n and says something.
   mpechoat $n $I matter-of-factly says, '45,000 gold pieces.'
 endif
+ 
 ~
 #ENDPROG
 
@@ -1884,25 +1874,36 @@ say Good ... doing business ... with you, $n.
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p how much?~
+Arglist   p what price~
 Comlist   if isnpc($n)
 else
   mpechoat $n The dark figure stares unflinchingly into your eyes.
   mpechoaround $n $I draws close to $n and says something.
   mpechoat $n $I matter-of-factly says, '45,000 gold pieces.'
 endif
- 
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  speech_prog~
-Arglist   p what price?~
+Arglist   p how much~
 Comlist   if isnpc($n)
 else
   mpechoat $n The dark figure stares unflinchingly into your eyes.
   mpechoaround $n $I draws close to $n and says something.
   mpechoat $n $I matter-of-factly says, '45,000 gold pieces.'
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   25~
+Comlist   if isnpc($n)
+else
+  mpechoat $n A man hidden in the shadows beckons you over to him.
+  tell $n I have some information which may be of some value...
+  tell $n And for a price I will perhaps share it with you.
 endif
 ~
 #ENDPROG
@@ -1958,21 +1959,21 @@ Speaking   common~
 Bodyparts  head heart~
 Immune     fire cold electricity energy blunt pierce slash acid poison drain sleep charm hold nonmagic plus1 plus2 plus3 plus4 plus5 plus6 magic paralysis~
 #MUDPROG
+Progtype  rand_prog~
+Arglist   6~
+Comlist   sac corpse
+sac head
+sac heart
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpechoat $n You hear a ghastly howl.
 say You think you may have killed me, but I will be avenged!
 mpechoat $n Another demon is quickly pushed from the shadows.
 mpmload 21434
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   6~
-Comlist   sac corpse
-sac head
-sac heart
 ~
 #ENDPROG
 
@@ -8849,8 +8850,8 @@ Arglist   50~
 Comlist   if isimmort($r)
 or isgood($r)
 else
-  mpforce $r pray
-  c heal $r
+  mpforce $r grovel
+  c bless $r
 endif
 ~
 #ENDPROG
@@ -8861,8 +8862,8 @@ Arglist   50~
 Comlist   if isimmort($r)
 or isgood($r)
 else
-  mpforce $r grovel
-  c bless $r
+  mpforce $r pray
+  c heal $r
 endif
 ~
 #ENDPROG
@@ -8960,8 +8961,8 @@ Arglist   50~
 Comlist   if isimmort($r)
 or isevil($r)
 else
-  mpforce $r pray
-  c heal $r
+  mpforce $r grovel
+  c bless $r
 endif
 ~
 #ENDPROG
@@ -8972,8 +8973,8 @@ Arglist   50~
 Comlist   if isimmort($r)
 or isevil($r)
 else
-  mpforce $r grovel
-  c bless $r
+  mpforce $r pray
+  c heal $r
 endif
 ~
 #ENDPROG
@@ -10011,14 +10012,14 @@ Desc      The ruins of the concourse are to the south.
 #MUDPROG
 Progtype  rand_prog~
 Arglist   2~
-Comlist   mpecho The damaged bridge suddenly groans, and shifts slightly.
+Comlist   mpecho A slight movement can be felt rumbling through the crumbling bridge.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  rand_prog~
 Arglist   2~
-Comlist   mpecho A slight movement can be felt rumbling through the crumbling bridge.
+Comlist   mpecho The damaged bridge suddenly groans, and shifts slightly.
 ~
 #ENDPROG
 

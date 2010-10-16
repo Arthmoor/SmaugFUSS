@@ -3,10 +3,11 @@
 Version      1
 Name         Spectral Gate~
 Author       Brittany~
+WeatherX     0
+WeatherY     0
 Ranges       0 60 0 60
 Economy      0 45009000
 ResetMsg     A bell rings far above as another passes beyond the Spectral Gates...~
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -42,36 +43,8 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if race($n) == Halfling
-smile $n
-say Welcome to the Realms of Despair reception chamber, $n.
-say You have yet to enter the actual game, but will soon...
-mpechoat $n Please take the time to read everything you see along the way.
-mpechoat $n - use Newbiechat to speak to the Immortals for assistance:
-mpechoat $n - type "new <message>" to use the channel.
-mpechoat $n Please, look around -- just type 'look <object>'.  (look bust)
-mpechoat $n ... I hope you viewed the various tapestries up the staircase.
-mpechoat $n ... They give you a brief look in all directions of our Realms.
-else
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
-Arglist   p flys in from the north.~
-Comlist   say Welcome back, $n.
-say Perhaps you come to look around some more?
-mpechoat $n I hope you viewed the various tapestries at the top of the stairs.
-mpechoat $n They give you a brief look in all directions of our Realms.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p flys in from above.~
+Arglist   p arrives from above.~
 Comlist   smile $n
 say Welcome to the Realms of Despair reception chamber, $n.
 say You have yet to enter the actual game, but will soon...
@@ -94,7 +67,7 @@ mpechoat $n They give you a brief look in all directions of our Realms.
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p arrives from above.~
+Arglist   p flys in from above.~
 Comlist   smile $n
 say Welcome to the Realms of Despair reception chamber, $n.
 say You have yet to enter the actual game, but will soon...
@@ -102,6 +75,34 @@ mpechoat $n Please take the time to read everything you see along the way.
 mpechoat $n - use Newbiechat to speak to the Immortals for assistance:
 mpechoat $n - type "new <message>" to use the channel.
 mpechoat $n Please, look around -- just type 'look <object>'.  (look bust)
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p flys in from the north.~
+Comlist   say Welcome back, $n.
+say Perhaps you come to look around some more?
+mpechoat $n I hope you viewed the various tapestries at the top of the stairs.
+mpechoat $n They give you a brief look in all directions of our Realms.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if race($n) == Halfling
+smile $n
+say Welcome to the Realms of Despair reception chamber, $n.
+say You have yet to enter the actual game, but will soon...
+mpechoat $n Please take the time to read everything you see along the way.
+mpechoat $n - use Newbiechat to speak to the Immortals for assistance:
+mpechoat $n - type "new <message>" to use the channel.
+mpechoat $n Please, look around -- just type 'look <object>'.  (look bust)
+mpechoat $n ... I hope you viewed the various tapestries up the staircase.
+mpechoat $n ... They give you a brief look in all directions of our Realms.
+else
+endif
 ~
 #ENDPROG
 
@@ -129,20 +130,15 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if race($n) == Halfling
-mpechoat $n Your eyes are quickly drawn to the tapestries.
-mpforce 0.$n look tapestries
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  act_prog~
-Arglist   p flys in from below.~
-Comlist   mpechoat $n Your eyes are quickly drawn to the tapestries.
-mpforce 0.$n look tapestries
+Arglist   p has entered the game.~
+Comlist   mpoload 10311 1
+give eye 0.$n
+mpforce 0.$n wear eye
+mpoload 123 1
+give burlap 0.$n
+mea $n A burlap sack is delivered into your hands, type LOOK SACK to use.
+mea $n Familiar, yet somehow different, your being has changed...
 ~
 #ENDPROG
 
@@ -156,14 +152,19 @@ mpforce 0.$n look tapestries
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p has entered the game.~
-Comlist   mpoload 10311 1
-give eye 0.$n
-mpforce 0.$n wear eye
-mpoload 123 1
-give burlap 0.$n
-mea $n A burlap sack is delivered into your hands, type LOOK SACK to use.
-mea $n Familiar, yet somehow different, your being has changed...
+Arglist   p flys in from below.~
+Comlist   mpechoat $n Your eyes are quickly drawn to the tapestries.
+mpforce 0.$n look tapestries
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if race($n) == Halfling
+mpechoat $n Your eyes are quickly drawn to the tapestries.
+mpforce 0.$n look tapestries
+endif
 ~
 #ENDPROG
 
@@ -199,6 +200,19 @@ Saves      0 0 0 0 0
 Speaks     common dwarven~
 Speaking   common dwarven~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p from the south.~
+Comlist   bow $n
+  say You appear to be a visitor, $n.
+  mpechoat $n - Type "look <item>" or "look <name>" to see things here.
+  mpechoat $n - Type 'eq' to check your equipment (items you are wearing).
+  mpechoat $n ... to see your unused belongings, type 'inventory' or 'i'
+  mpechoat $n ... to display your statistics sheet, type 'score' or 'ol'
+  say Type 'look tree'...
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if race($n) == halfling
@@ -210,19 +224,6 @@ mpechoat $n ... to see your unused belongings, type 'inventory' or 'i'
 mpechoat $n ... to display your statistics sheet, type 'score' or 'ol'
 say Type 'look tree'...
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p from the south.~
-Comlist   bow $n
-  say You appear to be a visitor, $n.
-  mpechoat $n - Type "look <item>" or "look <name>" to see things here.
-  mpechoat $n - Type 'eq' to check your equipment (items you are wearing).
-  mpechoat $n ... to see your unused belongings, type 'inventory' or 'i'
-  mpechoat $n ... to display your statistics sheet, type 'score' or 'ol'
-  say Type 'look tree'...
 ~
 #ENDPROG
 
@@ -254,18 +255,18 @@ Speaks     common dwarven ogre orcish trollese reptile dragon halfling clan~
 Speaking   common dwarven ogre orcish trollese reptile dragon halfling clan~
 Bodyparts  head guts eye tail~
 #MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpoload 108 1
-mpechoat $n A piece of meat is torn from the serpent as it dies.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  fight_prog~
 Arglist   50~
 Comlist   mpechoat $n $I sinks its fangs painfully into your flesh!
 mpechoaround $n $I sinks its fangs into $n's flesh!
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpoload 108 1
+mpechoat $n A piece of meat is torn from the serpent as it dies.
 ~
 #ENDPROG
 
@@ -297,6 +298,16 @@ Speaks     common elvish orcish trollese insectoid spiritual magical clan gnome~
 Speaking   common elvish orcish trollese insectoid spiritual magical clan gnome~
 Bodyparts  head arms legs feet tail~
 #MUDPROG
+Progtype  rand_prog~
+Arglist   7~
+Comlist   mpe The dragon gives a deep rumbling growl, just to let you know he is here.
+sac corpse
+sac shield
+sac bucket
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpoload 112 1
@@ -307,16 +318,6 @@ mpmload 104
 mpechoat $n Remember...
 mpechoat $n You cannot advance beyond level 1 until you have passed the
 mpechoat $n runed gate and entered the actual game.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   7~
-Comlist   mpe The dragon gives a deep rumbling growl, just to let you know he is here.
-sac corpse
-sac shield
-sac bucket
 ~
 #ENDPROG
 
@@ -344,9 +345,34 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   mpat 199 drop all
+Progtype  act_prog~
+Arglist   P arrives from the west.~
+Comlist   mpoload 113 1
+mpoload 114 1
+mpat 120 give armour Quercusi
+mpat 120 give golden Quercusi
+mpoload 116 1
+mpoload 117 1
+mpat 123 mppurge
+mpat 123 drop box
+mpat 123 put token box
+mpat 123 close box
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p flys in from the west.~
+Comlist   mpoload 113 1
+mpoload 114 1
+mpat 120 give armour Quercusi
+mpat 120 give golden Quercusi
+mpoload 116 1
+mpoload 117 1
+mpat 123 mppurge
+mpat 123 drop box
+mpat 123 put token box
+mpat 123 close box
 ~
 #ENDPROG
 
@@ -370,34 +396,9 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   p flys in from the west.~
-Comlist   mpoload 113 1
-mpoload 114 1
-mpat 120 give armour Quercusi
-mpat 120 give golden Quercusi
-mpoload 116 1
-mpoload 117 1
-mpat 123 mppurge
-mpat 123 drop box
-mpat 123 put token box
-mpat 123 close box
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   P arrives from the west.~
-Comlist   mpoload 113 1
-mpoload 114 1
-mpat 120 give armour Quercusi
-mpat 120 give golden Quercusi
-mpoload 116 1
-mpoload 117 1
-mpat 123 mppurge
-mpat 123 drop box
-mpat 123 put token box
-mpat 123 close box
+Progtype  rand_prog~
+Arglist   2~
+Comlist   mpat 199 drop all
 ~
 #ENDPROG
 
@@ -429,58 +430,28 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p floats north.~
-Comlist   mpat 119 mpecho $I leans out the door...
-mpat 119 give key $n
-mpat 119 give armour $n
-mpat 119 mpechoat $n Good luck in your adventures, $n...
-close door
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  leave_prog~
+Progtype  all_greet_prog~
 Arglist   100~
-Comlist   if race($n) == Halfling
-give key $n
-give armour $n
-mpechoat $n Good luck in your adventures, $n...
+Comlist   smile $n
+say Hello, $n, welcome to my home.
+mpechoat $n Do you have the following items?
+mpechoat $n ... a weapon from a chest in a tree.
+mpechoat $n ... a Shield of Scales from the dragon hatchling in the cave.
+mpechoat $n ... a ring from the end of your chosen path.
+mpechoat $n ... also a feather, a bucket and the meat of a serpent.
+mpechoat $n If you missed any of these and would like to retrieve them, or
+if ispkill($n)
+  mpechoat $n if you would like to return to choose the Peaceful path, simply
 else
+  mpechoat $n if you would like to return to choose the Deadly path, simply
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   2~
-Comlist   mpat 199 drop all
-mpat 199 get armour
-mpat 199 get armour
-mpat 199 get key
-mpat 199 get key
-mpat 199 get key
-mpat 199 get key
-mpat 199 get armour
-mpat 199 get armour
-mpat 199 mppurge
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  give_prog~
-Arglist   ring shadow shadowring~
-Comlist   mpechoat $n I shall now return you to Xouwasi at the tree.
-mpechoaround $n $n disappears in a magical flash.
-mptransfer 0.$n 103
-mpat 103 mpforce 0.$n south
-mpjunk shadowring
+mpechoat $n give me your ring (type 'give ring man').
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p flys north.~
+Arglist   p leaves north.~
 Comlist   mpat 119 mpecho $I leans out the door...
 mpat 119 give key $n
 mpat 119 give armour $n
@@ -502,7 +473,7 @@ mpjunk lightring
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p leaves north.~
+Arglist   p flys north.~
 Comlist   mpat 119 mpecho $I leans out the door...
 mpat 119 give key $n
 mpat 119 give armour $n
@@ -512,22 +483,52 @@ close door
 #ENDPROG
 
 #MUDPROG
-Progtype  all_greet_prog~
+Progtype  give_prog~
+Arglist   ring shadow shadowring~
+Comlist   mpechoat $n I shall now return you to Xouwasi at the tree.
+mpechoaround $n $n disappears in a magical flash.
+mptransfer 0.$n 103
+mpat 103 mpforce 0.$n south
+mpjunk shadowring
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   2~
+Comlist   mpat 199 drop all
+mpat 199 get armour
+mpat 199 get armour
+mpat 199 get key
+mpat 199 get key
+mpat 199 get key
+mpat 199 get key
+mpat 199 get armour
+mpat 199 get armour
+mpat 199 mppurge
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  leave_prog~
 Arglist   100~
-Comlist   smile $n
-say Hello, $n, welcome to my home.
-mpechoat $n Do you have the following items?
-mpechoat $n ... a weapon from a chest in a tree.
-mpechoat $n ... a Shield of Scales from the dragon hatchling in the cave.
-mpechoat $n ... a ring from the end of your chosen path.
-mpechoat $n ... also a feather, a bucket and the meat of a serpent.
-mpechoat $n If you missed any of these and would like to retrieve them, or
-if ispkill($n)
-  mpechoat $n if you would like to return to choose the Peaceful path, simply
+Comlist   if race($n) == Halfling
+give key $n
+give armour $n
+mpechoat $n Good luck in your adventures, $n...
 else
-  mpechoat $n if you would like to return to choose the Deadly path, simply
 endif
-mpechoat $n give me your ring (type 'give ring man').
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p floats north.~
+Comlist   mpat 119 mpecho $I leans out the door...
+mpat 119 give key $n
+mpat 119 give armour $n
+mpat 119 mpechoat $n Good luck in your adventures, $n...
+close door
 ~
 #ENDPROG
 
@@ -1410,15 +1411,6 @@ ExDescKey    'tapestry~
 #ENDEXDESC
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   20~
-Comlist   mpecho A large shadow passes through the room as sounds cascade from above.
-mpechoat $r You look up and see the tapestry overhead...
-mpforce $r look up
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  leave_prog~
 Arglist   100~
 Comlist   if isimmort($n)
@@ -1426,6 +1418,15 @@ or race($n) == halfling
 else
   mpforce 0.$n vis
 endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  rand_prog~
+Arglist   20~
+Comlist   mpecho A large shadow passes through the room as sounds cascade from above.
+mpechoat $r You look up and see the tapestry overhead...
+mpforce $r look up
 ~
 #ENDPROG
 
@@ -1627,10 +1628,24 @@ Desc      Behind you is a path by the leading back to the reception area.
 
 Reset O 0 192 1 103
 #MUDPROG
-Progtype  rand_prog~
-Arglist   33~
-Comlist   mpechoat $r Your eyes are drawn to the boulder, and you LOOK PLAQUE.
-mpforce $r look plaque
+Progtype  speech_prog~
+Arglist   p shadowy path~
+Comlist   if level($n) == 1
+mpforce 0.$n config -nice
+mpforce 0.$n config -flee
+mppkset $n yes
+mpechoat $n You are now a Deadly Character... you will be listed under
+mpechoat $n 'who deadly' once you reach level 5 and 18 years of age.
+mpechoat $n You will now be transferred to your chosen path...
+mpechoaround $n $n choses the path of shadows, disappearing into the darkness.
+mptransfer 0.$n 107
+mpat 107 mpforce 0.$n look
+mpat 107 mpforce 0.$n config +autoloot
+mpat 107 mpforce 0.$n config +autogold
+else
+mpechoat $n You have already chosen your path...
+mptransfer $n 21001
+endif
 ~
 #ENDPROG
 
@@ -1654,24 +1669,10 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  speech_prog~
-Arglist   p shadowy path~
-Comlist   if level($n) == 1
-mpforce 0.$n config -nice
-mpforce 0.$n config -flee
-mppkset $n yes
-mpechoat $n You are now a Deadly Character... you will be listed under
-mpechoat $n 'who deadly' once you reach level 5 and 18 years of age.
-mpechoat $n You will now be transferred to your chosen path...
-mpechoaround $n $n choses the path of shadows, disappearing into the darkness.
-mptransfer 0.$n 107
-mpat 107 mpforce 0.$n look
-mpat 107 mpforce 0.$n config +autoloot
-mpat 107 mpforce 0.$n config +autogold
-else
-mpechoat $n You have already chosen your path...
-mptransfer $n 21001
-endif
+Progtype  rand_prog~
+Arglist   33~
+Comlist   mpechoat $r Your eyes are drawn to the boulder, and you LOOK PLAQUE.
+mpforce $r look plaque
 ~
 #ENDPROG
 
@@ -1921,20 +1922,20 @@ would not wish to attempt to chop down any found here.
 #ENDEXDESC
 
 #MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   mpforce 0.$n vis
-mpoload 109 1
-mpat 111 drop feather
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   c heal $n
 c refresh $n
 c refresh $n
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   mpforce 0.$n vis
+mpoload 109 1
+mpat 111 drop feather
 ~
 #ENDPROG
 
@@ -2384,6 +2385,13 @@ ExDesc       As you examine them, you notice a crack which has snagged part of t
 #ENDEXDESC
 
 #MUDPROG
+Progtype  rand_prog~
+Arglist   25~
+Comlist   mpecho The wooden chair creaks as it rocks back and forth over the floorboards.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  leave_prog~
 Arglist   100~
 Comlist   if race($n) == Halfling
@@ -2394,13 +2402,6 @@ mpforce q mpechoat $n Good luck in your adventures, $n...
 close door
 else
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  rand_prog~
-Arglist   25~
-Comlist   mpecho The wooden chair creaks as it rocks back and forth over the floorboards.
 ~
 #ENDPROG
 

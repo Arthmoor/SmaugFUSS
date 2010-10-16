@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include "mud.h"
 
-char *const npc_race[MAX_NPC_RACE] = {
+const char *const npc_race[MAX_NPC_RACE] = {
    "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",
    "half-orc", "half-troll", "half-elf", "gith", "drow", "sea-elf",
    "lizardman", "gnome", "r5", "r6", "r7", "r8", "troll",
@@ -36,7 +36,7 @@ char *const npc_race[MAX_NPC_RACE] = {
 };
 
 
-char *const npc_class[MAX_NPC_CLASS] = {
+const char *const npc_class[MAX_NPC_CLASS] = {
    "mage", "cleric", "thief", "warrior", "vampire", "druid", "ranger",
    "augurer", "paladin", "nephandi", "savage", "pirate", "pc12", "pc13",
    "pc14", "pc15", "pc16", "pc17", "pc18", "pc19",
@@ -288,7 +288,7 @@ const struct liq_type liq_table[LIQ_MAX] = {
    {"grog", "thick brown", {3, 2, 5}}  /* 17 */
 };
 
-char *const attack_table[18] = {
+const char *const attack_table[18] = {
    "hit",
    "slice", "stab", "slash", "whip", "claw",
    "blast", "pound", "crush", "grep", "bite",
@@ -296,14 +296,14 @@ char *const attack_table[18] = {
    "stone", "pea"
 };
 
-char *s_blade_messages[24] = {
+const char *s_blade_messages[24] = {
    "miss", "barely scratch", "scratch", "nick", "cut", "hit", "tear",
    "rip", "gash", "lacerate", "hack", "maul", "rend", "decimate",
    "_mangle_", "_devastate_", "_cleave_", "_butcher_", "DISEMBOWEL",
    "DISFIGURE", "GUT", "EVISCERATE", "* SLAUGHTER *", "*** ANNIHILATE ***"
 };
 
-char *p_blade_messages[24] = {
+const char *p_blade_messages[24] = {
    "misses", "barely scratches", "scratches", "nicks", "cuts", "hits",
    "tears", "rips", "gashes", "lacerates", "hacks", "mauls", "rends",
    "decimates", "_mangles_", "_devastates_", "_cleaves_", "_butchers_",
@@ -311,14 +311,14 @@ char *p_blade_messages[24] = {
    "*** ANNIHILATES ***"
 };
 
-char *s_blunt_messages[24] = {
+const char *s_blunt_messages[24] = {
    "miss", "barely scuff", "scuff", "pelt", "bruise", "strike", "thrash",
    "batter", "flog", "pummel", "smash", "maul", "bludgeon", "decimate",
    "_shatter_", "_devastate_", "_maim_", "_cripple_", "MUTILATE", "DISFIGURE",
    "MASSACRE", "PULVERIZE", "* OBLITERATE *", "*** ANNIHILATE ***"
 };
 
-char *p_blunt_messages[24] = {
+const char *p_blunt_messages[24] = {
    "misses", "barely scuffs", "scuffs", "pelts", "bruises", "strikes",
    "thrashes", "batters", "flogs", "pummels", "smashes", "mauls",
    "bludgeons", "decimates", "_shatters_", "_devastates_", "_maims_",
@@ -326,7 +326,7 @@ char *p_blunt_messages[24] = {
    "* OBLITERATES *", "*** ANNIHILATES ***"
 };
 
-char *s_generic_messages[24] = {
+const char *s_generic_messages[24] = {
    "miss", "brush", "scratch", "graze", "nick", "jolt", "wound",
    "injure", "hit", "jar", "thrash", "maul", "decimate", "_traumatize_",
    "_devastate_", "_maim_", "_demolish_", "MUTILATE", "MASSACRE",
@@ -334,7 +334,7 @@ char *s_generic_messages[24] = {
    "**** SMITE ****"
 };
 
-char *p_generic_messages[24] = {
+const char *p_generic_messages[24] = {
    "misses", "brushes", "scratches", "grazes", "nicks", "jolts", "wounds",
    "injures", "hits", "jars", "thrashes", "mauls", "decimates", "_traumatizes_",
    "_devastates_", "_maims_", "_demolishes_", "MUTILATES", "MASSACRES",
@@ -342,7 +342,7 @@ char *p_generic_messages[24] = {
    "**** SMITES ****"
 };
 
-char **const s_message_table[18] = {
+const char **const s_message_table[18] = {
    s_generic_messages,  /* hit */
    s_blade_messages, /* slice */
    s_blade_messages, /* stab */
@@ -363,7 +363,7 @@ char **const s_message_table[18] = {
    s_generic_messages   /* pea */
 };
 
-char **const p_message_table[18] = {
+const char **const p_message_table[18] = {
    p_generic_messages,  /* hit */
    p_blade_messages, /* slice */
    p_blade_messages, /* stab */
@@ -385,7 +385,7 @@ char **const p_message_table[18] = {
 };
 
 /* Weather constants - FB */
-char *const temp_settings[MAX_CLIMATE] = {
+const char *const temp_settings[MAX_CLIMATE] = {
    "cold",
    "cool",
    "normal",
@@ -393,7 +393,7 @@ char *const temp_settings[MAX_CLIMATE] = {
    "hot",
 };
 
-char *const precip_settings[MAX_CLIMATE] = {
+const char *const precip_settings[MAX_CLIMATE] = {
    "arid",
    "dry",
    "normal",
@@ -401,7 +401,7 @@ char *const precip_settings[MAX_CLIMATE] = {
    "wet",
 };
 
-char *const wind_settings[MAX_CLIMATE] = {
+const char *const wind_settings[MAX_CLIMATE] = {
    "still",
    "calm",
    "normal",
@@ -409,7 +409,7 @@ char *const wind_settings[MAX_CLIMATE] = {
    "windy",
 };
 
-char *const preciptemp_msg[6][6] = {
+const char *const preciptemp_msg[6][6] = {
    /*
     * precip = 0 
     */
@@ -472,7 +472,7 @@ char *const preciptemp_msg[6][6] = {
     "A torrent of rain soaks the heated earth"}
 };
 
-char *const windtemp_msg[6][6] = {
+const char *const windtemp_msg[6][6] = {
    /*
     * wind = 0 
     */
@@ -535,13 +535,13 @@ char *const windtemp_msg[6][6] = {
     "Monsoon winds tear the feverish air"}
 };
 
-char *const precip_msg[3] = {
+const char *const precip_msg[3] = {
    "there is not a cloud in the sky",
    "pristine white clouds are in the sky",
    "thick, grey clouds mask the sun"
 };
 
-char *const wind_msg[6] = {
+const char *const wind_msg[6] = {
    "there is not a breath of wind in the air",
    "a slight breeze stirs the air",
    "a breeze wafts through the area",

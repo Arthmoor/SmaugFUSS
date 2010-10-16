@@ -30,10 +30,12 @@
 void reset_colors( CHAR_DATA * );
 void set_char_color( short AType, CHAR_DATA * ch );
 void set_pager_color( short AType, CHAR_DATA * ch );
-char *color_str( short AType, CHAR_DATA * ch );
+const char *color_str( short AType, CHAR_DATA * ch );
 char *color_align( const char *argument, int size, int align );
 int color_strlen( const char *src );
 char *colorize( const char *txt, DESCRIPTOR_DATA * d );
+int colorcode( const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int *vislen );
+
 
 #define COLOR_DIR "../color/"
 DECLARE_DO_FUN( do_color );

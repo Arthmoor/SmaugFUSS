@@ -20,7 +20,7 @@
 
 PLANE_DATA *first_plane, *last_plane;
 
-void do_plist( CHAR_DATA * ch, char *argument )
+void do_plist( CHAR_DATA* ch, const char* argument)
 {
    PLANE_DATA *p;
 
@@ -30,7 +30,7 @@ void do_plist( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_pstat( CHAR_DATA * ch, char *argument )
+void do_pstat( CHAR_DATA* ch, const char* argument)
 {
    PLANE_DATA *p;
    char arg[MAX_INPUT_LENGTH];
@@ -45,7 +45,7 @@ void do_pstat( CHAR_DATA * ch, char *argument )
    return;
 }
 
-void do_pset( CHAR_DATA * ch, char *argument )
+void do_pset( CHAR_DATA* ch, const char* argument)
 {
    PLANE_DATA *p;
    char arg[MAX_INPUT_LENGTH];

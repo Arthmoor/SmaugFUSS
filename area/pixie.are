@@ -3,11 +3,12 @@
 Version      1
 Name         Pixie Forest~
 Author       Caine~
+WeatherX     0
+WeatherY     0
 Ranges       1 5 0 60
 Economy      0 14805000
 ResetMsg     A pixie pops into view then flutters away, giggling...~
 ResetFreq    5
-Climate      2 2 2
 #ENDAREADATA
 
 #MOBILE
@@ -41,18 +42,18 @@ Speaking   common mammal~
 Bodyparts  head legs heart guts ear eye claws~
 Attacks    claws~
 #MUDPROG
+Progtype  fight_prog~
+Arglist   15~
+Comlist   , spreads its jaws wide and nearly roars you backwards!
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpe _yel As the bear breathes its last and collapses with a thud.
 mpe _yel You notice one of its long, curved claws has fallen loose.
 mpoload 2071
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  fight_prog~
-Arglist   15~
-Comlist   , spreads its jaws wide and nearly roars you backwards!
 ~
 #ENDPROG
 
@@ -87,17 +88,17 @@ Speaking   common pixie~
 Bodyparts  head arms legs heart guts hands feet ear eye wings~
 Defenses   dodge~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   20~
-Comlist   mpe _cya $I shrieks wildly through the air, trying to avoid harm.
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpe _cya As the small creature plunges to the surface, a wing is torn off.
 mpoload 2072
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   20~
+Comlist   mpe _cya $I shrieks wildly through the air, trying to avoid harm.
 ~
 #ENDPROG
 
@@ -133,17 +134,17 @@ Bodyparts  head arms legs heart guts hands feet ear eye tail horns~
 Immune     charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   15~
-Comlist   mpe $I's shriek resounds through the cave!
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpe _red As the foul imp perishes, a small object slips its grasp...
 mpoload 2070
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   15~
+Comlist   mpe $I's shriek resounds through the cave!
 ~
 #ENDPROG
 
@@ -178,18 +179,18 @@ Bodyparts  head arms legs heart guts hands feet ear eye wings~
 Immune     charm~
 Defenses   dodge~
 #MUDPROG
-Progtype  fight_prog~
-Arglist   10~
-Comlist   mpe _cya $I releases a lash of iced-filled water from its outstretched hand!
-mpdamage $n 3
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpe _cya $I collapses into the water, forming a circle of liquid.
 mpoload 2073
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  fight_prog~
+Arglist   10~
+Comlist   mpe _cya $I releases a lash of iced-filled water from its outstretched hand!
+mpdamage $n 3
 ~
 #ENDPROG
 

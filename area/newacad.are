@@ -3,13 +3,13 @@
 Version      1
 Name         Darkhaven Academy~
 Author       Scarab~
+WeatherX     0
+WeatherY     0
 Ranges       1 5 0 60
 Economy      0 497818680
 ResetMsg     You hear the patter of little feet as the battleground teems with life...~
 ResetFreq    3
 Flags        nopkill~
-Climate      2 2 2
-Neighbor     Limbo~
 #ENDAREADATA
 
 #MOBILE
@@ -989,19 +989,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1036,19 +1036,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1083,19 +1083,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1130,19 +1130,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1177,19 +1177,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1224,19 +1224,19 @@ Speaking   common elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1270,19 +1270,19 @@ Speaks     common~
 Speaking   common~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -1352,41 +1352,6 @@ Speaks     halfling~
 Speaking   common halfling~
 Immune     charm nonmagic magic~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p grovels in the~
-Comlist   if isnpc($n)
-else
-  if level($n) > 10
-    smile $n
-    say You are too experienced to have need of my assistance, $n.
-  else
-    clap $n 
-    say Well done, $n.
-    c fly $n
-    tell $n that will help you with your movements.
-  endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if isnpc($n)
-else
-  if level($n) > 10
-    smile $n
-  else
-    pat $n
-    mpechoat $n You are definitely learning!
-    mpechoat $n Now find the word in my description that will earn you a spell.
-    cast shield $n
-  endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  all_greet_prog~
 Arglist   100~
 Comlist   if isnpc($n)
@@ -1412,6 +1377,41 @@ else
     endif
   endif
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if isnpc($n)
+else
+  if level($n) > 10
+    smile $n
+  else
+    pat $n
+    mpechoat $n You are definitely learning!
+    mpechoat $n Now find the word in my description that will earn you a spell.
+    cast shield $n
+  endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p grovels in the~
+Comlist   if isnpc($n)
+else
+  if level($n) > 10
+    smile $n
+    say You are too experienced to have need of my assistance, $n.
+  else
+    clap $n 
+    say Well done, $n.
+    c fly $n
+    tell $n that will help you with your movements.
+  endif
 endif
 ~
 #ENDPROG
@@ -1446,6 +1446,14 @@ Bodyparts  head arms~
 Immune     magic~
 ShopData   0 0 0 0 0 120 90 0 23
 #MUDPROG
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   smile $n
+say Welcome to my store!
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  death_prog~
 Arglist   100~
 Comlist   mpgoto 10399
@@ -1456,14 +1464,6 @@ mpforce 2.sage get meat
 mpforce 2.sage get dragonskin
 mpforce 2.sage mpgoto 10357
 mpat 10357 mpecho The corpse of the sage disappears in a flash!
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   smile $n
-say Welcome to my store!
 ~
 #ENDPROG
 
@@ -1571,36 +1571,35 @@ Speaks     halfling~
 Speaking   common halfling~
 Bodyparts  head arms~
 #MUDPROG
-Progtype  rand_prog~
-Arglist   32~
-Comlist   if class ($r) == Ranger
-mpechoat $r The ground opens beneath you!  You drop into the Rangers portal.
-mpechoat $r You land in the Rangers Hall with a bounce.
-mpechoaround $r $r disappears down a portal marked:  Rangers Only!
-mptransfer $r 10391
-mpat $r mpforce $r bounce
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   mpechoat $n Silvina looks up from her filing and appraises your needs.
+say Hello there, $n.
+if class ($n) == Mage
+mpechoat $n I will direct you to the mage portal momentarily.
 endif
-if class ($r) == Druid
-mpechoat $r The ground opens beneath you!  You drop into the Druids portal.
-mpechoat $r You land in the Druids Hall with a bounce.
-mpechoaround $r $r disappears down a portal marked:  Druids Only!
-mptransfer $r 10320
-mpat $r mpforce $r bounce
+if class ($n) == Cleric
+mpechoat $n I will direct you to the cleric portal momentarily.
 endif
-if class ($r) == Thief
-mpechoat $r The ground opens beneath you!  You drop into the Thieves portal.
-mpechoat $r You land in the Thieves Hall with a bounce.
-mpechoaround $r $r disappears down a portal marked:  Thieves Only!
-mptransfer $r 10322
-mpat $r mpforce $r bounce
+if class ($n) == Warrior
+mpechoat $n I will direct you to the warrior portal momentarily.
 endif
-if class ($r) == Augurer
-mpechoat $r The ground opens beneath you!  You drop into the Augurers portal.
-mpechoat $r You land in the Augurers Hall with a bounce.
-mpechoaround $r $r disappears down a portal marked:  Augurers Only!
-mptransfer $r 10400
-mpat $r mpforce $r bounce
+if class ($n) == Vampire
+mpechoat $n I will direct you to the vampire portal momentarily.
 endif
+if class ($n) == Druid
+mpechoat $n I will direct you to the druid portal momentarily.
+endif
+if class ($n) == Ranger
+mpechoat $n I will direct you to the ranger portal momentarily.
+endif
+if class ($n) == Thief
+mpechoat $n I will direct you to the thief portal momentarily.
+endif
+if class ($n) == Augurer
+mpechoat $n I will direct you to the augurer portal momentarily.
+endif
+mpechoat $n Please, read the certificate on the wall as you wait.
 ~
 #ENDPROG
 
@@ -1639,35 +1638,36 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   mpechoat $n Silvina looks up from her filing and appraises your needs.
-say Hello there, $n.
-if class ($n) == Mage
-mpechoat $n I will direct you to the mage portal momentarily.
+Progtype  rand_prog~
+Arglist   32~
+Comlist   if class ($r) == Ranger
+mpechoat $r The ground opens beneath you!  You drop into the Rangers portal.
+mpechoat $r You land in the Rangers Hall with a bounce.
+mpechoaround $r $r disappears down a portal marked:  Rangers Only!
+mptransfer $r 10391
+mpat $r mpforce $r bounce
 endif
-if class ($n) == Cleric
-mpechoat $n I will direct you to the cleric portal momentarily.
+if class ($r) == Druid
+mpechoat $r The ground opens beneath you!  You drop into the Druids portal.
+mpechoat $r You land in the Druids Hall with a bounce.
+mpechoaround $r $r disappears down a portal marked:  Druids Only!
+mptransfer $r 10320
+mpat $r mpforce $r bounce
 endif
-if class ($n) == Warrior
-mpechoat $n I will direct you to the warrior portal momentarily.
+if class ($r) == Thief
+mpechoat $r The ground opens beneath you!  You drop into the Thieves portal.
+mpechoat $r You land in the Thieves Hall with a bounce.
+mpechoaround $r $r disappears down a portal marked:  Thieves Only!
+mptransfer $r 10322
+mpat $r mpforce $r bounce
 endif
-if class ($n) == Vampire
-mpechoat $n I will direct you to the vampire portal momentarily.
+if class ($r) == Augurer
+mpechoat $r The ground opens beneath you!  You drop into the Augurers portal.
+mpechoat $r You land in the Augurers Hall with a bounce.
+mpechoaround $r $r disappears down a portal marked:  Augurers Only!
+mptransfer $r 10400
+mpat $r mpforce $r bounce
 endif
-if class ($n) == Druid
-mpechoat $n I will direct you to the druid portal momentarily.
-endif
-if class ($n) == Ranger
-mpechoat $n I will direct you to the ranger portal momentarily.
-endif
-if class ($n) == Thief
-mpechoat $n I will direct you to the thief portal momentarily.
-endif
-if class ($n) == Augurer
-mpechoat $n I will direct you to the augurer portal momentarily.
-endif
-mpechoat $n Please, read the certificate on the wall as you wait.
 ~
 #ENDPROG
 
@@ -1752,6 +1752,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Mage
+mpechoat $n Hello $n, I am a fellow mage who is here to tell you a little
+mpechoat $n about the mage class. For instance, our prime stat is intelligence.
+cast 'dragon wit' $n
+mpechoat $n That spell will raise your int by 3 for a while, the spell is
+mpechoat $n called dragon wit. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the mage class, type HELP MAGE.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Mage
@@ -1780,38 +1812,6 @@ smile $n
 mpechoat $n You are too high a level to need my assistance now.
 endif
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Mage
-mpechoat $n Hello $n, I am a fellow mage who is here to tell you a little
-mpechoat $n about the mage class. For instance, our prime stat is intelligence.
-cast 'dragon wit' $n
-mpechoat $n That spell will raise your int by 3 for a while, the spell is
-mpechoat $n called dragon wit. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the mage class, type HELP MAGE.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
 ~
 #ENDPROG
 
@@ -1845,22 +1845,12 @@ Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Cleric
-mpechoat $n Hello $n, I am a fellow cleric who is here to tell you a little
-mpechoat $n about the cleric class. For instance, our prime stat is wisdom.
-cast sagacity $n
-mpechoat $n That spell will raise your wis by 3 for a while, the spell is
-mpechoat $n called sagacity. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the cleric class, type HELP CLERIC.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
-endif
-endif
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
 ~
 #ENDPROG
 
@@ -1898,12 +1888,22 @@ endif
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
+Arglist   p looks at you.~
+Comlist   if class($n) == Cleric
+mpechoat $n Hello $n, I am a fellow cleric who is here to tell you a little
+mpechoat $n about the cleric class. For instance, our prime stat is wisdom.
+cast sagacity $n
+mpechoat $n That spell will raise your wis by 3 for a while, the spell is
+mpechoat $n called sagacity. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the cleric class, type HELP CLERIC.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
 ~
 #ENDPROG
 
@@ -1937,6 +1937,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Thief
+mpechoat $n Hello $n, I am a fellow thief who is here to tell you a little
+mpechoat $n about the thief class. For instance, our prime stat is dexterity.
+cast slink $n
+mpechoat $n That spell will raise your dex by 3 for a while, the spell is
+mpechoat $n called slink. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the thief class, type HELP THIEF.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Thief
@@ -1963,38 +1995,6 @@ mpat $n mpforce $n config -brief
 else
 smile $n
 mpechoat $n You are too high a level to need my assistance now.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Thief
-mpechoat $n Hello $n, I am a fellow thief who is here to tell you a little
-mpechoat $n about the thief class. For instance, our prime stat is dexterity.
-cast slink $n
-mpechoat $n That spell will raise your dex by 3 for a while, the spell is
-mpechoat $n called slink. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the thief class, type HELP THIEF.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
 endif
 endif
 ~
@@ -2030,6 +2030,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Warrior
+mpechoat $n Hello $n, I am a fellow warrior who is here to tell you a little
+mpechoat $n about the warrior class. For instance, our prime stat is strength.
+cast 'kindred strength' $n
+mpechoat $n That spell will raise your str by 3 for a while, the spell is
+mpechoat $n called kindred strength. To find out all the skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the warrior class, type HELP WARRIOR.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Warrior
@@ -2056,38 +2088,6 @@ mpat $n mpforce $n config -brief
 else
 smile $n
 mpechoat $n You are too high a level to need my assistance now.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Warrior
-mpechoat $n Hello $n, I am a fellow warrior who is here to tell you a little
-mpechoat $n about the warrior class. For instance, our prime stat is strength.
-cast 'kindred strength' $n
-mpechoat $n That spell will raise your str by 3 for a while, the spell is
-mpechoat $n called kindred strength. To find out all the skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the warrior class, type HELP WARRIOR.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
 endif
 endif
 ~
@@ -2123,6 +2123,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Vampire
+mpechoat $n Hello $n, I am a fellow vampire who is here to tell you a little
+mpechoat $n about the vampire class. For instance, our prime stat is dexterity.
+cast slink $n
+mpechoat $n That spell will raise your dex by 3 for a while, the spell is
+mpechoat $n called slink. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the vampire class, type HELP VAMPIRE.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Vampire
@@ -2149,38 +2181,6 @@ mpat $n mpforce $n config -brief
 else
 mpechoat $n You are too high a level to need my assistance now.
 smile $n
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Vampire
-mpechoat $n Hello $n, I am a fellow vampire who is here to tell you a little
-mpechoat $n about the vampire class. For instance, our prime stat is dexterity.
-cast slink $n
-mpechoat $n That spell will raise your dex by 3 for a while, the spell is
-mpechoat $n called slink. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the vampire class, type HELP VAMPIRE.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
 endif
 endif
 ~
@@ -2215,6 +2215,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Druid
+mpechoat $n Hello $n, I am a fellow druid who is here to tell you a little
+mpechoat $n about the druid class. For instance, our prime stat is wisdom.
+cast 'sagacity' $n
+mpechoat $n That spell will raise your wis by 3 for a while, the spell is
+mpechoat $n called sagacity. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the druid class, type HELP DRUID.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == druid
@@ -2241,38 +2273,6 @@ mpat $n mpforce $n config -brief
 else
 smile $n
 mpechoat $n You are too high a level to need my assistance now.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Druid
-mpechoat $n Hello $n, I am a fellow druid who is here to tell you a little
-mpechoat $n about the druid class. For instance, our prime stat is wisdom.
-cast 'sagacity' $n
-mpechoat $n That spell will raise your wis by 3 for a while, the spell is
-mpechoat $n called sagacity. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the druid class, type HELP DRUID.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
 endif
 endif
 ~
@@ -2307,6 +2307,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Ranger
+mpechoat $n Hello $n, I am a fellow ranger who is here to tell you a little
+mpechoat $n about the ranger class. For instance, our prime stat is strength.
+cast 'kindred strength' $n
+mpechoat $n That spell will raise your str by 3 for a while, the spell is
+mpechoat $n called kindred strength. To find out all the spells, skills, weapon
+mpechoat $n types and languages available to you, type SLIST. To find out
+mpechoat $n information on the ranger class, type HELP RANGER.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Ranger
@@ -2335,38 +2367,6 @@ smile $n
 mpechoat $n You are too high a level to need my assistance now.
 endif
 endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Ranger
-mpechoat $n Hello $n, I am a fellow ranger who is here to tell you a little
-mpechoat $n about the ranger class. For instance, our prime stat is strength.
-cast 'kindred strength' $n
-mpechoat $n That spell will raise your str by 3 for a while, the spell is
-mpechoat $n called kindred strength. To find out all the spells, skills, weapon
-mpechoat $n types and languages available to you, type SLIST. To find out
-mpechoat $n information on the ranger class, type HELP RANGER.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, type SAY BESTOW to receive it.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
 ~
 #ENDPROG
 
@@ -2929,12 +2929,17 @@ Speaking   common elvish dwarven pixie ogre orcish trollese goblin halfling gith
 Bodyparts  head arms~
 Immune     sleep charm nonmagic magic~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p flees head over heels!~
-Comlist   mptrans 0.$n
-mpechoat $n Abbigayle says, 'You fled, so I shall spare your life!'
-mpgoto 10399
-mpat 10306 mpmload 10394
+Progtype  all_greet_prog~
+Arglist   100~
+Comlist   if ispc($n)
+wink $n
+if level($n) < 20
+tell $n My lessons start when you reach level 20. Have fun until then.
+else
+tell $n I am ready to teach you, are you prepared for the lessons?
+endif
+grin $n
+endif
 ~
 #ENDPROG
 
@@ -2950,17 +2955,12 @@ mpat 10306 mpmload 10394
 #ENDPROG
 
 #MUDPROG
-Progtype  all_greet_prog~
-Arglist   100~
-Comlist   if ispc($n)
-wink $n
-if level($n) < 20
-tell $n My lessons start when you reach level 20. Have fun until then.
-else
-tell $n I am ready to teach you, are you prepared for the lessons?
-endif
-grin $n
-endif
+Progtype  act_prog~
+Arglist   p flees head over heels!~
+Comlist   mptrans 0.$n
+mpechoat $n Abbigayle says, 'You fled, so I shall spare your life!'
+mpgoto 10399
+mpat 10306 mpmload 10394
 ~
 #ENDPROG
 
@@ -3092,21 +3092,57 @@ Saves      0 0 0 0 0
 Speaks     common~
 Speaking   common~
 #MUDPROG
-Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce $n drink
-mpechoat $n A drink from this fountain will quench your thirst and improve your
-mpechoat $n mental state.
+Progtype  death_prog~
+Arglist   100~
+Comlist   mpmload 10399
+say You may kill this body, but my spirit will not die!
+smile 2.tsythia
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce 0.$n eat mushroom
-mpechoat $n This will help your hunger, and your mental state.  Enjoy $n.
+Arglist   p from the south.~
+Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  How was the battlegrounds?'
+mpechoat $n Please take the time to visit the note room to the east.
+mpechoat $n When done here, leave up to explore Darkhaven.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p from the north.~
+Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  How was the Academy?'
+mpechoat $n Please take the time to visit the note room to the east.
+mpechoat $n When done here, leave up to explore Darkhaven.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p from the east.~
+Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  Did you enjoy the reading?'
+mpechoat $n To the north is the Academy, and south is the Battlegrounds.
+mpechoat $n When done here, leave up to explore Darkhaven.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p from above.~
+Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n. How was your trip to Darkhaven?'
+mpechoat $n To the north is the Academy, and south is the Battlegrounds.
+mpechoat $n Please take the time to visit the note room to the east.
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p from somewhere.~
+Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n. I see you have met Tagetarle.'
+mpechoat $n Please take the time to visit the note room to the east.
+mpechoat $n To the north is the Academy, and south is the Battlegrounds.
+mpechoat $n When done here, leave up to explore Darkhaven.
 ~
 #ENDPROG
 
@@ -3151,56 +3187,20 @@ endif
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p from somewhere.~
-Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n. I see you have met Tagetarle.'
-mpechoat $n Please take the time to visit the note room to the east.
-mpechoat $n To the north is the Academy, and south is the Battlegrounds.
-mpechoat $n When done here, leave up to explore Darkhaven.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce 0.$n eat mushroom
+mpechoat $n This will help your hunger, and your mental state.  Enjoy $n.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p from above.~
-Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n. How was your trip to Darkhaven?'
-mpechoat $n To the north is the Academy, and south is the Battlegrounds.
-mpechoat $n Please take the time to visit the note room to the east.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p from the east.~
-Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  Did you enjoy the reading?'
-mpechoat $n To the north is the Academy, and south is the Battlegrounds.
-mpechoat $n When done here, leave up to explore Darkhaven.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p from the north.~
-Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  How was the Academy?'
-mpechoat $n Please take the time to visit the note room to the east.
-mpechoat $n When done here, leave up to explore Darkhaven.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p from the south.~
-Comlist   mpechoat $n Mistress Tsythia says 'Hello, $n.  How was the battlegrounds?'
-mpechoat $n Please take the time to visit the note room to the east.
-mpechoat $n When done here, leave up to explore Darkhaven.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  death_prog~
-Arglist   100~
-Comlist   mpmload 10399
-say You may kill this body, but my spirit will not die!
-smile 2.tsythia
+Arglist   p is dying~
+Comlist   mpforce $n drink
+mpechoat $n A drink from this fountain will quench your thirst and improve your
+mpechoat $n mental state.
 ~
 #ENDPROG
 
@@ -3233,6 +3233,38 @@ Speaking   common~
 Bodyparts  head arms~
 Immune     sleep charm~
 #MUDPROG
+Progtype  act_prog~
+Arglist   p looks at you.~
+Comlist   if class($n) == Augurer
+mpechoat $n Hello $n, I am a fellow Augurer who is here to tell you a little
+mpechoat $n about the Augurer class.  For instance, our prime stat is wisdom.
+cast 'sagacity' $n
+mpechoat $n That spell will raise your wisdom by 3 for a while, the spell is
+mpechoat $n called Sagacity.  To find out all the spells, skills, weapon types
+mpechoat $n and languages available to you, type 'slist'.  To see additional
+mpechoat $n information on the Augurer class, type 'help augurer'.
+mpechoat $n Good luck $n!
+if level($n) == 1
+or level($n) == 2
+or level($n) == 3
+mpechoat $n I have a gift for you, say the word 'bestow' to receive it...
+endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  act_prog~
+Arglist   p bounces around.~
+Comlist   mpforce $n look
+mpecho The statue begins to move, marble transforming to flesh.
+emote looks at you.
+smile $n
+mpecho The statue once again returns to its solid marble form.
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  speech_prog~
 Arglist   bestow~
 Comlist   if class($n) == Augurer
@@ -3259,38 +3291,6 @@ mpat $n mpforce $n config -brief
 else
 smile $n
 mpechoat $n You are too high a level to need my assistance now.
-endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p bounces around.~
-Comlist   mpforce $n look
-mpecho The statue begins to move, marble transforming to flesh.
-emote looks at you.
-smile $n
-mpecho The statue once again returns to its solid marble form.
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  act_prog~
-Arglist   p looks at you.~
-Comlist   if class($n) == Augurer
-mpechoat $n Hello $n, I am a fellow Augurer who is here to tell you a little
-mpechoat $n about the Augurer class.  For instance, our prime stat is wisdom.
-cast 'sagacity' $n
-mpechoat $n That spell will raise your wisdom by 3 for a while, the spell is
-mpechoat $n called Sagacity.  To find out all the spells, skills, weapon types
-mpechoat $n and languages available to you, type 'slist'.  To see additional
-mpechoat $n information on the Augurer class, type 'help augurer'.
-mpechoat $n Good luck $n!
-if level($n) == 1
-or level($n) == 2
-or level($n) == 3
-mpechoat $n I have a gift for you, say the word 'bestow' to receive it...
 endif
 endif
 ~
@@ -3327,19 +3327,19 @@ Speaking   elvish~
 Immune     paralysis~
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is starved~
-Comlist   mpoload 20
-give mushroom $n
-mpforce $n eat mushroom
-mpechoat $n Eating food will help your hunger and improve your mental state.
+Arglist   p is dying~
+Comlist   mpforce 0.$n drink
+mpechoat $n Drinking fluid will help your thirst and improve your mental state.
 ~
 #ENDPROG
 
 #MUDPROG
 Progtype  act_prog~
-Arglist   p is dying~
-Comlist   mpforce 0.$n drink
-mpechoat $n Drinking fluid will help your thirst and improve your mental state.
+Arglist   p is starved~
+Comlist   mpoload 20
+give mushroom $n
+mpforce $n eat mushroom
+mpechoat $n Eating food will help your hunger and improve your mental state.
 ~
 #ENDPROG
 
@@ -5301,6 +5301,16 @@ Desc      Abbigayle's Language Lessons.
 #ENDEXIT
 
 #MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -5310,16 +5320,6 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -7410,8 +7410,8 @@ Flags     isdoor closed~
 
 Reset D 0 10361 4 1
 #MUDPROG
-Progtype  rand_prog~
-Arglist   50~
+Progtype  act_prog~
+Arglist   P from the east.~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -7419,8 +7419,8 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   P from the east.~
+Progtype  rand_prog~
+Arglist   50~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -8177,6 +8177,16 @@ Flags     nomob~
 Reset D 0 10382 0 1
 Reset O 0 10401 1 10382
 #MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -8186,16 +8196,6 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -8647,12 +8647,11 @@ Desc      Entrance to Darkhaven Academy
 
 Reset O 0 10367 1 10398
 #MUDPROG
-Progtype  entry_prog~
+Progtype  leave_prog~
 Arglist   100~
-Comlist   if ispc($n)
-if level($n) == 1
-mpforce $n config -brief
-endif
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -8678,11 +8677,12 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  leave_prog~
+Progtype  entry_prog~
 Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
+Comlist   if ispc($n)
+if level($n) == 1
+mpforce $n config -brief
+endif
 endif
 ~
 #ENDPROG

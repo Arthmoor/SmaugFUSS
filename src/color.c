@@ -66,7 +66,7 @@
 #include <dirent.h>
 #include "mud.h"
 
-char *const pc_displays[MAX_COLORS] = {
+const char *const pc_displays[MAX_COLORS] = {
    "black", "dred", "dgreen", "orange",
    "dblue", "purple", "cyan", "grey",
    "dgrey", "red", "green", "yellow",
@@ -130,7 +130,7 @@ const short default_set[MAX_COLORS] = {
    AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE  /* 110 */
 };
 
-char *const valid_color[] = {
+const char *const valid_color[] = {
    "black",
    "dred",
    "dgreen",
@@ -281,7 +281,7 @@ void reset_colors( CHAR_DATA * ch )
       log_printf( "%s: Attempting to reset NPC colors: %s", __FUNCTION__, ch->short_descr );
 }
 
-void do_color( CHAR_DATA * ch, char *argument )
+void do_color( CHAR_DATA* ch, const char* argument)
 {
    bool dMatch, cMatch;
    short count = 0, y = 0;
@@ -516,7 +516,7 @@ void do_color( CHAR_DATA * ch, char *argument )
 
    argument = one_argument( argument, arg2 );
 
-   if( !arg || arg[0] == '\0' )
+   if( arg[0] == '\0' )
    {
       send_to_char( "Change which color type?\r\n", ch );
       return;
@@ -539,7 +539,7 @@ void do_color( CHAR_DATA * ch, char *argument )
          }
       }
    }
-   else if( !arg || arg2[0] == '\0' )
+   else if( arg2[0] == '\0' )
       cMatch = FALSE;
    else
    {
@@ -634,7 +634,7 @@ void do_color( CHAR_DATA * ch, char *argument )
    return;
 }
 
-char *color_str( short AType, CHAR_DATA * ch )
+const char *color_str( short AType, CHAR_DATA * ch )
 {
    if( !ch )
    {
@@ -722,7 +722,7 @@ char *color_str( short AType, CHAR_DATA * ch )
 }
 
 /* Random Ansi Color Code -- Xorith */
-char *random_ansi( short type )
+const char *random_ansi( short type )
 {
    switch ( type )
    {
@@ -856,7 +856,7 @@ int colorcode( const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int 
 {
    CHAR_DATA *ch = NULL;
    bool ansi = FALSE;
-   char *sympos = NULL;
+   const char *sympos = NULL;
 
    /*
     * No descriptor, assume ANSI conversion can't be done. 
@@ -1370,7 +1370,7 @@ char *colorize( const char *txt, DESCRIPTOR_DATA * d )
 
    if( txt && *txt && d )
    {
-      char *colstr;
+      const char *colstr;
       const char *prevstr = txt;
       char colbuf[20];
       int ln;
@@ -1437,7 +1437,7 @@ void set_char_color( short AType, CHAR_DATA * ch )
    ch->desc->pagecolor = ch->colors[AType];
 }
 
-void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, unsigned int length )
+void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 {
    int pageroffset;  /* Pager fix by thoric */
 
@@ -1483,7 +1483,6 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, unsigned int length )
    strncpy( d->pagebuf + d->pagetop, txt, length );   /* Leave this one alone! BAD THINGS(TM) will happen if you don't! */
    d->pagetop += length;
    d->pagebuf[d->pagetop] = '\0';
-   return;
 }
 
 void set_pager_color( short AType, CHAR_DATA * ch )
@@ -1497,7 +1496,7 @@ void set_pager_color( short AType, CHAR_DATA * ch )
    write_to_pager( ch->desc, color_str( AType, ch ), 0 );
    if( !ch->desc )
    {
-      bug( "set_pager_color: NULL descriptor after WTP! CH: %s", ch->name ? ch->name : "Unknown?!?" );
+      bug( "%s: NULL descriptor after WTP! CH: %s", __FUNCTION__, ch->name ? ch->name : "Unknown?!?" );
       return;
    }
    ch->desc->pagecolor = ch->colors[AType];
@@ -1516,7 +1515,6 @@ void send_to_desc_color( const char *txt, DESCRIPTOR_DATA * d )
       return;
 
    write_to_buffer( d, colorize( txt, d ), 0 );
-   return;
 }
 
 /*
@@ -1526,20 +1524,19 @@ void send_to_char( const char *txt, CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s", "send_to_char: NULL ch!" );
+      bug( "%s: NULL ch!", __FUNCTION__ );
       return;
    }
 
    if( txt && ch->desc )
       send_to_desc_color( txt, ch->desc );
-   return;
 }
 
 void send_to_pager( const char *txt, CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s", "send_to_pager: NULL ch!" );
+      bug( "%s: NULL ch!", __FUNCTION__ );
       return;
    }
 
@@ -1559,10 +1556,9 @@ void send_to_pager( const char *txt, CHAR_DATA * ch )
             write_to_pager( ch->desc, colorize( txt, ch->desc ), 0 );
       }
    }
-   return;
 }
 
-void ch_printf( CHAR_DATA * ch, char *fmt, ... )
+void ch_printf( CHAR_DATA * ch, const char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1574,7 +1570,7 @@ void ch_printf( CHAR_DATA * ch, char *fmt, ... )
    send_to_char( buf, ch );
 }
 
-void pager_printf( CHAR_DATA * ch, char *fmt, ... )
+void pager_printf( CHAR_DATA * ch, const char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1590,7 +1586,7 @@ void pager_printf( CHAR_DATA * ch, char *fmt, ... )
  * The primary output interface for formatted output.
  */
 /* Major overhaul. -- Alty */
-void ch_printf_color( CHAR_DATA * ch, char *fmt, ... )
+void ch_printf_color( CHAR_DATA * ch, const char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1602,7 +1598,7 @@ void ch_printf_color( CHAR_DATA * ch, char *fmt, ... )
    send_to_char( buf, ch );
 }
 
-void pager_printf_color( CHAR_DATA * ch, char *fmt, ... )
+void pager_printf_color( CHAR_DATA * ch, const char *fmt, ... )
 {
    char buf[MAX_STRING_LENGTH * 2];
    va_list args;
@@ -1632,12 +1628,10 @@ void paint( short AType, CHAR_DATA * ch, const char *fmt, ... )
 void send_to_char_color( const char *txt, CHAR_DATA * ch )
 {
    send_to_char( txt, ch );
-   return;
 }
 
 /* Wrapper function for any "legacy" code that may be installed later */
 void send_to_pager_color( const char *txt, CHAR_DATA * ch )
 {
    send_to_pager( txt, ch );
-   return;
 }

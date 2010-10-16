@@ -353,7 +353,7 @@ int slot_lookup( int slot )
 int dispel_casting( AFFECT_DATA * paf, CHAR_DATA * ch, CHAR_DATA * victim, int affect, bool dispel )
 {
    char buf[MAX_STRING_LENGTH];
-   char *spell;
+   const char *spell;
    SKILLTYPE *sktmp;
    bool is_mage = FALSE, has_detect = FALSE;
    EXT_BV ext_bv = meb( affect );
@@ -583,15 +583,15 @@ void say_spell( CHAR_DATA * ch, int sn )
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
    CHAR_DATA *rch;
-   char *pName;
+   const char *pName;
    int iSyl;
    int length;
    SKILLTYPE *skill = get_skilltype( sn );
 
    struct syl_type
    {
-      char *old;
-      char *cnew;
+      const char *old;
+      const char *cnew;
    };
 
    static const struct syl_type syl_table[] = {
@@ -758,7 +758,7 @@ int rd_parse( CHAR_DATA * ch, int level, char *texp )
             return get_curr_lck( ch );
          case 'Y':
          case 'y':
-            return get_age( ch );
+            return calculate_age( ch );
       }
    }
 
@@ -868,7 +868,7 @@ int rd_parse( CHAR_DATA * ch, int level, char *texp )
 }
 
 /* wrapper function so as not to destroy exp */
-int dice_parse( CHAR_DATA * ch, int level, char *texp )
+int dice_parse( CHAR_DATA * ch, int level, const char *texp )
 {
    char buf[MAX_INPUT_LENGTH];
 
@@ -956,8 +956,8 @@ bool saves_spell_staff( int level, CHAR_DATA * victim )
 bool process_spell_components( CHAR_DATA * ch, int sn )
 {
    SKILLTYPE *skill = get_skilltype( sn );
-   char *comp = skill->components;
-   char *check;
+   const char *comp = skill->components;
+   const char *check;
    char arg[MAX_INPUT_LENGTH];
    bool consume, fail, found;
    int val, value;
@@ -1353,13 +1353,13 @@ void *locate_targets( CHAR_DATA * ch, char *arg, int sn, CHAR_DATA ** victim, OB
 /*
  * The kludgy global is for spells who want more stuff from command line.
  */
-char *target_name;
-char *ranged_target_name = NULL;
+const char *target_name;
+const char *ranged_target_name = NULL;
 
 /*
  * Cast a spell.  Multi-caster and component support by Thoric
  */
-void do_cast( CHAR_DATA * ch, char *argument )
+void do_cast( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2096,6 +2096,7 @@ ch_ret spell_call_lightning( int sn, int level, CHAR_DATA * ch, void *vo )
    int dam;
    bool ch_died;
    ch_ret retcode;
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
 
    if( !IS_OUTSIDE( ch ) )
    {
@@ -2103,7 +2104,7 @@ ch_ret spell_call_lightning( int sn, int level, CHAR_DATA * ch, void *vo )
       return rSPELL_FAILED;
    }
 
-   if( ch->in_room->area->weather->precip <= 0 )
+   if( getPrecip( cell ) < 40 && getEnergy( cell ) < 30 )
    {
       send_to_char( "You need bad weather.\r\n", ch );
       return rSPELL_FAILED;
@@ -2318,33 +2319,28 @@ ch_ret spell_colour_spray( int sn, int level, CHAR_DATA * ch, void *vo )
 ch_ret spell_control_weather( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    SKILLTYPE *skill = get_skilltype( sn );
-   WEATHER_DATA *weath;
    int change;
-   weath = ch->in_room->area->weather;
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
 
-   change = number_range( -rand_factor, rand_factor ) + ( ch->level * 3 ) / ( 2 * max_vector );
+   change = URANGE( 5, number_range( 5, 15 ) + ( ch->level / 10 ), 15 );
 
    if( !str_cmp( target_name, "warmer" ) )
-      weath->temp_vector += change;
+      IncreaseTemp( cell, change );
    else if( !str_cmp( target_name, "colder" ) )
-      weath->temp_vector -= change;
+      DecreaseTemp( cell, change );
    else if( !str_cmp( target_name, "wetter" ) )
-      weath->precip_vector += change;
+      IncreasePrecip( cell, change );
    else if( !str_cmp( target_name, "drier" ) )
-      weath->precip_vector -= change;
-   else if( !str_cmp( target_name, "windier" ) )
-      weath->wind_vector += change;
+      DecreasePrecip( cell, change );
+   else if( !str_cmp( target_name, "stormier" ) )
+      IncreaseEnergy( cell, change );
    else if( !str_cmp( target_name, "calmer" ) )
-      weath->wind_vector -= change;
+      DecreaseEnergy( cell, change );
    else
    {
-      send_to_char( "Do you want it to get warmer, colder, wetter, " "drier, windier, or calmer?\r\n", ch );
+      send_to_char( "Do you want it to get warmer, colder, wetter, drier, stormier, or calmer?\r\n", ch );
       return rSPELL_FAILED;
    }
-
-   weath->temp_vector = URANGE( -max_vector, weath->temp_vector, max_vector );
-   weath->precip_vector = URANGE( -max_vector, weath->precip_vector, max_vector );
-   weath->wind_vector = URANGE( -max_vector, weath->wind_vector, max_vector );
 
    successful_casting( skill, ch, NULL, NULL );
    return rNONE;
@@ -2365,7 +2361,7 @@ ch_ret spell_create_food( int sn, int level, CHAR_DATA * ch, void *vo )
 ch_ret spell_create_water( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *obj = ( OBJ_DATA * ) vo;
-   WEATHER_DATA *weath;
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
    int water;
 
    if( obj->item_type != ITEM_DRINK_CON )
@@ -2380,9 +2376,7 @@ ch_ret spell_create_water( int sn, int level, CHAR_DATA * ch, void *vo )
       return rSPELL_FAILED;
    }
 
-   weath = ch->in_room->area->weather;
-
-   water = UMIN( level * ( weath->precip >= 0 ? 4 : 2 ), obj->value[0] - obj->value[1] );
+   water = UMIN( level * ( getPrecip( cell ) >= 0 ? 4 : 2 ), obj->value[0] - obj->value[1] );
 
    if( water > 0 )
    {
@@ -2976,9 +2970,10 @@ ch_ret spell_disenchant_weapon( int sn, int level, CHAR_DATA * ch, void *vo )
    }
 
    separate_obj( obj );
-   for( paf = obj->first_affect; paf; paf = paf->next )
+   for( paf = obj->first_affect; paf; paf = paf_next )
    {
       paf_next = paf->next;
+
       if( paf->location == APPLY_HITROLL || paf->location == APPLY_DAMROLL )
       {
          UNLINK( paf, obj->first_affect, obj->last_affect, next, prev );
@@ -3185,7 +3180,7 @@ ch_ret spell_identify( int sn, int level, CHAR_DATA * ch, void *vo )
    AFFECT_DATA *paf;
    SKILLTYPE *sktmp;
    SKILLTYPE *skill = get_skilltype( sn );
-   char *name;
+   const char *name;
 
    if( target_name[0] == '\0' )
    {
@@ -3443,7 +3438,7 @@ ch_ret spell_invis( int sn, int level, CHAR_DATA * ch, void *vo )
 ch_ret spell_know_alignment( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *victim = ( CHAR_DATA * ) vo;
-   char *msg;
+   const char *msg;
    int ap;
    SKILLTYPE *skill = get_skilltype( sn );
 
@@ -4167,7 +4162,7 @@ ch_ret spell_fire_breath( int sn, int level, CHAR_DATA * ch, void *vo )
    {
       for( obj_lose = victim->first_carrying; obj_lose; obj_lose = obj_next )
       {
-         char *msg;
+         const char *msg;
 
          obj_next = obj_lose->next_content;
          if( number_bits( 2 ) != 0 )
@@ -4234,7 +4229,7 @@ ch_ret spell_frost_breath( int sn, int level, CHAR_DATA * ch, void *vo )
    {
       for( obj_lose = victim->first_carrying; obj_lose; obj_lose = obj_next )
       {
-         char *msg;
+         const char *msg;
 
          obj_next = obj_lose->next_content;
          if( number_bits( 2 ) != 0 )
@@ -4752,7 +4747,7 @@ ch_ret spell_solar_flight( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    CHAR_DATA *victim;
    SKILLTYPE *skill = get_skilltype( sn );
-   WEATHER_DATA *weath = ch->in_room->area->weather;
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
 
    if( ( victim = get_char_world( ch, target_name ) ) == NULL
        || victim == ch
@@ -4760,7 +4755,7 @@ ch_ret spell_solar_flight( int sn, int level, CHAR_DATA * ch, void *vo )
        || !victim->in_room
        || !IS_OUTSIDE( ch )
        || !IS_OUTSIDE( victim )
-       || weath->precip >= 0
+       || getCloudCover( cell ) >= 20
        || xIS_SET( victim->in_room->room_flags, ROOM_PRIVATE )
        || xIS_SET( victim->in_room->room_flags, ROOM_SOLITARY )
        || xIS_SET( victim->in_room->room_flags, ROOM_NO_ASTRAL )
@@ -5752,6 +5747,7 @@ ch_ret spell_obj_inv( int sn, int level, CHAR_DATA * ch, void *vo )
 {
    OBJ_DATA *obj = ( OBJ_DATA * ) vo;
    SKILLTYPE *skill = get_skilltype( sn );
+   struct WeatherCell *cell = getWeatherCell( ch->in_room->area );
 
    if( !obj )
    {
@@ -5769,7 +5765,6 @@ ch_ret spell_obj_inv( int sn, int level, CHAR_DATA * ch, void *vo )
          if( SPELL_FLAG( skill, SF_WATER ) ) /* create water */
          {
             int water;
-            WEATHER_DATA *weath = ch->in_room->area->weather;
 
             if( obj->item_type != ITEM_DRINK_CON )
             {
@@ -5784,7 +5779,7 @@ ch_ret spell_obj_inv( int sn, int level, CHAR_DATA * ch, void *vo )
             }
 
             water = UMIN( ( skill->dice ? dice_parse( ch, level, skill->dice ) : level )
-                          * ( weath->precip >= 0 ? 2 : 1 ), obj->value[0] - obj->value[1] );
+                          * ( getPrecip( cell ) >= 0 ? 2 : 1 ), obj->value[0] - obj->value[1] );
 
             if( water > 0 )
             {
@@ -6048,7 +6043,7 @@ ch_ret spell_create_mob( int sn, int level, CHAR_DATA * ch, void *vo )
    return rNONE;
 }
 
-ch_ret ranged_attack( CHAR_DATA *, char *, OBJ_DATA *, OBJ_DATA *, short, short );
+ch_ret ranged_attack( CHAR_DATA *, const char *, OBJ_DATA *, OBJ_DATA *, short, short );
 
 /*
  * Generic handler for new "SMAUG" spells			-Thoric

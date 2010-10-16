@@ -514,14 +514,6 @@ Log         0
 End
 
 #COMMAND
-Name        climate~
-Code        do_climate
-Position    100
-Level       61
-Log         0
-End
-
-#COMMAND
 Name        cook~
 Code        do_cook
 Position    100
@@ -1057,6 +1049,14 @@ Code        do_hset
 Position    100
 Level       59
 Log         1
+End
+
+#COMMAND
+Name        holidays~
+Code        do_holidays
+Position    100
+Level       0
+Log         0
 End
 
 #COMMAND
@@ -2187,14 +2187,6 @@ Log         1
 End
 
 #COMMAND
-Name        oldscore~
-Code        do_oldscore
-Position    100
-Level       0
-Log         0
-End
-
-#COMMAND
 Name        olist~
 Code        do_olist
 Position    100
@@ -2877,6 +2869,14 @@ Log         1
 End
 
 #COMMAND
+Name        setmssp~
+Code        do_setmssp
+Position    100
+Level       61
+Log         1
+End
+
+#COMMAND
 Name        shout~
 Code        do_shout
 Position    106
@@ -3139,7 +3139,23 @@ End
 Name        showweather~
 Code        do_showweather
 Position    100
-Level       61
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        setholiday~
+Code        do_setholiday
+Position    100
+Level       60
+Log         1
+End
+
+#COMMAND
+Name        saveholiday~
+Code        do_saveholiday
+Position    100
+Level       60
 Log         0
 End
 
@@ -3147,7 +3163,7 @@ End
 Name        setweather~
 Code        do_setweather
 Position    100
-Level       59
+Level       60
 Log         0
 End
 
@@ -3268,6 +3284,14 @@ End
 #COMMAND
 Name        time~
 Code        do_time
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        timezone~
+Code        do_timezone
 Position    100
 Level       0
 Log         0

@@ -33,7 +33,7 @@ BOARD_DATA *last_board;
 bool is_note_to( CHAR_DATA * ch, NOTE_DATA * pnote );
 void note_attach( CHAR_DATA * ch );
 void note_remove( BOARD_DATA * board, NOTE_DATA * pnote );
-void do_note( CHAR_DATA * ch, char *arg_passed, bool IS_MAIL );
+void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL );
 
 void delete_project( PROJECT_DATA * project )
 {
@@ -365,7 +365,7 @@ OBJ_DATA *find_quill( CHAR_DATA * ch )
    return NULL;
 }
 
-void do_noteroom( CHAR_DATA * ch, char *argument )
+void do_noteroom( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
    char arg[MAX_STRING_LENGTH];
@@ -409,7 +409,7 @@ void do_noteroom( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_mailroom( CHAR_DATA * ch, char *argument )
+void do_mailroom( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
    char arg[MAX_STRING_LENGTH];
@@ -453,7 +453,7 @@ void do_mailroom( CHAR_DATA * ch, char *argument )
    }
 }
 
-void do_note( CHAR_DATA * ch, char *arg_passed, bool IS_MAIL )
+void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -1024,7 +1024,9 @@ void do_note( CHAR_DATA * ch, char *arg_passed, bool IS_MAIL )
          return;
       }
 
-      arg_passed[0] = UPPER( arg_passed[0] );
+      // this is very, very evil and should not be done.
+      // but I don't feel like making a temporary string here.
+      ((char*)arg_passed)[0] = UPPER( arg_passed[0] );
 
       snprintf( fname, 1024, "%s%c/%s", PLAYER_DIR, tolower( arg_passed[0] ), capitalize( arg_passed ) );
 
@@ -1047,7 +1049,7 @@ void do_note( CHAR_DATA * ch, char *arg_passed, bool IS_MAIL )
 
    if( !str_cmp( arg, "show" ) )
    {
-      char *subject, *to_list, *text;
+      const char *subject, *to_list, *text;
 
       if( ( paper = get_eq_char( ch, WEAR_HOLD ) ) == NULL || paper->item_type != ITEM_PAPER )
       {
@@ -1068,7 +1070,8 @@ void do_note( CHAR_DATA * ch, char *arg_passed, bool IS_MAIL )
 
    if( !str_cmp( arg, "post" ) )
    {
-      char *strtime, *to, *subj, *text /*, *np = NULL */ ;
+      char *strtime;
+      const char *to, *subj, *text /*, *np = NULL */ ;
 
       if( ( paper = get_eq_char( ch, WEAR_HOLD ) ) == NULL || paper->item_type != ITEM_PAPER )
       {
@@ -1516,7 +1519,7 @@ void load_boards( void )
 }
 
 
-void do_makeboard( CHAR_DATA * ch, char *argument )
+void do_makeboard( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
 
@@ -1538,7 +1541,7 @@ void do_makeboard( CHAR_DATA * ch, char *argument )
    board->extra_removers = str_dup( "" );
 }
 
-void do_bset( CHAR_DATA * ch, char *argument )
+void do_bset( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
    bool found;
@@ -1881,7 +1884,7 @@ void do_bset( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_bstat( CHAR_DATA * ch, char *argument )
+void do_bstat( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
    bool found;
@@ -1933,7 +1936,7 @@ void do_bstat( CHAR_DATA * ch, char *argument )
 }
 
 
-void do_boards( CHAR_DATA * ch, char *argument )
+void do_boards( CHAR_DATA* ch, const char* argument)
 {
    BOARD_DATA *board;
 
