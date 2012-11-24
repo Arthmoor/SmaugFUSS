@@ -2417,7 +2417,9 @@ void teleport( CHAR_DATA * ch, int room, int flags )
 void do_climb( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
+   bool found;
 
+   found = FALSE;
    if( argument[0] == '\0' )
    {
       for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )
@@ -2445,7 +2447,9 @@ void do_climb( CHAR_DATA* ch, const char* argument)
 void do_enter( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
+   bool found;
 
+   found = FALSE;
    if( argument[0] == '\0' )
    {
       for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )
@@ -2481,7 +2485,9 @@ void do_enter( CHAR_DATA* ch, const char* argument)
 void do_leave( CHAR_DATA* ch, const char* argument)
 {
    EXIT_DATA *pexit;
+   bool found;
 
+   found = FALSE;
    if( argument[0] == '\0' )
    {
       for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )

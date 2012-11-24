@@ -2169,7 +2169,7 @@ void unequip_char( CHAR_DATA * ch, OBJ_DATA * obj )
 /*
  * Move an obj out of a room.
  */
-void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem );
+void write_corpses args( ( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem ) );
 
 int falling;
 

@@ -433,12 +433,14 @@ void read_obj_file( char *dirname, char *filename )
    if( ( fp = fopen( fname, "r" ) ) != NULL )
    {
       short iNest;
+      bool found;
       OBJ_DATA *tobj, *tobj_next;
 
       rset_supermob( room );
       for( iNest = 0; iNest < MAX_NEST; iNest++ )
          rgObjNest[iNest] = NULL;
 
+      found = TRUE;
       for( ;; )
       {
          char letter;

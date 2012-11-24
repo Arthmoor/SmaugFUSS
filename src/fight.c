@@ -255,6 +255,7 @@ short VAMP_AC( CHAR_DATA * ch )
 void violence_update( void )
 {
    CHAR_DATA *ch;
+   CHAR_DATA *lst_ch;
    CHAR_DATA *victim;
    CHAR_DATA *rch;
    TRV_WORLD *lcw;
@@ -266,10 +267,11 @@ void violence_update( void )
    SKILLTYPE *skill;
    static int pulse = 0;
 
+   lst_ch = NULL;
    pulse = ( pulse + 1 ) % 100;
 
    lcw = trworld_create( TR_CHAR_WORLD_BACK );
-   for( ch = last_char; ch; ch = trvch_wnext( lcw ) )
+   for( ch = last_char; ch; lst_ch = ch, ch = trvch_wnext( lcw ) )
    {
       set_cur_char( ch );
 

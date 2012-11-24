@@ -753,7 +753,7 @@ void mobile_update( void )
           && ( pexit = get_exit( ch->in_room, door ) ) != NULL
           && pexit->to_room
           && !IS_SET( pexit->exit_info, EX_WINDOW )
-          && ( !IS_SET( pexit->exit_info, EX_CLOSED ) || ( IS_AFFECTED(  ch, AFF_PASS_DOOR ) && !IS_SET( pexit->exit_info, EX_NOPASSDOOR ) ) )
+          && !IS_SET( pexit->exit_info, EX_CLOSED )
           && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
           && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH )
           && ( !xIS_SET( ch->act, ACT_STAY_AREA ) || pexit->to_room->area == ch->in_room->area ) )
@@ -780,8 +780,7 @@ void mobile_update( void )
           && pexit->to_room
           && !IS_SET( pexit->exit_info, EX_WINDOW )
           && !IS_SET( pexit->exit_info, EX_CLOSED )
-          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) 
-          && ( !xIS_SET( ch->act, ACT_STAY_AREA ) || pexit->to_room->area == ch->in_room->area ) )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
       {
          CHAR_DATA *rch;
          bool found;
@@ -2296,9 +2295,7 @@ void time_update( void )
    {
       for( d = first_descriptor; d; d = d->next )
       {
-         if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) 
-            && !NO_WEATHER_SECT( d->character->in_room->sector_type )
-            && IS_AWAKE( d->character ) )
+         if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) && IS_AWAKE( d->character ) )
          {
             struct WeatherCell *cell = getWeatherCell( d->character->in_room->area );
 

@@ -1291,7 +1291,7 @@ void do_look( CHAR_DATA * ch, const char *argument )
 
    if( !str_cmp( arg1, "sky" ) || !str_cmp( arg1, "stars" ) )
    {
-      if( !IS_OUTSIDE( ch ) || NO_WEATHER_SECT( ch->in_room->sector_type ) )
+      if( !IS_OUTSIDE( ch ) )
          send_to_char( "You can't see the sky indoors.\r\n", ch );
       else
          look_sky( ch );
