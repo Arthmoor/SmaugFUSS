@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Alfa~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 9999180
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #3600
@@ -26,7 +29,7 @@ sorrow and depression.  He is haunted by a memory of a lost paradise.
 65 0 350 C
 4 15 8 1d12+48 1d6+1
 10 800
-6 6 1
+108 108 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -41,7 +44,7 @@ Maggots crawl all over its decaying body.
 35 512 -750 C
 4 16 5 2d6+60 1d8+2
 0 800
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -57,7 +60,7 @@ resemble claws.  Its eyes are a dark yellow colour and glare hungrily at you.
 35 512 -750 C
 6 15 4 2d6+72 1d10+2
 20 1500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -73,7 +76,7 @@ time.
 1073741859 512 -750 C
 3 17 7 1d12+36 1d6+2
 10 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -89,7 +92,7 @@ time.
 97 512 -750 C
 3 17 7 1d12+36 1d6+2
 10 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 370945 370945 1
@@ -104,7 +107,7 @@ Maggots crawl all over its decaying body.
 1073741857 512 -750 C
 4 16 5 2d6+60 1d8+2
 100 800
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 370945 370945 1
@@ -197,8 +200,9 @@ an edible maggot~
 An ugly little maggot crawls along here.~
 ~
 26 0 16385
-6 15 -1 -1
+6 -1 -1 -1
 1 250 25
+'cure critical' 'NONE' 'NONE'
 #3610
 skeleton~
 a dusty skeleton~
@@ -357,6 +361,7 @@ The gravel path leads westwards between the dark evergreen trees.
 ~
 ~
 0 -1 3618
+R M 0 3604 4 3604
 S
 #3606
 A Gravel Path on the Graveyard~
@@ -378,6 +383,8 @@ D5
 ~
 tomb stone~
 3 -1 3607
+R D 0 3606 5 1
+R M 0 3604 4 3606
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -394,6 +401,8 @@ D4
 ~
 tomb stone~
 3 -1 3606
+R D 0 3607 4 1
+R O 0 3610 13 3607
 S
 #3608
 A Gravel Path on the Graveyard~
@@ -415,6 +424,7 @@ D5
 ~
 tomb stone~
 3 -1 3609
+R D 0 3608 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -431,6 +441,8 @@ D4
 ~
 tomb stone~
 3 -1 3608
+R D 0 3609 4 1
+R M 0 3603 5 3609
 S
 #3610
 A Gravel Path on the Graveyard~
@@ -452,6 +464,7 @@ D5
 ~
 tomb stone~
 3 -1 3611
+R D 0 3610 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -468,6 +481,9 @@ D4
 ~
 tomb stone~
 3 -1 3610
+R D 0 3611 4 1
+R M 0 3603 5 3611
+R O 0 3613 10 3611
 S
 #3612
 A Gravel Path on the Graveyard~
@@ -490,6 +506,8 @@ It is a small black-painted shed with a wooden door.
 ~
 door~
 3 -1 3613
+R D 0 3612 3 1
+R M 0 3604 4 3612
 S
 #3613
 In a shed on the Graveyard~
@@ -501,6 +519,13 @@ D1
 ~
 door~
 3 -1 3612
+R D 0 3613 1 1
+R M 0 3600 1 3613
+  R G 1 3601 1000
+R O 0 3602 1000 3613
+R O 0 3603 1 3613
+R O 0 3604 1000 3613
+R O 0 3605 1000 3613
 S
 #3614
 A Gravel Path on the Graveyard~
@@ -522,6 +547,7 @@ D5
 ~
 tomb stone~
 3 -1 3615
+R D 0 3614 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -538,6 +564,8 @@ D4
 ~
 tomb stone~
 3 -1 3614
+R D 0 3615 4 1
+R O 0 3610 13 3615
 S
 #3616
 A Gravel Path on the Graveyard~
@@ -559,6 +587,7 @@ D5
 ~
 tomb stone~
 3 -1 3617
+R D 0 3616 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -575,6 +604,9 @@ D4
 ~
 tomb stone~
 3 -1 3616
+R D 0 3617 4 1
+R M 0 3602 1 3617
+  R G 1 3612 1000
 S
 #3618
 A Gravel Path on the Graveyard~
@@ -596,6 +628,7 @@ D5
 ~
 tomb stone~
 3 -1 3619
+R D 0 3618 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -612,6 +645,8 @@ D4
 ~
 tomb stone~
 3 -1 3618
+R D 0 3619 4 1
+R O 0 3610 13 3619
 S
 #3638
 A Gravel Path on the Graveyard~
@@ -633,6 +668,9 @@ D5
 ~
 tomb stone~
 3 -1 3639
+R D 0 3638 5 1
+R M 0 3605 3 3638
+  R G 1 3606 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -649,6 +687,8 @@ D4
 ~
 tomb stone~
 3 -1 3638
+R D 0 3639 4 1
+R M 0 3603 5 3639
 S
 #3640
 A Gravel Path on the Graveyard~
@@ -670,6 +710,8 @@ D5
 ~
 tomb stone~
 3 -1 3641
+R D 0 3640 5 1
+R M 0 3604 4 3640
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -686,6 +728,8 @@ D4
 ~
 tomb stone~
 3 -1 3640
+R D 0 3641 4 1
+R O 0 3610 13 3641
 S
 #3642
 A Gravel Path on the Graveyard~
@@ -707,6 +751,7 @@ D5
 ~
 tomb stone~
 3 -1 3643
+R D 0 3642 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -723,6 +768,8 @@ D4
 ~
 tomb stone~
 3 -1 3642
+R D 0 3643 4 1
+R O 0 3603 5 3643
 S
 #3644
 A Gravel Path on the Graveyard~
@@ -744,6 +791,9 @@ D5
 ~
 tomb stone~
 3 -1 3645
+R D 0 3644 5 1
+R M 0 3605 3 3644
+  R G 1 3606 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -760,6 +810,10 @@ D4
 ~
 tomb stone~
 3 -1 3644
+R D 0 3645 4 1
+R M 0 3601 1 3645
+  R G 1 3606 1
+  R G 1 3611 1000
 S
 #3646
 A Gravel Path on the Graveyard~
@@ -781,6 +835,7 @@ D5
 ~
 tomb stone~
 3 -1 3647
+R D 0 3646 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -797,6 +852,8 @@ D4
 ~
 tomb stone~
 3 -1 3646
+R D 0 3647 4 1
+R O 0 3610 13 3647
 S
 #3648
 A Gravel Path on the Graveyard~
@@ -818,6 +875,7 @@ D5
 ~
 tomb stone~
 3 -1 3649
+R D 0 3648 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -834,6 +892,8 @@ D4
 ~
 tomb stone~
 3 -1 3648
+R D 0 3649 4 1
+R M 0 3603 5 3649
 S
 #3650
 A Gravel Path on the Graveyard~
@@ -855,6 +915,7 @@ D5
 ~
 tomb stone~
 3 -1 3651
+R D 0 3650 5 1
 E
 tomb stone~
 It is a large rectangular slab of dark grey stone that has been placed face
@@ -871,72 +932,11 @@ D4
 ~
 tomb stone~
 3 -1 3650
+R D 0 3651 4 1
+R M 0 3605 3 3651
+  R G 1 3606 1
 S
 #0
-
-
-#RESETS
-D 0 3606 5 1
-D 0 3607 4 1
-O 0 3610 13 3607
-D 0 3608 5 1
-D 0 3609 4 1
-M 0 3603 5 3609
-D 0 3610 5 1
-D 0 3611 4 1
-M 0 3603 5 3611
-O 0 3613 10 3611
-D 0 3612 3 1
-D 0 3613 1 1
-M 0 3600 1 3613
-G 1 3601 1000
-O 0 3602 1000 3613
-O 0 3603 1 3613
-O 0 3604 1000 3613
-O 0 3605 1000 3613
-D 0 3614 5 1
-D 0 3615 4 1
-O 0 3610 13 3615
-D 0 3616 5 1
-D 0 3617 4 1
-M 0 3602 1 3617
-G 1 3612 1000
-D 0 3618 5 1
-D 0 3619 4 1
-O 0 3610 13 3619
-D 0 3638 5 1
-D 0 3639 4 1
-M 0 3603 5 3639
-D 0 3640 5 1
-D 0 3641 4 1
-O 0 3610 13 3641
-D 0 3642 5 1
-D 0 3643 4 1
-O 0 3603 5 3643
-D 0 3644 5 1
-D 0 3645 4 1
-M 0 3601 1 3645
-G 1 3606 1
-G 1 3611 1000
-D 0 3646 5 1
-D 0 3647 4 1
-O 0 3610 13 3647
-D 0 3648 5 1
-D 0 3649 4 1
-M 0 3603 5 3649
-D 0 3650 5 1
-D 0 3651 4 1
-M 0 3604 4 3606
-M 0 3604 4 3604
-M 0 3604 4 3612
-M 0 3604 4 3640
-M 0 3605 3 3651
-G 1 3606 1
-M 0 3605 3 3644
-G 1 3606 1
-M 0 3605 3 3638
-G 1 3606 1
-S
 
 
 #SHOPS

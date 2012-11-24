@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Cedrick~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0 10
 
 #ECONOMY 0 59671270
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #2405
@@ -25,7 +28,7 @@ the thought of coming anywhere near it.
 67 0 -100 C
 7 0 -20 5d4+60 2d3+1
 7000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 79 3 0 0 1 1 0
@@ -63,7 +66,7 @@ She doesn't approve of your presence in the house.
 3 0 150 C
 5 0 -10 1d1+50 1d1+1
 0 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 73 3 0 0 1 1 0
@@ -95,7 +98,7 @@ do not want to approach.
 65 0 -200 C
 4 0 -10 0d0+0 3d3+3
 75 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 1 1 0
@@ -115,7 +118,7 @@ do not want to approach.
 3 0 -1 C
 5 0 -10 5d4+60 3d2+2
 75 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 395666 324275 0
@@ -146,7 +149,7 @@ dangerous glimmer in his eye makes you wonder just how frail he is.
 3 0 275 C
 7 0 10 5d2+60 2d2+1
 2000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -202,7 +205,7 @@ and very friendly.
 3 4194305 250 C
 5 0 0 5d4+40 3d1+1
 2000 0
-8 8 2
+112 112 2
 13 6 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -252,7 +255,7 @@ do not want to approach.
 65 0 -200 C
 5 0 -10 5d5+52 3d2+2
 75 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 1 1 0
@@ -267,7 +270,7 @@ This is one of the young children in the Tullfuhrzky family.
 3 0 250 C
 5 0 -10 3d3+45 2d2+2
 400 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -306,7 +309,7 @@ little creature.
 3 0 1000 C
 3 0 -10 5d5+50 2d2+1
 10 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -341,7 +344,7 @@ and is not afraid of anyone.
 3 0 250 C
 6 0 -10 5d6+80 2d2+2
 1000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -379,7 +382,7 @@ This is a young child of the Tullfuhrzky household.
 3 0 150 C
 3 0 1 4d5+75 2d3+2
 600 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -395,7 +398,7 @@ Although he is aging, you can see that he still has some fight left in him.
 3 40 350 C
 12 0 1 7d5+130 5d3+4
 7000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -466,7 +469,7 @@ dazzling smile.
 3 40 350 C
 10 0 1 10d2+130 5d3+4
 4000 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -518,7 +521,7 @@ intently, you seem to be able to make out a vague shape of shimmering energy.
 3 6291498 -200 C
 6 0 1 1d1+55 5d5+5
 100 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 36 3 0 0 1 1 0
@@ -553,7 +556,7 @@ A corpse slowly decomposes here.
 1 0 0 C
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -570,7 +573,7 @@ dishing out pain.
 3 4194344 -500 C
 11 0 1 10d3+120 3d2+6
 25000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -615,7 +618,7 @@ You are just dying for a ride, aren't you?
 262145 40 200 C
 8 0 1 9d3+100 3d3+2
 1000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 86 3 0 0 1 262145 0
@@ -638,7 +641,7 @@ tasks for over thirty-five years, and is quite bitter about it.
 1 0 200 C
 7 0 1 5d5+80 3d2+1
 3000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -659,7 +662,7 @@ kindness to it.
 65 0 250 C
 7 0 1 10d2+60 2d2+1
 25000 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -688,7 +691,7 @@ to the harsh world of forced labor.
 3 8 -100 C
 5 0 15 3d3+60 2d2+2
 20 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -720,7 +723,7 @@ is not particularly happy to be looking at you.
 3 0 200 C
 6 0 1 4d5+60 2d3+3
 3000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -756,7 +759,7 @@ He looks old and frail, but has a glint of wisdom in his eye.
 7 0 250 C
 9 0 1 5d5+160 4d5+5
 4000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -802,7 +805,7 @@ This is the biggest, most disgusting roach you have ever seen in your life.
 65 0 -275 C
 7 0 1 4d3+78 3d4+4
 100 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 83 3 0 0 1 1 0
@@ -826,7 +829,7 @@ This is the biggest, most disgusting roach you have ever seen in your life.
 65 0 -275 C
 3 0 0 4d3+20 3d2+2
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 83 3 0 0 1 1 0
@@ -842,7 +845,7 @@ superiority about him.
 1073741829 369098920 -1000 C
 2 0 0 1d1+30000 1d1+1000
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -891,7 +894,7 @@ A cute wooden toybox sits here~
 ~
 15 0 0
 50 5 0 0
-0 0 0
+1 0 0
 E
 box toybox~
 The box is painted white, with pictures of butterflies and wooden blocks.
@@ -927,7 +930,7 @@ A small stone water well descends into the ground here.~
 ~
 25 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2404
 baker's apron~
 this object is not used~
@@ -935,7 +938,7 @@ A plain baker's apron has been discarded here.~
 ~
 15 0 1
 0 0 0 0
-0 0 0
+1 0 0
 #2405
 rolling pin~
 a rolling pin~
@@ -955,7 +958,7 @@ A large pile of gold coins lies here.~
 ~
 20 0 1
 40000 0 0 0
-0 50000 5000
+1 50000 5000
 #2407
 safe~
 a safe~
@@ -963,15 +966,16 @@ A safe sits in the corner.~
 ~
 15 8 0
 100 15 2425 0
-0 0 0
+1 0 0
 #2408
 book~
 a book entitled "50 Ways to Heal the Dying"~
 A book entitled "50 Ways to Heal the Dying" lies on the ground.~
 ~
 3 64 16385
-15 3 3 15
-0 0 0
+15 3 3 -1
+1 0 0
+'cure critical'
 E
 book~
 Instructions:  just hold this book and zap somebody with it to make
@@ -995,8 +999,9 @@ a hand-carved pipe~
 Someone carelessly dropped their pipe on the ground.~
 ~
 4 0 16385
-11 3 3 72
+11 3 3 -1
 2 4000 400
+'faerie fire'
 A
 3 2
 #2411
@@ -1006,7 +1011,7 @@ A large row of cabinets hangs above the sink.~
 ~
 15 0 0
 30 5 0 0
-0 0 0
+1 0 0
 #2412
 toolshed shed~
 a small toolshed~
@@ -1014,7 +1019,7 @@ A small toolshed stands on the grounds here.~
 ~
 15 0 0
 999 5 0 0
-0 0 0
+1 0 0
 #2413
 gardening shears~
 a small pair of gardening shears~
@@ -1045,8 +1050,9 @@ a fang filled with venom~
 A fang filled with python's venom has been dropped here.~
 ~
 3 0 16385
-15 6 6 33
+15 6 6 -1
 1 2000 200
+'poison'
 #2416
 dresser~
 object not used~
@@ -1054,7 +1060,7 @@ Some god dropped a newly created dresser here.~
 ~
 15 0 0
 10 5 0 0
-0 0 0
+1 0 0
 #2417
 panther-crested ring~
 panther-crested ring~
@@ -1075,8 +1081,9 @@ a bar of soap~
 A bar of soap is here for you to trip over.~
 ~
 26 0 1
-30 28 1 81
+30 -1 -1 -1
 1 3000 300
+'heal' 'armor' 'refresh'
 #2419
 nightshirt shirt~
 a nightshirt~
@@ -1096,7 +1103,7 @@ A cabinet is here, waiting to be opened.~
 ~
 15 0 0
 50 5 0 0
-0 0 0
+1 0 0
 #2421
 silk robe~
 a silk bathrobe~
@@ -1117,8 +1124,9 @@ an ivory cane~
 An expensive-looking ivory cane has been carelessly left here.~
 ~
 4 320 16385
-1 1 1 36
+1 1 1 -1
 15 10000 1000
+'sanctuary'
 #2423
 black patent leather shoes~
 black patent leather shoes~
@@ -1152,15 +1160,16 @@ A small, metal safe key sits here.~
 ~
 18 524288 1
 2407 0 0 0
-0 0 0
+1 0 0
 #2426
 vial potion undead~
 a vial of undead spirits~
 On the ground is a vial of undead spirit potion.~
 ~
 10 80 1
-10 28 18 29
+10 -1 -1 -1
 1 3000 300
+'heal' 'detect evil' 'invis'
 #2427
 dog collar~
 a gem encrusted dog collar~
@@ -1215,7 +1224,7 @@ this object is not used~
 ~
 20 0 1
 0 0 0 0
-0 25000 2500
+1 25000 2500
 #2431
 purse coin~
 a coin purse~
@@ -1260,8 +1269,9 @@ a book of fairy tales~
 A book of fairy tales has been left on the floor.~
 ~
 2 0 1
-2 20 56 1
+2 -1 -1 -1
 1 1000 100
+'detect magic' 'fly' 'armor'
 #2436
 pocket watch~
 an expensive-looking pocket watch~
@@ -1289,23 +1299,25 @@ A cloth diaper lies on the ground.~
 ~
 9 0 2049
 1 1 0 0
-0 0 0
+1 0 0
 #2439
 paintbrush brush~
 a paintbrush~
 A brush drips with fresh watercolor paint.~
 ~
 3 64 16385
-9 4 4 10
+9 4 4 -1
 1 0 0
+'colour spray'
 #2440
 make-up compact~
 an ivory make-up compact~
 A small, ivory make-up compact has been forgotten on the floor.~
 ~
 4 320 16385
-14 3 3 226
+14 3 3 -1
 1 1000 100
+'elven beauty'
 #2441
 chef apron~
 a chef's apron~
@@ -1347,15 +1359,16 @@ A grotesque corpse rots away.~
 ~
 15 0 0
 5 0 0 0
-0 0 0
+1 0 0
 #2445
 scroll avatar avatar's~
 an avatar's scroll~
 An avatar's scroll lies here.~
 ~
 2 65 1
-4 39 228 227
+4 -1 -1 -1
 1 10000 1000
+'kindred strength' 'sagacity' 'dragon wit'
 E
 scroll~
 You are looking at a scroll which contains the 5 best lines heard over the
@@ -1417,8 +1430,9 @@ a small mirror~
 A small mirror has been left on the ground.~
 ~
 3 320 16385
-10 2 2 7
+10 2 2 -1
 1 50 5
+'charm person'
 #2449
 undershirt shirt tattered~
 a tattered undershirt~
@@ -1436,7 +1450,7 @@ A skeleton key lies here.~
 ~
 18 0 1
 2450 0 0 0
-0 0 0
+1 0 0
 #2451
 torturer's whip~
 a nasty torturer's whip~
@@ -1519,8 +1533,9 @@ an orange carrot~
 A large, orange carrot pokes up from the ground.~
 ~
 26 262144 1
-3 19 -1 -1
+3 -1 -1 -1
 6 500 50
+'detect invis' 'NONE' 'NONE'
 #2460
 chest drawers~
 a chest of drawers~
@@ -1528,23 +1543,25 @@ A chest of drawers sits in the corner.~
 ~
 15 262144 0
 30 5 0 0
-0 0 0
+1 0 0
 #2461
 watermelon~
 a juicy watermelon~
 A tantalizing watermelon grows here.~
 ~
 26 262144 1
-5 39 56 -1
+5 -1 -1 -1
 15 900 90
+'kindred strength' 'fly' 'NONE'
 #2462
 head lettuce~
 a head of lettuce~
 A head of lettuce is growing here.~
 ~
 26 262144 1
-14 15 -1 -1
+14 -1 -1 -1
 4 500 50
+'cure critical' 'NONE' 'NONE'
 #2463
 port barrel wine~
 a barrel of port wine~
@@ -1588,7 +1605,7 @@ A trough filled with cool water stands here.~
 ~
 25 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2498
 sword~
 not used~
@@ -1596,7 +1613,7 @@ A deadly elvenbane lies here.~
 ~
 5 0 8193
 12 60 100 3
-0 0 0
+1 0 0
 A
 17 -399
 A
@@ -1609,8 +1626,9 @@ not used~
 A Sprite~
 ~
 10 0 1
-50 28 28 28
-0 0 0
+50 -1 -1 -1
+1 0 0
+'heal' 'heal' 'heal'
 #0
 
 
@@ -1635,6 +1653,7 @@ This direction leads back down the hill.
 ~
 ~
 0 -1 2467
+R D 0 2400 0 1
 E
 plaque~
 Welcome!  This area is intended for levels 1 to 10.  Remember, LOOK at 
@@ -1677,6 +1696,8 @@ The yard continues on to the west.
 ~
 ~
 0 -1 2403
+R D 0 2401 0 1
+R D 0 2401 2 1
 E
 door~
 The door has a small square window built into it.
@@ -1721,6 +1742,7 @@ The yard continues west.
 ~
 ~
 0 -1 2404
+R O 0 2403 1 2403
 S
 #2404
 Southwest Corner of the Manor~
@@ -1792,6 +1814,10 @@ D5
 ~
 trapdoor~
 11 -1 2407
+R M 0 2407 1 2406
+  R E 1 2427 1 3
+R D 0 2406 2 1
+R D 0 2406 5 1
 E
 rug~
 As you lift up the rug, you see...a trapdoor!
@@ -1823,6 +1849,12 @@ South leads to a staircase.
 ~
 ~
 3 -1 2474
+R M 0 2409 2 2407
+R O 0 2407 1 2407
+  R P 0 2450 1 2407
+  R P 0 2406 1 2407
+  R P 0 2445 1 2407
+R D 0 2407 2 1
 S
 #2408
 A Luxurious Living Room~
@@ -1859,6 +1891,7 @@ D5
 ~
 ~
 0 -1 2409
+R D 0 2408 1 0
 E
 artwork~
 Wow!  A real Picasso!
@@ -1926,6 +1959,12 @@ West takes you back to the living room.
 ~
 ~
 1 -1 2408
+R M 0 2410 1 2410
+  R G 1 2436 1
+  R G 1 2408 1
+  R E 1 2410 1 17
+  R E 1 2409 1 5
+R D 0 2410 3 0
 E
 books~
 Some of the titles include "Immortality on the Realms of Despair", "How to
@@ -1973,6 +2012,14 @@ You see a spacious living room.
 ~
 ~
 0 -1 2408
+R M 0 2411 1 2411
+  R E 1 2405 1 16
+  R E 1 2441 1 5
+R O 0 2411 1 2411
+  R P 0 2402 1 2411
+  R P 0 2401 1 2411
+R D 0 2411 0 1
+R D 0 2411 1 1
 S
 #2412
 West of the Manor~
@@ -1990,6 +2037,8 @@ The yard continues south.
 ~
 ~
 0 -1 2404
+R O 0 2412 1 2412
+  R P 0 2413 1 2412
 S
 #2413
 Continuing Along the West Side of the Manor~
@@ -2105,6 +2154,7 @@ D3
 ~
 ~
 0 -1 2414
+R D 0 2418 2 1
 S
 #2419
 The Second Floor Landing~
@@ -2147,6 +2197,8 @@ The staircase takes you back to the living room.
 ~
 staircase~
 0 -1 2408
+R D 0 2419 1 1
+R D 0 2419 3 1
 S
 #2420
 A Large Bathroom~
@@ -2161,6 +2213,10 @@ The landing lies in this direction.
 ~
 ~
 3 -1 2419
+R M 0 2420 1 2420
+R O 0 2420 1 2420
+  R P 0 2421 1 2420
+R D 0 2420 3 1
 E
 basin~
 Just a standard basin, used for washing up.
@@ -2199,6 +2255,12 @@ East will return you to the landing.
 ~
 ~
 3 -1 2419
+R M 0 2421 1 2421
+  R E 1 2438 1 13
+R O 0 2400 1 2421
+  R P 0 2434 1 2400
+  R P 0 2435 1 2400
+R D 0 2421 1 1
 E
 window~
 You see a sprawling forest.
@@ -2233,6 +2295,9 @@ You see a room full of beds and dressers.
 ~
 ~
 3 -1 2423
+R D 0 2422 0 1
+R D 0 2422 1 1
+R D 0 2422 3 1
 S
 #2423
 The Children's Bedroom~
@@ -2247,6 +2312,9 @@ You see the hallway.
 ~
 ~
 3 -1 2422
+R M 0 2422 1 2423
+  R E 1 2439 1 17
+R D 0 2423 1 1
 E
 drawing painting drawings~
 What a cute drawing!  You see a picture of the entire family, mom, dad,
@@ -2266,6 +2334,7 @@ You see the hallway.
 ~
 ~
 3 -1 2422
+R D 0 2424 3 1
 E
 bed~
 Your baby crib was bigger than this.
@@ -2303,6 +2372,13 @@ You see the hallway.
 ~
 ~
 3 -1 2422
+R M 0 2425 1 2425
+  R E 1 2422 1 17
+  R E 1 2423 1 8
+  R E 1 2424 1 1
+  R G 1 2425 1
+R D 0 2425 1 1
+R D 0 2425 2 1
 E
 bed~
 The king-sized bed looks VERY inviting.
@@ -2480,6 +2556,7 @@ D1
 ~
 ~
 0 -1 2432
+R O 0 2463 2 2433
 S
 #2434
 An Intersection~
@@ -2538,6 +2615,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2434
+R M 0 2408 2 2435
 S
 #2436
 The Laybrinth~
@@ -2631,6 +2709,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2432
+R D 0 2439 2 2
 S
 #2440
 The Laybrinth~
@@ -2652,6 +2731,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2439
+R M 0 2412 4 2440
 S
 #2441
 The Laybrinth~
@@ -2702,6 +2782,11 @@ D1
 ~
 ~
 0 -1 2442
+R M 0 2442 1 2443
+  R G 1 2426 1
+R O 0 2444 1 2443
+  R P 0 2442 1 2444
+  R P 0 2443 1 2444
 S
 #2444
 A Gruesome Lair~
@@ -2715,6 +2800,7 @@ D3
 ~
 ~
 0 -1 2442
+R M 0 2405 1 2444
 S
 #2445
 The Laybrinth~
@@ -2773,6 +2859,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2446
+R M 0 2471 4 2447
 S
 #2448
 The Labyrinth~
@@ -2805,6 +2892,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2468
+R M 0 2408 2 2449
 S
 #2450
 Torture Room~
@@ -2821,6 +2909,9 @@ North will take you out of this horrible place.
 ~
 ~
 33 0 2439
+R M 0 2450 1 2450
+  R E 1 2452 1 6
+  R E 1 2451 1 16
 S
 #2451
 Farther into the Backyard~
@@ -2850,6 +2941,8 @@ You catch a whiff of a putrid odor...
 ~
 ~
 3 -1 2452
+R D 0 2451 0 1
+R D 0 2451 3 1
 S
 #2452
 The Outhouse~
@@ -2865,6 +2958,7 @@ East leads to the yard...and fresh air!
 ~
 ~
 3 -1 2451
+R D 0 2452 1 1
 > rand_prog 10~
 mpecho The horrid stench has overcome you.  You feel very sick.
 mpforce all puke
@@ -2912,6 +3006,7 @@ You see an intersection of paths.
 ~
 ~
 0 -1 2453
+R D 0 2454 1 1
 S
 #2455
 The Horse Stalls~
@@ -2934,6 +3029,10 @@ You see the enterance to the stables.
 ~
 gate~
 3 -1 2454
+R M 0 2455 3 2455
+R M 0 2455 3 2455
+R D 0 2455 0 0
+R D 0 2455 3 1
 S
 #2456
 Equipment Storage~
@@ -2949,6 +3048,10 @@ You see the horse stalls.
 ~
 ~
 0 -1 2455
+R M 0 2456 1 2456
+  R E 1 2428 1 16
+R O 0 2455 1 2456
+R O 0 2456 1 2456
 S
 #2457
 The Field~
@@ -2971,6 +3074,7 @@ D3
 ~
 ~
 0 -1 2482
+R D 0 2457 2 0
 S
 #2458
 A Darkened Hallway on the Second Floor~
@@ -3000,6 +3104,9 @@ This leads to a ridiculously small bathroom.
 ~
 ~
 3 -1 2461
+R D 0 2458 1 1
+R D 0 2458 2 1
+R D 0 2458 3 1
 S
 #2459
 The Cook's Bedroom~
@@ -3013,6 +3120,8 @@ The hallway lies in this direction.
 ~
 ~
 3 -1 2458
+R O 0 2448 1 2459
+R D 0 2459 3 1
 S
 #2460
 Nanny's Bedroom~
@@ -3028,6 +3137,13 @@ lead back into the hall.
 ~
 ~
 3 -1 2458
+R M 0 2460 1 2460
+  R E 1 2433 1 3
+  R E 1 2432 1 20
+R O 0 2460 1 2460
+  R P 0 2440 1 2460
+  R P 0 2431 1 2460
+R D 0 2460 0 1
 E
 bed~
 A tiny bed with a cheap mattress.
@@ -3057,6 +3173,8 @@ You desperately want to get out of this TINY room.
 ~
 ~
 3 -1 2458
+R O 0 2437 1 2461
+R D 0 2461 1 1
 E
 candle~
 It provides a little light for the room.
@@ -3082,6 +3200,12 @@ This way leads you out of this wretched place.
 ~
 ~
 3 -1 2451
+R M 0 2462 1 2462
+  R E 1 2449 1 5
+R M 0 2463 1 2462
+  R E 1 2453 1 7
+R O 0 2457 1 2462
+R D 0 2462 2 1
 E
 mat~
 A simple straw mat serves as a bed.
@@ -3101,6 +3225,10 @@ West will take you back to the kitchen.
 ~
 ~
 3 -1 2411
+R O 0 2464 1 2463
+R O 0 2465 1 2463
+R O 0 2463 2 2463
+R D 0 2463 3 1
 S
 #2464
 The Parlor~
@@ -3118,6 +3246,7 @@ West will return you to the foyer.
 ~
 ~
 0 -1 2406
+R O 0 2466 1 2464
 E
 lamp~
 Within the beautiful crystal lamp burns a solitary white candle.
@@ -3143,6 +3272,10 @@ D2
 ~
 ~
 0 -1 2453
+R M 0 2465 1 2465
+  R G 1 2462 1
+  R G 1 2461 1
+  R G 1 2458 1
 S
 #2466
 The Master Bathroom~
@@ -3156,6 +3289,11 @@ D3
 ~
 ~
 3 -1 2425
+R M 0 2426 1 2466
+  R E 1 2419 1 5
+  R E 1 2418 1 17
+  R E 1 2417 1 1
+R D 0 2466 3 1
 E
 mirror~
 Just looking at this thing makes you feel rich.
@@ -3210,6 +3348,8 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2449
+R M 0 2412 4 2468
+R O 0 2446 1 2468
 S
 #2469
 The Labyrinth~
@@ -3247,6 +3387,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2471
+R M 0 2409 2 2470
 S
 #2471
 The Labyrinth~
@@ -3289,6 +3430,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2478
+R M 0 2471 4 2472
 S
 #2473
 The Labyrinth~
@@ -3324,6 +3466,7 @@ D4
 ~
 ~
 0 -1 2464
+R D 0 2474 0 1
 S
 #2475
 The Labyrinth~
@@ -3415,6 +3558,8 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2480
+R M 0 2412 4 2479
+R O 0 2447 1 2479
 S
 #2480
 The Labyrinth~
@@ -3447,6 +3592,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2480
+R M 0 2412 4 2481
 S
 #2482
 The Field~
@@ -3485,6 +3631,8 @@ You have really done it now.  You are floating, helpless, in a void.
 The judge sits behind his desk, ready to pass judgment on you.
 ~
 0 3145804 0
+R M 0 2484 1 2484
+  R E 1 2454 1 16
 S
 #2485
 An Antechamber~
@@ -3518,6 +3666,8 @@ D2
 ~
 ~
 0 -1 2482
+R M 0 2455 3 2486
+R O 0 2486 1 2486
 S
 #2487
 The Labyrinth~
@@ -3550,6 +3700,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2473
+R M 0 2471 4 2488
 S
 #2489
 The Labyrinth~
@@ -3582,6 +3733,7 @@ You see nothing but darkened corridors.
 ~
 ~
 0 -1 2489
+R M 0 2471 4 2490
 S
 #2491
 The Labyrinth~
@@ -3654,144 +3806,6 @@ Floating in a void~
 0 12 0
 S
 #0
-
-
-#RESETS
-D 0 2400 0 1
-D 0 2401 0 1
-D 0 2401 2 1
-O 1 2403 1 2403
-M 0 2407 1 2406
-E 1 2427 1 3
-D 0 2406 2 1
-D 0 2406 5 1
-M 0 2409 2 2407
-O 1 2407 1 2407
-P 1 2450 1 2407
-P 1 2406 1 2407
-P 1 2445 1 2407
-D 0 2407 2 1
-D 0 2408 1 0
-M 0 2410 1 2410
-G 1 2436 1
-G 1 2408 1
-E 1 2410 1 17
-E 1 2409 1 5
-D 0 2410 3 0
-M 0 2411 1 2411
-E 1 2405 1 16
-E 1 2441 1 5
-O 1 2411 1 2411
-P 1 2402 1 2411
-P 1 2401 1 2411
-D 0 2411 0 1
-D 0 2411 1 1
-O 1 2412 1 2412
-P 1 2413 1 2412
-D 0 2418 2 1
-D 0 2419 1 1
-D 0 2419 3 1
-M 0 2420 1 2420
-O 1 2420 1 2420
-P 1 2421 1 2420
-D 0 2420 3 1
-M 0 2421 1 2421
-E 1 2438 1 13
-O 1 2400 1 2421
-P 1 2434 1 2400
-P 1 2435 1 2400
-D 0 2421 1 1
-D 0 2422 0 1
-D 0 2422 1 1
-D 0 2422 3 1
-M 0 2422 1 2423
-E 1 2439 1 17
-D 0 2423 1 1
-D 0 2424 3 1
-M 0 2425 1 2425
-E 1 2422 1 17
-E 1 2423 1 8
-E 1 2424 1 1
-G 1 2425 1
-D 0 2425 1 1
-D 0 2425 2 1
-O 1 2463 2 2433
-M 0 2408 2 2435
-D 0 2439 2 2
-M 0 2412 4 2440
-M 0 2442 1 2443
-G 1 2426 1
-O 1 2444 1 2443
-P 1 2442 1 2444
-P 1 2443 1 2444
-M 0 2405 1 2444
-M 0 2471 4 2447
-M 0 2408 2 2449
-M 0 2450 1 2450
-E 1 2452 1 6
-E 1 2451 1 16
-D 0 2451 0 1
-D 0 2451 3 1
-D 0 2452 1 1
-D 0 2454 1 1
-M 0 2455 3 2455
-M 0 2455 3 2455
-D 0 2455 0 0
-D 0 2455 3 1
-M 0 2456 1 2456
-E 1 2428 1 16
-O 1 2455 1 2456
-O 1 2456 1 2456
-D 0 2457 2 0
-D 0 2458 1 1
-D 0 2458 2 1
-D 0 2458 3 1
-O 1 2448 1 2459
-D 0 2459 3 1
-M 0 2460 1 2460
-E 1 2433 1 3
-E 1 2432 1 20
-O 1 2460 1 2460
-P 1 2440 1 2460
-P 1 2431 1 2460
-D 0 2460 0 1
-O 1 2437 1 2461
-D 0 2461 1 1
-M 0 2462 1 2462
-E 1 2449 1 5
-M 0 2463 1 2462
-E 1 2453 1 7
-O 1 2457 1 2462
-D 0 2462 2 1
-O 1 2464 1 2463
-O 1 2465 1 2463
-O 1 2463 2 2463
-D 0 2463 3 1
-O 1 2466 1 2464
-M 0 2465 1 2465
-G 1 2462 1
-G 1 2461 1
-G 1 2458 1
-M 0 2426 1 2466
-E 1 2419 1 5
-E 1 2418 1 17
-E 1 2417 1 1
-D 0 2466 3 1
-M 0 2412 4 2468
-O 1 2446 1 2468
-M 0 2409 2 2470
-M 0 2471 4 2472
-D 0 2474 0 1
-M 0 2412 4 2479
-O 1 2447 1 2479
-M 0 2412 4 2481
-M 0 2484 1 2484
-E 1 2454 1 16
-M 0 2455 3 2486
-O 1 2486 1 2486
-M 0 2471 4 2488
-M 0 2471 4 2490
-S
 
 
 #SHOPS

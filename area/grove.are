@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Alfa~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 2452038
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #8900
@@ -26,7 +29,7 @@ traps and pitfalls.
 193 8328 1000 S
 20 0 -5 20d20+180 1d8+12
 50 60000
-8 8 1
+112 112 1
 #8901
 hierophant~
 The Hierophant~
@@ -39,7 +42,7 @@ traps and pitfalls.
 193 8328 1000 S
 20 0 -5 20d20+180 1d8+12
 50 60000
-8 8 2
+112 112 2
 #8902
 elder druid~
 an elder druid~
@@ -51,7 +54,7 @@ his lack of wrinkles.
 193 8192 1000 S
 13 7 0 13d13+130 1d4+7
 50 15000
-8 8 1
+112 112 1
 #8903
 elder druidess~
 an elder druidess~
@@ -62,7 +65,7 @@ She looks ageless, as do all druids.  She smiles a beautiful smile at you.
 193 8192 1000 S
 13 7 0 13d13+130 1d4+7
 50 15000
-8 8 2
+112 112 2
 #8904
 doe~
 a doe~
@@ -74,7 +77,7 @@ she sniffs at you, but she goes back to chewing some grass.
 193 0 0 C
 5 15 5 5d5+55 1d4+3
 2 600
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 76 3 0 0 1768715009 1768715008 0
@@ -90,7 +93,7 @@ albeit ineffectively.
 193 0 0 S
 6 14 4 6d6+66 1d4+4
 2 800
-8 8 1
+112 112 1
 #8906
 stag deer large~
 a stag~
@@ -101,7 +104,7 @@ He eyes you with contained anger.  You'd better leave him alone!
 225 0 0 S
 8 12 2 8d8+88 1d4+9
 2 2000
-8 8 1
+112 112 1
 #8907
 bunny rabbit~
 a small bunny~
@@ -112,7 +115,7 @@ This bunny looks so adorable, you wished you had one just like this!
 193 0 0 S
 5 18 8 1d1+30 1d4+1
 2 100
-8 8 0
+112 112 0
 #8908
 snake~
 a harmless snake~
@@ -123,7 +126,7 @@ Upon careful inspection, you are sure it is NOT a cobra!
 225 32768 0 S
 5 16 4 4d4+44 1d3+3
 2 500
-8 8 0
+112 112 0
 #8909
 druid~
 a druid~
@@ -134,7 +137,7 @@ He doesn't like you bothering him, but is too polite to ask you to leave.
 193 8200 1000 S
 10 10 0 10d10+100 1d4+6
 50 5000
-8 8 1
+112 112 1
 #8910
 druidess~
 a druidess~
@@ -145,7 +148,7 @@ She wonders why you are staring at her, and how you got in here.
 193 8200 1000 S
 10 10 0 10d10+100 1d4+6
 50 5000
-8 8 2
+112 112 2
 #8911
 dragon ~
 Dragon~
@@ -162,7 +165,7 @@ who would challenge him.
 131137 168 -1 C
 21 0 -25 1d1+350 3d4+22
 0 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 0
@@ -311,56 +314,63 @@ some bluish herbs~
 Some bluish herbs are scattered here.~
 ~
 26 0 1
-15 -1 -1 3
+15 -1 -1 -1
 1 1 0
+'NONE' 'NONE' 'bless'
 #8914
 herbs~
 some purplish herbs~
 Some purplish herbs are scattered here.~
 ~
 26 0 1
-15 -1 -1 82
+15 -1 -1 -1
 1 1 0
+'NONE' 'NONE' 'change sex'
 #8915
 herbs~
 some blackish herbs~
 Some blackish herbs are scattered here.~
 ~
 26 0 1
-5 -1 -1 4
+5 -1 -1 -1
 1 1 0
+'NONE' 'NONE' 'blindness'
 #8916
 herbs~
 some grayish herbs~
 Some grayish herbs are scattered here.~
 ~
 26 0 1
-5 -1 39 33
+5 -1 -1 -1
 1 1 0
+'NONE' 'kindred strength' 'poison'
 #8917
 herbs~
 some reddish herbs~
 Some reddish herbs are scattered here.~
 ~
 26 0 1
-15 -1 -1 20
+15 -1 -1 -1
 1 1 0
+'NONE' 'NONE' 'detect magic'
 #8918
 herbs~
 some orangish herbs~
 Some orangish herbs are scattered here.~
 ~
 26 0 1
-5 -1 -1 16
+5 -1 -1 -1
 1 1 0
+'NONE' 'NONE' 'cure light'
 #8919
 herbs~
 some pinkish herbs~
 Some pinkish herbs are scattered here.~
 ~
 26 0 1
-5 -1 43 33
+5 -1 -1 -1
 1 1 0
+'NONE' 'cure poison' 'poison'
 #0
 
 
@@ -383,6 +393,11 @@ The path wind its way through the tall trees, disappearing out of sight.
 ~
 ~
 0 -1 8904
+R M 0 8901 1 8901
+  R E 1 8910 99 5
+  R E 1 8911 99 16
+  R G 1 8913 99
+  R G 1 8915 99
 S
 #8902
 The holy grove~
@@ -407,6 +422,10 @@ The path wind its way through the tall trees, disappearing out of sight.
 ~
 ~
 0 -1 8901
+R M 0 8902 1 8902
+  R E 1 8910 99 5
+  R G 1 8914 99
+  R G 1 8916 99
 S
 #8903
 A clearing in the woods~
@@ -427,6 +446,8 @@ There is a friendly-looking path leading west through the tall trees.
 ~
 ~
 0 -1 8902
+R M 0 8907 4 8903
+R M 0 8907 4 8903
 E
 tablet~
 This zone has been populated by Merc.  1993
@@ -461,6 +482,10 @@ barely glimpse the tall walls and the chimney-smokes of the city itself.
 ~
 ~
 0 -1 3502
+R M 0 8903 1 8904
+  R E 1 8910 99 5
+  R G 1 8919 99
+  R G 1 8917 99
 S
 #8905
 The sacred glade~
@@ -494,6 +519,13 @@ The path wind its way west between stately poplars and oaks.
 ~
 ~
 0 -1 8904
+R M 0 8900 1 8905
+  R E 1 8910 99 5
+  R E 1 8911 99 16
+  R G 1 8919 99
+  R G 1 8918 99
+R M 0 8904 2 8905
+R M 0 8906 1 8905
 S
 #8906
 The holy grove~
@@ -519,6 +551,8 @@ The path wind its way through the tall trees, disappearing out of sight.
 ~
 ~
 0 -1 8905
+R M 0 8905 2 8906
+R M 0 8908 9 8906
 E
 mansion~
 The mansion is a sprawling, two-story affair with three wings, where the top
@@ -613,6 +647,7 @@ To the south, the path leads straight up to the front door of the mansion.
 ~
 door~
 3 -1 8910
+R D 0 8909 2 1
 E
 mansion~
 The mansion is a sprawling, two-story affair with three wings, where the top
@@ -639,6 +674,8 @@ D2
 ~
 door~
 3 -1 8911
+R D 0 8910 2 1
+R D 0 8910 0 1
 E
 painting paintings~
 They are strange indeed, works of breathtaking precision depicting obviously
@@ -667,6 +704,10 @@ D2
 ~
 ~
 0 -1 8913
+R M 0 8909 1 8911
+  R G 1 8913 99
+R D 0 8911 1 1
+R D 0 8911 0 1
 S
 #8912
 The blue room~
@@ -681,6 +722,8 @@ D3
 ~
 door~
 3 -1 8911
+R O 0 8901 2 8912
+R D 0 8912 3 1
 S
 #8913
 The hallway~
@@ -705,6 +748,9 @@ D3
 ~
 door~
 3 -1 8916
+R D 0 8913 1 1
+R D 0 8913 2 1
+R D 0 8913 3 1
 S
 #8914
 The red room~
@@ -719,6 +765,10 @@ D3
 ~
 door~
 3 -1 8913
+R M 0 8910 1 8914
+  R G 1 8914 99
+R O 0 8901 2 8914
+R D 0 8914 3 1
 S
 #8915
 The kitchen~
@@ -739,6 +789,12 @@ D3
 ~
 door~
 3 -1 8918
+R O 0 8902 2 8915
+  R P 0 8903 1 8902
+R O 0 8902 2 8915
+  R P 0 8904 1 8902
+R D 0 8915 0 1
+R D 0 8915 3 1
 S
 #8916
 The ballroom~
@@ -761,6 +817,8 @@ D3
 ~
 ~
 0 -1 8917
+R D 0 8916 1 1
+R D 0 8916 2 1
 S
 #8917
 The greenhouse~
@@ -781,6 +839,9 @@ D2
 ~
 door~
 3 -1 8919
+R M 0 8910 2 8917
+  R G 1 8918 99
+R D 0 8917 2 1
 S
 #8918
 The dining hall~
@@ -802,6 +863,16 @@ D3
 ~
 wide door~
 3 -1 8919
+R M 0 8909 2 8918
+  R G 1 8916 99
+R D 0 8918 0 1
+R D 0 8918 1 1
+R D 0 8918 3 1
+R M 0 8911 1 8918
+  R E 1 8907 1 17
+  R E 1 8906 1 16
+  R E 1 8900 1 9
+  R E 1 8905 1 6
 E
 painting paintings~
 There are many, many beautiful paintings of famous dragons of history and
@@ -839,6 +910,8 @@ D3
 ~
 ~
 0 -1 8908
+R D 0 8919 1 1
+R D 0 8919 0 1
 S
 #8988
 Floating in a void~
@@ -906,73 +979,6 @@ and falling ...
 0 4 0
 S
 #0
-
-
-#RESETS
-M 0 8900 1 8905
-E 1 8910 99 5
-E 1 8911 99 16
-G 1 8919 99
-G 1 8918 99
-M 0 8901 1 8901
-E 1 8910 99 5
-E 1 8911 99 16
-G 1 8913 99
-G 1 8915 99
-M 0 8902 1 8902
-E 1 8910 99 5
-G 1 8914 99
-G 1 8916 99
-M 0 8903 1 8904
-E 1 8910 99 5
-G 1 8919 99
-G 1 8917 99
-M 0 8904 2 8905
-M 0 8905 2 8906
-M 0 8906 1 8905
-M 0 8907 4 8903
-M 0 8907 4 8903
-M 0 8908 9 8906
-M 0 8909 1 8911
-G 1 8913 99
-M 0 8909 2 8918
-G 1 8916 99
-M 0 8910 1 8914
-G 1 8914 99
-M 0 8910 2 8917
-G 1 8918 99
-O 0 8901 2 8912
-O 0 8901 2 8914
-O 0 8902 2 8915
-P 1 8903 1 8902
-O 0 8902 2 8915
-P 1 8904 1 8902
-D 0 8914 3 1
-D 0 8913 1 1
-D 0 8912 3 1
-D 0 8911 1 1
-D 0 8911 0 1
-D 0 8910 2 1
-D 0 8910 0 1
-D 0 8909 2 1
-D 0 8913 2 1
-D 0 8915 0 1
-D 0 8913 3 1
-D 0 8916 1 1
-D 0 8918 0 1
-D 0 8916 2 1
-D 0 8918 1 1
-D 0 8915 3 1
-D 0 8918 3 1
-D 0 8919 1 1
-D 0 8917 2 1
-D 0 8919 0 1
-M 0 8911 1 8918
-E 1 8907 1 17
-E 1 8906 1 16
-E 1 8900 1 9
-E 1 8905 1 6
-S
 
 
 #SHOPS

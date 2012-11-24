@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Seccunda~
 
 #RANGES
@@ -15,6 +16,8 @@ $
 
 #ECONOMY 0 22706892
 
+#CLIMATE 2 2 2
+
 #MOBILES
 #1500
 child gnome~
@@ -27,7 +30,7 @@ to pick him up and hug him.
 3 4194856 600 C
 7 18 7 3d7+70 2d4+0
 300 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -47,7 +50,7 @@ She's starting to look pretty attractive to you ...
 1 0 600 C
 10 16 5 5d10+100 1d8+0
 500 700
-8 8 2
+112 112 2
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -63,7 +66,7 @@ same time an intelligent creature who could outsmart you.
 1 4194856 500 C
 12 15 4 1d12+100 1d8+1
 450 900
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -86,7 +89,7 @@ to make.  His hair is white, but he looks fairly strong.
 1 4194856 500 C
 12 14 4 5d10+100 1d8+3
 1000 1300
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -102,7 +105,7 @@ he makes up for it with his scientific skills.
 1 0 400 C
 10 13 3 5d5+90 1d7+2
 100 2000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -124,7 +127,7 @@ but wise and resourceful.  You better not mess with him.
 3 0 550 C
 15 6 -1 5d10+200 1d15+2
 8000 15000
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 2
@@ -144,7 +147,7 @@ but with the eyes and fangs of a wild beast.
 1073741831 4194856 -900 C
 20 12 3 1d50+350 2d5+1
 200 2000
-8 8 1
+112 112 1
 16 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -179,7 +182,7 @@ The Mouse is a cute little creature.
 5 0 0 C
 5 19 9 1d5+50 1d4+0
 0 100
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 512 513 0
@@ -194,7 +197,7 @@ The rat is a little evil creature that deserves death.
 5 0 -200 C
 6 19 8 1d1+66 1d5+1
 0 200
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 512 513 1
@@ -209,7 +212,7 @@ You have the urge to kill this vile creature.
 5 0 -200 C
 8 17 6 1d1+88 1d8+0
 0 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 512 513 1
@@ -224,7 +227,7 @@ This rat has grown up to be the size of an average dog.
 37 0 -200 C
 10 15 4 1d1+111 1d8+1
 0 800
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 77 3 0 0 512 513 1
@@ -240,7 +243,7 @@ he lifts his powerful arm to bludgeon you.
 35 0 -800 C
 14 7 0 3d5+160 2d8+1
 100 10000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 65 65 0
@@ -255,7 +258,7 @@ The bat is a grotesque little creature with large wings and fangs.
 33 4719144 -500 C
 5 16 5 3d4+70 1d8+0
 1 1000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 23 3 0 0 513 513 0
@@ -272,7 +275,7 @@ always over the same place on the floor.
 3 4194856 -700 C
 12 14 3 4d12+110 1d8+3
 696 2300
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 0
@@ -288,7 +291,7 @@ hangs from the ceiling and bites at you.
 37 8 -900 C
 12 9 2 1d10+60 3d5+0
 6000 6000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -304,7 +307,7 @@ as he attempts to brain you.
 35 4194856 -700 C
 10 15 4 2d15+100 1d8+1
 75 1000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 16384 16385 1
@@ -326,7 +329,7 @@ of the elite guards.  He looks pissed.
 35 4194856 -600 C
 7 18 7 1d7+70 1d7+0
 50 300
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 16384 16385 1
@@ -349,7 +352,7 @@ stature.  He grins a toothy grin as he prepares to attack.
 3 4194856 -500 C
 10 14 4 2d15+105 1d7+2
 100 2000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 1 1 1
@@ -365,7 +368,7 @@ destroying the sophisticated effect he was trying to create.
 3 4194856 -500 C
 18 9 2 5d20+150 2d7+1
 500 6000
-6 8 1
+108 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 16385 16385 2
@@ -380,7 +383,7 @@ The miner is totally covered in dust.
 5 0 -400 C
 5 16 5 1d12+60 1d8+0
 700 500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 16384 16384 1
@@ -403,7 +406,7 @@ can only see a couple feet in front of him.
 7 4194856 -200 C
 13 11 2 3d15+115 2d6+1
 5000 2500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -418,7 +421,7 @@ The prisoner is just barely alive.
 7 4194856 1000 C
 6 17 8 5d3+50 2d3+1
 0 50
-5 8 1
+106 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -437,7 +440,7 @@ The prisoner is just barely alive.
 7 0 100 C
 5 17 8 3d5+35 2d3+1
 0 50
-5 8 2
+106 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -458,7 +461,7 @@ from years and years of collecting.
 5 0 -10 C
 12 16 5 5d10+120 1d8+0
 2500 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -474,7 +477,7 @@ goes about her work.
 3 4194856 -500 C
 15 14 4 150d1+1 1d7+1
 26 900
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 16384 16385 0
@@ -497,7 +500,7 @@ he makes up for it with his weapons skill.
 3 0 500 C
 13 13 3 2d6+120 3d3+2
 1500 2000
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 1 1 1
@@ -518,7 +521,7 @@ Some god abandoned a newly created tester mobbie here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 > speech_prog xxxxx~
 n
 s
@@ -535,7 +538,7 @@ of the person who lives here, it is well cared for.
 3 0 0 C
 5 0 0 1d1+40 1d1+2
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -552,7 +555,7 @@ perhaps the wife of the Chief.
 3 4194856 500 C
 13 14 4 3d13+130 1d13+0
 1000 1300
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400641 400641 1
@@ -577,7 +580,7 @@ he makes up for it with his scientific skills.
 1 0 500 C
 10 13 3 5d5+90 1d7+2
 100 2000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400641 400641 1
@@ -600,7 +603,7 @@ to make.  His hair is white, but he looks fairly strong.
 1 4194856 500 C
 12 14 4 5d10+100 1d8+3
 1000 1300
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400641 400641 1
@@ -621,7 +624,7 @@ almost want to join in the play.
 5 4194856 600 C
 8 18 7 3d7+80 1d6+2
 300 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400945 400945 1
@@ -637,7 +640,7 @@ the children about physics it appears.
 3 4194856 600 C
 10 16 5 5d10+100 1d8+0
 500 700
-8 8 2
+112 112 2
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400945 400945 1
@@ -660,7 +663,7 @@ same time an intelligent creature who could outsmart you.
 1073741827 4194856 500 C
 6 15 4 1d12+100 1d8+1
 450 900
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400945 400945 0
@@ -681,7 +684,7 @@ almost want to join in the play.
 5 4194856 600 C
 8 18 7 3d7+80 1d6+2
 300 400
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 401009 401009 1
@@ -704,7 +707,7 @@ almost want to join in the play.
 1 0 500 C
 6 0 0 2d6+60 1d4+2
 0 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 401009 401009 0
@@ -727,7 +730,7 @@ She's starting to look pretty attractive to you ...
 1 0 600 C
 10 16 5 5d10+100 1d8+0
 500 700
-8 8 2
+112 112 2
 18 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 401009 401009 1
@@ -745,7 +748,7 @@ it seems to move and mold around you.
 3 4194856 0 C
 15 0 0 2d30+150 2d7+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -771,7 +774,7 @@ but with the eyes and fangs of a wild beast.
 7 4194856 -900 C
 20 12 3 1d50+350 5d3+4
 200 2000
-8 8 1
+112 112 1
 16 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -822,7 +825,7 @@ but with the eyes and fangs of a wild beast.
 7 4194856 -900 C
 20 12 3 1d50+350 5d3+4
 200 2000
-8 8 1
+112 112 1
 16 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -872,7 +875,7 @@ markings along its length. He appears to be watching your every move.
 1 4194856 -400 C
 6 0 25 2d5+55 1d4+2
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -894,7 +897,7 @@ as he attempts to brain you.
 35 4194856 -700 C
 10 15 4 2d15+100 1d8+1
 75 1000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 399855 399854 0
@@ -917,7 +920,7 @@ as he attempts to brain you.
 33 4194856 -700 C
 10 15 4 2d15+100 1d8+1
 75 1000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 400031 400030 1
@@ -936,7 +939,7 @@ appear too intelligent.
 3 4194856 -700 C
 12 14 4 5d10+100 1d8+3
 1000 1300
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 400031 400030 1
@@ -957,7 +960,7 @@ The miner is totally covered in dust.
 7 0 -400 C
 5 16 5 1d12+60 1d8+0
 700 500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 400031 400030 1
@@ -973,7 +976,7 @@ as he attempts to brain you.
 3 4194856 -700 C
 10 15 4 2d15+100 1d8+1
 75 1000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 43 3 0 0 400031 400030 1
@@ -987,7 +990,7 @@ Some god abandoned a newly created new mob here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #1566
 child gnome~
 a gnome child~
@@ -999,7 +1002,7 @@ to pick him up and hug him.
 3 4194856 600 C
 7 18 7 3d7+70 2d4+0
 300 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 38 3 0 0 400641 400641 1
@@ -1017,7 +1020,7 @@ Some god abandoned a newly created new mob here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #0
 
 
@@ -1081,8 +1084,9 @@ a bloody potion~
 A bloody potion lies here.~
 ~
 10 0 1
-15 15 15 39
+15 -1 -1 -1
 22 1500 150
+'cure critical' 'cure critical' 'kindred strength'
 #1507
 cloak bloody~
 a bloody cloak~
@@ -1231,8 +1235,9 @@ a potion of life healing~
 A potion of life healing has left here.~
 ~
 10 129 1
-32 28 3 81
+32 -1 -1 -1
 1 1 0
+'heal' 'bless' 'refresh'
 #1524
 lever~
 a lever inside the object~
@@ -1240,7 +1245,7 @@ A small lever rests within the object along the wall.~
 ~
 37 33554432 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 lever~
 This tiny lever seems to be made of some shiny red material. Slick
@@ -1267,7 +1272,7 @@ A large, strange object hums quietly here.~
 ~
 13 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 object~
 Looking like an ornate box with fluted tubes sticking out at odd angles,
@@ -1288,7 +1293,7 @@ A sturdy box rests securely on the ground here.~
 ~
 15 0 0
 1 5 0 0
-0 0 0
+1 0 0
 E
 box~
 Large and sturdy, this box is made of solid iron. Careful examination
@@ -1304,7 +1309,7 @@ An odd slick packet rests in a special cradle here.~
 ~
 13 0 1
 0 0 0 0
-0 0 0
+1 0 0
 E
 packet~
 Made of some shiny slick material, this dark colored object has been
@@ -1329,7 +1334,7 @@ A small crack in the wall has been found here.~
 ~
 15 33554432 0
 10 0 0 0
-0 0 0
+1 0 0
 E
 crack~
 After careful searching, you find a small crack in the northern wall.
@@ -1377,7 +1382,7 @@ A large gnome carved from granite stands here, holding a bronze plaque.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 granite~
 As you gaze upon this large piece of granite, you see a tall plaque
@@ -1409,7 +1414,7 @@ A tall oaken shelf stands here.~
 ~
 15 0 0
 20 0 0 0
-0 0 0
+1 0 0
 E
 shelf shelves~
 Hand made, from pieces of locally cut oak, these shelves show the
@@ -1424,8 +1429,9 @@ a battered scroll~
 A weathered vellum scroll rests here.~
 ~
 2 0 1
-25 59 3 34
-0 0 0
+25 -1 -1 -1
+1 0 0
+'dispel magic' 'bless' 'protection'
 E
 scroll~
 This battered length of vellum has a faded, arcane script upon it.
@@ -1462,8 +1468,9 @@ a fungoid losenge~
 A slimy little losenge sticks to the floor here.~
 $n hold$q back a gag as $e slip$q the losenge down $s throat~
 26 0 1
-20 77 205 208
+20 -1 -1 -1
 5 550 55
+'infravision' 'slink' 'valiance'
 #1535
 sword electrum~
 an electrum sword~
@@ -1496,8 +1503,9 @@ a glowing beaker of liquid~
 A beaker full of a glowing liquid sits here, brewing and boilding.~
 ~
 10 65 1
-20 3 15 81
-0 0 0
+20 -1 -1 -1
+1 0 0
+'bless' 'cure critical' 'refresh'
 #1538
 grey ratty labcoat~
 a ratty grey labcoat~
@@ -1516,8 +1524,9 @@ a rounded, flat stone~
 A oddly glowing rock lies here.~
 ~
 3 65 16385
-15 1 1 66
+15 1 1 -1
 5 300 30
+'stone skin'
 #1540
 apron plaid cotton~
 a plaid cotton apron~
@@ -1554,8 +1563,9 @@ a vial of fizz~
 A fizzing vial was left here.~
 ~
 10 0 1
-15 15 15 39
+15 -1 -1 -1
 22 1500 150
+'cure critical' 'cure critical' 'kindred strength'
 #1543
 cloak plaid cotton~
 a tattered plaid cloak~
@@ -1710,7 +1720,7 @@ Some god dropped a newly created aset spacer object here.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 #1573
 foul spring pool~
 a foul spring and pool~
@@ -1718,7 +1728,7 @@ A foul smelling spring trickles down to a small pool here.~
 ~
 25 0 0
 0 0 0 1
-0 0 0
+1 0 0
 E
 spring~
 A small crack in the wall of the cave has let a stream of water 
@@ -1773,7 +1783,7 @@ A strange glowing sign is imbedded in the earth by the roadside.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 sign~
 Ages ago, in a far off place, there existed a great nation of gnomes.
@@ -1832,7 +1842,7 @@ Some god dropped a newly created aset spacer object here.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 #0
 
 
@@ -1854,6 +1864,14 @@ A guard room
 ~
 ~
 0 -1 1575
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R M 0 1517 7 1500
+R D 0 1500 0 1
 S
 #1501
 A bend in the trail~
@@ -1873,6 +1891,7 @@ The trail meanders off into the forest...
 ~
 ~
 0 -1 3588
+R O 0 1598 1 1501
 E
 signature~
 The area to the east is populated with two distinct groups.
@@ -1918,6 +1937,16 @@ A bend in the trail
 ~
 ~
 0 -1 1501
+R M 0 1527 2 1502
+  R E 1 1504 2 16
+  R E 1 1505 2 11
+  R G 1 1542 2
+  R E 1 1543 2 3
+R M 0 1527 2 1502
+  R G 1 1542 2
+  R E 1 1543 2 3
+  R E 1 1504 2 16
+  R E 1 1505 2 11
 S
 #1503
 Breaks in the trees~
@@ -1998,6 +2027,10 @@ A storage room
 ~
 ~
 0 -1 1504
+R M 0 1504 2 1505
+  R G 1 1537 4
+R M 0 1532 2 1505
+  R E 1 1511 4 17
 S
 #1506
 A small lab~
@@ -2019,6 +2052,10 @@ A quiet trail
 ~
 ~
 0 -1 1503
+R M 0 1504 2 1506
+  R G 1 1537 4
+R O 0 1525 1 1506
+R O 0 1524 1 1506
 S
 #1507
 Gears galore~
@@ -2033,6 +2070,8 @@ The lab
 ~
 ~
 0 -1 1506
+R M 0 1532 2 1507
+  R E 1 1511 4 17
 S
 #1508
 Careful storage~
@@ -2047,6 +2086,8 @@ A aweful smell
 ~
 ~
 0 -1 1509
+R M 0 1503 2 1508
+  R E 1 1511 4 17
 S
 #1509
 Bubbling beakers~
@@ -2095,6 +2136,8 @@ A squat building
 ~
 ~
 0 -1 1509
+R M 0 1531 2 1510
+  R G 1 1537 4
 S
 #1511
 A strange garden~
@@ -2116,6 +2159,10 @@ The path begins
 ~
 ~
 0 -1 1510
+R M 0 1531 2 1511
+  R G 1 1537 4
+R M 0 1503 2 1511
+  R E 1 1511 4 17
 S
 #1512
 Cluttered storage~
@@ -2156,6 +2203,10 @@ A dank, dark place
 ~
 trapdoor trap~
 2055 1501 1515
+R M 0 1530 1 1513
+  R G 1 1501 1
+  R E 1 1536 2 20
+R D 0 1513 5 2
 E
 paintings~
 The paintings show displays of strange and fantastical inventions. One in
@@ -2222,6 +2273,10 @@ Back to the office
 ~
 ~
 0 -1 1513
+R M 0 1505 1 1514
+  R E 1 1508 1 1
+  R E 1 1509 1 3
+  R E 1 1535 1 16
 E
 construct~
 Smooth on the outside, the cracks and fissures running through its 
@@ -2281,6 +2336,10 @@ An ornate office
 ~
 trapdoor trap~
 3 -1 1513
+R M 0 1510 2 1515
+R M 0 1511 1 1515
+R D 0 1515 0 1
+R D 0 1515 4 1
 E
 wall~
 You see a crack in the wall here, almost as if it will open to your touch.
@@ -2305,6 +2364,7 @@ The cellar entrance
 ~
 ~
 0 -1 1515
+R M 0 1509 3 1516
 E
 disk~
 As you move towards the disk to examine it further, the disk seems
@@ -2327,6 +2387,7 @@ Back to the darkness of the main cellar
 ~
 ~
 0 -1 1515
+R M 0 1510 2 1517
 E
 stream~
 The stream is pretty small, but it looks too cold to swim.
@@ -2367,6 +2428,11 @@ D2
 ~
 ~
 2099211 -1 1515
+R M 0 1509 3 1518
+R M 0 1509 3 1518
+R O 0 1526 1 1518
+  R P 0 1527 1 1526
+R D 0 1518 2 1
 E
 powder~
 Dusty traces of some faint red powder can been seen on the walls. 
@@ -2389,6 +2455,9 @@ A dank cellar
 ~
 wall~
 1035 -1 1515
+R O 0 1528 1 1519
+  R P 0 1529 1 1528
+R D 0 1519 2 1
 E
 light~
 As you look towards the light that caught your eye, it disappears.
@@ -2433,6 +2502,10 @@ A quiet pathway
 ~
 ~
 0 -1 1502
+R M 0 1537 5 1520
+  R E 1 1539 5 17
+R M 0 1537 5 1520
+  R E 1 1539 5 17
 S
 #1521
 A thinning in the trees~
@@ -2462,6 +2535,10 @@ A small building
 ~
 ~
 0 -1 1522
+R M 0 1502 4 1521
+  R E 1 1515 4 8
+R M 0 1502 4 1521
+  R E 1 1515 4 8
 S
 #1522
 A small classroom~
@@ -2477,6 +2554,10 @@ A forest pathway
 ~
 ~
 0 -1 1521
+R M 0 1534 1 1522
+  R E 1 1536 2 20
+R M 0 1500 2 1522
+R M 0 1500 2 1522
 E
 table puzzles~
 There are several puzzles arrayed upon the table. They seem quite
@@ -2509,6 +2590,11 @@ A forest pathway
 ~
 ~
 0 -1 1521
+R M 0 1535 1 1523
+  R E 1 1503 1 16
+R M 0 1566 3 1523
+R M 0 1566 3 1523
+R M 0 1566 3 1523
 E
 gears joints springs~
 All of these items have a larger than life feel to them. Made of some
@@ -2546,6 +2632,10 @@ On to the road
 ~
 ~
 0 -1 1526
+R M 0 1538 4 1525
+  R E 1 1541 4 6
+R M 0 1538 4 1525
+  R E 1 1541 4 6
 S
 #1526
 A small cul-de-sac~
@@ -2603,6 +2693,9 @@ The road continues
 ~
 ~
 0 -1 1526
+R M 0 1536 3 1527
+  R E 1 1502 6 16
+R O 0 1530 1 1527
 S
 #1528
 Pandemonium~
@@ -2616,6 +2709,10 @@ Back to the road
 ~
 ~
 0 -1 1527
+R M 0 1538 4 1528
+  R E 1 1541 4 6
+R M 0 1538 4 1528
+  R E 1 1541 4 6
 S
 #1529
 Workshop~
@@ -2637,6 +2734,9 @@ A shimmering portal beckons to you
 ~
 trap floor trapdoor~
 3016715 -1 1585
+R M 0 1514 1 1529
+  R E 1 1538 1 12
+R D 0 1529 5 1
 E
 floor~
 As you scan about the room, your eyes alight on the floor. Careful
@@ -2699,6 +2799,10 @@ Onto the road
 ~
 ~
 0 -1 1532
+R M 0 1536 3 1531
+  R E 1 1502 6 16
+R M 0 1536 3 1531
+  R E 1 1502 6 16
 E
 bed shelves chair~
 All the furnishings here are basic in the extreme and look to have
@@ -2733,6 +2837,12 @@ To the west is a small, unkept home.
 ~
 ~
 0 -1 1531
+R M 0 1533 3 1532
+  R E 1 1502 6 16
+R M 0 1502 4 1532
+  R E 1 1515 4 8
+R M 0 1502 4 1532
+  R E 1 1515 4 8
 S
 #1533
 A small cul-de-sac~
@@ -2775,6 +2885,10 @@ On to the road
 ~
 ~
 0 -1 1533
+R M 0 1533 3 1534
+  R E 1 1502 6 16
+R M 0 1533 3 1534
+  R E 1 1502 6 16
 S
 #1535
 A sloven hut~
@@ -2789,6 +2903,10 @@ Onto the road
 ~
 ~
 0 -1 1532
+R M 0 1501 3 1535
+  R E 1 1540 3 13
+R M 0 1501 3 1535
+  R E 1 1540 3 13
 S
 #1536
 Light and color~
@@ -2804,6 +2922,8 @@ On to the road
 ~
 ~
 0 -1 1533
+R M 0 1501 3 1536
+  R E 1 1540 3 13
 E
 glass crystal~
 Almost everything in this room is made of glass or crystal. What is 
@@ -2857,6 +2977,8 @@ A bend in the trail
 ~
 ~
 0 -1 1538
+R M 0 1537 5 1537
+  R E 1 1539 5 17
 S
 #1538
 A thin trail~
@@ -2875,6 +2997,10 @@ A thin trail
 ~
 ~
 0 -1 1537
+R M 0 1537 5 1538
+  R E 1 1539 5 17
+R M 0 1537 5 1538
+  R E 1 1539 5 17
 S
 #1539
 The trail ends~
@@ -2917,6 +3043,10 @@ A thin trail through the trees
 ~
 ~
 0 -1 1539
+R M 0 1508 4 1540
+  R G 1 1512 2
+R M 0 1508 4 1540
+  R G 1 1512 2
 S
 #1541
 A field by the river~
@@ -2937,6 +3067,7 @@ Back towards to path
 ~
 ~
 0 -1 1540
+R M 0 1547 2 1541
 S
 #1542
 A sea of clover~
@@ -2980,6 +3111,10 @@ An overgrown field
 ~
 ~
 0 -1 1542
+R M 0 1508 4 1543
+  R G 1 1513 2
+R M 0 1508 4 1543
+  R G 1 1513 2
 S
 #1544
 The bottom of a small hill~
@@ -3031,6 +3166,7 @@ Back down the side of the hill
 ~
 ~
 0 -1 1545
+R M 0 1545 1 1546
 S
 #1547
 A bridge over the river~
@@ -3046,6 +3182,7 @@ Back down the side of the hill
 ~
 ~
 0 -1 1548
+R M 0 1546 1 1547
 S
 #1548
 The hillside~
@@ -3101,6 +3238,7 @@ The trees surround you
 ~
 ~
 0 -1 1551
+R M 0 1547 2 1550
 S
 #1551
 A darkened path~
@@ -3199,6 +3337,7 @@ Up to the cave entrance
 ~
 ~
 65536 -1 1554
+R M 0 1524 1 1555
 E
 shelves nicknacks piles~
 As your eyes scan over the posessions arrayed throughout the
@@ -3221,6 +3360,9 @@ A quiet home
 ~
 ~
 0 -1 1555
+R M 0 1529 1 1556
+R O 0 1531 1 1556
+  R P 0 1532 1 1531
 S
 #1557
 An abrupt end~
@@ -3364,6 +3506,11 @@ A dank passage
 ~
 ~
 0 -1 1568
+R M 0 1513 3 1563
+R M 0 1513 3 1563
+R M 0 1513 3 1563
+R M 0 1520 6 1563
+  R E 1 1597 1 17
 S
 #1564
 A dank passage~
@@ -3392,6 +3539,7 @@ A way out
 ~
 ~
 0 -1 1563
+R M 0 1520 6 1564
 S
 #1565
 Dust and decay~
@@ -3420,6 +3568,9 @@ A dank passage
 ~
 ~
 0 -1 1564
+R M 0 1526 1 1566
+  R G 1 1534 1
+R O 0 1533 2 1566
 > entry_prog 100~
 if race ($n) == half-ogre
 or race ($n) == half-orc
@@ -3471,6 +3622,7 @@ A way out
 ~
 ~
 0 -1 1563
+R M 0 1520 6 1568
 S
 #1569
 A home of bones~
@@ -3508,6 +3660,11 @@ The end of the tunnel
 ~
 ~
 0 -1 1572
+R M 0 1520 6 1570
+  R E 1 1597 1 17
+R M 0 1520 6 1570
+  R E 1 1597 1 17
+R M 0 1520 6 1570
 S
 #1571
 An empty space~
@@ -3566,6 +3723,7 @@ The beginnings of a passageway
 ~
 ~
 0 -1 1572
+R O 0 1573 1 1573
 S
 #1574
 Almost neat~
@@ -3599,6 +3757,16 @@ The beginnings of a passageway
 ~
 ~
 0 -1 1572
+R M 0 1548 5 1575
+  R E 1 1521 10 16
+R M 0 1548 5 1575
+  R E 1 1521 10 16
+R M 0 1548 5 1575
+  R E 1 1521 10 16
+R M 0 1548 5 1575
+  R E 1 1521 10 16
+R M 0 1548 5 1575
+  R E 1 1521 10 16
 S
 #1576
 The King's chamber~
@@ -3618,6 +3786,18 @@ D3
 ~
 throne~
 2098223 1500 1577
+R M 0 1519 1 1576
+  R G 1 1500 1
+  R E 1 1544 1 12
+  R E 1 1545 2 16
+R M 0 1518 2 1576
+  R E 1 1520 3 5
+  R E 1 1521 10 16
+R M 0 1518 2 1576
+  R E 1 1520 3 5
+  R E 1 1521 10 16
+R D 0 1576 2 1
+R D 0 1576 3 2
 E
 throne~
 There is a huge, stone throne here, blocking travel to the west.
@@ -3636,6 +3816,10 @@ The king's chamber
 ~
 throne door~
 35 -1 1576
+R M 0 1521 1 1577
+  R G 1 1523 2
+R O 0 1518 2 1577
+R D 0 1577 1 1
 S
 #1578
 An end to a dark path~
@@ -3698,6 +3882,16 @@ A precarious descent
 ~
 ~
 128 -1 1579
+R M 0 1516 2 1580
+  R E 1 1521 10 16
+  R E 1 1519 3 11
+  R E 1 1548 3 6
+  R G 1 1533 2
+R M 0 1516 2 1580
+  R E 1 1521 10 16
+  R E 1 1519 3 11
+  R E 1 1548 3 6
+  R G 1 1533 1516
 S
 #1581
 Strange echos~
@@ -3717,6 +3911,8 @@ The beginnings of a forest pathway
 ~
 ~
 0 -1 1578
+R M 0 1515 4 1581
+R M 0 1515 4 1581
 S
 #1582
 A darkened turn~
@@ -3785,6 +3981,9 @@ The passageway continues
 ~
 ~
 0 -1 1583
+R D 0 1584 1 1
+R M 0 1552 1 1584
+  R E 1 1521 1552 16
 E
 door~
 The door at first glance appears to be very fragile. Simply made of
@@ -3812,6 +4011,8 @@ A shimmering portal beckons to you
 ~
 floor trap door~
 3016715 -1 1529
+R D 0 1585 3 1
+R D 0 1585 5 1
 E
 rug~
 Strangely patterned, this rug depicts some sort of abstract scene
@@ -3834,6 +4035,7 @@ A passageway begins
 ~
 ~
 0 -1 1597
+R M 0 1551 2 1586
 S
 #1587
 A guard post~
@@ -3863,6 +4065,10 @@ The dank passage
 ~
 ~
 0 -1 1583
+R M 0 1549 4 1587
+R M 0 1549 4 1587
+R D 0 1587 0 1
+R D 0 1587 2 1
 E
 doors~
 The doors at first glance appear to be very fragile. Simply made of 
@@ -3899,6 +4105,10 @@ Another guard room
 ~
 ~
 0 -1 1587
+R M 0 1549 4 1588
+R M 0 1549 4 1588
+R D 0 1588 0 1
+R D 0 1588 2 1
 E
 door~
 The door at first glance appears to be very fragile. Simply made of
@@ -3925,6 +4135,7 @@ A guard room
 ~
 ~
 3 -1 1588
+R D 0 1589 2 1
 E
 scratchings~
 Looking carefully at the walls, you can barely make out some strange
@@ -3948,6 +4159,10 @@ A guard room
 ~
 ~
 3 -1 1588
+R M 0 1522 3 1590
+R M 0 1522 3 1590
+R M 0 1522 3 1590
+R D 0 1590 0 1
 S
 #1591
 A dark cell~
@@ -3963,6 +4178,8 @@ A dirty guard room
 ~
 ~
 3 -1 1587
+R M 0 1539 1 1591
+R D 0 1591 2 1
 S
 #1592
 A cluttered cell~
@@ -3977,6 +4194,11 @@ A dusty guard room
 ~
 ~
 3 -1 1587
+R M 0 1523 4 1592
+R M 0 1523 4 1592
+R M 0 1523 4 1592
+R M 0 1523 4 1592
+R D 0 1592 0 1
 S
 #1593
 A sharp end~
@@ -4028,6 +4250,8 @@ The passage continues
 ~
 ~
 0 -1 1597
+R M 0 1515 4 1594
+R M 0 1515 4 1594
 S
 #1595
 An assembly room~
@@ -4042,6 +4266,7 @@ A dank passageway
 ~
 ~
 0 -1 1594
+R M 0 1551 2 1595
 E
 boxes~
 The boxes are full of odd bits and pieces. Everything from gears and
@@ -4195,6 +4420,7 @@ A dank passageway
 ~
 ~
 0 -1 1597
+R M 0 1550 3 1598
 E
 beakers bottles~
 Caked, crusted, cracked, crazed, every one of these containers has
@@ -4235,6 +4461,8 @@ A dank passageway
 ~
 ~
 0 -1 1597
+R M 0 1550 3 1599
+R M 0 1550 3 1599
 E
 junk oddments stacks~
 Piled high about the room, these piles are a sad mix of poorly
@@ -4263,228 +4491,6 @@ offering support to them.
 ~
 S
 #0
-
-
-#RESETS
-M 0 1517 7 1500
-M 0 1517 7 1500
-M 0 1517 7 1500
-M 0 1517 7 1500
-M 0 1517 7 1500
-M 0 1517 7 1500
-M 0 1517 7 1500
-D 0 1500 0 1
-O 1 1598 1 1501
-M 0 1527 2 1502
-E 1 1504 2 16
-E 1 1505 2 11
-G 1 1542 2
-E 1 1543 2 3
-M 0 1527 2 1502
-G 1 1542 2
-E 1 1543 2 3
-E 1 1504 2 16
-E 1 1505 2 11
-M 0 1504 2 1505
-G 1 1537 4
-M 0 1532 2 1505
-E 1 1511 4 17
-M 0 1504 2 1506
-G 1 1537 4
-O 1 1525 1 1506
-O 1 1524 1 1506
-M 0 1532 2 1507
-E 1 1511 4 17
-M 0 1503 2 1508
-E 1 1511 4 17
-M 0 1531 2 1510
-G 1 1537 4
-M 0 1531 2 1511
-G 1 1537 4
-M 0 1503 2 1511
-E 1 1511 4 17
-M 0 1530 1 1513
-G 1 1501 1
-E 1 1536 2 20
-D 0 1513 5 2
-M 0 1505 1 1514
-E 1 1508 1 1
-E 1 1509 1 3
-E 1 1535 1 16
-M 0 1510 2 1515
-M 0 1511 1 1515
-D 0 1515 0 1
-D 0 1515 4 1
-M 0 1509 3 1516
-M 0 1510 2 1517
-M 0 1509 3 1518
-M 0 1509 3 1518
-O 1 1526 1 1518
-P 1 1527 1 1526
-D 0 1518 2 1
-O 1 1528 1 1519
-P 1 1529 1 1528
-D 0 1519 2 1
-M 0 1537 5 1520
-E 1 1539 5 17
-M 0 1537 5 1520
-E 1 1539 5 17
-M 0 1502 4 1521
-E 1 1515 4 8
-M 0 1502 4 1521
-E 1 1515 4 8
-M 0 1534 1 1522
-E 1 1536 2 20
-M 0 1535 1 1523
-E 1 1503 1 16
-M 0 1538 4 1525
-E 1 1541 4 6
-M 0 1538 4 1525
-E 1 1541 4 6
-M 0 1536 3 1527
-E 1 1502 6 16
-O 1 1530 1 1527
-M 0 1538 4 1528
-E 1 1541 4 6
-M 0 1538 4 1528
-E 1 1541 4 6
-M 0 1514 1 1529
-E 1 1538 1 12
-D 0 1529 5 1
-M 0 1536 3 1531
-E 1 1502 6 16
-M 0 1536 3 1531
-E 1 1502 6 16
-M 0 1533 3 1532
-E 1 1502 6 16
-M 0 1502 4 1532
-E 1 1515 4 8
-M 0 1502 4 1532
-E 1 1515 4 8
-M 0 1533 3 1534
-E 1 1502 6 16
-M 0 1533 3 1534
-E 1 1502 6 16
-M 0 1501 3 1535
-E 1 1540 3 13
-M 0 1501 3 1535
-E 1 1540 3 13
-M 0 1501 3 1536
-E 1 1540 3 13
-M 0 1537 5 1537
-E 1 1539 5 17
-M 0 1537 5 1538
-E 1 1539 5 17
-M 0 1537 5 1538
-E 1 1539 5 17
-M 0 1508 4 1540
-G 1 1512 2
-M 0 1508 4 1540
-G 1 1512 2
-M 0 1547 2 1541
-M 0 1508 4 1543
-G 1 1513 2
-M 0 1508 4 1543
-G 1 1513 2
-M 0 1545 1 1546
-M 0 1546 1 1547
-M 0 1547 2 1550
-M 0 1524 1 1555
-M 0 1529 1 1556
-O 1 1531 1 1556
-P 1 1532 1 1531
-M 0 1513 3 1563
-M 0 1513 3 1563
-M 0 1513 3 1563
-M 0 1520 6 1563
-E 1 1597 1 17
-M 0 1520 6 1564
-M 0 1526 1 1566
-G 1 1534 1
-O 1 1533 2 1566
-M 0 1520 6 1568
-M 0 1520 6 1570
-E 1 1597 1 17
-M 0 1520 6 1570
-E 1 1597 1 17
-M 0 1520 6 1570
-O 1 1573 1 1573
-M 0 1548 5 1575
-E 1 1521 10 16
-M 0 1548 5 1575
-E 1 1521 10 16
-M 0 1548 5 1575
-E 1 1521 10 16
-M 0 1548 5 1575
-E 1 1521 10 16
-M 0 1548 5 1575
-E 1 1521 10 16
-M 0 1519 1 1576
-G 1 1500 1
-E 1 1544 1 12
-E 1 1545 2 16
-M 0 1518 2 1576
-E 1 1520 3 5
-E 1 1521 10 16
-M 0 1518 2 1576
-E 1 1520 3 5
-E 1 1521 10 16
-D 0 1576 2 1
-D 0 1576 3 2
-M 0 1521 1 1577
-G 1 1523 2
-O 1 1518 2 1577
-D 0 1577 1 1
-M 0 1516 2 1580
-E 1 1521 10 16
-E 1 1519 3 11
-E 1 1548 3 6
-G 1 1533 2
-M 0 1516 2 1580
-E 1 1521 10 16
-E 1 1519 3 11
-E 1 1548 3 6
-G 1 1533 1516
-M 0 1515 4 1581
-M 0 1515 4 1581
-D 0 1584 1 1
-D 0 1585 3 1
-D 0 1585 5 1
-M 0 1551 2 1586
-M 0 1549 4 1587
-M 0 1549 4 1587
-D 0 1587 0 1
-D 0 1587 2 1
-M 0 1549 4 1588
-M 0 1549 4 1588
-D 0 1588 0 1
-D 0 1588 2 1
-D 0 1589 2 1
-M 0 1522 3 1590
-M 0 1522 3 1590
-M 0 1522 3 1590
-D 0 1590 0 1
-M 0 1539 1 1591
-D 0 1591 2 1
-M 0 1523 4 1592
-M 0 1523 4 1592
-M 0 1523 4 1592
-M 0 1523 4 1592
-D 0 1592 0 1
-M 0 1515 4 1594
-M 0 1515 4 1594
-M 0 1551 2 1595
-M 0 1550 3 1598
-M 0 1550 3 1599
-M 0 1550 3 1599
-M 0 1552 1 1584
-E 1 1521 1552 16
-M 0 1500 2 1522
-M 0 1500 2 1522
-M 0 1566 3 1523
-M 0 1566 3 1523
-M 0 1566 3 1523
-S
 
 
 #SHOPS

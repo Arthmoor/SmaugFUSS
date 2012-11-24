@@ -1,7 +1,7 @@
 #SYSTEM
 MudName	     (Name Not Set)~
-Highplayers    0
-Highplayertime ~
+Highplayers    2
+Highplayertime Fri Oct  1 13:54:25 2004~
 CheckImmHost   1
 Nameresolving  1
 Waitforauth    0
@@ -9,7 +9,6 @@ Readallmail    58
 Readmailfree   51
 Writemailfree  51
 Takeothersmail 58
-IMCMailVnum    0
 Muse           56
 Think          60
 Build          53
@@ -42,6 +41,7 @@ BanClassLevel  61
 MorphOpt       1
 PetSave	     1
 IdentTries     20
+Pkloot	     1
 End
 
 #END

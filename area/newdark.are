@@ -14,7 +14,7 @@ $
 #FLAGS
 1
 
-#ECONOMY 0 87824366
+#ECONOMY 0 78988646
 
 #CLIMATE 2 2 2
 
@@ -1145,7 +1145,7 @@ glowing blue potion~
 A glowing blue potion has been carelessly left here.~
 ~
 10 65 1
-22 -1 131 -1
+22 -1 -1 -1
 2 15000 1500
 'restore mana' 'restore mana' 'NONE'
 #21005
@@ -1400,7 +1400,7 @@ thief ring~
 a thief's ring~
 A ring which will bring good luck lies here.~
 ~
-9 1074479104 3
+9 737280 3
 3 3 0 0
 1 500 50
 A
@@ -2067,6 +2067,7 @@ The road to the south leads to Darkhaven Square.
 ~
 ~
 0 -1 21000
+R M 0 21044 1 21001
 > entry_prog 100~
 if isnpc($n)
 or isimmort($n)
@@ -2117,6 +2118,7 @@ A rather bland portion of Vertic Avenue lies to the south.
 ~
 ~
 0 -1 21002
+R M 0 21045 2 21003
 S
 #21004
 Intersection of Vertic Avenue and Justice Road~
@@ -2176,6 +2178,16 @@ The intersection of Vertic Avenue and Justice Road is to the west.
 ~
 ~
 0 -1 21004
+R M 0 21037 8 21005
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 S
 #21006
 Justice Road~
@@ -2286,6 +2298,7 @@ The road ranges to the south.
 ~
 ~
 0 -1 21011
+R M 0 21055 1 21010
 S
 #21011
 Hawk Street~
@@ -2503,6 +2516,16 @@ Law Avenue stretches westward as far as the eye can see.
 ~
 ~
 0 -1 21019
+R M 0 21037 8 21018
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 E
 plaque~
 The plaque reads: 'May you rest in peace, Uthar Darkbane.'
@@ -2640,6 +2663,16 @@ Law Avenue stretches westward.
 ~
 ~
 0 -1 21023
+R M 0 21037 8 21022
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
 E
 sign post signpost~
 North - Annir's Clothing
@@ -2879,6 +2912,16 @@ Falcon Road stretches southward.
 ~
 ~
 0 -1 21029
+R M 0 21037 8 21030
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 S
 #21031
 Falcon Road~
@@ -3074,6 +3117,16 @@ Horizon Road stretches to the west as far as the eye can see.
 ~
 ~
 0 -1 21037
+R M 0 21037 8 21038
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
 E
 sign post signpost~
 East  - Horizon Road
@@ -3176,6 +3229,16 @@ Horizon Road and Falcon Road cross to the west.
 ~
 ~
 0 -1 21028
+R M 0 21037 8 21041
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 E
 sign post signpost~
 East  - Horizon Road
@@ -3390,6 +3453,16 @@ More shops attract your attention to the west.
 ~
 ~
 0 -1 21046
+R M 0 21037 8 21047
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21069 23 16
+  R E 1 21067 28 0
 E
 sign post signpost~
 North - Wizard's Tent
@@ -3429,6 +3502,7 @@ The intersection of Vertic Avenue and Market Street lies to the west.
 ~
 ~
 0 -1 21043
+R M 0 21045 2 21048
 E
 sign post signpost~
 North - The Carnivore's Delight
@@ -3506,6 +3580,16 @@ More shops attract you in this direction.
 ~
 ~
 0 -1 21049
+R M 0 21037 8 21050
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 E
 sign post signpost~
 North - Dairy Products
@@ -3538,6 +3622,10 @@ The opening in the tent leads back out onto Market Street.
 ~
 ~
 0 -1 21045
+R M 0 21004 1 21051
+  R G 1 21005 3
+  R G 1 21006 2
+  R G 1 21007 1
 S
 #21052
 The Shining Emerald~
@@ -3558,6 +3646,7 @@ Darkhaven's courier lies to the east.
 ~
 ~
 0 -1 21053
+R M 0 21014 1 21052
 S
 #21053
 The Darkhaven Courier~
@@ -3589,6 +3678,8 @@ A dealer in fine jewelry has set up a shop to the west.
 ~
 ~
 0 -1 21052
+R M 0 21017 1 21053
+R O 0 21048 1 21053
 S
 #21054
 The Alchemist's~
@@ -3615,6 +3706,12 @@ A scribe's shop lies to the west.
 ~
 ~
 0 -1 21051
+R M 0 21003 1 21054
+  R G 1 21000 2
+  R G 1 21003 1
+  R G 1 21002 1
+  R G 1 21001 1
+  R G 1 21004 1
 S
 #21055
 The Wizard's Tent~
@@ -3636,6 +3733,11 @@ You can see the alchemist's tent.
 ~
 ~
 0 -1 21054
+R M 0 21001 1 21055
+  R G 1 35 3
+  R G 1 34 3
+  R G 1 21046 1
+  R G 1 21049 1
 S
 #21056
 Quills and Parchments~
@@ -3657,6 +3759,9 @@ The Darkhaven Courier is situated in the shop to the west.
 ~
 ~
 0 -1 21053
+R M 0 21011 1 21056
+  R G 1 36 8
+  R G 1 37 7
 S
 #21057
 The Butcher's Shop~
@@ -3676,6 +3781,10 @@ An opening in the tent allows you to return to Market Street.
 ~
 ~
 0 -1 21048
+R M 0 21018 1 21057
+  R G 1 21014 1
+  R G 1 21015 1
+  R G 1 21016 1
 S
 #21058
 The Blacksmith's Tent~
@@ -3694,6 +3803,7 @@ The armourer's shop lies to the east.
 ~
 ~
 0 -1 21059
+R M 0 21002 1 21058
 S
 #21059
 Armory~
@@ -3718,6 +3828,17 @@ The blacksmith's is to the west.
 ~
 ~
 0 -1 21058
+R M 0 21015 1 21059
+  R G 1 21057 17
+  R G 1 21058 30
+  R G 1 21059 30
+  R G 1 21060 30
+  R G 1 21061 30
+  R G 1 21062 30
+  R G 1 21063 30
+  R G 1 21064 26
+  R G 1 21065 9
+  R G 1 21066 16
 S
 #21060
 The Darkhaven Bakery~
@@ -3743,6 +3864,9 @@ The butchery lies to the west.
 ~
 ~
 0 -1 21057
+R M 0 21019 1 21060
+  R G 1 21020 2
+  R G 1 21021 1
 S
 #21061
 The Dairy Tent~
@@ -3763,6 +3887,10 @@ The Darkhaven Bakery is situated in the shop to the west.
 ~
 ~
 0 -1 21060
+R M 0 21020 1 21061
+  R G 1 21017 1
+  R G 1 21018 1
+  R G 1 21019 2
 S
 #21062
 Weaponry Shop~
@@ -3784,6 +3912,11 @@ The Solid Parry is situated to the west.
 ~
 ~
 0 -1 21059
+R M 0 21016 1 21062
+  R G 1 21068 9
+  R G 1 21069 23
+  R G 1 21081 1
+  R G 1 21082 1
 S
 #21063
 Thieves Alley~
@@ -3803,6 +3936,8 @@ Falcon Road lies to the west.
 ~
 ~
 0 -1 21025
+R M 0 21052 3 21063
+  R E 1 21055 3 1
 S
 #21064
 Thieves Alley~
@@ -3827,6 +3962,8 @@ The Thieves Alley continues in this direction.
 ~
 ~
 0 -1 21063
+R M 0 21052 3 21064
+  R E 1 21055 3 1
 S
 #21065
 Thieves Alley~
@@ -3846,6 +3983,8 @@ The Thieves Alley continues in this direction.
 ~
 ~
 0 -1 21064
+R M 0 21052 3 21065
+  R E 1 21055 3 1
 S
 #21066
 Annir's Clothing~
@@ -3861,6 +4000,12 @@ The door leads back out onto Law Avenue
 ~
 ~
 0 -1 21022
+R M 0 21021 1 21066
+  R G 1 21076 1
+  R G 1 21077 1
+  R G 1 21078 1
+  R G 1 21079 1
+  R G 1 21080 1
 S
 #21067
 Companions and Mounts~
@@ -3890,6 +4035,10 @@ The inn lies to the east.
 ~
 ~
 0 -1 21069
+R M 0 21013 1 21068
+  R G 1 21009 1
+  R G 1 21008 1
+  R G 1 21010 1
 S
 #21069
 The Darkhaven Inn~
@@ -3910,6 +4059,7 @@ The tavern lies to the west.
 ~
 ~
 0 -1 21068
+R M 0 21025 2 21069
 S
 #21071
 A Chamber Covered with Runes~
@@ -3973,6 +4123,20 @@ The gate leads outside of Darkhaven.
 ~
 gate~
 7 21073 21075
+R M 0 21068 1 21074
+  R E 1 21073 2 17
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 S
 #21075
 Outside the Southern Gate~
@@ -4006,6 +4170,22 @@ Into darkness...
 ~
 manhole~
 1035 -1 7030
+R M 0 21069 1 21075
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21073 2 17
+  R E 1 21064 26 15
+  R E 1 21065 9 11
 E
 foliage~
 Searching thoroughly, you discover a manhole hidden beneath one of the
@@ -4125,6 +4305,21 @@ The precarious bridge lies to the south.
 ~
 ~
 0 -1 21296
+R M 0 21061 4 21081
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 15
+  R E 1 21065 9 11
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21064 26 14
+  R E 1 21069 23 16
 S
 #21082
 On a Trail Rounding Darkhaven~
@@ -4245,6 +4440,22 @@ Into the forest...
 ~
 ~
 0 -1 6000
+R M 0 21063 1 21087
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21064 26 15
+  R E 1 21065 9 11
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21070 2 17
 S
 #21088
 Inside the Western Gate~
@@ -4262,6 +4473,20 @@ The road continues deep into the forests of Haon Dor.
 ~
 gate~
 7 21070 21087
+R M 0 21062 1 21088
+  R E 1 21070 2 17
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21069 23 16
+  R E 1 21067 28 0
 S
 #21089
 On a Trail North of the Western Gate~
@@ -4386,6 +4611,21 @@ The road continues to the south.
 ~
 ~
 0 -1 21093
+R M 0 21061 4 21094
+  R E 1 21067 28 0
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21064 26 15
+  R E 1 21065 9 11
+  R E 1 21066 16 20
+  R E 1 21069 23 16
 S
 #21095
 On a Trail Rounding Darkhaven~
@@ -4485,6 +4725,22 @@ The road begins to the west.
 ~
 ~
 0 -1 21098
+R M 0 21065 1 21099
+  R E 1 21071 2 17
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21065 9 11
+  R E 1 21064 26 15
 S
 #21100
 Inside the Northern Gate~
@@ -4502,6 +4758,20 @@ Two roads meet to the south.
 ~
 ~
 0 -1 21004
+R M 0 21064 1 21100
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21071 2 17
 S
 #21101
 On a Trail East of the Northern Gate~
@@ -4596,6 +4866,21 @@ The path stretches westward.
 ~
 ~
 0 -1 21105
+R M 0 21061 4 21106
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21064 26 15
+  R E 1 21065 9 11
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 S
 #21107
 On a Trail Rounding Darkhaven~
@@ -4719,6 +5004,22 @@ The gate leads into Darkhaven.
 ~
 gate~
 7 21072 21113
+R M 0 21067 1 21112
+  R E 1 21072 2 17
+  R E 1 21065 9 11
+  R E 1 21064 26 14
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 15
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
 S
 #21113
 Inside the Eastern Gate~
@@ -4736,6 +5037,20 @@ Two roads cross to the west.
 ~
 ~
 0 -1 21012
+R M 0 21066 1 21113
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21069 23 16
+  R E 1 21072 2 17
 S
 #21114
 On a Trail South of the East Gate~
@@ -4843,6 +5158,21 @@ The road continues to the west.
 ~
 ~
 0 -1 21120
+R M 0 21061 4 21119
+  R E 1 21067 28 0
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21064 26 15
+  R E 1 21065 9 11
+  R E 1 21066 16 20
+  R E 1 21069 23 16
 S
 #21120
 On a Trail Rounding Darkhaven~
@@ -5023,6 +5353,7 @@ The corridor leads back to the main hall.
 ~
 ~
 0 -1 21127
+R O 0 21037 1 21128
 S
 #21129
 The Chamber of Meditation~
@@ -5040,6 +5371,8 @@ The corridor leads back to the main hall.
 ~
 ~
 0 -1 21127
+R M 0 21028 1 21129
+  R G 1 34 3
 S
 #21131
 On a Stone Stairway~
@@ -5202,6 +5535,7 @@ The corridor leads back out to the main hall.
 ~
 ~
 0 -1 21135
+R O 0 21041 1 21136
 S
 #21137
 The Chamber of Discipline~
@@ -5217,6 +5551,7 @@ A corridor leads back to the main hall.
 ~
 ~
 0 -1 21135
+R M 0 21006 1 21137
 S
 #21138
 A Room Covered with Blood~
@@ -5235,6 +5570,7 @@ The corridor leads back to the main hall.
 ~
 ~
 0 -1 21135
+R M 0 21007 1 21138
 S
 #21139
 Hoard of the Undead~
@@ -5306,6 +5642,7 @@ The main hall of the guild is to the west.
 ~
 ~
 0 -1 21141
+R M 0 21023 1 21142
 S
 #21144
 Chamber of the Loot~
@@ -5339,6 +5676,7 @@ The Chamber of the Loot is to the west.
 ~
 ~
 0 -1 21144
+R O 0 21040 1 21145
 S
 #21146
 A Plain Hallway~
@@ -5363,6 +5701,8 @@ A plain hallway is to the west.
 ~
 ~
 0 -1 21155
+R M 0 21025 2 21146
+R D 0 21146 2 1
 S
 #21147
 A Luxurious Room~
@@ -5378,6 +5718,7 @@ A hallway in the inn is behind the door.
 ~
 ~
 3 -1 21146
+R D 0 21147 0 1
 S
 #21148
 A Plain Hallway~
@@ -5408,6 +5749,8 @@ The hallway stretches westward.
 ~
 ~
 0 -1 21146
+R D 0 21148 0 1
+R D 0 21148 2 1
 S
 #21149
 A Plain Room~
@@ -5423,6 +5766,7 @@ A hallway of the inn is to the north.
 ~
 ~
 3 -1 21148
+R D 0 21149 0 1
 S
 #21150
 A Plain Room~
@@ -5438,6 +5782,7 @@ The hallway lies behind the door.
 ~
 ~
 3 -1 21148
+R D 0 21150 2 1
 S
 #21151
 A Plain Hallway~
@@ -5468,6 +5813,9 @@ A hallway leads back to the entrance hall.
 ~
 ~
 0 -1 21148
+R D 0 21151 0 1
+R D 0 21151 1 1
+R D 0 21151 2 1
 S
 #21152
 A Plain Room~
@@ -5483,6 +5831,7 @@ Beyond the door is a long hallway.
 ~
 ~
 3 -1 21151
+R D 0 21152 2 1
 S
 #21153
 A Plain Room~
@@ -5498,6 +5847,7 @@ A hallway lies behind the door.
 ~
 ~
 3 -1 21151
+R D 0 21153 0 1
 S
 #21154
 A Luxurious Room~
@@ -5514,6 +5864,7 @@ The door leads back out into the hallway.
 ~
 ~
 3 -1 21151
+R D 0 21154 3 1
 S
 #21155
 A Plain Hallway~
@@ -5544,6 +5895,8 @@ The corridor continues to the west.
 ~
 ~
 0 -1 21159
+R D 0 21155 0 1
+R D 0 21155 2 1
 S
 #21156
 A Plain Room~
@@ -5559,6 +5912,7 @@ A hallway lies to the south.
 ~
 ~
 3 -1 21155
+R D 0 21156 2 1
 S
 #21157
 A Plain Room~
@@ -5574,6 +5928,7 @@ The inn's hallway is behind this door.
 ~
 ~
 3 -1 21155
+R D 0 21157 0 1
 S
 #21158
 A Plain Room~
@@ -5589,6 +5944,7 @@ Behind the door is a lengthy corridor.
 ~
 ~
 3 -1 21159
+R D 0 21158 0 1
 S
 #21159
 A Plain Hallway~
@@ -5619,6 +5975,9 @@ Behind this door is a luxurious room.
 ~
 ~
 3 -1 21161
+R D 0 21159 0 1
+R D 0 21159 2 1
+R D 0 21159 3 1
 S
 #21160
 A Plain Room~
@@ -5634,6 +5993,7 @@ The door leads back out into the hallway.
 ~
 ~
 3 -1 21159
+R D 0 21160 2 1
 S
 #21161
 A Luxurious Room~
@@ -5650,6 +6010,7 @@ The door leads back out into the hallway.
 ~
 ~
 3 -1 21159
+R D 0 21161 1 1
 S
 #21162
 A Shadowy Room Covered With Blood~
@@ -5832,6 +6193,7 @@ The corridor leads back to the eastern hall.
 ~
 ~
 0 -1 21170
+R M 0 21012 1 21171
 S
 #21172
 The Chamber of the Scriptures~
@@ -5847,6 +6209,7 @@ The corridor leads back to the eastern hall.
 ~
 ~
 0 -1 21170
+R O 0 21039 1 21172
 S
 #21174
 Public Notices~
@@ -5861,6 +6224,7 @@ The cathedral altar is to the east.
 ~
 ~
 1 -1 21194
+R O 0 21042 1 21174
 S
 #21176
 Before the Altar to Evil~
@@ -6148,6 +6512,7 @@ A corridor leads back to the guild's main hall.
 ~
 ~
 0 -1 21187
+R M 0 21034 1 21190
 S
 #21191
 A Room of Silence~
@@ -6163,6 +6528,7 @@ A corridor leads back to the main hall of the guild.
 ~
 ~
 0 -1 21187
+R O 0 21038 1 21191
 S
 #21192
 Eastern Donation Room~
@@ -6177,6 +6543,7 @@ A carpeted walkway leads back to the pews.
 ~
 ~
 0 -1 21182
+R O 0 21112 1 21192
 S
 #21193
 Western Donation Room~
@@ -6191,6 +6558,7 @@ A carpeted walkway leads back to the pews.
 ~
 ~
 0 -1 21182
+R O 0 21111 1 21193
 S
 #21194
 The Cathedral Altar~
@@ -6209,6 +6577,7 @@ The public board room of Darkhaven lies to the west.
 ~
 ~
 0 -1 21174
+R M 0 21000 1 21194
 S
 #21200
 A Forested Path~
@@ -6401,6 +6770,7 @@ The path leads back to the main clearing.
 ~
 ~
 0 -1 21208
+R O 0 21035 1 21212
 S
 #21213
 Tracking the Prey~
@@ -6417,6 +6787,7 @@ The main clearing is at the end of this path.
 ~
 ~
 0 -1 21208
+R M 0 21031 1 21213
 S
 #21233
 Stone Tunnel~
@@ -6494,6 +6865,7 @@ The main hall of the warriors' guild is west of here.
 ~
 ~
 0 -1 21236
+R M 0 21035 1 21237
 S
 #21239
 A Silent Corner in the Hall~
@@ -6512,6 +6884,7 @@ A large storage room lies to the west.
 ~
 ~
 0 -1 21240
+R O 0 21034 1 21239
 S
 #21240
 Armor Dump~
@@ -6554,6 +6927,9 @@ To the south you can see the Darkhaven River.
 ~
 ~
 0 -1 21297
+R M 0 21009 1 21275
+  R G 1 21025 1
+  R G 1 21024 1
 S
 #21280
 Entrance to the Academy~
@@ -6701,6 +7077,10 @@ The entrance to the Darkhaven Academy is to the west.
 ~
 ~
 0 -1 21280
+R M 0 21029 1 21295
+  R G 1 10316 2
+  R G 1 10317 2
+  R G 1 10314 2
 S
 #21296
 Crossing the Precarious Bridge~
@@ -6925,6 +7305,17 @@ The battlements continue to the south.
 ~
 ~
 0 -1 21307
+R M 0 21071 8 21308
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21309
 Atop the Battlements~
@@ -6974,6 +7365,16 @@ The battlements continue to the west.
 ~
 ~
 0 -1 21311
+R M 0 21071 8 21312
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21314
 Atop the Battlements~
@@ -7032,6 +7433,18 @@ The battlements extend down the eastern wall of Darkhaven.
 ~
 ~
 0 -1 21315
+R M 0 21071 8 21316
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21318
 Atop the Battlements~
@@ -7051,6 +7464,17 @@ The battlements extend down the southern wall of Darkhaven.
 ~
 ~
 0 -1 21319
+R M 0 21071 8 21318
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21319
 Atop the Battlements~
@@ -7138,6 +7562,17 @@ The battlements continue to the north.
 ~
 ~
 0 -1 21323
+R M 0 21071 8 21324
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21066 16 20
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21325
 Atop the Battlements~
@@ -7173,6 +7608,17 @@ The battlements extend westward.
 ~
 ~
 0 -1 21327
+R M 0 21071 8 21326
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21327
 Atop the Battlements~
@@ -7226,6 +7672,17 @@ The battlements continue to the west.
 ~
 ~
 0 -1 21328
+R M 0 21071 8 21329
+  R E 1 21056 28 1
+  R E 1 21057 17 3
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21330
 Atop the Battlements~
@@ -7271,6 +7728,17 @@ The battlements continue to the north.
 ~
 ~
 0 -1 21332
+R M 0 21071 8 21333
+  R E 1 21056 28 1
+  R E 1 21058 30 5
+  R E 1 21059 30 6
+  R E 1 21060 30 7
+  R E 1 21061 30 8
+  R E 1 21062 30 10
+  R E 1 21063 30 9
+  R E 1 21064 26 14
+  R E 1 21067 28 0
+  R E 1 21068 9 16
 S
 #21335
 The Western Hall~
@@ -7285,6 +7753,10 @@ The lights of Horizon Street glimmer to the north.
 ~
 ~
 0 -1 21039
+R M 0 21010 1 21335
+  R G 1 21022 1
+  R G 1 21019 2
+  R G 1 21020 2
 S
 #21337
 In the Air~
@@ -7337,11 +7809,18 @@ Law Avenue lies to the south.
 ~
 ~
 0 -1 21017
+R M 0 21022 1 21339
 S
 #21340
 Petshop Stables~
 ~
 0 3147780 1
+R M 0 21056 1 21340
+R M 0 21057 1 21340
+R M 0 21058 1 21340
+R M 0 21059 1 21340
+R M 0 21060 1 21340
+R M 0 21070 1 21340
 S
 #21353
 A Corridor in the Abandoned Mansion~
@@ -7543,6 +8022,7 @@ This way leads back to the main hall of the Guild of Augurers.
 ~
 ~
 0 -1 21430
+R O 0 21435 1 21433
 S
 #21434
 The Chamber of Bounty~
@@ -7660,6 +8140,7 @@ D8
 ~
 ~
 0 -1 21437
+R M 0 21431 1 21439
 S
 #21499
 Final room~
@@ -7667,491 +8148,6 @@ Final room~
 0 1075838980 1
 S
 #0
-
-
-#RESETS
-M 0 21044 1 21001
-M 0 21045 2 21003
-M 0 21037 8 21005
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21055 1 21010
-M 0 21037 8 21018
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21037 8 21022
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-M 0 21037 8 21030
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21037 8 21038
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-M 0 21037 8 21041
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21037 8 21047
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21069 23 16
-E 1 21067 28 0
-M 0 21045 2 21048
-M 0 21037 8 21050
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21004 1 21051
-G 1 21005 3
-G 1 21006 2
-G 1 21007 1
-M 0 21014 1 21052
-M 0 21017 1 21053
-O 1 21048 1 21053
-M 0 21003 1 21054
-G 1 21000 2
-G 1 21003 1
-G 1 21002 1
-G 1 21001 1
-G 1 21004 1
-M 0 21001 1 21055
-G 1 35 3
-G 1 34 3
-G 1 21046 1
-G 1 21049 1
-M 0 21011 1 21056
-G 1 36 8
-G 1 37 7
-M 0 21018 1 21057
-G 1 21014 1
-G 1 21015 1
-G 1 21016 1
-M 0 21002 1 21058
-M 0 21015 1 21059
-G 1 21057 17
-G 1 21058 30
-G 1 21059 30
-G 1 21060 30
-G 1 21061 30
-G 1 21062 30
-G 1 21063 30
-G 1 21064 26
-G 1 21065 9
-G 1 21066 16
-M 0 21019 1 21060
-G 1 21020 2
-G 1 21021 1
-M 0 21020 1 21061
-G 1 21017 1
-G 1 21018 1
-G 1 21019 2
-M 0 21016 1 21062
-G 1 21068 9
-G 1 21069 23
-G 1 21081 1
-G 1 21082 1
-M 0 21052 3 21063
-E 1 21055 3 1
-M 0 21052 3 21064
-E 1 21055 3 1
-M 0 21052 3 21065
-E 1 21055 3 1
-M 0 21021 1 21066
-G 1 21076 1
-G 1 21077 1
-G 1 21078 1
-G 1 21079 1
-G 1 21080 1
-M 0 21013 1 21068
-G 1 21009 1
-G 1 21008 1
-G 1 21010 1
-M 0 21025 2 21069
-M 0 21068 1 21074
-E 1 21073 2 17
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21069 1 21075
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21073 2 17
-E 1 21064 26 15
-E 1 21065 9 11
-M 0 21061 4 21081
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 15
-E 1 21065 9 11
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21064 26 14
-E 1 21069 23 16
-M 0 21063 1 21087
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21064 26 15
-E 1 21065 9 11
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21070 2 17
-M 0 21062 1 21088
-E 1 21070 2 17
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21069 23 16
-E 1 21067 28 0
-M 0 21061 4 21094
-E 1 21067 28 0
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21064 26 15
-E 1 21065 9 11
-E 1 21066 16 20
-E 1 21069 23 16
-M 0 21065 1 21099
-E 1 21071 2 17
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21065 9 11
-E 1 21064 26 15
-M 0 21064 1 21100
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21071 2 17
-M 0 21061 4 21106
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21064 26 15
-E 1 21065 9 11
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21067 1 21112
-E 1 21072 2 17
-E 1 21065 9 11
-E 1 21064 26 14
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 15
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-M 0 21066 1 21113
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21069 23 16
-E 1 21072 2 17
-M 0 21061 4 21119
-E 1 21067 28 0
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21064 26 15
-E 1 21065 9 11
-E 1 21066 16 20
-E 1 21069 23 16
-O 1 21037 1 21128
-M 0 21028 1 21129
-G 1 34 3
-O 1 21041 1 21136
-M 0 21006 1 21137
-M 0 21007 1 21138
-M 0 21023 1 21142
-O 1 21040 1 21145
-M 0 21025 2 21146
-D 0 21146 2 1
-D 0 21147 0 1
-D 0 21148 0 1
-D 0 21148 2 1
-D 0 21149 0 1
-D 0 21150 2 1
-D 0 21151 0 1
-D 0 21151 1 1
-D 0 21151 2 1
-D 0 21152 2 1
-D 0 21153 0 1
-D 0 21154 3 1
-D 0 21155 0 1
-D 0 21155 2 1
-D 0 21156 2 1
-D 0 21157 0 1
-D 0 21158 0 1
-D 0 21159 0 1
-D 0 21159 2 1
-D 0 21159 3 1
-D 0 21160 2 1
-D 0 21161 1 1
-M 0 21012 1 21171
-O 1 21039 1 21172
-M 0 21034 1 21190
-O 1 21038 1 21191
-O 0 21111 1 21193
-O 0 21112 1 21192
-M 0 21000 1 21194
-O 1 21035 1 21212
-M 0 21031 1 21213
-M 0 21035 1 21237
-O 1 21034 1 21239
-M 0 21009 1 21275
-G 1 21025 1
-G 1 21024 1
-M 0 21029 1 21295
-G 1 10316 2
-G 1 10317 2
-G 1 10314 2
-M 0 21071 8 21308
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21312
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21316
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21318
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21324
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21066 16 20
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21326
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21329
-E 1 21056 28 1
-E 1 21057 17 3
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21071 8 21333
-E 1 21056 28 1
-E 1 21058 30 5
-E 1 21059 30 6
-E 1 21060 30 7
-E 1 21061 30 8
-E 1 21062 30 10
-E 1 21063 30 9
-E 1 21064 26 14
-E 1 21067 28 0
-E 1 21068 9 16
-M 0 21010 1 21335
-G 1 21022 1
-G 1 21019 2
-G 1 21020 2
-M 0 21022 1 21339
-M 0 21056 1 21340
-M 0 21057 1 21340
-M 0 21058 1 21340
-M 0 21059 1 21340
-M 0 21060 1 21340
-M 0 21070 1 21340
-M 0 21431 1 21439
-O 0 21042 1 21174
-O 0 21435 1 21433
-S
 
 
 #SHOPS

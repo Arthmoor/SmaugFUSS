@@ -1,0 +1,55 @@
+SmaugFUSS 1.6 Readme
+--------------------
+
+A few quick notes about this version.
+
+Why the 1.6?
+------------
+
+Semi-arbitraty decision to reflect the major changes to the reset system to fix the problems with the nested put resets. All of the stock areas in this package have been updated to support the new format and as such will not be backward compatible with any Smaug mud that does not employ the reset fix. Since there has been some confusion of late about version numbers because of some 1.5 packages out there, I chose 1.6 to clearly differentiate this one.
+
+Areas written for Smaug 1.02a, 1.4, and 1.4a should load without a problem and remain compatible with these versions so long as they are not saved using 1.6.
+
+Also as a result of these changes, areas saved using the 1.6 code will not be compatible with various area editors out there, such as Orb or Nick Gammon's Area Editor program. I have no control over whether they will plan to update their programs or not, so please don't ask me to do this :)
+
+
+Installing and using the code
+-----------------------------
+
+It should be fairly a straightforward process to install the mud.
+Using either Cygwin or a *nix flavor, unpack the tgz file (which you probably already have if you're reading this).
+
+1. Compiling
+
+On a Linux based system:
+
+Change to the dist/src directory and type: make
+
+On Cygwin:
+
+Change to the dist/src directory.
+Open the Makefile.
+Uncomment the Cygwin definition and save the file.
+Type make
+
+On FreeBSD:
+
+Change to the dist/src directory and type: gmake
+BSD compiling is probably not compatible with pmake.
+
+2. Starting up
+
+After the compile finishes, open the starup file and change the port number to the one you plan to use.
+Then type: nohup ./startup &
+
+This will launch the mud in the background, telling it to ignore when you disconnect from your session.
+
+3. First immortal
+
+Log in to the mud, and use the following user/pass:
+
+admin/admin
+
+Once you're in, you can either use the pcrename command to change this character's name to yours ( and then change the password! ) or you can use it to advance another character who logs in afterward. If you choose to advance a different character, delete the admin player for security purposes.
+
+4. Start having some fun! :)

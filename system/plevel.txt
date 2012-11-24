@@ -1,0 +1,2 @@
+&GSamson         ->&w2   &G-&w  17   &G   Rvnum: 10300   Pixie Druid
+&GBalzor         ->&w2   &G-&w  17   &G   Rvnum: 10300   Pixie Druid

@@ -1,6 +1,8 @@
 Name        Warrior~
 Class       3
-Attrprime   1
+AttrPrime   1
+AttrSecond   0
+AttrDeficient   0
 Weapon      10313
 Guild       3022
 Skilladept  85
@@ -10,6 +12,9 @@ Hpmin       11
 Hpmax       15
 Mana        0
 Expbase     1150
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'aggressive style' 1 95
 Skill 'aid' 6 80
 Skill 'bash' 30 85

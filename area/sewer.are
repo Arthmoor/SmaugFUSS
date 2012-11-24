@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Diku~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 7253836
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #7000
@@ -26,7 +29,7 @@ flesh for breakfast and is strongly intent on having the same for dinner.
 65 32768 -250 C
 12 9 -2 12d12+120 2d6+5
 100 4000
-5 5 0
+106 106 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 1 1 1
@@ -43,7 +46,7 @@ cruel creature doesn't seem appealing.
 97 557056 -500 C
 1 20 4 5d2+6 1d5+0
 0 20
-4 4 0
+104 104 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 76 3 0 0 512 512 1
@@ -57,7 +60,7 @@ The huge hungry-looking sewer rat sits here.
 33 512 -1000 C
 5 16 5 5d5+50 2d4+0
 0 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 54 3 0 0 512 512 1
@@ -71,7 +74,7 @@ The small hairy spider.
 33 32768 -700 C
 1 20 3 1d12+8 1d4+0
 0 100
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 63 3 0 0 256 256 1
@@ -85,7 +88,7 @@ The giant mean-looking earth beetle crawls towards you.
 1 512 -300 C
 8 13 3 8d8+80 2d5+1
 0 2000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 83 3 0 0 256 256 1
@@ -99,7 +102,7 @@ The giant maggot crawls toward you.
 1 512 300 C
 3 17 9 2d5+35 1d7+0
 0 350
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 83 3 0 0 256 256 1
@@ -113,7 +116,7 @@ The snake slithers towards you.
 33 512 -500 C
 5 16 7 4d4+40 1d9+0
 0 500
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1024 1024 1
@@ -128,7 +131,7 @@ The evil wanderer is very thin.  He is dressed in a grey cloak.
 1073741957 512 -1000 C
 10 11 2 10d10+100 2d6+1
 300 2500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -145,7 +148,7 @@ teeth gleaming yellow.
 65 520 -780 C
 11 10 -1 11d11+110 2d6+2
 10 3500
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -161,7 +164,7 @@ glowing eyes. The lower body is in an orange shading.
 133 32776 -830 C
 12 9 2 2d26+148 2d7+1
 0 5000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 8192 8192 0
@@ -178,7 +181,7 @@ at you with such a glint in the eyes that reminds you of immense hunger.
 161 512 -900 C
 10 11 0 10d10+100 2d6+2
 25 3000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 1 1 1
@@ -195,7 +198,7 @@ flesh for breakfast and is strongly intent on having the same for dinner.
 97 32768 -250 S
 12 9 -2 12d12+120 2d6+5
 1000 8000
-5 5 0
+106 106 0
 #7040
 fierce red dragon~
 a fierce red dragon~
@@ -208,7 +211,7 @@ it moves closer.  'Can one NEVER sleep in peace ... Hsss'.
 39 520 -1000 C
 33 -10 -10 500d2+2500 3d4+30
 5000 450000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 31 3 0 0 67584 2049 3
@@ -237,7 +240,7 @@ and it has small sharp horns.  It hates beauty.
 33 512 -800 C
 14 7 1 1d8+172 2d8+1
 0 18000
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -255,7 +258,7 @@ leads to some evil creatures'.
 3 512 700 C
 12 9 2 1d18+148 2d7+1
 50 13500
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 1 8192 0
@@ -272,7 +275,7 @@ glowing pale green.
 1073741861 520 -250 C
 13 11 0 1d12+160 2d7+2
 0 16000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 79 3 0 0 1024 1024 1
@@ -290,7 +293,7 @@ mind has been burned out.
 33 32768 -500 S
 5 16 6 3d5+57 2d4+0
 0 1000
-8 8 0
+112 112 0
 #7045
 jones cruncher ettin~
 Jones~
@@ -303,7 +306,7 @@ filthy and moth eaten. Jones really stinks...
 37 512 -480 S
 10 11 2 10d10+100 2d6+4
 60 4000
-5 5 1
+106 106 1
 #7046
 herald mouse killer ettin~
 Herald~
@@ -316,7 +319,7 @@ hangs dead mouses and rats. He does not smell good.
 5 512 200 S
 6 14 4 6d6+60 1d8+0
 40 1000
-5 5 1
+106 106 1
 #7200
 master mind mindflayer~
 the master mindflayer~
@@ -329,7 +332,7 @@ moment now. In the middle of its head are four tentacles with sharp points.
 37 520 -800 S
 14 7 0 14d14+140 3d4+4
 1000 18000
-8 8 0
+112 112 0
 #7201
 senior mind mindflayer~
 the senior mindflayer~
@@ -342,7 +345,7 @@ tentacles with very sharp points.
 37 520 -600 S
 8 13 2 8d8+80 2d4+3
 400 3000
-8 8 0
+112 112 0
 #7202
 junior mind mindflayer~
 the junior mindflayer~
@@ -355,7 +358,7 @@ center of its head.
 37 520 -350 S
 6 15 4 6d6+60 1d4+3
 200 1500
-8 8 0
+112 112 0
 #7203
 wererat rat were~
 the ugly wererat~
@@ -367,7 +370,7 @@ that it is standing.
 101 512 -700 S
 6 15 3 4d6+69 2d4+2
 50 1200
-8 8 0
+112 112 0
 #7204
 rat gigantic~
 the gigantic rat~
@@ -379,7 +382,7 @@ the size of your head looking very nasty.
 35 512 -800 S
 12 9 -2 12d12+120 2d6+2
 2513 10000
-4 8 1
+104 112 1
 #7205
 jay~
 a newly created jay~
@@ -389,7 +392,7 @@ Some god abandoned a newly created jay here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #7206
 bird~
 a newly created bird~
@@ -399,7 +402,7 @@ Some god abandoned a newly created bird here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #0
 
 
@@ -483,8 +486,9 @@ an neon blue potion~
 A neon blue potion stands on the floor.~
 ~
 10 64 1
-14 28 29 42
+14 -1 -1 -1
 4 100 10
+'heal' 'invis' 'word of recall'
 #7205
 key black~
 a black key~
@@ -518,8 +522,9 @@ a basilisk's eye~
 Rolling on the ground before you is the eye of a foul beast.~
 ~
 4 84 16385
-20 8 8 15
+20 8 8 -1
 3 3256 325
+'cure critical'
 #7208
 stick small light~
 a small stick~
@@ -557,7 +562,7 @@ There is a huge treasure here, looking very valuable.~
 ~
 20 0 1
 15000 0 0 0
-0 15000 1500
+1 15000 1500
 E
 treasure~
 This looks like a whole lot of coins.
@@ -713,7 +718,7 @@ A huge treasure is lying here, looking very valuable.~
 ~
 20 0 1
 25000 0 0 0
-0 25000 2500
+1 25000 2500
 E
 treasure~
 Looks like a LOT of coins.
@@ -752,8 +757,9 @@ the Red DragonOrb~
 A large reddish orb draws your eye.~
 ~
 4 592 16385
-12 7 7 36
+12 7 7 -1
 8 10000 1000
+'sanctuary'
 A
 3 2
 A
@@ -949,6 +955,8 @@ bottom anyway. There are bars that function as a ladder on the side.
 ~
 ~
 0 -1 7102
+R M 0 7001 12 7004
+R M 0 7001 12 7004
 S
 #7005
 The muddy sewer~
@@ -1404,6 +1412,7 @@ Another intersection lies to the south. It leads west and south.
 ~
 ~
 0 -1 7026
+R M 0 7001 12 7025
 S
 #7026
 A junction~
@@ -1547,6 +1556,7 @@ West. You can just make out a triple junction leading north and west.
 ~
 ~
 0 -1 7018
+R M 0 7002 3 7031
 S
 #7034
 A bend in the sewer pipe~
@@ -1613,6 +1623,8 @@ You can just make out a smaller room with a chair.
 ~
 ~
 0 -1 7050
+R M 0 7003 8 7037
+R M 0 7003 8 7037
 S
 #7038
 The three way junction~
@@ -1646,6 +1658,9 @@ To the north you see a pipe junction.
 ~
 ~
 0 -1 7038
+R M 0 7003 8 7039
+R M 0 7003 8 7039
+R M 0 7003 8 7039
 S
 #7041
 The Shaft~
@@ -1665,6 +1680,7 @@ direction.
 ~
 ~
 0 -1 7123
+R M 0 7001 12 7041
 E
 ladder~
 Firmly set into the wall of the shaft it's impossible to even rock, is your
@@ -1799,6 +1815,7 @@ and west.
 ~
 ~
 0 -1 7044
+R M 0 7002 3 7049
 S
 #7050
 The small room~
@@ -1816,6 +1833,7 @@ You can see a room with a lot of light in it. You can't make out any details.
 ~
 ~
 0 -1 7051
+R M 0 7003 8 7050
 E
 chair~
 This chair is made of marble, but the fact that it is worn and attached to the
@@ -2286,6 +2304,7 @@ East. You see nothing of interest.
 ~
 ~
 0 -1 7103
+R M 0 7006 5 7101
 E
 mud~
 You never saw such disgusting matter before, it nearly makes you puke.
@@ -2311,6 +2330,8 @@ D5
 ~
 trapdoor~
 1 -1 7400
+R M 0 7004 3 7102
+R M 0 7006 5 7102
 E
 ladder~
 This is funny enough a wooden ladder and, after closer inspection, you
@@ -2337,6 +2358,8 @@ apart from in you direction.
 ~
 ~
 0 -1 7101
+R M 0 7000 3 7103
+R M 0 7000 3 7103
 E
 mud~
 You never saw such disgusting matter before, it nearly makes you puke.
@@ -2363,6 +2386,8 @@ West. There's a room with a ladder leading up.
 ~
 ~
 0 -1 7102
+R M 0 7002 7 7104
+R M 0 7006 5 7104
 S
 #7105
 Down the old well~
@@ -2568,6 +2593,8 @@ D3
 ~
 ~
 0 -1 7104
+R M 0 7005 7 7112
+R M 0 7005 7 7112
 S
 #7113
 The narrow ledge going east to west~
@@ -2651,6 +2678,9 @@ D5
 ~
 secret trapdoor entrance~
 3 -1 7280
+R D 1 7116 5 1
+R D 0 7116 5 1
+R D 1 7116 5 1
 E
 ground ledge rock~
 The ground here seems a little different from all the other ledges along the
@@ -2777,6 +2807,7 @@ D3
 ~
 ~
 0 -1 7112
+R M 0 7005 7 7122
 E
 wall~
 There is a crack here that looks like it has been made recently.
@@ -2860,6 +2891,7 @@ You look back through the opening into the inner lair.
 ~
 door stone~
 1 7205 7201
+R O 0 7204 6 7200
 E
 door stone~
 This is a heavy black stone door it looks very solid.
@@ -2885,6 +2917,12 @@ You see the treasury.
 ~
 door stone~
 7 7205 7200
+R D 0 7201 3 2
+R D 0 7201 2 1
+R M 0 7200 1 7201
+  R E 1 7200 4 16
+  R E 1 7203 4 3
+  R G 1 7205 7200
 S
 #7202
 The Lair~
@@ -2908,6 +2946,7 @@ You see another part of the lair.
 ~
 ~
 0 -1 7203
+R D 0 7202 0 1
 E
 skull skulls bones decay~
 On all the skulls you notice that there is a three inch hole in the 
@@ -2943,6 +2982,8 @@ You see another part of the lair.
 ~
 ~
 0 -1 7204
+R M 0 7201 1 7203
+  R E 1 7201 4 16
 E
 skull skulls bones decay~
 On all the skulls you notice that there is a three inch hole in the 
@@ -3008,6 +3049,8 @@ You see another part of the lair.
 ~
 ~
 0 -1 7202
+R M 0 7202 2 7205
+  R E 1 7202 8 16
 E
 skull skulls bones decay~
 On all the skulls you notice that there is a three inch hole in the 
@@ -3043,6 +3086,7 @@ You see another part of the lair.
 ~
 ~
 0 -1 7203
+R O 0 7206 4 7206
 E
 bones decay~
 All the bones are broken and old.
@@ -3072,6 +3116,8 @@ You see another part of the lair.
 ~
 ~
 1 -1 7204
+R M 0 7202 2 7207
+  R E 1 7202 8 16
 E
 skull skulls bones decay~
 On all the skulls you notice that there is a three inch hole in the 
@@ -3103,6 +3149,7 @@ You see a crawlway.
 ~
 ~
 0 -1 7209
+R D 0 7208 0 1
 E
 slime~
 The slime is slimy and uninteresting.
@@ -3193,6 +3240,8 @@ You can see the drain continuing south.
 ~
 ~
 0 -1 7212
+R M 0 7203 10 7213
+  R E 1 7211 16 16
 S
 #7214
 The drain end.~
@@ -3205,6 +3254,8 @@ You see the sewer drain.
 ~
 ~
 0 -1 7213
+R M 0 7203 10 7214
+  R E 1 7211 16 16
 S
 #7215
 The half-wet drain.~
@@ -3222,6 +3273,8 @@ To the south you see a sewer drain filled with water.
 ~
 ~
 0 -1 7216
+R M 0 7203 10 7215
+  R E 1 7211 16 16
 E
 water~
 The water is dirty but it looks like you would be able to swim in it.
@@ -3267,6 +3320,9 @@ You see a drain running to the west.
 ~
 ~
 0 -1 7219
+R M 0 7203 10 7217
+  R G 1 7208 20
+  R E 1 7211 16 16
 E
 water~
 The water is dirty but it looks like you would be able to swim in it.
@@ -3302,6 +3358,9 @@ You see another boring sewer drain.
 ~
 ~
 0 -1 7220
+R M 0 7203 10 7219
+  R E 1 7209 4 8
+  R E 1 7211 16 16
 S
 #7220
 A boring drain.~
@@ -3340,6 +3399,9 @@ You can see a sewer line.
 ~
 ~
 0 -1 7129
+R M 0 7203 10 7221
+  R G 1 7208 20
+  R E 1 7211 16 16
 S
 #7222
 The sewer drain.~
@@ -3376,6 +3438,9 @@ You see a sewer drain.
 ~
 ~
 0 -1 7222
+R M 0 7203 10 7223
+  R E 1 7209 4 8
+  R E 1 7211 16 16
 S
 #7224
 The sewer junction~
@@ -3412,6 +3477,8 @@ You see a sewer drain.
 ~
 ~
 0 -1 7224
+R M 0 7203 10 7225
+  R E 1 7211 16 16
 S
 #7229
 The strange sewer~
@@ -3504,6 +3571,12 @@ You see a sewer.
 ~
 ~
 0 -1 7232
+R M 0 7203 10 7233
+  R G 1 7208 20
+  R E 1 7211 16 16
+R M 0 7203 10 7233
+  R E 1 7209 4 8
+  R E 1 7211 16 16
 S
 #7234
 The rat's lair~
@@ -3516,6 +3589,7 @@ You see the sewer system that way.
 ~
 ~
 0 -1 7233
+R M 0 7204 1 7234
 S
 #7235
 Floating in a void~
@@ -3559,6 +3633,10 @@ D4
 ~
 secret door~
 3 -1 7116
+R D 1 7280 4 1
+R D 0 7280 4 1
+R M 0 7000 8 7280
+R D 1 7280 4 1
 E
 altar~
 This altar are very special. Faces are smiling from it. There
@@ -3586,6 +3664,8 @@ D2
 ~
 small round door~
 1 -1 7280
+R M 0 7000 8 7281
+R M 0 7000 8 7281
 E
 small round door~
 The door is completely round without a keyhole.
@@ -3680,6 +3760,9 @@ To dark to tell.
 ~
 door iron~
 1 -1 7286
+R M 0 7002 5 7285
+  R E 1 7190 10 2
+R M 0 7002 5 7285
 E
 skeletons~
 When you look at the skeletons, you can see that they once had been in great 
@@ -3710,6 +3793,8 @@ To dark to tell.
 ~
 ~
 0 -1 7283
+R M 0 7000 8 7286
+R M 0 7013 3 7286
 S
 #7301
 The Entrance to the Realm of silence~
@@ -3792,6 +3877,7 @@ To the south tunnel continuing.
 ~
 ~
 0 -1 7400
+R M 0 7008 4 7401
 S
 #7402
 Cave room~
@@ -3834,6 +3920,7 @@ You can see some light to the west.
 ~
 ~
 0 -1 7402
+R M 0 7013 3 7403
 E
 mud~
 When you examine the mud, you notice small worms crawling
@@ -3861,6 +3948,7 @@ D3
 ~
 ~
 0 -1 7403
+R D 0 7404 2 1
 E
 flat round stone~
 The stone looks very uninteresting. BUT as you are
@@ -3887,6 +3975,8 @@ You see a grey block.
 ~
 grey block~
 3 -1 7406
+R D 0 7405 2 1
+R D 0 7405 0 1
 E
 socket~
 The socket looks like the work of a dwarf. It is VERY beautiful.
@@ -3913,6 +4003,8 @@ D3
 ~
 ~
 0 -1 7407
+R D 0 7406 0 1
+R M 0 7044 6 7406
 S
 #7407
 Tunnel~
@@ -4031,6 +4123,7 @@ D3
 ~
 ~
 0 -1 7413
+R M 0 7013 3 7412
 S
 #7413
 The spongy room~
@@ -4082,6 +4175,7 @@ D3
 ~
 ~
 0 -1 7414
+R D 0 7415 0 1
 E
 primitive picture~
 You see some persons dancing around a huge sun. The
@@ -4103,6 +4197,7 @@ huge moon.
 ~
 door picture sun moon~
 3 -1 7415
+R D 0 7416 2 1
 S
 #7417
 The square lair~
@@ -4151,6 +4246,7 @@ another part of the lair.
 ~
 ~
 0 -1 7419
+R D 0 7418 1 1
 E
 sign wall~
 The sign says 'Gods of War I call you, my sword is by my side,
@@ -4179,6 +4275,7 @@ another part of the lair.
 ~
 ~
 0 -1 7420
+R M 0 7045 1 7419
 E
 sign~
 The sign says 'I'm wandering around in a everlasting tale,
@@ -4237,6 +4334,7 @@ You can see a wooden door.
 ~
 wooden door~
 3 -1 7418
+R D 0 7421 3 1
 S
 #7422
 North tunnel~
@@ -4258,6 +4356,7 @@ You can see a cave entrance.
 ~
 ~
 0 -1 7436
+R M 0 7007 3 7422
 S
 #7423
 The L-shaped room.~
@@ -4273,6 +4372,7 @@ D2
 ~
 ~
 0 -1 7422
+R M 0 7011 3 7423
 S
 #7424
 The Circular hall.~
@@ -4290,6 +4390,8 @@ you see a room far away.
 ~
 ~
 0 -1 7423
+R D 0 7424 1 1
+R M 0 7046 1 7424
 E
 head heads~
 When you study the faces of the heads you see that it
@@ -4330,6 +4432,7 @@ description!
 ~
 door~
 3 -1 7424
+R D 0 7425 3 1
 S
 #7426
 The crossing~
@@ -4397,6 +4500,16 @@ You can see nothing but darkness.
 ~
 ~
 0 -1 7427
+R M 0 7040 1 7428
+  R E 1 7304 99 5
+  R E 1 7305 99 7
+  R E 1 7306 99 9
+  R E 1 7307 99 6
+  R E 1 7308 99 11
+  R E 1 7309 99 8
+  R E 1 7310 99 10
+  R E 1 7216 99 16
+  R E 1 7303 99 17
 S
 #7429
 The burned room~
@@ -4413,6 +4526,7 @@ D3
 ~
 ~
 0 -1 7430
+R M 0 7010 2 7429
 E
 writing~
 The writing says 'DANGER!!!'
@@ -4527,6 +4641,7 @@ D2
 ~
 ~
 0 -1 7436
+R M 0 7042 2 7435
 E
 bones bone~
 it looks like bones of a human.
@@ -4610,6 +4725,9 @@ D2
 ~
 ~
 0 -1 7440
+R M 0 7043 3 7439
+  R G 1 7207 1
+R O 0 7300 8 7439
 E
 hay~
 The hay is very dirty. The smell of it makes you feel sick.
@@ -4703,6 +4821,7 @@ To dark to tell, but you can feel something nearby.
 ~
 ~
 0 -1 7445
+R M 0 7041 2 7444
 S
 #7445
 The pool~
@@ -4726,123 +4845,6 @@ D3
 0 -1 7444
 S
 #0
-
-
-#RESETS
-M 0 7001 12 7041
-M 0 7001 12 7025
-M 0 7001 12 7004
-M 0 7001 12 7004
-M 0 7002 3 7049
-M 0 7002 3 7031
-M 0 7003 8 7039
-M 0 7003 8 7039
-M 0 7003 8 7039
-M 0 7003 8 7037
-M 0 7003 8 7037
-M 0 7003 8 7050
-M 0 7004 3 7102
-M 0 7005 7 7112
-M 0 7005 7 7112
-M 0 7005 7 7122
-M 0 7002 7 7104
-M 0 7000 3 7103
-M 0 7000 3 7103
-M 0 7006 5 7102
-M 0 7006 5 7104
-M 0 7006 5 7101
-D 1 7116 5 1
-D 1 7280 4 1
-D 0 7201 3 2
-D 0 7201 2 1
-D 0 7202 0 1
-D 0 7208 0 1
-M 0 7200 1 7201
-E 1 7200 4 16
-E 1 7203 4 3
-G 1 7205 7200
-O 0 7204 6 7200
-M 0 7201 1 7203
-E 1 7201 4 16
-M 0 7202 2 7205
-E 1 7202 8 16
-M 0 7202 2 7207
-E 1 7202 8 16
-O 0 7206 4 7206
-M 0 7203 10 7214
-E 1 7211 16 16
-M 0 7203 10 7213
-E 1 7211 16 16
-M 0 7203 10 7215
-E 1 7211 16 16
-M 0 7203 10 7217
-G 1 7208 20
-E 1 7211 16 16
-M 0 7203 10 7219
-E 1 7209 4 8
-E 1 7211 16 16
-M 0 7203 10 7221
-G 1 7208 20
-E 1 7211 16 16
-M 0 7203 10 7223
-E 1 7209 4 8
-E 1 7211 16 16
-M 0 7203 10 7225
-E 1 7211 16 16
-M 0 7203 10 7233
-G 1 7208 20
-E 1 7211 16 16
-M 0 7203 10 7233
-E 1 7209 4 8
-E 1 7211 16 16
-M 0 7204 1 7234
-D 0 7280 4 1
-D 0 7116 5 1
-M 0 7002 5 7285
-E 1 7190 10 2
-M 0 7002 5 7285
-M 0 7000 8 7286
-M 0 7013 3 7286
-M 0 7000 8 7281
-M 0 7000 8 7281
-M 0 7000 8 7280
-D 1 7116 5 1
-D 1 7280 4 1
-D 0 7415 0 1
-D 0 7416 2 1
-D 0 7418 1 1
-D 0 7421 3 1
-D 0 7424 1 1
-D 0 7425 3 1
-D 0 7405 2 1
-D 0 7406 0 1
-D 0 7404 2 1
-D 0 7405 0 1
-M 0 7040 1 7428
-E 1 7304 99 5
-E 1 7305 99 7
-E 1 7306 99 9
-E 1 7307 99 6
-E 1 7308 99 11
-E 1 7309 99 8
-E 1 7310 99 10
-E 1 7216 99 16
-E 1 7303 99 17
-M 0 7041 2 7444
-M 0 7042 2 7435
-M 0 7043 3 7439
-G 1 7207 1
-O 0 7300 8 7439
-M 0 7044 6 7406
-M 0 7045 1 7419
-M 0 7046 1 7424
-M 0 7010 2 7429
-M 0 7013 3 7403
-M 0 7013 3 7412
-M 0 7011 3 7423
-M 0 7007 3 7422
-M 0 7008 4 7401
-S
 
 
 #SHOPS

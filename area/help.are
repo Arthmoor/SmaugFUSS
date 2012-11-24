@@ -22,6 +22,90 @@ This increases the users' fortitude making him/her a tougher opponent
 in battle.
 ~
 
+56 FOR~
+Syntax:  for (argument) (command)
+Syntax:  for (argument) (command) (target)
+
+For allows an immortal to perform a command at or even on a large
+number of targets.  The arguments include:  all, mobs, gods.
+
+Example:  for gods gl, you will 'glance' in the room of every god
+who is online (include link-dead)
+
+You can also perform an action on the argument target.
+Example:  for mobs poke #, you will perform the 'poke' social on
+every mob in the game.
+
+'For' does not override private flags.
+~
+
+51 BOARDS~
+Syntax:  boards
+
+This command displays statistics on all boards in the game.  Example:
+
+imm.brd  Vnum: 1200 Read: 50 Post: 51 Rmv: 55 Max: 50 Posts: 1 Type: 0
+
+The first column lists the board's filename (imm.brd)
+Vnum   - object vnum to which the board is attached (object vnum must
+         be present to read the board, allowing a board to be placed in
+         one or many places by simply placing that object where needed)
+Read   - minimum level required to read that board
+Post   - minumum level required to post to that board
+Remove - minumum level required to remove notes not addressed to 'All'
+Max    - maximum number of posts the board is set to hold
+Posts  - the current number of posts on the board
+Type   - 0 = note board         1 = mail board
+
+
+See Also:  BSTAT  BSET  MAKEBOARD
+~
+
+56 BSET~
+Syntax:   bset (board filename) (command) (argument)
+Example:  bset immortal.brd vnum 1200
+
+BSET is used to set fields governing an individual board's operation.
+
+Filename - filename to store the board's information (set first)
+Vnum     - object vnum assigned to the board (see 'help boards')
+Read     - the mininum level required to read the board
+Post     - the minimum level required to post to the board
+Remove   - the minumum level required to remove notes from the board
+           NOTE: notes addressed to 'all' can be removed by anyone
+Maxpost  - maximum number of posts the board can hold
+Filename - filename to store the board's information
+Type     - 0 = note board         1 = mail board
+
+Board groups:  (example:  bset druid.brd read_group guild of druids)
+read_group    - group that may read that board, regardless of level
+post_group    - group that may post to that board, regardless of level
+extra_readers - char. who may read the board regardless of their level
+extra_removers- char. who may remove notes from this board regardless
+                  of their level or membership in a reader_group
+
+See Also: BOARDS  MAKEBOARD  BSET
+~
+
+56 BSTAT~
+Syntax:  bstat (board filename)
+
+BSTAT is used to display the fields of an individual board.
+
+(see 'help bset' for an explanation of each field)
+
+See Also:  BSET  BOARDS  MAKEBOARD
+~
+
+56 MAKEBOARD~
+Syntax:  makeboard (board filename)
+Example: makeboard newboard.brd
+
+Used to create a board file, which can then be defined using 'bset'.
+
+See Also:  BSET  BSTAT  BOARDS
+~
+
 56 ''IMM AUTH' 'IMM AUTHORIZE'~
 Associated help files: authorize
  
@@ -134,7 +218,8 @@ work together to effect an estimable estrapade.
 ~
 
 1 'ACID BLAST' 'BURNING HANDS' 'COLOUR SPRAY' FIREBALL 'LIGHTNING BOLT'
-  'MAGIC MISSILE' 'SHOCKING GRASP'~
+
+  'MAGIC MISSILE' 'SHOCKING GRASP'~
 These are all attack spells and should not be used against another player
 unless both you and the other player are listed under 'who deadly' and are
 within the legal pkill level range.
@@ -1463,7 +1548,6 @@ remove until then
 21341 - member.brd - ?? - delete
 1226 - law.brd - ??? - delete
 1231 - ban.brd - ban board - change to floating and delete
-21497 - imc.brd - do we need this? if not, delete
 0 - arcaneind.brd - screwup? delete
 15532 - extravote.brd - useless - delete
 21229 - voting4.brd - do we need 4 vote boards?
@@ -2388,7 +2472,6 @@ Fields: save - saves the control panel settings
         guild_advisor - name of the Advisor to Guilds
         saveflag - flags/actions on which to save a pfile (drop, give, get,
                    receive, auction, zap, death, auction, auto, password)
-        imc_vnum - vnum for imc board
         ban_site_level -  level able to ban sites
         ban_class_level - level able to ban classes
         ban_race_level -  level able to ban races
@@ -2586,8 +2669,8 @@ rules, 'help imm'.  Visit note boards at 1200, 1213, and 1214 regularly.
  | Dragons (tm), AD&&D (tm) and Forgotten Realms (tm); also Steve Jackson   |
  | and Ian Livingstone for their Fighting Fantasy (tm) games and books.    |
  |                                                                         |
- | The DIKU Mud team for their contributions to the Internet world of MUDS,|
- | and the MERC Mud team for their work and development towards DikuMud.   |
+ | DIKU: Hans Staerfeldt, Tom Madsen, Katja Nyboe,                         |
+ | Michael Seifert ( Seifert@Dikumud.com ) and Sebastian Hammer.           |
  |                                                                         |
  | And a great many thanks to all the gods, avatars and wonderful players  |
  | of Realms of Despair, as without them this mud could not be what it is. | 
@@ -2643,7 +2726,6 @@ Fields: save - saves the control panel settings
         guild_advisor - name of the Advisor to Guilds
         saveflag - flags/actions on which to save a pfile (drop, give, get,
                    receive, auction, zap, death, auction, auto, password)
-        imc_vnum - vnum for imc board
  
 ~
 
@@ -4868,11 +4950,14 @@ resides in a chamber which prevents the usage of magic...
          /     |      |  |      |   \____/    \_____/     ***************
         / 
 
+SMAUG 1.6 FUSS changes by Samson. Other bugfixes and changes provided by
+various members of the SMAUG community. Their contributions are greatly
+appreciated.
 SMAUG 1.4 written by Thoric (Derek Snider) with Altrag, Blodkai, Haus, Narn,
 Scryn, Swordbearer, Tricops, Gorog, Rennard, Grishnakh, Fireblade and Nivek.
-
- Original MERC 2.1 code by Hatchet, Furey, and Kahn.  Original DikuMUD code by:
-  Hans Staerfeldt, Katja Nyboe, Tom Madsen, Michael Seifert && Sebastian Hammer
+Original MERC 2.1 code by Hatchet, Furey, and Kahn.
+Original DikuMUD code by:
+Hans Staerfeldt, Katja Nyboe, Tom Madsen, Michael Seifert && Sebastian Hammer
 
 Enter your character's name, or type new: ~
 
@@ -6238,12 +6323,13 @@ SEE ALSO: mpedit, opedit, rpedit, ifchecks.
 52 'IFCHECK ISPASSAGE'~
 &r*-------------------------------------------------------------------*
 
-            &GEXAMPLE:     &cif ispassage($n) == 6
+            &GEXAMPLE:     &cif ispassage($n) == northeast
                          'There is a passage leading northeast.
 
         &GDESCRIPTION:     &cThe ISPASSAGE(dir) ifcheck is used to
                          determine if there is an exit in the 
-                         specified direction. (HELP DOORDIRS)
+                         specified direction. (HELP EXITS)
+                         Do NOT use doordirs. Use the exit name.
 
  &r*-------------------------------------------------------------------*
 
@@ -7141,24 +7227,6 @@ Ignore none will set you to ignoring no one.
 Syntax: c 'ill fortune' <victim>
  
 Ill Fortune reduces the victim's luck by three.
-~
-
-2 IMC~
-IMC, or Intermud chat, is a means of talking with people across
-different muds by networking many muds to one hub server.
-
-For more information on Intermud chat, try:
-RBEEP RTELL RREPLY RWHO RQUERY RCHANNELS IMCLIST
- 
-To post to the imc.board..go to the Darkhaven Courier and look at the
-sign for more information.
-~
-
-2 IMCLIST~
-Syntax: imclist
-Imclist will show a list of all muds connected to IMC.
-(Note: "muds" beginning with hub are just hub connectors, and not
-actual muds.)
 ~
 
 51 IMM~
@@ -8951,6 +9019,52 @@ For.-+== =================[]===HORIZON=ST==== ==+-X-   10 Scrolls
    Graveyard      Bridge    Marina-Coral Depths    S   22 Tailor
  
 NOTES: Archive second floor, all south.  Oracle second floor, all south, east.
+~
+
+51 MAPOUT~
+Syntax: mapout <write/stat/clear/show/create>
+
+mapout write: create a map in edit buffer.
+mapout stat: get information about a written, but not yet created map.
+mapout clear: clear a written, but not yet created map.
+mapout show: show a written, but not yet created map.
+mapout create: turn a written map into rooms in your assigned room vnum 
+range.
+
+Example of a map:
+[I]-[C]
+
+This would create two rooms, the first would have the sector type inside 
+while the second would have the sector type city. They would be linked east
+and west by a normal exit.
+
+[Letter to use] [Sector type given to room]
+      I         SECT_INSIDE
+      C         SECT_CITY
+      f         SECT_FIELD
+      F         SECT_FOREST
+      H         SECT_HILLS
+      M         SECT_MOUNTAIN
+      s         SECT_WATER_SWIM
+      S         SECT_WATER_NOSWIM
+      A         SECT_AIR
+      D         SECT_DESERT
+      U         SECT_DUNNO
+      O         SECT_OCEANFLOOR
+      u         SECT_UNDERGROUND
+      U         SECT_UNDERWATER
+      L         SECT_LAVA
+      W         SECT_SWAMP
+    [ELSE]      SECT_DUNNO
+
+[Exits to use] [Direction it gives]
+      ^        UP or DOWN
+     = :       Used in all directions except UP and DOWN
+                 Makes a closed door in the direction its used in.
+      /        NORTHEAST or SOUTHWEST
+      \        NORTHWEST or SOUTHEAST
+      |        NORTH or SOUTH
+      -        EAST or WEST
 ~
 
 53 MCREATE OCREATE~
@@ -11067,10 +11181,6 @@ accessed by its vnum.
 See OPEDIT, TRIGGER, OPTRIGGERS, OPCOMMANDS, IFCHECKS, IFCHECKS2 VARIABLES
 ~
 
-62 ORANGE~
-This function is under construction.
-~
-
 0 ORDER~
 Syntax: order <character> command
 Syntax: order all command
@@ -11342,41 +11452,63 @@ High scores
 ~
 
 0 PCOLORS 'PROMPT COLORS'~
-The foreground special character is:  &&
-Tokens for && are:
-  &&x  - Black                     &&r  - Red (blood)
-  &&g  - Green                     &&O  - Orange (brown)
-  &&b  - Dark Blue                 &&p  - Purple
-  &&c  - Cyan                      &&w  - Gray (default color)
-  &&z  - Dark Grey                 &&R  - Light Red
-  &&G  - Light Green               &&Y  - Yellow
-  &&B  - Blue                      &&P  - Pink
-  &&C  - Light Blue                &&W  - White
- 
-The background special character is:  ^^
-Tokens for ^^ are:
-  ^^x(z)  - Black                  ^^r(R)  - Red
-  ^^g(G)  - Green                  ^^O(Y)  - Orange
-  ^^b(B)  - Blue                   ^^p(P)  - Purple
-  ^^c(C)  - Cyan                   ^^w(W)  - Grey
-The tokens in brackets are the same colors, but cause the foreground color
-to flash.
- 
-Note: If setting both foreground and background colors. The foreground must
-      precede the background color. Also, the last color setting in your
-      prompt will wash over into the text you type. So, if you want a set
-      of colors for your typed text, include that at the end of your prompt
-      set.
+The following are the tags used for adding color in your text.
+
+Foreground text tag: &&
+Tokens for foreground text are:
+
+&&x - Black           &&r - &rDark Red&D  &&g - &gDark Green&D
+&&O - &OOrange (brown)&D  &&b - &bDark Blue&D &&p - &pPurple&D
+&&c - &cCyan&D            &&w - &wGrey&D      &&z - &zDark Grey&D
+&&R - &RRed&D             &&G - &GGreen&D     &&Y - &YYellow&D
+&&B - &BBlue&D            &&P - &PPink&D      &&C - &CLight Blue&D
+&&W - &WWhite&D
+&&v or &&V - &vReverse the colors.&D
+&&u or &&U - &uUnderline the text.&D
+&&i or &&I - &iItalicize the text.&D
+&&s or &&S - &sStrikeover text.&D
+&&D - Resets to custom color for whatever is being displayed.
+&&d - Resets to terminal default color.
+
+Blinking foreground text tag: }}
+Tokens for blinking text are:
+
+}}x - Black           }}r - }rDark Red&D  }}g - }gDark Green&D
+}}O - }OOrange (brown)&D  }}b - }bDark Blue&D }}p - }pPurple&D
+}}c - }cCyan&D            }}w - }wGrey&D      }}z - }zDark Grey&D
+}}R - }RRed&D             }}G - }GGreen&D     }}Y - }YYellow&D
+}}B - }BBlue&D            }}P - }PPink&D      }}C - }CLight Blue&D
+}}W - }WWhite&D
+
+When putting color in something, please try to remember to close your
+colors with a &&D tag so that anyone viewing it won't have to deal with
+color bleeding all over the place. The same holds for italic or underlined
+text as well.
+
+The &&d tag should only be used when absolutely necessary.
+
+Background color tag: ^^
+Tokens for background color are:
+
+^^x - Black         ^^r - Red           ^^g - Green
+^^O - Orange        ^^b - Blue          ^^p - Purple
+^^c - Cyan          ^^w - Grey
+
+If setting both foreground and background colors. The foreground must
+be used before the background color. Also, the last color setting in your
+prompt will wash over into the text you type. So, if you want a set
+of colors for your typed text, include that at the end of your prompt set.
  
 Example (assuming current h.p.'s of 43 and mana of 23): 
  
-Prompt &&Y^^b<%h/&&x^^r%m>&&w^^x =   <43/23> 
-                               {A }{B}{C              }
+Prompt &&Y^^b<%h/&&x^^r%m>&&w^^x = <43/23>
+        {A}     {B}       {C}
+
 A) Yellow with blue background.
-B) Black with red background.
+B) Black with dark red background.
 C) Light Grey with black background.
  
-See also: HELP PROMPT
+See also: PROMPT, ANSI&D
 ~
 
 55 PCRENAME~
@@ -12286,37 +12418,6 @@ honest to themselves and their fellow members.
 For more information, see HELP RB INDUCTION, HELP RB EFF, and HELP RB MAPPING
 ~
 
-2 RBEEP~
-Syntax: rbeep <player>@<mud>
-This will send a remote beep to a player on another mud, as well as
-a message that you@RoD beeped them.
-~
-
-2 RCHANNELS~
-Syntax: rchannels
-        rchannels +/-<channel>
-Rchannels alone will give you a list of current remote channels that
-you have, and using rchannels with + or - followed by the channel name
-will toggle that channel on or off.
-~
-
-51 RCHAT~
-Syntax: rchat <message>
-
-Rchat will send a message across the IMC network to all players.
-
-At this time &Conly immortals&G (on this mud) are able to send rchat messages.
-Currently there is no plan to change this policy.
- 
-&CTo turn rchat &WOFF&C type &Wrchan -rchat&G
- 
-~
-
-57 RCODE~
-Syntax: rcode <message>
-Sends a message to all who can see rcode.
-~
-
 1 'REALM OF WORSHIP'~
 Recommended level range: 0 - 60
 
@@ -12864,11 +12965,6 @@ deadly poisons and evil curses.
 You have the right to remain silent or to hit the off button at any time.
 ~
 
-54 RIMM~
-Syntax: rimm <message>
-Sends a message to all imms on IMC.
-~
-
 0 RIP~
 Syntax: rip <on/off>
 
@@ -13055,28 +13151,6 @@ a room remotely).
 See RPEDIT, TRIGGER, RPTRIGGERS, RPCOMMANDS, IFCHECKS, IFCHECKS2, VARIABLES
 ~
 
-2 RQUERY~
-Syntax: rquery <mud> <command>
- 
-Commands:
- 
-Help: lists rquery commands
-Who: lists players on mud
-Info: displays information for mud
-List: shows mud list (i.e. imclist)
-~
-
-2 RREPLY~
-Syntax: rreply <message>
-Rreply will send <message> to the last player to send you an rtell.
-~
-
-2 RTELL~
-Syntax: rtell <player>@<mud> <message>
-Rtell will send a remote tell to a player at another mud (assuming
-they're on).
-~
-
 1 RUINS UMBRAGEOUS~
 Recommended level range: 5 - 50 (pkill)
 
@@ -13111,9 +13185,138 @@ leave town by *several* rooms before casting a portal.  It is also
 illegal to create a portal in Darkhaven Academy.
 ~
 
-2 RWHO~
-Syntax: rwho <mud>
-Rwho will give you a list of players on any IMC mud.
+0 I3~
+Syntax: i3 <option>
+
+Note: You must meet the mud's minimum level requirement before accessing I3.
+You will be notified when you have reached the approptiate level.
+
+General Usage:
+------------------------------------------------
+
+List channels available                : i3 chanlist [all] [filter]
+To tune into a channel                 : i3 listen <localchannel>
+To see who is listening on another mud : i3 chanwho <channel> <mud>
+List muds connected to I3              : i3 mudlist [filter]
+Information on antoher mud             : i3 mudinfo <mud>
+Ignore someone who annoys you          : i3 ignore <person@mud>
+Make yourself invisible to I3          : i3 invis
+
+i3 chanlist: Lists the channels the mud has available to listen to.
+  Specifying 'all' will list the channels for the entire network.
+
+i3 listen  : Tunes you in to the specified channel. You must meet or
+  exceed whatever the minimum level is for that channel to do so,
+  and your mud must have the channel configured locally.
+
+i3 chanwho : Shows you who is listening to the specified channel on the
+  specified mud. Invisble players will not be shown.
+
+i3 mudlist : Lists the muds which are connected to the network.
+  Specifying a filter will narrow the list down to only those muds
+  whose information matches. IE: &Wi3 mudlist smaug&D will list all
+  muds who have &Wsmaug&D as part of their listing.
+
+i3 mudinfo : Lists the information provided by the specified mud.
+
+i3 ignore  : Allows you to selectively ignore all contact with person@mud.
+  This will block tells, beeps, locates, fingers, emotes, and whos. It will also
+  block channel output from them, but will NOT block them from seeing YOU on
+  a channel.
+
+i3 invis   : Makes you invisible to I3. Performs similar to the ignore option
+  except it prevents EVERYONE on the network from finding you. You will still
+  be able to use channels, and you will NOT be invisible to others if you
+  do so.
+
+See also: i3tell, i3finger, i3emote, i3locate, i3who
+~
+
+0 I3BEEP~
+Syntax: i3beep <person@mud>
+
+i3beep sends a quick message to a person on another mud.
+If the target mud supports the beep tone, then the person
+on that mud will hear the standard beep tone used by whatever
+client software they are using. Works in the same manner as
+the local beep command.
+
+See also: I3, INTERMUD3
+~
+
+0 I3EMOTE~
+Syntax i3emote <person@mud> <message>
+
+Sends a private emote to a person on another mud.
+
+See also: I3, INTERMUD3
+~
+
+0 I3FINGER~
+Syntax i3finger <person@mud>
+
+Request for information regarding a player on another mud.
+Operates in a similar manner to the local 'finger' command.
+Will only reveal information the target mud feels is appropriate.
+
+When used with the bridge, typing i3finger <mud@i3> will produce a who
+listing of the target mud.
+
+See also: I3, INTERMUD3
+~
+
+0 I3LOCATE~
+Syntax i3locate <name>
+
+Asks all the muds on the Intermud-3 network if a person
+known by the name is there. Be patient when using this command,
+there are a lot of muds on the network to search through, so
+a response may take some time to come back.
+
+See also: I3, INTERMUD3
+~
+
+0 I3TELL I3REPLY~
+Syntax: i3tell <person@mud> <message>
+Syntax: i3reply <message>
+
+i3tell sends a private message to a person on another mud.
+
+To send a tell to someone on a mud with a multi-word name, you need to
+enlcose person@mud in quotes, like so: i3tell 'person@mud with long name'
+Otherwise this command operates in much the same way as the local tell command.
+
+To reply to the last i3tell you received, simply type 'i3reply'
+followed by your message and it will be sent back to the last
+person on I3 who sent a tell to you. Works in the same manner
+as the local reply command.
+
+See also: I3, INTERMUD3
+~
+
+0 I3WHO~
+Syntax i3who <mud>
+
+Requests an overview of players on a different mud.
+Operates similarly to the local who command.
+
+See also: I3, INTERMUD3
+~
+
+0 INTERMUD3~
+Intermud-3 is a protocol which allows you to chat with people on
+other muds who are also connected to Intermud-3. It is primarily
+populated by LP based muds at this time, but the hope is to get
+more Diku based muds to join over time. While some may say that
+Diku based muds would be better served on the IMC Network, it
+is far easier for a mud to obtain a connection to the Intermud-3
+network, and the commands to use it are generally simpler.
+In either case, should a mud desire it, Intermud-3 will coexist
+peacefully with an IMC enabled mud. Currently there is no way
+for public or private traffic to be passed from one network to
+the other.
+
+See also: I3, I3TELL, I3EMOTE, I3FINGER, I3WHO, I3LOCATE, IMC
 ~
 
 1 'SACRAL DIVINITY'~
@@ -13832,6 +14035,25 @@ files.  Neither 'sn' nor 'slot' is used for player files; these operate with
 the actual skill and spell names.
 
 SLOOKUP ALL shows this information for all skills and spells.
+~
+
+-1 FUSS SMAUGFUSS 'SMAUG FUSS'~
+.                          The SMAUG FUSS Project
+                             www.smaugfuss.org
+
+FUSS stands for: [F]ixed [U]p [S]maug [S]ource
+It has also come to be known by the alias: [F]ixed [U]p [S]tock [S]ource
+
+The ongoing goal of this project is to find and eliminate as many of the
+bugs in the stock SMAUG source code as possible so as to provide for a
+clean, stable base for new admins to run a SMAUG mud from.
+
+The project is coordinated by Samson, lead developer of the AFKMud codebase.
+Contributions are made by various members of the SMAUG community.
+
+Most of the fixes are culled from forum posts, emails to the SMAUG mailing
+list, and from continuing work on other SMAUG derivative projects in which
+bugs are found that apply backward to the base distribution.
 ~
 
 -1 SMAUG THORIC~

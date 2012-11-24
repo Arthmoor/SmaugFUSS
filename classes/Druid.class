@@ -1,6 +1,8 @@
 Name        Druid~
 Class       5
-Attrprime   4
+AttrPrime   4
+AttrSecond   0
+AttrDeficient   0
 Weapon      10315
 Guild       3037
 Skilladept  95
@@ -10,6 +12,10 @@ Hpmin       9
 Hpmax       14
 Mana        1
 Expbase     1350
+Affected    0
+Resist	 0
+Suscept	 0
+Skill 'acidmist' 41 80
 Skill 'aqua breath' 18 95
 Skill 'armor' 1 95
 Skill 'bless' 5 95
@@ -78,6 +84,7 @@ Skill 'sleep' 34 95
 Skill 'stone skin' 35 95
 Skill 'teleport' 50 95
 Skill 'true sight' 48 45
+Skill 'venomshield' 29 95
 Skill 'weaken' 15 95
 Skill 'word of recall' 20 95
 Skill 'aggressive style' 7 85

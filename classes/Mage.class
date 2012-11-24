@@ -1,6 +1,8 @@
 Name        Mage~
 Class       0
-Attrprime   3
+AttrPrime   3
+AttrSecond   0
+AttrDeficient   0
 Weapon      10312
 Guild       3018
 Skilladept  95
@@ -10,6 +12,9 @@ Hpmin       6
 Hpmax       8
 Mana        1
 Expbase     1250
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'acetum primus' 37 95
 Skill 'acid blast' 20 95
 Skill 'acid breath' 43 95

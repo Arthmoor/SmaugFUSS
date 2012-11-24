@@ -1,73 +1,86 @@
 CC      = gcc
 #PROF    = -p
-NOCRYPT =
+
+#Uncomment to compile in Cygwin
+#CYGWIN = -DCYGWIN
 
 # Uncomment the two lines below if compiling on a Solaris box
 #SOLARIS_FLAG = -Dsun -DSYSV
 #SOLARIS_LINK = -lnsl -lsocket
 
-#Uncomment the line below if you are getting a line like:
-#interp.c:757: warning: int format, time_t arg (arg 7)
-#TIME = -DTIMEFORMAT
+#IMC2 - Comment out to disable IMC2 support
+IMC = 1
 
-#Uncomment the line below if you are getting implicit decleration of re_exec
-#REG = -DREGEX
+W_FLAGS = -Wall -Werror -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls
 
-#Uncomment the line below if you are getting undefined re_exec errors
-#NEED_REG = -lgnuregex
+C_FLAGS = -g2 $(W_FLAGS) $(SOLARIS_FLAG) $(PROF) -export-dynamic
+L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz -ldl
 
-#Uncomment the line below if you are getting undefined crypt errors
-#NEED_CRYPT = -lcrypt
+C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c boards.c \
+          build.c clans.c color.c comm.c comments.c const.c db.c deity.c fight.c \
+          handler.c hashstr.c hotboot.c imm_host.c interp.c magic.c makeobjs.c mapout.c mccp.c \
+          misc.c mpxset.c mud_comm.c mud_prog.c planes.c player.c polymorph.c \
+          reset.c save.c services.c sha256.c shops.c skills.c special.c tables.c \
+          track.c update.c
 
-#DBUGFLG = -DREQUESTS
+ifdef IMC
+   C_FILES := imc.c $(C_FILES)
+   C_FLAGS := $(C_FLAGS) -DIMC -DIMCSMAUG
+endif
 
-#Uncomment the line below if you want a performance increase though beware
-#your core files may not be as much of a benefit if you do.
-#OPT_FLAG = -finline-functions -funroll-loops -fdefer-pop -fstrength-reduce
+O_FILES := $(patsubst %.c,o/%.o,$(C_FILES))
 
-C_FLAGS = $(OPT_FLAG) -O -g3 -Wall -Wuninitialized $(PROF) $(NOCRYPT) $(DBUGFLG) -DSMAUG $(SOLARIS_FLAG) $(TIME) $(REG)
-L_FLAGS = $(OPT_FLAG) $(PROF) $(SOLARIS_LINK) $(NEED_CRYPT)
-
-#Uncomment the next three comments below if you want to use IMC
-#USE_IMC    = -DUSE_IMC
-
-#IMC_OFILES = imc.o imc-mail.o imc-interp.o imc-util.o imc-config.o \
-#        imc-events.o imc-version.o imc-mercbase.o ice.o icec.o icec-mercbase.o
-
-#IMC_CFILES = imc.c imc-mail.c imc-interp.c imc-util.c imc-config.c \
-#        imc-events.c imc-version.c imc-mercbase.c ice.c icec.c icec-mercbase.c
-
-O_FILES = act_comm.o act_info.o act_move.o act_obj.o act_wiz.o boards.o \
-          build.o clans.o comm.o comments.o const.o db.o deity.o fight.o \
-          handler.o hashstr.o ibuild.o ident.o interp.o magic.o makeobjs.o \
-          mapout.o misc.o mpxset.o mud_comm.o mud_prog.o player.o polymorph.o \
-          requests.o reset.o save.o shops.o skills.o special.o tables.o \
-          track.o update.o grub.o stat_obj.o ban.o services.o planes.o \
-          imm_host.o $(IMC_OFILES) colorize.o 
-
-C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c boards.c \
-          build.c clans.c comm.c comments.c const.c db.c deity.c fight.c \
-          handler.c hashstr.c ibuild.c ident.c interp.c magic.c makeobjs.c \
-          mapout.c misc.c mpxset.c mud_comm.c mud_prog.c player.c polymorph.c \
-          requests.c reset.c save.c shops.c skills.c special.c tables.c \
-          track.c update.c grub.c stat_obj.c ban.c services.c planes.c \
-          imm_host.c $(IMC_CFILES) colorize.c 
-
-H_FILES = mud.h bet.h imc-config.h imc-mercbase.h imc-mercdefs.h imc.h \
-          ice.h icec.h icec-mercbase.h
+H_FILES = $(wildcard *.h) 
 
 all:
-	make smaug
+	$(MAKE) -s smaug
 
+# pull in dependency info for *existing* .o files
+-include dependencies.d
+
+ifdef CYGWIN
+smaug: $(O_FILES)
+	rm -f smaug.exe
+	$(CC) -o smaug.exe $(O_FILES) $(L_FLAGS)
+	echo "Generating dependency file ...";
+	$(CC) -MM $(C_FLAGS) $(C_FILES) > dependencies.d
+	perl -pi -e 's.^([a-z]).o/$$1.g' dependencies.d
+	echo "Done compiling mud.";
+	chmod g+w smaug.exe
+	chmod a+x smaug.exe
+	chmod g+w $(O_FILES)
+
+clean:
+	rm -f o/*.o smaug.exe *~
+else
 smaug: $(O_FILES)
 	rm -f smaug
-	$(CC) $(L_FLAGS) $(USE_IMC) -o smaug $(O_FILES)
+	$(CC) -export-dynamic -o smaug $(O_FILES) $(L_FLAGS)
+	echo "Generating dependency file ...";
+	$(CC) -MM $(C_FLAGS) $(C_FILES) > dependencies.d
+	perl -pi -e 's.^([a-z]).o/$$1.g' dependencies.d
+	echo "Done compiling mud.";
 	chmod g+w smaug
 	chmod a+x smaug
 	chmod g+w $(O_FILES)
 
-.c.o: mud.h
-	$(CC) -c $(C_FLAGS) $(USE_IMC) $<
-
 clean:
-	rm -f *.o smaug *~
+	rm -f o/*.o smaug *~
+	@echo "Generating dependency file ...";
+	@$(CC) -MM $(C_FLAGS) $(C_FILES) > dependencies.d
+	@perl -pi -e 's.^([a-z]).o/$$1.g' dependencies.d
+endif
+
+indent:
+	indent -ts3 -nut -nsaf -nsai -nsaw -npcs -npsl -ncs -nbc -bls -prs -bap -cbi0 -cli3 -bli0 -l125 -lp -i3 -cdb -c1 -cd1 -sc -pmt $(C_FILES)
+	indent -ts3 -nut -nsaf -nsai -nsaw -npcs -npsl -ncs -nbc -bls -prs -bap -cbi0 -cli3 -bli0 -l125 -lp -i3 -cdb -c1 -cd1 -sc -pmt $(H_FILES)
+
+indentclean:
+	rm *.c~ *.h~
+
+o/%.o: %.c
+	echo "  Compiling $@....";
+	$(CC) -c $(C_FLAGS) $< -o $@
+
+.c.o: mud.h
+	$(CC) -c $(C_FLAGS) $<

@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Zaknafein~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 94935260
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #24800
@@ -25,7 +28,7 @@ opportunity to see her share of muscled, handsome warriors.
 3 4194344 0 C
 30 0 -200 1d1+3800 25d5+25
 0 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -81,7 +84,7 @@ feel if your job consisted of pricing all the art in the Realms?
 67 0 0 S
 40 0 -100 1d1+20000 0d0+0
 0 0
-8 8 1
+112 112 1
 > rand_prog 80~
 if inroom($i) == 24802
 else
@@ -104,7 +107,7 @@ reproductions of art touches a nerve in the boredom region of the brain.
 67 0 0 S
 50 0 -200 30000d0+1 0d0+0
 0 0
-8 8 2
+112 112 2
 #24803
 sculpture phunbaba demon~
 the sculpture of Phunbaba~
@@ -115,7 +118,7 @@ A plaque mounted on the statue says proudly, "PHUNBABA".
 67 8320 0 C
 44 0 -300 5000d0+1 3d4+15
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 34
 3 0 0 0 131073 131072 0
@@ -136,7 +139,7 @@ faint glimmer of intelligence.
 99 168 0 S
 35 0 -200 3000d0+1 0d0+0
 3 0
-8 8 1
+112 112 1
 #24805
 green envy color~
 Envy~
@@ -149,7 +152,7 @@ with jealousy at the ethereal quality of the shape before you.  "Why can't
 67 524328 0 C
 35 0 -200 7000d0+1 0d0+0
 13 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -171,7 +174,7 @@ your knees grow weak from the emotion, and it becomes an effort to stand.
 1 524288 0 C
 40 0 -50 500d0+500 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -193,7 +196,7 @@ turns your stomach.  You wonder how ANYthing could be that afraid.
 195 524328 0 C
 39 0 -200 7000d0+1 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -215,7 +218,7 @@ your head.  Hmm.  Maybe it would be best to just leave this place.
 67 524328 0 C
 38 0 -250 7000d0+1 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131073 0
@@ -237,7 +240,7 @@ forever, you wouldn't mind.  In fact, that seems like a very good idea.
 67 524328 0 C
 35 0 -200 7000d0+1 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -259,7 +262,7 @@ in a world of desire and peace.  Siiiiiiiigh.
 67 524328 0 C
 35 0 -200 7000d0+1 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -282,7 +285,7 @@ from this mass.
 99 524328 -1000 C
 37 0 -250 7000d0+1 0d0+0
 100 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 84
 3 0 0 0 131073 131072 0
@@ -304,7 +307,7 @@ harm you.  It's too nice.  You smile to yourself and sigh happily.
 67 524456 1000 S
 40 0 -200 9000d0+1 0d0+0
 1 0
-8 8 0
+112 112 0
 > rand_prog 25~
 smile
   giggle
@@ -322,7 +325,7 @@ flesh chills.  You try to scream, but nothing comes out.  This  is  pure  evil.
 67 524456 0 S
 45 0 -200 10000d0+1 0d0+0
 666 0
-8 8 0
+112 112 0
 > rand_prog 25~
 growl
   scream
@@ -337,7 +340,7 @@ The monstrous left foot of King Welmar is here, tapping impatiently.
 3 0 0 C
 20 0 -50 900d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 0
@@ -359,7 +362,7 @@ The humongous right foot of King Welmar is here, tracing designs on the floor.
 3 0 0 C
 20 0 -50 900d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 3 0 0 0 131073 131072 0
@@ -381,7 +384,7 @@ The gigantic right hand of King Welmar is here, gripping a huge golden sceptre.
 65 0 750 C
 30 0 -75 1900d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 0
@@ -404,7 +407,7 @@ Welmar's enormous left hand is here, drumming its fingers.
 1 0 -1000 C
 30 0 -75 1900d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 0
@@ -427,7 +430,7 @@ King Welmar's left eye glares at you in irritation.
 3 172 750 C
 35 0 -100 2400d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 1
@@ -445,7 +448,7 @@ King Welmar's right eye stares at you impassively.
 3 172 750 C
 35 0 -100 2400d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 1
@@ -463,7 +466,7 @@ King Welmar's mouth mutters something about "kill" and "damn intruders".
 3 0 -1000 C
 40 0 -150 2900d0+100 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 85 0 0 0 131073 131072 0
@@ -485,7 +488,7 @@ You begin to regret ever coming to the art gallery.
 3 4792872 0 C
 50 0 -150 1d1+11000 8d8+6
 650000 0
-8 8 0
+112 112 0
 18 13 13 16 13 13 0
 0 0 0 -15 -6
 31 0 0 0 131073 131073 5
@@ -527,7 +530,7 @@ mind.  Looks like he's been sitting here for a long, long, LONG time.
 67 40 -1000 C
 30 0 -75 1000d0+500 0d0+0
 10000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 0
 0 0 0 0 71
 3 0 0 0 131073 131072 0
@@ -544,7 +547,7 @@ intelligence.  Watch out for this one.
 99 40 -1000 C
 35 0 -100 1200d0+50 0d0+0
 20000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 0
 0 0 0 0 67
 3 0 0 0 131073 131072 0
@@ -561,7 +564,7 @@ on her head, the only thing on what's left of her body that hasn't rotted away.
 67 40 -1000 C
 35 0 -100 1300d0+50 0d0+0
 10000 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 0
 0 0 0 0 60
 3 0 0 0 131073 131072 0
@@ -578,7 +581,7 @@ neck, and you rub your neck involuntarily at the thought.
 99 2097320 -1000 C
 45 0 -200 2800d0+200 0d0+0
 50000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 0
 0 0 0 0 5
 3 0 0 0 131073 131072 0
@@ -595,7 +598,7 @@ wonder he looks so carefree.
 193 0 0 C
 20 0 0 400d0+100 0d0+0
 0 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -618,7 +621,7 @@ and jaws.  You wouldn't want to get caught between either of those.
 97 32 0 C
 22 0 0 1d1+800 10d2+5
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -637,7 +640,7 @@ a very bad idea.
 99 4726972 0 C
 45 0 -250 7000d0+1000 2d5+4
 750000 0
-8 8 1
+112 112 1
 17 13 13 16 13 13 0
 0 0 0 0 0
 3 0 0 0 131073 131073 0
@@ -675,7 +678,7 @@ enter the realm of the undead.
 67 60 0 C
 45 0 -200 7000d0+1000 0d0+0
 100000 0
-8 8 1
+112 112 1
 13 13 13 13 13 13 0
 0 0 0 0 67
 3 0 0 0 131073 131072 0
@@ -705,7 +708,7 @@ messed with.
 67 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 0
+112 112 0
 #24831
 baker jon lang~
 the baker~
@@ -718,7 +721,7 @@ himself.
 67 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24832
 stafford fruit markham vendor~
 the fruit stand vendor~
@@ -731,7 +734,7 @@ just about as boring as it sounds.
 67 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24833
 tabby cat orange~
 the orange tabby~
@@ -743,7 +746,7 @@ of her quite well.
 67 0 0 C
 20 0 -75 900d0+100 0d0+0
 0 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 0
 0 0 0 0 29
 3 0 0 0 131073 131072 0
@@ -760,7 +763,7 @@ flush as she offers you merchandise.
 67 4726972 0 S
 10 0 -300 29000d0+200 0d0+0
 0 0
-8 8 2
+112 112 2
 #24835
 barbarian heafstaag~
 a barbarian fighter~
@@ -773,7 +776,7 @@ though.  They are frightened, pleading eyes.  The eyes of a beaten man.
 67 0 0 S
 30 0 -175 3500d0+500 0d0+0
 0 0
-8 8 1
+112 112 1
 > rand_prog 20~
 growl
 ~
@@ -790,7 +793,7 @@ as a storm giant even before his deep violet skin.
 67 0 0 S
 50 0 -200 5500d0+500 0d0+0
 0 0
-8 8 1
+112 112 1
 > rand_prog 25~
 cackle
 ~
@@ -807,7 +810,7 @@ very existence is a defamation of nature.
 99 8 0 C
 30 0 -100 2500d0+500 0d0+0
 10000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 85
 3 0 0 0 131073 131072 0
@@ -822,7 +825,7 @@ A tag on his collar says "Tundra".
 67 0 0 C
 10 0 -50 500d0+500 0d0+0
 10000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 30
 3 0 0 0 131073 131072 0
@@ -837,7 +840,7 @@ A tag on his collar says "Pyrite".
 67 0 0 C
 10 0 -50 500d0+500 0d0+0
 10000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 30
 3 0 0 0 131073 131072 0
@@ -852,7 +855,7 @@ A tag on his collar says "Schultz".
 67 0 0 C
 10 0 -50 500d0+500 0d0+0
 10000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 30
 3 0 0 0 131073 131072 0
@@ -867,7 +870,7 @@ A tag on his collar says "O'Sullivan".
 67 0 0 C
 10 0 -50 500d0+500 0d0+0
 40000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 30
 3 0 0 0 131073 131072 0
@@ -882,7 +885,7 @@ A tag on his collar says "Tyson".
 99 0 0 C
 10 0 -50 500d0+500 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 30
 3 0 0 0 131073 131072 0
@@ -899,7 +902,7 @@ bitten by one of these.  If dragonflies do indeed bite.  Hmm.
 67 524288 0 C
 10 0 -50 500d0+500 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 83
 3 0 0 0 131073 131072 0
@@ -916,7 +919,7 @@ That would be the icing on the cake.
 67 524288 0 S
 15 0 -75 1000d0+500 0d0+0
 0 0
-8 8 0
+112 112 0
 #24845
 ~
 the butcher~
@@ -929,7 +932,7 @@ messed with.
 1073741891 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 0
+112 112 0
 #24846
 ~
 the baker~
@@ -942,7 +945,7 @@ himself.
 1073741891 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24847
 ~
 the fruit stand vendor~
@@ -955,7 +958,7 @@ just about as boring as it sounds.
 1073741891 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24848
 ~
 the dimpled milkmaid~
@@ -968,7 +971,7 @@ flush as she offers you merchandise.
 1073741891 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 2
+112 112 2
 #24850
 ~
 the butcher~
@@ -981,7 +984,7 @@ messed with.
 1073741891 4726972 0 S
 10 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 0
+112 112 0
 #24851
 butcher graeme davis~
 the butcher~
@@ -994,7 +997,7 @@ messed with.
 67 4726972 0 S
 10 0 -300 1d0+600 0d0+0
 0 0
-8 8 0
+112 112 0
 #24852
 milkmaid dairy roberts bonnie~
 the dimpled milkmaid~
@@ -1007,7 +1010,7 @@ flush as she offers you merchandise.
 67 4726972 0 S
 10 0 -300 300d0+200 0d0+0
 0 0
-8 8 2
+112 112 2
 #24853
 baker jon lang~
 the baker~
@@ -1020,7 +1023,7 @@ himself.
 67 4726972 0 S
 10 0 -300 300d0+500 0d0+0
 0 0
-8 8 1
+112 112 1
 #24854
 stafford fruit markham vendor~
 the fruit stand vendor~
@@ -1033,7 +1036,7 @@ just about as boring as it sounds.
 67 4726972 0 S
 10 0 -300 200d0+650 0d0+0
 0 0
-8 8 1
+112 112 1
 #24892
 wiggins scott ~
 Scott~
@@ -1046,7 +1049,7 @@ you're not the one in the Corps.
 65 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 0
+112 112 0
 #24893
 aaron white~
 Aaron~
@@ -1058,7 +1061,7 @@ holding his koofers for the big test tomorrow.
 67 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24894
 schneider rob schneidr~
 Rob~
@@ -1071,7 +1074,7 @@ for Political Theory class.  Don't disturb him.
 67 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24895
 tex aaron lee~
 Tex~
@@ -1089,7 +1092,7 @@ blue jeans jacket, and a Garth Brooksesque shirt make up this weirdo's ensemble
 65 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24896
 forrester chris~
 Forrester~
@@ -1101,7 +1104,7 @@ looks quite dangerous, though.
 67 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24897
 cox brian bastard~
 Cox~
@@ -1113,7 +1116,7 @@ just as well.
 65 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24898
 roberts grant troll-boy~
 Grant~
@@ -1126,7 +1129,7 @@ of concentration as he types much, MUCH too quickly on his keyboard.
 67 4726972 0 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #24899
 seguin brian~
 Seguin~
@@ -1138,7 +1141,7 @@ has no fashion sense.  But that's why the women love him.
 67 4726972 -1000 S
 50 0 -300 29000d0+1000 0d0+0
 0 0
-8 8 1
+112 112 1
 #0
 
 
@@ -1277,8 +1280,9 @@ bhelliom~
 An intricately designed rose made of sapphire lies here, pulsing with life.~
 ~
 3 0 16385
-50 5 5 89
+50 5 5 -1
 1 2000000 3392
+'shockshield'
 A
 17 0
 #24811
@@ -1287,32 +1291,36 @@ a dandelion~
 A huge dandelion is sprouting up from the ground below you.~
 ~
 3 0 16385
-50 5 5 88
+50 5 5 -1
 1 2000000 3392
+'fireshield'
 #24812
 bouquet marigolds flower marigold~
 a marigold~
 A single marigold is pushing up through the soil here.~
 ~
 3 0 16385
-50 5 5 36
+50 5 5 -1
 1 2000000 3392
+'sanctuary'
 #24813
 pansy flower~
 a pansy~
 A tasty-looking pansy grows by itself off to the side here.~
 ~
 26 0 1
-50 66 67 34
+50 -1 -1 -1
 1 2000000 3392
+'stone skin' 'shield' 'protection'
 #24814
 primrose flower~
 a potted primrose~
 A bright red primrose grows in a pot here.~
 ~
 26 0 1
-50 56 39 91
+50 -1 -1 -1
 1 2000000 3392
+'fly' 'kindred strength' 'scry'
 #24815
 plaque keystone~
 the Art Gallery's keystone~
@@ -1320,7 +1328,7 @@ A plaque is mounted on the keystone of the gallery.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 plaque keystone~
 ------------------------------------------------------------------------------
@@ -1384,8 +1392,9 @@ the Death Sceptre~
 A jet black sceptre is here, exuding an aura of evil.~
 ~
 4 6870 16385
-50 5 10 8
+50 5 10 -1
 5 1000000 -31072
+'chill touch'
 A
 17 -40
 A
@@ -1432,8 +1441,9 @@ the Wand of Decay~
 An ice-cold onyx wand lies here on the ground, killing all life underneath it.~
 ~
 3 4820 16385
-60 3 3 25
+60 3 3 -1
 5 100000 10000
+'energy drain'
 A
 9 -100
 A
@@ -1697,7 +1707,7 @@ Jelly leaks out of a powdered donut that is on the ground here.~
 %s reluctantly eat$q $p without any beer to go with it.  *sigh*~
 19 0 1
 50 0 0 0
-0 10 1
+1 10 1
 #24850
 stickybun gooey marketplace~
 a gooey stickybun~
@@ -1758,8 +1768,9 @@ the Ice Orb~
 A crystal clear, perfectly formed sphere gives off its own light here.~
 ~
 4 1 16385
-43 5 5 36
+43 5 5 -1
 1 1000000 -31072
+'sanctuary'
 #24858
 ice tooth~
 the Ice Tooth~
@@ -2055,7 +2066,7 @@ The severed tentacle of a mind flayer lies here on the ground.~
 ~
 9 0 4097
 0 0 0 0
-0 1000000 -31072
+1 1000000 -31072
 A
 3 2
 #24892
@@ -2076,8 +2087,9 @@ a deck of cards~
 An old, beat-up deck of cards lies here on the ground.~
 ~
 3 0 16385
-20 13 5 7
+20 13 5 -1
 1 10000 1000
+'charm person'
 #24894
 visor clear~
 a clear visor~
@@ -2095,7 +2107,7 @@ An old, dusty-looking chest sits here, covered with cobwebs and blood.~
 ~
 15 0 0
 200 1 24816 0
-0 0 0
+1 0 0
 #24896
 lake blood red~
 the lake of blood~
@@ -2103,7 +2115,7 @@ The lake of blood you just crawled out of is as still as death here.~
 ~
 27 0 0
 5 40 0 1
-0 0 0
+1 0 0
 #24897
 tree lemon~
 a lemon tree~
@@ -2173,6 +2185,8 @@ D3
 ~
 ~
 0 -1 24802
+R M 0 24800 1 24801
+R D 0 24801 0 2
 S
 #24802
 Curator's Desk~
@@ -2186,6 +2200,7 @@ D1
 ~
 ~
 0 -1 24801
+R M 0 24801 1 24802
 E
 nameplate desk~
 The gold nameplate says "MICHAEL COSNER - CURATOR"
@@ -2202,6 +2217,8 @@ D2
 ~
 ~
 0 -1 24848
+R T 5 1 5 24803
+R O 0 24895 1 24803
 S
 #24804
 Outside the Art of the Year Rooms~
@@ -2261,6 +2278,7 @@ D3
 ~
 ~
 0 -1 24804
+R M 0 24803 1 24806
 S
 #24807
 By the "Wasteland" Painting~
@@ -2287,6 +2305,7 @@ D3
 ~
 ~
 0 -1 24814
+R D 0 24807 0 1
 S
 #24808
 By the "Canine Recreation" Painting~
@@ -2309,6 +2328,7 @@ D3
 ~
 ~
 0 -1 24807
+R D 0 24808 1 1
 S
 #24809
 By the "Spectrum" Painting~
@@ -2331,6 +2351,7 @@ D3
 ~
 painting~
 3 -1 24817
+R D 0 24809 3 1
 S
 #24810
 By the "Still Life of Monarchy" Painting~
@@ -2353,6 +2374,7 @@ D3
 ~
 ~
 0 -1 24811
+R D 0 24810 0 1
 S
 #24811
 By the "Arena of Valorous Combat" Painting~
@@ -2376,6 +2398,7 @@ D3
 ~
 ~
 0 -1 24812
+R D 0 24811 2 1
 S
 #24812
 By the "Tea Party" Painting~
@@ -2399,6 +2422,7 @@ D3
 ~
 painting~
 3 -1 24820
+R D 0 24812 3 1
 S
 #24813
 By the "Loss" Painting~
@@ -2421,6 +2445,7 @@ D2
 ~
 ~
 0 -1 24814
+R D 0 24813 1 1
 S
 #24814
 By the "Urban Jungle" Painting~
@@ -2443,6 +2468,7 @@ D2
 ~
 painting~
 3 -1 24822
+R D 0 24814 2 1
 S
 #24815
 Oops~
@@ -2485,6 +2511,17 @@ D3
 ~
 ~
 33 -1 24808
+R O 0 24893 1 24816
+R M 0 24838 1 24816
+  R E 1 24894 1 6
+R M 0 24839 1 24816
+  R E 1 24894 1 6
+R M 0 24840 1 24816
+  R E 1 24894 1 6
+R M 0 24841 1 24816
+  R E 1 24894 1 6
+R M 0 24842 1 24816
+  R E 1 24894 1 6
 S
 #24817
 Green~
@@ -2511,6 +2548,8 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24805 1 24817
+  R E 1 24804 1 16
 E
 plant plants~
 These plants are more exotic than you would have expected to see in midair.
@@ -2535,6 +2574,7 @@ D4
 ~
 ~
 0 -1 24849
+R M 0 24814 1 24818
 S
 #24819
 The Arena~
@@ -2556,6 +2596,13 @@ D4
 ~
 ~
 0 -1 24872
+R M 0 24836 1 24819
+  R E 1 24887 1 5
+  R E 1 24888 1 16
+  R E 1 24885 1 6
+R M 0 24835 1 24819
+  R E 1 24885 1 6
+  R E 1 24884 1 16
 S
 #24820
 The Tea Party~
@@ -2573,6 +2620,12 @@ D1
 ~
 ~
 33 -1 24812
+R M 0 24822 1 24820
+  R E 1 24817 1 12
+R M 0 24823 1 24820
+R M 0 24824 1 24820
+  R E 1 24817 1 12
+  R E 1 24818 1 6
 S
 #24821
 The Funeral~
@@ -2604,6 +2657,18 @@ D1
 ~
 ~
 0 -1 24867
+R M 0 24853 1 24822
+  R G 1 24844 1
+  R G 1 24845 1
+  R G 1 24846 1
+  R G 1 24847 1
+  R G 1 24848 1
+  R G 1 24849 1
+  R G 1 24850 1
+  R G 1 24851 1
+  R G 1 24852 1
+  R G 1 24854 1
+  R G 1 24855 1
 S
 #24823
 Blue~
@@ -2629,6 +2694,12 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24806 1 24823
+  R E 1 24805 1 16
+R M 0 24843 2 24823
+R M 0 24843 2 24823
+R M 0 24844 2 24823
+R M 0 24844 2 24823
 S
 #24824
 Yellow~
@@ -2654,6 +2725,11 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24807 1 24824
+  R E 1 24803 1 16
+R O 0 24897 1 24824
+  R P 0 24898 1 24897
+R O 0 24898 1 24824
 E
 sun sky~
 The sun stretches as far as your peripheral vision can see, almost occupying
@@ -2686,6 +2762,8 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24808 1 24825
+  R E 1 24806 1 16
 E
 pond~
 The dark blue sky reflects onto the pond beautifully, and its cool waters
@@ -2717,6 +2795,9 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24809 1 24826
+  R E 1 24802 1 16
+R M 0 24833 1 24826
 S
 #24827
 Violet~
@@ -2738,6 +2819,11 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24810 1 24827
+  R E 1 24807 1 16
+  R G 1 24899 1
+R O 0 24899 1 24827
+R O 0 24899 2 24827
 S
 #24828
 Red~
@@ -2760,6 +2846,9 @@ D5
 ~
 ~
 0 -1 24830
+R M 0 24811 1 24828
+  R E 1 24801 1 16
+R O 0 24896 1 24828
 S
 #24829
 White~
@@ -2775,6 +2864,8 @@ D5
 ~
 ~
 0 -1 24809
+R M 0 24812 1 24829
+  R E 1 24808 1 16
 S
 #24830
 Black~
@@ -2790,6 +2881,8 @@ D4
 ~
 ~
 0 -1 24809
+R M 0 24813 1 24830
+  R E 1 24809 1 16
 S
 #24831
 High above Icewind Dale~
@@ -2820,6 +2913,8 @@ D1
 ~
 ~
 0 -1 24833
+R M 0 24827 3 24832
+R M 0 24826 2 24832
 S
 #24833
 Within Sight of the Reghed Glacier~
@@ -2838,6 +2933,7 @@ D3
 ~
 ~
 0 -1 24832
+R M 0 24827 3 24833
 S
 #24834
 At the Base of the Reghed Glacier~
@@ -2855,6 +2951,9 @@ D3
 ~
 ~
 0 -1 24833
+R M 0 24827 3 24834
+R M 0 24826 2 24834
+R D 0 24834 1 1
 E
 glacier mountain wall~
 The glacier does indeed look impenetrable.  It'd be a cold day in hell before
@@ -2884,6 +2983,8 @@ D5
 ~
 pool evermelt water~
 1057 24821 24836
+R O 0 24820 1 24835
+R D 0 24835 3 1
 S
 #24836
 Swimming in Evermelt~
@@ -3171,6 +3272,7 @@ D3
 ~
 ~
 0 -1 24840
+R M 0 24821 1 24848
 S
 #24849
 Welmar's Left Knee~
@@ -3239,6 +3341,7 @@ D4
 ~
 ~
 0 -1 24851
+R M 0 24815 1 24852
 S
 #24853
 Welmar's Chest~
@@ -3277,6 +3380,9 @@ D5
 ~
 ~
 0 -1 24853
+R M 0 24818 1 24854
+R M 0 24819 1 24854
+R M 0 24820 1 24854
 S
 #24855
 Welmar's Left Arm~
@@ -3289,6 +3395,7 @@ D3
 ~
 ~
 0 -1 24853
+R M 0 24817 1 24855
 S
 #24856
 Welmar's Right Arm~
@@ -3303,6 +3410,7 @@ D1
 ~
 ~
 0 -1 24853
+R M 0 24816 1 24856
 S
 #24857
 The Head of the Table~
@@ -3317,6 +3425,8 @@ D2
 ~
 ~
 0 -1 24820
+R M 0 24825 1 24857
+  R E 1 24819 1 17
 S
 #24858
 Over the Falls~
@@ -3403,6 +3513,17 @@ D4
 ~
 ~
 0 -1 24863
+R M 0 24828 1 24862
+  R E 1 24824 1 5
+  R E 1 24825 1 7
+  R E 1 24826 1 10
+  R E 1 24827 1 19
+  R E 1 24858 1 16
+  R E 1 24857 1 17
+  R E 1 24828 1 9
+  R E 1 24856 1 8
+  R E 1 24829 1 6
+  R E 1 24830 1 13
 S
 #24863
 On top of the Reghed Glacier~
@@ -3455,6 +3576,7 @@ D4
 ~
 ~
 0 -1 24813
+R M 0 24829 1 24865
 S
 #24866
 Death~
@@ -3485,6 +3607,20 @@ D3
 ~
 ~
 0 -1 24822
+R M 0 24851 1 24867
+  R G 1 24831 1
+  R G 1 24832 1
+  R G 1 24833 1
+  R G 1 24834 1
+  R G 1 24835 1
+  R G 1 24836 1
+  R G 1 24837 1
+  R G 1 24838 1
+  R G 1 24839 1
+  R G 1 24840 1
+  R G 1 24841 1
+  R G 1 24842 1
+  R G 1 24843 1
 S
 #24868
 Fruits R Us~
@@ -3502,6 +3638,21 @@ D3
 ~
 ~
 0 -1 24867
+R M 0 24854 1 24868
+  R G 1 24872 1
+  R G 1 24871 1
+  R G 1 24870 1
+  R G 1 24869 1
+  R G 1 24868 1
+  R G 1 24867 1
+  R G 1 24866 1
+  R G 1 24865 1
+  R G 1 24864 1
+  R G 1 24863 1
+  R G 1 24862 1
+  R G 1 24861 1
+  R G 1 24873 1
+  R G 1 24860 1
 S
 #24869
 Goodbody Dairy~
@@ -3516,6 +3667,17 @@ D3
 ~
 ~
 0 -1 24868
+R M 0 24852 1 24869
+  R G 1 24874 1
+  R G 1 24875 1
+  R G 1 24876 1
+  R G 1 24877 1
+  R G 1 24878 1
+  R G 1 24879 1
+  R G 1 24880 1
+  R G 1 24881 1
+  R G 1 24882 1
+  R G 1 24883 1
 S
 #24870
 The Arena~
@@ -3530,6 +3692,10 @@ D3
 ~
 ~
 0 -1 24819
+R O 0 24889 1 24870
+  R P 0 24885 1 24889
+R O 0 24890 1 24870
+  R P 0 24885 1 24890
 S
 #24871
 The Arena~
@@ -3544,6 +3710,10 @@ D1
 ~
 ~
 0 -1 24819
+R O 0 24890 1 24871
+  R P 0 24885 1 24890
+R O 0 24889 1 24871
+  R P 0 24885 1 24889
 S
 #24872
 In the Stands~
@@ -3561,6 +3731,12 @@ D5
 ~
 ~
 0 -1 24819
+R M 0 24837 3 24872
+  R E 1 24892 1 12
+R M 0 24837 3 24872
+  R E 1 24892 1 12
+R M 0 24837 3 24872
+  R E 1 24892 1 12
 S
 #24873
 Floating in a void~
@@ -3795,174 +3971,6 @@ bitching about losing another apple of discord.
 ~
 S
 #0
-
-
-#RESETS
-M 0 24800 1 24801
-D 0 24801 0 2
-M 0 24801 1 24802
-M 0 24803 1 24806
-D 0 24807 0 1
-D 0 24808 1 1
-D 0 24809 3 1
-D 0 24810 0 1
-D 0 24811 2 1
-D 0 24812 3 1
-D 0 24813 1 1
-D 0 24814 2 1
-M 0 24805 1 24817
-E 1 24804 1 16
-M 0 24814 1 24818
-M 0 24806 1 24823
-E 1 24805 1 16
-M 0 24807 1 24824
-E 1 24803 1 16
-M 0 24808 1 24825
-E 1 24806 1 16
-M 0 24809 1 24826
-E 1 24802 1 16
-M 0 24810 1 24827
-E 1 24807 1 16
-G 1 24899 1
-M 0 24811 1 24828
-E 1 24801 1 16
-M 0 24812 1 24829
-E 1 24808 1 16
-M 0 24813 1 24830
-E 1 24809 1 16
-M 0 24821 1 24848
-M 0 24815 1 24852
-M 0 24818 1 24854
-M 0 24819 1 24854
-M 0 24820 1 24854
-M 0 24817 1 24855
-M 0 24816 1 24856
-M 0 24822 1 24820
-E 1 24817 1 12
-M 0 24823 1 24820
-M 0 24824 1 24820
-E 1 24817 1 12
-E 1 24818 1 6
-M 0 24825 1 24857
-E 1 24819 1 17
-O 0 24820 1 24835
-M 0 24827 3 24832
-M 0 24827 3 24833
-M 0 24827 3 24834
-M 0 24826 2 24832
-M 0 24826 2 24834
-M 0 24828 1 24862
-E 1 24824 1 5
-E 1 24825 1 7
-E 1 24826 1 10
-E 1 24827 1 19
-E 1 24858 1 16
-E 1 24857 1 17
-E 1 24828 1 9
-E 1 24856 1 8
-E 1 24829 1 6
-E 1 24830 1 13
-M 0 24829 1 24865
-M 0 24851 1 24867
-G 1 24831 1
-G 1 24832 1
-G 1 24833 1
-G 1 24834 1
-G 1 24835 1
-G 1 24836 1
-G 1 24837 1
-G 1 24838 1
-G 1 24839 1
-G 1 24840 1
-G 1 24841 1
-G 1 24842 1
-G 1 24843 1
-M 0 24853 1 24822
-G 1 24844 1
-G 1 24845 1
-G 1 24846 1
-G 1 24847 1
-G 1 24848 1
-G 1 24849 1
-G 1 24850 1
-G 1 24851 1
-G 1 24852 1
-G 1 24854 1
-G 1 24855 1
-M 0 24854 1 24868
-G 1 24872 1
-G 1 24871 1
-G 1 24870 1
-G 1 24869 1
-G 1 24868 1
-G 1 24867 1
-G 1 24866 1
-G 1 24865 1
-G 1 24864 1
-G 1 24863 1
-G 1 24862 1
-G 1 24861 1
-G 1 24873 1
-G 1 24860 1
-M 0 24833 1 24826
-M 0 24852 1 24869
-G 1 24874 1
-G 1 24875 1
-G 1 24876 1
-G 1 24877 1
-G 1 24878 1
-G 1 24879 1
-G 1 24880 1
-G 1 24881 1
-G 1 24882 1
-G 1 24883 1
-O 0 24889 1 24870
-P 1 24885 1 24889
-O 0 24890 1 24870
-P 1 24885 1 24890
-O 0 24890 1 24871
-P 1 24885 1 24890
-O 0 24889 1 24871
-P 1 24885 1 24889
-M 0 24837 3 24872
-E 1 24892 1 12
-M 0 24837 3 24872
-E 1 24892 1 12
-M 0 24837 3 24872
-E 1 24892 1 12
-O 0 24893 1 24816
-M 0 24838 1 24816
-E 1 24894 1 6
-M 0 24839 1 24816
-E 1 24894 1 6
-M 0 24840 1 24816
-E 1 24894 1 6
-M 0 24841 1 24816
-E 1 24894 1 6
-M 0 24842 1 24816
-E 1 24894 1 6
-T 5 1 5 24803
-O 0 24895 1 24803
-O 0 24896 1 24828
-O 0 24897 1 24824
-P 1 24898 1 24897
-O 0 24898 1 24824
-M 0 24843 2 24823
-M 0 24843 2 24823
-M 0 24844 2 24823
-M 0 24844 2 24823
-O 0 24899 1 24827
-O 0 24899 2 24827
-M 0 24836 1 24819
-E 1 24887 1 5
-E 1 24888 1 16
-E 1 24885 1 6
-M 0 24835 1 24819
-E 1 24885 1 6
-E 1 24884 1 16
-D 0 24834 1 1
-D 0 24835 3 1
-S
 
 
 #SHOPS

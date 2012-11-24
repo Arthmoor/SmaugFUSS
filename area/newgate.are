@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Brittany~
 
 #RANGES
@@ -14,6 +15,8 @@ $
 0
 
 #ECONOMY 0 45009000
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #100
@@ -35,7 +38,7 @@ world have you stepped into?
 3 4194984 0 C
 50 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 4 0 0 1 1 0
@@ -94,7 +97,7 @@ An Act Mob is here, but can not be seen by Pre-Auths.
 2097155 66058 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 > act_prog p has entered the game.~
 mpoload 10311 1
 give eye 0.$n
@@ -135,7 +138,7 @@ quite a striking picture.
 1073741827 4194984 0 C
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 5 0 0 5 5 0
@@ -172,7 +175,7 @@ movement, looking for an opening to strike!
 35 520 0 C
 3 0 75 1d1+25 0d0+0
 500 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 62 4 0 0 396405 396405 0
@@ -198,7 +201,7 @@ This dragon, though a baby, looks like a tough battle indeed.
 3 0 0 C
 2 0 75 20d0+0 0d0+0
 1000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 31 3 0 0 3420515 3420515 0
@@ -229,7 +232,7 @@ An Act Mob is here, but can not be seen by Pre-Auths.
 1075838979 66058 0 C
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 18 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -289,7 +292,7 @@ be in top physical shape, and his eyes sparkle with wit and wisdom.
 1073741827 4194952 0 C
 50 0 0 0d0+0 0d0+0
 0 0
-8 8 1
+112 112 1
 25 13 13 25 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -375,7 +378,7 @@ An Act Mob is here, but can not be seen by Pre-Auths.
 2097155 66058 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 > act_prog p pulls a rope.~
 mpechoat $n High overhead you hear a large bell thunder in response.
 mpechoaround $n High overhead, a large bell thunders in response.
@@ -393,7 +396,7 @@ Some god abandoned a newly created spacermob here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #0
 
 
@@ -421,7 +424,7 @@ A weapons chest rests against the northern wall.~
 ~
 15 0 0
 1000 0 0 0
-0 0 0
+1 0 0
 E
 chest~
 This chest is made from a thick carved oak, it is sturdy but not locked.
@@ -446,6 +449,7 @@ or class ($n) == Druid
 else
 if class ($n) == Warrior
 or class ($n) == Ranger
+or class ($n) == Paladin
   mpoload 127 1
   put 'heavy broadsword broad sword' chest
   mpforce $n get broadsword chest
@@ -515,15 +519,16 @@ A piece of meat from a snake~
 ~
 19 262144 1
 25 0 0 0
-0 0 0
+1 0 0
 #109
 feather purple~
 a purple feather~
 A bright purple feather lies here.~
 ~
 3 268697664 16385
-3 2 2 32
+3 2 2 -1
 4 0 0
+'magic missile'
 E
 feather purple~
 Rather heavy for a feather, it looks to actually be a wand of sorts.  Perhaps
@@ -552,7 +557,7 @@ A shallow pond of crystal clear water~
 ~
 25 1073741824 0
 100000 1000000 0 0
-0 0 0
+1 0 0
 E
 pond~
 The waters are shallow and clear, and surprisingly cold.  Several varieties
@@ -597,7 +602,7 @@ A large golden key lies here, it looks to open something important.~
 ~
 18 0 1
 0 0 0 0
-0 0 0
+1 0 0
 E
 golden key~
 This key looks to open something very important. Maybe the gate to
@@ -610,7 +615,7 @@ A rope hangs from high above, waiting to be pulled.~
 ~
 37 262144 0
 29 0 0 0
-0 0 0
+1 0 0
 E
 rope~
 If you are ready to pass beyond the Spectral Gates, you need only pull this
@@ -668,7 +673,7 @@ Some god dropped a newly created gown here.~
 ~
 9 0 9
 0 0 0 0
-0 0 0
+1 0 0
 A
 1 5
 A
@@ -680,7 +685,7 @@ A large sign floats before the trees alongside the pathway.~
 ~
 12 1 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 sign~
 The Gods hope your stay on the game will be a pleasant one.  However,
@@ -700,7 +705,7 @@ A large sign floating alongside the pathway demands your attention.~
 ~
 12 4 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 sign~
 The Gods hope your stay on the game will be a pleasant one.  However,
@@ -738,7 +743,7 @@ A spiral staircase leads down from center of the room.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 stairs staircase~
 These staircase looks sturdy.  It descends to another room from the
@@ -799,7 +804,7 @@ A container set up with the progs to make useless for non-guilded players.~
 ~
 15 1073741824 16385
 300 0 0 0
-0 0 0
+1 0 0
 #191
 fountain~
 a fountain~
@@ -807,7 +812,7 @@ A fountain of fresh water sits in the corner.~
 ~
 25 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #192
 plaque~
 a plaque~
@@ -815,7 +820,7 @@ To the right of the path, a plaque is imbedded in a boulder.  (look plaque)~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 boulder~
 This is an average boulder, grey and craggy.  It appears to be here
@@ -850,7 +855,7 @@ Attached to the banister is an inscribed golden plaque.~
 ~
 12 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 golden plaque banister~
 Welcome, Adventurers, to the Spectral Gates...
@@ -879,16 +884,17 @@ An opening in the tree, leading back to the path.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #196
 spiral staircase~
 a staircase~
 A spiral staircase leads down from center of the room, with an inscribed
+
 golden plaque attached to its banister.  [look plaque]~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 staircase spiral~
 This staircase is done up completely in wrought iron.  Strange mythical
@@ -902,7 +908,7 @@ A large, golden gate gives passage into the game.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #198
 cabin~
 the cabin~
@@ -910,7 +916,7 @@ A cabin of logs has been built into the hillside south of here.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 cabin~
 Disappearing into the hillside, only the very front of the cabin can be
@@ -923,7 +929,7 @@ Towering beside the pathway is an enormous tree, a large opening at its base.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 tree opening~
 A truly ancient tree, with a man-made opening large enough for you to enter.
@@ -952,6 +958,8 @@ You see a spiral staircase leading to a reception room.
 ~
 ~
 0 -1 101
+R M 0 101 1 100
+R O 0 124 1 100
 E
 tapestry~
 As you peer closer at this tapestry, you find it is not a tapestry at all,
@@ -1081,6 +1089,8 @@ Up a spiral staircase is a observation tower, overlooking the Realms.
 ~
 ~
 0 -1 100
+R M 0 100 1 101
+  R E 1 100 1 0
 E
 cedar~
 The walls here are made from the finest cedar, giving the room a luxurious
@@ -1163,6 +1173,8 @@ D10
 ~
 opening~
 917504 -1 104
+R M 0 102 1 102
+R O 0 199 1 102
 E
 tree~
 This tree is huge! On the southern face you see a large opening, it
@@ -1205,6 +1217,7 @@ Behind you is a path by the leading back to the reception area.
 ~
 ~
 0 -1 102
+R O 0 192 1 103
 > speech_prog p shadowy path~
 if level($n) == 1
 mpforce 0.$n config -nice
@@ -1258,6 +1271,10 @@ D10
 ~
 opening~
 917505 -1 102
+R O 0 194 1 104
+R O 0 104 1 104
+  R P 0 105 1 104
+R D 0 104 10 0
 E
 table~
 A small wooden table, only large enough to seat two.  There are a few
@@ -1296,6 +1313,7 @@ Before you is an adventure, are you ready to embrace it?
 ~
 ~
 0 -1 106
+R O 0 120 1 105
 > leave_prog 100~
 mpechoat $n Your eyes read over the sign as you pass it by.  It reads:
 mpforce 0.$n look sign
@@ -1340,6 +1358,7 @@ Before you is an adventure, are you ready to embrace it?
 ~
 ~
 0 -1 108
+R O 0 121 1 107
 > leave_prog 100~
 mpechoat $n Your eyes read over the sign as you pass it by. It reads:
 mpforce 0.$n look sign
@@ -1388,6 +1407,7 @@ Leading away from this field is a path through a circle of trees.
 ~
 ~
 0 -1 110
+R M 0 103 1 109
 > entry_prog 100~
 if mobinroom(103) < 1
 mpmload 103
@@ -1491,6 +1511,7 @@ The base of a hill meets the trail to the west.
 ~
 ~
 0 -1 113
+R O 0 111 1 112
 > leave_prog 100~
 mpforce 0.$n get bucket
 ~
@@ -1608,6 +1629,7 @@ North is the path to your future.
 ~
 ~
 0 -1 115
+R M 0 104 1 116
 > leave_prog 100~
 c refresh $n
 c refresh $n
@@ -1684,6 +1706,8 @@ The path ends before a large gate
 ~
 ~
 0 -1 121
+R M 0 105 1 119
+R O 0 198 1 119
 E
 cabin~
 This cabin looks like it melds with the surrounding hillside, a
@@ -1723,6 +1747,9 @@ D5
 ~
 trap trapdoor~
 1071 114 123
+R M 0 106 1 120
+  R E 1 119 1 5
+R D 0 120 5 2
 E
 rocking chair~
 This rocking chair is made of a supple wood, bent and twisted rather than
@@ -1781,6 +1808,8 @@ D9
 ~
 ~
 0 -1 119
+R D 0 121 1 2
+R O 0 197 1 121
 E
 gate~
 It would clearly take a large key to unlock this gate.  Maybe the resident
@@ -1803,6 +1832,8 @@ D3
 ~
 gate~
 7 114 121
+R O 0 115 1 122
+R D 0 122 3 2
 > act_prog p pulls a rope.~
 mpechoat $n High overhead you hear a large bell thunder in response.
 mpechoaround $n High overhead, a large bell thunders in response.
@@ -1826,6 +1857,7 @@ D4
 ~
 trap trapdoor~
 3 114 120
+R D 0 123 4 1
 > entry_prog 100~
 mpechoat $n You hear a creaking sound as the trapdoor closes above you.
 mpat Quercusi mpforce Quercusi close trapdoor
@@ -1838,36 +1870,6 @@ Floating in a void~
 0 4 1
 S
 #0
-
-
-#RESETS
-O 0 194 1 104
-M 0 101 1 100
-M 0 100 1 101
-E 1 100 1 0
-M 0 102 1 102
-O 1 104 1 104
-P 1 105 1 104
-D 0 104 10 0
-M 0 103 1 109
-O 1 111 1 112
-M 0 104 1 116
-M 0 105 1 119
-M 0 106 1 120
-E 1 119 1 5
-D 0 120 5 2
-D 0 121 1 2
-O 1 115 1 122
-D 0 122 3 2
-O 0 199 1 102
-O 0 198 1 119
-O 0 197 1 121
-O 0 192 1 103
-O 0 120 1 105
-O 0 121 1 107
-D 0 123 4 1
-O 0 124 1 100
-S
 
 
 #SHOPS

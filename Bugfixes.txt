@@ -1,0 +1,39 @@
+This list of fixes is only current as of the "Last Updated" date on Mud Planet.
+What's been done to this:
+
+Profanity checker removed.
+Request pipe code removed. It never seemed to work right anyway.
+Removed the build interface code.
+Added Intermud-3 support.
+Swapped olf IMC2 code out. Added IMC2 support using Freedom CL-1d.
+All compiler warnings fixed.
+Verified all of Kevin's bugfixes.
+Applied Darkoth's fixlist.
+Applied Zylara's fixlists.
+Applied the surving bugfixes from Sadiq.
+Applied Druid's bugfix list.
+Applied Nested Reset Fix. Major.
+Applied the posted fixes at the MUD Planet forums. ( www.mudplanet.org )
+Log spammy "Resetting blah blah" thing stopped.
+Removed the use of the bugs.txt file. Was redundant and often worthless.
+Added a default Admin player for initial startup. Has no password. DELETE WHEN DONE USING IT.
+Added Cygwin support.
+Corrected non-compliant Diku licensing issues.
+Stock colorize system replaced with Samson's color snippet. ( Yes, this *IS* a bugfix! )
+By popular demand, added Samson's hotboot snippet.
+
+Tested error-free on the following platforms:
+
+Redhat Linux 8.0, kernel 2.4.18-19.8.0, GCC 3.2 compiler
+Fedora Core 2, kernel 2.6.10-1.12_FC2, GCC 3.4.3 compiler
+Cygwin 1.3.17-1, WinXP Pro w/ SP1, GCC 3.2 compiler, Cygwin crypt library installed.
+Cygwin 1.5.13, WinXP Pro w/ SP2, GCC 3.3.3 compiler, Cygwin crypt library installed (but not required)
+
+------
+
+The Mud Domain IMC2 Intermud Network
+
+An intermud communication network of various muds, using a wide variety of codebases. We represent a variety of people from all parts of the world. We encourage free speech, exchanging ideas, lending a helping hand, and in general just having fun with each other. We welcome and encourage new MU*s to join in. The development home of the IMC2 Intermud Protocol.
+
+IMC2 intermud support and connection information can be found at the following site:
+http://www.imc2-intermud.org

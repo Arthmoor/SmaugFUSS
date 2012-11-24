@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Diku~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 3643376
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #6000
@@ -26,7 +29,7 @@ one of a peaceful man leading a simple life.
 65 544 350 C
 7 15 7 5d5+50 1d8+2
 50 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -59,7 +62,7 @@ teeth.  It doesn't resemble those cute little thingies from toy shops at all.
 97 0 -50 C
 8 13 3 8d8+80 2d6+2
 0 2000
-4 8 0
+104 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 76 3 0 0 513 512 1
@@ -76,7 +79,7 @@ rabbits into ferocious and bloodthirsty monsters.
 97 0 -150 S
 3 17 6 1d4+26 1d8+0
 0 350
-4 8 0
+104 112 0
 #6004
 deer~
 the fallow deer~
@@ -88,7 +91,7 @@ looking back at you with an air of watchful interest.
 1073741907 8 350 C
 2 19 2 2d8+2 1d6+0
 0 200
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 76 3 0 0 512 512 1
@@ -103,7 +106,7 @@ It is a large fox with beautiful, red-brown fur and a long, thick brush.
 65 0 -50 C
 2 18 6 1d4+18 1d6+0
 0 200
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 76 3 0 0 512 512 1
@@ -119,7 +122,7 @@ quickly from its long, white fangs.  It looks quite dangerous and very angry.
 97 0 -350 C
 5 16 5 1d1+60 1d6+1
 0 800
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 69 3 0 0 512 512 0
@@ -135,7 +138,7 @@ quickly from its long, white fangs.  It looks quite dangerous and very angry.
 97 0 -350 C
 5 16 5 1d1+60 2d4+0
 0 800
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 69 3 0 0 512 512 0
@@ -150,7 +153,7 @@ The large, grey wolf eyes you with interest while licking its lips.
 97 0 -150 C
 4 18 7 1d12+35 1d7+0
 0 450
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 69 3 0 0 513 512 0
@@ -169,7 +172,7 @@ The large, black wolf eyes you with interest while licking its lips.
 97 0 -150 C
 4 18 7 1d12+35 1d1+3
 0 450
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 512 512 0
@@ -191,7 +194,7 @@ do.
 99 8 -1000 C
 25 -5 -7 25d25+250 2d6+18
 5000 200000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 2048 2048 3
@@ -208,7 +211,7 @@ he is having great fun.
 149 32778 1000 C
 11 1 -10 10d10+100 1d8+2
 500 3000
-8 8 1
+112 112 1
 13 13 13 16 13 13 13
 0 0 0 0 0
 4 3 0 0 8 9 1
@@ -231,7 +234,7 @@ he would be a tough foe.
 7 8 0 C
 13 4 -7 1d1+130 2d8+2
 0 20000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -255,7 +258,7 @@ Thank god you're boring as hell.
 1 4194856 0 C
 25 0 -300 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 18 15 15 13 13 5 13
 0 0 0 0 0
 80 3 0 0 356069 356069 0
@@ -369,7 +372,7 @@ A fireplace made from stone is set against the east wall.~
 ~
 15 0 0
 200 0 0 0
-0 0 0
+1 0 0
 E
 fireplace~
 It is fashioned from stones of various sizes that have been stacked on top of
@@ -408,7 +411,7 @@ Some gold coins lie piled up in a heap on the floor.~
 ~
 20 0 1
 5000 0 0 0
-0 5000 500
+1 5000 500
 E
 coins~
 The coins seem to be gold.  They are obviously valuable.
@@ -452,7 +455,7 @@ An ancient, colossal tree serves to block the westward path.~
 ~
 15 262148 0
 1000 0 0 0
-0 0 0
+1 0 0
 E
 opening~
 The opening is far too narrow for you to squeeze through but it looks as if the
@@ -524,8 +527,9 @@ a humming yellow potion~
 A humming yellow potion lies here.~
 ~
 10 66 1
-30 39 66 1
+30 -1 -1 -1
 2 1000 100
+'kindred strength' 'stone skin' 'armor'
 E
 potion yellow~
 It has a deep yellow colour and and a strong spicy smell.
@@ -590,7 +594,7 @@ An old tome made of patchwork parchment lies in the dust here.~
 ~
 13 1074266368 16385
 0 0 0 0
-0 0 0
+1 0 0
 E
 book~
 Dusty and patchworked, this ancient tome has seen much use over the years.
@@ -1149,6 +1153,7 @@ The small path leads east through the trees.
 ~
 ~
 0 -1 6007
+R O 0 6011 3 6006
 E
 path paths~
 The narrow path is probably used by the animals living in the forest.
@@ -1255,6 +1260,11 @@ The small path leads west through the light forest.
 ~
 ~
 0 -1 6008
+R M 0 6000 1 6009
+  R E 1 6000 10 16
+  R E 1 6001 10 5
+  R E 1 6002 10 8
+R D 0 6009 0 1
 E
 cabin logs~
 It looks simple but comfortable and the slender trees make the whole place seem
@@ -1281,6 +1291,11 @@ The wooden door leads south.
 ~
 door wooden~
 1 -1 6009
+R O 0 6003 1 6010
+  R P 0 6006 1 6003
+R O 0 6005 1 6010
+  R P 0 6007 1 6005
+R O 0 6013 3 6010
 E
 bed~
 It is definitely not the most comfortable bed you have seen in your life.
@@ -1367,6 +1382,7 @@ The small path leads west through the trees.
 ~
 ~
 0 -1 6012
+R O 0 6011 3 6013
 E
 path paths~
 The narrow path is probably used by the animals living in the forest.
@@ -1397,6 +1413,7 @@ The small path leads west through the trees.
 ~
 ~
 0 -1 6013
+R M 0 6005 2 6014
 E
 path paths~
 The narrow path is probably used by the animals living in the forest.
@@ -1450,6 +1467,7 @@ The small path leads south through the trees.
 ~
 ~
 0 -1 6017
+R O 0 6011 3 6016
 E
 path paths~
 The narrow path is probably used by the animals living in the forest.
@@ -1615,6 +1633,7 @@ The cave opening is to the east.
 ~
 ~
 0 -1 6021
+R M 0 6002 1 6022
 E
 debris~
 It consists mostly of gnawed bones mixed with small pieces of torn fur.
@@ -1641,6 +1660,8 @@ The small path leads south in between the trees.
 ~
 ~
 0 -1 6018
+R M 0 6004 1 6023
+R O 0 6010 2 6023
 E
 grass~
 The tall grass makes a nice hiding place for animals.
@@ -1681,6 +1702,8 @@ The narrow, dusty trail leads west through the forest.
 ~
 ~
 0 -1 6101
+R M 0 6115 1 6100
+  R E 1 6114 3 1
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -1799,6 +1822,7 @@ The narrow, dusty trail leads south through the forest.
 ~
 ~
 0 -1 6108
+R O 0 6102 1 6103
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -1827,6 +1851,9 @@ The narrow path winds its way through the trees to the south.
 ~
 ~
 0 -1 6105
+R M 0 6102 4 6104
+R M 0 6102 4 6104
+R O 0 6106 4 6104
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -1853,6 +1880,7 @@ The narrow path winds its way through the trees to the west.
 ~
 ~
 0 -1 6106
+R O 0 6105 1 6105
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -1942,6 +1970,8 @@ The narrow, dusty trail leads west through the forest.
 ~
 ~
 0 -1 6109
+R M 0 6102 4 6108
+R M 0 6102 4 6108
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -2040,6 +2070,7 @@ The narrow, dusty trail leads south through the forest.
 ~
 ~
 0 -1 6112
+R O 0 6106 4 6111
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -2073,6 +2104,8 @@ The narrow, dusty trail leads west through the forest.
 ~
 ~
 0 -1 6127
+R M 0 6103 4 6112
+R M 0 6103 4 6112
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -2105,6 +2138,7 @@ The narrow path winds its way through the trees to the west.
 ~
 ~
 0 -1 6112
+R O 0 6103 1 6113
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -2189,6 +2223,8 @@ The narrow path winds its way through the trees to the south.
 ~
 ~
 0 -1 6115
+R M 0 6100 2 6116
+R M 0 6100 2 6116
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -2246,6 +2282,8 @@ The narrow path winds its way through the trees to the west.
 ~
 ~
 0 -1 6117
+R M 0 6103 4 6118
+R M 0 6103 4 6118
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -2272,6 +2310,7 @@ The narrow path winds its way through the trees to the south.
 ~
 ~
 0 -1 6120
+R O 0 6107 4 6119
 E
 tree trees trunk trunks~
 You feel as if they are watching you.
@@ -2326,6 +2365,7 @@ The narrow path winds its way through the trees to the east.
 ~
 ~
 0 -1 6120
+R M 0 6117 1 6121
 E
 river~
 The river flows fast and strong.  It is black or looks so in the gloom.
@@ -2357,6 +2397,7 @@ The narrow path winds its way through the trees to the south.
 ~
 ~
 0 -1 6123
+R O 0 6106 4 6122
 E
 tree trees trunk trunks~
 The ancient grey giants seem to observe you silently.
@@ -2449,6 +2490,7 @@ The narrow path winds its way through the trees to the east.
 ~
 ~
 0 -1 6123
+R O 0 6104 1 6125
 E
 river~
 The river flows fast and strong.  It is black or looks so in the gloom.
@@ -2518,6 +2560,8 @@ The narrow, dusty trail leads south through the forest.
 ~
 ~
 0 -1 6126
+R M 0 6101 2 6127
+R M 0 6101 2 6127
 E
 trail~
 The dark and dusty trail seems fragile compared to the massive trunks, and in
@@ -2826,6 +2870,10 @@ The exit leads out into the forest.
 ~
 ~
 0 -1 6142
+R M 0 6112 1 6143
+  R G 1 6110 10
+  R G 1 6112 10
+  R G 1 6111 10
 E
 bone bones floor~
 Most of the bones on the floor appear to be of human origin.
@@ -2917,6 +2965,7 @@ The bend on the trail...
 ~
 ~
 0 -1 6151
+R D 1 6152 1 1
 S
 #6153
 Inside the great tree.~
@@ -2934,6 +2983,7 @@ The steps look appear like they will hold your weight.
 ~
 ~
 0 -1 6154
+R D 1 6153 3 1
 S
 #6154
 The underground hallway.~
@@ -2965,6 +3015,8 @@ the hallway looks quite grand.
 ~
 ~
 1 -1 6154
+R M 0 6116 1 6155
+  R E 1 6155 1 16
 S
 #6156
 A smaller path~
@@ -2980,58 +3032,6 @@ Into a darker section of the forest.
 0 -1 6151
 S
 #0
-
-
-#RESETS
-M 0 6000 1 6009
-E 1 6000 10 16
-E 1 6001 10 5
-E 1 6002 10 8
-D 0 6009 0 1
-M 0 6002 1 6022
-M 0 6004 1 6023
-M 0 6005 2 6014
-O 0 6003 1 6010
-O 0 6005 1 6010
-P 1 6007 1 6005
-P 1 6006 1 6003
-O 0 6013 3 6010
-O 0 6010 2 6023
-O 0 6011 3 6006
-O 0 6011 3 6013
-O 0 6011 3 6016
-M 0 6100 2 6116
-M 0 6100 2 6116
-M 0 6101 2 6127
-M 0 6101 2 6127
-M 0 6102 4 6108
-M 0 6102 4 6108
-M 0 6102 4 6104
-M 0 6102 4 6104
-M 0 6103 4 6112
-M 0 6103 4 6112
-M 0 6103 4 6118
-M 0 6103 4 6118
-M 0 6112 1 6143
-G 1 6110 10
-G 1 6112 10
-G 1 6111 10
-M 0 6115 1 6100
-E 1 6114 3 1
-M 0 6116 1 6155
-E 1 6155 1 16
-D 1 6152 1 1
-D 1 6153 3 1
-O 0 6102 1 6103
-O 0 6103 1 6113
-O 0 6104 1 6125
-O 0 6105 1 6105
-O 0 6106 4 6104
-O 0 6106 4 6111
-O 0 6106 4 6122
-O 0 6107 4 6119
-M 0 6117 1 6121
-S
 
 
 #SHOPS

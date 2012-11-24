@@ -1,583 +1,432 @@
+/* IMC2 Freedom Client - Developed by Mud Domain.
+ *
+ * Copyright (C)2004 by Roger Libiez ( Samson )
+ * Contributions by Johnathan Walker ( Xorith ), Copyright (C)2004
+ * Additional contributions by Jesse Defer ( Garil ), Copyright (C)2004
+ * Additional contributions by Rogel, Copyright (c) 2004
+ * Comments and suggestions welcome: imc@imc2.org
+ * License terms are available in the imc2freedom.license file.
+ */
+
+#ifndef __IMC2_H__
+#define __IMC2_H__
+
+/* The all important version ID string, which is hardcoded for now out of laziness.
+ * This name was chosen to represent the ideals of not only the code, but of the
+ * network which spawned it.
+ */
+#define IMC_VERSION_STRING "IMC2 Freedom CL-2.1 "
+#define IMC_VERSION 2
+
+/* Number of entries to keep in the channel histories */
+#define MAX_IMCHISTORY 20
+#define MAX_IMCTELLHISTORY 20
+
+/* Remcon: Ask and ye shall receive. */
+#define IMC_DIR          "../imc/"
+
+#define IMC_CHANNEL_FILE IMC_DIR "imc.channels"
+#define IMC_CONFIG_FILE  IMC_DIR "imc.config"
+#define IMC_BAN_FILE     IMC_DIR "imc.ignores"
+#define IMC_UCACHE_FILE  IMC_DIR "imc.ucache"
+#define IMC_COLOR_FILE   IMC_DIR "imc.color"
+#define IMC_HELP_FILE    IMC_DIR "imc.help"
+#define IMC_CMD_FILE     IMC_DIR "imc.commands"
+#define IMC_HOTBOOT_FILE IMC_DIR "imc.hotboot"
+#define IMC_WHO_FILE     IMC_DIR "imc.who"
+
+/* Make sure you set the macros in the imccfg.h file properly or things get ugly from here. */
+#include "imccfg.h"
+
+#define IMC_BUFF_SIZE 16384
+
+/* Connection states stuff */
+enum imc_constates
+{
+   IMC_OFFLINE, IMC_AUTH1, IMC_AUTH2, IMC_ONLINE
+};
+
+typedef enum
+{
+   IMCPERM_NOTSET, IMCPERM_NONE, IMCPERM_MORT, IMCPERM_IMM, IMCPERM_ADMIN, IMCPERM_IMP
+} imc_permissions;
+
+/* Flag macros */
+#define IMCIS_SET(var, bit)         ((var) & (bit))
+#define IMCSET_BIT(var, bit)        ((var) |= (bit))
+#define IMCREMOVE_BIT(var, bit)     ((var) &= ~(bit))
+
+/* Channel flags, only one so far, but you never know when more might be useful */
+#define IMCCHAN_LOG      (1 <<  0)
+
+/* Player flags */
+#define IMC_TELL         (1 <<  0)
+#define IMC_DENYTELL     (1 <<  1)
+#define IMC_BEEP         (1 <<  2)
+#define IMC_DENYBEEP     (1 <<  3)
+#define IMC_INVIS        (1 <<  4)
+#define IMC_PRIVACY      (1 <<  5)
+#define IMC_DENYFINGER   (1 <<  6)
+#define IMC_AFK          (1 <<  7)
+#define IMC_COLORFLAG    (1 <<  8)
+#define IMC_PERMOVERRIDE (1 <<  9)
+#define IMC_NOTIFY       (1 << 10)
+
+#define IMCPERM(ch)           (CH_IMCDATA((ch))->imcperm)
+#define IMCFLAG(ch)           (CH_IMCDATA((ch))->imcflag)
+#define FIRST_IMCIGNORE(ch)   (CH_IMCDATA((ch))->imcfirst_ignore)
+#define LAST_IMCIGNORE(ch)    (CH_IMCDATA((ch))->imclast_ignore)
+#define IMC_LISTEN(ch)        (CH_IMCDATA((ch))->imc_listen)
+#define IMC_DENY(ch)          (CH_IMCDATA((ch))->imc_denied)
+#define IMC_RREPLY(ch)        (CH_IMCDATA((ch))->rreply)
+#define IMC_RREPLY_NAME(ch)   (CH_IMCDATA((ch))->rreply_name)
+#define IMC_EMAIL(ch)         (CH_IMCDATA((ch))->email)
+#define IMC_HOMEPAGE(ch)      (CH_IMCDATA((ch))->homepage)
+#define IMC_AIM(ch)           (CH_IMCDATA((ch))->aim)
+#define IMC_ICQ(ch)           (CH_IMCDATA((ch))->icq)
+#define IMC_YAHOO(ch)         (CH_IMCDATA((ch))->yahoo)
+#define IMC_MSN(ch)           (CH_IMCDATA((ch))->msn)
+#define IMC_COMMENT(ch)       (CH_IMCDATA((ch))->comment)
+#define IMCTELLHISTORY(ch,x)  (CH_IMCDATA((ch))->imc_tellhistory[(x)])
+#define IMCISINVIS(ch)        ( IMCIS_SET( IMCFLAG((ch)), IMC_INVIS ) )
+#define IMCAFK(ch)            ( IMCIS_SET( IMCFLAG((ch)), IMC_AFK ) )
+
+/* Should not need to edit anything below this point */
+
+#define LGST 4096 /* Large String */
+#define SMST 1024 /* Small String */
+
+/* Macro taken from DOTD codebase. Fcloses a file, then nulls its pointer for safety. */
+#define IMCFCLOSE(fp)  fclose((fp)); (fp)=NULL;
+
 /*
- * IMC2 - an inter-mud communications protocol
- *
- * imc.h: the core protocol definitions
- *
- * Copyright (C) 1996,1997 Oliver Jowett <oliver@jowett.manawatu.planet.co.nz>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program (see the file COPYING); if not, write to the
- * Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- *
+ * Memory allocation macros.
  */
-
-#ifndef IMC_H
-#define IMC_H
-
-#include <sys/time.h>
-#include "imc-config.h"
-
-#define REVISION "Revision 8 5/4/99"
-/* activation states */
-
-#define IA_NONE        0
-#define IA_CONFIG1     1
-#define IA_CONFIG2     2
-#define IA_UP          3
-#define IA_LISTENING   4
-
-/* connection states */
-
-#define IMC_CLOSED     0
-#define IMC_CONNECTING 1
-#define IMC_WAIT1      2
-#define IMC_WAIT2      3
-#define IMC_CONNECTED  4
-
-/* connection flags */
-
-#define IMC_NOAUTO 1
-#define IMC_CLIENT 2
-#define IMC_RECONNECT 4
-#define IMC_BROADCAST 8
-#define IMC_DENY 16
-#define IMC_QUIET 32
-#define IMC_HUB 64      /* SPAM fix - shogar */
-#define IMC_MAIN_HUB 128 /* Scion */
-#define IMC_OLD_HUB 256 /* Scion */
-#define IMC_DEAD_HUB 512 /* Scion */
-#define IMC_NEW_HUB 1024 /* shogar */
-#define IMC_NOSWITCH 2048 /* shogar */
-
-
-/* ignore types */
-#define IMC_IGNORE  1          /* ignore sender */
-#define IMC_NOTRUST 2          /* don't trust sender's levels */
-#define IMC_TRUST   3          /* do trust sender's levels */
-
-/* ignore match flags */
-#define IMC_IGNORE_EXACT  0    /* match exactly */
-#define IMC_IGNORE_PREFIX 1    /* ignore prefixes when matching */
-#define IMC_IGNORE_SUFFIX 2    /* ignore suffixes when matching */
-
-/* imc_char_data invisibility state */
-#define IMC_INVIS 1
-#define IMC_HIDDEN 2
-
-
-
-
-/* typedefs */
-
-/* flag/state tables */
-typedef struct
-{
-  char *name;			/* flag name */
-  int value;			/* bit value */
-} imc_flag_type;
-
-/* data in an IMC packet */
-typedef struct
-{
-  char *key[IMC_MAX_KEYS];
-  char *value[IMC_MAX_KEYS];
-} imc_data;
-
-/* an IMC packet, as seen by the high-level code */
-typedef struct
-{
-  char to[IMC_NAME_LENGTH];	/* destination of packet */
-  char from[IMC_NAME_LENGTH];	/* source of packet      */
-  char type[IMC_TYPE_LENGTH];	/* type of packet        */
-  imc_data data;		/* data of packet        */
-
-  /* internal things which only the low-level code needs to know about */
-  struct {
-    char to[IMC_NAME_LENGTH];
-    char from[IMC_NAME_LENGTH];
-    char path[IMC_PATH_LENGTH];
-    unsigned long sequence;
-    int stamp;
-  } i;
-} imc_packet;
-
-/* an actual IMC connection */
-typedef struct _imc_connect
-{
-  struct _imc_info *info;       /* imc_info struct for this connection */
-
-  int desc;			/* descriptor */
-  unsigned short state;	      	/* IMC_xxxx state */
-  unsigned short version;      	/* version of remote site */
-
-  short newoutput;              /* try to write at end of cycle regardless
-				 * of fd_set state?
-				 */
-  
-  char *inbuf;		        /* input buffer */
-  int insize;
-
-  char *outbuf;		        /* output buffer */
-  int outsize;
-
-  int spamcounter1;             /* packet counters since last update */
-  int spamcounter2;
-  int spamtime1;                /* +ve = time exceeding limit */
-  int spamtime2;                /* -ve = time remaining with enforced limit */
-
-  struct _imc_connect *next;
-} imc_connect;
-
-/* a configured IMC connection */
-typedef struct _imc_info
-{
-  char *name;			/* name of remote mud */
-  char *host;			/* hostname */
-
-  struct _imc_connect *connection;
-
-  unsigned short port;		/* remote port */
-  char *serverpw;		/* server password */
-  char *clientpw;		/* client password */
-  int flags;			/* connection flags */
-  time_t timer_duration;        /* delay after next reconnect failure */
-
-  int rcvstamp;                 /* packets get this stamp on arrival */
-  int noforward;                /* packets with these bits set don't get
-                                 * forwarded here */
-
-  time_t last_connected;        /* last connected when? */
-  int connect_attempts;       /* try for 3 times - shogar */
-  
-  struct _imc_info *next;
-} imc_info;
-
-/* IMC statistics */
-typedef struct
-{
-  time_t start;		        /* when statistics started */
-  
-  long rx_pkts;		        /* received packets */
-  long tx_pkts;		        /* transmitted packets */
-  long rx_bytes;		/* received bytes */
-  long tx_bytes;		/* transmitted bytes */
-
-  int max_pkt;                  /* max. size packet processed */
-  int sequence_drops;           /* dropped packets due to age */
-} imc_statistics;
-
-#define IMC_REMINFO_NORMAL 0
-#define IMC_REMINFO_EXPIRED 1
-
-/* info about another mud on IMC */
-typedef struct _imc_reminfo
-{
-  char *name;
-  char *version;
-  time_t alive;
-  int ping;
-  int type;
-  int hide;
-  char *route;
-  char *path;
-  unsigned long top_sequence;
-  struct _imc_reminfo *next;
-} imc_reminfo;
-
-/* an event */
-typedef struct _imc_event
-{
-  time_t when;
-  void (*callback)(void *data);
-  void *data;
-  int timed;
-  struct _imc_event *next;
-} imc_event;
-
-/* for the versioning table */
-typedef struct
-{
-  int version;
-  const char *(*generate) (const imc_packet *);
-  imc_packet *(*interpret) (const char *);
-} _imc_vinfo;
-
-/* an entry in the memory table */
-typedef struct
-{
-  char *from;
-  unsigned long sequence;
-} _imc_memory;
-
-/* an ignore/notrust/etc entry */
-typedef struct _imc_ignore_data
-{
-  char *name;
-  int match;                      /* exact, prefix, suffix */
-  int type;                       /* ignore, notrust */
-  struct _imc_ignore_data *next;
-} imc_ignore_data;
-
-/* a player on IMC */
-typedef struct
-{
-  char name[IMC_NAME_LENGTH];	/* name of character */
-  int invis;			/* invisible to IMC? */
-  int level;			/* trust level */
-  int wizi;			/* wizi level */
-} imc_char_data;
-
-/* one piece of mail */
-typedef struct _imc_mail
-{
-  char *from;			/* 'from' line */
-  char *to;			/* 'to' line */
-  char *text;			/* text of the mail */
-  char *date;			/* 'date' line */
-  char *subject;		/* 'subject' line */
-  char *id;			/* mail ID (should be unique among mails) */
-  time_t received;		/* when it was received (into the queue) */
-  int usage;			/* number of references to this mail */
-  struct _imc_mail *next;
-} imc_mail;
-
-/* a queue entry pointing at a piece of mail */
-typedef struct _imc_qnode
-{
-  imc_mail *data;
-  char *tomud;
-  struct _imc_qnode *next;
-} imc_qnode;
-
-/* a mail ID that has been received */
-typedef struct _imc_mailid
-{
-  char *id;			/* message-id */
-  time_t received;		/* when received */
-  struct _imc_mailid *next;
-} imc_mailid;
-
-/* site information */
-typedef struct
-{
-  char *name;    /* FULL name of mud */
-  char *host;    /* host AND port */
-  char *email;   /* contact address (email) */
-  char *imail;   /* contact address (IMC mail) */
-  char *www;     /* homepage */
-  char *details; /* BRIEF description of mud */
-  char *flags;   /* special flags - currently only "hide" is supported */
-  int maxguests; /* max number of guest connections - shogar */
-} imc_siteinfo_struct;
-
-/* data structures */
-
-extern imc_siteinfo_struct imc_siteinfo;
-
-/* the packet memory table */
-extern _imc_memory imc_memory[IMC_MEMORY];
-/* the version lookup table */
-extern _imc_vinfo imc_vinfo[];
-
-/* global stats struct */
-extern imc_statistics imc_stats;
-
-/* flag and state tables */
-extern const imc_flag_type imc_connection_flags[];
-extern const imc_flag_type imc_ignore_types[];
-extern const imc_flag_type imc_state_names[];
-extern const imc_flag_type imc_active_names[];
-
-/* global recursion lock */
-extern int imc_lock;
-/* the local IMC name */
-extern char *imc_name;
-/* the local IMC port */
-extern unsigned short imc_port;
-/* IP to bind to */
-extern unsigned long imc_bind;
-/* the configuration prefix */
-extern char *imc_prefix;
-/* run as a router? */
-extern int imc_is_router;
-
-/* the ignore list */
-extern imc_ignore_data *imc_ignore_list;
-/* the reminfo list */
-extern imc_reminfo *imc_reminfo_list;
-/* the connection list */
-extern imc_connect *imc_connect_list;
-/* the configured connection list */
-extern imc_info *imc_info_list;
-/* the event list, and recycle list */
-extern imc_event *imc_event_list, *imc_event_free;
-
-/* the current time */
-extern time_t imc_now;
-/* next sequence number to use */
-extern unsigned long imc_sequencenumber;
-
-/* IMC state */
-extern int imc_active;
-
-/* -1 if prefix is in use (when network is up), >=0 otherwise */
-extern int imc_lock_file;
-
-/* mail list */
-extern imc_mail *imc_ml_head;
-/* mail queue */
-extern imc_qnode *imc_mq_head, *imc_mq_tail;
-/* ID list */
-extern imc_mailid *imc_idlist;
-
-/* last reported error */
-extern char imc_lasterror[IMC_DATA_LENGTH];
-
-/* packet hook */
-int (*imc_recv_hook)(const imc_packet *p, int bcast);
-
-/* imc-util.c exported functions */
-
-/* static buffer handling */
-char *imc_getsbuf(int len);
-void imc_shrinksbuf(char *buf);
-
-/* imc data handlers */
-const char *imc_getkey(const imc_data *p, const char *key, const char *def);
-int imc_getkeyi(const imc_data *p, const char *key, int def);
-void imc_addkey(imc_data *p, const char *key, const char *value);
-void imc_addkeyi(imc_data *p, const char *key, int value);
-void imc_initdata(imc_data *p);
-void imc_freedata(imc_data *p);
-void imc_clonedata(const imc_data *p, imc_data *n);
-
-/* reminfo handling */
-imc_reminfo *imc_find_reminfo(const char *name, int type);
-imc_reminfo *imc_new_reminfo(void);
-void imc_delete_reminfo(imc_reminfo *p);
-
-/* info handling */
-imc_info *imc_new_info(void);
-void imc_delete_info(imc_info *);
-imc_info *imc_getinfo(const char *name);
-
-/* state/flag handling */
-const char *imc_flagname(int value, const imc_flag_type *table);
-int imc_flagvalue(const char *name, const imc_flag_type *table);
-const char *imc_statename(int value, const imc_flag_type *table);
-int imc_statevalue(const char *name, const imc_flag_type *table);
-
-/* string manipulations */
-const char *imc_nameof(const char *name);
-const char *imc_mudof(const char *name);
-const char *imc_makename(const char *name, const char *mud);
-const char *imc_firstinpath(const char *path);
-const char *imc_lastinpath(const char *path);
-const char *imc_getarg(const char *arg, char *buf, int length);
-int imc_hasname(const char *list, const char *name);
-void imc_addname(char **list, const char *name);
-void imc_removename(char **list, const char *name);
-void imc_slower(char *what);
-void imc_sncpy(char *dest, const char *src, int count);
-const char *imc_getconnectname(const imc_connect *c);
-
-/* logging */
-
-void imc_logstring(const char *format,...); /*__attribute__((format(printf,1,2))); Uncomment these */
-void imc_logerror(const char *format,...); /*__attribute__((format(printf,1,2))); if your system can*/
-void imc_qerror(const char *format,...); /*__attribute__((format(printf,1,2)));   use them. */
-void imc_lerror(const char *format,...); /*__attribute__((format(printf,1,2)));*/
-const char *imc_error(void);
-
-/* external log interfaces */
-void imc_log(const char *string);
-void imc_debug(const imc_connect *, int out, const char *packet);
-
-
-
-/* imc-events.c exported functions */
-
-/* event handling */
-imc_event *imc_new_event(void);
-void imc_free_event(imc_event *p);
-void imc_add_event(int when, void (*callback)(void *), void *data, int timed);
-void imc_cancel_event(void (*callback)(void *), void *data);
-void imc_run_events(time_t);
-int imc_next_event(void (*callback)(void *), void *data);
-void imc_recv_keepalive(const char *from, const char *version, const char *flags); /* shogar */
-void imc_request_keepalive(void); /* shogar */
-void imc_recv_info_reply(const char *from, const char *hub, int direct); /* Scion */
-void imc_send_autoconnect(const char *to); /* Scion */
-void imc_recv_autoconnect(const char *to, const char *rhost, int rport, const char *rclientpw, const char *rserverpw, 
-						  int rrcvstamp, int rnoforward, const char *rflags, const char *remotename); /* Scion */
-void imc_autoconnect_reply_accept(const char *from, const char *rhost, int rport, const char *rclientpw, const char *rserverpw, 
-						  int rrcvstamp, int rnoforward, const char *rflags, const char *remotename, const char *confirm); /* Scion */
-imc_info *imc_insert_info(); /* shogar */
-void imc_cancel_info(imc_info *i); /* shogar */
-
-
-/* all events (in imc-events.c unless otherwise specified) */
-void ev_expire_reminfo(void *data);
-void ev_drop_reminfo(void *data);
-void ev_login_timeout(void *data);       /* imc.c */
-void ev_reconnect(void *data);
-void ev_shrink_input(void *data);
-void ev_shrink_output(void *data);
-void ev_keepalive(void *data);
-void ev_request_keepalive(void *data);
-void ev_spam1(void *data);
-void ev_spam2(void *data);
-void ev_qnode_expire(void *data);        /* imc-mail.c */
-void ev_mailid_expire(void *data);       /* imc-mail.c */
-void ev_qnode_send(void *data);          /* imc-mail.c */
-void ev_imc_optimize(void *data);	/* Scion */
-void ev_imc_pollforhub(void *data);	/* shogar */
-
-/* imc.c exported functions */
-
-void imc_setup_reconnect(imc_info *i);
-
-const char *imc_make_password(void); /* Scion */
-
-void imc_send(imc_packet *p);
-void imc_recv(const imc_packet *p);
-
-void imc_startup_port(void);
-void imc_startup_network(void);
-void imc_startup(const char *prefix);
-void imc_shutdown(void);
-void imc_shutdown_network(void);
-void imc_shutdown_port(void);
-void imc_idle(int s, int us);
-
-int imc_get_max_timeout(void);
-int imc_fill_fdsets(int maxfd, fd_set *read, fd_set *write, fd_set *exc);
-void imc_idle_select(fd_set *read, fd_set *write, fd_set *exc, time_t now);
-
-int imc_connect_to(const char *mud);
-int imc_disconnect(const char *mud);
-
-/* memory allocation hooks
- * these aren't #defines so we don't have to know about the actual mud
- * function declarations in imc.c/imc-comm.c
+#define IMCCREATE(result, type, number)                           \
+do                                                                \
+{                                                                 \
+    if (!((result) = (type *) calloc ((number), sizeof(type))))   \
+    {                                                             \
+	imclog( "Malloc failure @ %s:%d\n", __FILE__, __LINE__ );   \
+	abort();                                                    \
+    }                                                             \
+} while(0)
+
+#define IMCRECREATE(result, type, number)                               \
+do                                                                      \
+{                                                                       \
+   if(!((result) = (type *)realloc((result), sizeof(type) * (number)))) \
+   {                                                                    \
+      imclog( "Realloc failure @ %s:%d\n", __FILE__, __LINE__ );        \
+      abort();                                                          \
+   }                                                                    \
+} while(0)
+
+#define IMCDISPOSE(point)     \
+do                            \
+{                             \
+   if((point))                \
+   {                          \
+      free((point));          \
+      (point) = NULL;         \
+   }                          \
+} while(0)
+
+#define IMCSTRALLOC strdup
+#define IMCSTRFREE IMCDISPOSE
+
+/* double-linked list handling macros -Thoric ( From the Smaug codebase ) */
+/* Updated by Scion 8/6/1999 */
+#define IMCLINK(link, first, last, next, prev)  \
+do                                              \
+{                                               \
+   if ( !(first) )                              \
+   {                                            \
+      (first) = (link);                         \
+      (last) = (link);                          \
+   }                                            \
+   else                                         \
+      (last)->next = (link);                    \
+   (link)->next = NULL;                         \
+   if ((first) == (link))                       \
+      (link)->prev = NULL;                      \
+   else                                         \
+      (link)->prev = (last);                    \
+   (last) = (link);                             \
+} while(0)
+
+#define IMCINSERT(link, insert, first, next, prev)    \
+do                                                    \
+{                                                     \
+   (link)->prev = (insert)->prev;                     \
+   if ( !(insert)->prev )                             \
+      (first) = (link);                               \
+   else                                               \
+      (insert)->prev->next = (link);                  \
+   (insert)->prev = (link);                           \
+   (link)->next = (insert);                           \
+} while(0)
+
+#define IMCUNLINK(link, first, last, next, prev) \
+do                                               \
+{                                                \
+   if ( !(link)->prev )                          \
+   {                                             \
+      (first) = (link)->next;                    \
+	if((first))                                \
+	   (first)->prev = NULL;                   \
+   }                                             \
+   else                                          \
+   {                                             \
+      (link)->prev->next = (link)->next;         \
+   }                                             \
+   if( !(link)->next )                           \
+   {                                             \
+      (last) = (link)->prev;                     \
+	if((last))                                 \
+	   (last)->next = NULL;                    \
+   }                                             \
+   else                                          \
+   {                                             \
+      (link)->next->prev = (link)->prev;         \
+   }                                             \
+} while(0)
+
+/* No real functional difference in alot of this, but double linked lists DO seem to handle better,
+ * and they look alot neater too. Yes, readability IS important! - Samson
  */
-#define imc_free(b,s) {IMC_free(b,s);b=NULL;}
-#define imc_strfree(s) {IMC_strfree(s);s=NULL;}
-void *imc_malloc(int size);
-void IMC_free(void *block, int size);
-char *imc_strdup(const char *src);
-void IMC_strfree(char *str);
+typedef struct imc_channel IMC_CHANNEL;   /* Channels, both local and non-local */
+typedef struct imc_packet IMC_PACKET;  /* It's a packet! */
+typedef struct imc_packet_data IMC_PDATA; /* Extra data fields for packets */
+typedef struct imc_siteinfo SITEINFO;  /* The given mud :) */
+typedef struct imc_remoteinfo REMOTEINFO; /* Information on a mud connected to IMC */
+typedef struct imc_ban_data IMC_BAN;   /* Mud level bans */
+typedef struct imcchar_data IMC_CHARDATA; /* Player flags */
+typedef struct imc_ignore IMC_IGNORE;  /* Player level ignores */
+typedef struct imcucache_data IMCUCACHE_DATA;   /* User cache data for gender targetting socials */
+typedef struct imc_color_table IMC_COLOR; /* The Color config */
+typedef struct imc_command_table IMC_CMD_DATA;  /* Command table */
+typedef struct imc_help_table IMC_HELP_DATA; /* Help table */
+typedef struct imc_cmd_alias IMC_ALIAS;   /* Big, bad, bloated command alias thing */
+typedef struct imc_packet_handler IMC_PHANDLER; /* custom packet handlers added dynamically */
+typedef struct who_template WHO_TEMPLATE; /* The who templates */
 
+typedef void IMC_FUN( CHAR_DATA * ch, char *argument );
+#define IMC_CMD( name ) void (name)( CHAR_DATA *ch, char *argument )
 
+typedef void PACKET_FUN( IMC_PACKET * q, char *packet );
+#define PFUN( name ) void (name)( IMC_PACKET *q, char *packet )
 
-/* imc-interp.c exported functions */
+extern REMOTEINFO *first_rinfo;
+extern REMOTEINFO *last_rinfo;
+extern SITEINFO *this_imcmud;
 
-void imc_sendignore(const char *to);
+/* Oh yeah, baby, that raunchy looking Merc structure just got the facelift of the century.
+ * Thanks to Thoric and friends for the slick idea.
+ */
+struct imc_cmd_alias
+{
+   IMC_ALIAS *next;
+   IMC_ALIAS *prev;
+   char *name;
+};
 
-void imc_send_chat(const imc_char_data *from, int channel,
-		   const char *argument, const char *to);
-void imc_send_emote(const imc_char_data *from, int channel,
-		    const char *argument, const char *to);
-void imc_send_tell(const imc_char_data *from, const char *to,
-		   const char *argument, int isreply);
-void imc_send_who(const imc_char_data *from, const char *to,
-		  const char *type);
-void imc_send_whoreply(const char *to, const char *data, int sequence);
-void imc_send_whois(const imc_char_data *from, const char *to);
-void imc_send_whoisreply(const char *to, const char *data);
-void imc_send_beep(const imc_char_data *from, const char *to);
-void imc_send_keepalive(void);
-void imc_send_ping(const char *to, int time_s, int time_u);
-void imc_send_pingreply(const char *to, int time_s, int time_u, const char *path);
-void imc_send_whois(const imc_char_data *from, const char *to);
-void imc_send_whoisreply(const char *to, const char *text);
-void imc_send_info_request(void);
+struct imc_command_table
+{
+   IMC_CMD_DATA *next;
+   IMC_CMD_DATA *prev;
+   IMC_ALIAS *first_alias;
+   IMC_ALIAS *last_alias;
+   IMC_FUN *function;
+   char *name;
+   int level;
+   bool connected;
+};
 
+struct imc_help_table
+{
+   IMC_HELP_DATA *next;
+   IMC_HELP_DATA *prev;
+   char *name;
+   char *text;
+   int level;
+};
 
-void imc_whoreply_start(const char *to);
-void imc_whoreply_add(const char *text);
-void imc_whoreply_end(void);
+struct imc_color_table
+{
+   IMC_COLOR *next;
+   IMC_COLOR *prev;
+   char *name; /* the name of the color */
+   char *mudtag;  /* What the mud uses for the raw tag */
+   char *imctag;  /* The imc tilde code that represents the mudtag to the network */
+};
 
-/* callbacks that need to be provided by the interface layer */
+struct imc_ignore
+{
+   IMC_IGNORE *next;
+   IMC_IGNORE *prev;
+   char *name;
+};
 
-void imc_recv_chat(const imc_char_data *from, int channel,
-		   const char *argument);
-void imc_recv_emote(const imc_char_data *from, int channel,
-		    const char *argument);
-void imc_recv_tell(const imc_char_data *from, const char *to,
-		   const char *argument, int isreply);
-void imc_recv_whoreply(const char *to, const char *data, int sequence);
-void imc_recv_who(const imc_char_data *from, const char *type);
-void imc_recv_beep(const imc_char_data *from, const char *to);
-void imc_recv_keepalive(const char *from, const char *version, const char *flags);
-void imc_recv_ping(const char *from, int time_s, int time_u, const char *path);
-void imc_recv_pingreply(const char *from, int time_s, int time_u, const char *pathto, const char *pathfrom);
-void imc_recv_whois(const imc_char_data *from, const char *to);
-void imc_recv_whoisreply(const char *to, const char *text);
-void imc_recv_inforequest(const char *from);
+struct imcucache_data
+{
+   IMCUCACHE_DATA *next;
+   IMCUCACHE_DATA *prev;
+   char *name;
+   time_t time;
+   int gender;
+};
 
-void imc_traceroute(int ping, const char *pathto, const char *pathfrom);
+struct imcchar_data
+{
+   IMC_IGNORE *imcfirst_ignore;  /* List of ignored people */
+   IMC_IGNORE *imclast_ignore;
+   char *rreply;  /* IMC reply-to */
+   char *rreply_name;   /* IMC reply-to shown to char */
+   char *imc_listen; /* Channels the player is listening to */
+   char *imc_denied; /* Channels the player has been denied use of */
+   char *imc_tellhistory[MAX_IMCTELLHISTORY];   /* History of received imctells - Samson 1-21-04 */
+   char *email;   /* Person's email address - for imcfinger - Samson 3-21-04 */
+   char *homepage;   /* Person's homepage - Samson 3-21-04 */
+   char *aim;  /* Person's AOL Instant Messenger screenname - Samson 3-21-04 */
+   char *yahoo;   /* Person's Y! screenname - Samson 3-21-04 */
+   char *msn;  /* Person's MSN Messenger screenname - Samson 3-21-04 */
+   char *comment; /* Person's personal comment - Samson 3-21-04 */
+   long imcflag;  /* Flags set on the player */
+   int icq; /* Person's ICQ UIN Number - Samson 3-21-04 */
+   int imcperm;   /* Permission level for the player */
+};
 
-/* other functions */
-const char *imc_sockets(void);
-const char *imc_getstats(void);
+struct imc_channel
+{
+   IMC_CHANNEL *next;
+   IMC_CHANNEL *prev;
+   char *name; /* name of channel */
+   char *owner;   /* owner (singular) of channel */
+   char *operators;  /* current operators of channel */
+   char *invited;
+   char *excluded;
+   char *local_name; /* Operational localname */
+   char *regformat;
+   char *emoteformat;
+   char *socformat;
+   char *history[MAX_IMCHISTORY];
+   long flags;
+   short level;
+   bool open;
+   bool refreshed;
+};
 
+struct imc_packet_data
+{
+   IMC_PDATA *next;
+   IMC_PDATA *prev;
+   char field[IMC_BUFF_SIZE];
+};
 
-/* imc-config.c exported functions */
+struct imc_packet
+{
+   IMC_PDATA *first_data;
+   IMC_PDATA *last_data;
+   char from[SMST];
+   char to[SMST];
+   char type[SMST];
+   char route[SMST]; /* This is only used internally and not sent */
+};
 
-/* ignore handling */
-imc_ignore_data *imc_findignore(const char *who, int type);
-int imc_isignored(const char *who);
-void imc_addignore(const char *who, int flags);
-int imc_delignore(const char *who);
-imc_ignore_data *imc_newignore(void);
-void imc_freeignore(imc_ignore_data *ign);
+/* The mud's connection data for the server */
+struct imc_siteinfo
+{
+   char *servername; /* name of server */
+   char *rhost;   /* DNS/IP of server */
+   char *network; /* Network name of the server, set at keepalive - Samson */
+   char *serverpw;   /* server password */
+   char *clientpw;   /* client password */
+   char *localname;  /* One word localname */
+   char *fullname;   /* FULL name of mud */
+   char *ihost;   /* host AND port of mud */
+   char *email;   /* contact address (email) */
+   char *www;  /* homepage */
+   char *base; /* The mud's codebase name */
+   char *details; /* BRIEF description of mud */
+   int iport;  /* The port the mud itself is on */
+   int minlevel;  /* Minimum player level */
+   int immlevel;  /* Immortal level */
+   int adminlevel;   /* Admin level */
+   int implevel;  /* Implementor level */
+   unsigned short rport;   /* remote port of server */
+   bool sha256;   /* Client will support MD5 authentication */
+   bool sha256pass;  /* Client is using MD5 authentication */
+   bool autoconnect; /* Do we autoconnect on bootup or not? - Samson */
 
-const char *imc_ignore(const char *what);
-const char *imc_list(int level);
-int imc_command(const char *argument);
-int imc_saveconfig(void);
-int imc_readconfig(void);
-int imc_saveignores(void);
-int imc_readignores(void);
+   /*
+    * Conection parameters - These don't save in the config file 
+    */
+   char inbuf[IMC_BUFF_SIZE]; /* input buffer */
+   char incomm[IMC_BUFF_SIZE];
+   char *outbuf;  /* output buffer */
+   char *versionid;  /* Transient version id for the imclist */
+   unsigned long outsize;
+   int outtop;
+   int desc;   /* descriptor */
+   unsigned short state;   /* connection state */
+};
 
-int imc_readconfighook(const char *type, const char *value);
-void imc_saveconfighook(FILE *fp);
+struct imc_remoteinfo
+{
+   REMOTEINFO *next;
+   REMOTEINFO *prev;
+   char *name;
+   char *version;
+   char *network;
+   char *path;
+   char *url;
+   char *host;
+   char *port;
+   bool expired;
+};
 
-/* Globals for optimization routines. I'm sure there's a better way to handle this,
-but I'll save that for version 1.1, thank you very much. 1/6/99 -- Scion */
-extern char global_hubname[IMC_MNAME_LENGTH];
-extern int global_directnum;
+/* A mudwide ban */
+struct imc_ban_data
+{
+   IMC_BAN *next;
+   IMC_BAN *prev;
+   char *name;
+};
 
+struct imc_packet_handler
+{
+   IMC_PHANDLER *next;
+   IMC_PHANDLER *prev;
+   PACKET_FUN *func;
+   char *name;
+};
 
+struct who_template
+{
+   char *head;
+   char *plrheader;
+   char *immheader;
+   char *plrline;
+   char *immline;
+   char *tail;
+   char *master;
+};
 
-
-
-/* imc-mail.c exported functions */
-
-void imc_recv_mailok(const char *from, const char *id);
-void imc_recv_mailrej(const char *from, const char *id, const char *reason);
-void imc_recv_mail(const char *from, const char *to, const char *date,
-		   const char *subject, const char *id, const char *text);
-void imc_send_mail(const char *from, const char *to, const char *date,
-		   const char *subject, const char *text);
-
-char *imc_mail_arrived(const char *from, const char *to, const char *date,
-		       const char *subject, const char *text);
-
-void imc_mail_startup(void);
-void imc_mail_shutdown(void);
-
-char *imc_mail_showqueue(void);
+bool imc_command_hook( CHAR_DATA * ch, char *command, char *argument );
+void imc_hotboot( void );
+void imc_startup( bool force, int desc, bool connected );
+void imc_shutdown( bool reconnect );
+void imc_initchar( CHAR_DATA * ch );
+bool imc_loadchar( CHAR_DATA * ch, FILE * fp, const char *word );
+void imc_savechar( CHAR_DATA * ch, FILE * fp );
+void imc_freechardata( CHAR_DATA * ch );
+void imc_loop( void );
+IMC_CHANNEL *imc_findchannel( char *name );  /* Externalized for comm.c spamguard checks */
+void imc_register_packet_handler( char *name, PACKET_FUN * func );
+#if defined(_DISKIO_H_)
+void imc_load_pfile( CHAR_DATA * ch, char *tag, int num, char *line );
+void imc_save_pfile( struct CHAR_DATA *ch, FBFILE * fp );
+#endif
 
 #endif

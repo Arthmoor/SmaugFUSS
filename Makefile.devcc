@@ -1,0 +1,156 @@
+# Project: SmaugFUSS
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = src/o/act_comm.o src/o/act_info.o src/o/act_move.o src/o/act_obj.o src/o/act_wiz.o src/o/ban.o src/o/boards.o src/o/build.o src/o/clans.o src/o/color.o src/o/comm.o src/o/comments.o src/o/const.o src/o/db.o src/o/deity.o src/o/fight.o src/o/handler.o src/o/hashstr.o src/o/hotboot.o src/o/imc.o src/o/imm_host.o src/o/interp.o src/o/magic.o src/o/makeobjs.o src/o/mapout.o src/o/mccp.o src/o/misc.o src/o/mpxset.o src/o/mud_comm.o src/o/mud_prog.o src/o/planes.o src/o/player.o src/o/polymorph.o src/o/reset.o src/o/save.o src/o/services.o src/o/sha256.o src/o/shops.o src/o/skills.o src/o/special.o src/o/tables.o src/o/track.o src/o/update.o $(RES)
+LINKOBJ  = src/o/act_comm.o src/o/act_info.o src/o/act_move.o src/o/act_obj.o src/o/act_wiz.o src/o/ban.o src/o/boards.o src/o/build.o src/o/clans.o src/o/color.o src/o/comm.o src/o/comments.o src/o/const.o src/o/db.o src/o/deity.o src/o/fight.o src/o/handler.o src/o/hashstr.o src/o/hotboot.o src/o/imc.o src/o/imm_host.o src/o/interp.o src/o/magic.o src/o/makeobjs.o src/o/mapout.o src/o/mccp.o src/o/misc.o src/o/mpxset.o src/o/mud_comm.o src/o/mud_prog.o src/o/planes.o src/o/player.o src/o/polymorph.o src/o/reset.o src/o/save.o src/o/services.o src/o/sha256.o src/o/shops.o src/o/skills.o src/o/special.o src/o/tables.o src/o/track.o src/o/update.o $(RES)
+LIBS =  -L"C:/Dev-Cpp/lib"  
+INCS =  -I"C:/Dev-Cpp/include" 
+CXXINCS =  -I"C:/Dev-Cpp/lib/gcc/mingw32/3.4.2/include"  -I"C:/Dev-Cpp/include/c++/3.4.2/backward"  -I"C:/Dev-Cpp/include/c++/3.4.2/mingw32"  -I"C:/Dev-Cpp/include/c++/3.4.2"  -I"C:/Dev-Cpp/include" 
+BIN  = area/smaug.exe
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS) -DIMC -DIMCSMAUG
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before area/smaug.exe all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o "area\smaug.exe" $(LIBS) -lz -lwinmm -lwsock32 -ladvapi32
+
+src/o/act_comm.o: src/act_comm.c
+	$(CC) -c src/act_comm.c -o src/o/act_comm.o $(CFLAGS)
+
+src/o/act_info.o: src/act_info.c
+	$(CC) -c src/act_info.c -o src/o/act_info.o $(CFLAGS)
+
+src/o/act_move.o: src/act_move.c
+	$(CC) -c src/act_move.c -o src/o/act_move.o $(CFLAGS)
+
+src/o/act_obj.o: src/act_obj.c
+	$(CC) -c src/act_obj.c -o src/o/act_obj.o $(CFLAGS)
+
+src/o/act_wiz.o: src/act_wiz.c
+	$(CC) -c src/act_wiz.c -o src/o/act_wiz.o $(CFLAGS)
+
+src/o/ban.o: src/ban.c
+	$(CC) -c src/ban.c -o src/o/ban.o $(CFLAGS)
+
+src/o/boards.o: src/boards.c
+	$(CC) -c src/boards.c -o src/o/boards.o $(CFLAGS)
+
+src/o/build.o: src/build.c
+	$(CC) -c src/build.c -o src/o/build.o $(CFLAGS)
+
+src/o/clans.o: src/clans.c
+	$(CC) -c src/clans.c -o src/o/clans.o $(CFLAGS)
+
+src/o/color.o: src/color.c
+	$(CC) -c src/color.c -o src/o/color.o $(CFLAGS)
+
+src/o/comm.o: src/comm.c
+	$(CC) -c src/comm.c -o src/o/comm.o $(CFLAGS)
+
+src/o/comments.o: src/comments.c
+	$(CC) -c src/comments.c -o src/o/comments.o $(CFLAGS)
+
+src/o/const.o: src/const.c
+	$(CC) -c src/const.c -o src/o/const.o $(CFLAGS)
+
+src/o/db.o: src/db.c
+	$(CC) -c src/db.c -o src/o/db.o $(CFLAGS)
+
+src/o/deity.o: src/deity.c
+	$(CC) -c src/deity.c -o src/o/deity.o $(CFLAGS)
+
+src/o/fight.o: src/fight.c
+	$(CC) -c src/fight.c -o src/o/fight.o $(CFLAGS)
+
+src/o/handler.o: src/handler.c
+	$(CC) -c src/handler.c -o src/o/handler.o $(CFLAGS)
+
+src/o/hashstr.o: src/hashstr.c
+	$(CC) -c src/hashstr.c -o src/o/hashstr.o $(CFLAGS)
+
+src/o/hotboot.o: src/hotboot.c
+	$(CC) -c src/hotboot.c -o src/o/hotboot.o $(CFLAGS)
+
+src/o/imc.o: src/imc.c
+	$(CC) -c src/imc.c -o src/o/imc.o $(CFLAGS)
+
+src/o/imm_host.o: src/imm_host.c
+	$(CC) -c src/imm_host.c -o src/o/imm_host.o $(CFLAGS)
+
+src/o/interp.o: src/interp.c
+	$(CC) -c src/interp.c -o src/o/interp.o $(CFLAGS)
+
+src/o/magic.o: src/magic.c
+	$(CC) -c src/magic.c -o src/o/magic.o $(CFLAGS)
+
+src/o/makeobjs.o: src/makeobjs.c
+	$(CC) -c src/makeobjs.c -o src/o/makeobjs.o $(CFLAGS)
+
+src/o/mapout.o: src/mapout.c
+	$(CC) -c src/mapout.c -o src/o/mapout.o $(CFLAGS)
+
+src/o/mccp.o: src/mccp.c
+	$(CC) -c src/mccp.c -o src/o/mccp.o $(CFLAGS)
+
+src/o/misc.o: src/misc.c
+	$(CC) -c src/misc.c -o src/o/misc.o $(CFLAGS)
+
+src/o/mpxset.o: src/mpxset.c
+	$(CC) -c src/mpxset.c -o src/o/mpxset.o $(CFLAGS)
+
+src/o/mud_comm.o: src/mud_comm.c
+	$(CC) -c src/mud_comm.c -o src/o/mud_comm.o $(CFLAGS)
+
+src/o/mud_prog.o: src/mud_prog.c
+	$(CC) -c src/mud_prog.c -o src/o/mud_prog.o $(CFLAGS)
+
+src/o/planes.o: src/planes.c
+	$(CC) -c src/planes.c -o src/o/planes.o $(CFLAGS)
+
+src/o/player.o: src/player.c
+	$(CC) -c src/player.c -o src/o/player.o $(CFLAGS)
+
+src/o/polymorph.o: src/polymorph.c
+	$(CC) -c src/polymorph.c -o src/o/polymorph.o $(CFLAGS)
+
+src/o/reset.o: src/reset.c
+	$(CC) -c src/reset.c -o src/o/reset.o $(CFLAGS)
+
+src/o/save.o: src/save.c
+	$(CC) -c src/save.c -o src/o/save.o $(CFLAGS)
+
+src/o/services.o: src/services.c
+	$(CC) -c src/services.c -o src/o/services.o $(CFLAGS)
+
+src/o/sha256.o: src/sha256.c
+	$(CC) -c src/sha256.c -o src/o/sha256.o $(CFLAGS)
+
+src/o/shops.o: src/shops.c
+	$(CC) -c src/shops.c -o src/o/shops.o $(CFLAGS)
+
+src/o/skills.o: src/skills.c
+	$(CC) -c src/skills.c -o src/o/skills.o $(CFLAGS)
+
+src/o/special.o: src/special.c
+	$(CC) -c src/special.c -o src/o/special.o $(CFLAGS)
+
+src/o/tables.o: src/tables.c
+	$(CC) -c src/tables.c -o src/o/tables.o $(CFLAGS)
+
+src/o/track.o: src/track.c
+	$(CC) -c src/track.c -o src/o/track.o $(CFLAGS)
+
+src/o/update.o: src/update.c
+	$(CC) -c src/update.c -o src/o/update.o $(CFLAGS)

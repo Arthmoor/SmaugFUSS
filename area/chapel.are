@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Copper~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 30000000
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #3400
@@ -25,7 +28,7 @@ skeleton looks very mindless but still dangerous ...
 33 0 0 C
 1 20 9 1d1+19 1d6+0
 5 100
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -42,7 +45,7 @@ human.
 35 40 -100 C
 4 17 6 1d1+49 1d8+0
 0 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 390521 390521 1
@@ -58,7 +61,7 @@ he looks like he hasn't forgot his fighting skills.
 33 8 -500 C
 6 15 4 1d1+79 2d5+1
 0 1500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -75,7 +78,7 @@ in his eyes.
 35 42 -750 C
 12 9 2 1d1+149 3d6+0
 0 13000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -92,7 +95,7 @@ that he appears too formidable to be a minor minion.
 35 40 -1000 C
 25 0 -4 1d1+385 4d5+15
 0 105000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 0
@@ -109,7 +112,7 @@ this man has a sacred beauty.  You see a halo around his head.
 2051 168 1000 C
 15 5 -5 15d15+150 1d4+8
 2000 20000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -128,7 +131,7 @@ beings sometimes walk on all their legs and sometimes on the hind pair only.
 33 0 -500 C
 12 9 2 12d12+120 2d7+2
 0 10000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -147,7 +150,7 @@ it has no face, only a suggestive blackness where a face ought to be ...
 97 98304 -1000 C
 10 11 1 10d10+100 2d6+3
 150 4050
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 0
@@ -166,7 +169,7 @@ voices.  A hunting horror is HUGE, normally around 40 feet long.
 33 40 -1000 C
 20 1 -5 20d20+200 3d6+12
 0 60000
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 84 3 0 0 1 1 1
@@ -181,7 +184,7 @@ Just some unpleasant looking vine-like growths ...
 37 98312 0 C
 6 15 4 1d1+75 1d8+1
 0 1500
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -198,7 +201,7 @@ He is called up from his service in hell in order to aid the Undying One.
 3 8 -750 C
 20 0 -1 1d1+365 4d3+15
 10 40000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -217,7 +220,7 @@ lead you to believe that he knew that you were coming.
 35 8 -1000 C
 17 4 1 1d1+215 4d2+7
 0 28000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -238,7 +241,7 @@ softly into the air:
 1073741827 40 350 C
 20 0 -1 1d1+260 4d6+5
 1000 40000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 2
@@ -262,7 +265,7 @@ It is a large brownish slug.  Got any salt?  Didn't think so ...
 5 0 0 C
 3 18 7 1d1+42 1d7+0
 5 350
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -287,7 +290,7 @@ And on he babbles ...
 65 1 1000 C
 5 5 3 1d1+80 2d6+1
 0 900
-6 6 1
+108 108 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -306,7 +309,7 @@ resting on the shoulder of the etcher ... her husband.
 3 65536 1000 C
 7 14 4 1d1+86 2d4+3
 15 2250
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 1
@@ -321,7 +324,7 @@ YUK! It's ugly, disgusting ... it smells ... it also moves a bit!
 37 0 -350 C
 6 15 4 1d1+80 2d5+1
 0 1500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 1 1 1
@@ -562,8 +565,9 @@ a tightly rolled scroll~
 A yellowing, tightly-rolled scroll lies here.~
 ~
 2 64 16385
-20 10 65 32
+20 -1 -1 -1
 5 5000 500
+'colour spray' 'flamestrike' 'magic missile'
 E
 scroll tightly rolled~
 It is tightly wound. The writing on the inside when opened up is very
@@ -582,8 +586,9 @@ an auburn-colored orb~
 An orb is here~
 ~
 4 66 16385
-10 2 2 7
+10 2 2 -1
 10 15000 1500
+'charm person'
 E
 auburn orb~
 You gaze into the orb and are almost lost in the swirling mists of color
@@ -688,6 +693,11 @@ D5
 ~
 altar~
 39 3430 3421
+R M 0 3405 1 3405
+  R G 1 3430 99
+R D 0 3405 0 2
+R D 0 3405 5 2
+R O 0 3400 1 3405
 E
 glass windows~
 The windows must be meant to be dark.  At least they are completely clean.
@@ -720,6 +730,7 @@ D5
 ~
 ~
 0 0 3450
+R D 0 3408 3 2
 S
 #3409
 The Acolyte's Bedroom~
@@ -731,6 +742,10 @@ A bloodied corpse of an acolyte is lying here ...
 A bloodied corpse of an acolyte is lying here ...
 ~
 0 13 0
+R M 0 3401 8 3409
+R M 0 3401 8 3409
+R M 0 3401 8 3409
+R M 0 3402 8 3409
 E
 corpse corpses~
 Mauled and torn apart ... throats were ripped out and guts spilled on the
@@ -751,6 +766,9 @@ D3
 ~
 ~
 0 0 3411
+R R 0 3410 4
+R M 0 3400 8 3410
+  R E 1 3421 15 16
 S
 #3411
 The Lower Chambers and Tombs of the Undead~
@@ -761,6 +779,10 @@ D1
 ~
 ~
 0 0 3410
+R R 0 3411 4
+R M 0 3403 1 3411
+  R E 1 3425 3 17
+R M 0 3416 4 3411
 S
 #3412
 The Grand Hall of Kings~
@@ -778,6 +800,7 @@ A door to the south
 ~
 door~
 3 -1 3413
+R D 0 3412 2 1
 E
 stain stains~
 That's odd ... they seem a little GREEN.
@@ -805,6 +828,7 @@ D2
 ~
 south~
 1 -1 3414
+R D 0 3413 0 1
 S
 #3414
 The Tomb of Shohan~
@@ -823,6 +847,10 @@ D1
 ~
 ~
 0 0 3419
+R M 0 3401 8 3414
+R M 0 3401 8 3414
+R M 0 3401 8 3414
+R M 0 3401 8 3414
 E
 coffin sarcophagus~
 Now destroyed ... there is writing on it: 'All hail the new king; we serve
@@ -838,15 +866,16 @@ The stench of death is heavy in these caverns.
 D1
 ~
 ~
-0 0 3410
+0 0 3420
 D2
 ~
 ~
-0 0 3420
+0 0 3410
 D3
 ~
 ~
 0 0 3416
+R R 0 3415 4
 S
 #3416
 Entrance to the Lower Chambers~
@@ -883,6 +912,8 @@ D3
 ~
 ~
 0 0 3412
+R M 0 3413 5 3417
+  R G 1 3422 10
 S
 #3418
 The Shrine of Cristis~
@@ -900,6 +931,9 @@ D5
 ~
 staircase~
 3 -1 3416
+R M 0 3413 5 3418
+  R G 1 3422 10
+R D 0 3418 5 1
 E
 altar~
 It stands 2 feet high with the remnants of candle-wax on top.  There is
@@ -936,6 +970,8 @@ D3
 ~
 ~
 0 0 3414
+R M 0 3400 8 3419
+  R E 1 3421 15 16
 S
 #3420
 The Lower Chambers and Tombs of the Undead~
@@ -945,11 +981,12 @@ The stench of death is heavy in these caverns.
 D1
 ~
 ~
-0 0 3415
+0 0 3425
 D3
 ~
 ~
-0 0 3425
+0 0 3415
+R R 0 3420 4
 S
 #3421
 Entrance Chamber to the Grand Hall of Kings~
@@ -972,6 +1009,8 @@ the top.
 ~
 stone trapdoor door~
 39 3410 3405
+R D 0 3421 2 1
+R D 0 3421 4 2
 E
 stone door trapdoor~
 It's rather small and looks quite heavy but maybe with some kind of leverage
@@ -1031,6 +1070,8 @@ D3
 ~
 ~
 0 0 3417
+R D 0 3422 0 1
+R D 0 3422 2 1
 S
 #3423
 The Shrine of Crotus~
@@ -1049,6 +1090,7 @@ D2
 ~
 ~
 0 0 3424
+R D 0 3423 0 1
 S
 #3424
 The Tomb of Crotus~
@@ -1064,6 +1106,11 @@ D1
 ~
 ~
 0 0 3429
+R M 0 3412 1 3424
+  R E 1 3416 1 17
+R O 0 3415 1 3424
+  R P 0 3417 5 3415
+  R P 0 3418 1 3415
 S
 #3425
 The Lower Chambers and Tombs of the Undead~
@@ -1078,6 +1125,7 @@ D3
 ~
 ~
 0 0 3420
+R R 0 3425 4
 S
 #3426
 The Lower Chambers and Tombs of the Undead~
@@ -1087,11 +1135,15 @@ The stench of death is heavy in these caverns.
 D1
 ~
 ~
-0 0 3430
+0 0 3425
 D2
 ~
 ~
-0 0 3425
+0 0 3430
+R R 0 3426 4
+R M 0 3409 4 3426
+R M 0 3409 4 3426
+R M 0 3416 4 3426
 S
 #3427
 The Grand Hall of Kings~
@@ -1111,6 +1163,7 @@ D3
 ~
 ~
 0 0 3422
+R D 0 3427 2 1
 S
 #3428
 The Shrine of Mitnar~
@@ -1132,6 +1185,7 @@ D2
 ~
 ~
 0 0 3429
+R D 0 3428 0 1
 S
 #3429
 The Tomb of Mitnar~
@@ -1167,6 +1221,9 @@ D2
 ~
 ~
 0 0 3426
+R R 0 3430 4
+R M 0 3400 8 3430
+  R E 1 3421 15 16
 S
 #3431
 The Lower Chambers and Tombs of the Undead~
@@ -1181,6 +1238,7 @@ D2
 ~
 ~
 0 0 3436
+R R 0 3431 4
 S
 #3432
 The Grand Hall of Kings~
@@ -1195,6 +1253,8 @@ D3
 ~
 ~
 0 0 3427
+R M 0 3413 5 3432
+  R G 1 3422 10
 S
 #3433
 The Shrine of Frath~
@@ -1222,6 +1282,10 @@ D5
 ~
 ~
 0 0 3439
+R M 0 3411 1 3434
+  R E 1 3414 10 16
+  R G 1 3412 2
+    R P 0 3413 2 3412
 S
 #3435
 The Lower Chambers and Tombs of the Undead~
@@ -1240,6 +1304,7 @@ D3
 ~
 ~
 0 0 3430
+R R 0 3435 4
 S
 #3436
 The Lower Chambers and Tombs of the Undead~
@@ -1249,15 +1314,16 @@ The stench of death is heavy in these caverns.
 D0
 ~
 ~
-0 0 3435
+0 0 3431
 D2
 ~
 ~
-0 0 3431
+0 0 3441
 D3
 ~
 ~
-0 0 3441
+0 0 3435
+R R 0 3436 4
 S
 #3437
 The Grand Hall of Kings~
@@ -1273,6 +1339,8 @@ D3
 ~
 ~
 0 0 3432
+R M 0 3402 8 3437
+R D 0 3437 0 1
 S
 #3438
 The Shrine of Jubal~
@@ -1318,7 +1386,7 @@ D0
 D1
 ~
 ~
-0 0 3441
+0 0 3435
 D2
 ~
 ~
@@ -1326,7 +1394,8 @@ D2
 D3
 ~
 ~
-0 0 3435
+0 0 3441
+R R 0 3440 4
 S
 #3441
 The Lower Chambers and Tombs of the Undead~
@@ -1336,15 +1405,20 @@ The stench of death is heavy in these caverns.
 D0
 ~
 ~
-0 0 3440
+0 0 3436
 D1
 ~
 ~
-0 0 3446
+0 0 3440
 D2
 ~
 ~
-0 0 3436
+0 0 3446
+R R 0 3441 4
+R M 0 3400 8 3441
+  R E 1 3421 15 16
+R M 0 3413 5 3441
+  R G 1 3422 10
 S
 #3442
 The Lower Chambers and Tombs of the Undead~
@@ -1359,6 +1433,8 @@ D2
 ~
 ~
 0 0 3447
+R R 0 3442 4
+R M 0 3416 4 3442
 S
 #3443
 The Lower Chambers and Tombs of the Undead~
@@ -1368,11 +1444,12 @@ The stench of death is heavy in these caverns.
 D0
 ~
 ~
-0 0 3444
+0 0 3442
 D3
 ~
 ~
-0 0 3442
+0 0 3444
+R R 0 3443 4
 S
 #3444
 The Lower Chambers and Tombs of the Undead~
@@ -1383,6 +1460,9 @@ D2
 ~
 ~
 0 0 3443
+R R 0 3444 4
+R M 0 3409 4 3444
+R M 0 3409 4 3444
 S
 #3445
 The Lower Chambers and Tombs of the Undead~
@@ -1397,6 +1477,7 @@ D3
 ~
 ~
 0 0 3446
+R R 0 3445 4
 S
 #3446
 The Lower Chambers and Tombs of the Undead~
@@ -1410,11 +1491,12 @@ D0
 D1
 ~
 ~
-0 0 3447
+0 0 3445
 D3
 ~
 ~
-0 0 3445
+0 0 3447
+R R 0 3446 4
 S
 #3447
 The Lower Chambers and Tombs of the Undead~
@@ -1424,15 +1506,17 @@ The stench of death is heavy in these caverns.
 D0
 ~
 ~
-0 0 3446
+0 0 3448
 D1
 ~
 ~
-0 0 3448
+0 0 3446
 D2
 ~
 ~
 0 0 3442
+R R 0 3447 4
+R M 0 3402 8 3447
 S
 #3448
 The Lower Chambers and Tombs of the Undead~
@@ -1446,6 +1530,9 @@ D0
 ~
 ~
 0 0 3447
+R M 0 3416 4 3448
+R O 0 3420 1 3448
+  R P 0 3410 1 3420
 E
 painting paintings mural~
 There is a tiny painting of a vault in this mural ... and it seems to be a
@@ -1459,12 +1546,17 @@ The stench of death is heavy in these caverns.
 0 9 0
 D1
 ~
-door~
-33 3411 3408
-D2
-~
 ~
 3 -1 3440
+D2
+~
+door~
+33 3411 3408
+R R 0 3449 4
+R M 0 3410 1 3449
+  R E 1 3414 10 16
+  R E 1 3429 5 5
+  R E 1 3411 2 17
 S
 #3450
 Entrance to the Forbidden Catacombs~
@@ -1497,6 +1589,8 @@ D4
 ~
 ~
 0 -1 3408
+R M 0 3413 5 3450
+  R G 1 3422 10
 S
 #3451
 The Catacombs~
@@ -1529,6 +1623,8 @@ Too dark to tell.
 ~
 ~
 0 -1 3450
+R M 0 3407 5 3452
+  R E 1 3402 5 16
 S
 #3453
 The Catacombs~
@@ -1540,6 +1636,8 @@ Too dark to tell.
 ~
 ~
 0 -1 3450
+R M 0 3407 5 3453
+  R E 1 3402 5 16
 S
 #3454
 The Catacombs~
@@ -1551,6 +1649,7 @@ Too dark to tell.
 ~
 ~
 0 -1 3450
+R M 0 3402 8 3454
 S
 #3455
 The Catacombs~
@@ -1567,6 +1666,8 @@ Too dark to tell.
 ~
 ~
 0 0 3451
+R M 0 3406 4 3455
+  R E 1 3403 8 5
 S
 #3456
 The Catacombs~
@@ -1599,6 +1700,8 @@ Too dark to tell.
 ~
 ~
 0 0 3456
+R M 0 3407 5 3457
+  R E 1 3402 5 16
 S
 #3458
 The Catacombs~
@@ -1653,6 +1756,12 @@ A jet black coffin ... who knows what lurks beneath.
 ~
 coffin~
 1063 3419 3475
+R M 0 3404 1 3460
+  R E 1 3428 3 16
+  R E 1 3427 10 12
+  R E 1 3419 1 17
+  R G 1 3424 5
+R D 0 3460 5 2
 S
 #3461
 The Catacombs~
@@ -1685,6 +1794,7 @@ Too dark too tell.
 ~
 ~
 0 0 3461
+R M 0 3402 8 3462
 S
 #3463
 The Catacombs~
@@ -1701,6 +1811,8 @@ Too dark to tell.
 ~
 ~
 0 0 3464
+R M 0 3406 4 3463
+  R E 1 3403 8 5
 S
 #3464
 The Catacombs~
@@ -1721,6 +1833,7 @@ Too dark to tell.
 ~
 ~
 0 0 3463
+R D 0 3464 1 1
 S
 #3465
 The Gilded Hallway~
@@ -1741,6 +1854,10 @@ The glow of your light reflects off the walls ... the gilded hallway.
 ~
 ~
 0 0 3466
+R M 0 3407 5 3465
+  R E 1 3402 5 16
+R M 0 3407 5 3465
+  R E 1 3402 5 16
 E
 etchings~
 Beautiful yet disturbing, they urge you to move onward.
@@ -1763,6 +1880,8 @@ Your light reveals more of the hallway.
 ~
 ~
 0 0 3467
+R M 0 3406 4 3466
+  R E 1 3403 8 5
 E
 etchings~
 Beautiful yet disturbing, they urge you to move onward.
@@ -1807,6 +1926,9 @@ Your light reveals more of the hallway.
 ~
 ~
 0 0 3469
+R M 0 3414 1 3468
+  R E 1 3423 4 5
+R M 0 3415 1 3468
 E
 etchings~
 Beautiful yet disturbing, they urge you to move onward.
@@ -1854,6 +1976,9 @@ Too dark to tell.
 ~
 ~
 0 0 3470
+R M 0 3408 1 3471
+  R E 1 3425 3 17
+  R G 1 3426 10
 S
 #3472
 The Short Way to Hell ...~
@@ -1887,133 +2012,9 @@ D4
 ~
 lid coffin~
 1031 3419 3460
+R D 0 3475 4 2
 S
 #0
-
-
-#RESETS
-R 0 3410 4
-R 0 3411 4
-R 0 3415 4
-R 0 3420 4
-R 0 3425 4
-R 0 3426 4
-R 0 3430 4
-R 0 3431 4
-R 0 3435 4
-R 0 3436 4
-R 0 3440 4
-R 0 3441 4
-R 0 3442 4
-R 0 3443 4
-R 0 3444 4
-R 0 3445 4
-R 0 3446 4
-R 0 3447 4
-R 0 3449 4
-M 0 3405 1 3405
-G 1 3430 99
-D 0 3405 0 2
-D 0 3405 5 2
-O 0 3400 1 3405
-M 0 3400 8 3441
-E 1 3421 15 16
-M 0 3400 8 3430
-E 1 3421 15 16
-M 0 3400 8 3410
-E 1 3421 15 16
-M 0 3400 8 3419
-E 1 3421 15 16
-M 0 3401 8 3414
-M 0 3401 8 3414
-M 0 3401 8 3414
-M 0 3401 8 3414
-M 0 3401 8 3409
-M 0 3401 8 3409
-M 0 3401 8 3409
-M 0 3402 8 3447
-M 0 3402 8 3454
-M 0 3402 8 3462
-M 0 3402 8 3437
-M 0 3402 8 3409
-M 0 3403 1 3411
-E 1 3425 3 17
-M 0 3404 1 3460
-E 1 3428 3 16
-E 1 3427 10 12
-E 1 3419 1 17
-G 1 3424 5
-M 0 3406 4 3466
-E 1 3403 8 5
-M 0 3406 4 3463
-E 1 3403 8 5
-M 0 3406 4 3455
-E 1 3403 8 5
-M 0 3407 5 3465
-E 1 3402 5 16
-M 0 3407 5 3465
-E 1 3402 5 16
-M 0 3407 5 3457
-E 1 3402 5 16
-M 0 3407 5 3452
-E 1 3402 5 16
-M 0 3407 5 3453
-E 1 3402 5 16
-M 0 3408 1 3471
-E 1 3425 3 17
-G 1 3426 10
-M 0 3409 4 3444
-M 0 3409 4 3444
-M 0 3409 4 3426
-M 0 3409 4 3426
-M 0 3410 1 3449
-E 1 3414 10 16
-E 1 3429 5 5
-E 1 3411 2 17
-M 0 3411 1 3434
-E 1 3414 10 16
-G 1 3412 2
-P 1 3413 2 3412
-M 0 3412 1 3424
-E 1 3416 1 17
-O 0 3415 1 3424
-P 1 3417 5 3415
-P 1 3418 1 3415
-M 0 3413 5 3432
-G 1 3422 10
-M 0 3413 5 3417
-G 1 3422 10
-M 0 3413 5 3450
-G 1 3422 10
-M 0 3413 5 3418
-G 1 3422 10
-M 0 3413 5 3441
-G 1 3422 10
-M 0 3414 1 3468
-E 1 3423 4 5
-M 0 3415 1 3468
-M 0 3416 4 3426
-M 0 3416 4 3442
-M 0 3416 4 3448
-M 0 3416 4 3411
-O 0 3420 1 3448
-P 1 3410 1 3420
-D 0 3418 5 1
-D 0 3421 2 1
-D 0 3422 0 1
-D 0 3421 4 2
-D 0 3412 2 1
-D 0 3413 0 1
-D 0 3422 2 1
-D 0 3423 0 1
-D 0 3427 2 1
-D 0 3428 0 1
-D 0 3437 0 1
-D 0 3408 3 2
-D 0 3460 5 2
-D 0 3475 4 2
-D 0 3464 1 1
-S
 
 
 #SHOPS

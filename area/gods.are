@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR ROD~
 
 #RANGES
@@ -15,6 +16,10 @@ $
 
 #ECONOMY 0 45000000
 
+#CLIMATE 2 2 2
+
+#NEIGHBOR Limbo~
+
 #MOBILES
 #1200
 mobile~
@@ -25,7 +30,7 @@ A mobile is here.
 1073741825 0 0 C
 1 50 0 0d0+0 0d0+0
 100 4000
-8 8 0
+112 112 0
 13 13 13 13 13 13 0
 0 0 0 0 0
 3 0 0 0 131073 1 0
@@ -41,7 +46,7 @@ Mystical sparkling colors converge here to form arcane runes...~
 ~
 12 0 0
 0 0 0 0
-0 10 1
+1 10 1
 #0
 
 
@@ -83,11 +88,6 @@ It looks very comfortable.
 ~
 S
 #0
-
-
-#RESETS
-O 0 1200 1 1200
-S
 
 
 #SHOPS

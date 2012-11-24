@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Caine~
 
 #RANGES
@@ -14,6 +15,8 @@ $
 0 5
 
 #ECONOMY 0 14805000
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #2070
@@ -31,7 +34,7 @@ your presence.
 65 0 0 C
 7 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 24 3 0 0 512 513 0
@@ -58,7 +61,7 @@ it as it bobs and darts about.
 65 524296 0 C
 3 0 0 0d0+0 0d0+1
 1000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 4 3 0 0 9 9 0
@@ -85,7 +88,7 @@ or perhaps to keep a watchful eye on the forest's creatures...
 3 0 -1000 C
 5 0 0 0d0+0 0d0+0
 1500 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 9 9 0
@@ -110,7 +113,7 @@ with a delightful laugh... oblivious to the danger you present.
 3 524288 0 C
 4 0 0 0d0+0 0d0+0
 1000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 4 3 0 0 9 9 0
@@ -154,7 +157,7 @@ The giant claw of a forest bear draws your curiosity.~
 ~
 5 262144 8193
 0 0 0 5
-0 0 0
+1 0 0
 A
 5 2
 A
@@ -190,8 +193,9 @@ a beaker of plentiful potions~
 A mystical concoction is here waiting to be quaffed.~
 ~
 10 64 1
-10 15 1 81
+10 -1 -1 -1
 2 1500 150
+'cure critical' 'armor' 'refresh'
 #2075
 pad paper~
 A pad of paper~
@@ -250,6 +254,7 @@ A small clearing
 ~
 ~
 0 -1 2070
+R M 0 2071 4 2071
 E
 tree oak~
 This ancient oak casts a shadow across much of the southeastern section
@@ -488,6 +493,7 @@ Too dark to tell
 ~
 ~
 0 -1 2083
+R M 0 2072 1 2082
 S
 #2083
 Inside a damp cave~
@@ -656,6 +662,9 @@ A dark clearing
 ~
 ~
 0 -1 2084
+R M 0 2073 2 2090
+  R G 1 2074 1
+R O 0 2076 1 2090
 S
 #2091
 On a small pond~
@@ -679,6 +688,7 @@ A small pond
 ~
 ~
 0 -1 2090
+R O 0 2076 1 2091
 S
 #2092
 A path through thick foliage~
@@ -737,6 +747,7 @@ Too ark to tell
 ~
 ~
 0 -1 2095
+R M 0 2070 1 2094
 S
 #2095
 A bend in the cave~
@@ -777,6 +788,7 @@ D6
 ~
 ~
 0 -1 2492
+R O 0 2076 1 2096
 E
 reflection~
 Your reflection seems to depict you as you were at the age of twenty.
@@ -799,6 +811,10 @@ A small pond
 ~
 ~
 0 -1 2096
+R M 0 2073 2 2097
+  R G 1 2074 1
+  R E 1 2073 1 2
+R O 0 2076 1 2097
 S
 #2098
 The crystaline grove~
@@ -833,22 +849,6 @@ A junction in the forest.
 0 -1 2074
 S
 #0
-
-
-#RESETS
-M 0 2070 1 2094
-M 0 2071 4 2071
-M 0 2072 1 2082
-M 0 2073 2 2097
-G 1 2074 1
-E 1 2073 1 2
-M 0 2073 2 2090
-G 1 2074 1
-O 0 2076 1 2090
-O 0 2076 1 2096
-O 0 2076 1 2097
-O 0 2076 1 2091
-S
 
 
 #SHOPS

@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Eldaera~
 
 #RANGES
@@ -14,6 +15,8 @@ $
 0 10
 
 #ECONOMY 0 1323238
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #2101
@@ -28,7 +31,7 @@ job, this gravedigger turns his back on you, oblivious to your presence.
 69 0 -100 C
 5 15 5 5d5+50 1d5+5
 200 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -45,7 +48,7 @@ tombstones throughout the area.
 69 33288 -350 C
 7 15 5 5d5+50 1d7+5
 473 700
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 2 0 0 1 1 0
@@ -63,7 +66,7 @@ feeding upon the decaying organs hungrily.
 99 0 3 C
 13 8 5 13d13+130 1d10+12
 2000 10000
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 60 3 0 0 400197 1 0
@@ -83,7 +86,7 @@ will never have the chance to belong to this lovely beauty.
 7 131080 1000 C
 10 9 -1 10d10+100 1d6+10
 1500 4500
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -102,7 +105,7 @@ one of the graves within the cemetary.
 7 0 0 C
 7 8 3 7d7+70 1d6+4
 1000 1500
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -132,7 +135,7 @@ the bloody corpse and turns to you...
 39 520 -500 C
 11 13 4 1d1+150 1d6+8
 0 2000
-8 8 0
+112 112 0
 16 13 13 16 13 13 13
 0 -1 0 0 0
 71 3 0 0 396423 396423 0
@@ -149,7 +152,7 @@ her shaking hands.
 193 0 200 C
 10 10 1 10d10+100 1d6+6
 500 3800
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -167,7 +170,7 @@ a fresher corpse to devour.
 35 520 -100 C
 5 10 2 1d1+55 1d6+3
 10 700
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 54 3 0 0 398781 398781 0
@@ -184,7 +187,7 @@ job, this gravedigger turns his back on you, oblivious to your presence.
 69 0 -100 C
 6 15 5 5d5+50 1d5+5
 200 600
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -203,7 +206,7 @@ this corpse and flee with his life still intact.
 35 552 -750 C
 14 0 0 0d0+0 0d0+0
 5000 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -221,7 +224,7 @@ to nearly stumble.
 35 4194344 0 C
 2 0 0 1d1+9 0d0+0
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 3 0 0 399469 399469 0
@@ -242,7 +245,7 @@ the unholy confines of the cemetery.
 3 524288 0 C
 6 0 4 0d0+0 1d5+5
 0 0
-8 8 0
+112 112 0
 13 13 13 13 13 13 13
 0 0 0 0 0
 59 3 0 0 400341 400341 0
@@ -301,8 +304,9 @@ a shattered crucifix~
 An old wooden crucifix lays here, shattered into several pieces.~
 ~
 3 2 16385
-11 3 3 22
+11 3 3 -1
 1 300 30
+'dispel evil'
 #2106
 chisel rusted~
 a graverobber's chisel~
@@ -333,8 +337,9 @@ a preacher's bible~
 A tattered old bible lays on the ground gathering dust.~
 ~
 4 1345 16385
-6 2 2 56
+6 2 2 -1
 1 1000 100
+'fly'
 #2109
 gold bracelet~
 Arabella's golden bracelet~
@@ -404,7 +409,7 @@ A crumbling granite fountain stands here, filled with stagnant water.~
 ~
 25 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2115
 tree dead fall~
 a large dead tree~
@@ -412,7 +417,7 @@ A giant tree has fallen here, blocking your way to the east.~
 ~
 12 262144 0
 0 0 0 0
-0 0 0
+1 0 0
 #2116
 glass coffin~
 Anastacia's glass coffin~
@@ -420,7 +425,7 @@ A crystal clear coffin made of glass lies upon a platform of swirled marble.~
 ~
 15 0 0
 2 0 0 0
-0 0 0
+1 0 0
 #2117
 petals rose bed~
 a bed of scattered white rose petals~
@@ -475,7 +480,7 @@ A swirled marble headstone lays on its side, sinking in the earth.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2122
 rugged cross~
 old rugged cross~
@@ -483,7 +488,7 @@ A splintered old cross stands here, entangled in vines.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2123
 piles corpse limbs~
 mangled limbs and bloody corpses~
@@ -491,7 +496,7 @@ Several piles of decapitated corpses and mangled limbs litter the ground.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2124
 corpse suicide rope~
 decaying corpse hanging from a rope~
@@ -499,7 +504,7 @@ Dangling from an old rotten rope, a decaying corpse sways in the wind.~
 ~
 12 262144 0
 0 0 0 0
-0 0 0
+1 0 0
 #2125
 headstone flowered preacher~
 a preacher's headstone~
@@ -507,7 +512,7 @@ Crumbly, dead flowers lay decaying at the base of a dull black headstone.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2126
 crushed corpse stone~
 fallen headstone~
@@ -515,7 +520,7 @@ A large headstone lays on the ground, resting at a strange angle.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2127
 withered old oak tree~
 a withered old oak tree~
@@ -523,7 +528,7 @@ A withered old oak tree now lays on its side, decaying in the rains.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2128
 statue beheaded~
 a beheaded statue~
@@ -531,7 +536,7 @@ A grisly statue caked in blood stands before you.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #2129
 statue gargoyle~
 statue of a woman~
@@ -539,7 +544,7 @@ A statue, well worn and eroded, stands here dripping blood.~
 ~
 12 262144 0
 0 0 0 0
-0 0 0
+1 0 0
 #2150
 border object~
 a newly created border object~
@@ -547,7 +552,7 @@ Some god dropped a newly created border object here.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 #0
 
 
@@ -575,6 +580,9 @@ The path becomes smoother.
 ~
 ~
 0 -1 2172
+R M 0 2110 4 2101
+  R G 1 2103 1
+  R E 1 2101 1 5
 E
 twigs~
 Twisted brown twigs lay dead at your feet, blown away from the fingers
@@ -654,6 +662,17 @@ The darkness continues...
 ~
 ~
 0 -1 2102
+R M 0 2107 12 2103
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
+R M 0 2102 12 2103
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R M 0 2101 4 2103
+  R E 1 2103 1 16
+  R E 1 2101 1 5
 E
 footstone~
 This grey marble stone lays sunken into the earth, crumbling to the touch.
@@ -694,6 +713,7 @@ The darkness continues ...
 ~
 ~
 0 -1 2103
+R O 0 2113 1 2104
 E
 box~
 Inside the box lay the corpse of Thomas.  Though thoroughly decaying,
@@ -744,6 +764,13 @@ More darkness continues...
 ~
 ~
 0 -1 2104
+R M 0 2102 12 2105
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R M 0 2101 4 2105
+  R E 1 2103 1 16
+  R E 1 2101 1 5
+R O 0 2121 1 2105
 E
 headstone~
 Caused by the rain-soaked, uneven grounds, this tombstone appears to have
@@ -785,6 +812,11 @@ Darkness overcomes the fog...
 ~
 ~
 0 -1 2105
+R M 0 2107 12 2106
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
 E
 headstone~
 Two old swords are mounted here, crossed in a rusty brown tribute to the
@@ -823,6 +855,9 @@ The thick fog almost chokes you...
 ~
 ~
 0 -1 2106
+R M 0 2102 12 2107
+  R E 1 2104 12 11
+  R E 1 2106 12 16
 E
 grass~
 The tall brown grass grows thick here, in a smothering unkept jungle,
@@ -865,6 +900,12 @@ The misty fog almost chokes you...
 ~
 ~
 0 -1 2115
+R M 0 2107 12 2108
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
+R O 0 2115 1 2108
 E
 tree~
 This tree, possibly a sycamore, lies rotting on its side, fallen to its
@@ -992,6 +1033,9 @@ A broken skull lays on the ground...
 ~
 ~
 0 -1 2118
+R M 0 2101 4 2112
+  R E 1 2103 1 16
+  R E 1 2101 1 5
 S
 #2113
 The Old Rugged Cross~
@@ -1022,6 +1066,7 @@ The odor of rotting corpses permeates the air...
 ~
 ~
 0 -1 2112
+R O 0 2122 1 2113
 S
 #2114
 The Twig-Covered Grave~
@@ -1074,6 +1119,11 @@ A large tree now lays on its side...
 ~
 ~
 0 -1 2108
+R M 0 2107 12 2115
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
 S
 #2116
 The Withered Old Tree~
@@ -1098,6 +1148,15 @@ The thick, broken roots of the tree extend unto the east...
 ~
 ~
 0 -1 2117
+R M 0 2107 12 2116
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
+R M 0 2102 12 2116
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R O 0 2127 1 2116
 S
 #2117
 Grave Beneath the Tree~
@@ -1284,6 +1343,10 @@ A trail of bones leads off into the distance...
 ~
 ~
 0 -1 2119
+R M 0 2102 12 2123
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R O 0 2123 1 2123
 S
 #2124
 The Broken Old Fountain~
@@ -1302,6 +1365,7 @@ A rusty wrought iron fence has fallen...
 ~
 ~
 0 -1 2125
+R O 0 2114 1 2124
 S
 #2125
 The Fallen Fence~
@@ -1348,6 +1412,7 @@ Dismembered corpses lay decaying along the trail...
 ~
 ~
 0 -1 2127
+R O 0 2126 1 2126
 S
 #2127
 The Mournful Trail Continues~
@@ -1424,6 +1489,7 @@ D5
 ~
 grate~
 2098187 -1 2130
+R D 0 2129 5 1
 E
 floor bones corpse body torso~
 Scavaging through the broken bones, you find a large puddle of a thick
@@ -1465,6 +1531,7 @@ A quick escape into the mausoleum is your only hope...
 ~
 grate~
 1027 -1 2129
+R D 0 2130 4 1
 S
 #2131
 The Barren Headstone~
@@ -1570,6 +1637,10 @@ D2
 ~
 gate~
 1027 -1 2138
+R M 0 2102 12 2133
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R D 0 2133 2 1
 S
 #2134
 Within the Decaying Mausoleum~
@@ -1613,6 +1684,8 @@ A trail of blood leads away from the beast's lair...
 ~
 ~
 0 -1 2130
+R M 0 2106 1 2135
+  R E 1 2112 3 9
 S
 #2136
 Arabella's Final Resting Place~
@@ -1643,6 +1716,7 @@ The grave of Triabella lies open here...
 ~
 slab~
 3 -1 2141
+R D 0 2136 5 1
 > rand_prog 10~
 mpecho The muffled sound of scratching fills the air...
 ~
@@ -1677,6 +1751,12 @@ A stoney slab rests on the ground, marking another grave...
 ~
 ~
 0 -1 2136
+R M 0 2102 12 2137
+  R E 1 2104 12 11
+  R E 1 2106 12 16
+R M 0 2102 12 2137
+  R E 1 2106 12 16
+  R E 1 2104 12 11
 E
 twigs~
 Dead broken twigs lay here, fallen from the huge tree that marks
@@ -1728,6 +1808,7 @@ Long armlike vines grow thickly within the graveyard...
 ~
 ~
 0 -1 2137
+R D 0 2138 0 1
 E
 building~
 To the north, you see what appears to be a mausoleum.  The gate, clearly
@@ -1805,6 +1886,14 @@ The entrance to a small mausoleum lies this way...
 ~
 ~
 0 -1 2138
+R M 0 2107 12 2140
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
+R M 0 2101 4 2140
+  R E 1 2103 1 16
+R O 0 2129 1 2140
 S
 #2141
 Inside the Grave of Arabella~
@@ -1829,6 +1918,8 @@ Upon opening the coffin, grey rats scurry away from your light...
 ~
 coffin~
 3 -1 2142
+R D 0 2141 4 1
+R D 0 2141 5 1
 S
 #2142
 Arabella's Coffin~
@@ -1846,6 +1937,12 @@ An excape lies this way...
 ~
 coffin~
 3 -1 2141
+R M 0 2103 1 2142
+  R E 1 2109 1 10
+  R E 1 2111 1 1
+R M 0 2108 2 2142
+R M 0 2108 2 2142
+R D 0 2142 4 1
 S
 #2143
 Deeper into the Cemetary~
@@ -1876,6 +1973,9 @@ A darkened grove of trees awaits in the distance...
 ~
 ~
 0 -1 2147
+R M 0 2102 12 2143
+  R E 1 2104 12 11
+  R E 1 2106 12 16
 S
 #2144
 The Shadowy Grave~
@@ -1997,6 +2097,9 @@ The grove gets darker with each step...
 ~
 ~
 0 -1 2152
+R M 0 2102 12 2147
+  R E 1 2104 12 11
+  R E 1 2106 12 16
 S
 #2148
 Man's Best Friend~
@@ -2019,6 +2122,11 @@ Several withered old trees surround you...
 ~
 ~
 0 -1 2149
+R M 0 2107 12 2148
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
 S
 #2149
 A Small Grove of Forgotten Trees~
@@ -2078,6 +2186,11 @@ The thorny trail of weeds and vines continues...
 ~
 ~
 0 -1 2160
+R M 0 2107 12 2150
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
 S
 #2151
 The Edge of the Darkened Grove~
@@ -2129,6 +2242,12 @@ The edge of the grove can be seen...
 ~
 ~
 0 -1 2151
+R M 0 2102 12 2152
+  R E 1 2106 12 16
+  R E 1 2104 12 11
+R M 0 2110 4 2152
+  R G 1 2103 1
+  R E 1 2101 1 5
 S
 #2153
 Deep Inside the Brightened Grove~
@@ -2156,6 +2275,7 @@ Small wildflowers blossom brightly in patches of color along the ground...
 ~
 ~
 0 -1 2157
+R D 0 2153 2 1
 S
 #2154
 The Grove Thickens~
@@ -2181,6 +2301,9 @@ The grove of trees seems to brighten...
 ~
 ~
 0 -1 2159
+R M 0 2102 12 2154
+  R E 1 2104 12 11
+  R E 1 2106 12 16
 S
 #2155
 The Chapel Foyer~
@@ -2203,6 +2326,7 @@ A splintered old door leads to the graveyard...
 ~
 ~
 1027 -1 2162
+R D 0 2155 2 1
 S
 #2156
 The Mournful Sanctuary~
@@ -2229,6 +2353,20 @@ The bellfry looms above you...
 ~
 trapdoor~
 65539 -1 2163
+R M 0 2105 1 2156
+  R E 1 2108 1 17
+  R G 1 2105 2
+R M 0 2107 12 2156
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2112 3 9
+  R E 1 2120 12 20
+R M 0 2107 12 2156
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2112 3 9
+  R E 1 2120 12 20
+R D 0 2156 4 1
 S
 #2157
 Within the Brightened Grove~
@@ -2280,6 +2418,13 @@ A door with the name "Anastacia" stands here, marking the entrance...
 ~
 ~
 3 -1 2165
+R M 0 2107 12 2158
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
+R D 0 2158 0 1
+R D 0 2158 2 1
 S
 #2159
 Brightened Grove~
@@ -2303,6 +2448,9 @@ Wildflowers bloom brightly in the middle of the grove...
 ~
 ~
 0 -1 2153
+R M 0 2110 4 2159
+  R G 1 2103 1
+  R E 1 2101 1 5
 S
 #2160
 Along the Dark Trail of Vines~
@@ -2350,6 +2498,7 @@ Thorny weeds smother the ground...
 ~
 ~
 0 -1 2160
+R O 0 2125 1 2161
 S
 #2162
 In Front of a Shoddy Old Chapel~
@@ -2399,6 +2548,7 @@ Wails of sorrowful mourners echo from beneath your feet...
 ~
 trapdoor~
 65539 -1 2156
+R O 0 2119 1 2163
 S
 #2164
 Grove of the Dead~
@@ -2422,6 +2572,8 @@ Large piles of debris block your view to the south...
 ~
 ~
 0 -1 2169
+R M 0 2120 1 2164
+R O 0 2124 1 2164
 S
 #2165
 The Shrine of Anastacia~
@@ -2447,6 +2599,7 @@ A beautiful glass topped coffin lies this way...
 ~
 ~
 0 -1 2170
+R D 0 2165 0 1
 S
 #2166
 Near the Cemetary's Chapel~
@@ -2493,6 +2646,7 @@ A small urn lays shattered on the ground...
 ~
 ~
 0 -1 2166
+R O 0 2128 1 2167
 S
 #2168
 The Bloody Headstone~
@@ -2519,6 +2673,11 @@ A statue of a woman stands alongside the rusty wrought iron fence...
 ~
 ~
 0 -1 2167
+R M 0 2107 12 2168
+  R E 1 2110 10 16
+  R E 1 2102 12 5
+  R E 1 2107 12 8
+  R E 1 2120 12 20
 S
 #2169
 The Beginning of a Small Grove Within the Graveyard~
@@ -2562,6 +2721,11 @@ A small shrine to Anastacia lies undisturbed...
 ~
 ~
 0 -1 2165
+R M 0 2104 1 2170
+  R G 1 2105 2
+  R E 1 2118 1 17
+R O 0 2116 1 2170
+  R P 0 2117 1 2116
 S
 #2171
 Before the Graveyard~
@@ -2581,6 +2745,9 @@ You see the entrance to the graveyard.
 ~
 ~
 0 -1 2172
+R M 0 2110 4 2171
+  R G 1 2103 1
+  R E 1 2101 1 5
 E
 fence~
 This tall, wrought iron fence encircles the area, locking all
@@ -2654,172 +2821,6 @@ the names inscribed upon them.
 ~
 S
 #0
-
-
-#RESETS
-M 0 2107 12 2103
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2102 12 2103
-E 1 2104 12 11
-E 1 2106 12 16
-O 1 2113 1 2104
-M 0 2102 12 2105
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2107 12 2106
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2102 12 2107
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2107 12 2108
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-O 1 2115 1 2108
-M 0 2107 12 2115
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2107 12 2116
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2102 12 2116
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2102 12 2123
-E 1 2104 12 11
-E 1 2106 12 16
-D 0 2129 5 1
-D 0 2130 4 1
-M 0 2102 12 2133
-E 1 2104 12 11
-E 1 2106 12 16
-D 0 2133 2 1
-M 0 2106 1 2135
-E 1 2112 3 9
-D 0 2136 5 1
-M 0 2102 12 2137
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2102 12 2137
-E 1 2106 12 16
-E 1 2104 12 11
-D 0 2138 0 1
-M 0 2107 12 2140
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-D 0 2141 4 1
-D 0 2141 5 1
-M 0 2103 1 2142
-E 1 2109 1 10
-E 1 2111 1 1
-M 0 2108 2 2142
-M 0 2108 2 2142
-D 0 2142 4 1
-M 0 2102 12 2143
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2102 12 2147
-E 1 2104 12 11
-E 1 2106 12 16
-M 0 2107 12 2148
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2107 12 2150
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2102 12 2152
-E 1 2106 12 16
-E 1 2104 12 11
-D 0 2153 2 1
-M 0 2102 12 2154
-E 1 2104 12 11
-E 1 2106 12 16
-D 0 2155 2 1
-M 0 2105 1 2156
-E 1 2108 1 17
-G 1 2105 2
-M 0 2107 12 2156
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2112 3 9
-E 1 2120 12 20
-M 0 2107 12 2156
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2112 3 9
-E 1 2120 12 20
-D 0 2156 4 1
-M 0 2107 12 2158
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-D 0 2158 0 1
-D 0 2158 2 1
-M 0 2120 1 2164
-D 0 2165 0 1
-M 0 2107 12 2168
-E 1 2110 10 16
-E 1 2102 12 5
-E 1 2107 12 8
-E 1 2120 12 20
-M 0 2104 1 2170
-G 1 2105 2
-E 1 2118 1 17
-O 1 2116 1 2170
-P 1 2117 1 2116
-O 0 2114 1 2124
-M 0 2101 4 2103
-E 1 2103 1 16
-E 1 2101 1 5
-M 0 2101 4 2105
-E 1 2103 1 16
-E 1 2101 1 5
-M 0 2101 4 2112
-E 1 2103 1 16
-E 1 2101 1 5
-M 0 2101 4 2140
-E 1 2103 1 16
-M 0 2110 4 2152
-G 1 2103 1
-E 1 2101 1 5
-M 0 2110 4 2159
-G 1 2103 1
-E 1 2101 1 5
-M 0 2110 4 2171
-G 1 2103 1
-E 1 2101 1 5
-M 0 2110 4 2101
-G 1 2103 1
-E 1 2101 1 5
-O 0 2125 1 2161
-O 0 2121 1 2105
-O 0 2122 1 2113
-O 0 2126 1 2126
-O 0 2127 1 2116
-O 0 2128 1 2167
-O 0 2129 1 2140
-O 0 2119 1 2163
-O 0 2123 1 2123
-O 0 2124 1 2164
-S
 
 
 #SHOPS

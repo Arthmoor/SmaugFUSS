@@ -1,6 +1,8 @@
 Name        Vampire~
 Class       4
-Attrprime   2
+AttrPrime   2
+AttrSecond   0
+AttrDeficient   0
 Weapon      10312
 Guild       3036
 Skilladept  95
@@ -10,6 +12,9 @@ Hpmin       9
 Hpmax       14
 Mana        0
 Expbase     1500
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'chill touch' 3 95
 Skill 'control weather' 18 95
 Skill 'detect magic' 20 85

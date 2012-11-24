@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Sandman~
 
 #RANGES
@@ -14,6 +15,8 @@ $
 0
 
 #ECONOMY 0 6672836
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #9800
@@ -28,7 +31,7 @@ locked to all who do not know the cult's password.
 3 4194984 0 C
 4 17 6 1d0+9999 1d4+3
 100 400
-8 8 2
+112 112 2
 15 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -86,7 +89,7 @@ realizes you are here.  He almost seems to be in a trance of some sort.
 65 8 -100 C
 12 17 0 1d4+250 2d5+7
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 1 0 0 1 1 0
@@ -103,7 +106,7 @@ of craziness to them, like this man lives in a world of his own.
 97 48 -200 C
 14 17 0 1d4+300 1d4+12
 100 400
-8 8 1
+112 112 1
 15 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -121,7 +124,7 @@ life it to kill the people who pass here without an invitation.
 67 696 -400 C
 16 17 -20 1d4+400 2d5+15
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 31 3 0 0 1 1 0
@@ -149,7 +152,7 @@ of vestigial scales, show this woman to have more of a reptilian origin.
 67 8376 -600 C
 18 17 -25 1d4+400 5d4+8
 100 400
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 31 0 0 0 1 1 0
@@ -179,7 +182,7 @@ handsome warrior to save her.
 3 512 0 C
 5 17 6 1d5+50 1d4+3
 100 400
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 4 5 0 0 8 9 0
@@ -216,7 +219,7 @@ It is viciuos and has a nasty bite, so you better be ready!
 39 648 -1000 C
 25 -15 -12 10d20+600 3d10+12
 50000 1000000
-8 8 1
+112 112 1
 18 13 13 13 13 13 13
 0 0 0 0 0
 31 2 0 0 1 1 0
@@ -241,7 +244,7 @@ The minor priest seems preoccupied.
 67 8200 -100 C
 12 17 0 1d4+9 1d4+3
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -264,7 +267,7 @@ A sincere, if looney, monk ... he wears a look of utter terror.
 1 8 0 C
 6 17 6 1d4+60 1d4+10
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 2
@@ -291,7 +294,7 @@ pointed ears. His elven features are tamed well by his human blood.
 71 552 -1000 C
 7 17 6 1d20+60 1d4+3
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 9 2 0 0 3 3 0
@@ -360,7 +363,7 @@ place.  She barely glances at you, then goes back to scrubbing.
 69 520 200 C
 12 17 6 5d15+120 1d4+3
 100 400
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -444,7 +447,7 @@ reasons.
 65 520 -1000 C
 14 17 0 5d20+190 1d15+4
 100 400
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -528,7 +531,7 @@ to get a look up her skirt.
 67 520 -500 C
 12 17 -10 1d4+300 1d4+11
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -612,7 +615,7 @@ smile. Resisting the urge to shiver, you pull your eyes away.
 71 4194824 -1000 C
 12 17 -30 20d10+500 1d7+5
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -666,7 +669,7 @@ your appraisal.
 67 8872 750 C
 15 17 0 5d10+150 1d8+4
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 1 0 0 1 1 0
@@ -725,7 +728,7 @@ a lot of that strength into his undeath.
 99 136 -1000 C
 15 17 6 10d10+150 1d7+7
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -749,7 +752,7 @@ gods are in your favor he will probably kill you.
 99 33554608 -1000 C
 37 17 -75 10d30+750 5d4+12
 100 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 67 0 0 0 1 1 0
@@ -767,7 +770,7 @@ are rotten and his tongue is a disgusting black.
 3 4202664 -200 C
 20 17 -300 1d1+10000 10d5+10
 100 400
-8 8 1
+112 112 1
 13 13 13 16 13 13 13
 0 0 0 0 -3
 36 1 0 0 1 1 3
@@ -794,7 +797,7 @@ of craziness to them, like this man lives in a world of his own.
 65 48 -200 C
 14 17 0 1d4+300 1d4+12
 100 400
-8 8 1
+112 112 1
 15 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -808,7 +811,7 @@ Some god abandoned a newly created spacer mob here.
 1073741825 0 0 S
 1 0 0 0d0+0 0d0+0
 0 0
-8 8 0
+112 112 0
 #0
 
 
@@ -820,7 +823,7 @@ Some god dropped a newly created altar here.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 #9825
 black key~
 a black key~
@@ -993,64 +996,72 @@ dragon candy~
 A piece of Dragon candy.~
 ~
 26 0 1
-0 4 27 -1
+0 -1 -1 -1
 1 200 20
+'blindness' 'harm' 'NONE'
 #9842
 zombie candy~
 zombie candy~
 A piece of Zombie candy.~
 ~
 26 0 1
-0 4 2 17
+0 -1 -1 -1
 1 320 32
+'blindness' 'teleport' 'curse'
 #9843
 lich candy~
 lich candy~
 A piece of Lich candy.~
 ~
 26 0 1
-0 33 -1 -1
+0 -1 -1 -1
 1 50 5
+'poison' 'NONE' 'NONE'
 #9844
 vampire candy~
 vampire candy~
 A piece of Vampire candy.~
 ~
 26 0 1
-0 25 25 25
+0 -1 -1 -1
 1 100 10
+'energy drain' 'energy drain' 'energy drain'
 #9845
 beholder candy~
 beholder candy~
 A piece of Beholder candy.~
 ~
 26 0 1
-0 44 19 20
+0 -1 -1 -1
 1 1000 100
+'detect hidden' 'detect invis' 'detect magic'
 #9846
 ogre candy~
 ogre candy~
 A piece of Ogre candy.~
 ~
 26 0 1
-1 39 66 -1
+1 -1 -1 -1
 1 2000 200
+'kindred strength' 'stone skin' 'NONE'
 #9847
 troll candy~
 troll candy~
 A piece of Troll candy.~
 ~
 26 0 1
-0 16 16 -1
+0 -1 -1 -1
 1 1500 150
+'cure light' 'cure light' 'NONE'
 #9848
 death candy~
 death candy~
 A piece of Death candy.~
 ~
 26 0 1
-0 36 66 67
+0 -1 -1 -1
 1 15000 1500
+'sanctuary' 'stone skin' 'shield'
 #9849
 emerald stone~
 an emerald stone~
@@ -1117,7 +1128,7 @@ A new, brightly glowing caution sign beckons to you.~
 ~
 12 3 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 glowing sign caution~
 This area has been updated to take advantage of special functions and
@@ -1145,7 +1156,7 @@ A pure gold dragon statue stands in the center of the room.~
 ~
 13 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 statue~
 This statue is made from gold, molded into the shape of a majestic
@@ -1159,8 +1170,9 @@ a brown dragon staff~
 Here lies a staff carved in a dark brown wood in the shape of a dragon.~
 ~
 4 262209 16385
-40 1 1 227
+40 1 1 -1
 15 10000 1000
+'dragon wit'
 #9861
 golden dragon statuette~
 a golden dragon statuette~
@@ -1181,16 +1193,18 @@ a red dragon wand~
 A red wand with the grip carved into the shape of a dragon.~
 ~
 3 65 16385
-20 1 1 212
+20 1 1 -1
 10 95000 9500
+'dragonskin'
 #9863
 black dragon potion~
 a black dragon potion~
 A black liquid, inside a dragon shaped flask, lies here bubbling.~
 ~
 10 195 1
-30 59 3 1
+30 -1 -1 -1
 20 111111 11111
+'dispel magic' 'bless' 'armor'
 #9864
 leaky quill~
 a leaky quill~
@@ -1240,8 +1254,9 @@ dragon candy~
 A piece of Dragon candy.~
 ~
 26 0 1
-5 227 85 -1
+5 -1 -1 -1
 1 450 45
+'dragon wit' 'create fire' 'NONE'
 #9893
 rusty key~
 a rusty key~
@@ -1257,7 +1272,7 @@ Some god dropped a newly created spacerobj here.~
 ~
 13 1073741824 0
 0 0 0 0
-0 0 0
+1 0 0
 #0
 
 
@@ -1292,6 +1307,7 @@ D1
 ~
 ~
 3 -1 9813
+R D 0 9812 1 1
 S
 #9813
 North Mage Route~
@@ -1309,6 +1325,7 @@ D3
 ~
 ~
 3 -1 9812
+R D 0 9813 3 1
 S
 #9814
 North Mage Route~
@@ -1322,6 +1339,7 @@ D3
 ~
 ~
 0 -1 9813
+R D 0 9814 1 1
 S
 #9815
 Spring~
@@ -1335,6 +1353,7 @@ D3
 ~
 ~
 3 -1 9814
+R D 0 9815 3 1
 S
 #9816
 Spring Altar~
@@ -1366,6 +1385,7 @@ D2
 ~
 ~
 3 -1 9819
+R D 0 9818 2 1
 S
 #9819
 East Mage Route~
@@ -1383,6 +1403,7 @@ D3
 ~
 ~
 0 -1 9840
+R D 0 9819 0 1
 S
 #9820
 East Mage Route~
@@ -1396,6 +1417,7 @@ D2
 ~
 ~
 3 -1 9821
+R D 0 9820 2 1
 S
 #9821
 Summer~
@@ -1409,6 +1431,7 @@ D2
 ~
 ~
 0 -1 9822
+R D 0 9821 0 1
 S
 #9822
 Summer Altar~
@@ -1443,6 +1466,7 @@ D3
 ~
 ~
 3 -1 9824
+R D 0 9823 3 1
 S
 #9824
 A dark cell~
@@ -1456,6 +1480,8 @@ D3
 ~
 ~
 3 -1 9825
+R D 0 9824 1 1
+R D 0 9824 3 1
 S
 #9825
 South Mage Route~
@@ -1473,6 +1499,7 @@ D3
 ~
 ~
 0 -1 9826
+R D 0 9825 1 1
 S
 #9826
 South Mage Route~
@@ -1486,6 +1513,7 @@ D3
 ~
 ~
 3 -1 9827
+R D 0 9826 3 1
 S
 #9827
 Autumn~
@@ -1499,6 +1527,7 @@ D3
 ~
 ~
 0 -1 9828
+R D 0 9827 1 1
 S
 #9828
 Autumn Altar~
@@ -1534,6 +1563,8 @@ D2
 ~
 ~
 3 -1 9829
+R D 0 9830 0 1
+R D 0 9830 2 1
 S
 #9831
 West Mage Route~
@@ -1551,6 +1582,7 @@ D2
 ~
 ~
 3 -1 9830
+R D 0 9831 2 1
 S
 #9832
 West Mage Route~
@@ -1564,6 +1596,7 @@ D2
 ~
 ~
 0 -1 9831
+R D 0 9832 0 1
 S
 #9833
 Winter~
@@ -1577,6 +1610,7 @@ D2
 ~
 ~
 3 -1 9832
+R D 0 9833 2 1
 S
 #9834
 Winter Attendant~
@@ -1785,6 +1819,9 @@ D3
 ~
 ~
 0 -1 9848
+R M 0 9802 4 9849
+  R E 1 9832 6 16
+  R E 1 9852 4 3
 S
 #9850
 Dragon Exports front desk~
@@ -1806,6 +1843,8 @@ To the south is Law Avenue, of the town of Darkhaven.
 ~
 ~
 0 -1 21019
+R M 0 9800 1 9850
+R D 0 9850 0 2
 E
 west~
 A massive picture adorns the west wall, barely allowing the light
@@ -1928,6 +1967,7 @@ A door leads into the Reception Area.
 ~
 door~
 3 9825 9850
+R D 0 9851 2 1
 S
 #9852
 Dragon Hall Foyer~
@@ -1997,6 +2037,11 @@ There is a trapdoor leading down.
 ~
 trapdoor~
 3 -1 9854
+R M 0 9809 1 9853
+  R E 1 9838 2 7
+  R E 1 9864 2 16
+R D 0 9853 1 1
+R D 0 9853 5 1
 E
 plaque~
 The Dragon Cult Temple was created by Sandman,
@@ -2070,6 +2115,10 @@ As you look up you can see a trapdoor.
 ~
 trapdoor~
 16777219 -1 9853
+R M 0 9802 4 9854
+  R E 1 9832 6 16
+  R E 1 9835 4 5
+R D 0 9854 4 1
 S
 #9855
 The Candlelit Shrine~
@@ -2083,6 +2132,9 @@ You see the intersection.
 ~
 ~
 0 -1 9854
+R M 0 9801 7 9855
+  R E 1 9830 8 5
+R O 0 9855 1 9855
 S
 #9856
 The Tapestry Room~
@@ -2104,6 +2156,13 @@ You see the intersection.
 ~
 ~
 0 -1 9854
+R M 0 9801 7 9856
+  R E 1 9830 8 5
+  R E 1 9833 6 16
+R M 0 9801 7 9856
+  R E 1 9830 8 5
+  R E 1 9833 6 16
+R D 0 9856 1 1
 E
 w west~
 The two tapestries on the west wall feature an early spring and
@@ -2176,6 +2235,8 @@ You see the intersection.
 ~
 ~
 0 -1 9854
+R D 0 9857 0 1
+R D 0 9857 1 1
 S
 #9858
 The lavatory~
@@ -2192,6 +2253,8 @@ You see a door.
 ~
 door~
 3 -1 9857
+R M 0 9807 1 9858
+R D 0 9858 3 1
 S
 #9859
 A hallway~
@@ -2234,6 +2297,15 @@ You see a hallway.
 ~
 ~
 0 -1 9859
+R M 0 9801 7 9860
+  R E 1 9830 8 5
+  R E 1 9833 6 16
+R M 0 9801 7 9860
+  R E 1 9830 8 5
+  R E 1 9833 6 16
+R M 0 9801 7 9860
+  R E 1 9830 8 5
+  R E 1 9833 6 16
 S
 #9861
 A place of worship~
@@ -2260,6 +2332,12 @@ A trapdoor leads deeper into the Dragon cult temple.
 ~
 trapdoor~
 3 -1 9862
+R M 0 9802 4 9861
+  R E 1 9832 6 16
+  R E 1 9852 4 3
+R M 0 9801 7 9861
+  R E 1 9830 8 5
+R D 0 9861 5 1
 E
 floor~
 Drawn and scratched into the floor are hundreds of patterns, drawings,
@@ -2298,6 +2376,7 @@ You see a trapdoor.
 ~
 trapdoor~
 3 -1 9861
+R D 0 9862 4 1
 E
 ladder~
 This small ladder looks like it will support your weight, but not
@@ -2330,6 +2409,12 @@ You see a corridor.
 ~
 ~
 16777216 -1 9865
+R M 0 9863 2 9863
+  R E 1 9835 4 3
+  R E 1 9832 6 16
+R M 0 9863 2 9863
+  R E 1 9835 4 3
+  R E 1 9832 6 16
 E
 walls~
 The walls are a dark, chiselled rock, bare except for splashings of
@@ -2366,6 +2451,9 @@ A small stairway leads down into a pit, deep under the ground.
 ~
 tile~
 16777219 -1 9888
+R M 0 9802 4 9864
+  R E 1 9852 4 3
+R D 0 9864 5 1
 E
 tile~
 This heavy tile appears to be placed directly over a hole in the ground.
@@ -2393,6 +2481,11 @@ It's not a safe place to go.
 ~
 ~
 0 -1 9867
+R M 0 9803 1 9865
+  R G 1 9826 1
+  R E 1 9828 1 16
+  R E 1 9829 1 6
+R D 0 9865 0 2
 S
 #9866
 The Virgins' Cell~
@@ -2414,6 +2507,10 @@ Back to the glowing room.
 ~
 trapdoor~
 65667 3 9873
+R M 0 9805 1 9866
+  R E 1 9836 1 5
+R D 0 9866 2 2
+R D 0 9866 4 1
 S
 #9867
 An even more forboding corridor...~
@@ -2432,6 +2529,7 @@ The chamber of a powerful being.
 ~
 door~
 1027 -1 9868
+R D 0 9867 3 1
 S
 #9868
 The Chamber of the High Priestess~
@@ -2453,6 +2551,11 @@ The forboding hallway isn't NEARLY as forboding as what lies beyond it.
 ~
 door~
 1027 -1 9867
+R M 0 9804 1 9868
+  R G 1 9827 1
+  R E 1 9834 1 5
+R D 0 9868 0 1
+R D 0 9868 1 1
 E
 bed~
 This bed is by far larger than any you have seen before.  It is very
@@ -2486,6 +2589,8 @@ You see the room in which the High Priestess resides.
 ~
 ~
 1027 -1 9868
+R D 0 9869 0 2
+R D 0 9869 2 1
 S
 #9870
 Chamber of the Wyrmling~
@@ -2502,6 +2607,8 @@ A huge steel door, probably meant to keep the Wyrmling in.
 ~
 door~
 3 9826 9869
+R M 0 9806 1 9870
+R D 0 9870 2 1
 S
 #9871
 A Waiting Room~
@@ -2527,6 +2634,7 @@ You see an evil glow.
 ~
 door~
 3 -1 9873
+R D 0 9871 3 1
 S
 #9872
 Dragon Exports central hall~
@@ -2561,6 +2669,7 @@ The Portable Dragon shop.
 ~
 ~
 0 -1 9879
+R M 0 9811 1 9872
 S
 #9873
 A strange, glowing room...~
@@ -2578,6 +2687,8 @@ A dark, damp cell.
 ~
 trapdoor~
 3 -1 9866
+R D 0 9873 1 2
+R D 0 9873 5 1
 E
 rug~
 It's pretty big rug, but it isn't nailed down or anything....
@@ -2616,6 +2727,7 @@ You see Gemma's office to the west.
 ~
 ~
 0 -1 9875
+R D 0 9874 0 1
 E
 door~
 This is a door made of a thick metal, unlike anything else so far
@@ -2680,6 +2792,7 @@ You see a large workshop directly south if this office.
 ~
 ~
 0 -1 9878
+R M 0 9812 1 9876
 E
 desk~
 This desk is in shambles, stained and littered.  It's amazing that any
@@ -2751,6 +2864,11 @@ You see the entranceway to the office.
 ~
 ~
 0 -1 9872
+R M 0 9814 1 9879
+  R G 1 9860 1
+  R G 1 9861 1
+  R G 1 9862 1
+  R G 1 9863 1
 E
 shelves~
 There are four shelves here, each heavily ladden with dragon items.
@@ -2799,6 +2917,7 @@ You see an open door leading to the front office.
 ~
 door~
 3 -1 9853
+R D 0 9880 3 1
 S
 #9881
 End of the hallway~
@@ -2822,6 +2941,8 @@ You see a door.
 ~
 door~
 3 -1 9882
+R D 0 9881 0 1
+R D 0 9881 3 1
 E
 door~
 There is a door to the north, with a sign reading: 
@@ -2854,6 +2975,8 @@ You see the middle of the office.
 ~
 ~
 0 -1 9878
+R M 0 9810 1 9882
+R D 0 9882 1 1
 E
 door east~
 There is a door to the east, with a sign reading: Caution -- Do not enter!
@@ -2875,6 +2998,8 @@ You see a big rusty iron door.
 ~
 door~
 39 9893 9884
+R M 0 9815 1 9883
+R D 0 9883 3 2
 S
 #9884
 The torture chamber~
@@ -2895,6 +3020,10 @@ You see a big rusty iron door.
 ~
 door~
 1063 9837 9883
+R M 0 9813 1 9884
+  R G 1 9837 1
+R D 0 9884 0 2
+R D 0 9884 1 2
 > death_prog 100~
 if name($n) == Wilam torturer
 mpoload 9837 1
@@ -2944,6 +3073,8 @@ You see the room to the front of the tapestry.
 ~
 tapestry~
 1027 -1 9856
+R D 0 9886 2 1
+R D 0 9886 3 1
 E
 wall panel panelling~
 The panelled wall seems oddly out of place here, like it is more
@@ -2980,6 +3111,7 @@ sliding down the vertical tunnel.
 ~
 ~
 0 -1 9885
+R D 0 9887 2 1
 S
 #9888
 Deeper into the pit~
@@ -2999,6 +3131,7 @@ You see a spiral staircase leading down, deep into the ground.
 ~
 ~
 0 -1 9889
+R D 0 9888 4 1
 S
 #9889
 A darkened landing~
@@ -3024,6 +3157,7 @@ Below you is the bottom of this deep pit.
 ~
 ~
 0 -1 9891
+R D 0 9889 1 1
 S
 #9890
 A dark alcove~
@@ -3038,6 +3172,7 @@ To the west is a landing of a staircase, leading back to the upper temple.
 ~
 door~
 3 -1 9889
+R D 0 9890 3 1
 E
 wall~
 The wall is plain, without paint or polish.  Attached in several places
@@ -3062,6 +3197,7 @@ It is too dark to see.
 ~
 ~
 0 -1 9889
+R M 0 9816 1 9891
 S
 #9892
 Cultic Candies~
@@ -3076,6 +3212,16 @@ You see the hallway.
 ~
 ~
 3 -1 9857
+R M 0 9817 1 9892
+  R G 1 9892 3
+  R G 1 9842 1
+  R G 1 9843 1
+  R G 1 9844 1
+  R G 1 9845 1
+  R G 1 9846 1
+  R G 1 9847 1
+  R G 1 9848 1
+R D 0 9892 2 1
 S
 #9893
 Top of the staircase~
@@ -3095,6 +3241,7 @@ You see the bottom of the staircase.
 ~
 ~
 0 -1 9894
+R D 0 9893 2 1
 S
 #9894
 Bottom of the staircase~
@@ -3194,142 +3341,6 @@ D5
 0 -1 9898
 S
 #0
-
-
-#RESETS
-D 0 9812 1 1
-D 0 9813 3 1
-D 0 9814 1 1
-D 0 9815 3 1
-D 0 9818 2 1
-D 0 9819 0 1
-D 0 9820 2 1
-D 0 9821 0 1
-D 0 9823 3 1
-D 0 9824 1 1
-D 0 9824 3 1
-D 0 9825 1 1
-D 0 9826 3 1
-D 0 9827 1 1
-D 0 9830 0 1
-D 0 9830 2 1
-D 0 9831 2 1
-D 0 9832 0 1
-D 0 9833 2 1
-M 0 9802 4 9849
-E 1 9832 6 16
-E 1 9852 4 3
-M 0 9800 1 9850
-D 0 9850 0 2
-D 0 9851 2 1
-M 0 9809 1 9853
-E 1 9838 2 7
-E 1 9864 2 16
-D 0 9853 1 1
-D 0 9853 5 1
-M 0 9802 4 9854
-E 1 9832 6 16
-E 1 9835 4 5
-D 0 9854 4 1
-M 0 9801 7 9855
-E 1 9830 8 5
-O 1 9855 1 9855
-M 0 9801 7 9856
-E 1 9830 8 5
-E 1 9833 6 16
-M 0 9801 7 9856
-E 1 9830 8 5
-E 1 9833 6 16
-D 0 9856 1 1
-D 0 9857 0 1
-D 0 9857 1 1
-M 0 9807 1 9858
-D 0 9858 3 1
-M 0 9801 7 9860
-E 1 9830 8 5
-E 1 9833 6 16
-M 0 9801 7 9860
-E 1 9830 8 5
-E 1 9833 6 16
-M 0 9801 7 9860
-E 1 9830 8 5
-E 1 9833 6 16
-M 0 9802 4 9861
-E 1 9832 6 16
-E 1 9852 4 3
-M 0 9801 7 9861
-E 1 9830 8 5
-D 0 9861 5 1
-D 0 9862 4 1
-M 0 9863 2 9863
-E 1 9835 4 3
-E 1 9832 6 16
-M 0 9863 2 9863
-E 1 9835 4 3
-E 1 9832 6 16
-M 0 9802 4 9864
-E 1 9852 4 3
-D 0 9864 5 1
-M 0 9803 1 9865
-G 1 9826 1
-E 1 9828 1 16
-E 1 9829 1 6
-D 0 9865 0 2
-M 0 9805 1 9866
-E 1 9836 1 5
-D 0 9866 2 2
-D 0 9866 4 1
-D 0 9867 3 1
-M 0 9804 1 9868
-G 1 9827 1
-E 1 9834 1 5
-D 0 9868 0 1
-D 0 9868 1 1
-D 0 9869 0 2
-D 0 9869 2 1
-M 0 9806 1 9870
-D 0 9870 2 1
-D 0 9871 3 1
-M 0 9811 1 9872
-D 0 9873 1 2
-D 0 9873 5 1
-D 0 9874 0 1
-M 0 9812 1 9876
-M 0 9814 1 9879
-G 1 9860 1
-G 1 9861 1
-G 1 9862 1
-G 1 9863 1
-D 0 9880 3 1
-D 0 9881 0 1
-D 0 9881 3 1
-M 0 9810 1 9882
-D 0 9882 1 1
-M 0 9815 1 9883
-D 0 9883 3 2
-M 0 9813 1 9884
-G 1 9837 1
-D 0 9884 0 2
-D 0 9884 1 2
-D 0 9886 2 1
-D 0 9886 3 1
-D 0 9887 2 1
-D 0 9888 4 1
-D 0 9889 1 1
-D 0 9890 3 1
-M 0 9816 1 9891
-M 0 9817 1 9892
-G 1 9892 3
-G 1 9842 1
-G 1 9843 1
-G 1 9844 1
-G 1 9845 1
-G 1 9846 1
-G 1 9847 1
-G 1 9848 1
-D 0 9892 2 1
-D 0 9893 2 1
-S
 
 
 #SHOPS

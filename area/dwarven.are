@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Raff~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 13141784
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #6500
@@ -24,7 +27,7 @@ The guard looks very tough and mean.
 2051 8 500 S
 20 0 -2 20d20+200 2d4+18
 10000 40000
-8 8 1
+112 112 1
 #6501
 dwarf worker miner~
 the dwarven worker~
@@ -35,7 +38,7 @@ He is very dirty, and looks extremely over-worked.
 2113 0 900 S
 12 4 1 12d12+120 1d7+7
 3500 6000
-8 8 1
+112 112 1
 #6502
 wraith~
 the wraith~
@@ -46,7 +49,7 @@ A black, almost transparent wraith.
 3 40 -900 S
 29 -5 -10 29d29+290 4d6+15
 50000 125000
-8 8 1
+112 112 1
 #6503
 storekeeper~
 the storekeeper~
@@ -57,7 +60,7 @@ The storekeeper is very rotund, but looks like a sharp guy.
 3 40 900 C
 35 2 2 6d10+990 2d9+20
 100000 80000
-8 8 1
+112 112 1
 16 13 13 14 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 0
@@ -73,7 +76,7 @@ together and approaches you with a smile.
 3 40 900 C
 35 2 2 7d10+990 2d9+19
 20000 80000
-8 8 1
+112 112 1
 16 13 13 15 13 13 13
 0 0 0 0 0
 2 3 0 0 5 4 0
@@ -89,7 +92,7 @@ habitat.  He looks very powerful.
 65 8 100 S
 18 7 2 10d20+500 4d4+5
 1200 25000
-8 8 1
+112 112 1
 #6506
 giant~
 the giant~
@@ -100,7 +103,7 @@ The giant is about 8 feet tall, with arms of steel, and looks very strong.
 65 0 0 S
 16 5 1 4d20+300 3d7+5
 2000 24000
-8 8 1
+112 112 1
 #6507
 dwarf miner~
 the dwarven miner~
@@ -111,7 +114,7 @@ The mineworker is very tired, and very dirty, and he has bulging muscles.
 2051 0 0 S
 8 14 7 8d8+100 2d9+9
 40 1000
-8 8 1
+112 112 1
 #6508
 dwarf leader~
 the dwarven mine leader~
@@ -122,7 +125,7 @@ The mine leader is very big and very strong.
 2051 0 0 S
 21 0 -8 5d3+400 3d9+3
 20000 52000
-8 8 1
+112 112 1
 #6509
 dwarf doctor~
 the dwarven doctor~
@@ -133,7 +136,7 @@ He is a very skilled surgeon, with hands of steel.
 2051 136 1000 S
 9 15 4 9d9+99 3d4+12
 1500 15000
-8 8 1
+112 112 1
 #6510
 dwarf peon~
 the dwarven peon~
@@ -143,7 +146,7 @@ A dwarven peon is awaiting help here.
 2051 0 500 S
 3 16 6 5d3+33 2d4+3
 75 400
-8 8 1
+112 112 1
 #6511
 dwarf~
 the dwarf~
@@ -153,7 +156,7 @@ A grinning dwarf is here.
 2051 0 500 S
 9 10 2 9d9+99 3d4+1
 1250 6000
-8 8 1
+112 112 1
 #6512
 dwarf son~
 the unwanted son~
@@ -163,7 +166,7 @@ An unwanted son is here.  You feel sorry for the guy.
 65 0 250 S
 9 12 3 3d4+125 3d5+5
 50 5000
-8 8 1
+112 112 1
 #6513
 dwarf daughter~
 the unwanted daughter~
@@ -173,7 +176,7 @@ An unwanted daughter is here.  You feel sorry for her.
 65 0 250 S
 10 11 2 3d4+135 3d5+7
 50 5000
-8 8 1
+112 112 1
 #6514
 dwarf guard~
 the barracks guard~
@@ -183,7 +186,7 @@ A barrack guard is here.
 2051 0 100 S
 16 5 1 16d16+160 3d6+8
 3000 18000
-8 8 1
+112 112 1
 #6515
 man~
 the man in waiting~
@@ -193,7 +196,7 @@ A man in waiting is here.  He looks nervous and unsure of himself.
 2051 0 300 S
 15 12 7 6d8+180 3d7+5
 6969 20000
-8 8 1
+112 112 1
 #6516
 mazekeeper~
 the mazekeeper~
@@ -204,7 +207,7 @@ He looks VERY tough.
 2083 128 -1000 S
 29 0 -9 25d29+290 4d8+15
 80000 200000
-8 8 1
+112 112 1
 #6517
 snake~
 the giant snake~
@@ -214,7 +217,7 @@ There is a giant snake here.
 35 0 -1000 S
 15 7 2 3d7+432 3d7+6
 3000 30000
-8 8 1
+112 112 1
 #0
 
 
@@ -251,8 +254,9 @@ a long, black stick~
 A long, black stick lays here.~
 ~
 4 0 16385
-12 10 10 15
+12 10 10 -1
 3 100 10
+'cure critical'
 #6507
 long white stick~
 a long, white stick~
@@ -330,7 +334,7 @@ A crumpled note is here.~
 ~
 12 0 1
 0 0 0 0
-0 0 0
+1 0 0
 E
 note letter letters~
 It seems to be a juicy love letter from the Queen.  Unfortunately, it's
@@ -343,7 +347,7 @@ There is a key to Strangelove Castle here.~
 ~
 18 0 1
 0 0 0 0
-0 10 1
+1 10 1
 #6516
 key mine~
 a mine key~
@@ -351,7 +355,7 @@ There is a key to the mines here.~
 ~
 18 0 1
 0 0 0 0
-0 10 1
+1 10 1
 #6517
 coal pile~
 a small pile of coal~
@@ -380,8 +384,9 @@ a box of birth control pills~
 There is a box of birth control pills here.~
 ~
 26 0 1
-20 82 -1 -1
+20 -1 -1 -1
 1 300 30
+'change sex' 'NONE' 'NONE'
 E
 birth control pills pill~
 They are in a circular container, and there are numbers corresponding
@@ -434,6 +439,7 @@ The path heads toward the main city.
 ~
 ~
 0 -1 6500
+R M 0 6501 6 6501
 S
 #6502
 Path up the Mountain~
@@ -452,6 +458,7 @@ The base of the mountain is near.
 ~
 ~
 0 -1 6501
+R M 0 6501 6 6502
 S
 #6503
 Top of the Mountain~
@@ -476,6 +483,8 @@ There is an entrance to the mountain.
 ~
 ~
 0 -1 6505
+R O 0 6507 2 6503
+R M 0 6501 6 6503
 S
 #6504
 Along the Narrow Path~
@@ -508,6 +517,15 @@ D3
 ~
 door~
 39 6502 6513
+R D 0 6505 3 2
+R M 0 6500 4 6505
+  R E 1 6504 10 16
+  R E 1 6505 10 5
+  R G 1 6502 10
+R M 0 6500 4 6505
+  R E 1 6504 10 16
+  R E 1 6505 10 5
+R O 0 6507 2 6505
 S
 #6506
 Bend in the Narrow Path~
@@ -560,6 +578,7 @@ D2
 ~
 ~
 0 -1 6507
+R M 0 6506 2 6508
 S
 #6509
 The Door to the Kingdom~
@@ -580,6 +599,15 @@ D3
 ~
 ~
 0 -1 6522
+R D 0 6509 1 2
+R M 0 6500 6 6509
+  R E 1 6509 10 16
+  R E 1 6510 10 6
+  R E 1 6511 10 1
+R M 0 6500 6 6509
+  R E 1 6512 10 9
+  R E 1 6509 10 16
+  R E 1 6505 10 5
 S
 #6510
 Path to the Castle~
@@ -595,6 +623,7 @@ D3
 ~
 door~
 39 6502 6509
+R D 0 6510 3 2
 S
 #6511
 Still on the path to the Castle~
@@ -632,6 +661,11 @@ D2
 ~
 ~
 0 -1 6511
+R D 0 6512 1 2
+R M 0 6500 2 6512
+  R E 1 6508 10 16
+R M 0 6500 2 6512
+  R E 1 6508 10 16
 S
 #6513
 Inside the entrance~
@@ -654,6 +688,8 @@ This looks like an entrance to some type of store room.
 ~
 ~
 0 -1 6526
+R D 0 6513 1 2
+R O 0 6507 2 6513
 S
 #6514
 Path~
@@ -685,6 +721,7 @@ The Hide & Tooth shop is seen to the west.
 ~
 ~
 0 -1 6516
+R M 0 6505 1 6515
 S
 #6516
 Hide & Tooth Shop~
@@ -700,6 +737,13 @@ D1
 ~
 ~
 0 -1 6515
+R M 0 6503 1 6516
+  R G 1 6504 10
+  R G 1 6505 10
+  R G 1 6510 10
+  R G 1 6511 10
+  R G 1 6512 10
+  R E 1 6504 10 16
 S
 #6517
 Path to the north of shop~
@@ -767,6 +811,7 @@ D3
 ~
 ~
 0 -1 6519
+R M 0 6505 1 6520
 S
 #6521
 Entrance to barracks~
@@ -782,6 +827,14 @@ D3
 ~
 ~
 0 -1 6520
+R D 0 6521 2 1
+R M 0 6514 4 6521
+  R E 1 6509 10 16
+R M 0 6514 4 6521
+  R E 1 6509 10 16
+R M 0 6500 4 6521
+R M 0 6500 4 6521
+R M 0 6500 4 6521
 S
 #6522
 A Guard House~
@@ -809,6 +862,13 @@ D2
 ~
 ~
 0 -1 6524
+R D 0 6523 0 1
+R M 0 6511 8 6523
+R M 0 6511 8 6523
+  R E 1 6504 10 16
+  R E 1 6514 10 17
+R M 0 6511 8 6523
+R M 0 6511 8 6523
 S
 #6524
 Back of Barracks~
@@ -820,6 +880,10 @@ D0
 ~
 ~
 0 -1 6523
+R M 0 6511 8 6524
+R O 0 6513 1 6524
+R M 0 6502 2 6524
+R M 0 6511 8 6524
 S
 #6525
 Inside of Castle Strangelove~
@@ -836,6 +900,7 @@ D4
 ~
 ~
 0 -1 6528
+R D 0 6525 3 2
 S
 #6526
 A store room~
@@ -852,6 +917,7 @@ D5
 ~
 trapdoor~
 3 0 6527
+R D 0 6526 5 1
 E
 floor dust~
 After blowing all the dust off the floor, you notice a trapdoor!
@@ -867,6 +933,9 @@ D4
 ~
 ~
 3 -1 6526
+R D 0 6527 4 1
+R M 0 6502 1 6527
+  R G 1 6502 10
 S
 #6528
 Stairs in castle~
@@ -881,6 +950,7 @@ D5
 ~
 ~
 0 -1 6525
+R M 0 6512 3 6528
 S
 #6529
 Stairs~
@@ -897,6 +967,8 @@ D5
 ~
 ~
 0 -1 6528
+R M 0 6512 3 6529
+R M 0 6513 3 6529
 S
 #6530
 Top of stairs~
@@ -912,6 +984,7 @@ D5
 ~
 ~
 0 -1 6529
+R M 0 6513 3 6530
 S
 #6531
 Queen's waiting room~
@@ -929,6 +1002,9 @@ D3
 ~
 ~
 0 -1 6530
+R D 0 6531 0 1
+R M 0 6515 4 6531
+R M 0 6515 4 6531
 S
 #6532
 Bedroom~
@@ -945,6 +1021,8 @@ D2
 ~
 door~
 35 6502 6531
+R D 0 6532 2 1
+R O 0 6516 1 6532
 S
 #6534
 Hospital~
@@ -956,6 +1034,11 @@ D2
 ~
 ~
 0 -1 6519
+R O 0 6506 1 6534
+R M 0 6510 4 6534
+R M 0 6510 4 6534
+R M 0 6509 1 6534
+  R E 1 6506 10 17
 S
 #6535
 Granite Head's Bakery~
@@ -967,6 +1050,8 @@ D1
 ~
 ~
 0 -1 6517
+R M 0 6504 1 6535
+  R E 1 6504 10 16
 S
 #6540
 Dark Path before a Mountain Gate~
@@ -988,6 +1073,15 @@ D3
 ~
 ~
 0 -1 6503
+R D 0 6540 1 2
+R M 0 6500 4 6540
+  R E 1 6504 10 16
+  R E 1 6505 10 5
+  R G 1 6502 10
+R M 0 6500 4 6540
+  R E 1 6504 10 16
+  R E 1 6505 10 5
+R O 0 6507 1 6540
 S
 #6541
 Mine entrance~
@@ -1003,6 +1097,7 @@ D5
 ~
 ~
 0 -1 6542
+R D 0 6541 3 2
 S
 #6542
 Inside the mine~
@@ -1019,6 +1114,8 @@ D5
 ~
 ~
 0 -1 6554
+R M 0 6507 4 6542
+  R E 1 6508 10 16
 S
 #6543
 Path in the mine~
@@ -1034,6 +1131,13 @@ D3
 ~
 ~
 0 -1 6554
+R M 0 6507 4 6543
+  R E 1 6508 10 16
+R M 0 6507 4 6543
+  R E 1 6508 10 16
+R M 0 6508 4 6543
+  R E 1 6512 10 9
+  R E 1 6508 10 16
 S
 #6544
 Mine crossroad~
@@ -1057,6 +1161,7 @@ D3
 ~
 ~
 0 -1 6543
+R D 0 6544 0 2
 S
 #6545
 Coal Room~
@@ -1069,6 +1174,7 @@ D3
 ~
 ~
 0 -1 6544
+R O 0 6517 6 6545
 S
 #6546
 Mine Maze~
@@ -1084,6 +1190,7 @@ D2
 ~
 door~
 39 6502 6544
+R D 0 6546 2 2
 S
 #6547
 Maze inscription~
@@ -1112,6 +1219,7 @@ D2
 ~
 ~
 0 -1 6547
+R M 0 6517 2 6548
 S
 #6549
 Maze~
@@ -1126,6 +1234,7 @@ D3
 ~
 ~
 0 -1 6548
+R M 0 6517 2 6549
 S
 #6550
 Maze~
@@ -1152,6 +1261,7 @@ D0
 ~
 ~
 0 -1 6544
+R O 0 6518 3 6551
 S
 #6552
 Solved the Maze.~
@@ -1184,6 +1294,7 @@ D1
 ~
 ~
 0 -1 6552
+R M 0 6516 1 6553
 S
 #6554
 Bottom of mineshaft~
@@ -1201,116 +1312,6 @@ D4
 0 -1 6542
 S
 #0
-
-
-#RESETS
-D 0 6505 3 2
-D 0 6513 1 2
-D 0 6509 1 2
-D 0 6510 3 2
-D 0 6512 1 2
-D 0 6525 3 2
-D 0 6521 2 1
-D 0 6523 0 1
-D 0 6526 5 1
-D 0 6527 4 1
-D 0 6540 1 2
-D 0 6541 3 2
-D 0 6544 0 2
-D 0 6546 2 2
-D 0 6531 0 1
-D 0 6532 2 1
-M 0 6500 4 6505
-E 1 6504 10 16
-E 1 6505 10 5
-G 1 6502 10
-M 0 6500 4 6505
-E 1 6504 10 16
-E 1 6505 10 5
-M 0 6500 4 6540
-E 1 6504 10 16
-E 1 6505 10 5
-G 1 6502 10
-M 0 6500 4 6540
-E 1 6504 10 16
-E 1 6505 10 5
-O 0 6506 1 6534
-O 0 6507 2 6513
-O 0 6507 2 6505
-O 0 6507 2 6503
-O 0 6507 1 6540
-M 0 6501 6 6503
-M 0 6501 6 6502
-M 0 6501 6 6501
-M 0 6502 1 6527
-G 1 6502 10
-M 0 6503 1 6516
-G 1 6504 10
-G 1 6505 10
-G 1 6510 10
-G 1 6511 10
-G 1 6512 10
-E 1 6504 10 16
-M 0 6504 1 6535
-E 1 6504 10 16
-M 0 6505 1 6515
-M 0 6506 2 6508
-M 0 6500 6 6509
-E 1 6509 10 16
-E 1 6510 10 6
-E 1 6511 10 1
-M 0 6500 6 6509
-E 1 6512 10 9
-E 1 6509 10 16
-E 1 6505 10 5
-M 0 6507 4 6543
-E 1 6508 10 16
-M 0 6507 4 6543
-E 1 6508 10 16
-M 0 6507 4 6542
-E 1 6508 10 16
-M 0 6508 4 6543
-E 1 6512 10 9
-E 1 6508 10 16
-M 0 6510 4 6534
-M 0 6510 4 6534
-M 0 6514 4 6521
-E 1 6509 10 16
-M 0 6514 4 6521
-E 1 6509 10 16
-M 0 6500 4 6521
-M 0 6500 4 6521
-M 0 6500 4 6521
-M 0 6511 8 6523
-M 0 6511 8 6523
-E 1 6504 10 16
-E 1 6514 10 17
-M 0 6511 8 6523
-M 0 6511 8 6523
-M 0 6511 8 6524
-O 0 6513 1 6524
-M 0 6502 2 6524
-M 0 6511 8 6524
-M 0 6512 3 6528
-M 0 6512 3 6529
-M 0 6513 3 6529
-M 0 6513 3 6530
-M 0 6515 4 6531
-M 0 6515 4 6531
-M 0 6509 1 6534
-E 1 6506 10 17
-M 0 6516 1 6553
-M 0 6517 2 6548
-M 0 6517 2 6549
-O 0 6516 1 6532
-O 0 6517 6 6545
-O 0 6518 3 6551
-M 0 6500 2 6512
-E 1 6508 10 16
-M 0 6500 2 6512
-E 1 6508 10 16
-M 0 6505 1 6520
-S
 
 
 #SHOPS

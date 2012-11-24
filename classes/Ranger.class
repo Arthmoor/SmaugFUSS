@@ -1,6 +1,8 @@
 Name        Ranger~
 Class       6
-Attrprime   1
+AttrPrime   1
+AttrSecond   0
+AttrDeficient   0
 Weapon      10313
 Guild       3039
 Skilladept  90
@@ -10,6 +12,9 @@ Hpmin       11
 Hpmax       15
 Mana        1
 Expbase     1125
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'aqua breath' 24 90
 Skill 'armor' 20 85
 Skill 'bless' 18 80

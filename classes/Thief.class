@@ -1,6 +1,8 @@
 Name        Thief~
 Class       2
-Attrprime   2
+AttrPrime   2
+AttrSecond   0
+AttrDeficient   0
 Weapon      10312
 Guild       3028
 Skilladept  85
@@ -10,6 +12,9 @@ Hpmin       8
 Hpmax       13
 Mana        0
 Expbase     750
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'aggressive style' 1 80
 Skill 'aid' 18 70
 Skill 'backstab' 1 95

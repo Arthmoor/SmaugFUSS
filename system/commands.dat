@@ -198,14 +198,6 @@ Log         0
 End
 
 #COMMAND
-Name        atmob~
-Code        (fae4c)
-Position    100
-Level       52
-Log         0
-End
-
-#COMMAND
 Name        buy~
 Code        do_buy
 Position    106
@@ -335,6 +327,14 @@ Log         1
 End
 
 #COMMAND
+Name        bolt~
+Code        do_bolt
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
 Name        cast~
 Code        do_cast
 Position    104
@@ -398,22 +398,6 @@ Code        do_clans
 Position    100
 Level       0
 Log         0
-End
-
-#COMMAND
-Name        clear~
-Code        do_clear
-Position    100
-Level       0
-Log         0
-End
-
-#COMMAND
-Name        cmenu~
-Code        do_cmenu
-Position    100
-Level       61
-Log         1
 End
 
 #COMMAND
@@ -526,6 +510,14 @@ Name        cook~
 Code        do_cook
 Position    100
 Level       1
+Log         0
+End
+
+#COMMAND
+Name        color~
+Code        do_color
+Position    100
+Level       0
 Log         0
 End
 
@@ -644,14 +636,6 @@ Log         0
 End
 
 #COMMAND
-Name        diagnose~
-Code        do_diagnose
-Position    100
-Level       62
-Log         0
-End
-
-#COMMAND
 Name        dismiss~
 Code        do_dismiss
 Position    100
@@ -670,6 +654,14 @@ End
 #COMMAND
 Name        date~
 Code        do_time
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        dnd~
+Code        do_dnd
 Position    100
 Level       0
 Log         0
@@ -824,7 +816,7 @@ Name        formpass~
 Code        do_form_password
 Position    100
 Level       61
-Log         1
+Log         0
 End
 
 #COMMAND
@@ -948,14 +940,6 @@ Log         0
 End
 
 #COMMAND
-Name        grub~
-Code        do_grub
-Position    100
-Level       55
-Log         0
-End
-
-#COMMAND
 Name        gold~
 Code        do_gold
 Position    100
@@ -1052,6 +1036,14 @@ Log         1
 End
 
 #COMMAND
+Name        hotboot~
+Code        do_hotboot
+Position    100
+Level       60
+Log         1
+End
+
+#COMMAND
 Name        inventory~
 Code        do_inventory
 Position    100
@@ -1141,22 +1133,6 @@ Log         3
 End
 
 #COMMAND
-Name        imc~
-Code        (fae4c)
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
-Name        imclist~
-Code        (fae4c)
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
 Name        ignore~
 Code        do_ignore
 Position    100
@@ -1177,38 +1153,6 @@ Name        ipcompare~
 Code        do_ipcompare
 Position    100
 Level       52
-Log         0
-End
-
-#COMMAND
-Name        ichannels~
-Code        (fae4c)
-Position    100
-Level       63
-Log         0
-End
-
-#COMMAND
-Name        isetup~
-Code        (fae4c)
-Position    100
-Level       63
-Log         0
-End
-
-#COMMAND
-Name        ilist~
-Code        (fae4c)
-Position    100
-Level       63
-Log         0
-End
-
-#COMMAND
-Name        icommand~
-Code        (fae4c)
-Position    100
-Level       63
 Log         0
 End
 
@@ -1329,6 +1273,46 @@ Name        laws~
 Code        do_laws
 Position    100
 Level       1
+Log         0
+End
+
+#COMMAND
+Name        morph~
+Code        do_imm_morph
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        morphstat~
+Code        do_morphstat
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        morphcreate~
+Code        do_morphcreate
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        morphset~
+Code        do_morphset
+Position    100
+Level       51
+Log         0
+End
+
+#COMMAND
+Name        morphdestroy~
+Code        do_morphdestroy
+Position    100
+Level       51
 Log         0
 End
 
@@ -1673,27 +1657,11 @@ Log         1
 End
 
 #COMMAND
-Name        map~
-Code        do_lookmap
-Position    100
-Level       62
-Log         0
-End
-
-#COMMAND
 Name        mapout~
 Code        do_mapout
 Position    100
 Level       57
 Log         0
-End
-
-#COMMAND
-Name        massign~
-Code        do_massign
-Position    100
-Level       61
-Log         1
 End
 
 #COMMAND
@@ -1745,14 +1713,6 @@ Log         0
 End
 
 #COMMAND
-Name        mmenu~
-Code        do_mmenu
-Position    100
-Level       54
-Log         0
-End
-
-#COMMAND
 Name        mpedit~
 Code        do_mpedit
 Position    100
@@ -1768,14 +1728,6 @@ Position    100
 Level       54
 Log         0
 Flags       1
-End
-
-#COMMAND
-Name        mrange~
-Code        do_mrange
-Position    100
-Level       54
-Log         0
 End
 
 #COMMAND
@@ -1933,14 +1885,6 @@ Flags       1
 End
 
 #COMMAND
-Name        moblog~
-Code        (fae4c)
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
 Name        mpasupress~
 Code        do_mpasupress
 Position    100
@@ -1991,6 +1935,14 @@ Position    100
 Level       1
 Log         0
 Flags       1
+End
+
+#COMMAND
+Name        morphlist~
+Code        do_morphlist
+Position    100
+Level       51
+Log         0
 End
 
 #COMMAND
@@ -2147,14 +2099,6 @@ Log         0
 End
 
 #COMMAND
-Name        oassign~
-Code        do_oassign
-Position    100
-Level       61
-Log         1
-End
-
-#COMMAND
 Name        ocreate~
 Code        do_ocreate
 Position    100
@@ -2203,14 +2147,6 @@ Log         0
 End
 
 #COMMAND
-Name        omenu~
-Code        do_omenu
-Position    100
-Level       54
-Log         0
-End
-
-#COMMAND
 Name        opedit~
 Code        do_opedit
 Position    100
@@ -2221,14 +2157,6 @@ End
 #COMMAND
 Name        opstat~
 Code        do_opstat
-Position    100
-Level       54
-Log         0
-End
-
-#COMMAND
-Name        orange~
-Code        do_orange
 Position    100
 Level       54
 Log         0
@@ -2275,35 +2203,11 @@ Log         1
 End
 
 #COMMAND
-Name        owhere~
-Code        do_owhere
-Position    100
-Level       53
-Log         0
-End
-
-#COMMAND
-Name        opentourney~
-Code        (fae4c)
-Position    100
-Level       65
-Log         1
-End
-
-#COMMAND
 Name        oset~
 Code        do_oset
 Position    100
 Level       54
 Log         3
-End
-
-#COMMAND
-Name        ogrub~
-Code        do_ogrub
-Position    100
-Level       54
-Log         0
 End
 
 #COMMAND
@@ -2327,14 +2231,6 @@ Name        practice~
 Code        do_practice
 Position    104
 Level       0
-Log         0
-End
-
-#COMMAND
-Name        pagelength~
-Code        do_pagelen
-Position    100
-Level       51
 Log         0
 End
 
@@ -2516,14 +2412,6 @@ Log         0
 End
 
 #COMMAND
-Name        rassign~
-Code        do_rassign
-Position    100
-Level       61
-Log         1
-End
-
-#COMMAND
 Name        rat~
 Code        do_rat
 Position    100
@@ -2577,22 +2465,6 @@ Code        do_redit
 Position    100
 Level       53
 Log         3
-End
-
-#COMMAND
-Name        redraw~
-Code        do_redraw_page
-Position    100
-Level       52
-Log         0
-End
-
-#COMMAND
-Name        refresh~
-Code        do_refresh_page
-Position    100
-Level       52
-Log         0
 End
 
 #COMMAND
@@ -2724,122 +2596,10 @@ Log         0
 End
 
 #COMMAND
-Name        rset~
-Code        do_rset
-Position    100
-Level       53
-Log         3
-End
-
-#COMMAND
 Name        rstat~
 Code        do_rstat
 Position    100
 Level       53
-Log         0
-End
-
-#COMMAND
-Name        rreset~
-Code        do_rreset
-Position    100
-Level       60
-Log         3
-End
-
-#COMMAND
-Name        rgrub~
-Code        do_rgrub
-Position    100
-Level       53
-Log         0
-End
-
-#COMMAND
-Name        rdisconnect~
-Code        (fae4c)
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
-Name        rconnect~
-Code        (fae4c)
-Position    100
-Level       58
-Log         0
-End
-
-#COMMAND
-Name        rsockets~
-Code        (fae4c)
-Position    100
-Level       56
-Log         0
-End
-
-#COMMAND
-Name        rignore~
-Code        (fae4c)
-Position    100
-Level       61
-Log         0
-End
-
-#COMMAND
-Name        rchanset~
-Code        (fae4c)
-Position    100
-Level       61
-Log         0
-End
-
-#COMMAND
-Name        rtell~
-Code        (fae4c)
-Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rbeep~
-Code        (fae4c)
-Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rreply~
-Code        (fae4c)
-Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rwho~
-Code        (fae4c)
-Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rquery~
-Code        (fae4c)
-Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rchannels~
-Code        (fae4c)
-Position    100
-Level       2
 Log         0
 End
 
@@ -2893,18 +2653,10 @@ Log         0
 End
 
 #COMMAND
-Name        rfinger~
-Code        (fae4c)
+Name        revert~
+Code        do_revert
 Position    100
-Level       2
-Log         0
-End
-
-#COMMAND
-Name        rwhois~
-Code        (fae4c)
-Position    100
-Level       2
+Level       0
 Log         0
 End
 
@@ -2913,6 +2665,14 @@ Name        south~
 Code        do_south
 Position    112
 Level       0
+Log         0
+End
+
+#COMMAND
+Name        skin~
+Code        do_skin
+Position    100
+Level       2
 Log         0
 End
 
@@ -3368,14 +3128,6 @@ Log         0
 End
 
 #COMMAND
-Name        showlayers~
-Code        do_showlayers
-Position    100
-Level       62
-Log         0
-End
-
-#COMMAND
 Name        tell~
 Code        do_tell
 Position    106
@@ -3434,6 +3186,14 @@ Log         1
 End
 
 #COMMAND
+Name        traffic~
+Code        do_traffic
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
 Name        trust~
 Code        do_trust
 Position    100
@@ -3462,6 +3222,14 @@ Name        up~
 Code        do_up
 Position    112
 Level       0
+Log         0
+End
+
+#COMMAND
+Name        unmorph~
+Code        do_imm_unmorph
+Position    100
+Level       51
 Log         0
 End
 
@@ -3514,9 +3282,33 @@ Log         1
 End
 
 #COMMAND
+Name        unbolt~
+Code        do_unbolt
+Position    100
+Level       0
+Log         0
+End
+
+#COMMAND
 Name        value~
 Code        do_value
 Position    106
+Level       0
+Log         0
+End
+
+#COMMAND
+Name        vassign~
+Code        do_vassign
+Position    100
+Level       61
+Log         1
+End
+
+#COMMAND
+Name        version~
+Code        do_version
+Position    100
 Level       0
 Log         0
 End

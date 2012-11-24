@@ -1,16 +1,15 @@
 #! /bin/csh -f
 
 # Set the port number.
-set port = 4000
+set port = 4020
 if ( "$1" != "" ) set port="$1"
 
 # Change to area directory.
 cd ../area
 
 # Set limits.
-nohup
-nice
-limit stack 1024k
+limit coredumpsize unlimited
+limit stacksize unlimited
 if ( -e shutdown.txt ) rm -f shutdown.txt
 
 while ( 1 )
@@ -27,25 +26,20 @@ while ( 1 )
     date > $logfile
     date > ../area/boot.txt
 
-    # Record initial charges
-    # charges >> $logfile
-
     # Run SMAUG.
+    # Check if already running
+    set matches = `netstat -an | grep ":$port " | grep -c LISTEN`
+    if ( $matches >= 1 ) then
+        # Already running
+        echo Port $port is already in use.
+        exit 0
+    endif
     ../src/smaug $port >&! $logfile
-#    ../src/smaug >>&! $logfile
-
-    # Record ending charges
-    # charges >> $logfile
-
-#    # Delete this out if no adb.
-#    if ( -e core ) then
-#	    echo '$c' | adb ../src/smaug
-#    endif
 
     # Restart, giving old connections a chance to die.
     if ( -e shutdown.txt ) then
 	rm -f shutdown.txt
 	exit 0
     endif
-    sleep 15
+    sleep 5
 end

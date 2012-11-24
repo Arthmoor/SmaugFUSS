@@ -1,6 +1,8 @@
 Name        Cleric~
 Class       1
-Attrprime   4
+AttrPrime   4
+AttrSecond   0
+AttrDeficient   0
 Weapon      10315
 Guild       3003
 Skilladept  95
@@ -10,6 +12,9 @@ Hpmin       7
 Hpmax       10
 Mana        1
 Expbase     900
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'alertness' 23 92
 Skill 'animate dead' 42 85
 Skill 'antimagic shell' 42 70

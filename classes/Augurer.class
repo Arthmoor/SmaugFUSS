@@ -1,6 +1,8 @@
 Name        Augurer~
 Class       7
-Attrprime   4
+AttrPrime   4
+AttrSecond   0
+AttrDeficient   0
 Weapon      10312
 Guild       21430
 Skilladept  95
@@ -10,6 +12,9 @@ Hpmin       9
 Hpmax       14
 Mana        1
 Expbase     1350
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'aqua breath' 14 80
 Skill 'armor' 2 90
 Skill 'bless' 16 95

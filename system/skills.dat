@@ -22,8 +22,8 @@ Slot         246
 Mana         10
 Code         spell_smaug
 Dammsg       ~
-Affect       '10' 13 '-75' -1
 Affect       '10' 31 '-3' -1
+Affect       '10' 13 '-75' -1
 Minlevel     51
 End
 
@@ -106,7 +106,7 @@ Rounds       12
 Code         spell_animate_dead
 Dammsg       ~
 Wearoff      !Animate Dead!~
-Minlevel     23
+Minlevel     42
 End
 
 #SKILL
@@ -343,9 +343,9 @@ Wearoff      The blessing fades away.~
 Hitchar      You lay the blessing of your god upon $N.~
 Hitvict      A powerful blessing is laid upon you.~
 Hitroom      $N beams as a powerful blessing is laid upon $M.~
-Affect       '' 60 '109' -1
-Affect       'l*23' 24 '-(l/8)' -1
 Affect       'l*23' 18 'l/8' -1
+Affect       'l*23' 24 '-(l/8)' -1
+Affect       '' 60 '109' -1
 Minlevel     5
 End
 
@@ -599,7 +599,7 @@ Hitchar      A small cloud of vaporous flame bursts forth before you.~
 Hitroom      A small cloud of vaporous flame bursts forth before $n.~
 Dice         L~
 Value        30
-Minlevel     1
+Minlevel     6
 End
 
 #SKILL
@@ -795,7 +795,7 @@ Wearoff      Your leathery skin grows thinner as your spell wanes.~
 Hitvict      Your skin becomes thick and leathery, similar to that of a demon.~
 Hitroom      $N's skin becomes thick and leathery, similar to that of a demon.~
 Affect       'l*23' 27 '64' -1
-Minlevel     14
+Minlevel     20
 End
 
 #SKILL
@@ -887,7 +887,7 @@ Rounds       12
 Code         spell_detect_poison
 Dammsg       ~
 Wearoff      !Detect Poison!~
-Minlevel     4
+Minlevel     5
 End
 
 #SKILL
@@ -1060,8 +1060,8 @@ Dammsg       ~
 Wearoff      The eldritch sphere about you winks from existence.~
 Hitvict      A magical eldritch sphere forms about you...~
 Hitroom      A shimmering eldritch sphere forms about $N...~
-Affect       '(l*3)+25' 27 '8192' -1
 Affect       '(l*3)+25' 27 '1048576' -1
+Affect       '(l*3)+25' 27 '8192' -1
 Minlevel     33
 End
 
@@ -1352,7 +1352,7 @@ Rounds       12
 Code         spell_fireball
 Dammsg       shield of flame~
 Missroom     supress~
-Minlevel     28
+Minlevel     51
 End
 
 #SKILL
@@ -1685,8 +1685,8 @@ Wearoff      The Fury of The High Gods seeps from your veins, leaving you draine
 Hitchar      You lay The Fury of The High Gods upon $N.~
 Hitvict      The Fury of The High Gods is temporarily given to you.~
 Hitroom      The Fury of The High Gods is temporarily given to $N.~
-Affect       'l/2' 18 '1+(l/17)' -1
 Affect       'l/2' 19 '1+(l/17)' -1
+Affect       'l/2' 18 '1+(l/17)' -1
 Minlevel     27
 End
 
@@ -1873,11 +1873,11 @@ Name         magic missile~
 Type         Spell
 Info         340
 Flags        0
+Target       1
 Minpos       109
 Slot         32
 Mana         7
 Rounds       6
-Range        2
 Code         spell_smaug
 Dammsg       magic missile~
 Wearoff      !Magic Missile!~
@@ -1971,9 +1971,9 @@ Wearoff      The minor invocation fades away.~
 Hitchar      You lay a minor invocation of your god  upon $N.~
 Hitvict      A minor invocation is laid upon you.~
 Hitroom      $N beams as a minor invocation is laid upon $M.~
-Affect       'l*23' 18 '(l/8)' -1
-Affect       'l*23' 24 '-(l/8)' -1
 Affect       '' 60 '3' -1
+Affect       'l*23' 24 '-(l/8)' -1
+Affect       'l*23' 18 '(l/8)' -1
 Minlevel     10
 End
 
@@ -2060,7 +2060,7 @@ Rounds       20
 Code         spell_poison
 Dammsg       poison~
 Wearoff      You feel less sick.~
-Minlevel     5
+Minlevel     6
 End
 
 #SKILL
@@ -2072,26 +2072,10 @@ Minpos       111
 Slot         294
 Mana         60
 Rounds       12
-Code         spell_null
+Code         spell_polymorph
 Dammsg       ~
 Wearoff      !Polymorph!~
 Minlevel     51
-End
-
-#SKILL
-Name         possess~
-Type         Spell
-Info         0
-Flags        0
-Minpos       111
-Slot         232
-Mana         120
-Rounds       30
-Code         spell_possess
-Dammsg       possess~
-Wearoff      You return to your body.~
-Components   v+13~
-Minlevel     49
 End
 
 #SKILL
@@ -2107,6 +2091,22 @@ Code         spell_portal
 Dammsg       ~
 Wearoff      !Portal!~
 Minlevel     21
+End
+
+#SKILL
+Name         possess~
+Type         Spell
+Info         0
+Flags        0
+Minpos       111
+Slot         232
+Mana         120
+Rounds       30
+Code         spell_possess
+Dammsg       possess~
+Wearoff      You return to your body.~
+Components   v+13~
+Minlevel     51
 End
 
 #SKILL
@@ -2159,9 +2159,9 @@ Dammsg       ~
 Wearoff      Your pulse returns to a normal rate.~
 Hitvict      You feel your pulse quicken!~
 Missvict     You fail to gather enough magic to perform this spell.~
-Affect       'l+50' 26 'quickening' -1
 Affect       'l+50' 2 '+2' -1
-Minlevel     21
+Affect       'l+50' 26 'quickening' -1
+Minlevel     51
 End
 
 #SKILL
@@ -2755,8 +2755,8 @@ Wearoff      Your vigor subsides, leaving you more charismatic.~
 Hitchar      $N's face contorts with a bestial vigor...~
 Hitvict      You sense a bestial vigor consume you...~
 Hitroom      $N's face contorts with a bestial vigor...~
-Affect       'l*24' 5 '1+(l/17)' -1
 Affect       'l*24' 25 '-1' -1
+Affect       'l*24' 5 '1+(l/17)' -1
 Minlevel     6
 End
 
@@ -2808,8 +2808,8 @@ Hitchar      $N's eyes widen in fear as $S defenses are unravelled.~
 Hitvict      Your defenses are unravelled before your very eyes.~
 Hitroom      $N's eyes widen in fear as $S defenses are unravelled.~
 Immchar      Your spell has no effect upon $N.~
-Affect       '(l*3)+25' 29 '1048576' -1
 Affect       '(l*3)+25' 29 '8192' -1
+Affect       '(l*3)+25' 29 '1048576' -1
 Minlevel     33
 End
 
@@ -2917,7 +2917,7 @@ Rounds       12
 Code         spell_word_of_recall
 Dammsg       ~
 Wearoff      !Word of Recall!~
-Minlevel     5
+Minlevel     12
 End
 
 #SKILL
@@ -2971,7 +2971,7 @@ Rounds       8
 Code         do_bash
 Dammsg       bash~
 Wearoff      !Bash!~
-Minlevel     12
+Minlevel     30
 End
 
 #SKILL
@@ -3000,7 +3000,7 @@ Code         spell_null
 Dammsg       ~
 Wearoff      !berserk style!~
 Teachers     10340 3004~
-Minlevel     5
+Minlevel     10
 End
 
 #SKILL
@@ -3173,7 +3173,7 @@ Minpos       112
 Rounds       20
 Code         do_dig
 Dammsg       ~
-Minlevel     1
+Minlevel     2
 End
 
 #SKILL
@@ -3225,7 +3225,7 @@ Rounds       24
 Code         do_bashdoor
 Dammsg       bashdoor~
 Wearoff      !Bash Door!~
-Minlevel     7
+Minlevel     8
 End
 
 #SKILL
@@ -3361,7 +3361,7 @@ Minpos       105
 Code         spell_null
 Dammsg       ~
 Wearoff      !Grip!~
-Minlevel     8
+Minlevel     25
 End
 
 #SKILL
@@ -3560,8 +3560,8 @@ Dammsg       ~
 Wearoff      The fire in your eyes slowly fades...~
 Hitvict      Your eyes blaze like coals, filling your sight with unseen forms.~
 Hitroom      $N's eyes burn like coals in the darkness.~
-Affect       'l*14' 26 'detect_hidden' 5
 Affect       'l*14' 26 'detect_invis' 3
+Affect       'l*14' 26 'detect_hidden' 5
 Minlevel     12
 End
 
@@ -3909,7 +3909,7 @@ Rounds       8
 Code         do_stun
 Dammsg       stun~
 Wearoff      You regain consciousness.~
-Minlevel     10
+Minlevel     48
 End
 
 #SKILL
@@ -4014,7 +4014,7 @@ Dammsg       ~
 Hitvict      You enter a peaceful trance, collecting mana from the cosmos.~
 Missvict     You spend several minutes in a deep trance, but fail to collect any mana.~
 Affect       '' 12 '50' -1
-Minlevel     15
+Minlevel     32
 End
 
 #SKILL
@@ -4078,11 +4078,11 @@ Hitroom      $N convulses as $n inflicts a silent curse...~
 Misschar     There seems to be no effect...~
 Missvict     $n extends a clawed hand toward you...~
 Missroom     $n extends a clawed hand toward $N...~
-Affect       '12' 26 'curse' 10
-Affect       '12' 18 '-(l/8)' -1
-Affect       '12' 19 '-(l/8)' -1
-Affect       '12' 24 'l/18' -1
 Affect       '12' 31 '-1' -1
+Affect       '12' 24 'l/18' -1
+Affect       '12' 19 '-(l/8)' -1
+Affect       '12' 18 '-(l/8)' -1
+Affect       '12' 26 'curse' 10
 Minlevel     13
 End
 
@@ -4255,6 +4255,90 @@ Flags        0
 Code         spell_null
 Dammsg       ~
 Minlevel     1
+End
+
+#SKILL
+Name         acidmist~
+Type         Spell
+Info         1536
+Flags        0
+Target       3
+Minpos       112
+Mana         70
+Rounds       15
+Code         spell_smaug
+Dammsg       ~
+Wearoff      The cloud of acidic mist around you dissipates away.~
+Hitchar      A vaporous cloud of acidic mist forms around you.~
+Hitvict      A vaporous cloud of acidic mist forms around you.~
+Hitroom      A vaporous cloud of acidic mist forms around $N.~
+Missvict     You fail to conjure the acidic vapors.~
+Affect       '(l*4)+8' 26 'acidmist' 34
+Minlevel     0
+End
+
+#SKILL
+Name         venomshield~
+Type         Spell
+Info         1536
+Flags        0
+Target       3
+Minpos       112
+Mana         70
+Rounds       15
+Code         spell_smaug
+Dammsg       ~
+Wearoff      The noxious cloud surrounding you dissipates into nothing.~
+Hitchar      A noxious vapor cloud forms around you.~
+Hitvict      A noxious vapor cloud forms around you.~
+Hitroom      A noxious vapor cloud forms around $N.~
+Missvict     You fail to create the noxious cloud.~
+Affect       '(l*4)+8' 26 'venomshield' 35
+Minlevel     0
+End
+
+#SKILL
+Name         acidshot~
+Type         Spell
+Info         1421
+Author	      Smaug~
+Flags        0~
+Target       1
+Minpos       9~
+Mana         15
+Rounds       12
+Code         spell_smaug
+Dammsg       droplet of acid~
+Hitchar      $N is burned by your acidmist!~
+Hitvict      You are burned by droplets of acid from $n's acidmist!~
+Hitroom      Droplets of acid from $n's acidmist horribly burn $N!~
+Diechar      $N's body dissolves under the onslaught of acid!~
+Dievict      The acid overwhelms you and dissolves you into goo!~
+Dieroom      $N's body dissolves under the onslaught of $n's acidmist!&z~
+Dice         l/2+30~
+Minlevel     51
+End
+
+#SKILL
+Name         venomshot~
+Type         Spell
+Info         1422
+Author	      Smaug~
+Flags        0~
+Target       1
+Minpos       9~
+Mana         15
+Rounds       12
+Code         spell_smaug
+Dammsg       burst of vapor~
+Hitchar      $N coughs and chokes on vapors from your venomshield!&z~
+Hitvict      You cough and choke on vapors from $N's venomshield!&z~
+Hitroom      $N coughs and chokes on vapors from $n's venomshield!&z~
+Diechar      $N gags and sputters, then collapses dead!&z~
+Dievict      The vapors from $n's venomshield prove too much for you....&z~
+Dieroom      $N gags and sputters for a moment, then collapses dead!~
+Dice         l/2~
+Minlevel     51
 End
 
 #END

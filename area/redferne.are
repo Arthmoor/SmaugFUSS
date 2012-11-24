@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Diku~
 
 #RANGES
@@ -12,6 +13,8 @@ $
 0
 
 #ECONOMY 0 1246000
+
+#CLIMATE 2 2 2
 
 #MOBILES
 #7900
@@ -26,7 +29,7 @@ help the innocent.
 1073741889 136 1000 C
 45 -5 -9 20d10+700 2d6+14
 2000 100000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 0 3 0 0 1 1 4
@@ -42,7 +45,7 @@ A huge treasure is lying here, looking very valuable.~
 ~
 20 0 1
 -100 0 0 0
-0 0 0
+1 0 0
 E
 treasure~
 Looks like a LOT of coins.  One of them has writing on it.
@@ -99,6 +102,18 @@ You see a Huge Chain that anchors the Mansion of Naris to the ground.
 ~
 ~
 0 -1 7918
+R D 0 7900 0 1
+R M 0 7900 1 7900
+  R E 1 7216 99 16
+  R E 1 7217 99 5
+  R E 1 7218 99 7
+  R E 1 7219 99 9
+  R E 1 7220 99 6
+  R E 1 7221 99 11
+  R E 1 7223 99 10
+  R E 1 7222 99 8
+  R E 1 7224 99 12
+  R G 1 7911 99
 > act_prog p has lost~
 mpforce 0.$n quit
 ~
@@ -149,6 +164,9 @@ It ends in what seems like a large bedroom up there.
 ~
 ~
 0 -1 7909
+R D 0 7901 2 1
+R D 0 7901 3 1
+R D 0 7901 1 1
 E
 runes~
 These runes are utterly strange to you, but you are in luck today: Under
@@ -177,6 +195,7 @@ You can see an old ashen door, painted in a peculiar yellow colour.
 ~
 door ash ashen east~
 35 -1 7901
+R D 0 7902 1 1
 E
 globe world map~
 You see a large world map stretch out on the enormous globe. It has towns
@@ -224,6 +243,7 @@ no furniture here what-so-ever. The only way out seems to be west, through
 the low steel door.
 ~
 0 524 0
+R O 0 7909 10 7903
 S
 #7904
 The Northern end of the hall~
@@ -257,6 +277,8 @@ is beautifully carven with small elves as main issue of sculpture.
 ~
 aspen asp~
 35 -1 7905
+R D 0 7904 1 1
+R D 0 7904 3 1
 S
 #7905
 The Sitting room of Naris~
@@ -272,6 +294,7 @@ an Aspen tree.
 ~
 asp aspen door heavy~
 35 -1 7904
+R D 0 7905 1 1
 E
 chair arm-chair~
 This is truly a wonderful relic of the past. In it is a large cushion.
@@ -301,6 +324,8 @@ You can see the northern end of the hall.
 ~
 ~
 0 -1 7904
+R D 0 7906 1 1
+R D 0 7906 0 1
 S
 #7907
 The Larder~
@@ -312,6 +337,7 @@ D2
 ~
 door wooden larder exit~
 35 -1 7906
+R D 0 7907 2 1
 S
 #7908
 The Fridge~
@@ -322,6 +348,8 @@ D3
 ~
 door exit fridge~
 35 -1 7906
+R D 0 7908 3 1
+R O 0 6013 10 7908
 S
 #7909
 On the stairs~
@@ -349,6 +377,10 @@ You see a tall oak door.
 ~
 door oak tall~
 35 -1 7901
+R D 0 7910 3 1
+R O 0 7910 1 7910
+  R P 0 7298 1 7910
+  R P 0 7208 6 7910
 S
 #7911
 Redferne's Bedroom~
@@ -369,6 +401,7 @@ D5
 ~
 ~
 0 -1 7909
+R D 0 7911 2 1
 S
 #7912
 The Balcony of Redferne's Residence~
@@ -384,6 +417,7 @@ God.
 ~
 doors~
 35 -1 7911
+R D 0 7912 0 1
 S
 #7913
 The Monster Pen~
@@ -398,6 +432,7 @@ This looks like the only exit from here.
 ~
 door cage metal pen~
 35 -1 7904
+R D 0 7913 3 1
 S
 #7914
 On the Huge Chain~
@@ -449,42 +484,6 @@ your eyes. Beautiful!!
 0 -1 7900
 S
 #0
-
-
-#RESETS
-D 0 7900 0 1
-D 0 7901 2 1
-D 0 7902 1 1
-D 0 7901 3 1
-D 0 7901 1 1
-D 0 7910 3 1
-D 0 7904 1 1
-D 0 7913 3 1
-D 0 7911 2 1
-D 0 7912 0 1
-D 0 7904 3 1
-D 0 7905 1 1
-D 0 7906 1 1
-D 0 7908 3 1
-D 0 7906 0 1
-D 0 7907 2 1
-M 0 7900 1 7900
-E 1 7216 99 16
-E 1 7217 99 5
-E 1 7218 99 7
-E 1 7219 99 9
-E 1 7220 99 6
-E 1 7221 99 11
-E 1 7223 99 10
-E 1 7222 99 8
-E 1 7224 99 12
-G 1 7911 99
-O 0 6013 10 7908
-O 0 7910 1 7910
-P 1 7298 1 7910
-P 1 7208 6 7910
-O 0 7909 10 7903
-S
 
 
 #SHOPS

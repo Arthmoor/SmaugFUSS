@@ -2,6 +2,7 @@
 
 
 
+#VERSION 1
 #AUTHOR Sandman~
 
 #RANGES
@@ -15,6 +16,8 @@ $
 
 #ECONOMY 0 19976800
 
+#CLIMATE 2 2 2
+
 #MOBILES
 #6600
 dwarven child~
@@ -26,7 +29,7 @@ This is a young but not totally harmless creature.
 69 0 -5 C
 3 17 6 1d4+30 1d3+6
 300 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -42,7 +45,7 @@ clean up after all these brats.
 69 0 500 C
 3 19 9 3d5+20 2d3+2
 450 75
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -57,7 +60,7 @@ This small baby looks like she has been cared for with a lot of love.
 69 0 300 C
 2 18 9 2d5+19 1d5+1
 150 200
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -73,7 +76,7 @@ like he could cause you any harm.
 69 0 -300 C
 3 18 7 3d5+26 2d3+2
 100 300
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -89,7 +92,7 @@ He snarls and growls at you.
 69 32768 -400 C
 3 17 6 3d4+25 1d3+6
 300 300
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 24 3 0 0 1 1 0
@@ -104,7 +107,7 @@ This small baby looks like it has been cared for with plenty of love.
 65 32768 -2 C
 1 20 10 1d1+9 1d3+4
 200 50
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 85 3 0 0 1 1 0
@@ -120,7 +123,7 @@ appears that there is still some fight left in her.
 65 0 10 C
 5 16 6 4d4+50 1d8+2
 1000 750
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -148,7 +151,7 @@ You suddenly think that you had better flee.
 71 8 -800 C
 4 9 2 3d5+50 3d2+3
 2500 2000
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -164,7 +167,7 @@ biggest urge to put him out of his misery.
 67 8 -400 C
 6 18 9 2d5+65 1d3+8
 2000 50
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -180,7 +183,7 @@ for too long.
 3 0 200 C
 3 0 0 2d5+30 2d2+3
 1500 0
-8 8 2
+112 112 2
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 1 1 0
@@ -195,7 +198,7 @@ This is a young but not totally harmless creature.
 71 0 -5 C
 3 17 6 1d4+30 1d3+6
 300 400
-8 8 1
+112 112 1
 13 13 13 13 13 13 13
 0 0 0 0 0
 2 3 0 0 5 5 0
@@ -235,7 +238,7 @@ A small plaque is affixed to the wall.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 plaque~
 Before you lies the Dwarven Daycare.  This area is intended for levels 1-5,
@@ -252,7 +255,7 @@ A set of rope swings twist lazily in the breeze.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #6618
 wooden seesaw see-saw~
 a brightly painted wooden see-saw~
@@ -260,7 +263,7 @@ A wooden see-saw promises hours of simple-minded distraction.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #6619
 wooden bench~
 a low wooden bench~
@@ -268,7 +271,7 @@ A low wooden bench offers respite for your aching feet.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 #6620
 tree~
 a large oak tree~
@@ -276,7 +279,7 @@ A large oak tree stands here, waiting for you to climb it.~
 ~
 12 0 0
 0 0 0 0
-0 0 0
+1 0 0
 E
 tree large oak~
 This majestic tree seems to reach up to the clouds with its beauty.  Its
@@ -328,8 +331,9 @@ a saffron potion~
 A saffron potion is delicately balanced on the floor here.~
 ~
 10 1 1
-30 61 67 81
+30 -1 -1 -1
 2 1500 150
+'cure serious' 'shield' 'refresh'
 #6633
 pop gun~
 a pop gun~
@@ -382,8 +386,9 @@ an amber potion~
 An amber potion sits in a corner.~
 ~
 10 0 1
-30 16 1 -1
+30 -1 -1 -1
 1 1500 150
+'cure light' 'armor' 'NONE'
 #6647
 gun toy~
 a toy gun~
@@ -459,6 +464,7 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6632
+R D 0 6602 0 1
 S
 #6603
 Day Care Center~
@@ -483,6 +489,8 @@ You see a messy bathroom.
 ~
 ~
 0 -1 6606
+R M 0 6605 2 6603
+  R E 1 6631 1 1
 S
 #6604
 Day Care Center~
@@ -512,6 +520,7 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6633
+R M 0 6604 2 6604
 S
 #6605
 Day Care Center~
@@ -542,6 +551,8 @@ You see a well worn path leading to the playground.
 ~
 ~
 0 -1 6637
+R M 0 6601 2 6605
+  R G 1 6632 1
 S
 #6606
 Inside a Filthy Bathroom~
@@ -556,6 +567,10 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6603
+R M 0 6602 2 6606
+  R E 1 6634 1 16
+R M 0 6604 2 6606
+R M 0 6610 1 6606
 S
 #6607
 Atop the Rickety Stairs~
@@ -593,6 +608,9 @@ You see the playground.
 ~
 ~
 0 -1 6639
+R M 0 6601 2 6608
+  R G 1 6632 1
+R O 0 6619 1 6608
 S
 #6609
 The Playground~
@@ -612,6 +630,8 @@ You see the playground.
 ~
 ~
 0 -1 6611
+R M 0 6603 2 6609
+R O 0 6618 1 6609
 S
 #6610
 The Playground~
@@ -641,6 +661,7 @@ You see the large oak tree.
 ~
 tree~
 65664 -1 6620
+R O 0 6620 1 6610
 S
 #6611
 The Playground~
@@ -660,6 +681,10 @@ You see the playground.
 ~
 ~
 0 -1 6638
+R M 0 6606 2 6611
+  R E 1 6635 1 12
+  R G 1 6644 1
+R O 0 6617 1 6611
 S
 #6612
 Foot of the Stairs~
@@ -695,12 +720,13 @@ D2
 You see a small passage.
 ~
 ~
-0 -1 6615
+0 -1 6612
 D3
 You see a small passage.
 ~
 ~
-0 -1 6612
+0 -1 6615
+R R 0 6613 4
 S
 #6614
 Lost in a mini-maze~
@@ -713,12 +739,13 @@ D2
 You see a small passage.
 ~
 ~
-0 -1 6616
+0 -1 6613
 D3
 You see a small passage.
 ~
 ~
-0 -1 6613
+0 -1 6616
+R R 0 6614 4
 S
 #6615
 Lost in a mini-maze~
@@ -731,12 +758,13 @@ D0
 You see a small passage.
 ~
 ~
-0 -1 6616
+0 -1 6613
 D1
 You see a small passage.
 ~
 ~
-0 -1 6613
+0 -1 6616
+R R 0 6615 4
 S
 #6616
 Lost in a mini-maze~
@@ -760,6 +788,7 @@ The end of the mini-maze.
 ~
 ~
 0 -1 6624
+R R 0 6616 4
 S
 #6617
 A Darkened Cloakroom~
@@ -779,6 +808,7 @@ Beyond the small gate you see a room full of children wreaking havoc.
 ~
 gate~
 3 -1 6602
+R D 0 6617 2 1
 S
 #6619
 Floating in a void~
@@ -816,6 +846,7 @@ The end?
 ~
 ~
 0 -1 6631
+R M 0 6607 1 6624
 E
 sign~
 If you are not level 5 or above, you should think twice about going south!
@@ -835,6 +866,8 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6602
+R M 0 6603 2 6626
+R M 0 6609 1 6626
 S
 #6628
 Floating in a void~
@@ -853,6 +886,8 @@ End of the mini-maze.
 ~
 ~
 0 -1 6624
+R M 0 6608 1 6631
+  R E 1 6630 1 6
 S
 #6632
 Day Care Center~
@@ -877,6 +912,8 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6603
+R M 0 6600 3 6632
+  R E 1 6633 1 16
 S
 #6633
 Day Care Center~
@@ -925,6 +962,9 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6635
+R M 0 6606 2 6634
+  R E 1 6635 1 12
+  R G 1 6644 1
 S
 #6635
 Day Care Center~
@@ -949,6 +989,10 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6634
+R M 0 6600 3 6635
+  R E 1 6633 1 16
+R M 0 6605 2 6635
+  R E 1 6631 1 1
 S
 #6636
 Day Care Center~
@@ -968,6 +1012,8 @@ You see a room full of children wreaking havoc.
 ~
 ~
 0 -1 6635
+R M 0 6602 2 6636
+  R E 1 6634 1 16
 S
 #6637
 A well worn path~
@@ -1011,6 +1057,8 @@ You see the playground.
 ~
 ~
 0 -1 6611
+R M 0 6600 3 6638
+  R E 1 6633 1 16
 S
 #6639
 The Playground~
@@ -1097,53 +1145,6 @@ Floating in a void~
 0 1073741828 1
 S
 #0
-
-
-#RESETS
-R 0 6613 4
-R 0 6614 4
-R 0 6615 4
-R 0 6616 4
-M 0 6608 1 6631
-E 1 6630 1 6
-M 0 6600 3 6632
-E 1 6633 1 16
-M 0 6600 3 6635
-E 1 6633 1 16
-M 0 6600 3 6638
-E 1 6633 1 16
-M 0 6601 2 6608
-G 1 6632 1
-M 0 6601 2 6605
-G 1 6632 1
-M 0 6602 2 6606
-E 1 6634 1 16
-M 0 6602 2 6636
-E 1 6634 1 16
-M 0 6603 2 6609
-M 0 6603 2 6626
-M 0 6604 2 6606
-M 0 6604 2 6604
-M 0 6605 2 6603
-E 1 6631 1 1
-M 0 6605 2 6635
-E 1 6631 1 1
-M 0 6606 2 6611
-E 1 6635 1 12
-G 1 6644 1
-M 0 6606 2 6634
-E 1 6635 1 12
-G 1 6644 1
-M 0 6607 1 6624
-D 0 6617 2 1
-O 0 6620 1 6610
-D 0 6602 0 1
-M 0 6609 1 6626
-O 0 6619 1 6608
-O 0 6617 1 6611
-O 0 6618 1 6609
-M 0 6610 1 6606
-S
 
 
 #SHOPS

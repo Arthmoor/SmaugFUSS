@@ -1,6 +1,8 @@
 Name        Paladin~
 Class       8
-Attrprime   1
+AttrPrime   1
+AttrSecond   0
+AttrDeficient   0
 Weapon      10313
 Guild       3013
 Skilladept  90
@@ -10,6 +12,9 @@ Hpmin       12
 Hpmax       15
 Mana        2
 Expbase     1500
+Affected    0
+Resist	 0
+Suscept	 0
 Skill 'aqua breath' 18 85
 Skill 'armor' 1 90
 Skill 'benefic aura' 30 85
@@ -214,6 +219,24 @@ Title
 Knight Templar~
 Knight Templar~
 Title
+Avatar of an Immortal~
+Avatar of an Immortal~
+Title
+Avatar of a Deity~
+Avatar of a Deity~
+Title
+Avatar of a Supremity~
+Avatar of a Supremity~
+Title
+Avatar of an Implementor~
+Avatar of an Implementor~
+Title
+Master of all Divinity~
+Mistress of all Divinity~
+Title
+Avatar~
+Avatar~
+Title
 Neophyte~
 Neophyte~
 Title
@@ -258,22 +281,4 @@ Infinite One~
 Title
 Supreme Entity~
 Supreme Entity~
-Title
-(null)~
-(null)~
-Title
-(null)~
-(null)~
-Title
-(null)~
-(null)~
-Title
-(null)~
-(null)~
-Title
-(null)~
-(null)~
-Title
-(null)~
-(null)~
 End
