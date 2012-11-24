@@ -2640,14 +2640,13 @@ void write_char_mobile( CHAR_DATA * ch, char *argument )
 void read_char_mobile( char *argument )
 {
    FILE *fp;
-   CHAR_DATA *mob;
 
    if( ( fp = fopen( argument, "r" ) ) == NULL )
    {
       bug( "Read_char_mobile: couldn't open %s for reading!\r\n", argument );
       return;
    }
-   mob = fread_mobile( fp );
+   fread_mobile( fp );
    fclose( fp );
    return;
 }

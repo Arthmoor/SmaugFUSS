@@ -762,10 +762,8 @@ void do_skin( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
    OBJ_DATA *skin;
-   bool found;
    const char *name;
    char buf[MAX_STRING_LENGTH];
-   found = FALSE;
 
    if( !IS_PKILL( ch ) && !IS_IMMORTAL( ch ) )
    {
@@ -4702,7 +4700,7 @@ void do_berserk( CHAR_DATA* ch, const char* argument)
 }
 
 /* External from fight.c */
-ch_ret one_hit args( ( CHAR_DATA * ch, CHAR_DATA * victim, int dt ) );
+ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt );
 void do_hitall( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *vch;
@@ -5133,7 +5131,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
 {
    CHAR_DATA *victim, *vch;
    EXIT_DATA *pexit;
-   ROOM_INDEX_DATA *was_in_room;
+   ROOM_INDEX_DATA *was_in_room, *temproom;
    char arg[MAX_INPUT_LENGTH];
    char arg1[MAX_INPUT_LENGTH];
    char temp[MAX_INPUT_LENGTH];
@@ -5385,6 +5383,11 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
          /*
           * whadoyahknow, the door's closed 
           */
+         /* We need to go back one step before echoing these messages  */
+         temproom = ch->was_in_room;   /* Room with the closed exit */
+         char_from_room( ch );         /* Out of here, overwrites ch->was_in_room */
+         char_to_room( ch, temproom ); /* Put them one room back */
+
          if( projectile )
             snprintf( buf, MAX_STRING_LENGTH, "You see your %s pierce a door in the distance to the %s.",
                       myobj( projectile ), dir_name[dir] );
@@ -5404,6 +5407,8 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
             buf[0] = UPPER( buf[0] );
             act( color, buf, ch, NULL, NULL, TO_ROOM );
          }
+         if( projectile )
+            extract_obj( projectile );
          break;
       }
 
@@ -5702,11 +5707,8 @@ void do_slice( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
    OBJ_DATA *slice;
-   bool found;
    MOB_INDEX_DATA *pMobIndex;
    char buf[MAX_STRING_LENGTH];
-   found = FALSE;
-
 
    /*
     * Noticed that it was checking gsn_kick.  Bug report by Li'l Lukey

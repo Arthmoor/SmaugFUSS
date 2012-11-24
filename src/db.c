@@ -5744,7 +5744,6 @@ void process_sorting( AREA_DATA * tarea )
 EXTRA_DESCR_DATA *fread_fuss_exdesc( FILE * fp )
 {
    EXTRA_DESCR_DATA *ed;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    CREATE( ed, EXTRA_DESCR_DATA, 1 );
 
@@ -5784,8 +5783,8 @@ EXTRA_DESCR_DATA *fread_fuss_exdesc( FILE * fp )
             break;
 
          case 'E':
-            KEY( "ExDescKey", ed->keyword, fread_string( fp ) );
-            KEY( "ExDesc", ed->description, fread_string( fp ) );
+            FKEY( "ExDescKey", ed->keyword, fread_string( fp ) );
+            FKEY( "ExDesc", ed->description, fread_string( fp ) );
             break;
       }
    }
@@ -5835,7 +5834,6 @@ AFFECT_DATA *fread_fuss_affect( FILE * fp, const char *word )
 void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
 {
    EXIT_DATA *pexit = NULL;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -5867,8 +5865,8 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
             break;
 
          case 'D':
-            KEY( "Desc", pexit->description, fread_string( fp ) );
-            KEY( "Distance", pexit->distance, fread_number( fp ) );
+            FKEY( "Desc", pexit->description, fread_string( fp ) );
+            FKEY( "Distance", pexit->distance, fread_number( fp ) );
             if( !str_cmp( word, "Direction" ) )
             {
                int door = get_dir( fread_flagstring( fp ) );
@@ -5906,8 +5904,8 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
             break;
 
          case 'K':
-            KEY( "Key", pexit->key, fread_number( fp ) );
-            KEY( "Keywords", pexit->keyword, fread_string( fp ) );
+            FKEY( "Key", pexit->key, fread_number( fp ) );
+            FKEY( "Keywords", pexit->keyword, fread_string( fp ) );
             break;
 
          case 'P':
@@ -5920,7 +5918,7 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
             break;
 
          case 'T':
-            KEY( "ToRoom", pexit->vnum, fread_number( fp ) );
+            FKEY( "ToRoom", pexit->vnum, fread_number( fp ) );
             break;
       }
    }
@@ -5938,7 +5936,6 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
    char MUDProgfile[256];
    FILE *progfile;
    char letter;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    snprintf( MUDProgfile, 256, "%s%s", PROG_DIR, f );
 
@@ -6018,7 +6015,7 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
                   break;
 
                case 'C':
-                  KEY( "Comlist", mprg->comlist, fread_string( progfile ) );
+                  FKEY( "Comlist", mprg->comlist, fread_string( progfile ) );
                   break;
 
                case 'P':
@@ -6039,7 +6036,6 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
 
 void fread_fuss_roomprog( FILE * fp, MPROG_DATA * mprg, ROOM_INDEX_DATA * prog_target )
 {
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -6080,7 +6076,7 @@ void fread_fuss_roomprog( FILE * fp, MPROG_DATA * mprg, ROOM_INDEX_DATA * prog_t
             break;
 
          case 'C':
-            KEY( "Comlist", mprg->comlist, fread_string( fp ) );
+            FKEY( "Comlist", mprg->comlist, fread_string( fp ) );
             break;
 
          case 'P':
@@ -6099,7 +6095,6 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
 {
    ROOM_INDEX_DATA *pRoomIndex = NULL;
    bool oldroom = false;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -6174,7 +6169,7 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'D':
-            KEY( "Desc", pRoomIndex->description, fread_string( fp ) );
+            FKEY( "Desc", pRoomIndex->description, fread_string( fp ) );
             break;
 
          case 'F':
@@ -6200,7 +6195,7 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'N':
-            KEY( "Name", pRoomIndex->name, fread_string( fp ) );
+            FKEY( "Name", pRoomIndex->name, fread_string( fp ) );
             break;
 
          case 'R':
@@ -6303,7 +6298,6 @@ void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
    char MUDProgfile[256];
    FILE *progfile;
    char letter;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    snprintf( MUDProgfile, 256, "%s%s", PROG_DIR, f );
 
@@ -6383,7 +6377,7 @@ void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
                   break;
 
                case 'C':
-                  KEY( "Comlist", mprg->comlist, fread_string( progfile ) );
+                  FKEY( "Comlist", mprg->comlist, fread_string( progfile ) );
                   break;
 
                case 'P':
@@ -6404,7 +6398,6 @@ void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
 
 void fread_fuss_objprog( FILE * fp, MPROG_DATA * mprg, OBJ_INDEX_DATA * prog_target )
 {
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -6445,7 +6438,7 @@ void fread_fuss_objprog( FILE * fp, MPROG_DATA * mprg, OBJ_INDEX_DATA * prog_tar
             break;
 
          case 'C':
-            KEY( "Comlist", mprg->comlist, fread_string( fp ) );
+            FKEY( "Comlist", mprg->comlist, fread_string( fp ) );
             break;
 
          case 'P':
@@ -6464,7 +6457,6 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
 {
    OBJ_INDEX_DATA *pObjIndex = NULL;
    bool oldobj = false;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -6524,7 +6516,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'A':
-            KEY( "Action", pObjIndex->action_desc, fread_string( fp ) );
+            FKEY( "Action", pObjIndex->action_desc, fread_string( fp ) );
 
             if( !str_cmp( word, "Affect" ) || !str_cmp( word, "AffectData" ) )
             {
@@ -6555,15 +6547,15 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'K':
-            KEY( "Keywords", pObjIndex->name, fread_string( fp ) );
+            FKEY( "Keywords", pObjIndex->name, fread_string( fp ) );
             break;
 
          case 'L':
-            KEY( "Long", pObjIndex->description, fread_string( fp ) );
+            FKEY( "Long", pObjIndex->description, fread_string( fp ) );
             break;
 
          case 'S':
-            KEY( "Short", pObjIndex->short_descr, fread_string( fp ) );
+            FKEY( "Short", pObjIndex->short_descr, fread_string( fp ) );
             if( !str_cmp( word, "Spells" ) )
             {
                switch ( pObjIndex->item_type )
@@ -6721,7 +6713,6 @@ void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
    char MUDProgfile[256];
    FILE *progfile;
    char letter;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    snprintf( MUDProgfile, 256, "%s%s", PROG_DIR, f );
 
@@ -6801,7 +6792,7 @@ void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
                   break;
 
                case 'C':
-                  KEY( "Comlist", mprg->comlist, fread_string( progfile ) );
+                  FKEY( "Comlist", mprg->comlist, fread_string( progfile ) );
                   break;
 
                case 'P':
@@ -6822,7 +6813,6 @@ void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
 
 void fread_fuss_mobprog( FILE * fp, MPROG_DATA * mprg, MOB_INDEX_DATA * prog_target )
 {
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -6863,7 +6853,7 @@ void fread_fuss_mobprog( FILE * fp, MPROG_DATA * mprg, MOB_INDEX_DATA * prog_tar
             break;
 
          case 'C':
-            KEY( "Comlist", mprg->comlist, fread_string( fp ) );
+            FKEY( "Comlist", mprg->comlist, fread_string( fp ) );
             break;
 
          case 'P':
@@ -6882,7 +6872,6 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 {
    MOB_INDEX_DATA *pMobIndex = NULL;
    bool oldmob = false;
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -7070,7 +7059,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                break;
             }
 
-            KEY( "Desc", pMobIndex->description, fread_string( fp ) );
+            FKEY( "Desc", pMobIndex->description, fread_string( fp ) );
             break;
 
          case 'G':
@@ -7107,11 +7096,11 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'K':
-            KEY( "Keywords", pMobIndex->player_name, fread_string( fp ) );
+            FKEY( "Keywords", pMobIndex->player_name, fread_string( fp ) );
             break;
 
          case 'L':
-            KEY( "Long", pMobIndex->long_descr, fread_string( fp ) );
+            FKEY( "Long", pMobIndex->long_descr, fread_string( fp ) );
             break;
 
          case 'P':
@@ -7200,7 +7189,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                break;
             }
 
-            KEY( "Short", pMobIndex->short_descr, fread_string( fp ) );
+            FKEY( "Short", pMobIndex->short_descr, fread_string( fp ) );
 
             if( !str_cmp( word, "ShopData" ) )
             {
@@ -7417,7 +7406,6 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
 
 void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
 {
-   bool fMatch;   // Unused, but needed to shut the compiler up about the KEY macro
 
    for( ;; )
    {
@@ -7445,11 +7433,11 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'A':
-            KEY( "Author", tarea->author, fread_string( fp ) );
+            FKEY( "Author", tarea->author, fread_string( fp ) );
             break;
 
          case 'C':
-            KEY( "Credits", tarea->credits, fread_string( fp ) );
+            FKEY( "Credits", tarea->credits, fread_string( fp ) );
             break;
 
          case 'E':
@@ -7484,7 +7472,7 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
             break;
 
          case 'N':
-            KEY( "Name", tarea->name, fread_string_nohash( fp ) );
+            FKEY( "Name", tarea->name, fread_string_nohash( fp ) );
             break;
 
          case 'R':
@@ -7505,21 +7493,21 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
 
                break;
             }
-            KEY( "ResetMsg", tarea->resetmsg, fread_string_nohash( fp ) );
-            KEY( "ResetFreq", tarea->reset_frequency, fread_number( fp ) );
+            FKEY( "ResetMsg", tarea->resetmsg, fread_string_nohash( fp ) );
+            FKEY( "ResetFreq", tarea->reset_frequency, fread_number( fp ) );
             break;
 
          case 'S':
-            KEY( "Spelllimit", tarea->spelllimit, fread_number( fp ) );
+            FKEY( "Spelllimit", tarea->spelllimit, fread_number( fp ) );
             break;
 
          case 'V':
-            KEY( "Version", tarea->version, fread_number( fp ) );
+            FKEY( "Version", tarea->version, fread_number( fp ) );
             break;
 
          case 'W':
-            KEY( "WeatherX", tarea->weatherx, fread_number( fp ) );
-            KEY( "WeatherY", tarea->weathery, fread_number( fp ) );
+            FKEY( "WeatherX", tarea->weatherx, fread_number( fp ) );
+            FKEY( "WeatherY", tarea->weathery, fread_number( fp ) );
             break;
       }
    }

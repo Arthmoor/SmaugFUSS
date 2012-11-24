@@ -23,12 +23,12 @@ COUNCIL_DATA *first_council;
 COUNCIL_DATA *last_council;
 
 /* local routines */
-void fread_clan args( ( CLAN_DATA * clan, FILE * fp ) );
-bool load_clan_file args( ( const char *clanfile ) );
-void write_clan_list args( ( void ) );
-void fread_council args( ( COUNCIL_DATA * council, FILE * fp ) );
-bool load_council_file args( ( const char *councilfile ) );
-void write_council_list args( ( void ) );
+void fread_clan( CLAN_DATA * clan, FILE * fp );
+bool load_clan_file( const char *clanfile );
+void write_clan_list( void );
+void fread_council( COUNCIL_DATA * council, FILE * fp );
+bool load_council_file( const char *councilfile );
+void write_council_list( void );
 
 void add_roster( CLAN_DATA * clan, const char *name, int Class, int level, int kills, int deaths )
 {
@@ -2221,7 +2221,6 @@ void do_makecouncil( CHAR_DATA* ch, const char* argument)
 {
    char filename[256];
    COUNCIL_DATA *council;
-   bool found;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -2231,7 +2230,6 @@ void do_makecouncil( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   found = FALSE;
    snprintf( filename, 256, "%s%s", COUNCIL_DIR, strlower( argument ) );
 
    CREATE( council, COUNCIL_DATA, 1 );

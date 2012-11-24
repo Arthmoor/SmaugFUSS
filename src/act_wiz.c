@@ -2334,7 +2334,7 @@ void do_gwhere( CHAR_DATA* ch, const char* argument)
    char arg2[MAX_INPUT_LENGTH];
    char arg3[MAX_INPUT_LENGTH];
    DESCRIPTOR_DATA *d;
-   bool found = FALSE, pmobs = FALSE;
+   bool pmobs = FALSE;
    int low = 1, high = MAX_LEVEL, count = 0;
 
    argument = one_argument( argument, arg1 );
@@ -2366,7 +2366,6 @@ void do_gwhere( CHAR_DATA* ch, const char* argument)
              && ( victim = d->character ) != NULL && !IS_NPC( victim ) && victim->in_room
              && can_see( ch, victim ) && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
                                 victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
                                 victim->in_room->name );
@@ -2378,7 +2377,6 @@ void do_gwhere( CHAR_DATA* ch, const char* argument)
       for( victim = first_char; victim; victim = victim->next )
          if( IS_NPC( victim ) && victim->in_room && can_see( ch, victim ) && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
                                 victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
                                 victim->in_room->name );
@@ -2396,7 +2394,7 @@ void do_gfighting( CHAR_DATA* ch, const char* argument)
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
    char arg3[MAX_INPUT_LENGTH];
-   bool found = FALSE, pmobs = FALSE, phating = FALSE, phunting = FALSE;
+   bool pmobs = FALSE, phating = FALSE, phunting = FALSE;
    int low = 1, high = MAX_LEVEL, count = 0;
 
    argument = one_argument( argument, arg1 );
@@ -2432,7 +2430,6 @@ void do_gfighting( CHAR_DATA* ch, const char* argument)
              && ( victim = d->character ) != NULL && !IS_NPC( victim ) && victim->in_room
              && can_see( ch, victim ) && victim->fighting && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
                                 victim->name, victim->level, victim->fighting->who->level,
                                 IS_NPC( victim->fighting->who ) ? victim->fighting->who->short_descr : victim->fighting->
@@ -2448,7 +2445,6 @@ void do_gfighting( CHAR_DATA* ch, const char* argument)
              && victim->in_room && can_see( ch, victim )
              && victim->fighting && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
                                 victim->name, victim->level, victim->fighting->who->level,
                                 IS_NPC( victim->fighting->who ) ? victim->fighting->who->short_descr : victim->fighting->
@@ -2463,7 +2459,6 @@ void do_gfighting( CHAR_DATA* ch, const char* argument)
          if( IS_NPC( victim )
              && victim->in_room && can_see( ch, victim ) && victim->hating && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
                                 victim->name, victim->level, victim->hating->who->level, IS_NPC( victim->hating->who ) ?
                                 victim->hating->who->short_descr : victim->hating->who->name, IS_NPC( victim->hating->who ) ?
@@ -2479,7 +2474,6 @@ void do_gfighting( CHAR_DATA* ch, const char* argument)
              && victim->in_room && can_see( ch, victim )
              && victim->hunting && victim->level >= low && victim->level <= high )
          {
-            found = TRUE;
             pager_printf_color( ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
                                 victim->name, victim->level, victim->hunting->who->level, IS_NPC( victim->hunting->who ) ?
                                 victim->hunting->who->short_descr : victim->hunting->who->name,
@@ -5037,9 +5031,7 @@ void do_mortalize( CHAR_DATA* ch, const char* argument)
    char fname[1024];
    char name[256];
    struct stat fst;
-   bool loaded;
    DESCRIPTOR_DATA *d;
-   int old_room_vnum;
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
    CHAR_DATA *victim;
@@ -5066,9 +5058,8 @@ void do_mortalize( CHAR_DATA* ch, const char* argument)
       d->outsize = 2000;
       CREATE( d->outbuf, char, d->outsize );
 
-      loaded = load_char_obj( d, name, FALSE, FALSE );
+      load_char_obj( d, name, FALSE, FALSE );
       add_char( d->character );
-      old_room_vnum = d->character->in_room->vnum;
       char_to_room( d->character, ch->in_room );
       if( get_trust( d->character ) >= get_trust( ch ) )
       {
@@ -5154,7 +5145,6 @@ void do_loadup( CHAR_DATA* ch, const char* argument)
    char fname[1024];
    char name[256];
    struct stat fst;
-   bool loaded;
    DESCRIPTOR_DATA *d;
    int old_room_vnum;
    char buf[MAX_STRING_LENGTH];
@@ -5200,7 +5190,7 @@ void do_loadup( CHAR_DATA* ch, const char* argument)
       d->outsize = 2000;
       CREATE( d->outbuf, char, d->outsize );
 
-      loaded = load_char_obj( d, name, FALSE, FALSE );
+      load_char_obj( d, name, FALSE, FALSE );
       add_char( d->character );
       old_room_vnum = d->character->in_room->vnum;
       char_to_room( d->character, ch->in_room );
@@ -9683,7 +9673,7 @@ void do_ipcompare( CHAR_DATA* ch, const char* argument)
    char arg2[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH];
    char *addie = NULL;
-   bool prefix = FALSE, suffix = FALSE, inarea = FALSE, inroom = FALSE, inworld = FALSE;
+   bool prefix = FALSE, suffix = FALSE, inarea = FALSE, inroom = FALSE;
    int count = 0, times = -1;
    bool fMatch;
    argument = one_argument( argument, arg );
@@ -9833,8 +9823,6 @@ void do_ipcompare( CHAR_DATA* ch, const char* argument)
             inroom = TRUE;
          else if( !str_cmp( arg1, "area" ) )
             inarea = TRUE;
-         else
-            inworld = TRUE;
       }
       if( arg2[0] != '\0' )
       {

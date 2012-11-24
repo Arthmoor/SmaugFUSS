@@ -50,7 +50,6 @@ void SwapHint( HINT_DATA * pHint1, HINT_DATA * pHint2 )
 const char *get_hint( int level )
 {
    HINT_DATA *hintData;
-   bool found = FALSE;
    static char buf[MAX_STRING_LENGTH];
    int count, which;
 
@@ -62,7 +61,6 @@ const char *get_hint( int level )
    }
    else
    {
-      found = FALSE;
       hintData = first_hint;
       for( hintData = first_hint; hintData; hintData = hintData->next )
       {
