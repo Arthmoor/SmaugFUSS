@@ -81,8 +81,8 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
          else
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d]\r\n", *num, mobname, pReset->arg1,
-                   roomname, pReset->arg3, pReset->arg2 );
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d] %s\r\n", *num, mobname, pReset->arg1,
+                   roomname, pReset->arg3, pReset->arg2, pReset->sreset ? "[Not Reset]" : "[Reset]" );
 
          for( tReset = pReset->first_reset; tReset; tReset = tReset->next_reset )
          {
@@ -1332,6 +1332,9 @@ void update_room_reset( CHAR_DATA *ch, bool setting )
    int nfind = 0;
 
    if( !ch )
+      return;
+
+   if( ch->loadedself )
       return;
 
    if( !( room = get_room_index( ch->resetvnum ) ) )

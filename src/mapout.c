@@ -422,7 +422,7 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 {
    struct map_stuff map[49][78]; /* size of edit buffer */
    const char *newmap;
-   int row, col, i, n, x, y, tvnum, proto_vnum = 0, leftmost, rightmost;
+   int row, col, i, n, x, y, tvnum, proto_vnum = 0;
    int newx, newy;
    const char *l;
    char c;
@@ -446,7 +446,6 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 
    n = 0;
    row = col = 0;
-   leftmost = rightmost = 0;
 
    /*
     * Check to make sure map_index exists.  

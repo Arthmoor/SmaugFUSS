@@ -2304,6 +2304,7 @@ struct char_data
    int home_vnum; /* hotboot tracker */
    int resetvnum;
    int resetnum;
+   bool loadedself; /* Used to see if mpmloaded self, if so skip changing the reset for it currently */
 };
 
 struct killed_data
@@ -2337,6 +2338,7 @@ struct pc_data
    NUISANCE_DATA *nuisance;   /* New Nuisance structure */
    KILLED_DATA killed[MAX_KILLTRACK];
    const char *homepage;
+   const char *pointing;
    const char *clan_name;
    const char *council_name;
    const char *deity_name;
@@ -3934,6 +3936,8 @@ DECLARE_DO_FUN( do_sacrifice );
 DECLARE_DO_FUN( do_save );
 DECLARE_DO_FUN( do_savearea );
 DECLARE_DO_FUN( do_say );
+DECLARE_DO_FUN( do_say2 );
+DECLARE_DO_FUN( do_pointing );
 DECLARE_DO_FUN( do_scan );
 DECLARE_DO_FUN( do_scatter );
 DECLARE_DO_FUN( do_score );

@@ -2055,6 +2055,8 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
    free_char( d->character );
    d->character = NULL;
    fOld = load_char_obj( d, buf, FALSE, FALSE );
+   if( !fOld )
+      bug( "%s: failed to load_char_obj for %s.", __FUNCTION__, buf );
    ch = d->character;
    if( ch->position == POS_FIGHTING
        || ch->position == POS_EVASIVE
@@ -3158,9 +3160,6 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 #define ACTF_TXT  BV00
 #define ACTF_CH   BV01
 #define ACTF_OBJ  BV02
-
-   const OBJ_DATA *obj1 = ( const OBJ_DATA * ) arg1;
-   const OBJ_DATA *obj2 = ( const OBJ_DATA * ) arg2;
    int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
    /*
@@ -3192,14 +3191,12 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
             case 't':
                flags1 |= ACTF_TXT;
-               obj1 = NULL;
                break;
 
             case 'T':
             case 'd':
                flags2 |= ACTF_TXT;
                vch = NULL;
-               obj2 = NULL;
                break;
 
             case 'n':
@@ -3215,7 +3212,6 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
             case 'S':
             case 'Q':
                flags2 |= ACTF_CH;
-               obj2 = NULL;
                break;
 
             case 'p':
@@ -3233,14 +3229,12 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
    if( flags1 != ACTF_NONE && flags1 != ACTF_TXT && flags1 != ACTF_CH && flags1 != ACTF_OBJ )
    {
       bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
-      obj1 = NULL;
    }
 
    if( flags2 != ACTF_NONE && flags2 != ACTF_TXT && flags2 != ACTF_CH && flags2 != ACTF_OBJ )
    {
       bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
       vch = NULL;
-      obj2 = NULL;
    }
 
    if( !ch->in_room )

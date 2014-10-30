@@ -1764,7 +1764,7 @@ MORPH_DATA *fread_morph( FILE * fp )
             KEY( "Charisma", morph->cha, fread_number( fp ) );
             if( !str_cmp( word, "Class" ) )
             {
-               arg = fread_string( fp );
+               arg = fread_flagstring( fp );
                while( arg[0] != '\0' )
                {
                   arg = one_argument( arg, temp );

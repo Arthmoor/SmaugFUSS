@@ -787,6 +787,12 @@ void do_mpmload( CHAR_DATA* ch, const char* argument)
    }
 
    victim = create_mobile( pMobIndex );
+   if( ch->pIndexData == pMobIndex )
+   {
+      victim->resetvnum = ch->resetvnum;
+      victim->resetnum = ch->resetnum;
+      ch->loadedself = true;
+   }
    char_to_room( victim, ch->in_room );
    return;
 }
@@ -1728,7 +1734,7 @@ void do_mp_practice( CHAR_DATA* ch, const char* argument)
    char buf[MAX_INPUT_LENGTH];
    char log_buf[MAX_STRING_LENGTH];
    CHAR_DATA *victim;
-   int sn, max, tmp, adept;
+   int sn, max, adept;
    const char *fskill_name;
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
@@ -1804,7 +1810,6 @@ void do_mp_practice( CHAR_DATA* ch, const char* argument)
    /*
     * past here, victim learns something 
     */
-   tmp = UMIN( victim->pcdata->learned[sn] + int_app[get_curr_int( victim )].learn, max );
    act( AT_ACTION, "$N demonstrates $t to you.  You feel more learned in this subject.", victim, skill_table[sn]->name, ch,
         TO_CHAR );
 
@@ -2921,10 +2926,8 @@ ch_ret simple_damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
    short dameq;
    bool npcvict;
    OBJ_DATA *damobj;
-   ch_ret retcode;
    char log_buf[MAX_STRING_LENGTH];
 
-   retcode = rNONE;
 
    if( !ch )
    {

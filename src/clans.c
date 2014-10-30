@@ -2221,7 +2221,6 @@ void do_makecouncil( CHAR_DATA* ch, const char* argument)
 {
    char filename[256];
    COUNCIL_DATA *council;
-   bool found;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -2231,7 +2230,6 @@ void do_makecouncil( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   found = FALSE;
    snprintf( filename, 256, "%s%s", COUNCIL_DIR, strlower( argument ) );
 
    CREATE( council, COUNCIL_DATA, 1 );

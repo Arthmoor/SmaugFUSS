@@ -408,12 +408,10 @@ void successful_casting( SKILLTYPE * skill, CHAR_DATA * ch, CHAR_DATA * victim, 
 {
    short chitroom = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_ACTION );
    short chit = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HIT );
-   short chitme = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HITME );
 
    if( skill->target != TAR_CHAR_OFFENSIVE )
    {
       chit = chitroom;
-      chitme = chitroom;
    }
 
    if( ch && ch != victim )
@@ -455,12 +453,10 @@ void successful_casting( SKILLTYPE * skill, CHAR_DATA * ch, CHAR_DATA * victim, 
 void failed_casting( SKILLTYPE * skill, CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * obj )
 {
    short chitroom = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_ACTION );
-   short chit = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HIT );
    short chitme = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HITME );
 
    if( skill->target != TAR_CHAR_OFFENSIVE )
    {
-      chit = chitroom;
       chitme = chitroom;
    }
 
@@ -505,12 +501,10 @@ void immune_casting( SKILLTYPE * skill, CHAR_DATA * ch, CHAR_DATA * victim, OBJ_
 {
    short chitroom = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_ACTION );
    short chit = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HIT );
-   short chitme = ( skill->type == SKILL_SPELL ? AT_MAGIC : AT_HITME );
 
    if( skill->target != TAR_CHAR_OFFENSIVE )
    {
       chit = chitroom;
-      chitme = chitroom;
    }
 
    if( ch && ch != victim )
@@ -5355,7 +5349,6 @@ ch_ret spell_area_attack( int sn, int level, CHAR_DATA * ch, void *vo )
    bool saved;
    bool affects;
    int dam;
-   bool ch_died = FALSE;
    ch_ret retcode = rNONE;
 
    if( xIS_SET( ch->in_room->room_flags, ROOM_SAFE ) )
@@ -5433,7 +5426,6 @@ ch_ret spell_area_attack( int sn, int level, CHAR_DATA * ch, void *vo )
                retcode = spell_attack( sn, level, vch, ch );
                if( char_died( ch ) )
                {
-                  ch_died = TRUE;
                   break;
                }
                continue;
@@ -5445,7 +5437,6 @@ ch_ret spell_area_attack( int sn, int level, CHAR_DATA * ch, void *vo )
          retcode = spell_affectchar( sn, level, ch, vch );
       if( retcode == rCHAR_DIED || char_died( ch ) )
       {
-         ch_died = TRUE;
          break;
       }
    }

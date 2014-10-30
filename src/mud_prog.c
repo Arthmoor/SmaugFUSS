@@ -3010,13 +3010,10 @@ void set_supermob( OBJ_DATA * obj )
 {
    ROOM_INDEX_DATA *room;
    OBJ_DATA *in_obj;
-   CHAR_DATA *mob;
    char buf[200];
 
    if( !supermob )
       supermob = create_mobile( get_mob_index( MOB_VNUM_SUPERMOB ) );
-
-   mob = supermob;   /* debugging */
 
    if( !obj )
       return;

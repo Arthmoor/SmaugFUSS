@@ -8,6 +8,7 @@ WeatherY     0
 Ranges       0 60 0 60
 Economy      0 45000000
 ResetMsg     A low humming noise can be heard.~
+ResetFreq    15
 #ENDAREADATA
 
 #MOBILE
@@ -51,6 +52,12 @@ Desc     You are lounging in a quiet cosy parlour, warmed by a gentle magical fi
 which twinkles happily in a warm fireplace. 
  
 ~
+Reset M 1 10415 6 1200
+Reset M 1 10415 6 1200
+Reset M 1 10415 6 1200
+Reset M 1 21045 7 1200
+Reset M 1 21045 7 1200
+Reset M 1 21045 7 1200
 #ENDROOM
 
 #ROOM

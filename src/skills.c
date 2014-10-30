@@ -758,14 +758,12 @@ bool check_skill( CHAR_DATA * ch, char *command, char *argument )
 
 void do_skin( CHAR_DATA* ch, const char* argument)
 {
-   OBJ_DATA *korps;
+   OBJ_INDEX_DATA *korps;
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
    OBJ_DATA *skin;
-   bool found;
    const char *name;
    char buf[MAX_STRING_LENGTH];
-   found = FALSE;
 
    if( !IS_PKILL( ch ) && !IS_IMMORTAL( ch ) )
    {
@@ -802,7 +800,12 @@ void do_skin( CHAR_DATA* ch, const char* argument)
       bug( "Vnum %d (OBJ_VNUM_SKIN) not found for do_skin!", OBJ_VNUM_SKIN );
       return;
    }
-   korps = create_object( get_obj_index( OBJ_VNUM_CORPSE_PC ), 0 );
+   if( !( korps = get_obj_index( OBJ_VNUM_CORPSE_PC ) ) )
+   {
+      bug( "Vnum %d (OBJ_VNUM_CORPSE_PC) not found for %s!", OBJ_VNUM_CORPSE_PC, __FUNCTION__ );
+      return;
+   }
+
    skin = create_object( get_obj_index( OBJ_VNUM_SKIN ), 0 );
    name = IS_NPC( ch ) ? korps->short_descr : corpse->short_descr;
    snprintf( buf, MAX_STRING_LENGTH, skin->short_descr, name );
@@ -5702,11 +5705,8 @@ void do_slice( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
    OBJ_DATA *slice;
-   bool found;
    MOB_INDEX_DATA *pMobIndex;
    char buf[MAX_STRING_LENGTH];
-   found = FALSE;
-
 
    /*
     * Noticed that it was checking gsn_kick.  Bug report by Li'l Lukey
