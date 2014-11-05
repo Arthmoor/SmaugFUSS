@@ -9,7 +9,6 @@
  * Levi Beckerson (Whir), Michael Ward (Tarl), Erik Wolfe (Dwip),           *
  * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine, and Adjani.    *
  * All Rights Reserved.                                                     *
- * Registered with the United States Copyright Office. TX 5-877-286         *
  *                                                                          *
  * External contributions from Xorith, Quixadhal, Zarius, and many others.  *
  *                                                                          *
