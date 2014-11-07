@@ -2363,14 +2363,6 @@ Log         0
 End
 
 #COMMAND
-Name        pointing~
-Code        do_pointing
-Position    100
-Level       65
-Log         0
-End
-
-#COMMAND
 Name        quaff~
 Code        do_quaff
 Position    105
@@ -3252,14 +3244,6 @@ Name        setmixture~
 Code        do_setmixture
 Position    100
 Level       56
-Log         0
-End
-
-#COMMAND
-Name        say2~
-Code        do_say2
-Position    100
-Level       65
 Log         0
 End
 
