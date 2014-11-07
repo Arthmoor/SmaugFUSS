@@ -1018,45 +1018,134 @@ void do_smoke( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_light( CHAR_DATA* ch, const char* argument)
+OBJ_DATA *find_tinder( CHAR_DATA *ch )
 {
-   OBJ_DATA *opipe;
+   OBJ_DATA *tinder;
+
+   for( tinder = ch->last_carrying; tinder; tinder = tinder->prev_content )
+      if( ( tinder->item_type == ITEM_TINDER ) && can_see_obj( ch, tinder ) )
+         return tinder;
+   return NULL;
+}
+
+void do_extinguish( CHAR_DATA *ch, const char *argument )
+{
+   OBJ_DATA *obj;
    char arg[MAX_INPUT_LENGTH];
 
    one_argument( argument, arg );
    if( arg[0] == '\0' )
    {
-      send_to_char( "Light what?\r\n", ch );
+      send_to_char( "Extinguish what?\r\n", ch );
       return;
    }
 
    if( ms_find_obj( ch ) )
       return;
 
-   if( ( opipe = get_obj_carry( ch, arg ) ) == NULL )
+   if( ( obj = get_obj_wear( ch, arg ) ) == NULL )
+      if( ( obj = get_obj_carry( ch, arg ) ) == NULL )
+         if( ( obj = get_obj_list_rev( ch, arg, ch->in_room->last_content ) ) == NULL )
    {
       send_to_char( "You aren't carrying that.\r\n", ch );
       return;
    }
-   if( opipe->item_type != ITEM_PIPE )
+
+   separate_obj( obj );
+
+   if( obj->item_type != ITEM_LIGHT || ( obj->value[1] < 1 ) )
    {
-      send_to_char( "You can't light that.\r\n", ch );
+      send_to_char( "You can't extinguish that.\r\n", ch );
       return;
    }
-   if( !IS_SET( opipe->value[3], PIPE_LIT ) )
+
+   if( IS_SET( obj->value[3], PIPE_LIT ) )
    {
-      if( opipe->value[1] < 1 )
-      {
-         act( AT_ACTION, "You try to light $p, but it's empty.", ch, opipe, NULL, TO_CHAR );
-         act( AT_ACTION, "$n tries to light $p, but it's empty.", ch, opipe, NULL, TO_ROOM );
+      act( AT_ACTION, "You extinguish $p.", ch, obj, NULL, TO_CHAR );
+      act( AT_ACTION, "$n extinguishes $p.", ch, obj, NULL, TO_ROOM );
+      REMOVE_BIT( obj->value[3], PIPE_LIT );
+      return;
+   }
+   else
+   {
+      send_to_char( "It's not lit.\r\n", ch );
+      return;
+   }
+}
+
+void do_light( CHAR_DATA *ch, const char *argument )
+{
+   OBJ_DATA *obj;
+   char arg[MAX_INPUT_LENGTH];
+
+   one_argument( argument, arg );
+
+   if( arg[0] == '\0' )
+   {
+      send_to_char( "Light what?\r\n", ch );
+      return;
+   }
+
+   if( ms_find_obj(ch) )
+      return;
+
+   if( ( obj = get_obj_wear( ch, arg ) ) == NULL )
+      if( ( obj = get_obj_carry( ch, arg ) ) == NULL )
+         if( ( obj = get_obj_list_rev( ch, arg, ch->in_room->last_content ) ) == NULL )
+   {
+      send_to_char( "You aren't carrying that.\r\n", ch );
+      return;
+   }
+
+   if( !find_tinder( ch ) )
+   {
+      send_to_char( "You need some tinder to light with.\r\n", ch );
+      return;
+   }
+
+   separate_obj( obj );
+
+   switch( obj->item_type )
+   {
+      default:
+         send_to_char( "You can't light that.\r\n", ch );
          return;
-      }
-      act( AT_ACTION, "You carefully light $p.", ch, opipe, NULL, TO_CHAR );
-      act( AT_ACTION, "$n carefully lights $p.", ch, opipe, NULL, TO_ROOM );
-      SET_BIT( opipe->value[3], PIPE_LIT );
-      return;
+
+      case ITEM_PIPE:
+         if( !IS_SET( obj->value[3], PIPE_LIT ) )
+         {
+            if( obj->value[1] < 1 )
+            {
+               act( AT_ACTION, "You try to light $p, but it's empty.", ch, obj, NULL, TO_CHAR );
+               act( AT_ACTION, "$n tries to light $p, but it's empty.", ch, obj, NULL, TO_ROOM );
+               return;
+            }
+            act( AT_ACTION, "You carefully light $p.", ch, obj, NULL, TO_CHAR );
+            act( AT_ACTION, "$n carefully lights $p.", ch, obj, NULL, TO_ROOM );
+            SET_BIT( obj->value[3], PIPE_LIT );
+            return;
+         }
+         send_to_char( "It's already lit.\r\n", ch );
+         break;
+
+      case ITEM_LIGHT:
+         if( obj->value[1] > 0 )
+         {
+            if( !IS_SET( obj->value[3], PIPE_LIT ) )
+            {
+               act( AT_ACTION, "You carefully light $p.", ch, obj, NULL, TO_CHAR );
+               act( AT_ACTION, "$n carefully lights $p.", ch, obj, NULL, TO_ROOM );
+               SET_BIT( obj->value[3], PIPE_LIT );
+            }
+            else
+               send_to_char( "It's already lit.\r\n", ch );
+            return;
+         }
+         else
+            send_to_char( "You can't light that.\r\n", ch );
+         break;
    }
-   send_to_char( "It's already lit.\r\n", ch );
+   return;
 }
 
 /*
