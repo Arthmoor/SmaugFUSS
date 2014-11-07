@@ -4919,9 +4919,9 @@ bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
             continue;
          if( destobj->item_type == ITEM_QUIVER && otmp->item_type != ITEM_PROJECTILE )
             continue;
-         if( ( destobj->item_type == ITEM_CONTAINER || destobj->item_type == ITEM_KEYRING
-               || destobj->item_type == ITEM_QUIVER )
-             && get_real_obj_weight( otmp ) + get_real_obj_weight( destobj ) > destobj->value[0] )
+         if( (destobj->item_type == ITEM_CONTAINER || destobj->item_type == ITEM_KEYRING || destobj->item_type == ITEM_QUIVER)
+            && ( get_real_obj_weight( otmp ) + get_real_obj_weight( destobj ) > destobj->value[0]
+            || ( destobj->in_room && destobj->in_room->max_weight && destobj->in_room->max_weight < get_real_obj_weight( otmp )+destobj->in_room->weight ) ) )
             continue;
          obj_from_obj( otmp );
          obj_to_obj( otmp, destobj );
@@ -4934,6 +4934,10 @@ bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
       for( otmp = obj->first_content; otmp; otmp = otmp_next )
       {
          otmp_next = otmp->next_content;
+
+         if( destroom->max_weight && destroom->max_weight < get_real_obj_weight( otmp ) + destroom->weight )
+            continue;
+
          if( ch && HAS_PROG( otmp->pIndexData, DROP_PROG ) && otmp->count > 1 )
          {
             separate_obj( otmp );

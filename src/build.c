@@ -4777,6 +4777,12 @@ void do_redit( CHAR_DATA* ch, const char* argument)
       return;
    }
 
+   if( !str_cmp( arg, "maxweight" ) )
+   {
+      location->max_weight = atoi( argument );
+      return;
+   }
+
    if( !str_cmp( arg, "tunnel" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -6315,7 +6321,7 @@ void fwrite_fuss_room( FILE * fpout, ROOM_INDEX_DATA * room, bool install )
    if( !xIS_EMPTY( room->room_flags ) )
       fprintf( fpout, "Flags    %s~\n", ext_flag_string( &room->room_flags, r_flags ) );
    if( room->tele_delay > 0 || room->tele_vnum > 0 || room->tunnel > 0 )
-      fprintf( fpout, "Stats    %d %d %d\n", room->tele_delay, room->tele_vnum, room->tunnel );
+      fprintf( fpout, "Stats    %d %d %d %d\n", room->tele_delay, room->tele_vnum, room->tunnel, room->max_weight );
    if( room->description && room->description[0] != '\0' )
       fprintf( fpout, "Desc     %s~\n", strip_cr( room->description ) );
 
@@ -6936,9 +6942,9 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
       fprintf( fpout, "#%d\n", vnum );
       fprintf( fpout, "%s~\n", room->name );
       fprintf( fpout, "%s~\n", strip_cr( room->description ) );
-      if( ( room->tele_delay > 0 && room->tele_vnum > 0 ) || room->tunnel > 0 )
-         fprintf( fpout, "0 %s %d %d %d %d\n", print_bitvector( &room->room_flags ),
-                  room->sector_type, room->tele_delay, room->tele_vnum, room->tunnel );
+      if( ( room->tele_delay > 0 && room->tele_vnum > 0 ) || room->tunnel > 0 || room->max_weight > 0 )
+         fprintf( fpout, "0 %s %d %d %d %d %d\n", print_bitvector( &room->room_flags ),
+                  room->sector_type, room->tele_delay, room->tele_vnum, room->tunnel, room->max_weight );
       else
          fprintf( fpout, "0 %s %d\n", print_bitvector( &room->room_flags ), room->sector_type );
       for( xit = room->first_exit; xit; xit = xit->next )

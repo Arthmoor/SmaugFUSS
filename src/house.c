@@ -230,7 +230,7 @@ bool set_house( CHAR_DATA * ch, int vnum, bool apartment )
       location->description = STRALLOC( "This is your desc. You can edit this with HOUSE DESC.\r\n" );
 
    location->sector_type = 0;
-   // location->max_weight = 2000;
+   location->max_weight = 2000;
    xSET_BIT( location->room_flags, ROOM_NO_SUMMON );
    xSET_BIT( location->room_flags, ROOM_NO_ASTRAL );
    xSET_BIT( location->room_flags, ROOM_INDOORS );
@@ -475,7 +475,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
    STRFREE( addloc->description );
    addloc->description = STRALLOC( "This is your desc. You can edit this with HOUSE DESC." );
    addloc->sector_type = 0;
-   // addloc->max_weight = 2000;
+   addloc->max_weight = 2000;
    xSET_BIT( addloc->room_flags, ROOM_NO_SUMMON );
    xSET_BIT( addloc->room_flags, ROOM_NO_ASTRAL );
    xSET_BIT( addloc->room_flags, ROOM_INDOORS );

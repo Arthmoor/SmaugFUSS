@@ -2764,6 +2764,8 @@ struct room_index_data
    int mpactnum;  /* mudprogs */
    int vnum;
    int tele_vnum;
+   int weight;
+   int max_weight;
    short light;   /* amount of light in the room */
    short sector_type;
    short winter_sector;

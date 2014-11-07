@@ -20,8 +20,6 @@
 #include "mud.h"
 #include "bet.h"
 
-/*double sqrt( double x );*/
-
 /*
  * External functions
  */
@@ -745,6 +743,13 @@ void do_put( CHAR_DATA* ch, const char* argument)
       }
       // Fix end
 
+      if( container->in_room && container->in_room->max_weight
+         && container->in_room->max_weight < get_real_obj_weight( obj ) / obj->count + container->in_room->weight )
+      {
+         send_to_char( "It won't fit.\r\n", ch );
+         return;
+      }
+
       separate_obj( obj );
       separate_obj( container );
       obj_from_char( obj );
@@ -939,7 +944,6 @@ void do_drop( CHAR_DATA* ch, const char* argument)
       /*
        * 'drop NNNN coins' 
        */
-
       if( !str_cmp( arg, "coins" ) || !str_cmp( arg, "coin" ) )
       {
          if( ch->gold < number )
@@ -994,6 +998,13 @@ void do_drop( CHAR_DATA* ch, const char* argument)
          return;
       }
 
+      if( ch->in_room->max_weight > 0
+         && ch->in_room->max_weight < get_real_obj_weight( obj ) / obj->count + ch->in_room->weight )
+      {
+         send_to_char( "There is not enough room on the ground for that.\r\n", ch );
+         return;
+      }
+
       separate_obj( obj );
       act( AT_ACTION, "$n drops $p.", ch, obj, NULL, TO_ROOM );
       act( AT_ACTION, "You drop $p.", ch, obj, NULL, TO_CHAR );
@@ -1037,13 +1048,15 @@ void do_drop( CHAR_DATA* ch, const char* argument)
          send_to_char( "You can't seem to do that here...\r\n", ch );
          return;
       }
+
       found = FALSE;
       for( obj = ch->first_carrying; obj; obj = obj_next )
       {
          obj_next = obj->next_content;
 
          if( ( fAll || nifty_is_name( chk, obj->name ) )
-             && can_see_obj( ch, obj ) && obj->wear_loc == WEAR_NONE && can_drop_obj( ch, obj ) )
+            && can_see_obj( ch, obj ) && obj->wear_loc == WEAR_NONE && can_drop_obj( ch, obj )
+            && ( !ch->in_room->max_weight || ch->in_room->max_weight > get_real_obj_weight( obj ) / obj->count + ch->in_room->weight ) )
          {
             found = TRUE;
             if( HAS_PROG( obj->pIndexData, DROP_PROG ) && obj->count > 1 )

@@ -2010,7 +2010,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
       int iHash;
       bool tmpBootDb;
       bool oldroom;
-      int x1, x2, x3, x4, x5, x6;
+      int x1, x2, x3, x4, x5, x6, x7;
 
       letter = fread_letter( fp );
       if( letter != '#' )
@@ -2084,21 +2084,22 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
       pRoomIndex->room_flags = fread_bitvector( fp );
 
       ln = fread_line( fp );
-      x3 = x4 = x5 = x6 = 0;
-      sscanf( ln, "%d %d %d %d", &x3, &x4, &x5, &x6 );
+      x3 = x4 = x5 = x6 = x7 = 0;
+      sscanf( ln, "%d %d %d %d %d", &x3, &x4, &x5, &x6, &x7 );
 
       pRoomIndex->sector_type = x3;
       pRoomIndex->tele_delay = x4;
       pRoomIndex->tele_vnum = x5;
       pRoomIndex->tunnel = x6;
+      pRoomIndex->max_weight = x7;
 
       if( pRoomIndex->sector_type < 0 || pRoomIndex->sector_type >= SECT_MAX )
       {
          bug( "Fread_rooms: vnum %d has bad sector_type %d.", vnum, pRoomIndex->sector_type );
          pRoomIndex->sector_type = 1;
       }
-      // if( xIS_SET( pRoomIndex->room_flags, ROOM_HOUSE ) )
-         // pRoomIndex->max_weight = 2000;
+      if( xIS_SET( pRoomIndex->room_flags, ROOM_HOUSE ) )
+         pRoomIndex->max_weight = 2000;
       pRoomIndex->light = 0;
       pRoomIndex->first_exit = NULL;
       pRoomIndex->last_exit = NULL;
@@ -6296,14 +6297,15 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
             if( !str_cmp( word, "Stats" ) )
             {
                char *ln = fread_line( fp );
-               int x1, x2, x3;
+               int x1, x2, x3, x4;
 
-               x1 = x2 = x3 = 0;
-               sscanf( ln, "%d %d %d", &x1, &x2, &x3 );
+               x1 = x2 = x3 = x4 = 0;
+               sscanf( ln, "%d %d %d %d", &x1, &x2, &x3, &x4 );
 
                pRoomIndex->tele_delay = x1;
                pRoomIndex->tele_vnum = x2;
                pRoomIndex->tunnel = x3;
+               pRoomIndex->max_weight = x4;
 
                fMatch = TRUE;
                break;

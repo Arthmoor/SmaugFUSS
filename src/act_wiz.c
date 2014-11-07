@@ -1688,6 +1688,7 @@ void do_rstat( CHAR_DATA* ch, const char* argument)
    if( location->tunnel > 0 )
       ch_printf_color( ch, "   &cTunnel: &W%d", location->tunnel );
    send_to_char( "\r\n", ch );
+   ch_printf_color( ch, "&cRoom Weight: &W%d   &cRoom Max Weight: &R%d\r\n", location->weight, location->max_weight );
    if( location->tele_delay > 0 || location->tele_vnum > 0 )
       ch_printf_color( ch, "&cTeleDelay: &R%d   &cTeleVnum: &R%d\r\n", location->tele_delay, location->tele_vnum );
    ch_printf_color( ch, "&cRoom flags: &w%s\r\n", ext_flag_string( &location->room_flags, r_flags ) );
