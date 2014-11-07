@@ -2599,6 +2599,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
    }
    do_look( ch, "auto" );
    mail_count( ch );
+   check_loginmsg( ch );
 
    if( !ch->was_in_room && ch->in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
       ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
@@ -2789,6 +2790,7 @@ bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
             log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s (%s) reconnected.", ch->name, d->host );
             d->connected = CON_PLAYING;
             do_look( ch, "auto" );
+            check_loginmsg( ch );
          }
          return TRUE;
       }
@@ -2837,6 +2839,7 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
          ch->switched = NULL;
          send_to_char( "Reconnecting.\r\n", ch );
          do_look( ch, "auto" );
+         check_loginmsg( ch );
          act( AT_ACTION, "$n has reconnected, kicking off old link.", ch, NULL, NULL, TO_CANSEE );
          log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s@%s reconnected, kicking off old link.",
                           ch->pcdata->filename, d->host );
@@ -3107,11 +3110,25 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                break;
 
             case 't':
-               i = ( char * )arg1;
+               /* bug fix - Edmond  i = (char *) arg1;         break; */
+               if ( arg1 )
+                  i = (char *) arg1;
+               else
+               {
+                  bug( "Act: Bad variable $t" );
+                  i = " <@@@> ";
+               }
                break;
 
             case 'T':
-               i = ( char * )arg2;
+               /* same bug fix as above -  i = (char *) arg2;          break; */
+               if ( arg2 )
+                  i = (char *) arg2;
+               else
+               {
+                  bug( "Act: Bad variable $T" );
+                  i = " <@@@> ";
+               }
                break;
          }
       }

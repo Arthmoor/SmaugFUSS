@@ -23,6 +23,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include "mud.h"
+#include "house.h"
 
 /*
  * Increment with every major format change.
@@ -505,6 +506,26 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
       fprintf( fp, "Site         %s\n", ch->desc->host );
    else
       fprintf( fp, "Site         (Link-Dead)\n" );
+
+   /* This MUST come after Room in pfile */
+   if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) && !IS_IMMORTAL( ch ) )
+   {
+      HOME_DATA *tmphome;
+      int i;
+
+      for( tmphome = first_home; tmphome; tmphome = tmphome->next )
+         for( i = 0; i < MAX_HOUSE_ROOMS; ++i )
+            if( tmphome->vnum[i] == ch->in_room->vnum )
+               fprintf( fp, "Homeowner %s~\n", tmphome->name );
+   }
+   else
+   {
+      HOMEBUY_DATA *tmphb;
+
+      for( tmphb = first_homebuy; tmphb; tmphb = tmphb->next )
+         if( ch->in_room->vnum == tmphb->vnum )
+            fprintf( fp, "Homeowner %s~\n", tmphb->seller );
+   }
 
    for( sn = 1; sn < num_skills; ++sn )
    {
@@ -1325,6 +1346,27 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
             KEY( "Hitroll", ch->hitroll, fread_number( fp ) );
             KEY( "Homepage", ch->pcdata->homepage, fread_string_nohash( fp ) );
 
+            if( !strcmp( word, "Homeowner" ) )
+            {
+               int i;
+
+               fMatch = TRUE;
+
+               if( ch->in_room && xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+               {
+                  HOME_DATA *tmphome;
+
+                  for( tmphome = first_home; tmphome; tmphome = tmphome->next )
+                     for( i = 0; i < MAX_HOUSE_ROOMS; ++i )
+                        if( tmphome->vnum[i] == ch->in_room->vnum )
+                           if( strcmp( tmphome->name, fread_string( fp ) ) )
+                              ch->in_room = get_room_index( ROOM_VNUM_TEMPLE );
+               }
+               else
+                  fread_flagstring( fp );
+               break;
+            }
+
             if( !strcmp( word, "HpManaMove" ) )
             {
                ch->hit = fread_number( fp );
@@ -1875,6 +1917,17 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
    }
 }
 
+bool check_owner( OBJ_DATA *obj )
+{ 
+   HOME_DATA *home; 
+
+   for( home = first_home; home; home = home->next )
+      if( home->vnum[0] == obj->pIndexData->vnum )
+         if( !str_cmp( home->name, obj->owner ) )
+            return TRUE;
+   return FALSE;
+}
+
 void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 {
    OBJ_DATA *obj;
@@ -1980,6 +2033,22 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
             if( !strcmp( word, "End" ) )
             {
+               if( obj->item_type == ITEM_HOUSEKEY )
+               {
+                  if( !check_owner( obj ) )
+                  {
+                     bug( "%s: house key found not belonging to correct house", __FUNCTION__ );
+                     if( obj->name )
+                        STRFREE( obj->name );
+                     if( obj->description )
+                        STRFREE( obj->description );
+                     if( obj->short_descr )
+                        STRFREE( obj->short_descr );
+                     DISPOSE( obj );
+                     return;
+                  }
+               }
+
                if( !fNest || !fVnum )
                {
                   if( obj->name )

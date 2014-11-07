@@ -1665,7 +1665,8 @@ typedef enum
    ITEM_MATCH, ITEM_TRAP, ITEM_MAP, ITEM_PORTAL, ITEM_PAPER,
    ITEM_TINDER, ITEM_LOCKPICK, ITEM_SPIKE, ITEM_DISEASE, ITEM_OIL, ITEM_FUEL,
    ITEM_EMPTY1, ITEM_EMPTY2, ITEM_MISSILE_WEAPON, ITEM_PROJECTILE, ITEM_QUIVER,
-   ITEM_SHOVEL, ITEM_SALVE, ITEM_COOK, ITEM_KEYRING, ITEM_ODOR, ITEM_CHANCE, ITEM_DRINK_MIX
+   ITEM_SHOVEL, ITEM_SALVE, ITEM_COOK, ITEM_KEYRING, ITEM_ODOR, ITEM_CHANCE,
+   ITEM_HOUSEKEY, ITEM_DRINK_MIX
 } item_types;
 
 #define MAX_ITEM_TYPE		     ITEM_DRINK_MIX
@@ -1839,7 +1840,7 @@ typedef enum
  */
 typedef enum
 {
-   ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_INDOORS, ROOM_LAWFUL, ROOM_NEUTRAL, ROOM_CHAOTIC,
+   ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_INDOORS, ROOM_HOUSE, ROOM_NEUTRAL, ROOM_CHAOTIC,
    ROOM_NO_MAGIC, ROOM_TUNNEL, ROOM_PRIVATE, ROOM_SAFE, ROOM_SOLITARY, ROOM_PET_SHOP,
    ROOM_NO_RECALL, ROOM_DONATION, ROOM_NODROPALL, ROOM_SILENCE, ROOM_LOGSPEECH, ROOM_NODROP,
    ROOM_CLANSTOREROOM, ROOM_NO_SUMMON, ROOM_NO_ASTRAL, ROOM_TELEPORT, ROOM_TELESHOWDESC,
@@ -2070,6 +2071,7 @@ struct timer_data
 #define AFLAG_NOTELEPORT	    BV02
 #define AFLAG_SPELLLIMIT	    BV03
 #define AFLAG_PROTOTYPE             BV04
+#define AFLAG_HIDDEN                BV05 /* Hidden from area list. - Blod*/
 
 /*
  * Prototype for a mob.
@@ -3733,6 +3735,7 @@ DECLARE_DO_FUN( do_enter );
 DECLARE_DO_FUN( do_equipment );
 DECLARE_DO_FUN( do_examine );
 DECLARE_DO_FUN( do_exits );
+DECLARE_DO_FUN( do_extinguish	);
 DECLARE_DO_FUN( do_feed );
 DECLARE_DO_FUN( do_fill );
 DECLARE_DO_FUN( do_findnote );
@@ -3936,8 +3939,6 @@ DECLARE_DO_FUN( do_sacrifice );
 DECLARE_DO_FUN( do_save );
 DECLARE_DO_FUN( do_savearea );
 DECLARE_DO_FUN( do_say );
-DECLARE_DO_FUN( do_say2 );
-DECLARE_DO_FUN( do_pointing );
 DECLARE_DO_FUN( do_scan );
 DECLARE_DO_FUN( do_scatter );
 DECLARE_DO_FUN( do_score );
@@ -4450,7 +4451,8 @@ RD *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1, int arg
 void reset_area( AREA_DATA * pArea );
 
 /* db.c */
-void add_loginmsg( char *name, short type, char *argument );
+void add_loginmsg( const char *name, short type, const char *argument );
+void check_loginmsg( CHAR_DATA * ch );
 void show_file( CHAR_DATA * ch, const char *filename );
 char *str_dup( char const *str );
 void boot_db( bool fCopyOver );
@@ -4832,6 +4834,7 @@ ch_ret chain_spells( int sn, int level, CHAR_DATA * ch, void *vo, short chain );
 /* object saving defines for fread/write_obj. -- Altrag */
 #define OS_CARRY	0
 #define OS_CORPSE	1
+#define OS_VAULT 2
 void save_char_obj args( ( CHAR_DATA * ch ) );
 bool load_char_obj args( ( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover ) );
 void set_alarm args( ( long seconds ) );

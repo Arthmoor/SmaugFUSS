@@ -281,6 +281,9 @@ PROJECT_DATA *read_project( FILE * fp );
 NOTE_DATA *read_log( FILE * fp );
 void load_specfuns( void );
 void init_chess( void );
+void load_homedata(  );
+void load_accessories(  );
+void load_homebuy(  );
 
 /*
  * External booting function
@@ -735,6 +738,12 @@ void boot_db( bool fCopyOver )
     */
    log_string( "Loading Morphs" );
    load_morphs(  );
+
+   log_string( "Loading Housing System, Home Accessories Data, and Home Auctioning System" );
+   load_homedata();
+   load_accessories();
+   load_homebuy();
+
    MOBtrigger = TRUE;
 
    /*
@@ -2088,6 +2097,8 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
          bug( "Fread_rooms: vnum %d has bad sector_type %d.", vnum, pRoomIndex->sector_type );
          pRoomIndex->sector_type = 1;
       }
+      // if( xIS_SET( pRoomIndex->room_flags, ROOM_HOUSE ) )
+         // pRoomIndex->max_weight = 2000;
       pRoomIndex->light = 0;
       pRoomIndex->first_exit = NULL;
       pRoomIndex->last_exit = NULL;
@@ -2795,6 +2806,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
       case ITEM_CONTAINER:
       case ITEM_DRINK_CON:
       case ITEM_KEY:
+      case ITEM_HOUSEKEY:
       case ITEM_KEYRING:
       case ITEM_ODOR:
       case ITEM_CHANCE:
@@ -9352,7 +9364,7 @@ void save_loginmsg(  )
    fp = NULL;
 }
 
-void add_loginmsg( char *name, short type, char *argument )
+void add_loginmsg( const char *name, short type, const char *argument )
 {
    LMSG_DATA *lmsg;
 

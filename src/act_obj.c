@@ -26,6 +26,7 @@
  * External functions
  */
 void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem );
+void save_house_by_vnum( int vnum );
 
 /*
  * how resistant an object is to damage				-Thoric
@@ -203,6 +204,9 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
       act( AT_ACTION, "$n gets $p.", ch, obj, container, TO_ROOM );
       obj_from_room( obj );
    }
+
+   if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+      save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
 
    /*
     * Clan storeroom checks 
@@ -773,6 +777,10 @@ void do_put( CHAR_DATA* ch, const char* argument)
 
       if( save_char )
          save_char_obj( ch );
+
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
+
       /*
        * Clan storeroom check 
        */
@@ -861,6 +869,9 @@ void do_put( CHAR_DATA* ch, const char* argument)
        */
       if( container->item_type == ITEM_CORPSE_PC )
          write_corpses( NULL, container->short_descr + 14, NULL );
+
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
 
       /*
        * Clan storeroom check 
@@ -1069,6 +1080,10 @@ void do_drop( CHAR_DATA* ch, const char* argument)
             act( AT_PLAIN, "You are not carrying any $T.", ch, NULL, chk, TO_CHAR );
       }
    }
+
+   if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+      save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
+
    if( IS_SET( sysdata.save_flags, SV_DROP ) )
       save_char_obj( ch ); /* duping protector */
    return;
@@ -2264,11 +2279,17 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument)
    act( AT_ACTION, buf, ch, obj, NULL, TO_ROOM );
    oprog_sac_trigger( ch, obj );
    if( obj_extracted( obj ) )
+   {
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
       return;
+   }
    if( cur_obj == obj->serial )
       global_objcode = rOBJ_SACCED;
    separate_obj( obj );
    extract_obj( obj );
+   if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+      save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
    return;
 }
 

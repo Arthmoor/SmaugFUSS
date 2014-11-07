@@ -4445,6 +4445,9 @@ void do_areas( CHAR_DATA* ch, const char* argument)
             send_to_pager( header_string2, ch );
             for( pArea = first_area; pArea; pArea = pArea->next )
             {
+               if( IS_SET( pArea->flags, AFLAG_HIDDEN ) ) /* Blod, 2000 */
+                  continue;
+
                pager_printf( ch, print_string,
                              pArea->author, pArea->name,
                              pArea->low_soft_range, pArea->hi_soft_range, pArea->low_hard_range, pArea->hi_hard_range );
@@ -4495,6 +4498,9 @@ void do_areas( CHAR_DATA* ch, const char* argument)
 
    for( pArea = first_area_name; pArea; pArea = pArea->next_sort_name )
    {
+      if( IS_SET( pArea->flags, AFLAG_HIDDEN ) ) /* Blod, 2000 */
+         continue;
+
       if( pArea->hi_soft_range >= lower_bound && pArea->low_soft_range <= upper_bound )
       {
          pager_printf( ch, print_string,

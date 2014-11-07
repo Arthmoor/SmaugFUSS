@@ -41,6 +41,9 @@ void subtract_times( struct timeval *etime, struct timeval *sttime );
 /* From interp.c */
 bool check_social( CHAR_DATA * ch, const char *command, const char *argument );
 
+/* From house.c */
+void homebuy_update(  );
+
 /*
  * Global Variables
  */
@@ -1959,6 +1962,7 @@ void update_handler( void )
    static int pulse_point;
    static int pulse_second;
    static int pulse_time;
+   static int pulse_houseauc;
    struct timeval sttime;
    struct timeval etime;
 
@@ -1967,6 +1971,12 @@ void update_handler( void )
       set_char_color( AT_PLAIN, timechar );
       send_to_char( "Starting update timer.\r\n", timechar );
       gettimeofday( &sttime, NULL );
+   }
+
+   if( --pulse_houseauc  <= 0 )
+   {
+      pulse_houseauc = 1800 * PULSE_PER_SECOND;
+      homebuy_update();
    }
 
    if( --pulse_area <= 0 )

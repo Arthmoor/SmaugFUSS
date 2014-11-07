@@ -23,6 +23,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "mud.h"
+#include "house.h"
 #include "sha256.h"
 
 #define RESTORE_INTERVAL 21600
@@ -3340,6 +3341,8 @@ void do_purge( CHAR_DATA* ch, const char* argument)
 
       act( AT_IMMORT, "$n purges the room!", ch, NULL, NULL, TO_ROOM );
       act( AT_IMMORT, "You have purged the room!", ch, NULL, NULL, TO_CHAR );
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
 
       /*
        * Clan storeroom check 
@@ -3369,13 +3372,15 @@ void do_purge( CHAR_DATA* ch, const char* argument)
       }
    }
 
-/* Single object purge in room for high level purge - Scryn 8/12*/
+   /* Single object purge in room for high level purge - Scryn 8/12*/
    if( obj )
    {
       separate_obj( obj );
       act( AT_IMMORT, "$n purges $p.", ch, obj, NULL, TO_ROOM );
       act( AT_IMMORT, "You make $p disappear in a puff of smoke!", ch, obj, NULL, TO_CHAR );
       extract_obj( obj );
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
 
       /*
        * Clan storeroom check 
@@ -3437,6 +3442,8 @@ void do_low_purge( CHAR_DATA* ch, const char* argument)
       act( AT_IMMORT, "$n purges $p!", ch, obj, NULL, TO_ROOM );
       act( AT_IMMORT, "You make $p disappear in a puff of smoke!", ch, obj, NULL, TO_CHAR );
       extract_obj( obj );
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
 
       /*
        * Clan storeroom check 
@@ -5990,6 +5997,15 @@ void do_destroy( CHAR_DATA* ch, const char* argument)
 
       set_char_color( AT_RED, ch );
       ch_printf( ch, "Player %s destroyed.  Pfile saved in backup directory.\r\n", name );
+      sprintf( buf, "%s%s", HOUSE_DIR, name );
+      if( !remove( buf ) )
+         send_to_char( "Player's housing data destroyed.\r\n", ch );
+      else if( errno != ENOENT )
+      {
+         ch_printf( ch, "Unknown error #%d - %s (housing data). Report to Coder.\r\n", errno, strerror( errno ) );
+         snprintf( buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf );
+         perror( buf2 );
+      }
       snprintf( buf, MAX_STRING_LENGTH, "%s%s", GOD_DIR, name );
       if( !remove( buf ) )
          send_to_char( "Player's immortal data destroyed.\r\n", ch );

@@ -64,7 +64,7 @@ const char *const sec_flags[] = {
 };
 
 const char *const r_flags[] = {
-   "dark", "death", "nomob", "indoors", "lawful", "neutral", "chaotic",
+   "dark", "death", "nomob", "indoors", "house", "neutral", "chaotic",
    "nomagic", "tunnel", "private", "safe", "solitary", "petshop", "norecall",
    "donation", "nodropall", "silence", "logspeech", "nodrop", "clanstoreroom",
    "nosummon", "noastral", "teleport", "teleshowdesc", "nofloor",
@@ -102,7 +102,7 @@ const char *const item_w_flags[] = {
 };
 
 const char *const area_flags[] = {
-   "nopkill", "freekill", "noteleport", "spelllimit", "prototype", "r5", "r6", "r7", "r8",
+   "nopkill", "freekill", "noteleport", "spelllimit", "prototype", "hidden", "r6", "r7", "r8",
    "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17",
    "r18", "r19", "r20", "r21", "r22", "r23", "r24",
    "r25", "r26", "r27", "r28", "r29", "r30", "r31"

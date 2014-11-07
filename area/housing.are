@@ -1,0 +1,107 @@
+#FUSSAREA
+#AREADATA
+Version      1
+Name         Housing~
+Author       SmaugFuss~
+WeatherX     0
+WeatherY     0
+Ranges       0 60 0 60
+Economy      0 0
+ResetMsg     A dim pulse of light filters through the swirling mists.~
+ResetFreq    60
+Flags        hidden~
+#ENDAREADATA
+
+#MOBILE
+Vnum       50000
+Keywords   placeholder mob~
+Short      a placeholder mob~
+Long       A placeholder mob is here, holding the place.
+~
+Desc       What? Never seen a placeholder before?
+~
+Race       dwarf~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_thief~
+Gender     male~
+Actflags   npc~
+Stats1     -5 3 17 6 300 400
+Stats2     1 4 30
+Stats3     1 3 6
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart hands feet eye~
+#ENDMOBILE
+
+#MOBILE
+Vnum       54999
+Keywords   placeholder mob~
+Short      a placeholder mob~
+Long       A placeholder mob is here, holding the place.
+~
+Desc       What? Never seen a placeholder before?
+~
+Race       dwarf~
+Class      warrior~
+Position   standing~
+DefPos     standing~
+Specfun    spec_thief~
+Gender     male~
+Actflags   npc~
+Stats1     -5 3 17 6 300 400
+Stats2     1 4 30
+Stats3     1 3 6
+Stats4     0 0 0 0 0
+Attribs    13 13 13 13 13 13 13
+Saves      0 0 0 0 0
+Speaks     common~
+Speaking   common~
+Bodyparts  head arms legs heart hands feet eye~
+#ENDMOBILE
+
+#OBJECT
+Vnum     50000
+Keywords placeholder obj~
+Type     weapon~
+Short    a placeholder obj~
+Long     A placeholder obj is here, holding the place~
+WFlags   take wield~
+Values   0 2 8 0 0 0
+Stats    15 600 60 0 0
+#ENDOBJECT
+
+#OBJECT
+Vnum     54999
+Keywords placeholder obj~
+Type     weapon~
+Short    a placeholder obj~
+Long     A placeholder obj is here, holding the place~
+WFlags   take wield~
+Values   0 2 8 0 0 0
+Stats    15 600 60 0 0
+#ENDOBJECT
+
+#ROOM
+Vnum     50000
+Name     Placeholder Space~
+Sector   inside~
+Flags    nomob indoors~
+Desc     It's really bland in here.
+~
+#ENDROOM
+
+#ROOM
+Vnum     54999
+Name     Placeholder Space~
+Sector   inside~
+Flags    nomob indoors~
+Desc     It's really bland in here.
+~
+#ENDROOM
+
+#ENDAREA
