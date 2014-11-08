@@ -207,6 +207,52 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
    return obj_to_room( corpse, ch->in_room );
 }
 
+void make_puddle( CHAR_DATA * ch, OBJ_DATA * cont )
+{
+   OBJ_DATA *obj;
+   char buf[20];
+   char buf2[70];
+   bool found = FALSE;
+
+   for(obj = ch->in_room->first_content; obj; obj = obj->next_content )
+   {
+      if( obj->pIndexData->item_type == ITEM_PUDDLE )
+      {
+         if( obj->value[2] == cont->value[2] )
+         {
+            obj->value[1] += cont->value[1];
+            obj->value[3] += cont->value[3];
+            obj->timer = number_range( 2, 4 );
+            found = TRUE;
+            break;
+         }
+      }
+   }
+
+   if( !found )
+   {
+      obj = create_object( get_obj_index( OBJ_VNUM_PUDDLE ), 0 );
+      obj->timer = number_range( 2, 4 );
+      obj->value[1] += cont->value[1];
+      obj->value[2] = cont->value[2];
+      obj->value[3] = cont->value[3];
+      obj_to_room( obj, ch->in_room );
+   }
+
+   if( obj->value[1] > 15 )
+      mudstrlcpy( buf, "large", 20 );
+   else if( obj->value[1] > 10 )
+      mudstrlcpy( buf, "rather large", 20 );
+   else if( obj->value[1] > 5 )
+      mudstrlcpy( buf, "rather small", 20 );
+   else
+      mudstrlcpy( buf, "small", 20 );
+   snprintf( buf2, 70, "There is a %s puddle of %s.", buf,
+      ( obj->value[2] >= LIQ_MAX ? "water" : liq_table[obj->value[2]].liq_name ) );
+   obj->description = STRALLOC( buf2 );
+   return;
+}
+
 void make_blood( CHAR_DATA * ch )
 {
    OBJ_DATA *obj;

@@ -1403,6 +1403,7 @@ void obj_update( void )
             AT_TEMP = AT_MAGIC;  /* doesn't remove_portal */
             break;
          case ITEM_FOUNTAIN:
+         case ITEM_PUDDLE:
             message = "$p dries up.";
             AT_TEMP = AT_BLUE;
             break;

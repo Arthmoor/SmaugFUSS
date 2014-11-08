@@ -1221,7 +1221,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
    if( arg[0] == '\0' )
    {
       for( obj = ch->in_room->first_content; obj; obj = obj->next_content )
-         if( obj->item_type == ITEM_FOUNTAIN )
+         if( ( obj->item_type == ITEM_FOUNTAIN ) || ( obj->item_type == ITEM_BLOOD ) || ( obj->item_type == ITEM_PUDDLE ) )
             break;
 
       if( !obj )
@@ -1398,6 +1398,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
          gain_condition( ch, COND_DRUNK, liq->mod[COND_DRUNK] );
          gain_condition( ch, COND_FULL, liq->mod[COND_FULL] );
          gain_condition( ch, COND_THIRST, liq->mod[COND_THIRST] );
+
          if( IS_VAMPIRE( ch ) )
             gain_condition( ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST] );
 
@@ -1478,6 +1479,117 @@ void do_drink( CHAR_DATA* ch, const char* argument)
          }
          break;
       }
+
+      case ITEM_PUDDLE: 
+      {
+         LIQ_TABLE *liq = NULL;
+
+         if( obj->value[1] <= 0 )
+         { 
+            bug( "%s: empty puddle %d.", __FUNCTION__, obj->in_room->vnum ); 
+            return; 
+         } 
+
+         if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
+         { 
+            bug( "%s: bad liquid number %d.", __FUNCTION__, obj->value[2] );
+            liq = get_liq_vnum( 0 );
+         }
+
+         if( !oprog_use_trigger( ch, obj, NULL, NULL ) )
+         { 
+            act( AT_ACTION, "$n stoops to the ground and drinks from $p.", ch, obj, NULL, TO_ROOM );
+            act( AT_ACTION, "You stoop to the ground and drink $T from $p.", ch, obj, liq->name, TO_CHAR );
+         }
+
+         amount = 1;
+
+         gain_condition( ch, COND_DRUNK, liq->mod[COND_DRUNK] );
+         gain_condition( ch, COND_FULL, liq->mod[COND_FULL] );
+         gain_condition( ch, COND_THIRST, liq->mod[COND_THIRST] );
+
+         if( IS_VAMPIRE( ch ) )
+            gain_condition( ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST] );
+
+         if( liq->type == LIQTYPE_POISON )
+         {
+            act( AT_POISON, "$n sputters and gags.", ch, NULL, NULL, TO_ROOM );
+            act( AT_POISON, "You sputter and gag.", ch, NULL, NULL, TO_CHAR );
+            ch->mental_state = URANGE( 20, ch->mental_state + 5, 100 );
+            af.type = gsn_poison;
+            af.duration = obj->value[3];
+            af.location = APPLY_NONE;
+            af.modifier = 0;
+            af.bitvector = meb( AFF_POISON );
+            affect_join( ch, &af );
+         }
+
+         if( !IS_NPC( ch ) )
+         {
+            if( ch->pcdata->condition[COND_DRUNK] > ( MAX_COND_VALUE / 2 )
+                && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .4 ) )
+               send_to_char( "You feel quite sloshed.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .4 )
+                     && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .6 ) )
+               send_to_char( "You start to feel a little drunk.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .6 )
+                     && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .9 ) )
+               send_to_char( "Your vision starts to get blurry.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .9 )
+                     && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE )
+               send_to_char( "You feel very drunk.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] == MAX_COND_VALUE )
+               send_to_char( "You feel like your going to pass out.\r\n", ch );
+
+            if( ch->pcdata->condition[COND_THIRST] > ( MAX_COND_VALUE / 2 )
+                && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .4 ) )
+               send_to_char( "Your stomach begins to slosh around.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .4 )
+                     && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .6 ) )
+               send_to_char( "You start to feel bloated.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .6 )
+                     && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .9 ) )
+               send_to_char( "You feel bloated.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .9 )
+                     && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE )
+               send_to_char( "You stomach is almost filled to it's brim!\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE )
+               send_to_char( "Your stomach is full, you can't manage to get anymore down.\r\n", ch );
+
+            /*
+             * Hopefully this is the reason why that crap was happening. =0P 
+             */
+            if( IS_VAMPIRE( ch ) )
+            {
+               if( ch->pcdata->condition[COND_BLOODTHIRST] > ( MAX_COND_VALUE / 2 )
+                   && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .4 ) )
+                  send_to_char( "&rYou replenish your body with the vidal fluid.\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .4 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .6 ) )
+                  send_to_char( "&rYour thirst for blood begins to decrease.\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .6 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .9 ) )
+                  send_to_char( "&rThe thirst for blood begins to leave you...\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .9 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE )
+                  send_to_char( "&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch );
+            }
+            else if( !IS_VAMPIRE( ch ) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE )
+            {
+               ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
+            }
+         }
+
+         obj->value[1] -= amount;
+         if( obj->value[1] <= 0 )
+         {
+            send_to_char( "The remainder of the puddle seeps into the ground.\r\n", ch );
+            if( cur_obj == obj->serial )
+               global_objcode = rOBJ_DRUNK;
+            extract_obj( obj );
+         }
+         break;
+      }
    }
 
    if( who_fighting( ch ) && IS_PKILL( ch ) )
@@ -1536,6 +1648,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
       case ITEM_DRINK_CON:
          src_item1 = ITEM_FOUNTAIN;
          src_item2 = ITEM_BLOOD;
+         src_item3 = ITEM_PUDDLE;
          break;
       case ITEM_HERB_CON:
          src_item1 = ITEM_HERB;
@@ -1669,7 +1782,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
                send_to_char( "There is nothing appropriate here!\r\n", ch );
                return;
             case ITEM_FOUNTAIN:
-               send_to_char( "There is no fountain or pool here!\r\n", ch );
+               send_to_char( "There is no fountain, pool, or puddle here!\r\n", ch );
                return;
             case ITEM_BLOOD:
                send_to_char( "There is no blood pool here!\r\n", ch );
@@ -1902,6 +2015,48 @@ void do_fill( CHAR_DATA* ch, const char* argument)
          act( AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR );
          act( AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM );
          return;
+
+      case ITEM_PUDDLE:
+         if( obj->value[1] != 0 && obj->value[2] != source->value[2] )
+         {
+            send_to_char( "There is already another liquid in it.\r\n", ch );
+            return;
+         }
+         obj->value[2] = source->value[2];
+
+         if( source->value[1] < diff )
+	         diff = source->value[1];
+
+         obj->value[1] += diff;
+         source->value[1] -= diff;
+
+         if( source->item_type == ITEM_PUDDLE )
+         {
+            char buf[20];
+            char buf2[70];
+
+            if( source->value[1] > 15 )
+               mudstrlcpy( buf, "large", 20 );
+            else if( source->value[1] > 10 )
+               mudstrlcpy( buf, "rather large", 20 );
+            else if( source->value[1] > 5 )
+               mudstrlcpy( buf, "rather small", 20 );
+            else
+               mudstrlcpy( buf, "small", 20 );
+            snprintf( buf2, 70, "There is a %s puddle of %s.", buf,
+               ( source->value[2] >= LIQ_MAX ? "water" : liq_table[source->value[2]].liq_name ) );
+            source->description = STRALLOC( buf2 );
+         }
+         act( AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR );
+         act( AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM );
+
+         if( source->value[1] < 1 )
+         {
+            act( AT_ACTION, "The remaining contents of the puddle seep into the ground.", ch, NULL, NULL, TO_CHAR );
+            act( AT_ACTION, "The remaining contents of the puddle seep into the ground.",ch, NULL, NULL, TO_ROOM );
+            extract_obj( source );
+         }
+         return;
    }
 }
 
@@ -1937,6 +2092,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
          act( AT_ACTION, "You shake $p in an attempt to empty it...", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n begins to shake $p in an attempt to empty it...", ch, obj, NULL, TO_ROOM );
          return;
+
       case ITEM_PIPE:
          act( AT_ACTION, "You gently tap $p and empty it out.", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n gently taps $p and empties it out.", ch, obj, NULL, TO_ROOM );
@@ -1951,6 +2107,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
             send_to_char( "It's already empty.\r\n", ch );
             return;
          }
+         make_puddle( ch, obj );
          act( AT_ACTION, "You empty $p.", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n empties $p.", ch, obj, NULL, TO_ROOM );
          obj->value[1] = 0;

@@ -1650,6 +1650,8 @@ typedef enum
 #define OBJ_VNUM_NOTE		     36
 #define OBJ_VNUM_DEITY		     64
 
+#define OBJ_VNUM_PUDDLE		     95
+
 /* Academy eq */
 #define OBJ_VNUM_SCHOOL_MACE	  10315
 #define OBJ_VNUM_SCHOOL_DAGGER	  10312
@@ -1674,7 +1676,7 @@ typedef enum
    ITEM_PULLCHAIN, ITEM_BUTTON, ITEM_DIAL, ITEM_RUNE, ITEM_RUNEPOUCH,
    ITEM_MATCH, ITEM_TRAP, ITEM_MAP, ITEM_PORTAL, ITEM_PAPER,
    ITEM_TINDER, ITEM_LOCKPICK, ITEM_SPIKE, ITEM_DISEASE, ITEM_OIL, ITEM_FUEL,
-   ITEM_EMPTY1, ITEM_EMPTY2, ITEM_MISSILE_WEAPON, ITEM_PROJECTILE, ITEM_QUIVER,
+   ITEM_PUDDLE, ITEM_EMPTY2, ITEM_MISSILE_WEAPON, ITEM_PROJECTILE, ITEM_QUIVER,
    ITEM_SHOVEL, ITEM_SALVE, ITEM_COOK, ITEM_KEYRING, ITEM_ODOR, ITEM_CHANCE,
    ITEM_HOUSEKEY, ITEM_DRINK_MIX
 } item_types;
@@ -4587,6 +4589,7 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer );
 void make_blood args( ( CHAR_DATA * ch ) );
 void make_bloodstain args( ( CHAR_DATA * ch ) );
 void make_scraps args( ( OBJ_DATA * obj ) );
+void make_puddle args( ( CHAR_DATA * ch, OBJ_DATA * cont ) );
 void make_fire args( ( ROOM_INDEX_DATA * in_room, short timer ) );
 OD *make_trap args( ( int v0, int v1, int v2, int v3 ) );
 OD *create_money args( ( int amount ) );

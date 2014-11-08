@@ -116,7 +116,7 @@ const char *const o_types[] = {
    "scraps", "pipe", "herbcon", "herb", "incense", "fire", "book", "switch",
    "lever", "pullchain", "button", "dial", "rune", "runepouch", "match", "trap",
    "map", "portal", "paper", "tinder", "lockpick", "spike", "disease", "oil",
-   "fuel", "_empty1", "_empty2", "missileweapon", "projectile", "quiver", "shovel",
+   "fuel", "puddle", "_empty2", "missileweapon", "projectile", "quiver", "shovel",
    "salve", "cook", "keyring", "odor", "chance", "mix"
 };
 

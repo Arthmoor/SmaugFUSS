@@ -2809,6 +2809,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
       case ITEM_TRASH:
       case ITEM_CONTAINER:
       case ITEM_DRINK_CON:
+      case ITEM_PUDDLE:
       case ITEM_KEY:
       case ITEM_HOUSEKEY:
       case ITEM_KEYRING:

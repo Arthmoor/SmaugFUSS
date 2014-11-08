@@ -626,6 +626,7 @@ void show_list_to_char( OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShow
             break;
          case ITEM_DRINK_CON:
          case ITEM_FOUNTAIN:
+         case ITEM_PUDDLE:
             set_char_color( AT_THIRSTY, ch );
             break;
          case ITEM_FIRE:
@@ -1534,7 +1535,6 @@ void do_look( CHAR_DATA * ch, const char *argument )
       return;
    }
 
-
    /*
     * finally fixed the annoying look 2.obj desc bug -Thoric 
     */
@@ -1573,6 +1573,9 @@ void do_look( CHAR_DATA * ch, const char *argument )
                send_to_char_color( "You see nothing special.\r\n", ch );
             else
                send_to_char_color( pdesc, ch );
+            if( obj->item_type == ITEM_PUDDLE )
+               ch_printf( ch, "It's a puddle of %s liquid.\r\n",
+                  ( obj->value[2] >= LIQ_MAX ? "clear" : liq_table[obj->value[2]].liq_color ) );
             if( EXA_prog_trigger )
                oprog_examine_trigger( ch, obj );
             return;
@@ -1614,6 +1617,9 @@ void do_look( CHAR_DATA * ch, const char *argument )
                send_to_char( "You see nothing special.\r\n", ch );
             else
                send_to_char_color( pdesc, ch );
+            if( obj->item_type == ITEM_PUDDLE )
+               ch_printf( ch, "It's a puddle of %s liquid.\r\n",
+                  ( obj->value[2] >= LIQ_MAX ? "clear" : liq_table[obj->value[2]].liq_color ) );
             if( EXA_prog_trigger )
                oprog_examine_trigger( ch, obj );
             return;
