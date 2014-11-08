@@ -3838,6 +3838,7 @@ DECLARE_DO_FUN( do_minvoke );
 DECLARE_DO_FUN( do_mistwalk );
 DECLARE_DO_FUN( do_mix );
 DECLARE_DO_FUN( do_mlist );
+DECLARE_DO_FUN( do_mobinvade );
 DECLARE_DO_FUN( do_morphcreate );
 DECLARE_DO_FUN( do_morphdestroy );
 DECLARE_DO_FUN( do_morphlist );

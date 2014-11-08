@@ -41,6 +41,7 @@ Log         0
 Flags       1
 End
 
+
 #COMMAND
 Name        ;~
 Code        do_gtell
@@ -55,6 +56,60 @@ Code        do_authorize
 Position    100
 Level       51
 Log         1
+End
+
+#COMMAND
+Name        accessories~
+Code        do_accessories
+Position    104
+Level       5
+Log         0
+Flags       1
+End
+
+#COMMAND
+Name        gohome~
+Code        do_gohome
+Position    104
+Level       5
+Log         0
+Flags       1
+End
+
+#COMMAND
+Name        homebuy~
+Code        do_homebuy
+Position    104
+Level       5
+Log         0
+Flags       1
+End
+
+#COMMAND
+Name        house~
+Code        do_house
+Position    104
+Level       5
+Log         0
+Flags       1
+End
+
+#COMMAND
+Name        residence~
+Code        do_residence
+Position    104
+Level       53
+Log         0
+Flags       1
+End
+
+#COMMAND
+Name        sellhouse~
+Code        do_sellhouse
+Position    104
+Level       5
+Log         0
+Flags       1
 End
 
 #COMMAND
@@ -1314,6 +1369,14 @@ Code        do_imm_morph
 Position    100
 Level       51
 Log         0
+End
+
+#COMMAND
+Name        mobinvade~
+Code        do_mobinvade
+Position    100
+Level       54
+Log         1
 End
 
 #COMMAND
@@ -2865,6 +2928,14 @@ Name        setcouncil~
 Code        do_setcouncil
 Position    100
 Level       61
+Log         1
+End
+
+#COMMAND
+Name        setvault~
+Code        do_setvault
+Position    100
+Level       58
 Log         1
 End
 

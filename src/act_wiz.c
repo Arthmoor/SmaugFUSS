@@ -3943,6 +3943,80 @@ void do_immortalize( CHAR_DATA* ch, const char* argument)
    return;
 }
 
+void do_mobinvade( CHAR_DATA *ch , const char *argument )
+{
+   char arg1[MAX_INPUT_LENGTH];
+   char arg2[MAX_INPUT_LENGTH];
+   char arg3[MAX_INPUT_LENGTH];
+   CHAR_DATA *victim;
+   AREA_DATA *tarea;
+   int count, created;
+   bool found = FALSE;
+   MOB_INDEX_DATA *pMobIndex;
+   ROOM_INDEX_DATA *location;
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+   argument = one_argument( argument, arg3 );
+
+   count = atoi( arg2 );
+   set_char_color( AT_GREEN, ch );
+   if( arg1[0] == '\0' || arg2[0] == '\0' )
+   {
+      send_to_char( "Invade <area> <# of invaders> <mob vnum>\r\n", ch );
+      return;
+   }
+
+   for( tarea = first_area; tarea; tarea = tarea->next )
+   {
+      if( !str_cmp( tarea->filename, arg1 ) )
+      {
+         found = TRUE;
+         break;
+      }
+   }
+
+   if( !found )
+   {
+      send_to_char( "Area not found.\r\n", ch );
+      return;
+   }
+
+   if( count > 300 )
+   {
+      send_to_char( "Whoa...Less than 300 please.\r\n", ch );
+      return;
+   }
+
+   if( ( pMobIndex = get_mob_index( atoi( arg3 ) ) ) == NULL )
+   {
+      send_to_char( "No mobile has that vnum.\r\n", ch );
+      return;
+   }
+
+   for( created = 0; created < count; ++created )
+   {
+      if( ( location = get_room_index( number_range( tarea->low_r_vnum, tarea->hi_r_vnum ) ) ) == NULL )
+      {
+         --created;
+         continue;
+      }
+
+      if( xIS_SET( location->room_flags, ROOM_SAFE ) )
+      {
+         --created;
+         continue;
+      }
+
+      victim = create_mobile( pMobIndex );
+      char_to_room( victim, location );
+
+      act( AT_IMMORT, "$N appears as part of an invasion force!", ch, NULL, victim, TO_ROOM );
+   }
+   send_to_char( "The invasion was successful!\r\n", ch );
+   return;
+}
+
 void do_trust( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
