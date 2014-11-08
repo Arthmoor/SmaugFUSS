@@ -3313,11 +3313,9 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          continue;
       if( type == TO_NOTVICT && ( to == ch || to == vch ) )
          continue;
-      if( type == TO_CANSEE && ( to == ch ||
-                                 ( !IS_IMMORTAL( to ) && !IS_NPC( ch ) && ( xIS_SET( ch->act, PLR_WIZINVIS )
-                                                                            && ( get_trust( to ) <
-                                                                                 ( ch->pcdata ? ch->pcdata->
-                                                                                   wizinvis : 0 ) ) ) ) ) )
+      if( type == TO_CANSEE && ( to == ch
+         || ( !IS_NPC(ch) && (xIS_SET(ch->act, PLR_WIZINVIS)
+         && ( get_trust(to) < ( ch->pcdata ? ch->pcdata->wizinvis : 0 ) ) ) ) ) )
          continue;
 
       if( IS_IMMORTAL( to ) )
@@ -3330,6 +3328,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          set_char_color( AType, to );
          send_to_char( txt, to );
       }
+
       if( MOBtrigger )
       {
          /*
@@ -3360,9 +3359,12 @@ void do_name( CHAR_DATA* ch, const char* argument)
 
    if( !check_parse_name( ucase_argument, TRUE ) )
    {
-      send_to_char( "Illegal name, try another.\r\n", ch );
+      send_to_char( "That name is reserved, please try another.\r\n", ch );
       return;
    }
+
+   if( check_playing( ch->desc, argument, FALSE ) == BERR )
+      return;
 
    if( !str_cmp( ch->name, ucase_argument ) )
    {
@@ -3479,6 +3481,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
       d->prevcolor = 0x08;
       pbuf += 4;
    }
+
    /*
     * Clear out old color stuff 
     */
@@ -3696,11 +3699,24 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   if( xIS_SET( och->act, PLR_ROOMVNUM ) )
                      snprintf( pbuf, MAX_STRING_LENGTH, "<#%d> ", ch->in_room->vnum );
                   break;
+               case 'D': /*display DND status*/
+                  if( IS_IMMORTAL(ch) )
+                  {
+                     if( IS_SET( ch->pcdata->flags, PCFLAG_DND ) )
+                        mudstrlcpy( pbuf, "DND", MAX_STRING_LENGTH );
+                  }
+                  break;
                case 'x':
                   pstat = ch->exp;
                   break;
                case 'X':
                   pstat = exp_level( ch, ch->level + 1 ) - ch->exp;
+                  break;
+               case 'w':
+                  pstat = ch->carry_weight;
+                  break;
+               case 'W':
+                  pstat = can_carry_w(ch);
                   break;
                case 'o':  /* display name of object on auction */
                   if( auction->item )
@@ -3785,13 +3801,13 @@ bool pager_output( DESCRIPTOR_DATA * d )
          d->pagesize = MAX_STRING_LENGTH;
          return TRUE;
    }
-   while( lines < 0 && d->pagepoint >= d->pagebuf )
-      if( *( --d->pagepoint ) == '\n' )
+   while( lines < 0 && --d->pagepoint >= d->pagebuf )
+      if( *d->pagepoint == '\n' )
          ++lines;
-   if( *d->pagepoint == '\r' && *( ++d->pagepoint ) == '\n' )
-      ++d->pagepoint;
    if( d->pagepoint < d->pagebuf )
       d->pagepoint = d->pagebuf;
+   if( *d->pagepoint == '\r' && *( ++d->pagepoint ) == '\n' )
+      ++d->pagepoint;
    for( lines = 0, last = d->pagepoint; lines < pclines; ++last )
       if( !*last )
          break;
@@ -3831,7 +3847,6 @@ bool pager_output( DESCRIPTOR_DATA * d )
    }
    return ret;
 }
-
 
 #ifdef WIN32
 
