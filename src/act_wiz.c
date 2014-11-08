@@ -3314,7 +3314,6 @@ void do_purge( CHAR_DATA* ch, const char* argument)
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
    OBJ_DATA *obj;
-   CLAN_DATA *clan;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -3342,6 +3341,7 @@ void do_purge( CHAR_DATA* ch, const char* argument)
 
       act( AT_IMMORT, "$n purges the room!", ch, NULL, NULL, TO_ROOM );
       act( AT_IMMORT, "You have purged the room!", ch, NULL, NULL, TO_CHAR );
+
       if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
          save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
 
@@ -3350,9 +3350,11 @@ void do_purge( CHAR_DATA* ch, const char* argument)
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         VAULT_DATA *vault;
+
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
       return;
    }
@@ -3388,9 +3390,11 @@ void do_purge( CHAR_DATA* ch, const char* argument)
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         VAULT_DATA *vault;
+
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
       return;
    }
@@ -3418,7 +3422,6 @@ void do_low_purge( CHAR_DATA* ch, const char* argument)
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
    OBJ_DATA *obj;
-   CLAN_DATA *clan;
 
    set_char_color( AT_IMMORT, ch );
 
@@ -3451,9 +3454,11 @@ void do_low_purge( CHAR_DATA* ch, const char* argument)
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         VAULT_DATA *vault;
+
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
       return;
    }

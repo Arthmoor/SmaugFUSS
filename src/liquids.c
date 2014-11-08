@@ -2031,6 +2031,15 @@ void do_empty( CHAR_DATA* ch, const char* argument)
          }
          if( ch->in_room && xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
             save_house_by_vnum( ch->in_room->vnum );
+
+         if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+         {
+            VAULT_DATA *vault;
+
+            for( vault = first_vault; vault; vault = vault->next )
+               if( vault->vnum == ch->in_room->vnum )
+                  save_storeroom( ch, vault->vnum );
+         }
          return;
    }
 }

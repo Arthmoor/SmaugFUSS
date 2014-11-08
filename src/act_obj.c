@@ -81,7 +81,7 @@ short get_obj_resistance( OBJ_DATA * obj )
 
 void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
 {
-   CLAN_DATA *clan;
+   VAULT_DATA *vault;
    int weight;
    int amt; /* gold per-race multipliers */
 
@@ -207,13 +207,13 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
       save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
 
    /*
-    * Clan storeroom checks 
+    * Clan storeroom checks
     */
    if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && ( !container || container->carried_by == NULL ) )
    {
-      for( clan = first_clan; clan; clan = clan->next )
-         if( clan->storeroom == ch->in_room->vnum )
-            save_clan_storeroom( ch, clan );
+      for( vault = first_vault; vault; vault = vault->next )
+         if( vault->vnum == ch->in_room->vnum )
+            save_storeroom( ch, vault->vnum );
    }
 
    if( obj->item_type != ITEM_CONTAINER )
@@ -612,7 +612,7 @@ void do_put( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *container;
    OBJ_DATA *obj;
    OBJ_DATA *obj_next;
-   CLAN_DATA *clan;
+   VAULT_DATA *vault;
    short count;
    int number;
    bool save_char = FALSE;
@@ -791,9 +791,9 @@ void do_put( CHAR_DATA* ch, const char* argument)
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
    }
    else
@@ -883,9 +883,9 @@ void do_put( CHAR_DATA* ch, const char* argument)
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) && container->carried_by == NULL )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
    }
    return;
@@ -897,7 +897,7 @@ void do_drop( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *obj;
    OBJ_DATA *obj_next;
    bool found;
-   CLAN_DATA *clan;
+   VAULT_DATA *vault;
    int number;
 
    argument = one_argument( argument, arg );
@@ -1016,14 +1016,17 @@ void do_drop( CHAR_DATA* ch, const char* argument)
       if( char_died( ch ) || obj_extracted( obj ) )
          return;
 
+      if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+         save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
+
       /*
        * Clan storeroom saving 
        */
       if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
       {
-         for( clan = first_clan; clan; clan = clan->next )
-            if( clan->storeroom == ch->in_room->vnum )
-               save_clan_storeroom( ch, clan );
+         for( vault = first_vault; vault; vault = vault->next )
+            if( vault->vnum == ch->in_room->vnum )
+               save_storeroom( ch, vault->vnum );
       }
    }
    else
@@ -1096,6 +1099,16 @@ void do_drop( CHAR_DATA* ch, const char* argument)
 
    if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
       save_house_by_vnum( ch->in_room->vnum ); /* House Object Saving */
+
+   /*
+    * Clan storeroom saving 
+    */
+   if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+   {
+      for( vault = first_vault; vault; vault = vault->next )
+         if( vault->vnum == ch->in_room->vnum )
+            save_storeroom( ch, vault->vnum );
+   }
 
    if( IS_SET( sysdata.save_flags, SV_DROP ) )
       save_char_obj( ch ); /* duping protector */
@@ -2480,50 +2493,6 @@ void do_zap( CHAR_DATA* ch, const char* argument)
       if( wand->serial == cur_obj )
          global_objcode = rOBJ_USED;
       extract_obj( wand );
-   }
-   return;
-}
-
-/*
- * Save items in a clan storage room			-Scryn & Thoric
- */
-void save_clan_storeroom( CHAR_DATA * ch, CLAN_DATA * clan )
-{
-   FILE *fp;
-   char filename[256];
-   short templvl;
-   OBJ_DATA *contents;
-
-   if( !clan )
-   {
-      bug( "%s: Null clan pointer!", __FUNCTION__ );
-      return;
-   }
-
-   if( !ch )
-   {
-      bug( "%s: Null ch pointer!", __FUNCTION__ );
-      return;
-   }
-
-   snprintf( filename, 256, "%s%s.vault", CLAN_DIR, clan->filename );
-   if( !( fp = fopen( filename, "w" ) ) )
-   {
-      bug( "%s: cant open %s", __FUNCTION__, filename );
-      perror( filename );
-   }
-   else
-   {
-      templvl = ch->level;
-      ch->level = LEVEL_HERO; /* make sure EQ doesn't get lost */
-      contents = ch->in_room->last_content;
-      if( contents )
-         fwrite_obj( ch, contents, fp, 0, OS_CARRY, FALSE );
-      fprintf( fp, "#END\n" );
-      ch->level = templvl;
-      fclose( fp );
-      fp = NULL;
-      return;
    }
    return;
 }

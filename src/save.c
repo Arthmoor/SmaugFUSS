@@ -622,15 +622,17 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
 
    /*
     * Castrate storage characters.
-    * Catch deleted objects                                    -Thoric
+    * Catch deleted objects                 -Thoric
     * Do NOT save prototype items!          -Thoric
     */
    if( !hotboot )
    {
-      if( ( ch && ch->level < obj->level )
-          || ( obj->item_type == ITEM_KEY && !IS_OBJ_STAT( obj, ITEM_CLANOBJECT ) )
-          || obj_extracted( obj ) || IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
-         return;
+      if( (ch && ch->level < obj->level)
+         || ( obj->item_type == ITEM_KEY && !IS_OBJ_STAT( obj, ITEM_CLANOBJECT ) )
+         || ( (os_type == OS_VAULT) && (obj->item_type == ITEM_CORPSE_PC) )
+         || obj_extracted( obj )
+         || IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) )
+      return;
    }
 
    /*
@@ -659,9 +661,9 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
    if( obj->owner && obj->owner[0] != '\0' )
       fprintf( fp, "Owner        %s~\n", obj->owner );
    fprintf( fp, "Vnum         %d\n", obj->pIndexData->vnum );
-   if( ( os_type == OS_CORPSE || hotboot ) && obj->in_room )
+   if( ( os_type == OS_CORPSE || os_type == OS_VAULT || hotboot ) && obj->in_room )
    {
-      fprintf( fp, "Room         %d\n", obj->in_room->vnum );
+      fprintf( fp, "Room      %d\n", obj->in_room->vnum );
       fprintf( fp, "Rvnum	   %d\n", obj->room_vnum );
    }
    if( !xSAME_BITS( obj->extra_flags, obj->pIndexData->extra_flags ) )
@@ -2097,14 +2099,18 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                         bug( "%s", "Fread_obj: Corpse without room" );
                         room = get_room_index( ROOM_VNUM_LIMBO );
                      }
+
                      /*
                       * Give the corpse a timer if there isn't one 
                       */
-
                      if( obj->timer < 1 )
                         obj->timer = 40;
                      if( room->vnum == ROOM_VNUM_HALLOFFALLEN && obj->first_content )
                         obj->timer = -1;
+                     obj = obj_to_room( obj, room );
+                  }
+                  else if( os_type == OS_VAULT && room )
+                  {
                      obj = obj_to_room( obj, room );
                   }
                   else if( iNest == 0 || rgObjNest[iNest] == NULL )
@@ -2241,6 +2247,10 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
                x1 = x2 = x3 = x4 = x5 = x6 = 0;
                sscanf( ln, "%d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6 );
+
+               /* clean up some garbage */
+               if( file_ver < 3 && os_type != OS_VAULT )
+                  x5 = x6 = 0;
 
                obj->value[0] = x1;
                obj->value[1] = x2;

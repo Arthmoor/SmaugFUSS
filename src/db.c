@@ -706,6 +706,9 @@ void boot_db( bool fCopyOver )
    log_string( "Loading boards" );
    load_boards(  );
 
+   log_string( "Loading vault list" );
+   load_vaults( );
+
    log_string( "Loading clans" );
    load_clans(  );
 
