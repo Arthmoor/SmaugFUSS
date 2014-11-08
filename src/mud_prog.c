@@ -2595,7 +2595,7 @@ void mprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, vo
       if( ( mprg->type == type ) && ( number_percent(  ) <= atoi( mprg->arglist ) ) )
       {
          mprog_driver( mprg->comlist, mob, actor, obj, vo, FALSE );
-         if( type != GREET_PROG && type != ALL_GREET_PROG )
+         if( type != GREET_PROG && type != ALL_GREET_PROG && type != LOGIN_PROG && type != VOID_PROG && type != GREET_IN_FIGHT_PROG )
             break;
       }
    }
@@ -2773,6 +2773,47 @@ void mprog_death_trigger( CHAR_DATA * killer, CHAR_DATA * mob )
    return;
 }
 
+/* login and void mob triggers by Edmond */
+void mprog_login_trigger( CHAR_DATA *ch )
+{
+   CHAR_DATA *vmob, *vmob_next;
+
+   for( vmob = ch->in_room->first_person; vmob; vmob = vmob_next )
+   {
+      vmob_next = vmob->next_in_room;
+
+      if( !IS_NPC( vmob ) || !can_see( vmob, ch ) || vmob->fighting || !IS_AWAKE( vmob ) )
+         continue;
+
+      if( IS_NPC( ch ) && ch->pIndexData == vmob->pIndexData )
+         continue;
+
+      if( HAS_PROG( vmob->pIndexData, LOGIN_PROG ) )
+         mprog_percent_check( vmob, ch, NULL, NULL, NULL, LOGIN_PROG );
+   }
+   return;
+}
+
+void mprog_void_trigger( CHAR_DATA *ch )
+{
+   CHAR_DATA *vmob, *vmob_next;
+
+   for( vmob = ch->in_room->first_person; vmob; vmob = vmob_next )
+   {
+      vmob_next = vmob->next_in_room;
+
+      if( !IS_NPC( vmob ) || !can_see( vmob, ch ) || vmob->fighting || !IS_AWAKE( vmob ) )
+         continue;
+
+      if( IS_NPC( ch ) && ch->pIndexData == vmob->pIndexData )
+         continue;
+
+      if( HAS_PROG( vmob->pIndexData, VOID_PROG ) )
+         mprog_percent_check( vmob, ch, NULL, NULL, NULL, VOID_PROG );
+   }
+   return;
+}
+
 void mprog_entry_trigger( CHAR_DATA * mob )
 {
    if( IS_NPC( mob ) && HAS_PROG( mob->pIndexData, ENTRY_PROG ) )
@@ -2851,11 +2892,16 @@ void mprog_greet_trigger( CHAR_DATA * ch )
 {
    TRV_DATA *loop_ctrl;
    CHAR_DATA *vmob;
+   int cmob, mnum = 0;
+   EXTRACT_CHAR_DATA *deadmark, *epnt;
+   CHAR_DATA *script[1024];
 
    loop_ctrl = trvch_create( ch, TR_CHAR_ROOM_FORW );
    for( vmob = ch->in_room->first_person; vmob; vmob = trvch_next( loop_ctrl ) )
    {
-      if( !IS_NPC( vmob ) || !can_see( vmob, ch ) || vmob->fighting || !IS_AWAKE( vmob ) )
+      if( !IS_NPC( vmob ) || !can_see( vmob, ch )
+         || ( vmob->fighting && !HAS_PROG( vmob->pIndexData, GREET_IN_FIGHT_PROG ) )
+         || !IS_AWAKE( vmob ) )
          continue;
 
       /*
@@ -2865,10 +2911,31 @@ void mprog_greet_trigger( CHAR_DATA * ch )
       if( IS_NPC( ch ) && ch->pIndexData == vmob->pIndexData )
          continue;
 
-      if( HAS_PROG( vmob->pIndexData, GREET_PROG ) )
-         mprog_percent_check( vmob, ch, NULL, NULL, GREET_PROG );
-      else if( HAS_PROG( vmob->pIndexData, ALL_GREET_PROG ) )
-         mprog_percent_check( vmob, ch, NULL, NULL, ALL_GREET_PROG );
+      if( HAS_PROG( vmob->pIndexData, GREET_PROG )
+         || HAS_PROG( vmob->pIndexData, ALL_GREET_PROG ) 
+         || HAS_PROG( vmob->pIndexData, GREET_IN_FIGHT_PROG ) )
+         script[mnum++] = vmob;
+   }
+
+   if( vmob && mnum == 1024 )
+      log_printf( "Greet_prog: too many mobs in room %d.", ch->in_room->vnum );
+
+   deadmark = extracted_char_queue;
+   for( cmob = 0 ; cmob < mnum ; cmob++ )
+   {
+      vmob = script[cmob];
+
+      for( epnt = extracted_char_queue; epnt != deadmark; epnt = epnt->next )
+         if( epnt->ch == vmob )
+            break;
+
+      if( epnt == deadmark )
+      {
+         if( vmob->fighting )
+            mprog_percent_check( vmob, ch, NULL, NULL, NULL, GREET_IN_FIGHT_PROG );
+         else
+            mprog_percent_check( vmob, ch, NULL, NULL, NULL, HAS_PROG( vmob->pIndexData, GREET_PROG ) ? GREET_PROG : ALL_GREET_PROG );
+      }
    }
    trv_dispose( &loop_ctrl );
 }
@@ -3526,6 +3593,27 @@ void rprog_leave_trigger( CHAR_DATA * ch )
    }
 }
 
+/* login and void room triggers by Edmond */
+void rprog_login_trigger( CHAR_DATA *ch )
+{
+   if( HAS_PROG( ch->in_room, LOGIN_PROG ) )
+   {
+      rset_supermob( ch->in_room );
+      rprog_percent_check( supermob, ch, NULL, NULL, NULL, LOGIN_PROG );
+      release_supermob();
+   }
+}
+
+void rprog_void_trigger( CHAR_DATA *ch )
+{
+   if( HAS_PROG( ch->in_room, VOID_PROG ) )
+   {
+      rset_supermob( ch->in_room );
+      rprog_percent_check( supermob, ch, NULL, NULL, NULL, VOID_PROG );
+      release_supermob();
+   }
+}
+
 void rprog_enter_trigger( CHAR_DATA * ch )
 {
    if( HAS_PROG( ch->in_room, ENTER_PROG ) )
@@ -3533,6 +3621,16 @@ void rprog_enter_trigger( CHAR_DATA * ch )
       rset_supermob( ch->in_room );
       rprog_percent_check( supermob, ch, NULL, NULL, ENTER_PROG );
       release_supermob(  );
+   }
+}
+
+void rprog_imminfo_trigger( CHAR_DATA *ch )
+{
+   if( HAS_PROG( ch->in_room, IMMINFO_PROG ) )
+   {
+      rset_supermob( ch->in_room );
+      rprog_percent_check( supermob, ch, NULL, NULL, NULL, IMMINFO_PROG );
+      release_supermob();
    }
 }
 

@@ -254,7 +254,7 @@ const char *const mprog_flags[] = {
    "allgreet", "give", "bribe", "hour", "time", "wear", "remove", "sac",
    "look", "exa", "zap", "get", "drop", "damage", "repair", "randiw",
    "speechiw", "pull", "push", "sleep", "rest", "leave", "script", "use",
-   "sell", "tell", "command"
+   "sell", "tell", "command", "login", "void", "greetinfight", "imminfo"
 };
 
 const char *flag_string( int bitvector, const char *const flagarray[] )

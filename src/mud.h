@@ -4607,6 +4607,8 @@ bool mprog_wordlist_check( const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, 
 void mprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * object, void *vo, int type );
 void mprog_act_trigger( const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj, const void *vo );
 void mprog_bribe_trigger( CHAR_DATA * mob, CHAR_DATA * ch, int amount );
+void mprog_login_trigger( CHAR_DATA * mob );
+void mprog_void_trigger( CHAR_DATA * mob );
 void mprog_entry_trigger( CHAR_DATA * mob );
 void mprog_give_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj );
 void mprog_greet_trigger( CHAR_DATA * mob );
@@ -5005,7 +5007,7 @@ typedef enum
    TIME_PROG, WEAR_PROG, REMOVE_PROG, SAC_PROG, LOOK_PROG, EXA_PROG, ZAP_PROG,
    GET_PROG, DROP_PROG, DAMAGE_PROG, REPAIR_PROG, RANDIW_PROG, SPEECHIW_PROG,
    PULL_PROG, PUSH_PROG, SLEEP_PROG, REST_PROG, LEAVE_PROG, SCRIPT_PROG,
-   USE_PROG, SELL_PROG, TELL_PROG, CMD_PROG
+   USE_PROG, SELL_PROG, TELL_PROG, CMD_PROG, LOGIN_PROG, VOID_PROG, GREET_IN_FIGHT_PROG
 } prog_types;
 
 /*
@@ -5027,6 +5029,9 @@ void rprog_speech_trigger( const char *txt, CHAR_DATA * ch );
 void rprog_random_trigger( CHAR_DATA * ch );
 void rprog_time_trigger( CHAR_DATA * ch );
 void rprog_hour_trigger( CHAR_DATA * ch );
+void rprog_login_trigger( CHAR_DATA *ch );
+void rprog_void_trigger( CHAR_DATA *ch );
+void rprog_imminfo_trigger( CHAR_DATA *ch );
 char *rprog_type_to_name( int type );
 
 #define OPROG_ACT_TRIGGER

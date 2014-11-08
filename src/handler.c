@@ -1773,6 +1773,9 @@ void char_to_room( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex )
       ch->home_vnum = ch->in_room->vnum;
    LINK( ch, pRoomIndex->first_person, pRoomIndex->last_person, next_in_room, prev_in_room );
 
+   if( IS_IMMORTAL( ch ) )
+      rprog_imminfo_trigger( ch );
+
    if( !IS_NPC( ch ) )
       if( ++pRoomIndex->area->nplayer > pRoomIndex->area->max_players )
          pRoomIndex->area->max_players = pRoomIndex->area->nplayer;

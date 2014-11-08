@@ -2591,6 +2591,10 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
    if( get_timer( ch, TIMER_PKILLED ) > 0 )
       remove_timer( ch, TIMER_PKILLED );
 
+   /* Login trigger by Edmond */
+   rprog_login_trigger( ch );
+   mprog_login_trigger( ch );
+
    act( AT_ACTION, "$n has entered the game.", ch, NULL, NULL, TO_CANSEE );
    if( ch->pcdata->pet )
    {
@@ -2786,6 +2790,8 @@ bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
             ch->desc = d;
             ch->timer = 0;
             send_to_char( "Reconnecting.\r\n", ch );
+            rprog_login_trigger( ch );
+            mprog_login_trigger( ch );
             act( AT_ACTION, "$n has reconnected.", ch, NULL, NULL, TO_CANSEE );
             log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s (%s) reconnected.", ch->name, d->host );
             d->connected = CON_PLAYING;
@@ -2838,6 +2844,8 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
             do_return( ch->switched, "" );
          ch->switched = NULL;
          send_to_char( "Reconnecting.\r\n", ch );
+         rprog_login_trigger( ch );
+         mprog_login_trigger( ch );
          do_look( ch, "auto" );
          check_loginmsg( ch );
          act( AT_ACTION, "$n has reconnected, kicking off old link.", ch, NULL, NULL, TO_CANSEE );
@@ -2857,22 +2865,8 @@ void stop_idling( CHAR_DATA * ch )
 {
    ROOM_INDEX_DATA *was_in_room;
 
-   /*
-    * if ( !ch
-    * ||   !ch->desc
-    * ||    ch->desc->connected != CON_PLAYING
-    * ||   !ch->was_in_room
-    * ||    ch->in_room != get_room_index( ROOM_VNUM_LIMBO ) )
-    * return;
-    */
-
    if( !ch || !ch->desc || ch->desc->connected != CON_PLAYING || !IS_IDLE( ch ) )
       return;
-
-   /*
-    * if ( IS_IMMORTAL(ch) )
-    * return;
-    */
 
    ch->timer = 0;
    was_in_room = ch->was_in_room;
@@ -2883,6 +2877,11 @@ void stop_idling( CHAR_DATA * ch )
     * ch->was_in_room  = NULL;
     */
    REMOVE_BIT( ch->pcdata->flags, PCFLAG_IDLE );
+
+   /* Void triggers by Edmond */
+   rprog_void_trigger( ch );
+   mprog_void_trigger( ch );
+
    act( AT_ACTION, "$n has returned from the void.", ch, NULL, NULL, TO_ROOM );
    return;
 }

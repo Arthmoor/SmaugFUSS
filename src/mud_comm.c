@@ -85,6 +85,14 @@ const char *mprog_type_to_name( int type )
          return "leave_prog";
       case USE_PROG:
          return "use_prog";
+      case LOGIN_PROG:
+         return "login_prog";
+      case VOID_PROG:
+         return "void_prog";
+      case GREET_IN_FIGHT_PROG:
+         return "greet_in_fight_prog";
+      case IMMINFO_PROG:
+         return "imminfo_prog";
       default:
          return "ERROR_PROG";
    }

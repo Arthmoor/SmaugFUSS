@@ -4766,6 +4766,14 @@ int mprog_name_to_type( const char *name )
       return SCRIPT_PROG;
    if( !str_cmp( name, "use_prog" ) )
       return USE_PROG;
+   if( !str_cmp( name, "login_prog" ) )
+      return LOGIN_PROG;
+   if( !str_cmp( name, "void_prog" ) )
+      return VOID_PROG;
+   if( !str_cmp( name, "greet_in_fight_prog" ) )
+      return GREET_IN_FIGHT_PROG;
+   if( !str_cmp( name, "imminfo_prog" ) )
+      return IMMINFO_PROG;
    return ( ERROR_PROG );
 }
 
