@@ -2789,7 +2789,7 @@ void mprog_login_trigger( CHAR_DATA *ch )
          continue;
 
       if( HAS_PROG( vmob->pIndexData, LOGIN_PROG ) )
-         mprog_percent_check( vmob, ch, NULL, NULL, NULL, LOGIN_PROG );
+         mprog_percent_check( vmob, ch, NULL, NULL, LOGIN_PROG );
    }
    return;
 }
@@ -2809,7 +2809,7 @@ void mprog_void_trigger( CHAR_DATA *ch )
          continue;
 
       if( HAS_PROG( vmob->pIndexData, VOID_PROG ) )
-         mprog_percent_check( vmob, ch, NULL, NULL, NULL, VOID_PROG );
+         mprog_percent_check( vmob, ch, NULL, NULL, VOID_PROG );
    }
    return;
 }
@@ -2932,9 +2932,9 @@ void mprog_greet_trigger( CHAR_DATA * ch )
       if( epnt == deadmark )
       {
          if( vmob->fighting )
-            mprog_percent_check( vmob, ch, NULL, NULL, NULL, GREET_IN_FIGHT_PROG );
+            mprog_percent_check( vmob, ch, NULL, NULL, GREET_IN_FIGHT_PROG );
          else
-            mprog_percent_check( vmob, ch, NULL, NULL, NULL, HAS_PROG( vmob->pIndexData, GREET_PROG ) ? GREET_PROG : ALL_GREET_PROG );
+            mprog_percent_check( vmob, ch, NULL, NULL, HAS_PROG( vmob->pIndexData, GREET_PROG ) ? GREET_PROG : ALL_GREET_PROG );
       }
    }
    trv_dispose( &loop_ctrl );
@@ -3599,7 +3599,7 @@ void rprog_login_trigger( CHAR_DATA *ch )
    if( HAS_PROG( ch->in_room, LOGIN_PROG ) )
    {
       rset_supermob( ch->in_room );
-      rprog_percent_check( supermob, ch, NULL, NULL, NULL, LOGIN_PROG );
+      rprog_percent_check( supermob, ch, NULL, NULL, LOGIN_PROG );
       release_supermob();
    }
 }
@@ -3609,7 +3609,7 @@ void rprog_void_trigger( CHAR_DATA *ch )
    if( HAS_PROG( ch->in_room, VOID_PROG ) )
    {
       rset_supermob( ch->in_room );
-      rprog_percent_check( supermob, ch, NULL, NULL, NULL, VOID_PROG );
+      rprog_percent_check( supermob, ch, NULL, NULL, VOID_PROG );
       release_supermob();
    }
 }
@@ -3629,7 +3629,7 @@ void rprog_imminfo_trigger( CHAR_DATA *ch )
    if( HAS_PROG( ch->in_room, IMMINFO_PROG ) )
    {
       rset_supermob( ch->in_room );
-      rprog_percent_check( supermob, ch, NULL, NULL, NULL, IMMINFO_PROG );
+      rprog_percent_check( supermob, ch, NULL, NULL, IMMINFO_PROG );
       release_supermob();
    }
 }
