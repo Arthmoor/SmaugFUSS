@@ -433,7 +433,13 @@ void do_setdeity( CHAR_DATA* ch, const char* argument)
          {
             if( vch->pcdata->deity == deity )
             {
-               ch_printf( ch, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name );
+               char buf[MAX_STRING_LENGTH];
+
+               snprintf( buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name );
+               if( !vch->desc )
+                  add_loginmsg( vch->name, 18, buf );
+               else
+                  send_to_char_color( buf, vch );
 
                xREMOVE_BITS( vch->affected_by, vch->pcdata->deity->affected );
                REMOVE_BIT( vch->resistant, vch->pcdata->deity->element );

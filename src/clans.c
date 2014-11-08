@@ -1656,7 +1656,10 @@ void do_outcast( CHAR_DATA* ch, const char* argument)
    victim->pcdata->clan_name = STRALLOC( "" );
    act( AT_MAGIC, "You outcast $N from $t", ch, clan->name, victim, TO_CHAR );
    act( AT_MAGIC, "$n outcasts $N from $t", ch, clan->name, victim, TO_ROOM );
-   act( AT_MAGIC, "$n outcasts you from $t", ch, clan->name, victim, TO_VICT );
+   if( victim->desc && victim->desc->host )
+      act( AT_MAGIC, "$n outcasts you from $t", ch, clan->name, victim, TO_VICT );
+   else
+      add_loginmsg( victim->name, 6, NULL );
    if( clan->clan_type != CLAN_GUILD && clan->clan_type != CLAN_ORDER )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s has been outcast from %s!", victim->name, clan->name );

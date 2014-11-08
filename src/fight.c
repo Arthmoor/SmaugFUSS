@@ -2302,6 +2302,9 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
       if( !npcvict )
       {
+         if( !victim->desc )
+            add_loginmsg( victim->name, 17, ( IS_NPC(ch) ? ch->short_descr : ch->name ) );
+
          snprintf( log_buf, MAX_STRING_LENGTH, "%s (%d) killed by %s at %d",
                    victim->name, victim->level, ( IS_NPC( ch ) ? ch->short_descr : ch->name ), victim->in_room->vnum );
          log_string( log_buf );

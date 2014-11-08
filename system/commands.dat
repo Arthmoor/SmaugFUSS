@@ -1784,6 +1784,14 @@ Log         1
 End
 
 #COMMAND
+Name        message~
+Code        do_message
+Position    100
+Level       53
+Log         0
+End
+
+#COMMAND
 Name        mfind~
 Code        do_mfind
 Position    100

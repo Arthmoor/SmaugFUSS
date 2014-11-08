@@ -4427,7 +4427,10 @@ void do_freeze( CHAR_DATA* ch, const char* argument)
          set_char_color( AT_LBLUE, victim );
       }
       xSET_BIT( victim->act, PLR_FREEZE );
-      send_to_char( "A godly force turns your body to ice!\r\n", victim );
+      if( !victim->desc )
+         add_loginmsg( victim->name, 15, NULL );
+      else
+         send_to_char( "A godly force turns your body to ice!\r\n", victim );
       ch_printf( ch, "You have frozen %s.\r\n", victim->name );
    }
    save_char_obj( victim );
@@ -4573,7 +4576,10 @@ void do_noemote( CHAR_DATA* ch, const char* argument)
    else
    {
       xSET_BIT( victim->act, PLR_NO_EMOTE );
-      send_to_char( "You can't emote!\r\n", victim );
+      if ( !victim->desc )
+         add_loginmsg( victim->name, 16, NULL );
+      else
+         send_to_char( "You can't emote!\r\n", victim );
       ch_printf( ch, "NOEMOTE applied to %s.\r\n", victim->name );
    }
    return;
@@ -4589,7 +4595,7 @@ void do_notell( CHAR_DATA* ch, const char* argument)
    one_argument( argument, arg );
    if( arg[0] == '\0' )
    {
-      send_to_char( "Notell whom?", ch );
+      send_to_char( "Notell whom?\r\n", ch );
       return;
    }
    if( ( victim = get_char_world( ch, arg ) ) == NULL )
@@ -4617,7 +4623,10 @@ void do_notell( CHAR_DATA* ch, const char* argument)
    else
    {
       xSET_BIT( victim->act, PLR_NO_TELL );
-      send_to_char( "You can't use tells!\r\n", victim );
+      if( !victim->desc )
+         add_loginmsg( victim->name, 14, NULL );
+      else
+         send_to_char( "You can't use tells!\r\n", victim );
       ch_printf( ch, "NOTELL applied to %s.\r\n", victim->name );
    }
    return;
@@ -4665,7 +4674,10 @@ void do_notitle( CHAR_DATA* ch, const char* argument)
       snprintf( buf, MAX_STRING_LENGTH, "the %s",
                 title_table[victim->Class][victim->level][victim->sex == SEX_FEMALE ? 1 : 0] );
       set_title( victim, buf );
-      send_to_char( "You can't set your own title!\r\n", victim );
+      if( !victim->desc )
+         add_loginmsg( victim->name, 8, NULL );
+      else
+         send_to_char( "You can't set your own title!\r\n", victim );
       ch_printf( ch, "NOTITLE set on %s.\r\n", victim->name );
    }
    return;
@@ -4707,7 +4719,10 @@ void do_silence( CHAR_DATA* ch, const char* argument)
    else
    {
       xSET_BIT( victim->act, PLR_SILENCE );
-      send_to_char( "You can't use channels!\r\n", victim );
+      if( !victim->desc )
+         add_loginmsg( victim->name, 7, NULL );
+      else
+         send_to_char( "You can't use channels!\r\n", victim );
       ch_printf( ch, "You SILENCE %s.\r\n", victim->name );
    }
    return;
@@ -6849,7 +6864,10 @@ void do_hell( CHAR_DATA* ch, const char* argument)
    char_to_room( victim, get_room_index( ROOM_VNUM_HELL ) );
    act( AT_MAGIC, "$n appears in a could of hellish light.", victim, NULL, ch, TO_NOTVICT );
    do_look( victim, "auto" );
-   ch_printf( victim, "The immortals are not pleased with your actions.\r\n"
+   if( !victim->desc )
+      add_loginmsg( victim->name, 10, NULL );
+   else
+      ch_printf( victim, "The immortals are not pleased with your actions.\r\n"
               "You shall remain in hell for %d %s%s.\r\n", htime, ( h_d ? "hour" : "day" ), ( htime == 1 ? "" : "s" ) );
    save_char_obj( victim );   /* used to save ch, fixed by Thoric 09/17/96 */
    return;
@@ -10630,4 +10648,100 @@ void do_oowner( CHAR_DATA* ch, const char* argument)
    xSET_BIT( obj->extra_flags, ITEM_PERSONAL );
    send_to_char( "Done.\r\n", ch );
    return;
+}
+
+/* Send login messages to characters - big modification to the original */
+/* login message stuff from the housing module - Edmond - June 02       */
+void do_message( CHAR_DATA *ch, const char *argument )
+{
+   char name[MAX_INPUT_LENGTH];
+   char arg1[MAX_INPUT_LENGTH];
+   char arg2[MAX_INPUT_LENGTH];
+   char checkname[256];
+   short type = 0;
+   LMSG_DATA *lmsg;
+
+   if( argument[0] == '\0' )
+   {
+      send_to_char( "Leave a login message for who?\r\n", ch );
+      return;
+   }
+
+   argument = one_argument( argument, name );
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( !str_cmp( name, "list" ) && get_trust( ch ) >= LEVEL_GREATER )
+   {
+      for( lmsg = first_lmsg; lmsg; lmsg = lmsg->next )
+      {
+         ch_printf_color( ch, "&CName: &c%-20s &CType: &c%d\r\n", capitalize(lmsg->name), lmsg->type );
+
+         if( lmsg->text )
+            ch_printf_color( ch, "&CText:\r\n  &c%s\r\n", lmsg->text );
+
+         send_to_char( "\r\n", ch );
+      }
+      send_to_char( "Ok.\r\n", ch );
+      return;
+   }
+
+   snprintf( checkname, 256, "%s%c/%s", PLAYER_DIR, tolower(name[0]), capitalize( name ) );
+
+   if( access( checkname, F_OK ) == 0 )
+   {
+      CHAR_DATA *temp;
+
+      for( temp = first_char; temp; temp = temp->next )
+      {
+         if( IS_NPC( temp ) )
+            continue;
+
+         if( !str_cmp( name, temp->name ) && temp->desc )
+         {
+            send_to_char( "They are online, wouldn't tells be just as easy?\r\n", ch );
+            return;
+         }
+      }
+
+      if( !str_cmp( arg1, "type" ) )
+      {
+         if( is_number( arg2 ) )
+         {
+            type = atoi( arg2 );
+
+            if( type > MAX_MSG )
+            {
+               send_to_char( "Invalid login message.\r\n", ch );
+               return;
+            }
+            argument = NULL;
+         }
+         else
+         {
+            send_to_char( "Which type?\r\n", ch );
+            return;
+         }
+      }
+
+      if( !type && ( argument[0] == '\0' ) )
+      {
+         send_to_char( "Send them what message?\r\n", ch );
+         return;
+      }
+
+      add_loginmsg( name, type, argument );
+      ch_printf( ch, "You have sent %s the following message:\r\n", capitalize(name) );
+
+      if( type == 0 )
+         send_to_char_color( argument, ch );
+      else
+         send_to_char_color( login_msg[type], ch );
+      send_to_char( "\r\n", ch );
+   }
+   else
+   {
+      send_to_char( "That name does not exist.\r\n", ch );
+      return;
+   }
 }

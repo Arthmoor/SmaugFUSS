@@ -1214,9 +1214,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                if( !preload
                    && ch->pcdata->clan_name[0] != '\0' && ( ch->pcdata->clan = get_clan( ch->pcdata->clan_name ) ) == NULL )
                {
-                  ch_printf( ch,
-                             "Warning: the organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
-                             ch->pcdata->clan_name );
+                  snprintf( buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
+                     ch->pcdata->clan_name );
+                  add_loginmsg( ch->name, 18, buf );
                   STRFREE( ch->pcdata->clan_name );
                   ch->pcdata->clan_name = STRALLOC( "" );
                }
@@ -1259,9 +1259,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                    && ch->pcdata->council_name[0] != '\0'
                    && ( ch->pcdata->council = get_council( ch->pcdata->council_name ) ) == NULL )
                {
-                  ch_printf( ch,
-                             "Warning: the council %s no longer exists, and herefore you no longer\r\nbelong to a council.\r\n",
-                             ch->pcdata->council_name );
+                  snprintf( buf, MAX_STRING_LENGTH, "&Y\r\nWarning:  the council %s no longer exists, and therefore you no longer\r\nbelong to a council.\r\n",
+                     ch->pcdata->council_name );
+                  add_loginmsg( ch->name, 18, buf );
                   STRFREE( ch->pcdata->council_name );
                   ch->pcdata->council_name = STRALLOC( "" );
                }
@@ -1281,7 +1281,8 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                    && ch->pcdata->deity_name[0] != '\0'
                    && ( ch->pcdata->deity = get_deity( ch->pcdata->deity_name ) ) == NULL )
                {
-                  ch_printf( ch, "Warning: the deity %s no longer exists.\r\n", ch->pcdata->deity_name );
+                  snprintf( buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", ch->pcdata->deity_name );
+                  add_loginmsg( ch->name, 18, buf );
                   STRFREE( ch->pcdata->deity_name );
                   ch->pcdata->deity_name = STRALLOC( "" );
                   ch->pcdata->favor = 0;
@@ -1323,9 +1324,9 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                if( !preload
                    && ch->pcdata->clan_name[0] != '\0' && ( ch->pcdata->clan = get_clan( ch->pcdata->clan_name ) ) == NULL )
                {
-                  ch_printf( ch,
-                             "Warning: the organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
-                             ch->pcdata->clan_name );
+                  snprintf( buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
+                     ch->pcdata->clan_name );
+                  add_loginmsg( ch->name, 18, buf );
                   STRFREE( ch->pcdata->clan_name );
                   ch->pcdata->clan_name = STRALLOC( "" );
                }

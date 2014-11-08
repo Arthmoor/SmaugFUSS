@@ -9254,7 +9254,6 @@ void fread_loginmsg( FILE * fp )
             {
                char checkname[MAX_STRING_LENGTH];
 
-
                if( !lmsg->name || lmsg->name[0] == '\0' )
                {
                   bug( "%s: Login message with no name", __FUNCTION__ );
@@ -9290,13 +9289,10 @@ void fread_loginmsg( FILE * fp )
             KEY( "Type", lmsg->type, fread_number( fp ) );
             KEY( "Text", lmsg->text, fread_string( fp ) );
             break;
-
       }
-
       if( !fMatch )
          bug( "%s: no match: %s", __FUNCTION__, word );
    }
-
 }
 
 /* load_loginmsg, check_loginmsg, fread_loginmsg, etc.. all support the do_message */
@@ -9456,7 +9452,6 @@ void check_loginmsg( CHAR_DATA * ch )
 
       if( !str_cmp( lmsg->name, ch->name ) )
       {
-
          if( lmsg->type > MAX_MSG )
             bug( "%s: Error: Unknown login msg: %d for %s.", __FUNCTION__, lmsg->type, ch->name );
 
