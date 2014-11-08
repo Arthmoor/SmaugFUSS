@@ -1988,6 +1988,15 @@ void do_mstat( CHAR_DATA* ch, const char* argument)
       pager_printf_color( ch, "&cHost: &w%s   Descriptor: %d  &cTrust: &w%d  &cAuthBy: &w%s\r\n",
                           victim->desc->host, victim->desc->descriptor,
                           victim->trust, victim->pcdata->authed_by[0] != '\0' ? victim->pcdata->authed_by : "(unknown)" );
+   if( !IS_NPC( victim ) )
+   {
+      pager_printf_color( ch, "&cRecent IP: &w%-15s", victim->pcdata->recent_site ?
+         victim->pcdata->recent_site : "Unknown" );
+      pager_printf_color( ch, "&cPrevious IP: &w%-15s", victim->pcdata->prev_site ?
+         victim->pcdata->prev_site : "Unknown" );
+      pager_printf_color( ch, "&cRank: &w%s\n\r",
+         str_cmp( victim->pcdata->rank, "" ) ? victim->pcdata->rank : "(default)" );
+   }
    if( !IS_NPC( victim ) && victim->pcdata->release_date != 0 )
       pager_printf_color( ch, "&cHelled until %24.24s by %s.\r\n",
                           ctime( &victim->pcdata->release_date ), victim->pcdata->helled_by );

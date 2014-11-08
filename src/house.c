@@ -2373,8 +2373,8 @@ CHAR_DATA *load_player( const char *pname )
 
    d->character->retran = oldvnum;
    d->character->desc = NULL;
-   // if( d->character->pcdata->prev_site )
-   //   d->character->pcdata->recent_site = STRALLOC( d->character->pcdata->prev_site );
+   if( d->character->pcdata->prev_site )
+      d->character->pcdata->recent_site = STRALLOC( d->character->pcdata->prev_site );
    d->character = NULL;
    DISPOSE( d->outbuf );
    DISPOSE( d );

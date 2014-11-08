@@ -1668,7 +1668,10 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
             if( !strcmp( word, "Site" ) )
             {
                if( !preload && !copyover )
-                  ch_printf( ch, "Last connected from: %s\r\n", fread_word( fp ) );
+               {
+                  ch->pcdata->prev_site = STRALLOC( fread_word( fp ) );
+                  ch_printf( ch, "Last connected from: %s\r\n", ch->pcdata->prev_site );
+               }
                else
                   fread_to_eol( fp );
                fMatch = TRUE;

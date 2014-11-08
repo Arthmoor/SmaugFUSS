@@ -2360,6 +2360,8 @@ struct pc_data
    const char *rank;
    const char *title;
    const char *bestowments;   /* Special bestowed commands     */
+   const char *recent_site;   /* site a player started their most recent session from */
+   const char *prev_site;     /* site a player last quit from */
    long int outcast_time;  /* The time at which the char was outcast */
    long int restore_time;  /* The last time the char did a restore all */
    int flags;  /* Whether the player is deadly and whatever else we add.      */

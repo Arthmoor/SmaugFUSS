@@ -3073,6 +3073,10 @@ void free_char( CHAR_DATA * ch )
       STRFREE( ch->pcdata->deity_name );
       STRFREE( ch->pcdata->clan_name );
       STRFREE( ch->pcdata->council_name );
+      if( ch->pcdata->recent_site )
+         STRFREE( ch->pcdata->recent_site );
+      if( ch->pcdata->prev_site )
+         STRFREE( ch->pcdata->prev_site );
       DISPOSE( ch->pcdata->pwd );   /* no hash */
       DISPOSE( ch->pcdata->bamfin );   /* no hash */
       DISPOSE( ch->pcdata->bamfout );  /* no hash */
