@@ -208,7 +208,7 @@ const char *const part_flags[] = {
    "ear", "eye", "long_tongue", "eyestalks", "tentacles", "fins", "wings",
    "tail", "scales", "claws", "fangs", "horns", "tusks", "tailattack",
    "sharpscales", "beak", "haunches", "hooves", "paws", "forelegs", "feathers",
-   "r1", "r2"
+   "shell", "r2"
 };
 
 const char *const attack_flags[] = {

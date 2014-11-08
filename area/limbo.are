@@ -1717,6 +1717,17 @@ Stats    5000 5000 500 0 0
 #ENDOBJECT
 
 #OBJECT
+Vnum     79
+Keywords husk shell~
+Type     trash~
+Short    a sturdy shell from %s~
+Long     A sturdy shell from %s lies here.~
+WFlags   take~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
 Vnum     80
 Keywords feather~
 Type     trash~

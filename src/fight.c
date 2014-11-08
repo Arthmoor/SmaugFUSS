@@ -3128,7 +3128,7 @@ int part_vnums[] = { 12,   /* Head */
    82,   /* paws */
    81,   /* forelegs */
    80,   /* feathers */
-   0, /* r1 */
+	79,	/* husk_shell */
    0  /* r2 */
 };
 
@@ -3164,7 +3164,7 @@ const char *part_messages[] = {
    "A paw is sliced from $n's dead body.",
    "$n's foreleg is sliced from $s dead body.",
    "Some feathers fall from $n's dead body.",
-   "r1 message.",
+	"$n's shell remains.",
    "r2 message."
 };
 

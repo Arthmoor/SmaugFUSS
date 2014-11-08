@@ -1466,6 +1466,7 @@ typedef enum
 #define PART_PAWS		  BV27
 #define PART_FORELEGS	  BV28
 #define PART_FEATHERS	  BV29
+#define PART_HUSK_SHELL	  BV30
 
 /*
  * Autosave flags
