@@ -294,8 +294,8 @@ Stats3     0 0 0
 Stats4     0 0 0 0 0
 Attribs    13 13 13 13 13 13 13
 Saves      0 0 0 0 0
-Speaks     common elvish orcish trollese insectoid spiritual magical clan gnome~
-Speaking   common elvish orcish trollese insectoid spiritual magical clan gnome~
+Speaks     common elvish orcish trollese insectoid spiritual magical clan gnomish~
+Speaking   common elvish orcish trollese insectoid spiritual magical clan gnomish~
 Bodyparts  head arms legs feet tail~
 #MUDPROG
 Progtype  rand_prog~
@@ -1205,8 +1205,7 @@ Keywords spiral staircase~
 Type     furniture~
 Short    a staircase~
 Long     A spiral staircase leads down from center of the room, with an inscribed
-
-golden plaque attached to its banister.  [look plaque]~
+golden plaque attached to its banister.  [look plaque]~
 Values   0 0 0 0 0 0
 Stats    1 0 0 0 0
 #EXDESC

@@ -95,7 +95,7 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
    {
       if( CAN_PKILL( ch ) && !get_timer( ch, TIMER_PKILLED ) )
       {
-         if( ch->level - obj->value[5] > 5 || obj->value[5] - ch->level > 5 )
+         if( !is_name( ch->name, obj->action_desc ) && !IS_IMMORTAL( ch ) )
          {
             send_to_char_color( "\r\n&bA godly force freezes your outstretched hand.\r\n", ch );
             return;
@@ -103,7 +103,8 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
          else
          {
             REMOVE_BIT( obj->magic_flags, ITEM_PKDISARMED );
-            obj->value[5] = 0;
+            STRFREE( obj->action_desc );
+            obj->action_desc = STRALLOC( "" );
          }
       }
       else
@@ -216,8 +217,7 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
             save_storeroom( ch, vault->vnum );
    }
 
-   if( obj->item_type != ITEM_CONTAINER )
-      check_for_trap( ch, obj, TRAP_GET );
+   check_for_trap( ch, obj, TRAP_GET );
    if( char_died( ch ) )
       return;
 
@@ -235,6 +235,61 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
       return;
    oprog_get_trigger( ch, obj );
    return;
+}
+
+void do_connect( CHAR_DATA *ch, const char *argument )
+{
+   OBJ_DATA *first_ob;
+   OBJ_DATA *second_ob;
+   OBJ_DATA *new_ob;
+   char arg1[MAX_STRING_LENGTH], arg2[MAX_STRING_LENGTH];
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' || arg2[0] == '\0' )
+   {
+      send_to_char( "Connect what to what?\r\n", ch );
+      return;
+   }
+
+   if( ( first_ob = get_obj_carry( ch, arg1 ) )  == NULL )
+   {
+      send_to_char( "You aren't holding the necessary objects.\r\n", ch );
+      return;
+   }
+
+   if( ( second_ob = get_obj_carry( ch, arg2 ) )  == NULL )
+   {
+      send_to_char( "You aren't holding the necessary objects.\r\n", ch );
+      return;
+   }
+
+   separate_obj( first_ob );
+   separate_obj( second_ob );
+
+   if( first_ob->item_type != ITEM_PIECE || second_ob->item_type !=ITEM_PIECE )
+   {
+      send_to_char( "You stare at them for a moment, but these items clearly don't go together.\r\n", ch );
+      return;
+   }
+
+   /* check to see if the pieces connect */
+   if( ( first_ob->value[0] == second_ob->pIndexData->vnum ) || ( first_ob->value[1] == second_ob->pIndexData->vnum ) )
+   /* good connection  */
+   {
+      new_ob = create_object( get_obj_index( first_ob->value[2] ), ch->level );
+      extract_obj( first_ob );
+      extract_obj( second_ob );
+      obj_to_char( new_ob , ch );
+      act( AT_ACTION, "$n cobbles some objects together.... suddenly they snap together, creating $p!", ch, new_ob,NULL, TO_ROOM );
+      act( AT_ACTION, "You cobble the objects together.... suddenly they snap together, creating $p!", ch, new_ob, NULL, TO_CHAR );
+   }
+   else
+   {
+      act( AT_ACTION, "$n jiggles some objects against each other, but can't seem to make them connect.", ch, NULL, NULL, TO_ROOM );
+      act( AT_ACTION, "You try to fit them together every which way, but they just don't want to connect.", ch, NULL, NULL, TO_CHAR );
+   }
 }
 
 void do_get( CHAR_DATA* ch, const char* argument)
@@ -447,7 +502,7 @@ void do_get( CHAR_DATA* ch, const char* argument)
                return;
             }
 
-            if( IS_OBJ_STAT( container, ITEM_CLANCORPSE )
+            if( IS_OBJ_STAT( container, ITEM_CLANCORPSE ) && !IS_IMMORTAL( ch )
                 && !IS_NPC( ch ) && str_cmp( name, ch->name ) && container->value[5] >= 3 )
             {
                send_to_char( "Frequent looting has left this corpse protected by the gods.\r\n", ch );
@@ -459,7 +514,7 @@ void do_get( CHAR_DATA* ch, const char* argument)
                 && container->value[4] - ch->level < 6 && container->value[4] - ch->level > -6 )
                break;
 
-            if( str_cmp( name, ch->name ) && !IS_IMMORTAL( ch ) )
+            if( !str_cmp( name, ch->name ) && !IS_IMMORTAL( ch ) )
             {
                bool fGroup;
 
@@ -1178,6 +1233,7 @@ void do_give( CHAR_DATA* ch, const char* argument)
       mudstrlcat( buf, arg1, MAX_STRING_LENGTH );
       mudstrlcat( buf, ( amount > 1 ) ? " coins." : " coin.", MAX_STRING_LENGTH );
 
+      set_char_color( AT_GOLD, victim );
       act( AT_ACTION, buf, ch, NULL, victim, TO_VICT );
       act( AT_ACTION, "$n gives $N some gold.", ch, NULL, victim, TO_NOTVICT );
       act( AT_ACTION, "You give $N some gold.", ch, NULL, victim, TO_CHAR );
@@ -1261,6 +1317,9 @@ obj_ret damage_obj( OBJ_DATA * obj )
 {
    CHAR_DATA *ch;
    obj_ret objcode;
+
+   if( IS_OBJ_STAT( obj, ITEM_PERMANENT ) )
+      return rNONE;
 
    ch = obj->carried_by;
    objcode = rNONE;
@@ -1350,6 +1409,9 @@ obj_ret damage_obj( OBJ_DATA * obj )
    if( ch != NULL )
       save_char_obj( ch ); /* Stop scrap duping - Samson 1-2-00 */
 
+   if( objcode == rOBJ_SCRAPPED && !IS_NPC( ch ) )
+    	log_printf( "%s scrapped %s (vnum: %d)", ch->name, obj->short_descr, obj->pIndexData->vnum );
+
    return objcode;
 }
 
@@ -1394,7 +1456,6 @@ bool remove_obj( CHAR_DATA * ch, int iWear, bool fReplace )
       return TRUE;
    else
       return FALSE;
-   return TRUE;
 }
 
 /*
@@ -1450,6 +1511,7 @@ bool can_layer( CHAR_DATA * ch, OBJ_DATA * obj, short wear_loc )
    short objlayers = obj->pIndexData->layers;
 
    for( otmp = ch->first_carrying; otmp; otmp = otmp->next_content )
+   {
       if( otmp->wear_loc == wear_loc )
       {
          if( !otmp->pIndexData->layers )
@@ -1457,6 +1519,7 @@ bool can_layer( CHAR_DATA * ch, OBJ_DATA * obj, short wear_loc )
          else
             bitlayers |= otmp->pIndexData->layers;
       }
+   }
 
    if( ( bitlayers && !objlayers ) || bitlayers > objlayers )
       return FALSE;
@@ -2189,16 +2252,14 @@ void do_bury( CHAR_DATA* ch, const char* argument)
    }
 
    separate_obj( obj );
+
    if( !CAN_WEAR( obj, ITEM_TAKE ) )
    {
-      if( !IS_OBJ_STAT( obj, ITEM_CLANCORPSE ) || IS_NPC( ch ) || !IS_SET( ch->pcdata->flags, PCFLAG_DEADLY ) )
-      {
-         act( AT_PLAIN, "You cannot bury $p.", ch, obj, 0, TO_CHAR );
-         return;
-      }
+      act( AT_PLAIN, "You cannot bury $p.", ch, obj, NULL, TO_CHAR );
+      return;
    }
 
-   switch ( ch->in_room->sector_type )
+   switch( ch->in_room->sector_type )
    {
       case SECT_CITY:
       case SECT_INSIDE:
@@ -2265,12 +2326,20 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument)
    }
 
    separate_obj( obj );
+
    if( !CAN_WEAR( obj, ITEM_TAKE ) )
    {
-      act( AT_PLAIN, "$p is not an acceptable sacrifice.", ch, obj, 0, TO_CHAR );
+      act( AT_PLAIN, "$p is not an acceptable sacrifice.", ch, obj, NULL, TO_CHAR );
       return;
    }
-   if( IS_SET( obj->magic_flags, ITEM_PKDISARMED ) && !IS_NPC( ch ) )
+
+   if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+   {
+      send_to_char( "The gods would not accept such a foolish sacrifice.\r\n", ch );
+      return;
+   }
+
+   if( IS_SET( obj->magic_flags, ITEM_PKDISARMED ) && !IS_NPC( ch ) && !IS_IMMORTAL( ch ) )
    {
       if( CAN_PKILL( ch ) && !get_timer( ch, TIMER_PKILLED ) )
       {
@@ -2301,19 +2370,32 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument)
    if( obj->item_type == ITEM_CORPSE_NPC || obj->item_type == ITEM_CORPSE_PC )
       adjust_favor( ch, 5, 1 );
    ch_printf( ch, "%s gives you one gold coin for your sacrifice.\r\n", name );
-   snprintf( buf, MAX_STRING_LENGTH, "$n sacrifices $p to %s.", name );
+
+   if( obj->item_type == ITEM_PAPER )
+	   snprintf( buf, MAX_STRING_LENGTH, "$n sacrifices a note to %s.", name );
+   else
+      snprintf( buf, MAX_STRING_LENGTH, "$n sacrifices $p to %s.", name );
    act( AT_ACTION, buf, ch, obj, NULL, TO_ROOM );
-   oprog_sac_trigger( ch, obj );
+
+   if( obj->item_type != ITEM_PAPER )
+      oprog_sac_trigger( ch, obj );
+
    if( obj_extracted( obj ) )
    {
       if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
          save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
       return;
    }
+
    if( cur_obj == obj->serial )
       global_objcode = rOBJ_SACCED;
+   /* Separate again.  There was a problem here with sac_progs in that if the
+      object respawned a copy of itself, it would sometimes link it to the
+      one that was being extracted, resulting in them both getting that evil
+      extraction :) -- Alty */
    separate_obj( obj );
    extract_obj( obj );
+
    if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
       save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
    return;
@@ -2719,8 +2801,7 @@ void do_auction( CHAR_DATA* ch, const char* argument)
           * to avoid slow auction, use a bigger amount than 100 if the bet
           * is higher up - changed to 10000 for our high economy
           */
-
-         if( newbet < ( auction->bet + 10000 ) )
+         if( newbet < auction->bet || newbet < ( auction->bet + 10000 ) )
          {
             send_to_char( "You must at least bid 10000 coins over the current bid.\r\n", ch );
             return;
@@ -2746,11 +2827,9 @@ void do_auction( CHAR_DATA* ch, const char* argument)
             send_to_char( "That item is not being auctioned right now.\r\n", ch );
             return;
          }
-         /*
-          * the actual bet is OK! 
-          */
 
          /*
+          * the actual bet is OK! 
           * return the gold to the last buyer, if one exists 
           */
          if( auction->buyer != NULL && auction->buyer != auction->seller )
@@ -2763,12 +2842,9 @@ void do_auction( CHAR_DATA* ch, const char* argument)
          auction->bet = newbet;
          auction->going = 0;
          auction->pulse = PULSE_AUCTION;  /* start the auction over again */
-         snprintf( buf, MAX_STRING_LENGTH, "A bid of %s gold has been received on %s.\r\n", num_punct( newbet ),
-                   auction->item->short_descr );
+         snprintf( buf, MAX_STRING_LENGTH, "A bid of %s gold has been received on %s.", num_punct( newbet ), auction->item->short_descr );
          talk_auction( buf );
          return;
-
-
       }
       else
       {
@@ -2794,6 +2870,18 @@ void do_auction( CHAR_DATA* ch, const char* argument)
    if( obj->timer > 0 )
    {
       send_to_char( "You can't auction objects that are decaying.\r\n", ch );
+      return;
+   }
+
+   if( IS_OBJ_STAT( obj, ITEM_CLANOBJECT ) )
+   {
+      send_to_char( "You can't auction clan items.\r\n", ch );
+      return;
+   }
+
+   if( IS_OBJ_STAT( obj, ITEM_PERMANENT ) )
+   {
+      send_to_char( "This item cannot leave your possession.\r\n", ch );
       return;
    }
 
@@ -2845,10 +2933,10 @@ void do_auction( CHAR_DATA* ch, const char* argument)
 /* insert any more item types here... items with a timer MAY NOT BE 
    AUCTIONED! 
 */
+         case ITEM_PAPER:
          case ITEM_LIGHT:
          case ITEM_TREASURE:
          case ITEM_POTION:
-         case ITEM_CONTAINER:
          case ITEM_KEYRING:
          case ITEM_QUIVER:
          case ITEM_DRINK_CON:
@@ -3165,12 +3253,6 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
    int numrolls;
 
    bool *face_seen_table = NULL;
-
-   if( IS_NPC( ch ) )
-   {
-      send_to_char( "Huh?\r\n", ch );
-      return;
-   }
 
    if( ( die = get_eq_char( ch, WEAR_HOLD ) ) == NULL || die->item_type != ITEM_CHANCE )
    {

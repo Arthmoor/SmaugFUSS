@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *		     Character saving and loading module		    *
+ *                   Character saving and loading module                    *
  ****************************************************************************/
 
 #include <ctype.h>
@@ -287,7 +287,7 @@ void save_char_obj( CHAR_DATA * ch )
     * Also save the player flags so we the wizlist builder can see
     * who is a guest and who is retired.
     */
-   if( ch->level >= LEVEL_IMMORTAL )
+   if( ch->level >= LEVEL_IMMORTAL || IS_SET( ch->pcdata->flags, PCFLAG_RETIRED ) )
    {
       snprintf( strback, MAX_INPUT_LENGTH, "%s%s", GOD_DIR, capitalize( ch->pcdata->filename ) );
 
@@ -311,19 +311,28 @@ void save_char_obj( CHAR_DATA * ch )
       }
    }
 
-   if( !( fp = fopen( strsave, "w" ) ) )
+   if( IS_SET( sysdata.save_flags, SV_TMPSAVE ) )
+      fp = fopen( TEMP_FILE, "w" );
+   else
+      fp = fopen( strsave, "w" );
+
+   if( fp == NULL )
    {
-      perror( strsave );
-      bug( "%s: cant open %s", __FUNCTION__, strsave );
+      if( IS_SET( sysdata.save_flags, SV_TMPSAVE ) )
+         perror( TEMP_FILE );
+      else
+         perror( strsave );
+      bug( "%s: fopen", __FUNCTION__ );
    }
    else
    {
+      bool ferr;
+
       fwrite_char( ch, fp );
       if( ch->morph )
          fwrite_morph_data( ch, fp );
       if( ch->first_carrying )
          fwrite_obj( ch, ch->last_carrying, fp, 0, OS_CARRY, ch->pcdata->hotboot );
-
       if( sysdata.save_pets && ch->pcdata->pet )
          fwrite_mobile( fp, ch->pcdata->pet );
       if( ch->variables )
@@ -331,7 +340,21 @@ void save_char_obj( CHAR_DATA * ch )
       if( ch->comments )   /* comments */
          fwrite_comments( ch, fp ); /* comments */
       fprintf( fp, "#END\n" );
+
+      ferr = ferror( fp );
       fclose( fp );
+      fp = NULL;
+
+      if( IS_SET( sysdata.save_flags, SV_TMPSAVE ) )
+      {
+         if( ferr )
+         {
+            perror( strsave );
+            bug( "%s: Error writing temp file for %s -- not copying", __FUNCTION__, strsave );
+         }
+         else
+            rename( TEMP_FILE, strsave );
+      }
    }
 
    re_equip_char( ch );
@@ -397,7 +420,7 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
    fprintf( fp, "SavingThrows %d %d %d %d %d\n",
             ch->saving_poison_death, ch->saving_wand, ch->saving_para_petri, ch->saving_breath, ch->saving_spell_staff );
    fprintf( fp, "Alignment    %d\n", ch->alignment );
-   fprintf( fp, "Favor	       %d\n", ch->pcdata->favor );
+   fprintf( fp, "Favor        %d\n", ch->pcdata->favor );
    fprintf( fp, "Glory        %d\n", ch->pcdata->quest_curr );
    fprintf( fp, "MGlory       %d\n", ch->pcdata->quest_accum );
    fprintf( fp, "Hitroll      %d\n", ch->hitroll );
@@ -502,8 +525,8 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
 
    fprintf( fp, "Condition    %d %d %d %d\n",
             ch->pcdata->condition[0], ch->pcdata->condition[1], ch->pcdata->condition[2], ch->pcdata->condition[3] );
-   if( ch->desc && ch->desc->host )
-      fprintf( fp, "Site         %s\n", ch->desc->host );
+   if( ch->pcdata->recent_site )
+      fprintf( fp, "Site         %s\n", ch->pcdata->recent_site );
    else
       fprintf( fp, "Site         (Link-Dead)\n" );
 
@@ -617,8 +640,7 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
     *   so loading them will load in forwards order.
     */
    if( obj->prev_content && os_type != OS_CORPSE )
-      if( os_type == OS_CARRY )
-         fwrite_obj( ch, obj->prev_content, fp, iNest, OS_CARRY, hotboot );
+      fwrite_obj( ch, obj->prev_content, fp, iNest, os_type, hotboot );
 
    /*
     * Castrate storage characters.
@@ -670,8 +692,8 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
       fprintf( fp, "ExtraFlags   %s\n", print_bitvector( &obj->extra_flags ) );
    if( obj->wear_flags != obj->pIndexData->wear_flags )
       fprintf( fp, "WearFlags    %d\n", obj->wear_flags );
-   wear_loc = -1;
-   for( wear = 0; wear < MAX_WEAR; wear++ )
+   wear_loc = WEAR_NONE;
+   for( wear = 0; wear < MAX_WEAR && wear_loc == WEAR_NONE; wear++ )
    {
       for( x = 0; x < MAX_LAYERS; x++ )
       {
@@ -793,6 +815,8 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
    ch->desc = d;
    ch->pcdata->filename = STRALLOC( name );
    ch->name = NULL;
+   if( d->host )
+      ch->pcdata->recent_site = STRALLOC( d->host );
    ch->act = multimeb( PLR_BLANK, PLR_COMBINE, PLR_PROMPT, -1 );
    ch->perm_str = 13;
    ch->perm_int = 13;
@@ -852,10 +876,10 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
                           preload ? "Preloading" : "Loading", ch->pcdata->filename, ( int )fst.st_size / 1024 );
       }
    }
+
    /*
     * else no player file 
     */
-
    if( ( fp = fopen( strsave, "r" ) ) != NULL )
    {
       int iNest;
@@ -883,8 +907,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_char_obj: # not found." );
-            bug( "%s", name );
+            bug( "%s: # not found. (%s)", __FUNCTION__, name );
             break;
          }
 
@@ -920,12 +943,12 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
             break;
          else
          {
-            bug( "%s", "Load_char_obj: bad section." );
-            bug( "%s", name );
+            bug( "%s: bad section: %s", __FUNCTION__, word );
             break;
          }
       }
       fclose( fp );
+      fp = NULL;
       fpArea = NULL;
       mudstrlcpy( strArea, "$", MAX_INPUT_LENGTH );
    }
@@ -1952,6 +1975,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
    obj->count = 1;
    obj->wear_loc = -1;
    obj->weight = 1;
+   obj->owner = STRALLOC( "" );
 
    fNest = TRUE;  // Requiring a Nest 0 is a waste
    fVnum = FALSE; // We can't assume this - what if Vnum isn't written to the file? Crashy crashy is what. - Pulled from Smaug 1.8
@@ -1993,7 +2017,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
                   sn = skill_lookup( fread_word( fp ) );
                   if( sn < 0 )
-                     bug( "%s", "Fread_obj: unknown skill." );
+                     bug( "%s: unknown skill.", __FUNCTION__ );
                   else
                      paf->type = sn;
                }

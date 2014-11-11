@@ -1235,7 +1235,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
 
    if( dclose->character )
    {
-      log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "Closing link to %s.", ch->pcdata->filename );
+      log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "Closing link to %s. (INRoom %d)", ch->pcdata->filename, ( ch->in_room ? ch->in_room->vnum : -1 ) );
 
       if( dclose->connected == CON_EDITING )
       {
@@ -1281,7 +1281,6 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    return;
 }
 
-
 bool read_from_descriptor( DESCRIPTOR_DATA * d )
 {
    unsigned int iStart;
@@ -1300,9 +1299,7 @@ bool read_from_descriptor( DESCRIPTOR_DATA * d )
    if( iStart >= sizeof( d->inbuf ) - 10 )
    {
       log_printf( "%s input overflow!", d->host );
-      write_to_descriptor( d,
-                           "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n",
-                           0 );
+      write_to_descriptor( d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0 );
       return FALSE;
    }
 
@@ -1431,9 +1428,7 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
          {
 /*		log_printf( "%s input spamming!", d->host );
 */
-            write_to_descriptor( d,
-                                 "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n",
-                                 0 );
+            write_to_descriptor( d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0 );
             mudstrlcpy( d->incomm, "quit", MAX_INPUT_LENGTH );
          }
       }
@@ -1495,7 +1490,6 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
       }
       return TRUE;
    }
-
 
    /*
     * Bust a prompt.
@@ -1572,9 +1566,12 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 {
    if( !d )
    {
-      bug( "Write_to_buffer: NULL descriptor" );
+      bug( "%s: NULL descriptor", __FUNCTION__ );
       return;
    }
+
+   if( MPSilent )
+      return;
 
    /*
     * Normally a bug... but can happen if loadup is used.
@@ -1638,8 +1635,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 }
 
 /*
-* This is the MCCP version. Use write_to_descriptor_old to send non-compressed
-* text.
+* This is the MCCP version. Use write_to_descriptor_old to send non-compressed text.
 * Updated to run with the block checks by Orion... if it doesn't work, blame
 * him.;P -Orion
 */
@@ -1886,11 +1882,15 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    fOld = load_char_obj( d, argument, TRUE, FALSE );
    if( !d->character )
    {
+      char cbuf[MAX_STRING_LENGTH];
+
       log_printf( "Bad player file %s@%s.", argument, d->host );
-      write_to_buffer( d, "Your playerfile is corrupt...Please notify Thoric@mud.compulink.com.\r\n", 0 );
+      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
+      write_to_buffer( d, cbuf, 0 );
       close_socket( d, FALSE );
       return;
    }
+
    ch = d->character;
    if( check_bans( ch, BAN_SITE ) )
    {
@@ -1914,6 +1914,7 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
          return;
       }
    }
+
    if( xIS_SET( ch->act, PLR_DENY ) )
    {
       log_printf_plus( LOG_COMM, sysdata.log_level, "Denying access to %s@%s.", argument, d->host );
@@ -1930,11 +1931,11 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       close_socket( d, FALSE );
       return;
    }
+
    /*
     *  Make sure the immortal host is from the correct place.
     *  Shaddai
     */
-
    if( IS_IMMORTAL( ch ) && sysdata.check_imm_host && !check_immortal_domain( ch, d->host ) )
    {
       log_printf_plus( LOG_COMM, sysdata.log_level, "%s's char being hacked from %s.", argument, d->host );
@@ -1942,7 +1943,6 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       close_socket( d, FALSE );
       return;
    }
-
 
    chk = check_reconnect( d, argument, FALSE );
    if( chk == BERR )
@@ -1967,13 +1967,14 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    {
       if( d->newstate != 0 )
       {
-         write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
+         write_to_buffer( d, "That name is already taken. Please choose another: ", 0 );
          d->connected = CON_GET_NAME;
          d->character->desc = NULL;
          free_char( d->character ); /* Big Memory Leak before --Shaddai */
          d->character = NULL;
          return;
       }
+
       /*
        * Old player
        */
@@ -1987,19 +1988,16 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       /*
        * if ( !check_parse_name( argument ) )
        * {
-       * write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
+       * write_to_buffer( d, "hat name is reserved, please try another.\r\nName: ", 0 );
        * return;
        * }
        */
-
       if( d->newstate == 0 )
       {
          /*
           * No such player
           */
-         write_to_buffer( d,
-                          "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ",
-                          0 );
+         write_to_buffer( d, "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ", 0 );
          d->connected = CON_GET_NAME;
          d->character->desc = NULL;
          free_char( d->character ); /* Big Memory Leak before --Shaddai */
@@ -2057,6 +2055,18 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
    fOld = load_char_obj( d, buf, FALSE, FALSE );
    if( !fOld )
       bug( "%s: failed to load_char_obj for %s.", __FUNCTION__, buf );
+
+   if( !d->character )
+   {
+      char cbuf[MAX_STRING_LENGTH];
+
+      log_printf( "Bad player file %s@%s.", argument, d->host );
+      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
+      write_to_buffer( d, cbuf, 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+
    ch = d->character;
    if( ch->position == POS_FIGHTING
        || ch->position == POS_EVASIVE
@@ -2390,9 +2400,6 @@ void nanny_press_enter( DESCRIPTOR_DATA * d, const char *argument )
    else
       REMOVE_BIT( ch->pcdata->flags, PCFLAG_WATCH );
 
-   if( ch->position == POS_MOUNTED )
-      ch->position = POS_STANDING;
-
    set_pager_color( AT_PLAIN, ch );
    if( xIS_SET( ch->act, PLR_RIP ) )
       send_rip_screen( ch );
@@ -2524,6 +2531,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
       ch->hit = UMAX( 1, ch->max_hit );
       ch->mana = UMAX( 1, ch->max_mana );
       ch->move = ch->max_move;
+      ch->gold = 0;
       /*
        * Set player birthday to current mud day, -17 years - Samson 10-25-99
        */
@@ -2583,7 +2591,6 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
    {
       char_to_room( ch, get_room_index( ROOM_VNUM_TEMPLE ) );
    }
-
 
    if( get_timer( ch, TIMER_SHOVEDRAG ) > 0 )
       remove_timer( ch, TIMER_SHOVEDRAG );
@@ -2704,12 +2711,6 @@ bool check_parse_name( const char *name, bool newchar )
       return FALSE;
 
    /*
-    * Outdated stuff -- Alty
-    */
-/*     if ( is_name( name, "all auto immortal self someone god supreme demigod dog guard cityguard cat cornholio spock hicaine hithoric death ass fuck shit piss crap quit" ) )
-       return FALSE;*/
-
-   /*
     * Length restrictions.
     */
    if( strlen( name ) < 3 )
@@ -2744,7 +2745,6 @@ bool check_parse_name( const char *name, bool newchar )
     * themselves after mobs... this caused much havoc when new areas
     * would go in...
     */
-
    return TRUE;
 }
 
@@ -2790,6 +2790,8 @@ bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
             ch->desc = d;
             ch->timer = 0;
             send_to_char( "Reconnecting.\r\n", ch );
+            if( d->host )
+               ch->pcdata->recent_site = STRALLOC( d->host );
             rprog_login_trigger( ch );
             mprog_login_trigger( ch );
             act( AT_ACTION, "$n has reconnected.", ch, NULL, NULL, TO_CANSEE );
@@ -2844,6 +2846,8 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
             do_return( ch->switched, "" );
          ch->switched = NULL;
          send_to_char( "Reconnecting.\r\n", ch );
+         if( d->host )
+            ch->pcdata->recent_site = STRALLOC( d->host );
          rprog_login_trigger( ch );
          mprog_login_trigger( ch );
          do_look( ch, "auto" );
@@ -2855,11 +2859,8 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
          return TRUE;
       }
    }
-
    return FALSE;
 }
-
-
 
 void stop_idling( CHAR_DATA * ch )
 {
@@ -2906,7 +2907,6 @@ const char *myobj( OBJ_DATA * obj )
       return obj->short_descr + 5;
    return obj->short_descr;
 }
-
 
 const char *obj_short( OBJ_DATA * obj )
 {
@@ -3056,30 +3056,39 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                break;
 
             case 'p':
-               if( !obj1 )
+               if( !to || can_see_obj( to, obj1 ) )
                {
-                  bug( "act_string: $p used with NULL obj1!" );
-                  i = "something";
+                  /*
+                   * Prevents act programs from triggering off note shorts 
+                   */
+                  if( ( !to || IS_NPC( to ) ) && ( obj1->item_type == ITEM_PAPER ) )
+                     i = obj1->pIndexData->short_descr;
+                  else
+                     i = obj_short( obj1 );
                }
                else
-                  i = should_upper ? ( ( !to || can_see_obj( to, obj1 ) ) ? capitalize( obj_short( obj1 ) ) : "Something" )
-                                     :( ( !to || can_see_obj( to, obj1 ) ) ? obj_short( obj1 ) : "something" );
+                  i = "something";
                break;
 
             case 'P':
-               if( !obj2 )
+               if( !to || can_see_obj( to, obj2 ) )
                {
-                  bug( "act_string: $P used with NULL obj2!" );
-                  i = "something";
+                  /*
+                   * Prevents act programs from triggering off note shorts 
+                   */
+                  if( ( !to || IS_NPC( to ) ) && ( obj2->item_type == ITEM_PAPER ) )
+                     i = obj2->pIndexData->short_descr;
+                  else
+                     i = obj_short( obj2 );
                }
                else
-                  i = should_upper ? (  !to || can_see_obj( to, obj2 ) ? capitalize( obj_short( obj2 ) ) : "Something" )
-                                     :(  !to || can_see_obj( to, obj2 ) ? obj_short( obj2 ) : "something" );
+                  i = "something";
                break;
 
             case 'q':
                i = ( to == ch ) ? "" : "s";
                break;
+
             case 'Q':
                i = ( to == ch ) ? "your" : his_her[URANGE( 0, ch->sex, 2 )];
                break;
@@ -3136,6 +3145,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
          ++point, ++i;
    }
    mudstrlcpy( point, "\r\n", MSL );
+
    if( !DONT_UPPER )
    {
       bool bUppercase = true;     //Always uppercase first letter
@@ -3176,6 +3186,8 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 #define ACTF_TXT  BV00
 #define ACTF_CH   BV01
 #define ACTF_OBJ  BV02
+   OBJ_DATA *obj1 = ( OBJ_DATA * ) arg1;
+   OBJ_DATA *obj2 = ( OBJ_DATA * ) arg2;
    int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
    /*
@@ -3186,7 +3198,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
    if( !ch )
    {
-      bug( "Act: null ch. (%s)", format );
+      bug( "%s: null ch. (%s)", __FUNCTION__, format );
       return;
    }
 
@@ -3202,17 +3214,19 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          switch ( *str )
          {
             default:
-               bug( "Act: bad code %c for format %s.", *str, format );
+               bug( "%s: bad code %c for format %s.", __FUNCTION__, *str, format );
                break;
 
             case 't':
                flags1 |= ACTF_TXT;
+               obj1 = NULL;
                break;
 
             case 'T':
             case 'd':
                flags2 |= ACTF_TXT;
                vch = NULL;
+               obj2 = NULL;
                break;
 
             case 'n':
@@ -3228,6 +3242,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
             case 'S':
             case 'Q':
                flags2 |= ACTF_CH;
+               obj2 = NULL;
                break;
 
             case 'p':
@@ -3245,12 +3260,14 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
    if( flags1 != ACTF_NONE && flags1 != ACTF_TXT && flags1 != ACTF_CH && flags1 != ACTF_OBJ )
    {
       bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      obj1 = NULL;
    }
 
    if( flags2 != ACTF_NONE && flags2 != ACTF_TXT && flags2 != ACTF_CH && flags2 != ACTF_OBJ )
    {
       bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
       vch = NULL;
+      obj2 = NULL;
    }
 
    if( !ch->in_room )
@@ -3289,10 +3306,10 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
       txt = act_string( format, NULL, ch, arg1, arg2, STRING_IMM );
       if( HAS_PROG( to->in_room, ACT_PROG ) )
-         rprog_act_trigger( txt, to->in_room, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+         rprog_act_trigger( txt, to->in_room, ch, obj1, vch, obj2 );
       for( to_obj = to->in_room->first_content; to_obj; to_obj = to_obj->next_content )
          if( HAS_PROG( to_obj->pIndexData, ACT_PROG ) )
-            oprog_act_trigger( txt, to_obj, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+            oprog_act_trigger( txt, to_obj, ch, obj1, vch, obj2 );
    }
 
    /*
@@ -3333,7 +3350,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          /*
           * Note: use original string, not string with ANSI. -- Alty 
           */
-         mprog_act_trigger( txt, to, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+         mprog_act_trigger( txt, to, ch, obj1, vch, obj2 );
       }
    }
    MOBtrigger = TRUE;

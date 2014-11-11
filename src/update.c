@@ -70,8 +70,7 @@ void advance_level( CHAR_DATA * ch )
    snprintf( buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0] );
    set_title( ch, buf );
 
-   add_hp = con_app[get_curr_con( ch )].hitp + number_range( class_table[ch->Class]->hp_min,
-                                                             class_table[ch->Class]->hp_max );
+   add_hp = con_app[get_curr_con( ch )].hitp + number_range( class_table[ch->Class]->hp_min, class_table[ch->Class]->hp_max );
    add_mana = class_table[ch->Class]->fMana ? number_range( 2, ( 2 * get_curr_int( ch ) + get_curr_wis( ch ) ) / 8 ) : 0;
    add_move = number_range( 5, ( get_curr_con( ch ) + get_curr_dex( ch ) ) / 4 );
    add_prac = wis_app[get_curr_wis( ch )].practice;
@@ -107,7 +106,7 @@ void advance_level( CHAR_DATA * ch )
          if( d->connected == CON_PLAYING && d->character != ch )
          {
             set_char_color( AT_IMMORT, d->character );
-            ch_printf( d->character, "%s has just achieved Avatarhood!\r\n", ch->name );
+            ch_printf( d->character, "%s has attained the rank of Avatar!\r\n", ch->name );
          }
       set_char_color( AT_WHITE, ch );
       do_help( ch, "M_ADVHERO_" );
@@ -180,6 +179,11 @@ void gain_exp( CHAR_DATA * ch, int gain )
       }
    }
 
+   if( IS_PKILL( ch ) )
+      modgain = ( modgain * sysdata.deadly_exp_mod ) / 100;
+   else
+      modgain = ( modgain * sysdata.peaceful_exp_mod ) / 100;
+
    /*
     * xp cap to prevent any one event from giving enuf xp to 
     * gain more than one level - FB 
@@ -202,6 +206,7 @@ void gain_exp( CHAR_DATA * ch, int gain )
       ch_printf( ch, "You have now obtained experience level %d!\r\n", ch->level );
       advance_level( ch );
    }
+   save_char_obj( ch );
 }
 
 /*
@@ -560,13 +565,13 @@ void check_alignment( CHAR_DATA * ch )
    if( ch->alignment < race_table[ch->race]->minalign )
    {
       set_char_color( AT_BLOOD, ch );
-      send_to_char( "Your actions have been incompatible with the ideals of your race.  This troubles you.", ch );
+      send_to_char( "Your actions have been incompatible with the ideals of your race.  This troubles you.\r\n", ch );
    }
 
    if( ch->alignment > race_table[ch->race]->maxalign )
    {
       set_char_color( AT_BLOOD, ch );
-      send_to_char( "Your actions have been incompatible with the ideals of your race.  This troubles you.", ch );
+      send_to_char( "Your actions have been incompatible with the ideals of your race.  This troubles you.\r\n", ch );
    }
 
    /*
@@ -582,6 +587,7 @@ void check_alignment( CHAR_DATA * ch )
          worsen_mental_state( ch, 15 );
          return;
       }
+
       if( ch->alignment < 500 )
       {
          set_char_color( AT_BLOOD, ch );
@@ -623,7 +629,7 @@ void mobile_update( void )
          continue;
       }
 
-      if( !ch->in_room || IS_AFFECTED( ch, AFF_CHARM ) || IS_AFFECTED( ch, AFF_PARALYSIS ) )
+      if( !ch->in_room || IS_AFFECTED( ch, AFF_CHARM ) || IS_AFFECTED( ch, AFF_PARALYSIS ) || IS_AFFECTED( ch, AFF_POSSESS ) )
          continue;
 
       /*
@@ -649,7 +655,7 @@ void mobile_update( void )
       /*
        * Examine call for special procedure 
        */
-      if( !xIS_SET( ch->act, ACT_RUNNING ) && ch->spec_fun )
+      if( !xIS_SET( ch->act, ACT_RUNNING ) && ch->spec_fun && !IS_AFFECTED( ch, AFF_POSSESS ) )
       {
          if( ( *ch->spec_fun ) ( ch ) )
             continue;
@@ -660,7 +666,7 @@ void mobile_update( void )
       /*
        * Check for mudprogram script on mob 
        */
-      if( HAS_PROG( ch->pIndexData, SCRIPT_PROG ) )
+      if( HAS_PROG( ch->pIndexData, SCRIPT_PROG ) && !xIS_SET( ch->act, ACT_STOP_SCRIPT ) )
       {
          mprog_script_trigger( ch );
          continue;
@@ -668,7 +674,7 @@ void mobile_update( void )
 
       if( ch != cur_char )
       {
-         bug( "%s", "Mobile_update: ch != cur_char after spec_fun" );
+         bug( "%s: ch != cur_char after spec_fun", __FUNCTION__ );
          continue;
       }
 
@@ -731,7 +737,7 @@ void mobile_update( void )
          {
             if( IS_OBJ_STAT( obj, ITEM_PROTOTYPE ) && !xIS_SET( ch->act, ACT_PROTOTYPE ) )
                continue;
-            if( CAN_WEAR( obj, ITEM_TAKE ) && obj->cost > max && !IS_OBJ_STAT( obj, ITEM_BURIED ) )
+            if( CAN_WEAR( obj, ITEM_TAKE ) && obj->cost > max && !IS_OBJ_STAT( obj, ITEM_BURIED ) && !IS_OBJ_STAT( obj, ITEM_HIDDEN ) )
             {
                obj_best = obj;
                max = obj->cost;
@@ -989,23 +995,6 @@ void char_update( void )
 
       if( !IS_NPC( ch ) && ch->level < LEVEL_IMMORTAL )
       {
-         OBJ_DATA *obj;
-
-         if( ( obj = get_eq_char( ch, WEAR_LIGHT ) ) != NULL && obj->item_type == ITEM_LIGHT && obj->value[2] > 0 )
-         {
-            if( --obj->value[2] == 0 && ch->in_room )
-            {
-               ch->in_room->light -= obj->count;
-               if( ch->in_room->light < 0 )
-                  ch->in_room->light = 0;
-               act( AT_ACTION, "$p goes out.", ch, obj, NULL, TO_ROOM );
-               act( AT_ACTION, "$p goes out.", ch, obj, NULL, TO_CHAR );
-               if( obj->serial == cur_obj )
-                  global_objcode = rOBJ_EXPIRED;
-               extract_obj( obj );
-            }
-         }
-
          if( ++ch->timer >= 12 )
          {
             if( !IS_IDLE( ch ) )
@@ -1054,6 +1043,7 @@ void char_update( void )
                   break;
             }
          }
+
          if( ch->pcdata->condition[COND_THIRST] > 1 )
          {
             switch ( ch->position )
@@ -1312,6 +1302,47 @@ void obj_update( void )
       if( obj_extracted( obj ) )
          continue;
 
+      if( obj->item_type == ITEM_LIGHT )
+      {
+         CHAR_DATA *tch;
+
+         if( ( tch = obj->carried_by ) )
+         {
+            if( !IS_NPC( tch )   /* && ( tch->level < LEVEL_IMMORTAL ) */
+                && ( ( obj == get_eq_char( tch, WEAR_LIGHT ) )
+                     || ( IS_SET( obj->value[3], PIPE_LIT ) ) ) && ( obj->value[2] > 0 ) )
+               if( --obj->value[2] == 0 && tch->in_room )
+               {
+                  tch->in_room->light -= obj->count;
+                  if( tch->in_room->light < 0 )
+                     tch->in_room->light = 0;
+                  act( AT_ACTION, "$p goes out.", tch, obj, NULL, TO_ROOM );
+                  act( AT_ACTION, "$p goes out.", tch, obj, NULL, TO_CHAR );
+                  if( obj->serial == cur_obj )
+                     global_objcode = rOBJ_EXPIRED;
+                  extract_obj( obj );
+                  continue;
+               }
+         }
+         else if( obj->in_room )
+            if( IS_SET( obj->value[3], PIPE_LIT ) && ( obj->value[2] > 0 ) )
+               if( --obj->value[2] == 0 )
+               {
+                  obj->in_room->light -= obj->count;
+                  if( obj->in_room->light < 0 )
+                     obj->in_room->light = 0;
+                  if( ( tch = obj->in_room->first_person ) )
+                  {
+                     act( AT_ACTION, "$p goes out.", tch, obj, NULL, TO_ROOM );
+                     act( AT_ACTION, "$p goes out.", tch, obj, NULL, TO_CHAR );
+                  }
+                  if( obj->serial == cur_obj )
+                     global_objcode = rOBJ_EXPIRED;
+                  extract_obj( obj );
+                  continue;
+               }
+      }
+
       if( obj->item_type == ITEM_PIPE )
       {
          if( IS_SET( obj->value[3], PIPE_LIT ) )
@@ -1392,46 +1423,56 @@ void obj_update( void )
             message = "$p mysteriously vanishes.";
             AT_TEMP = AT_PLAIN;
             break;
+
          case ITEM_CONTAINER:
             message = "$p falls apart, tattered from age.";
             AT_TEMP = AT_OBJECT;
             break;
+
          case ITEM_PORTAL:
             message = "$p unravels and winks from existence.";
             remove_portal( obj );
             obj->item_type = ITEM_TRASH;  /* so extract_obj  */
             AT_TEMP = AT_MAGIC;  /* doesn't remove_portal */
             break;
+
          case ITEM_FOUNTAIN:
          case ITEM_PUDDLE:
             message = "$p dries up.";
             AT_TEMP = AT_BLUE;
             break;
+
          case ITEM_CORPSE_NPC:
             message = "$p decays into dust and blows away.";
             AT_TEMP = AT_OBJECT;
             break;
+
          case ITEM_CORPSE_PC:
             message = "$p is sucked into a swirling vortex of colors...";
             AT_TEMP = AT_MAGIC;
             break;
+
          case ITEM_COOK:
          case ITEM_FOOD:
             message = "$p is devoured by a swarm of maggots.";
             AT_TEMP = AT_HUNGRY;
             break;
+
          case ITEM_BLOOD:
             message = "$p slowly seeps into the ground.";
             AT_TEMP = AT_BLOOD;
             break;
+
          case ITEM_BLOODSTAIN:
             message = "$p dries up into flakes and blows away.";
-            AT_TEMP = AT_BLOOD;
+            AT_TEMP = AT_ORANGE;
             break;
+
          case ITEM_SCRAPS:
             message = "$p crumble and decay into nothing.";
             AT_TEMP = AT_OBJECT;
             break;
+
          case ITEM_FIRE:
             message = "$p burns out.";
             AT_TEMP = AT_FIRE;
@@ -1673,7 +1714,7 @@ void aggr_update( void )
             if( tmp_act->obj && obj_extracted( tmp_act->obj ) )
                tmp_act->obj = NULL;
             if( tmp_act->ch && !char_died( tmp_act->ch ) )
-               mprog_wordlist_check( tmp_act->buf, wch, tmp_act->ch, tmp_act->obj, tmp_act->vo, ACT_PROG );
+               mprog_wordlist_check( tmp_act->buf, wch, tmp_act->ch, tmp_act->obj, tmp_act->victim, tmp_act->target, ACT_PROG );
             wch->mpact = tmp_act->next;
             DISPOSE( tmp_act->buf );
             DISPOSE( tmp_act );
@@ -1769,6 +1810,23 @@ void aggr_update( void )
                else
                {
                   global_retcode = damage( ch, victim, 0, gsn_backstab );
+                  continue;
+               }
+            }
+         }
+         else if( IS_NPC( ch ) && xIS_SET( ch->attacks, ATCK_POUNCE ) )
+         {
+            if( !ch->mount && !victim->fighting )
+            {
+               check_attacker( ch, victim );
+               if( !IS_AWAKE( victim ) || number_percent(  ) + 5 < ch->level )
+               {
+                  global_retcode = multi_hit( ch, victim, gsn_pounce );
+                  continue;
+               }
+               else
+               {
+                  global_retcode = damage( ch, victim, 0, gsn_pounce );
                   continue;
                }
             }
@@ -2242,23 +2300,20 @@ void auction_update( void )
          }
          else  /* not sold */
          {
-            snprintf( buf, MAX_STRING_LENGTH, "No bids received for %s - removed from auction.\r\n",
-                      auction->item->short_descr );
+            snprintf( buf, MAX_STRING_LENGTH, "No bids received for %s - removed from auction.", auction->item->short_descr );
             talk_auction( buf );
-            act( AT_ACTION, "The auctioneer appears before you to return $p to you.",
-                 auction->seller, auction->item, NULL, TO_CHAR );
-            act( AT_ACTION, "The auctioneer appears before $n to return $p to $m.",
-                 auction->seller, auction->item, NULL, TO_ROOM );
+            act( AT_ACTION, "The auctioneer appears before you to return $p to you.", auction->seller, auction->item, NULL, TO_CHAR );
+            act( AT_ACTION, "The auctioneer appears before $n to return $p to $m.", auction->seller, auction->item, NULL, TO_ROOM );
+
             if( ( auction->seller->carry_weight + get_obj_weight( auction->item ) ) > can_carry_w( auction->seller ) )
             {
-               act( AT_PLAIN, "You drop $p as it is just too much to carry"
-                    " with everything else you're carrying.", auction->seller, auction->item, NULL, TO_CHAR );
-               act( AT_PLAIN, "$n drops $p as it is too much extra weight"
-                    " for $m with everything else.", auction->seller, auction->item, NULL, TO_ROOM );
+               act( AT_PLAIN, "You drop $p as it is just too much to carry with everything else you're carrying.", auction->seller, auction->item, NULL, TO_CHAR );
+               act( AT_PLAIN, "$n drops $p as it is too much extra weight for $m with everything else.", auction->seller, auction->item, NULL, TO_ROOM );
                obj_to_room( auction->item, auction->seller->in_room );
             }
             else
                obj_to_char( auction->item, auction->seller );
+
             tax = ( int )( auction->item->cost * 0.05 );
             boost_economy( auction->seller->in_room->area, tax );
             ch_printf( auction->seller, "The auctioneer charges you an auction fee of %s.\r\n", num_punct( tax ) );

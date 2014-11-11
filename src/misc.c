@@ -205,7 +205,7 @@ void do_quaff( CHAR_DATA* ch, const char* argument)
    if( ( obj = find_obj( ch, argument, TRUE ) ) == NULL )
       return;
 
-   if( !IS_NPC( ch ) && IS_AFFECTED( ch, AFF_CHARM ) )
+   if( IS_NPC( ch ) && IS_AFFECTED( ch, AFF_CHARM ) )
       return;
 
    if( obj->item_type != ITEM_POTION )
@@ -239,19 +239,13 @@ void do_quaff( CHAR_DATA* ch, const char* argument)
 
    /*
     * People with nuisance flag feels up quicker. -- Shaddai 
-    */
-   /*
     * Yeah so I can't spell I'm a coder :P --Shaddai 
-    */
-   /*
     * You are now adept at feeling up quickly! -- Blod 
     */
    if( !IS_NPC( ch ) && ch->pcdata->nuisance &&
        ch->pcdata->nuisance->flags > 3
-       && ( ch->pcdata->condition[COND_FULL] >= ( 48 - ( 3 * ch->pcdata->nuisance->flags ) +
-                                                  ch->pcdata->nuisance->power )
-            || ch->pcdata->condition[COND_THIRST] >= ( 48 - ( ch->pcdata->nuisance->flags ) +
-                                                       ch->pcdata->nuisance->power ) ) )
+       && ( ch->pcdata->condition[COND_FULL] >= ( 48 - ( 3 * ch->pcdata->nuisance->flags ) + ch->pcdata->nuisance->power )
+            || ch->pcdata->condition[COND_THIRST] >= ( 48 - ( ch->pcdata->nuisance->flags ) + ch->pcdata->nuisance->power ) ) )
    {
       send_to_char( "Your stomach cannot contain any more.\r\n", ch );
       return;
@@ -304,13 +298,14 @@ void do_quaff( CHAR_DATA* ch, const char* argument)
 
       gain_condition( ch, COND_THIRST, 1 );
       if( !IS_NPC( ch ) && ch->pcdata->condition[COND_THIRST] > 43 )
-         act( AT_ACTION, "Your stomach is nearing its capacity.", ch, NULL, NULL, TO_CHAR );
+         act( AT_ACTION, "You are getting full.", ch, NULL, NULL, TO_CHAR );
       retcode = obj_cast_spell( obj->value[1], obj->value[0], ch, ch, NULL );
       if( retcode == rNONE )
          retcode = obj_cast_spell( obj->value[2], obj->value[0], ch, ch, NULL );
       if( retcode == rNONE )
          retcode = obj_cast_spell( obj->value[3], obj->value[0], ch, ch, NULL );
    }
+
    if( obj->pIndexData->vnum == OBJ_VNUM_FLASK_BREWING )
       sysdata.brewed_used++;
    else
@@ -1369,9 +1364,13 @@ void actiondesc( CHAR_DATA * ch, OBJ_DATA * obj )
          return;
 
       case ITEM_DRINK_CON:
-         act( AT_ACTION, charbuf, ch, obj, liq_table[obj->value[2]].liq_name, TO_CHAR );
-         act( AT_ACTION, roombuf, ch, obj, liq_table[obj->value[2]].liq_name, TO_ROOM );
+      {
+         LIQ_TABLE *liq = get_liq_vnum( obj->value[2] );
+
+         act( AT_ACTION, charbuf, ch, obj, ( liq == NULL ? "water" : liq->name ), TO_CHAR );
+         act( AT_ACTION, roombuf, ch, obj, ( liq == NULL ? "water" : liq->name ), TO_ROOM );
          return;
+      }
 
       case ITEM_PIPE:
          return;

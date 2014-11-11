@@ -80,7 +80,7 @@ Class      warrior~
 Position   sitting~
 DefPos     sitting~
 Gender     male~
-Actflags   npc sentinel r2 wimpy~
+Actflags   npc sentinel wimpy~
 Affected   hide~
 Stats1     500 7 17 6 0 600
 Stats2     1 12 47

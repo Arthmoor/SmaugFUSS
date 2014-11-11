@@ -476,15 +476,9 @@ int count_obj_list( OBJ_INDEX_DATA * pObjIndex, OBJ_DATA * list )
    int nMatch = 0;
 
    for( obj = list; obj; obj = obj->next_content )
-   {
       if( obj->pIndexData == pObjIndex )
-      {
-         if( obj->count > 1 )
-            nMatch += obj->count;
-         else
-            nMatch++;
-      }
-   }
+         nMatch += obj->count;
+
    return nMatch;
 }
 

@@ -251,28 +251,20 @@ bool spec_breath_any( CHAR_DATA * ch )
    return FALSE;
 }
 
-
-
 bool spec_breath_acid( CHAR_DATA * ch )
 {
    return dragon( ch, "acid breath" );
 }
-
-
 
 bool spec_breath_fire( CHAR_DATA * ch )
 {
    return dragon( ch, "fire breath" );
 }
 
-
-
 bool spec_breath_frost( CHAR_DATA * ch )
 {
    return dragon( ch, "frost breath" );
 }
-
-
 
 bool spec_breath_gas( CHAR_DATA * ch )
 {
@@ -289,14 +281,10 @@ bool spec_breath_gas( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_breath_lightning( CHAR_DATA * ch )
 {
    return dragon( ch, "lightning breath" );
 }
-
-
 
 bool spec_cast_adept( CHAR_DATA * ch )
 {
@@ -359,11 +347,8 @@ bool spec_cast_adept( CHAR_DATA * ch )
          return TRUE;
 
    }
-
    return FALSE;
 }
-
-
 
 bool spec_cast_cleric( CHAR_DATA * ch )
 {
@@ -449,8 +434,6 @@ bool spec_cast_cleric( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_cast_mage( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
@@ -534,8 +517,6 @@ bool spec_cast_mage( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_cast_undead( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
@@ -610,8 +591,6 @@ bool spec_cast_undead( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_executioner( CHAR_DATA * ch )
 {
    char buf[MAX_STRING_LENGTH];
@@ -652,7 +631,7 @@ bool spec_executioner( CHAR_DATA * ch )
    }
 
    snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!  MORE BLOOOOD!!!", victim->name, crime );
-   do_shout( ch, buf );
+   do_yell( ch, buf );
    multi_hit( ch, victim, TYPE_UNDEFINED );
    if( char_died( ch ) )
       return TRUE;
@@ -673,8 +652,6 @@ bool spec_executioner( CHAR_DATA * ch )
    char_to_room( create_mobile( cityguard ), ch->in_room );
    return TRUE;
 }
-
-
 
 bool spec_fido( CHAR_DATA * ch )
 {
@@ -705,8 +682,6 @@ bool spec_fido( CHAR_DATA * ch )
 
    return FALSE;
 }
-
-
 
 bool spec_guard( CHAR_DATA * ch )
 {
@@ -757,7 +732,7 @@ bool spec_guard( CHAR_DATA * ch )
    if( victim )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!!  BANZAI!!", victim->name, crime );
-      do_shout( ch, buf );
+      do_yell( ch, buf );
       multi_hit( ch, victim, TYPE_UNDEFINED );
       return TRUE;
    }
@@ -893,8 +868,6 @@ bool spec_mayor( CHAR_DATA * ch )
    pos++;
    return FALSE;
 }
-
-
 
 bool spec_poison( CHAR_DATA * ch )
 {

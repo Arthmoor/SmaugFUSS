@@ -32,8 +32,8 @@ Stats3     4 10 200
 Stats4     0 0 0 0 0
 Attribs    13 13 13 13 13 13 13
 Saves      0 0 0 0 0
-Speaks     common elvish orcish trollese insectoid spiritual magical clan gnome~
-Speaking   common elvish orcish trollese insectoid spiritual magical clan gnome~
+Speaks     common elvish orcish trollese insectoid spiritual magical clan gnomish~
+Speaking   common elvish orcish trollese insectoid spiritual magical clan gnomish~
 Immune     sleep charm nonmagic magic paralysis~
 Attacks    claws~
 Defenses   parry dodge~

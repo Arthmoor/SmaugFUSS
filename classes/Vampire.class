@@ -15,89 +15,91 @@ Expbase     1500
 Affected    0
 Resist	 0
 Suscept	 0
+Skill 'chill touch' 3 95
+Skill 'control weather' 18 95
+Skill 'detect magic' 20 85
+Skill 'detect traps' 20 90
+Skill 'dispel magic' 25 95
+Skill 'enchant weapon' 40 85
+Skill 'energy drain' 17 95
+Skill 'float' 1 95
+Skill 'fly' 10 95
+Skill 'harm' 13 95
+Skill 'identify' 15 95
+Skill 'infravision' 1 95
+Skill 'invis' 10 95
+Skill 'kindred strength' 15 95
+Skill 'know alignment' 6 95
+Skill 'lightning bolt' 17 95
+Skill 'locate object' 20 95
+Skill 'poison' 6 95
+Skill 'scry' 29 95
+Skill 'shield' 27 95
+Skill 'shocking grasp' 12 95
+Skill 'sleep' 12 95
+Skill 'stone skin' 30 95
+Skill 'teleport' 11 95
+Skill 'transport' 45 40
+Skill 'ventriloquate' 9 95
+Skill 'weaken' 6 95
+Skill 'word of recall' 30 95
 Skill 'aggressive style' 4 95
 Skill 'aid' 21 60
 Skill 'berserk style' 12 80
 Skill 'bite' 11 95
 Skill 'bloodlet' 11 95
-Skill 'bludgeons' 1 50
 Skill 'broach' 41 60
-Skill 'chill touch' 3 95
 Skill 'climb' 8 95
-Skill 'common' 1 99
-Skill 'control weather' 18 95
 Skill 'cook' 1 95
 Skill 'defensive style' 16 90
-Skill 'detect magic' 20 85
-Skill 'detect traps' 20 90
 Skill 'dig' 2 95
 Skill 'disarm' 25 95
-Skill 'disenchant weapon' 40 85
-Skill 'dispel magic' 25 95
 Skill 'dodge' 22 95
 Skill 'dominate' 14 95
 Skill 'dual wield' 35 95
-Skill 'dwarven' 1 99
 Skill 'elbow' 15 85
-Skill 'elvish' 1 99
-Skill 'enchant weapon' 40 85
-Skill 'energy drain' 17 95
 Skill 'enhanced damage' 5 95
 Skill 'evasive style' 12 90
 Skill 'feed' 3 95
-Skill 'flexible arms' 1 40
-Skill 'float' 1 95
-Skill 'fly' 10 95
 Skill 'fourth attack' 38 85
-Skill 'gith' 1 99
-Skill 'goblin' 1 99
 Skill 'grasp suspiria' 50 95
-Skill 'halfling' 1 99
-Skill 'harm' 13 95
 Skill 'hide' 3 95
-Skill 'identify' 15 95
-Skill 'infravision' 1 95
-Skill 'invis' 10 95
-Skill 'kindred strength' 15 95
 Skill 'knee' 20 60
-Skill 'know alignment' 6 95
 Skill 'leap' 18 80
-Skill 'lightning bolt' 17 95
-Skill 'locate object' 20 95
-Skill 'long blades' 1 85
 Skill 'mistform' 18 95
 Skill 'mistwalk' 31 90
 Skill 'mount' 16 95
 Skill 'occulutus visum' 12 95
-Skill 'ogre' 1 99
-Skill 'orcish' 1 99
 Skill 'parry' 11 95
 Skill 'peek' 16 95
-Skill 'pixie' 1 99
-Skill 'poison' 6 95
-Skill 'pugilism' 1 95
+Skill 'pounce' 5 80
 Skill 'scan' 36 85
-Skill 'scry' 29 95
 Skill 'search' 9 95
 Skill 'second attack' 11 95
-Skill 'shield' 27 95
-Skill 'shocking grasp' 12 95
-Skill 'short blades' 1 95
 Skill 'shriek' 35 95
-Skill 'sleep' 12 95
 Skill 'sneak' 3 95
 Skill 'standard style' 1 90
 Skill 'steal' 6 95
-Skill 'stone skin' 30 95
-Skill 'talonous arms' 1 95
-Skill 'teleport' 11 95
+Skill 'strike' 2 90
 Skill 'third attack' 23 95
-Skill 'transport' 45 40
-Skill 'trollese' 1 99
-Skill 'ventriloquate' 9 95
 Skill 'vomica pravus' 13 45
-Skill 'weaken' 6 95
-Skill 'word of recall' 30 95
+Skill 'bludgeons' 1 50
+Skill 'flexible arms' 1 40
+Skill 'long blades' 1 85
+Skill 'pugilism' 1 95
+Skill 'short blades' 1 95
+Skill 'talonous arms' 1 95
+Skill 'common' 1 99
+Skill 'dwarven' 1 99
+Skill 'elvish' 1 99
+Skill 'gith' 1 99
+Skill 'gnomish' 1 99
+Skill 'goblin' 1 99
+Skill 'halfling' 1 99
+Skill 'ogre' 1 99
+Skill 'orcish' 1 99
+Skill 'pixie' 1 99
+Skill 'trollese' 1 99
 Title
 Vampire~
 Vampiress~

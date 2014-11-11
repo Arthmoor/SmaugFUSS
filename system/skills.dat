@@ -46,10 +46,11 @@ End
 #SKILL
 Name         acid breath~
 Type         Spell
-Info         5
-Flags        0
+Info         2053
+Flags        131072
 Target       1
-Minpos       110
+Minpos       109
+Saves        5
 Slot         200
 Mana         20
 Rounds       4
@@ -107,6 +108,7 @@ Name         aggressive style~
 Type         Skill
 Info         0
 Flags        0
+Minpos       107
 Rounds       4
 Code         spell_null
 Dammsg       ~
@@ -256,7 +258,7 @@ Info         0
 Flags        0
 Target       1
 Minpos       105
-Rounds       8
+Rounds       26
 Code         do_bash
 Dammsg       bash~
 Wearoff      !Bash!~
@@ -362,12 +364,26 @@ Minlevel     11
 End
 
 #SKILL
+Name         black breath~
+Type         Spell
+Info         2440
+Flags        16
+Minpos       109
+Saves        5
+Slot         403
+Code         spell_smaug
+Dammsg       black breath~
+Affect       '5' 26 'blind' 0
+Minlevel     51
+End
+
+#SKILL
 Name         black fist~
 Type         Spell
 Info         911
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         310
 Mana         15
 Rounds       8
@@ -408,6 +424,32 @@ Code         spell_black_lightning
 Dammsg       Black Lightning~
 Wearoff      !WEAROFF!~
 Minlevel     46
+End
+
+#SKILL
+Name         blasphemy~
+Type         Spell
+Info         1928
+Flags        38912
+Target       1
+Minpos       110
+Slot         94
+Mana         80
+Rounds       8
+Code         spell_smaug
+Dammsg       blasphemy~
+Wearoff      You are no longer afflicted by the curse of the Nephandi!~
+Hitchar      You utter a curse against the Gods and bring their wrath upon
+
+$N!~
+Hitvict      $n has BLASPHEMED you!~
+Hitroom      $n utters Edaj and infuriates the Gods!~
+Dice         50d1~
+Components   v+482~
+Affect       '' 60 '17' -1
+Affect       'l*10' 31 '-3' -1
+Affect       'l*3' 26 'curse' -1
+Minlevel     30
 End
 
 #SKILL
@@ -468,7 +510,7 @@ Hitvict      A powerful blessing is laid upon you.~
 Hitroom      $N beams as a powerful blessing is laid upon $M.~
 Affect       'l*23' 24 '-(l/8)' -1
 Affect       'l*23' 18 'l/8' -1
-Affect       '' 60 '54' -1
+Affect       '' 60 '95' -1
 Minlevel     5
 End
 
@@ -492,13 +534,18 @@ End
 Name         blitz~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       105
 Rounds       8
 Code         spell_smaug
 Dammsg       Blitz~
-Hitchar      You attack $N with a set of furious blows.~
+Hitchar      You rush $N and tackle them to the ground.~
+Hitvict      $n rushes at you and tackles you to the ground.~
+Hitroom      $n rushes at $N and tackles them to the ground.~
+Misschar     You rush your opponent hoping to tackle them, but you miss and nearly fall down.~
+Missvict     $n rushes forward to tackle you, but misses and nearly falls flat on $s face.~
+Missroom     $n rushes forward to tackle $N, but misses and nearly falls flat on $s face.~
 Dice         l/2 { 40~
 Minlevel     28
 End
@@ -534,7 +581,7 @@ Flags        0
 Target       4
 Minpos       112
 Mana         95
-Rounds       12
+Rounds       8
 Code         do_brew
 Dammsg       ~
 Wearoff      !Brew!~
@@ -547,6 +594,7 @@ Type         Skill
 Info         0
 Flags        0
 Minpos       112
+Rounds       24
 Code         do_broach
 Dammsg       ~
 Minlevel     41
@@ -572,7 +620,7 @@ End
 Name         call lightning~
 Type         Spell
 Info         3
-Flags        0
+Flags        6144
 Minpos       109
 Slot         6
 Mana         15
@@ -648,11 +696,30 @@ Minlevel     34
 End
 
 #SKILL
+Name         caustic touch~
+Type         Spell
+Info         398
+Flags        6144
+Target       1
+Minpos       105
+Mana         18
+Rounds       10
+Code         spell_smaug
+Dammsg       ~
+Wearoff      The toxins in your blood subside.~
+Hitchar      You lay a hand on $N and infuse $S body with poison.~
+Hitvict      $n lays a hand on you and poison infuses you.~
+Hitroom      $N shivers under $n's caustic touch.~
+Affect       'l*25' 26 'poison' 12
+Minlevel     51
+End
+
+#SKILL
 Name         change sex~
 Type         Spell
 Info         0
 Flags        0
-Target       2
+Target       3
 Minpos       111
 Slot         82
 Mana         15
@@ -744,6 +811,19 @@ Rounds       8
 Code         spell_null
 Dammsg       slash~
 Minlevel     51
+End
+
+#SKILL
+Name         cleave~
+Type         Skill
+Info         0
+Flags        0
+Minpos       106
+Rounds       18
+Guild        99
+Code         do_cleave
+Dammsg       cleave~
+Minlevel     50
 End
 
 #SKILL
@@ -845,8 +925,8 @@ Rounds       12
 Code         spell_smaug
 Dammsg       ~
 Wearoff      !Create Fire!~
-Hitchar      A small cloud of vaporous flame bursts forth before you.~
-Hitroom      A small cloud of vaporous flame bursts forth before $n.~
+Hitchar      You call upon the Gods to invoke the power of fire!~
+Hitroom      $n invokes the power of fire!~
 Dice         L~
 Value        30
 Minlevel     6
@@ -928,7 +1008,7 @@ End
 Name         cuff~
 Type         Skill
 Info         9096
-Flags        0
+Flags        128
 Target       1
 Minpos       109
 Rounds       8
@@ -979,7 +1059,7 @@ Type         Spell
 Info         0
 Flags        0
 Target       2
-Minpos       110
+Minpos       107
 Slot         16
 Mana         10
 Rounds       12
@@ -1044,6 +1124,28 @@ Minlevel     12
 End
 
 #SKILL
+Name         dehydrate~
+Type         Spell
+Info         855
+Flags        132096
+Target       1
+Minpos       108
+Slot         95
+Mana         40
+Rounds       14
+Code         spell_smaug
+Dammsg       dehydration~
+Wearoff      You feel less dehydrated.~
+Hitchar      You dehydrate $N!~
+Hitvict      You feel parched!~
+Hitroom      $N is dehydrated!~
+Affect       'l*5' 64 '-10' -1
+Affect       '' 26 'dehydration' -1
+Affect       '' 60 '95' -1
+Minlevel     24
+End
+
+#SKILL
 Name         defensive style~
 Type         Skill
 Info         0
@@ -1054,6 +1156,26 @@ Dammsg       ~
 Wearoff      !defensive style!~
 Teachers     10340 3004~
 Minlevel     1
+End
+
+#SKILL
+Name         demonic aura~
+Type         Spell
+Info         1864
+Flags        6144
+Target       3
+Minpos       107
+Slot         98
+Mana         40
+Rounds       10
+Code         spell_smaug
+Dammsg       demonic aura~
+Wearoff      The dark powers no longer protect you.~
+Hitchar      You are enveloped by the powers of darkness!~
+Hitvict      A demonic aura protects you from harm!~
+Misschar     The evil powers fail to respond to your plea for protection.~
+Affect       'l*15' 27 '257' -1
+Minlevel     12
 End
 
 #SKILL
@@ -1076,6 +1198,26 @@ Minlevel     20
 End
 
 #SKILL
+Name         desecrate~
+Type         Spell
+Info         3982
+Flags        0
+Target       4
+Minpos       110
+Saves        1
+Slot         125
+Mana         15
+Rounds       10
+Code         spell_smaug
+Dammsg       desecrate~
+Hitvict      The desecration is successful!~
+Hitroom      Nephandi rejoice as another item is desecrated!~
+Affect       'l*4' 26 'poison' -1
+Affect       '' 26 'desecration' -1
+Minlevel     48
+End
+
+#SKILL
 Name         detect evil~
 Type         Spell
 Info         0
@@ -1089,7 +1231,7 @@ Code         spell_smaug
 Dammsg       ~
 Wearoff      The red outlines fade from your vision.~
 Hitvict      Traces of red outline all evil in plain sight.~
-Hitroom      A tint of red appears in $N's eyes, mirroring his own vision.~
+Hitroom      A tint of red appears in $N's eyes, mirroring $S own vision.~
 Affect       'l*24' 26 'detect evil' 2
 Minlevel     4
 End
@@ -1282,9 +1424,25 @@ Slot         305
 Mana         15
 Rounds       8
 Code         spell_disruption
-Dammsg       Disruption ~
+Dammsg       Disruption~
 Wearoff      !WEAROFF!~
 Minlevel     8
+End
+
+#SKILL
+Name         divination~
+Type         Spell
+Info         0
+Flags        6144
+Target       4
+Minpos       111
+Mana         10
+Rounds       10
+Code         spell_identify
+Dammsg       ~
+Hitchar      You focus your divining powers on $O...~
+Components   V@387~
+Minlevel     51
 End
 
 #SKILL
@@ -1425,7 +1583,7 @@ End
 Name         earthquake~
 Type         Spell
 Info         0
-Flags        0
+Flags        6144
 Minpos       109
 Slot         23
 Mana         15
@@ -1440,13 +1598,18 @@ End
 Name         elbow~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
 Code         spell_smaug
 Dammsg       elbow~
-Hitchar      You raise your elbow and strike out at $N.~
+Hitchar      You swing your elbow in a vicious arc hitting $N.~
+Hitvict      $n swings $s elbow in a vicious arc and hits you.~
+Hitroom      $n swings $s elbow in a vicious arc, hitting $N.~
+Misschar     You swing your elbow in a vicious arc intended to obliterate your target, but miss.~
+Missvict     $n swings $s elbow in a vicious arc fully intent on obliterating you, but fortunately misses.~
+Missroom     $n swings $s elbow in a vicious arc, intent on obliterating $s target, but misses altogether.~
 Dice         l/2 { 25~
 Minlevel     15
 End
@@ -1615,6 +1778,49 @@ Minlevel     1
 End
 
 #SKILL
+Name         execrate~
+Type         Spell
+Info         904
+Flags        6288
+Minpos       109
+Slot         95
+Mana         30
+Rounds       18
+Code         spell_smaug
+Dammsg       execration~
+Wearoff      The execration wears off.~
+Hitchar      You curse everyone within your reach.~
+Hitvict      An execration is laid upon you.~
+Affect       'l*23' 26 'curse' 10
+Affect       'l*23' 18 '-1' -1
+Affect       'l*23' 20 '1' -1
+Affect       '' 60 '95' -1
+Minlevel     3
+End
+
+#SKILL
+Name         exorcism~
+Type         Spell
+Info         840
+Flags        0
+Target       2
+Minpos       112
+Slot         99
+Mana         50
+Rounds       10
+Code         spell_smaug
+Dammsg       exorcism~
+Hitchar      You chant wildly and perform an exorcism on $N.~
+Hitvict      The demons within you are painfully extracted by $n. You feel relieved.~
+Hitroom      $N has undergone an exorcism!~
+Components   v+10216~
+Affect       '' 60 '99' -1
+Affect       '' 60 '17' -1
+Affect       '' 60 '94' -1
+Minlevel     25
+End
+
+#SKILL
 Name         expurgation~
 Type         Spell
 Info         0
@@ -1666,7 +1872,7 @@ Name         faerie fog~
 Type         Spell
 Info         0
 Flags        0
-Minpos       112
+Minpos       109
 Slot         73
 Mana         12
 Rounds       12
@@ -1710,6 +1916,27 @@ Hitroom      $N suddenly appears very tired and drowsy.~
 Immchar      Mysteriously, $N was not affected by your spell.~
 Affect       'l*15' 29 '1024' -1
 Minlevel     23
+End
+
+#SKILL
+Name         feebleness~
+Type         Spell
+Info         0
+Flags        6144
+Target       1
+Minpos       109
+Slot         107
+Mana         30
+Rounds       10
+Code         spell_smaug
+Dammsg       ~
+Wearoff      You no longer feel so feeble.~
+Hitchar      You lay a curse of feebleness upon $N.~
+Hitvict      You grow feeble from a powerful curse.~
+Hitroom      $n lays a curse of feebleness upon $N.~
+Immchar      $N is not affected by your spell.~
+Affect       'l*19' 29 '512' -1
+Minlevel     33
 End
 
 #SKILL
@@ -1811,7 +2038,7 @@ Type         Spell
 Info         393
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         60
 Mana         15
 Rounds       12
@@ -1822,21 +2049,43 @@ Minlevel     51
 End
 
 #SKILL
+Name         flesh armor~
+Type         Spell
+Info         840
+Flags        4096
+Target       3
+Minpos       112
+Slot         95
+Mana         50
+Rounds       25
+Code         spell_smaug
+Dammsg       ~
+Wearoff      Your flesh returns to its normal state.~
+Hitchar      You utilize magic to create an armor from your own flesh.~
+Hitvict      You form an armor from your own flesh and magic!~
+Hitroom      $n's flesh becomes a veil of armor and magic!~
+Missvict     Your flesh crawls but fails to form a protective aura.~
+Affect       'l*20' 26 'flesh armor' -1
+Affect       'l*20' 17 '-50' -1
+Minlevel     12
+End
+
+#SKILL
 Name         fletch~
 Type         Spell
 Info         8
 Flags        16384
-Minpos       109
+Minpos       111
 Slot         47
-Mana         30
+Mana         10
 Rounds       10
 Code         spell_smaug
 Dammsg       ~
 Hitchar      You fashion an arrow from a crude piece of flint.~
 Hitroom      $n creates an arrow from a piece of flint.~
 Misschar     You attempt to make an arrow, but fail miserably.~
-Value        21085
-Components   v21086~
+Value        306
+Components   Kflint~
 Minlevel     20
 End
 
@@ -1928,7 +2177,7 @@ Flags        0
 Target       1
 Minpos       110
 Slot         202
-Mana         95
+Mana         15
 Rounds       4
 Code         spell_frost_breath
 Dammsg       blast of frost~
@@ -1956,7 +2205,7 @@ End
 Name         gas breath~
 Type         Spell
 Info         0
-Flags        0
+Flags        6144
 Minpos       109
 Slot         203
 Mana         15
@@ -1994,6 +2243,16 @@ Minlevel     1
 End
 
 #SKILL
+Name         gnomish~
+Type         Tongue
+Info         0
+Flags        0
+Code         spell_null
+Dammsg       ~
+Minlevel     1
+End
+
+#SKILL
 Name         goblin~
 Type         Tongue
 Info         0
@@ -2014,6 +2273,20 @@ Code         do_gouge
 Dammsg       gouge~
 Wearoff      !Gouge!~
 Minlevel     20
+End
+
+#SKILL
+Name         grapple~
+Type         Skill
+Info         0
+Flags        0
+Minpos       109
+Rounds       36
+Guild        99
+Code         do_grapple
+Dammsg       !grapple!~
+Wearoff      You stop grappling.~
+Minlevel     50
 End
 
 #SKILL
@@ -2115,14 +2388,18 @@ End
 Name         headbutt~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       105
 Rounds       8
 Code         spell_smaug
 Dammsg       headbutt~
-Hitchar      You charge straight into $N and ram $M with your head!~
-Hitvict      $n headbutts you!~
+Hitchar      You rear your head back and headbutt $N.~
+Hitvict      $n rears $s head back and headbutts you in the face.~
+Hitroom      $n rears $s head back and headbutts $N.~
+Misschar     You rear your head back prepared to headbutt your opponent, but they move out of range of your blow.~
+Missvict     $n rears back $s head preparing to headbutt you, but you move back and out of range of their blow.~
+Missroom     $n rears back $s head preparing to headbutt $s foe, but $N steps back out of range of their blow.~
 Dice         l/2 { 35~
 Minlevel     20
 End
@@ -2173,7 +2450,7 @@ Mana         40
 Rounds       12
 Code         spell_smaug
 Dammsg       ~
-Hitchar      You infuse $n with a healing vitality.~
+Hitchar      You infuse $N with a healing vitality.~
 Hitvict      Your wounds are soothed by a healing vitality.~
 Components   V@65~
 Affect       '' 13 '5*(l/3)' -1
@@ -2230,12 +2507,31 @@ Minlevel     45
 End
 
 #SKILL
+Name         ice storm~
+Type         Spell
+Info         8074
+Flags        16
+Minpos       109
+Saves        5
+Slot         401
+Mana         10
+Rounds       12
+Code         spell_smaug
+Dammsg       storm of ice~
+Hitchar      You call a storm of ice!~
+Hitroom      $n calls an ice storm!~
+Dice         100d20~
+Affect       '30' 1 '-1' -1
+Minlevel     50
+End
+
+#SKILL
 Name         iceshard~
 Type         Spell
 Info         394
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         299
 Mana         15
 Rounds       12
@@ -2258,9 +2554,9 @@ Rounds       12
 Code         spell_smaug
 Dammsg       ~
 Wearoff      The hail of ice rapidly melts and evaporates into nothingness.~
-Hitchar      A glistening hail of ice encompasses $N.~
-Hitvict      A glistening hail of ice encompasses you.~
-Hitroom      A glistening hail of ice encompasses $N.~
+Hitchar      A glistening shield of ice encompasses $N!~
+Hitvict      A glistening shield of ice encompasses you!~
+Hitroom      A glistening shield of ice encompasses $N!~
 Affect       '(l*4)+8' 26 'iceshield' 28
 Minlevel     22
 End
@@ -2278,6 +2574,27 @@ Code         spell_identify
 Dammsg       ~
 Wearoff      !Identify!~
 Minlevel     10
+End
+
+#SKILL
+Name         ill fortune~
+Type         Spell
+Info         0
+Flags        6144
+Target       1
+Minpos       110
+Slot         108
+Mana         40
+Rounds       13
+Code         spell_smaug
+Dammsg       ~
+Wearoff      Your ill luck finally fades away.~
+Hitchar      $N's luck suddenly turns ill.~
+Hitvict      Your luck suddenly turns ill.~
+Hitroom      $N's luck suddenly turns ill.~
+Immchar      Your spell has no effect upon $N.~
+Affect       'l*18' 31 '-3' -1
+Minlevel     31
 End
 
 #SKILL
@@ -2299,6 +2616,20 @@ Hitroom      The Fury of The High Gods is temporarily given to $N.~
 Affect       'l/2' 18 '1+(l/17)' -1
 Affect       'l/2' 19 '1+(l/17)' -1
 Minlevel     27
+End
+
+#SKILL
+Name         infernal node~
+Type         Spell
+Info         0
+Flags        6144
+Target       3
+Minpos       110
+Mana         89
+Rounds       19
+Code         spell_teleport
+Dammsg       ~
+Minlevel     33
 End
 
 #SKILL
@@ -2364,14 +2695,18 @@ End
 Name         jab~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
 Code         spell_smaug
 Dammsg       jab~
-Hitchar      You jab at $N with your fist.~
-Hitvict      $n jabs at you with a fist.~
+Hitchar      You throw a light jab at $N.~
+Hitvict      $n throws a light jab and hits you.~
+Hitroom      $n throws a light jab at $N.~
+Misschar     You throw a light jab at $N but miss totally.~
+Missvict     $n throws a light jab at your face, but misses totally.~
+Missroom     $n throws a light jab at $N but misses totally.~
 Dice         l/2 { 20~
 Minlevel     20
 End
@@ -2413,7 +2748,7 @@ End
 Name         knee~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
@@ -2459,13 +2794,18 @@ End
 Name         leap~
 Type         Skill
 Info         904
-Flags        6144
+Flags        6272
 Target       1
 Minpos       105
 Rounds       8
 Code         spell_smaug
 Dammsg       leap~
-Hitchar      You leap into the air and hit $N with your feet!~
+Hitchar      You leap into the air and kick $N on the chest with both of your feet.~
+Hitvict      $n leaps into the air and kicks you on the chest with both of $s feet.~
+Hitroom      $n leaps into the air and kicks $N on the chest with both of $s feet.~
+Misschar     You leap into the air attempting to kick $N with both feet, but miss and fall flat on your rump.~
+Missvict     $n leaps into the air attempting to kick you with both feet, but misses and falls flat on $s rump.~
+Missroom     $n leaps into the air attempting to kick $N with both feet, but misses and falls flat on $s rump.~
 Dice         l/2 { 35~
 Minlevel     18
 End
@@ -2492,6 +2832,33 @@ Minlevel     12
 End
 
 #SKILL
+Name         levitate~
+Type         Spell
+Info         0
+Flags        6144
+Target       3
+Minpos       112
+Slot         95
+Mana         40
+Rounds       8
+Code         spell_smaug
+Dammsg       ~
+Wearoff      Your levitation spell wears off and you return to the
+
+ground.~
+Hitchar      You slowly rise into the air.~
+Hitvict      Your feet slowly rise off of the ground.~
+Hitroom      $N bows $S head in concentration and $S feet rise off the
+
+ground.~
+Misschar     You concentrate heavily, but your feet stay anchored to the
+
+earth.~
+Affect       'l*23' 26 'floating' 21
+Minlevel     27
+End
+
+#SKILL
 Name         lightning bolt~
 Type         Spell
 Info         3
@@ -2513,7 +2880,7 @@ Type         Spell
 Info         3
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         204
 Mana         15
 Rounds       4
@@ -2527,11 +2894,11 @@ End
 Name         locate object~
 Type         Spell
 Info         0
-Flags        0
+Flags        6144
 Minpos       111
 Slot         31
 Mana         40
-Rounds       18
+Rounds       24
 Code         spell_locate_object
 Dammsg       ~
 Wearoff      !Locate Object!~
@@ -2552,13 +2919,18 @@ End
 Name         lunge~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
 Code         spell_smaug
 Dammsg       lunge~
-Hitchar      You lunge toward $N with your weapon.~
+Hitchar      You lunge at $N, catching $m off guard and knocking $m to the floor.~
+Hitvict      $n lunges at you, catching you off guard and knocking you to the floor.~
+Hitroom      $n lunges at $N, catching $m off guard and knocking $m to the floor.~
+Misschar     You lunge at $N intending to catch $m off guard, but fall short and miss altogether.~
+Missvict     $n lunges at you intending to catch you off guard, but falls short and misses altogether.~
+Missroom     $n lunges at $s target intent on catching $N off guard, but falls short and misses altogether.~
 Dice         l/2 { 35~
 Minlevel     20
 End
@@ -2566,16 +2938,18 @@ End
 #SKILL
 Name         magic missile~
 Type         Spell
-Info         340
+Info         396
 Flags        0
 Target       1
 Minpos       109
 Slot         32
 Mana         7
 Rounds       6
+Range        1
 Code         spell_smaug
 Dammsg       magic missile~
 Wearoff      !Magic Missile!~
+Dice         l/3 + 3~
 Minlevel     1
 End
 
@@ -2641,13 +3015,35 @@ Info         0
 Flags        530432
 Target       3
 Minpos       106
-Rounds       25
-Code         spell_smaug
+Rounds       35
+Code         do_meditate
 Dammsg       ~
 Hitvict      You meditate peacefully, collecting mana from the cosmos.~
 Missvict     You spend several minutes in deep concentration, but fail to collect any mana.~
-Affect       '' 12 '22' -1
 Minlevel     12
+End
+
+#SKILL
+Name         mental anguish~
+Type         Spell
+Info         1932
+Flags        6144
+Target       1
+Minpos       111
+Mana         60
+Rounds       10
+Code         spell_smaug
+Dammsg       mental anguish~
+Wearoff      Your mind is now free of anguish.~
+Hitchar      You inflict mental anguish on $N!~
+Hitvict      $n tortures you with mental anguish!~
+Misschar     You fail to inflict mental anguish on $N!~
+Affect       '' 60 '206' -1
+Affect       '' 26 'mental anguish' -1
+Affect       'l*10' 3 '-1' -1
+Affect       'l*10' 5 '-1' -1
+Affect       'l*10' 18 '-1' -1
+Minlevel     44
 End
 
 #SKILL
@@ -2658,12 +3054,32 @@ Flags        0
 Target       4
 Minpos       111
 Slot         52
-Mana         30
-Rounds       20
+Mana         50
+Rounds       24
 Code         spell_midas_touch
 Dammsg       !MIDAS_TOUCH!~
 Wearoff      !MIDAS_TOUCH!~
 Minlevel     13
+End
+
+#SKILL
+Name         mind fortress~
+Type         Spell
+Info         1432
+Flags        14336
+Target       2
+Minpos       111
+Slot         95
+Mana         100
+Rounds       40
+Code         spell_smaug
+Dammsg       'mind fortress'~
+Wearoff      Your mind fortress dissolves!~
+Hitvict      Your mental powers block out magic!~
+Affect       'l*24' 26 'mind fortress' -1
+Affect       'l*24' 24 '-6' -1
+Affect       'l*24' 3 '+1' -1
+Minlevel     8
 End
 
 #SKILL
@@ -2679,7 +3095,7 @@ Rounds       15
 Code         spell_smaug
 Dammsg       ~
 Wearoff      The minor invocation fades away.~
-Hitchar      You lay a minor invocation of your god  upon $N.~
+Hitchar      You lay a minor invocation of your god upon $N.~
 Hitvict      A minor invocation is laid upon you.~
 Hitroom      $N beams as a minor invocation is laid upon $M.~
 Affect       'l*23' 18 '(l/8)' -1
@@ -2744,6 +3160,24 @@ Minlevel     2
 End
 
 #SKILL
+Name         mystic awareness~
+Type         Spell
+Info         840
+Flags        0
+Target       3
+Minpos       109
+Slot         310
+Mana         50
+Rounds       12
+Code         spell_smaug
+Dammsg       ~
+Wearoff      Your awareness of your surroundings fades.~
+Hitvict      Visions in the distance gain clarity.~
+Affect       'l*20' 26 'scry' 24
+Minlevel     9
+End
+
+#SKILL
 Name         necromantic touch~
 Type         Spell
 Info         8591
@@ -2765,6 +3199,21 @@ Minlevel     40
 End
 
 #SKILL
+Name         nightmare~
+Type         Spell
+Info         0
+Flags        0
+Minpos       109
+Mana         40
+Rounds       12
+Code         spell_dream
+Dammsg       ~
+Hitchar      You force your twisted thoughts into the mind of $N.~
+Hitvict      Your mind is tortured with twisted visions of death and despair.~
+Minlevel     26
+End
+
+#SKILL
 Name         nostrum~
 Type         Spell
 Info         0
@@ -2780,6 +3229,29 @@ Wearoff      !Nostrum!~
 Hitvict      A sense of revival rushes through your body.~
 Affect       '' 13 '100' -1
 Minlevel     29
+End
+
+#SKILL
+Name         occular explosium~
+Type         Spell
+Info         3413
+Flags        38912
+Target       1
+Minpos       112
+Slot         95
+Mana         40
+Rounds       10
+Code         spell_smaug
+Dammsg       occular explosium~
+Hitchar      You nearly cause $N's eyes to explode!~
+Hitvict      Blood spurts from your eye sockets as you experience the pain
+
+of occular explosium!~
+Dice         20d1~
+Components   v+49~
+Affect       '' 60 '95' -1
+Affect       'l*3' 29 'blindness' -1
+Minlevel     16
 End
 
 #SKILL
@@ -2819,6 +3291,28 @@ Flags        0
 Code         spell_null
 Dammsg       ~
 Minlevel     1
+End
+
+#SKILL
+Name         paranoia~
+Type         Spell
+Info         2952
+Flags        6144
+Target       1
+Minpos       111
+Saves        5
+Mana         20
+Rounds       10
+Code         spell_smaug
+Dammsg       paranoia attack~
+Wearoff      You are no longer paranoid.~
+Hitchar      You cause $N to become paranoid!~
+Hitvict      It seems as if everyone is out to kill you! Beware!~
+Misschar     $N is too stable to become paranoid.~
+Affect       '' 60 '227' -1
+Affect       'l+25' 26 'paranoia' -1
+Affect       'l+25' 3 '-1' -1
+Minlevel     38
 End
 
 #SKILL
@@ -2865,7 +3359,7 @@ End
 Name         pelt~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       114
 Rounds       8
@@ -2875,6 +3369,29 @@ Hitchar      You pelt at $N with a sharp blow!~
 Hitvict      $n pelts you with a sharp blow!~
 Dice         l/2 { 30~
 Minlevel     51
+End
+
+#SKILL
+Name         pentagram~
+Type         Spell
+Info         8
+Flags        22528
+Minpos       110
+Slot         97
+Mana         80
+Rounds       20
+Code         spell_smaug
+Dammsg       pentagram~
+Wearoff      The evil force surrounding you slowly dissipates... ~
+Hitchar      An evil force surrounds you as you make the mark of the Pentagram.~
+Hitvict      A Pentagram appears!~
+Hitroom      $n fashions a Pentagram from the forces of chaos!~
+Misschar     You fail to complete the pentagram.~
+Value        482
+Affect       '' 12 '50' -1
+Affect       'l*20' 17 '-20' -1
+Affect       'l*20' 26 'protect' -1
+Minlevel     16
 End
 
 #SKILL
@@ -2901,6 +3418,44 @@ Minlevel     1
 End
 
 #SKILL
+Name         pestilence~
+Type         Spell
+Info         1864
+Flags        0
+Minpos       111
+Slot         95
+Mana         60
+Rounds       10
+Code         spell_smaug
+Dammsg       ~
+Value        453
+Components   v482 v2072~
+Minlevel     50
+End
+
+#SKILL
+Name         plague~
+Type         Spell
+Info         2390
+Flags        6160
+Minpos       111
+Saves        1
+Slot         96
+Mana         90
+Rounds       14
+Code         spell_smaug
+Dammsg       plague~
+Hitchar      A black blister erupts as the Plague spreads!~
+Hitvict      Your skin erupts in black blisters!~
+Hitroom      $n calls forth the ancient curse of the Plague!~
+Dice         1d50~
+Components   v+482~
+Affect       '' 26 'plague' -1
+Affect       'l*4' 14 '-10' -1
+Minlevel     18
+End
+
+#SKILL
 Name         plant pass~
 Type         Spell
 Info         0
@@ -2921,7 +3476,7 @@ Type         Spell
 Info         0
 Flags        131072
 Target       1
-Minpos       111
+Minpos       112
 Slot         33
 Mana         10
 Rounds       20
@@ -2988,7 +3543,21 @@ Code         spell_possess
 Dammsg       possess~
 Wearoff      You return to your body.~
 Components   v+13~
-Minlevel     51
+Minlevel     35
+End
+
+#SKILL
+Name         pounce~
+Type         Skill
+Info         0
+Flags        0
+Minpos       112
+Mana         15
+Rounds       12
+Guild        99
+Code         do_pounce
+Dammsg       pounce~
+Minlevel     5
 End
 
 #SKILL
@@ -3011,6 +3580,45 @@ Minlevel     6
 End
 
 #SKILL
+Name         psionic blast~
+Type         Spell
+Info         911
+Flags        6144
+Minpos       110
+Slot         95
+Mana         10
+Rounds       10
+Range        1
+Code         spell_smaug
+Dammsg       Psionic Blast~
+Hitchar      Your psionic blast drains $N!~
+Hitroom      $n blasts $N with $s psionic powers!~
+Dice         75d2~
+Affect       '' 12 '-10' -1
+Affect       'l*3' 1012 'i/2' -1
+Minlevel     50
+End
+
+#SKILL
+Name         psychic surge~
+Type         Spell
+Info         12684
+Flags        6144
+Target       1
+Minpos       111
+Mana         20
+Rounds       10
+Code         spell_smaug
+Dammsg       psychic surge~
+Wearoff      !Psychic Surge!~
+Hitchar      You send a wave of psychic energy toward $N and $E howls in pain.~
+Hitvict      $n points at you and you are engulfed in blinding pain.~
+Dice         L/3~
+Affect       'i' 26 'blind' 0
+Minlevel     51
+End
+
+#SKILL
 Name         pugilism~
 Type         Weapon
 Info         0
@@ -3030,8 +3638,12 @@ Minpos       105
 Rounds       8
 Code         spell_smaug
 Dammsg       pummel~
-Hitchar      You pummel $N with your fists!~
-Hitvict      You are pummeled across the room!~
+Hitchar      You strike out angrily with both fists pummeling $N to the ground.~
+Hitvict      $n strikes out angrily with both fists pummeling you to the ground.~
+Hitroom      $n strikes out angrily with both fists pummeling $N to the ground.~
+Misschar     You strike out angrily with both fists hoping to pummel your opponent into the ground, but miss altogether.~
+Missvict     $n strikes out angrily with both fists hoping to pummel you into the ground, but misses altogether.~
+Missroom     $n strikes out angrily with both fists hoping to pummel $N into the ground, but misses altogether.~
 Dice         l/1 { 40~
 Minlevel     30
 End
@@ -3053,13 +3665,18 @@ End
 Name         punt~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       8
 Code         spell_smaug
 Dammsg       punt~
-Hitchar      You carefully aim a kick toward $N.~
+Hitchar      You raise your leg and deal $N a vicious kick.~
+Hitvict      $n raises $s leg and deals you a vicious kick.~
+Hitroom      $n raises $s leg and deals $N a vicious kick.~
+Misschar     You raise your leg to deal a vicious kick, but lose your balance and miss your target.~
+Missvict     $n raises his leg to deal you a vicious kick, but loses $s balance and misses you by a mile.~
+Missroom     $n raises his leg to deal $s target a vicious kick, but loses $s balance and misses completely.~
 Dice         l/2 { 25~
 Minlevel     15
 End
@@ -3073,7 +3690,7 @@ Target       1
 Minpos       107
 Slot         314
 Mana         15
-Rounds       8
+Rounds       10
 Code         spell_quantum_spike
 Dammsg       Quantum Spike~
 Wearoff      !WEAROFF!~
@@ -3230,7 +3847,7 @@ Dammsg       ~
 Wearoff      You no longer feel resilient.~
 Hitchar      You bless $N with a holy resilience.~
 Hitvict      You feel resilient.~
-Hitroom      $n grows resilient from a powerful spell.~
+Hitroom      $N grows resilient from a powerful spell.~
 Affect       'l*23' 27 '512' -1
 Minlevel     40
 End
@@ -3273,16 +3890,56 @@ Minlevel     51
 End
 
 #SKILL
+Name         reveal~
+Type         Spell
+Info         328
+Flags        6144
+Target       3
+Minpos       112
+Mana         50
+Rounds       13
+Code         spell_smaug
+Dammsg       ~
+Wearoff      You can no longer see the invisible forces around you.~
+Hitchar      The invisible world is revealed unto you!~
+Hitvict      The invisible world is revealed unto you!~
+Affect       'l*24' 26 'detect_invis' 3
+Minlevel     20
+End
+
+#SKILL
+Name         rid toxins~
+Type         Spell
+Info         328
+Flags        6144
+Target       3
+Minpos       110
+Mana         80
+Rounds       10
+Code         spell_cure_poison
+Dammsg       ~
+Wearoff      !Cure Poison!~
+Hitvict      The rite of cleansing has freed you from curses and toxins!~
+Hitroom      $n summons the Umbral demons to rid $mself of toxins!~
+Minlevel     14
+End
+
+#SKILL
 Name         roundhouse~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
 Code         spell_smaug
 Dammsg       roundhouse~
-Hitchar      You strike at $N with a vicious roundhouse blow!~
+Hitchar      You strike out with a vicious roundhouse kick.~
+Hitvict      $n strikes out with a vicious roundhouse kick which catches you on the side of the head.~
+Hitroom      $n strikes out at $N with a vicious roundhouse kick.~
+Misschar     You strike out with a powerful roundhouse kick which glances off of your opponent.~
+Missvict     $n strikes at you with a powerful roundhouse kick which glances off of you.~
+Missroom     $n strikes at $N with a powerful roundhouse kick which glances off of $M.~
 Dice         l/2 { 30~
 Minlevel     25
 End
@@ -3299,6 +3956,7 @@ Mana         100
 Rounds       12
 Code         spell_sacral_divinity
 Dammsg       ~
+Wearoff      You are no longer protected by the Gods.~
 Components   V@65~
 Minlevel     35
 End
@@ -3344,6 +4002,45 @@ Minlevel     13
 End
 
 #SKILL
+Name         sand of Hades~
+Type         Spell
+Info         3976
+Flags        133138
+Minpos       112
+Saves        5
+Slot         128
+Mana         70
+Rounds       18
+Code         spell_smaug
+Dammsg       sandstorm~
+Wearoff      The sand storm dissipates.~
+Hitvict      You're blinded by a swirling sand storm!~
+Affect       'l*4' 26 'blind' 0
+Affect       'l*4' 26 'blind' -1
+Affect       '' 14 '-10' -1
+Minlevel     37
+End
+
+#SKILL
+Name         saturation~
+Type         Spell
+Info         0
+Flags        0
+Target       2
+Minpos       112
+Mana         1
+Rounds       12
+Code         spell_smaug
+Dammsg       MOB SPELL ONLY~
+Wearoff      The last drops of water finally evaporate from your body~
+Hitchar      You call forth the powers of the water and soak $N to the bone!~
+Hitvict      Water slowly seeps into your equipment, making you feel heavy.~
+Affect       '' 14 '-(l*4+50)' -1
+Affect       '1d100+100' 14 '-(l*4+25)' -1
+Minlevel     51
+End
+
+#SKILL
 Name         scan~
 Type         Skill
 Info         0
@@ -3365,7 +4062,7 @@ Target       1
 Minpos       109
 Slot         296
 Mana         25
-Rounds       12
+Rounds       8
 Code         spell_scorching_surge
 Dammsg       scorching surge~
 Wearoff      !Scorching Surge!~
@@ -3379,7 +4076,7 @@ Info         0
 Flags        0
 Target       4
 Minpos       112
-Rounds       12
+Rounds       8
 Code         do_scribe
 Dammsg       ~
 Minlevel     30
@@ -3403,6 +4100,23 @@ Hitvict      You receive a revelatory vision...~
 Hitroom      $N's eyes glaze over as $E endures a vision...~
 Affect       'l*23' 26 'scry' 24
 Minlevel     15
+End
+
+#SKILL
+Name         seduction~
+Type         Spell
+Info         0
+Flags        0
+Target       1
+Minpos       110
+Mana         75
+Rounds       20
+Code         spell_charm_person
+Dammsg       ~
+Hitchar      $N has fallen prey to your seduction!~
+Hitvict      $n has seduced you against your will!~
+Components   v@13~
+Minlevel     18
 End
 
 #SKILL
@@ -3516,13 +4230,18 @@ End
 Name         shoulder~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       8
 Code         spell_smaug
 Dammsg       shoulder~
-Hitchar      You lean into $N and hit $M with your shoulder.~
+Hitchar      You crouch low and rush $N with your shoulder.~
+Hitvict      $n crouches low and rushes you with $s shoulder.~
+Hitroom      $n crouches low and rushes $N with $s shoulder.~
+Misschar     You crouch low to rush your opponent with your shoulder, but miss and run right past.~
+Missvict     $n crouches low to rush you with $s shoulder, but misjudges and runs right past you.~
+Missroom     $n crouches low to rush $s intended target with $s shoulders, but misses totally and almost runs right into you.~
 Dice         l/2 { 25~
 Minlevel     18
 End
@@ -3645,7 +4364,7 @@ Type         Spell
 Info         908
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         309
 Mana         15
 Rounds       8
@@ -3656,12 +4375,32 @@ Minlevel     19
 End
 
 #SKILL
+Name         soul petrification~
+Type         Spell
+Info         0
+Flags        0
+Target       1
+Minpos       108
+Slot         129
+Mana         30
+Rounds       13
+Code         spell_smaug
+Dammsg       petrification~
+Wearoff      Your soul becomes vulnerable again.~
+Hitchar      You petrify the soul of yet another!~
+Hitroom      $n petrifies the soul of $N!~
+Affect       'l*25' 26 'petrification' -1
+Affect       'l*25' 17 '-40' -1
+Minlevel     48
+End
+
+#SKILL
 Name         spectral furor~
 Type         Spell
 Info         908
 Flags        0
 Target       1
-Minpos       110
+Minpos       109
 Slot         306
 Mana         15
 Rounds       8
@@ -3675,7 +4414,7 @@ End
 Name         spinkick~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       12
@@ -3726,7 +4465,7 @@ End
 Name         spurn~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       105
 Rounds       8
@@ -3765,7 +4504,7 @@ End
 Name         sting~
 Type         Skill
 Info         0
-Flags        0
+Flags        128
 Target       1
 Minpos       109
 Rounds       8
@@ -3797,15 +4536,20 @@ End
 Name         strike~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       107
 Rounds       8
 Code         spell_smaug
 Dammsg       strike~
-Hitchar      You strike out at $N.~
+Hitchar      You strike out angrily with both fists hitting your opponent squarely in the chest.~
+Hitvict      $n strikes out angrily at you with both fists hitting you squarely in the chest.~
+Hitroom      $n strikes out angrily with both fists hitting $N squarely in the chest.~
+Misschar     You strike out blindly with both your fists and miss your mark.~
+Missvict     $n strikes out blindly with both $s fists but completely misses you.~
+Missroom     $n strikes out blindly with both $s fists, missing $s intended target and almost hitting you.~
 Dice         l/2 { 20~
-Minlevel     15
+Minlevel     2
 End
 
 #SKILL
@@ -3857,14 +4601,18 @@ End
 Name         swat~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       8
 Code         spell_smaug
 Dammsg       swat~
-Hitchar      You swat at $N.~
-Hitvict      $n swats at you with a hand.~
+Hitchar      You swat at $N, hitting $M with the back of your hand.~
+Hitvict      $n swats at you, hitting you with the back of $s hand.~
+Hitroom      $n swats at $N, hitting $M with the back of $s hand.~
+Misschar     You swat at $N, but manage only a glancing blow.~
+Missvict     $n swats at you, but manages only a glancing blow.~
+Missroom     $n swats at $N, but only manages a glancing blow.~
 Dice         l/2 { 15~
 Minlevel     10
 End
@@ -3873,7 +4621,7 @@ End
 Name         swipe~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       8
@@ -3953,7 +4701,7 @@ Type         Skill
 Info         0
 Flags        0
 Target       2
-Minpos       108
+Minpos       112
 Mana         60
 Rounds       12
 Code         spell_smaug
@@ -3983,7 +4731,7 @@ Info         395
 Flags        0
 Target       1
 Minpos       109
-Slot         300
+Slot         400
 Mana         15
 Rounds       12
 Code         spell_lightning_bolt
@@ -4011,13 +4759,12 @@ Info         0
 Flags        530432
 Target       3
 Minpos       106
-Rounds       32
-Code         spell_smaug
+Rounds       45
+Code         do_trance
 Dammsg       ~
 Hitvict      You enter a peaceful trance, collecting mana from the cosmos.~
 Missvict     You spend several minutes in a deep trance, but fail to collect any mana.~
-Affect       '' 12 '50' -1
-Minlevel     32
+Minlevel     15
 End
 
 #SKILL
@@ -4099,6 +4846,27 @@ Minlevel     46
 End
 
 #SKILL
+Name         umbral spear~
+Type         Spell
+Info         13199
+Flags        0
+Target       1
+Minpos       110
+Slot         95
+Mana         40
+Rounds       24
+Code         spell_smaug
+Dammsg       umbral spear~
+Hitchar      You fashion a spear of deepest umbra and unleash it on $N!~
+Hitvict      $n unleashes an Umbral Spear on you!~
+Hitroom      $n's Umbral Spear penetrates $N's flesh!~
+Dice         25d2~
+Affect       'l*3' 18 '-1' -1
+Affect       '' 60 '95' -1
+Minlevel     30
+End
+
+#SKILL
 Name         unknown~
 Type         Spell
 Info         0
@@ -4155,13 +4923,18 @@ End
 Name         uppercut~
 Type         Skill
 Info         8584
-Flags        6144
+Flags        6272
 Target       1
 Minpos       109
 Rounds       8
 Code         spell_smaug
 Dammsg       uppercut~
-Hitchar      You launch your fist upwards, hitting $N.~
+Hitchar      You lunge forward with an uppercut which hits $N.~
+Hitvict      $n lunges forward with an uppercut which hits you solidly on the chin.~
+Hitroom      $n lunges forward with an uppercut which hits $N. ~
+Misschar     You lunge upward with a wild uppercut which misses completely throwing you slightly off balance.~
+Missvict     $n lunges upward with a wild uppercut intended to put out your lights, but misses.~
+Missroom     $n lunges upward with a wild uppercut intended to put out $N's lights but misses.~
 Dice         l/2 { 30~
 Minlevel     28
 End
@@ -4190,16 +4963,42 @@ End
 Name         vault~
 Type         Skill
 Info         9096
-Flags        6144
+Flags        6272
 Target       1
 Minpos       105
 Rounds       8
 Code         spell_smaug
 Dammsg       vault~
-Hitchar      You vault into $N!~
-Hitvict      $n vaults into you!~
+Hitchar      You vault through the air and crash foot first into $N.~
+Hitvict      $n vaults through the air and crashes foot first into you.~
+Hitroom      $n vaults through the air and crashes feet first into $N.~
+Misschar     You vault through the air hoping to catch $N off guard, but miss and roll right by $M.~
+Missvict     $n vaults through the air hoping to catch you off guard, but misses and rolls right by you.~
+Missroom     $n vaults through the air at $N hoping to catch $M off guard, but misses and rolls right by $M.~
 Dice         l/2 { 40~
 Minlevel     25
+End
+
+#SKILL
+Name         veiled steps~
+Type         Skill
+Info         0
+Flags        6144
+Target       3
+Minpos       112
+Rounds       8
+Code         spell_smaug
+Dammsg       ~
+Wearoff      Your footsteps and form once again become discernible.~
+Hitchar      Your steps become silent and your form hidden.~
+Hitvict      Your steps become silent and your form hidden.~
+Misschar     You clumsily attempt to mask your footsteps and hide in
+
+shadows.~
+Missvict     You attempt to mask your footsteps.~
+Affect       'l*6' 26 'sneak' 15
+Affect       'l*6' 26 'hide' 16
+Minlevel     17
 End
 
 #SKILL
@@ -4221,6 +5020,27 @@ Hitroom      A noxious vapor cloud forms around $N.~
 Missvict     You fail to create the noxious cloud.~
 Affect       '(l*4)+8' 26 'venomshield' 35
 Minlevel     29
+End
+
+#SKILL
+Name         venomous touch~
+Type         Spell
+Info         398
+Flags        0
+Target       1
+Minpos       112
+Mana         5
+Rounds       12
+Code         spell_poison
+Dammsg       ~
+Wearoff      The venom in your blood is finally purged.~
+Hitchar      Toxic venom passes into the body of $N.~
+Hitvict      You shiver as $n reaches towards you and infuses you with toxic venom!~
+Hitroom      $N shivers as $n infuses $M body with toxic venom.~
+Misschar     You reach a hand toward $N, but $E evades your venomous
+
+touch.~
+Minlevel     5
 End
 
 #SKILL
@@ -4267,7 +5087,7 @@ Info         0
 Flags        0
 Target       1
 Minpos       106
-Mana         15
+Mana         30
 Rounds       6
 Code         spell_smaug
 Dammsg       ~
@@ -4299,6 +5119,23 @@ Code         spell_weaken
 Dammsg       spell~
 Wearoff      You feel stronger.~
 Minlevel     2
+End
+
+#SKILL
+Name         wine invocation~
+Type         Spell
+Info         8
+Flags        16384
+Minpos       112
+Slot         95
+Mana         40
+Rounds       5
+Code         spell_smaug
+Dammsg       ~
+Hitchar      You use your mental powers to turn water into wine!~
+Value        936
+Components   Kwater~
+Minlevel     8
 End
 
 #SKILL
@@ -4352,6 +5189,28 @@ Dammsg       ~
 Affect       '10' 13 '-75' -1
 Affect       '10' 31 '-3' -1
 Minlevel     51
+End
+
+#SKILL
+Name         zidros Wrath~
+Type         Spell
+Info         1935
+Flags        6144
+Target       1
+Minpos       112
+Slot         300
+Mana         125
+Code         spell_smaug
+Dammsg       Wrath of Zidros~
+Hitchar      You summon the Wrath of Zidros to steal your victims magic.~
+Hitvict      You feel your magic powers dwindle as the Wrath of Zidros is laid upon you!~
+Hitroom      $n has summoned the Wrath of Zidros!~
+Components   v+482~
+Affect       'l*2' 4 '-1' -1
+Affect       'l*2' 12 '-50' -1
+Affect       '50' 1012 'l/2' -1
+Affect       '' 60 '400' -1
+Minlevel     45
 End
 
 #END

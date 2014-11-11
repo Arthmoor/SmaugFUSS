@@ -9,10 +9,10 @@
  * ------------------------------------------------------------------------ *
  * v. 0.9: 6/19/95:  Converts an ascii map to rooms.                        *
  * v. 1.0: 7/05/95:  Read/write maps to .are files.  Efficient storage.     *
- *	             Room qualities based on map code. Can add & remove rms *
- *	                from a map. (Somewhat) intelligent exit decisions.  *
+ *	             Room qualities based on map code. Can add & remove rms      *
+ *	                from a map. (Somewhat) intelligent exit decisions.       *
  * v. 1.1: 7/11/95:  Various display options.  See comments over draw_map   *
- *	                                                                    *
+
  ****************************************************************************/
 
 #include <stdio.h>
@@ -261,6 +261,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
       start_editing( ch, ch->pnote->text );
       return;
    }
+
    if( !str_cmp( arg, "clear" ) )
    {
       if( !ch->pnote )
@@ -278,6 +279,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
       send_to_char( "Map cleared.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg, "show" ) )
    {
       if( !ch->pnote )
@@ -289,6 +291,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
       do_mapout( ch, "stat" );
       return;
    }
+
    if( !str_cmp( arg, "create" ) )
    {
       if( !ch->pnote )
@@ -330,6 +333,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
       send_to_char( "Ok.\r\n", ch );
       return;
    }
+
    send_to_char( "mapout write: create a map in edit buffer.\r\n", ch );
    send_to_char( "mapout stat: get information about a written, but not yet created map.\r\n", ch );
    send_to_char( "mapout clear: clear a written, but not yet created map.\r\n", ch );

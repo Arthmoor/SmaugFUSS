@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- * 		Commands for personal player settings/statictics	    *
+ *             Commands for personal player settings/statictics             *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -950,21 +950,36 @@ void do_inventory( CHAR_DATA* ch, const char* argument)
 
 void do_equipment( CHAR_DATA* ch, const char* argument)
 {
+   CHAR_DATA *victim = ch;
    OBJ_DATA *obj;
    int iWear;
    bool found;
 
-   set_char_color( AT_RED, ch );
-   send_to_char( "You are using:\r\n", ch );
+   if( get_trust( ch ) > LEVEL_GOD && argument[0] != '\0' )
+   {
+      if( ( victim = get_char_world( ch, argument ) ) == NULL )
+      {
+         send_to_char( "They're not here.\r\n", ch );
+         return;
+      }
+      act( AT_RED, "$n is using:", victim, NULL, ch, TO_VICT );
+   }
+   else
+   {
+      set_char_color( AT_RED, ch );
+      send_to_char( "You are using:\r\n", ch );
+   }
+
    found = FALSE;
    set_char_color( AT_OBJECT, ch );
    for( iWear = 0; iWear < MAX_WEAR; iWear++ )
    {
-      for( obj = ch->first_carrying; obj; obj = obj->next_content )
+      for( obj = victim->first_carrying; obj; obj = obj->next_content )
+      {
          if( obj->wear_loc == iWear )
          {
-            if( ( !IS_NPC( ch ) ) && ( ch->race > 0 ) && ( ch->race < MAX_PC_RACE ) )
-               send_to_char( race_table[ch->race]->where_name[iWear], ch );
+            if( ( !IS_NPC( victim ) ) && ( victim->race > 0 ) && ( victim->race < MAX_PC_RACE ) )
+               send_to_char( race_table[victim->race]->where_name[iWear], ch );
             else
                send_to_char( where_name[iWear], ch );
 
@@ -977,6 +992,7 @@ void do_equipment( CHAR_DATA* ch, const char* argument)
                send_to_char( "something.\r\n", ch );
             found = TRUE;
          }
+      }
    }
 
    if( !found )
@@ -1011,11 +1027,7 @@ void do_title( CHAR_DATA* ch, const char* argument)
       return;
 
    set_char_color( AT_SCORE, ch );
-   if( ch->level < 5 )
-   {
-      send_to_char( "Sorry... you must be at least level 5 to set your title...\r\n", ch );
-      return;
-   }
+
    if( IS_SET( ch->pcdata->flags, PCFLAG_NOTITLE ) )
    {
       set_char_color( AT_IMMORT, ch );
@@ -1037,7 +1049,6 @@ void do_title( CHAR_DATA* ch, const char* argument)
    send_to_char( "Ok.\r\n", ch );
 }
 
-
 void do_homepage( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_STRING_LENGTH];
@@ -1045,9 +1056,9 @@ void do_homepage( CHAR_DATA* ch, const char* argument)
    if( IS_NPC( ch ) )
       return;
 
-   if( ch->level < 5 )
+   if( IS_SET( ch->pcdata->flags, PCFLAG_NOHOMEPAGE ) )
    {
-      send_to_char( "Sorry... you must be at least level 5 to do that.\r\n", ch );
+      send_to_char( "The Gods prohibit you from changing your homepage.\r\n", ch );
       return;
    }
 
@@ -1082,8 +1093,6 @@ void do_homepage( CHAR_DATA* ch, const char* argument)
    send_to_char( "Homepage set.\r\n", ch );
 }
 
-
-
 /*
  * Set your personal description				-Thoric
  */
@@ -1095,16 +1104,22 @@ void do_description( CHAR_DATA* ch, const char* argument)
       return;
    }
 
+   if( IS_SET( ch->pcdata->flags, PCFLAG_NODESC ) )
+   {
+      send_to_char( "You cannot set your description.\r\n", ch );
+      return;
+   }
+
    if( !ch->desc )
    {
-      bug( "%s", "do_description: no descriptor" );
+      bug( "%s: no descriptor", __FUNCTION__ );
       return;
    }
 
    switch ( ch->substate )
    {
       default:
-         bug( "%s", "do_description: illegal substate" );
+         bug( "%s: illegal substate", __FUNCTION__ );
          return;
 
       case SUB_RESTRICTED:
@@ -1133,22 +1148,24 @@ void do_bio( CHAR_DATA* ch, const char* argument)
       send_to_char( "Mobs cannot set a bio.\r\n", ch );
       return;
    }
-   if( ch->level < 5 )
+
+   if( IS_SET( ch->pcdata->flags, PCFLAG_NOBIO ) )
    {
-      set_char_color( AT_SCORE, ch );
-      send_to_char( "You must be at least level five to write your bio...\r\n", ch );
+      set_char_color( AT_RED, ch );
+      send_to_char( "The gods won't allow you to do that!\n\r", ch );
       return;
    }
+
    if( !ch->desc )
    {
-      bug( "%s", "do_bio: no descriptor" );
+      bug( "%s: no descriptor", __FUNCTION__ );
       return;
    }
 
    switch ( ch->substate )
    {
       default:
-         bug( "%s", "do_bio: illegal substate" );
+         bug( "%s: illegal substate", __FUNCTION__ );
          return;
 
       case SUB_RESTRICTED:
@@ -1243,7 +1260,6 @@ void do_stat( CHAR_DATA* ch, const char* argument)
    return;
 }
 
-
 void do_report( CHAR_DATA* ch, const char* argument)
 {
    char buf[MAX_INPUT_LENGTH];
@@ -1292,6 +1308,7 @@ void do_fprompt( CHAR_DATA* ch, const char* argument)
       send_to_char( "NPC's can't change their prompt..\r\n", ch );
       return;
    }
+
    smash_tilde( argument );
    one_argument( argument, arg );
    if( !*arg || !str_cmp( arg, "display" ) )
@@ -1303,6 +1320,7 @@ void do_fprompt( CHAR_DATA* ch, const char* argument)
       send_to_char( "Type 'help prompt' for information on changing your prompt.\r\n", ch );
       return;
    }
+
    send_to_char( "Replacing old prompt of:\r\n", ch );
    set_char_color( AT_WHITE, ch );
    ch_printf( ch, "%s\r\n", !str_cmp( ch->pcdata->fprompt, "" ) ? "(default prompt)" : ch->pcdata->fprompt );
@@ -1318,8 +1336,10 @@ void do_fprompt( CHAR_DATA* ch, const char* argument)
     */
    if( !str_cmp( arg, "default" ) )
       ch->pcdata->fprompt = STRALLOC( "" );
+   else if( !str_cmp( arg, "none" ) )
+      ch->pcdata->fprompt = STRALLOC( ch->pcdata->prompt );
    else
-      ch->pcdata->fprompt = STRALLOC( prompt );
+      ch->pcdata->fprompt = STRALLOC( argument );
    return;
 }
 
@@ -1360,7 +1380,85 @@ void do_prompt( CHAR_DATA* ch, const char* argument)
     */
    if( !str_cmp( arg, "default" ) )
       ch->pcdata->prompt = STRALLOC( "" );
+   else if( !str_cmp( arg, "fprompt" ) )
+      ch->pcdata->prompt = STRALLOC( ch->pcdata->fprompt );
    else
-      ch->pcdata->prompt = STRALLOC( prompt );
+      ch->pcdata->prompt = STRALLOC( argument );
+   return;
+}
+
+void do_compass( CHAR_DATA *ch, const char *argument )
+{
+   char arg[MAX_INPUT_LENGTH];
+
+   one_argument( argument, arg );
+
+   if( arg[0] == '\0' )
+   {
+      if( xIS_SET( ch->act, PLR_COMPASS ) )
+      {
+         xREMOVE_BIT( ch->act, PLR_COMPASS );
+         send_to_char( "Compass is now off.\r\n", ch );
+      }
+      else
+      {
+         xSET_BIT( ch->act, PLR_COMPASS );
+         do_look( ch, "auto" );
+      }
+   }
+}
+
+/*
+ *  Command to show current favor by Edmond
+ */
+void do_favor( CHAR_DATA * ch, const char *argument )
+{
+   char buf[MAX_STRING_LENGTH];
+
+   if( IS_NPC( ch ) )
+   {
+      send_to_char( "Huh?\r\n", ch );
+      return;
+   }
+
+   set_char_color( AT_GREEN, ch );
+   if( !ch->pcdata->deity )
+      mudstrlcpy( buf, "N/A", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 2250 )
+      mudstrlcpy( buf, "loved", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 2000 )
+      mudstrlcpy( buf, "cherished", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 1750 )
+      mudstrlcpy( buf, "honored", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 1500 )
+      mudstrlcpy( buf, "praised", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 1250 )
+      mudstrlcpy( buf, "favored", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 1000 )
+      mudstrlcpy( buf, "respected", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 750 )
+      mudstrlcpy( buf, "liked", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > 250 )
+      mudstrlcpy( buf, "tolerated", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -250 )
+      mudstrlcpy( buf, "ignored", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -750 )
+      mudstrlcpy( buf, "shunned", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -1000 )
+      mudstrlcpy( buf, "disliked", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -1250 )
+      mudstrlcpy( buf, "dishonored", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -1500 )
+      mudstrlcpy( buf, "disowned", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -1750 )
+      mudstrlcpy( buf, "abandoned", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -2000 )
+      mudstrlcpy( buf, "despised", MAX_STRING_LENGTH );
+   else if( ch->pcdata->favor > -2250 )
+      mudstrlcpy( buf, "hated", MAX_STRING_LENGTH );
+   else
+      mudstrlcpy( buf, "damned", MAX_STRING_LENGTH );
+
+   ch_printf( ch, "%s considers you to be %s.\n\r", ch->pcdata->deity->name, buf );
    return;
 }

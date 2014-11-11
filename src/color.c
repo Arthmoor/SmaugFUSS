@@ -93,7 +93,8 @@ const char *const pc_displays[MAX_COLORS] = {
    "intermud", "helpfiles", "who5", "score5",
    "who6", "who7", "prac", "prac2",
    "prac3", "prac4", "mxpprompt", "guildtalk",
-   "board", "board2", "board3"
+   "board", "board2", "board3", "avtalk",
+   "music", "quest", "ask"
 };
 
 /* All defaults are set to Alsherok default scheme, if you don't 
@@ -126,7 +127,8 @@ const short default_set[MAX_COLORS] = {
    AT_GREEN, AT_PINK, AT_DGREEN, AT_CYAN, /* 98 */
    AT_RED, AT_WHITE, AT_BLUE, AT_DGREEN,  /* 102 */
    AT_CYAN, AT_BLOOD, AT_RED, AT_DGREEN,  /* 106 */
-   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE  /* 110 */
+   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE, /* 110 */
+   AT_GREEN, AT_GREEN, AT_GREEN, AT_GREEN /* 114 */
 };
 
 const char *const valid_color[] = {
@@ -1430,7 +1432,7 @@ void set_char_color( short AType, CHAR_DATA * ch )
    write_to_buffer( ch->desc, color_str( AType, ch ), 0 );
    if( !ch->desc )
    {
-      bug( "set_char_color: NULL descriptor after WTB! CH: %s", ch->name ? ch->name : "Unknown?!?" );
+      bug( "%s: NULL descriptor after WTB! CH: %s", __FUNCTION__, ch->name ? ch->name : "Unknown?!?" );
       return;
    }
    ch->desc->pagecolor = ch->colors[AType];
@@ -1466,16 +1468,20 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length )
    pageroffset = d->pagepoint - d->pagebuf;  /* pager fix (goofup fixed 08/21/97) */
    while( d->pagetop + length >= d->pagesize )
    {
-      if( d->pagesize > MAX_STRING_LENGTH * 16 )
+      if( d->pagesize > MAX_STRING_LENGTH * 24 )
       {
-         bug( "%s", "Pager overflow.  Ignoring.\r\n" );
          d->pagetop = 0;
          d->pagepoint = NULL;
          DISPOSE( d->pagebuf );
          d->pagesize = MAX_STRING_LENGTH;
+         // Move bug call here to avoid infinite loops.  Compliments of Daltorak -- Alty
+         bug( "Pager overflow (%s).  Ignoring.", d->character ? d->character->name : "???" );
          return;
       }
-      d->pagesize *= 2;
+      if( d->pagesize < 8 * MAX_STRING_LENGTH )
+         d->pagesize *= 2;
+      else
+         d->pagesize = 24 * MAX_STRING_LENGTH;
       RECREATE( d->pagebuf, char, d->pagesize );
    }
    d->pagepoint = d->pagebuf + pageroffset;  /* pager fix (goofup fixed 08/21/97) */

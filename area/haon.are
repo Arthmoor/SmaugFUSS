@@ -134,7 +134,7 @@ Class      warrior~
 Position   standing~
 DefPos     standing~
 Gender     female~
-Actflags   npc sentinel r2 stayarea prototype~
+Actflags   npc sentinel stayarea prototype~
 Affected   detect_invis~
 Stats1     350 2 19 2 0 200
 Stats2     2 8 2
@@ -338,7 +338,7 @@ Class      warrior~
 Position   standing~
 DefPos     standing~
 Gender     male~
-Actflags   npc scavenger r2 wimpy~
+Actflags   npc scavenger wimpy~
 Affected   invisible detect_invis sneak~
 Stats1     1000 11 1 -10 500 3000
 Stats2     10 10 100

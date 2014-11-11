@@ -723,7 +723,7 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
       return rNONE;
    }
 
-   if( IS_SET( pexit->exit_info, EX_NOMOB ) && IS_NPC( ch ) )
+   if( IS_SET( pexit->exit_info, EX_NOMOB ) && IS_NPC( ch ) && !xIS_SET( ch->act, ACT_PET ) )
    {
       act( AT_PLAIN, "Mobs can't enter there.", ch, NULL, NULL, TO_CHAR );
       return rNONE;
@@ -772,6 +772,12 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
       return rNONE;
    }
 
+   if( IS_NPC(ch) && xIS_SET( to_room->room_flags, ROOM_NO_MOB ) && !xIS_SET( ch->act, ACT_PET ) )
+   {
+      act( AT_PLAIN, "Mobs can't enter there.", ch, NULL, NULL, TO_CHAR );
+      return rNONE;
+   }
+
    if( room_is_private( to_room ) )
    {
       send_to_char( "That room is private right now.\r\n", ch );
@@ -795,8 +801,7 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
                send_to_char( "A voice in your mind says, 'You are nearly ready to go that way...'\r\n", ch );
                break;
             case 2:
-               send_to_char( "A voice in your mind says, 'Soon you shall be ready to travel down this path... soon.'\r\n",
-                             ch );
+               send_to_char( "A voice in your mind says, 'Soon you shall be ready to travel down this path... soon.'\r\n", ch );
                break;
             case 3:
                send_to_char( "A voice in your mind says, 'You are not ready to go down that path... yet.'\r\n", ch );
@@ -823,7 +828,6 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
        * non-flagged area, but allow them to move around if already
        * inside a nopkill area. - Blodkai
        */
-
       if( IS_SET( to_room->area->flags, AFLAG_NOPKILL )
           && !IS_SET( ch->in_room->area->flags, AFLAG_NOPKILL ) && ( IS_PKILL( ch ) && !IS_IMMORTAL( ch ) ) )
       {
@@ -1175,7 +1179,7 @@ ch_ret move_char( CHAR_DATA * ch, EXIT_DATA * pexit, int fall )
       send_to_char( "Oopsie... you're dead!\r\n", ch );
       snprintf( buf, MAX_STRING_LENGTH, "%s hit a DEATH TRAP in room %d!", ch->name, ch->in_room->vnum );
       log_string( buf );
-      to_channel( buf, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL );
+      to_channel( buf, CHANNEL_DEATH, "Death", LEVEL_IMMORTAL );
       if( IS_NPC( ch ) )
          extract_char( ch, TRUE );
       else
@@ -2292,7 +2296,6 @@ void do_sleep( CHAR_DATA* ch, const char* argument)
    return;
 }
 
-
 void do_wake( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
@@ -2359,7 +2362,7 @@ void teleportch( CHAR_DATA * ch, ROOM_INDEX_DATA * room, bool show )
       send_to_char( "Oopsie... you're dead!\r\n", ch );
       snprintf( buf, MAX_STRING_LENGTH, "%s hit a DEATH TRAP in room %d!", ch->name, ch->in_room->vnum );
       log_string( buf );
-      to_channel( buf, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL );
+      to_channel( buf, CHANNEL_DEATH, "Death", LEVEL_IMMORTAL );
       extract_char( ch, FALSE );
    }
 }
@@ -2835,7 +2838,6 @@ ch_ret pullcheck( CHAR_DATA * ch, int pulse )
          break;
    }
 
-
    /*
     * Do the moving 
     */
@@ -2853,22 +2855,16 @@ ch_ret pullcheck( CHAR_DATA * ch, int pulse )
          act( AT_PLAIN, toroom, ch, NULL, dir_name[xit->vdir], TO_ROOM );
 
       /*
-       * display an appropriate entrance message 
-       */
-      if( destrm && xit->to_room->first_person )
-      {
-         act( AT_PLAIN, destrm, xit->to_room->first_person, NULL, dtxt, TO_CHAR );
-         act( AT_PLAIN, destrm, xit->to_room->first_person, NULL, dtxt, TO_ROOM );
-      }
-
-
-      /*
        * move the char 
        */
       if( xit->pulltype == PULL_SLIP )
          return move_char( ch, xit, 1 );
       char_from_room( ch );
       char_to_room( ch, xit->to_room );
+
+      /* display an appropriate entrance message */
+      if( destrm )
+         act( AT_PLAIN, destrm, ch, NULL, dtxt, TO_NOTVICT );
 
       if( showroom )
          do_look( ch, "auto" );

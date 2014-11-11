@@ -224,8 +224,12 @@ DECLARE_DO_FUN( do_color );
 #define AT_BOARD       108 /* Samson 10-14-03 */
 #define AT_BOARD2      109 /* Samson 10-14-03 */
 #define AT_BOARD3      110 /* Samson 10-14-03 */
+#define AT_AVATAR      111 // Samson 11-08-2014
+#define AT_MUSIC       112 // Samson 11-08-2014
+#define AT_QUEST       113 // Samson 11-08-2014
+#define AT_ASK         114 // Samson 11-08-2014
 
 /* Should ALWAYS be one more than the last numerical value in the list */
-#define MAX_COLORS    111
+#define MAX_COLORS    115
 
 extern const short default_set[MAX_COLORS];

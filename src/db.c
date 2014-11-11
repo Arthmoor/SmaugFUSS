@@ -91,6 +91,7 @@ AUCTION_DATA *auction;  /* auctions */
 OBJ_DATA *supermob_obj;
 
 bool MOBtrigger;
+bool MPSilent;
 bool DONT_UPPER;
 
 /* weaponry */
@@ -140,6 +141,7 @@ short gsn_feed;
 short gsn_bloodlet;
 short gsn_broach;
 short gsn_mistwalk;
+short gsn_pounce;
 
 /* other   */
 short gsn_aid;
@@ -157,6 +159,10 @@ short gsn_climb;
 short gsn_cook;
 short gsn_scan;
 short gsn_slice;
+short gsn_grapple;
+short gsn_cleave;
+short gsn_meditate;
+short gsn_trance;
 
 /* spells */
 short gsn_aqua_breath;
@@ -182,6 +188,7 @@ short gsn_orcish;
 short gsn_trollish;
 short gsn_goblin;
 short gsn_halfling;
+short gsn_gnomish;
 
 // The total number of skills.
 // Note that the range [0; num_sorted_skills[ is
@@ -273,6 +280,7 @@ void save_sysdata( SYSTEM_DATA sys );
 void load_version( AREA_DATA * tarea, FILE * fp );
 void load_watchlist( void );
 void load_reserved( void );
+void load_loginmsg( void );
 void initialize_economy( void );
 void fix_exits( void );
 void sort_reserved( RESERVE_DATA * pRes );
@@ -362,10 +370,15 @@ void boot_db( bool fCopyOver )
    sysdata.dodge_mod = 2;
    sysdata.parry_mod = 2;
    sysdata.tumble_mod = 4;
+   sysdata.tumble_pk = 5;
    sysdata.dam_plr_vs_plr = 100;
    sysdata.dam_plr_vs_mob = 100;
    sysdata.dam_mob_vs_plr = 100;
    sysdata.dam_mob_vs_mob = 100;
+   sysdata.dam_nonav_vs_mob = 100;
+   sysdata.dam_mob_vs_nonav = 100;
+   sysdata.peaceful_exp_mod = 100;
+   sysdata.deadly_exp_mod = 100;
    sysdata.level_getobjnotake = LEVEL_GREATER;
    sysdata.save_frequency = 20;  /* minutes */
    sysdata.bestow_dif = 5;
@@ -373,6 +386,8 @@ void boot_db( bool fCopyOver )
    sysdata.morph_opt = 1;
    sysdata.save_pets = 0;
    sysdata.pk_loot = 1;
+   sysdata.pk_channels = 1;
+   sysdata.pk_silence = 0;
    sysdata.wizlock = FALSE;
    sysdata.secpertick = 70;
    sysdata.pulsepersec = 4;
@@ -386,6 +401,8 @@ void boot_db( bool fCopyOver )
       log_string( "Not found.  Creating new configuration." );
       sysdata.alltimemax = 0;
       sysdata.mud_name = str_dup( "(Name not set)" );
+      sysdata.port_name = str_dup( "mud" );
+      sysdata.admin_email = str_dup( "(not set)" );
       update_timers(  );
       update_calendar(  );
       save_sysdata( sysdata );
@@ -592,10 +609,15 @@ void boot_db( bool fCopyOver )
       ASSIGN_GSN( gsn_hitall, "hitall" );
       ASSIGN_GSN( gsn_feed, "feed" );
       ASSIGN_GSN( gsn_bloodlet, "bloodlet" );
+      ASSIGN_GSN( gsn_cleave, "cleave" );
+      ASSIGN_GSN( gsn_pounce, "pounce" );
+      ASSIGN_GSN( gsn_grapple, "grapple" );
       ASSIGN_GSN( gsn_broach, "broach" );
       ASSIGN_GSN( gsn_mistwalk, "mistwalk" );
       ASSIGN_GSN( gsn_aid, "aid" );
       ASSIGN_GSN( gsn_track, "track" );
+      ASSIGN_GSN( gsn_meditate, "meditate" );
+      ASSIGN_GSN( gsn_trance, "trance" );
       ASSIGN_GSN( gsn_search, "search" );
       ASSIGN_GSN( gsn_dig, "dig" );
       ASSIGN_GSN( gsn_mount, "mount" );
@@ -630,6 +652,7 @@ void boot_db( bool fCopyOver )
       ASSIGN_GSN( gsn_trollish, "trollese" );
       ASSIGN_GSN( gsn_goblin, "goblin" );
       ASSIGN_GSN( gsn_halfling, "halfling" );
+      ASSIGN_GSN( gsn_gnomish, "gnomish" );
    }
 
 #ifdef PLANES
@@ -747,7 +770,11 @@ void boot_db( bool fCopyOver )
    load_accessories();
    load_homebuy();
 
+   log_string( "Loading login messages" );
+   load_loginmsg(  );
+
    MOBtrigger = TRUE;
+   MPSilent = FALSE;
 
    /*
     * Initialize chess board stuff 
@@ -2815,6 +2842,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
       case ITEM_KEYRING:
       case ITEM_ODOR:
       case ITEM_CHANCE:
+      case ITEM_PIECE:
          break;
       case ITEM_COOK:
       case ITEM_FOOD:
@@ -2862,6 +2890,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
       case ITEM_FUEL:
       case ITEM_QUIVER:
       case ITEM_SHOVEL:
+      case ITEM_JOURNAL:
          break;
 
       case ITEM_SALVE:
@@ -3823,8 +3852,6 @@ int number_fuzzy( int number )
    return UMAX( 1, number );
 }
 
-
-
 /*
  * Generate a random number.
  * Ooops was (number_mm() % to) + from which doesn't work -Shaddai
@@ -3836,8 +3863,6 @@ int number_range( int from, int to )
    return ( ( number_mm(  ) % ( to - from + 1 ) ) + from );
 }
 
-
-
 /*
  * Generate a percentile roll.
  * number_mm() % 100 only does 0-99, changed to do 1-100 -Shaddai
@@ -3846,8 +3871,6 @@ int number_percent( void )
 {
    return ( number_mm(  ) % 100 ) + 1;
 }
-
-
 
 /*
  * Generate a random door.
@@ -3863,14 +3886,10 @@ int number_door( void )
 /*    return number_mm() & 10; */
 }
 
-
-
 int number_bits( int width )
 {
    return number_mm(  ) & ( ( 1 << width ) - 1 );
 }
-
-
 
 /*
  * I've gotten too many bad reports on OS-supplied random number generators.
@@ -3899,8 +3918,6 @@ void init_mm(  )
    return;
 }
 
-
-
 int number_mm( void )
 {
    int *piState;
@@ -3921,8 +3938,6 @@ int number_mm( void )
    piState[-1] = iState2;
    return iRand >> 6;
 }
-
-
 
 /*
  * Roll some dice.						-Thoric
@@ -3946,8 +3961,6 @@ int dice( int number, int size )
    return sum;
 }
 
-
-
 /*
  * Simple linear interpolation.
  */
@@ -3955,7 +3968,6 @@ int interpolate( int level, int value_00, int value_32 )
 {
    return value_00 + level * ( value_32 - value_00 ) / 32;
 }
-
 
 /*
  * Removes the tildes from a string.
@@ -4078,8 +4090,6 @@ bool str_prefix( const char *astr, const char *bstr )
    return FALSE;
 }
 
-
-
 /*
  * Compare strings, case insensitive, for match anywhere.
  * Returns TRUE is astr not part of bstr.
@@ -4104,8 +4114,6 @@ bool str_infix( const char *astr, const char *bstr )
 
    return TRUE;
 }
-
-
 
 /*
  * Compare strings, case insensitive, for suffix matching.
@@ -4226,7 +4234,6 @@ const char *aoran( const char *str )
    return temp;
 }
 
-
 /*
  * Append a string to a file.
  */
@@ -4285,7 +4292,7 @@ void bug( const char *str, ... )
       vsnprintf( buf + strlen( buf ), ( MAX_STRING_LENGTH - strlen( buf ) ), str, param );
       va_end( param );
    }
-   log_string( buf );
+   log_string_plus( buf, LOG_BUG, sysdata.log_level );
 
    if( fpArea != NULL )
    {
@@ -4310,7 +4317,7 @@ void bug( const char *str, ... )
          fseek( fpArea, iChar, 0 );
       }
 
-      log_printf( "[*****] FILE: %s LINE: %d", strArea, iLine );
+      log_printf_plus( LOG_BUG, sysdata.log_level, "[*****] FILE: %s LINE: %d", strArea, iLine );
 
       if( stat( SHUTDOWN_FILE, &fst ) != -1 )   /* file exists */
       {
@@ -4345,6 +4352,7 @@ void boot_log( const char *str, ... )
    {
       fprintf( fp, "%s\n", buf );
       fclose( fp );
+      fp = NULL;
    }
    return;
 }
@@ -4369,8 +4377,8 @@ void show_file( CHAR_DATA * ch, const char *filename )
          c = fgetc( fp );
          if( ( c != '\n' && c != '\r' ) || c == buf[num] )
             ungetc( c, fp );
-         buf[num++] = '\n';
          buf[num++] = '\r';
+         buf[num++] = '\n';
          buf[num] = '\0';
          send_to_pager_color( buf, ch );
          num = 0;
@@ -4380,6 +4388,44 @@ void show_file( CHAR_DATA * ch, const char *filename )
        * *  This out. 
        */
       fclose( fp );
+      fp = NULL;
+   }
+}
+
+/*
+ * Dump a text file to a player, a line at a time		-Thoric
+ * This version picks off the room vnum at each line to be used
+ * against a range check.					-- Alty
+ */
+void show_file_vnum( CHAR_DATA *ch, const char *filename, int lo, int hi )
+{
+   FILE *fp;
+   char buf[MAX_STRING_LENGTH];
+   int c;
+   int num = 0;
+
+   if( ( fp = fopen( filename, "r" ) ) != NULL )
+   {
+      while( !feof( fp ) )
+      {
+         while( ( buf[num] = fgetc( fp ) ) != EOF && buf[num] != '\n' && buf[num] != '\r' && num < ( MAX_STRING_LENGTH - 2 ) )
+            num++;
+
+         c = fgetc( fp );
+         if( ( c != '\n' && c != '\r' ) || c == buf[num] )
+            ungetc( c, fp );
+         buf[num++] = '\r';
+         buf[num++] = '\n';
+         buf[num  ] = '\0';
+
+         c = atoi( buf + 1 );
+         if( ( lo < 0 || c >= lo ) && ( hi < 0 || c <= hi ) )
+            send_to_pager_color( buf, ch );
+         num = 0;
+      }
+      /* Thanks to stu <sprice@ihug.co.nz> from the mailing list in pointingThis out. */
+      fclose( fp );
+      fp = NULL;
    }
 }
 
@@ -4427,6 +4473,9 @@ void log_string_plus( const char *str, short log_type, short level )
          break;
       case LOG_WARN:
          to_channel( str + offset, CHANNEL_WARN, "Warn", level );
+         break;
+      case LOG_BUG:
+         to_channel( str + offset, CHANNEL_BUG, "Bug", level );
          break;
       case LOG_ALL:
          break;
@@ -4485,6 +4534,7 @@ void towizfile( const char *line )
    {
       fputs( outline, wfp );
       fclose( wfp );
+      wfp = NULL;
    }
 }
 
@@ -4513,6 +4563,7 @@ void add_to_wizlist( char *name, int level )
     * insert sort, of sorts 
     */
    for( tmp = first_wiz; tmp; tmp = tmp->next )
+   {
       if( level > tmp->level )
       {
          if( !tmp->last )
@@ -4524,7 +4575,7 @@ void add_to_wizlist( char *name, int level )
          tmp->last = wiz;
          return;
       }
-
+   }
    wiz->last = last_wiz;
    wiz->next = NULL;
    last_wiz->next = wiz;
@@ -4569,11 +4620,12 @@ void make_wizlist(  )
             else
                iflags = 0;
             fclose( gfp );
-            if( IS_SET( iflags, PCFLAG_RETIRED ) )
-               ilevel = MAX_LEVEL - 15;
+            gfp = NULL;
+
             if( IS_SET( iflags, PCFLAG_GUEST ) )
                ilevel = MAX_LEVEL - 16;
-            add_to_wizlist( dentry->d_name, ilevel );
+            if( !IS_SET( iflags, PCFLAG_RETIRED ) )
+               add_to_wizlist( dentry->d_name, ilevel );
          }
       }
       dentry = readdir( dp );
@@ -4758,6 +4810,10 @@ int mprog_name_to_type( const char *name )
       return FIGHT_PROG;
    if( !str_cmp( name, "enter_prog" ) )
       return ENTRY_PROG;
+   if( !str_cmp( name, "login_prog" ) )
+      return LOGIN_PROG;
+   if( !str_cmp( name, "void_prog" ) )
+      return VOID_PROG;
    if( !str_cmp( name, "leave_prog" ) )
       return LEAVE_PROG;
    if( !str_cmp( name, "rdeath_prog" ) )
@@ -4766,14 +4822,18 @@ int mprog_name_to_type( const char *name )
       return SCRIPT_PROG;
    if( !str_cmp( name, "use_prog" ) )
       return USE_PROG;
-   if( !str_cmp( name, "login_prog" ) )
-      return LOGIN_PROG;
-   if( !str_cmp( name, "void_prog" ) )
-      return VOID_PROG;
-   if( !str_cmp( name, "greet_in_fight_prog" ) )
-      return GREET_IN_FIGHT_PROG;
+   if( !str_cmp( name, "load_prog" ) )
+      return LOAD_PROG;
    if( !str_cmp( name, "imminfo_prog" ) )
       return IMMINFO_PROG;
+   if( !str_cmp( name, "cmd_prog" ) )
+      return CMD_PROG;
+   if( !str_cmp( name, "sell_prog" ) )
+      return SELL_PROG;
+   if( !str_cmp( name, "tell_prog" ) )
+      return TELL_PROG;
+   if( !str_cmp( name, "greet_in_fight_prog" ) )
+      return GREET_IN_FIGHT_PROG;
    return ( ERROR_PROG );
 }
 
@@ -5469,6 +5529,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
       pObjIndex->value[5] = 0;
       pObjIndex->weight = 1;
       pObjIndex->cost = 0;
+      pObjIndex->level = 0;
    }
    else
    {
@@ -5490,6 +5551,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
       pObjIndex->value[5] = cObjIndex->value[5];
       pObjIndex->weight = cObjIndex->weight;
       pObjIndex->cost = cObjIndex->cost;
+      pObjIndex->level = cObjIndex->level;
       for( ced = cObjIndex->first_extradesc; ced; ced = ced->next )
       {
          CREATE( ed, EXTRA_DESCR_DATA, 1 );
@@ -8396,12 +8458,13 @@ void save_sysdata( SYSTEM_DATA sys )
    {
       fprintf( fp, "#SYSTEM\n" );
       fprintf( fp, "MudName	     %s~\n", sys.mud_name );
+      fprintf( fp, "PortName	     %s~\n", sys.port_name );
+      fprintf( fp, "AdminEmail     %s~\n", sys.admin_email );
       fprintf( fp, "Highplayers    %d\n", sys.alltimemax );
       fprintf( fp, "Highplayertime %s~\n", sys.time_of_max );
       fprintf( fp, "CheckImmHost   %d\n", sys.check_imm_host );
       fprintf( fp, "Nameresolving  %d\n", sys.NO_NAME_RESOLVING );
       fprintf( fp, "Waitforauth    %d\n", sys.WAIT_FOR_AUTH );
-      fprintf( fp, "Wizlock        %d\n", sys.wizlock );
       fprintf( fp, "Readallmail    %d\n", sys.read_all_mail );
       fprintf( fp, "Readmailfree   %d\n", sys.read_mail_free );
       fprintf( fp, "Writemailfree  %d\n", sys.write_mail_free );
@@ -8422,10 +8485,15 @@ void save_sysdata( SYSTEM_DATA sys )
       fprintf( fp, "Dodgemod       %d\n", sys.dodge_mod );
       fprintf( fp, "Parrymod       %d\n", sys.parry_mod );
       fprintf( fp, "Tumblemod      %d\n", sys.tumble_mod );
+      fprintf( fp, "Tumblepk	     %d\n", sys.tumble_pk );
       fprintf( fp, "Damplrvsplr    %d\n", sys.dam_plr_vs_plr );
       fprintf( fp, "Damplrvsmob    %d\n", sys.dam_plr_vs_mob );
       fprintf( fp, "Dammobvsplr    %d\n", sys.dam_mob_vs_plr );
       fprintf( fp, "Dammobvsmob    %d\n", sys.dam_mob_vs_mob );
+      fprintf( fp, "Damnonavvsmob  %d\n", sys.dam_nonav_vs_mob );
+      fprintf( fp, "Dammobvsnonav  %d\n", sys.dam_mob_vs_nonav );
+      fprintf( fp, "Peaceexpmod    %d\n", sys.peaceful_exp_mod );
+      fprintf( fp, "Deadlyexpmod   %d\n", sys.deadly_exp_mod );
       fprintf( fp, "Forcepc        %d\n", sys.level_forcepc );
       fprintf( fp, "Guildoverseer  %s~\n", sys.guild_overseer );
       fprintf( fp, "Guildadvisor   %s~\n", sys.guild_advisor );
@@ -8437,7 +8505,10 @@ void save_sysdata( SYSTEM_DATA sys )
       fprintf( fp, "BanClassLevel  %d\n", sys.ban_class_level );
       fprintf( fp, "MorphOpt       %d\n", sys.morph_opt );
       fprintf( fp, "PetSave	     %d\n", sys.save_pets );
-      fprintf( fp, "Pkloot	     %d\n", sys.pk_loot );
+      fprintf( fp, "Pkloot	        %d\n", sys.pk_loot );
+      fprintf( fp, "Pkchannels     %d\n", sys.pk_channels );
+      fprintf( fp, "Pksilence	     %d\n", sys.pk_silence );
+      fprintf( fp, "Wizlock        %d\n", sys.wizlock );
       fprintf( fp, "Maxholiday     %d\n", sys.maxholiday );
       fprintf( fp, "Secpertick     %d\n", sys.secpertick );
       fprintf( fp, "Pulsepersec    %d\n", sys.pulsepersec );
@@ -8459,6 +8530,8 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
 
    sys->time_of_max = NULL;
    sys->mud_name = NULL;
+   sys->port_name = NULL;
+   sys->admin_email = NULL;
 
    for( ;; )
    {
@@ -8470,6 +8543,10 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
          case '*':
             fMatch = TRUE;
             fread_to_eol( fp );
+            break;
+
+         case 'A':
+            KEY( "AdminEmail", sys->admin_email, fread_string_nohash( fp ) );
             break;
 
          case 'B':
@@ -8491,6 +8568,9 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             KEY( "Damplrvsmob", sys->dam_plr_vs_mob, fread_number( fp ) );
             KEY( "Dammobvsplr", sys->dam_mob_vs_plr, fread_number( fp ) );
             KEY( "Dammobvsmob", sys->dam_mob_vs_mob, fread_number( fp ) );
+            KEY( "Dammobvsnonav", sys->dam_mob_vs_nonav, fread_number( fp ) );
+            KEY( "Damnonavvsmob", sys->dam_nonav_vs_mob, fread_number( fp ) );
+            KEY( "Deadlyexpmod", sys->deadly_exp_mod, fread_number( fp ) );
             KEY( "Dodgemod", sys->dodge_mod, fread_number( fp ) );
             KEY( "Daysperweek", sys->daysperweek, fread_number( fp ) );
             KEY( "Dayspermonth", sys->dayspermonth, fread_number( fp ) );
@@ -8503,6 +8583,10 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
                   sys->time_of_max = str_dup( "(not recorded)" );
                if( !sys->mud_name )
                   sys->mud_name = str_dup( "(Name Not Set)" );
+               if( !sys->port_name )
+                  sys->port_name = str_dup( "mud" );
+               if( !sys->admin_email )
+                  sys->admin_email = str_dup( "(not set)" );
                return;
             }
             break;
@@ -8547,8 +8631,12 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
 
          case 'P':
             KEY( "Parrymod", sys->parry_mod, fread_number( fp ) );
+            KEY( "Peaceexpmod", sys->peaceful_exp_mod, fread_number( fp ) );
             KEY( "PetSave", sys->save_pets, fread_number( fp ) );
+            KEY( "Pkchannels", sys->pk_channels, fread_number( fp ) );
             KEY( "Pkloot", sys->pk_loot, fread_number( fp ) );
+            KEY( "Pksilence", sys->pk_silence, fread_number( fp ) );
+            KEY( "PortName", sys->port_name, fread_string_nohash( fp ) );
             KEY( "Protoflag", sys->level_modify_proto, fread_number( fp ) );
             KEY( "Pulsepersec", sys->pulsepersec, fread_number( fp ) );
             break;
@@ -8570,6 +8658,7 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             KEY( "Takeothersmail", sys->take_others_mail, fread_number( fp ) );
             KEY( "Think", sys->think_level, fread_number( fp ) );
             KEY( "Tumblemod", sys->tumble_mod, fread_number( fp ) );
+            KEY( "Tumblepk", sys->tumble_pk, fread_number( fp ) );
             break;
 
          case 'W':
@@ -9000,7 +9089,7 @@ PROJECT_DATA *read_project( FILE * fp )
                if( !project->name )
                   project->name = str_dup( "" );
                if( !project->owner )
-                  project->owner = STRALLOC( "" );
+                  project->owner = STRALLOC( "None" );
                if( !project->date )
                   project->date = STRALLOC( "Not Set?!" );
                if( !project->status )
@@ -9018,8 +9107,8 @@ PROJECT_DATA *read_project( FILE * fp )
                nlog = read_log( fp );
                if( !nlog )
                {
-                  bug( "read_project: couldn't read log, aborting" );
-                  exit( 1 );
+                  bug( "%s: couldn't read log, aborting", __FUNCTION__ );
+                  break;
                }
                if( !nlog->sender )
                   nlog->sender = STRALLOC( "" );
@@ -9055,7 +9144,6 @@ PROJECT_DATA *read_project( FILE * fp )
       }
    }
 
-/* Uncomment this block later if it's discovered to leak or something
    nlog = project->last_log;
    while( nlog )
    {
@@ -9066,15 +9154,20 @@ PROJECT_DATA *read_project( FILE * fp )
       free_note( nlog );
       nlog = tlog;
    }
+   if( project->coder )
       DISPOSE( project->coder );
+   if( project->description )
       STRFREE( project->description );
+   if( project->name )
       DISPOSE( project->name );
+   if( project->owner )
       STRFREE( project->owner );
+   if( project->date )
       STRFREE( project->date );
+   if( project->status )
       STRFREE( project->status );
    DISPOSE( project );
    return NULL;
-*/
 }
 
 NOTE_DATA *read_log( FILE * fp )
@@ -9341,7 +9434,7 @@ void load_loginmsg(  )
          break;
       else
       {
-         boot_log( "Load_loginmsg: bad section." );
+         bug( "%s: bad section: %s", __FUNCTION__, word );
          continue;
       }
    }
