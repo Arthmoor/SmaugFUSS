@@ -664,6 +664,24 @@ Flags       4
 End
 
 #COMMAND
+Name        delet~
+Code        do_delet
+Position    100
+Level       0
+Log         0
+Flags       0
+End
+
+#COMMAND
+Name        delete~
+Code        do_delete
+Position    100
+Level       0
+Log         1
+Flags       0
+End
+
+#COMMAND
 Name        description~
 Code        do_description
 Position    100

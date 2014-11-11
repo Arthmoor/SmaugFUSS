@@ -1194,7 +1194,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dn = d->next;
          if( d == dclose )
          {
-            bug( "Close_socket: %s desc:%p found, prev should be:%p, fixing.", ch ? ch->name : d->host, ( void * )dclose,
+            bug( "%s: %s desc:%p found, prev should be:%p, fixing.", __FUNCTION__, ch ? ch->name : d->host, ( void * )dclose,
                  ( void * )dp );
             dclose->prev = dp;
             break;
@@ -1211,7 +1211,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    if( !dclose->next && dclose != last_descriptor )
    {
       DESCRIPTOR_DATA *dp, *dn;
-      bug( "Close_socket: %s desc:%p != last_desc:%p and desc->next = NULL!",
+      bug( "%s: %s desc:%p != last_desc:%p and desc->next = NULL!", __FUNCTION__,
            ch ? ch->name : d->host, ( void * )dclose, ( void * )last_descriptor );
       dn = NULL;
       for( d = last_descriptor; d; d = dp )
@@ -1246,7 +1246,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dclose->connected = CON_PLAYING;
       }
 
-      if( dclose->connected == CON_PLAYING || dclose->connected == CON_EDITING )
+      if( dclose->connected == CON_PLAYING || dclose->connected == CON_EDITING || dclose->connected == CON_DELETE )
       {
          act( AT_ACTION, "$n has lost $s link.", ch, NULL, NULL, TO_CANSEE );
          ch->desc = NULL;
@@ -2423,14 +2423,12 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
+   char motdbuf[MAX_STRING_LENGTH];
    ch = d->character;
 
-   {
-      char motdbuf[MAX_STRING_LENGTH];
+   snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
+   write_to_buffer( d, motdbuf, 0 );
 
-      snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
-      write_to_buffer( d, motdbuf, 0 );
-   }
    add_char( ch );
    d->connected = CON_PLAYING;
 
@@ -2620,6 +2618,35 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
       ch->was_in_room = ch->in_room;
 }
 
+void nanny_delete_char( DESCRIPTOR_DATA * d, const char *argument )
+{
+   CHAR_DATA *ch = d->character;
+
+   if( !ch )
+   {
+      bug( "%s: NULL ch!", __func__ );
+      d->connected = CON_PLAYING;
+      return;
+   }
+
+   write_to_buffer( d, "\r\n", 2 );
+
+   if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
+   {
+      write_to_buffer( d, "Wrong password entered, deletion cancelled.\r\n", 0 );
+      write_to_buffer( d, (const char *)echo_on_str, 0 );
+      d->connected = CON_PLAYING;
+      return;
+   }
+   else
+   {
+      write_to_buffer( d, "\r\nYou've deleted your character!!!\r\n", 0 );
+      log_printf( "Player: %s has deleted.", capitalize( ch->name ) );
+      do_destroy( ch, ch->name );
+      return;
+   }
+}
+
 /*
  * Deal with sockets that haven't logged in yet.
  */
@@ -2678,8 +2705,11 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
       case CON_READ_MOTD:
          nanny_read_motd( d, argument );
          break;
-   }
 
+      case CON_DELETE:
+         nanny_delete_char( d, argument );
+         break;
+   }
    return;
 }
 
@@ -2823,7 +2853,7 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
       {
          cstate = dold->connected;
          ch = dold->original ? dold->original : dold->character;
-         if( !ch->name || ( cstate != CON_PLAYING && cstate != CON_EDITING ) )
+         if( !ch->name || ( cstate != CON_PLAYING && cstate != CON_EDITING && cstate != CON_DELETE ) )
          {
             write_to_buffer( d, "Already connected - try again.\r\n", 0 );
             log_printf_plus( LOG_COMM, sysdata.log_level, "%s already connected.", ch->pcdata->filename );
@@ -3413,6 +3443,47 @@ void do_name( CHAR_DATA* ch, const char* argument)
    ch->pcdata->filename = STRALLOC( ucase_argument );
    send_to_char( "Your name has been changed.  Please apply again.\r\n", ch );
    ch->pcdata->auth_state = 0;
+   return;
+}
+
+/* Alternate Self delete command provided by Waldemar Thiel (Swiv) */
+/* Allows characters to delete themselves - Installed 1-18-98 by Samson */
+void do_delet( CHAR_DATA *ch, const char *argument )
+{
+   send_to_char( "If you want to DELETE, spell it out.\r\n", ch );
+   return;
+}
+
+void do_delete( CHAR_DATA *ch, const char *argument )
+{
+   if( IS_NPC(ch) )
+   {
+      send_to_char ( "Yeah, right. Mobs can't delete themselves.\r\n", ch );
+      return;
+   }
+
+   if( ch->fighting != NULL )
+   {
+      send_to_char( "Wait until the fight is over before deleting yourself.\r\n", ch );
+      return;
+   }
+
+   /* Reimbursement warning added to code by Samson 1-18-98 */
+   set_char_color( AT_YELLOW, ch );
+   send_to_char( "Remember, this decision is IRREVERSABLE. There are no reimbursements!\r\n", ch );
+
+   /* Immortals warning added to code by Samson 1-18-98 */
+   if( IS_IMMORTAL(ch) )
+   {
+      ch_printf( ch, "Consider this carefuly %s, if you delete, you will not\r\nbe reinstated as an immortal!\r\n", ch->name );
+      send_to_char( "Any area data you have will also be lost if you proceed.\r\n", ch );
+   }
+
+   set_char_color( AT_RED, ch );
+   send_to_char( "\r\nType your password if you wish to delete your character.\r\n", ch );
+   send_to_char( "[DELETE] Password: ", ch );
+   write_to_buffer( ch->desc, (const char *)echo_off_str, 0 );
+   ch->desc->connected = CON_DELETE;
    return;
 }
 

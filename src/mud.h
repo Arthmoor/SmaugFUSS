@@ -743,10 +743,7 @@ typedef enum
 /* Uncomment this if using Samson's Reroll code */
 /* CON_ROLL_STATS, */
 
-   CON_COPYOVER_RECOVER, CON_PLAYING = 0,
-
-/* Uncomment this if using Samson's delete code */
-/* CON_DELETE, */
+   CON_COPYOVER_RECOVER, CON_PLAYING = 0, CON_DELETE,
 
 /* Uncomment this if using Mudworld's Oasis OLC port */
 /* CON_OEDIT,		 CON_MEDIT,			CON_REDIT, */
@@ -3761,6 +3758,8 @@ DECLARE_DO_FUN( do_cset );
 DECLARE_DO_FUN( do_defeats );
 DECLARE_DO_FUN( do_deities );
 DECLARE_DO_FUN( do_delay );
+DECLARE_DO_FUN( do_delet );
+DECLARE_DO_FUN( do_delete );
 DECLARE_DO_FUN( do_deny );
 DECLARE_DO_FUN( do_description );
 DECLARE_DO_FUN( do_destro );
