@@ -3594,7 +3594,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
       switch ( *( prompt - 1 ) )
       {
          default:
-            bug( "%s: bad command char '%c'.", _func_, *( prompt - 1 ) );
+            bug( "%s: bad command char '%c'.", __func__, *( prompt - 1 ) );
             break;
          case '%':
             *pbuf = '\0';

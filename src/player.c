@@ -967,9 +967,9 @@ void do_equipment( CHAR_DATA* ch, const char* argument)
    }
 
    if( victim != ch )
-      ch_printf( ch, "&R%s is using:\r\n", victim->isnpc(  ) ? victim->short_descr : victim->name );
+      ch_printf( ch, "&R%s is using:\r\n", IS_NPC( victim ) ? victim->short_descr : victim->name );
    else
-      send_to_char( "&RYou are using:\r\n" );
+      send_to_char( "&RYou are using:\r\n", ch );
 
    found = FALSE;
    set_char_color( AT_OBJECT, ch );
