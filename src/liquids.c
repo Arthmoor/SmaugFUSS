@@ -2131,6 +2131,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
       send_to_char( "You aren't carrying that.\r\n", ch );
       return;
    }
+
    if( obj->count > 1 )
       separate_obj( obj );
 

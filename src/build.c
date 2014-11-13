@@ -9247,7 +9247,7 @@ void do_odelete( CHAR_DATA* ch, const char* argument )
     * Does the player have the right to delete this object?
     */
    if( get_trust( ch ) < sysdata.level_modify_proto
-       && ( obj->vnum < ch->pcdata->area->low_m_vnum || obj->vnum > ch->pcdata->area->hi_m_vnum ) )
+       && ( obj->vnum < ch->pcdata->area->low_o_vnum || obj->vnum > ch->pcdata->area->hi_o_vnum ) )
    {
       send_to_char( "That obj is not in your assigned range.\n\r", ch );
       return;

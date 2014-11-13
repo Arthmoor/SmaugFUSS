@@ -2442,7 +2442,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
             bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __FUNCTION__, ch->name );
          }
          set_char_color( AT_GREY, ch );
-         pager_printf( ch, "There are %d pages in this journal.\r\n", journal->value[0] );
+         ch_printf( ch, "There are %d pages in this journal.\r\n", journal->value[0] );
          return;
       }
    }

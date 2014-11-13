@@ -955,20 +955,21 @@ void do_equipment( CHAR_DATA* ch, const char* argument)
    int iWear;
    bool found;
 
-   if( get_trust( ch ) > LEVEL_GOD && argument[0] != '\0' )
+   if( argument[0] == '\0' || get_trust( ch ) <= LEVEL_GOD )
+      victim = ch;
+   else
    {
       if( ( victim = get_char_world( ch, argument ) ) == NULL )
       {
          send_to_char( "They're not here.\r\n", ch );
          return;
       }
-      act( AT_RED, "$n is using:", victim, NULL, ch, TO_VICT );
    }
+
+   if( victim != ch )
+      ch_printf( ch, "&R%s is using:\r\n", victim->isnpc(  ) ? victim->short_descr : victim->name );
    else
-   {
-      set_char_color( AT_RED, ch );
-      send_to_char( "You are using:\r\n", ch );
-   }
+      send_to_char( "&RYou are using:\r\n" );
 
    found = FALSE;
    set_char_color( AT_OBJECT, ch );
@@ -1152,7 +1153,7 @@ void do_bio( CHAR_DATA* ch, const char* argument)
    if( IS_SET( ch->pcdata->flags, PCFLAG_NOBIO ) )
    {
       set_char_color( AT_RED, ch );
-      send_to_char( "The gods won't allow you to do that!\n\r", ch );
+      send_to_char( "The gods won't allow you to do that!\r\n", ch );
       return;
    }
 

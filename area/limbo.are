@@ -1861,6 +1861,16 @@ You cannot leave if engaged in combat.
 #ENDOBJECT
 
 #OBJECT
+Vnum     95
+Keywords puddle~
+Type     puddle~
+Short    a puddle of %s~
+Long     A puddle of %s is here.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
 Vnum     98
 Keywords A slice of wedding cake~
 Type     food~

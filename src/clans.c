@@ -2816,14 +2816,17 @@ void do_defeats( CHAR_DATA * ch, const char *argument )
 
    if( ch->pcdata->clan->clan_type != CLAN_ORDER && ch->pcdata->clan->clan_type != CLAN_GUILD )
    {
-      sprintf( filename, "%s%s.defeats", CLAN_DIR, ch->pcdata->clan->name );
+      snprintf( filename, 256, "%s%s.defeats", CLAN_DIR, ch->pcdata->clan->name );
       set_pager_color( AT_PURPLE, ch );
       if( !str_cmp( ch->name, ch->pcdata->clan->leader ) && !str_cmp( argument, "clean" ) )
       {
          FILE *fp = fopen( filename, "w" );
          if( fp )
+         {
             fclose( fp );
-         send_to_pager( "\r\nDefeats ledger has been cleared.\r\n", ch );
+            fp = NULL;
+         }
+         send_to_char( "\r\nDefeats ledger has been cleared.\r\n", ch );
          return;
       }
       else

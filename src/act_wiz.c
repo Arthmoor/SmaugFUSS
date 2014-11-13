@@ -1198,6 +1198,8 @@ void do_echo( CHAR_DATA* ch, const char* argument)
       target = ECHOTAR_PC;
    else if( !str_cmp( arg, "imm" ) )
       target = ECHOTAR_IMM;
+   else if( !str_cmp( arg, "pk" ) )
+      target = ECHOTAR_PK;
    else
    {
       target = ECHOTAR_ALL;
@@ -4424,7 +4426,7 @@ void do_restore( CHAR_DATA* ch, const char* argument)
 
          if( !IS_NPC( vch ) && !IS_IMMORTAL( vch ) && !CAN_PKILL( vch ) && !in_arena( vch ) )
          {
-            if( deity && ch->pcdata->deity != deity )
+            if( deity && vch->pcdata->deity != deity )
                continue;
 
             if( boost )
