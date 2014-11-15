@@ -789,7 +789,9 @@ void mobile_update( void )
           && pexit->to_room
           && !IS_SET( pexit->exit_info, EX_WINDOW )
           && !IS_SET( pexit->exit_info, EX_CLOSED )
-          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB ) && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_NO_MOB )
+          && !xIS_SET( pexit->to_room->room_flags, ROOM_DEATH )
+          && ( !xIS_SET( ch->act, ACT_STAY_AREA ) || pexit->to_room->area == ch->in_room->area ) )
       {
          CHAR_DATA *rch;
          bool found;
