@@ -2363,7 +2363,7 @@ void time_update( void )
    {
       for( d = first_descriptor; d; d = d->next )
       {
-         if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) && IS_AWAKE( d->character ) )
+         if( d->connected == CON_PLAYING && IS_OUTSIDE( d->character ) && !NO_WEATHER_SECT( d->character->in_room->sector_type ) && IS_AWAKE( d->character ) )
          {
             struct WeatherCell *cell = getWeatherCell( d->character->in_room->area );
 
