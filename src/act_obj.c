@@ -1551,14 +1551,19 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
 
    if( !IS_IMMORTAL( ch )
        && ( ( IS_OBJ_STAT( obj, ITEM_ANTI_WARRIOR ) && ch->Class == CLASS_WARRIOR )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_WARRIOR ) && ch->Class == CLASS_SAVAGE )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_WARRIOR ) && ch->Class == CLASS_PALADIN )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_MAGE ) && ch->Class == CLASS_MAGE )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_MAGE ) && ch->Class == CLASS_NEPHANDI )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_THIEF ) && ch->Class == CLASS_THIEF )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_VAMPIRE ) && ch->Class == CLASS_VAMPIRE )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_DRUID ) && ch->Class == CLASS_DRUID )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_WARRIOR ) && ch->Class == CLASS_RANGER )
             || ( IS_OBJ_STAT( obj, ITEM_ANTI_MAGE ) && ch->Class == CLASS_AUGURER )
-            || ( IS_OBJ_STAT( obj, ITEM_ANTI_CLERIC ) && ch->Class == CLASS_CLERIC ) ) )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_CLERIC ) && ch->Class == CLASS_CLERIC )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_GOOD ) && ch->alignment > 350 )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_NEUTRAL ) && ch->alignment >= -350 && ch->alignment <= 350 )
+            || ( IS_OBJ_STAT( obj, ITEM_ANTI_EVIL ) && ch->alignment < -350 ) ) )
    {
       act( AT_MAGIC, "You are forbidden to use that item.", ch, NULL, NULL, TO_CHAR );
       act( AT_ACTION, "$n tries to use $p, but is forbidden to do so.", ch, obj, NULL, TO_ROOM );
