@@ -5092,8 +5092,8 @@ char *rprog_type_to_name( int type );
 void oprog_act_trigger( const char *buf, OBJ_DATA * mobj, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target );
 void rprog_act_trigger( const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target );
 
-#define GET_ADEPT(ch,sn)    (  skill_table[(sn)]->skill_adept[(ch)->Class])
-#define LEARNED(ch,sn)	    (IS_NPC(ch) ? 80 : URANGE(0, ch->pcdata->learned[sn], 101))
+#define GET_ADEPT(ch,sn)    ( IS_IMMORTAL(ch) ? 100 : skill_table[(sn)]->skill_adept[(ch)->Class] )
+#define LEARNED(ch,sn)	    (IS_NPC(ch) ? 80 : URANGE(0, (ch)->pcdata->learned[(sn)], 101))
 
 /* List handling v2.0, expanded a bit - Luc 06/2007
    Whoa! Eight years since I wrote v1.0...  :( */

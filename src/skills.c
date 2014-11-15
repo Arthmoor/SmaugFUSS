@@ -1836,8 +1836,11 @@ void do_sset( CHAR_DATA* ch, const char* argument)
          if( victim->level >= skill_table[sn]->skill_level[victim->Class]
              || victim->level >= skill_table[sn]->race_level[victim->race] )
          {
-            if( value == 100 && !IS_IMMORTAL( victim ) )
-               victim->pcdata->learned[sn] = GET_ADEPT( victim, sn );
+            // Bugfix by Sadiq - Modified slightly by Samson. No need to call GET_ADEPT more than once each time this loop runs.
+            int adept = GET_ADEPT( victim, sn );
+
+            if( value > adept && !IS_IMMORTAL( victim ) )
+               victim->pcdata->learned[sn] = adept;
             else
                victim->pcdata->learned[sn] = value;
          }
@@ -1845,8 +1848,6 @@ void do_sset( CHAR_DATA* ch, const char* argument)
    }
    else
       victim->pcdata->learned[sn] = value;
-
-   return;
 }
 
 /*
