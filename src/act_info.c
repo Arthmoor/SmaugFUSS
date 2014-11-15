@@ -52,7 +52,6 @@ bool EXA_prog_trigger = TRUE;
  * This was found thanks to mud@mini.axcomp.com pointing it out :)
  * --Shaddai
  */
-
 const char *const where_name[] = {
    "<used as light>     ",
    "<worn on finger>    ",
@@ -76,10 +75,10 @@ const char *const where_name[] = {
    "<worn on ears>      ",
    "<worn on eyes>      ",
    "<missile wielded>   ",
-   "<worn on back>  ",
-   "<worn over face>  ",
-   "<worn around ankle>  ",
-   "<worn around ankle>  ",
+   "<worn on back>      ",
+   "<worn over face>    ",
+   "<worn around ankle> ",
+   "<worn around ankle> ",
    "<BUG Inform Nivek>  ",
    "<BUG Inform Nivek>  ",
    "<BUG Inform Nivek>  "
@@ -147,10 +146,10 @@ void look_sky( CHAR_DATA * ch )
    if( ( moonphase = ( ( ( ( MAP_WIDTH + moonpos - sunpos ) % MAP_WIDTH ) + ( MAP_WIDTH / 16 ) ) * 8 ) / MAP_WIDTH ) > 4 )
       moonphase -= 8;
    starpos = ( sunpos + MAP_WIDTH * time_info.month / NUM_MONTHS ) % MAP_WIDTH;
+
    /*
     * The left end of the star_map will be straight overhead at midnight during month 0 
     */
-
    for( linenum = 0; linenum < MAP_HEIGHT; linenum++ )
    {
       if( ( time_info.hour >= 6 && time_info.hour <= 18 ) && ( linenum < 3 || linenum >= 6 ) )
@@ -1296,8 +1295,8 @@ void do_look( CHAR_DATA * ch, const char *argument )
 
    if( !str_cmp( arg1, "sky" ) || !str_cmp( arg1, "stars" ) )
    {
-      if( !IS_OUTSIDE( ch ) )
-         send_to_char( "You can't see the sky indoors.\r\n", ch );
+      if( !IS_OUTSIDE( ch ) || NO_WEATHER_SECT( ch->in_room->sector_type ) )
+         send_to_char( "You can't see the sky from here.\r\n", ch );
       else
          look_sky( ch );
 
@@ -1322,16 +1321,19 @@ void do_look( CHAR_DATA * ch, const char *argument )
          send_to_char( "You do not see that here.\r\n", ch );
          return;
       }
+
       if( !CAN_WEAR( obj, ITEM_TAKE ) && ch->level < sysdata.level_getobjnotake )
       {
          send_to_char( "You can't seem to get a grip on it.\r\n", ch );
          return;
       }
+
       if( ch->carry_weight + obj->weight > can_carry_w( ch ) )
       {
          send_to_char( "It's too heavy for you to look under.\r\n", ch );
          return;
       }
+
       count = obj->count;
       obj->count = 1;
       act( AT_PLAIN, "You lift $p and look beneath it:", ch, obj, NULL, TO_CHAR );
