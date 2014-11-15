@@ -1947,7 +1947,7 @@ void mprog_driver( const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ
    char *command_list;
    char *cmnd;
    CHAR_DATA *rndm = NULL, *vch = NULL;
-   int count = 0, count2 = 0, ignorelevel = 0, iflevel, result, curr_serial;
+   int count = 0, rand_pick = 0, count2 = 0, ignorelevel = 0, iflevel, result, curr_serial;
    bool ifstate[MAX_IFS][DO_ELSE + 1];
    static int prog_nest, serial;
    MPSLEEP_DATA *mpsleep = NULL;
@@ -2013,15 +2013,34 @@ void mprog_driver( const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ
     * imms, but decided to just take it out.  If the mob can see you, 
     * you may be chosen as the random player. -Narn
     *
+    * BUGFIX - Reported by Aurin on the SmaugMuds.org forum.
+    *  Adapted for simplicity by Samson. The random pick wasn't as random as one might like.
+    *  It had a heavy bias toward the first chosen target, but her fix relied
+    *  on what looked like dodgy dynamic array allocation. This is safer as it doesn't
+    *  need to do anything like that.
     */
    count = 0;
    for( vch = mob->in_room->first_person; vch; vch = vch->next_in_room )
+   {
+      if( !IS_NPC( vch ) && can_see( mob, vch ) )
+         ++count;
+   }
+   rand_pick = number_range( 0, count );
+
+   // Now that we have the count and have picked a random number in that range, run the list again.
+   count = 0;
+   for( vch = mob->in_room->first_person; vch; vch = vch->next_in_room )
+   {
       if( !IS_NPC( vch ) && can_see( mob, vch ) )
       {
-         if( number_range( 0, count ) == 0 )
+         if( count == rand_pick )
+         {
             rndm = vch;
-         count++;
+            break;
+         }
+         ++count;
       }
+   }
 
    strcpy( tmpcmndlst, com_list );
    command_list = tmpcmndlst;
