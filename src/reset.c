@@ -1157,29 +1157,27 @@ void do_reset( CHAR_DATA* ch, const char* argument)
    if( !str_cmp( arg, "random" ) )
    {
       RESET_DATA *pReset;
-      int vnum = get_dir( arg );
+      int door = -1;
 
       argument = one_argument( argument, arg );
+      door = get_dir( arg );
 
-      if( vnum < 0 || vnum > 9 )
+      if( door < 0 || door > 9 )
       {
-         send_to_char( "Reset which random doors?\r\n", ch );
+         send_to_char( "Reset which directions randomly?\r\n", ch );
+         send_to_char( "3 would randomize north, south, east, west.\r\n", ch );
+         send_to_char( "5 would do those and up, down.\r\n", ch );
+         send_to_char( "9 would do those and ne, nw, se, sw.\r\n", ch );
          return;
       }
 
-      if( vnum == 0 )
+      if( door == 0 )
       {
          send_to_char( "There is no point in randomizing one door.\r\n", ch );
          return;
       }
 
-      if( !get_room_index( vnum ) )
-      {
-         send_to_char( "Target room does not exist.\r\n", ch );
-         return;
-      }
-
-      pReset = make_reset( 'R', 0, ch->in_room->vnum, vnum, 0 );
+      pReset = make_reset( 'R', 0, ch->in_room->vnum, door, 0 );
       pReset->prev = NULL;
       pReset->next = ch->in_room->first_reset;
       if( ch->in_room->first_reset )
