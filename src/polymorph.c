@@ -2271,6 +2271,7 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
    CREATE( morph, CHAR_MORPH, 1 );
    clear_char_morph( morph );
    ch->morph = morph;
+
    for( ;; )
    {
       word = feof( fp ) ? "End" : fread_word( fp );
@@ -2282,39 +2283,47 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "Affect", morph->affected_by, fread_bitvector( fp ) );
             KEY( "Armor", morph->ac, fread_number( fp ) );
             break;
+
          case 'C':
             KEY( "Charisma", morph->cha, fread_number( fp ) );
             KEY( "Constitution", morph->con, fread_number( fp ) );
             break;
+
          case 'D':
             KEY( "Damroll", morph->damroll, fread_number( fp ) );
             KEY( "Dexterity", morph->dex, fread_number( fp ) );
             KEY( "Dodge", morph->dodge, fread_number( fp ) );
             break;
+
          case 'E':
             if( !str_cmp( "End", word ) )
                return;
             break;
+
          case 'H':
             KEY( "Hit", morph->hit, fread_number( fp ) );
             KEY( "Hitroll", morph->hitroll, fread_number( fp ) );
             break;
+
          case 'I':
             KEY( "Immune", morph->immune, fread_number( fp ) );
             KEY( "Intelligence", morph->inte, fread_number( fp ) );
             break;
+
          case 'L':
             KEY( "Luck", morph->lck, fread_number( fp ) );
             break;
+
          case 'M':
             KEY( "Mana", morph->mana, fread_number( fp ) );
             KEY( "Move", morph->move, fread_number( fp ) );
             break;
+
          case 'N':
             if( !str_cmp( "Name", word ) )
             {
                if( morph->morph )
-                  if( str_cmp( morph->morph->name, fread_string( fp ) ) )
+                  if( str_cmp( morph->morph->name, fread_flagstring( fp ) ) )
                      bug( "Morph Name doesn't match vnum %d.", morph->morph->vnum );
                fMatch = TRUE;
                break;
@@ -2324,12 +2333,15 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "NoResistant", morph->no_resistant, fread_number( fp ) );
             KEY( "NoSuscept", morph->no_suscept, fread_number( fp ) );
             break;
+
          case 'P':
             KEY( "Parry", morph->parry, fread_number( fp ) );
             break;
+
          case 'R':
             KEY( "Resistant", morph->resistant, fread_number( fp ) );
             break;
+
          case 'S':
             KEY( "Save1", morph->saving_breath, fread_number( fp ) );
             KEY( "Save2", morph->saving_para_petri, fread_number( fp ) );
@@ -2339,10 +2351,12 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "Strength", morph->str, fread_number( fp ) );
             KEY( "Suscept", morph->suscept, fread_number( fp ) );
             break;
+
          case 'T':
             KEY( "Timer", morph->timer, fread_number( fp ) );
             KEY( "Tumble", morph->tumble, fread_number( fp ) );
             break;
+
          case 'V':
             if( !str_cmp( "Vnum", word ) )
             {
@@ -2351,17 +2365,18 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
                break;
             }
             break;
+
          case 'W':
             KEY( "Wisdom", morph->wis, fread_number( fp ) );
             break;
       }
+
       if( !fMatch )
       {
-         bug( "Fread_morph_data: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
-   return;
 }
 
 /* 
