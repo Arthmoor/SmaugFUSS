@@ -2441,16 +2441,18 @@ void do_brandish( CHAR_DATA* ch, const char* argument)
          act( AT_MAGIC, "$n brandishes $p.", ch, staff, NULL, TO_ROOM );
          act( AT_MAGIC, "You brandish $p.", ch, staff, NULL, TO_CHAR );
       }
+
       for( vch = ch->in_room->first_person; vch; vch = vch_next )
       {
          vch_next = vch->next_in_room;
+
          if( !IS_NPC( vch ) && xIS_SET( vch->act, PLR_WIZINVIS ) && vch->pcdata->wizinvis >= LEVEL_IMMORTAL )
             continue;
          else
             switch ( skill_table[sn]->target )
             {
                default:
-                  bug( "Do_brandish: bad target for sn %d.", sn );
+                  bug( "%s: bad target for sn %d.", __func__, sn );
                   return;
 
                case TAR_IGNORE:
@@ -2477,7 +2479,7 @@ void do_brandish( CHAR_DATA* ch, const char* argument)
          retcode = obj_cast_spell( staff->value[3], staff->value[0], ch, vch, NULL );
          if( retcode == rCHAR_DIED || retcode == rBOTH_DIED )
          {
-            bug( "%s", "do_brandish: char died" );
+            bug( "%s: char died", __func__ );
             return;
          }
       }

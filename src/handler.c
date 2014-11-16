@@ -927,7 +927,7 @@ bool is_name( const char *str, const char *namelist )
    }
 }
 
-bool is_name_prefix( const char *str, char *namelist )
+bool is_name_prefix( const char *str, const char *namelist )
 {
    char name[MAX_INPUT_LENGTH];
 

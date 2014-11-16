@@ -4060,8 +4060,6 @@ bool str_cmp( const char *astr, const char *bstr )
    return FALSE;
 }
 
-
-
 /*
  * Compare strings, case insensitive, for prefix matching.
  * Return TRUE if astr not a prefix of bstr

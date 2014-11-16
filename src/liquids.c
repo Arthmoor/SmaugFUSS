@@ -378,7 +378,7 @@ void load_mixtures( void )
 
          mix = fread_mixture( fp );
          if( !mix )
-            bug( "%s", "load_mixtures(): mixture returned NULL" );
+            bug( "%s: mixture returned NULL", __func__ );
          else
             LINK( mix, first_mixture, last_mixture, next, prev );
       }
