@@ -3562,6 +3562,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
    }
    else
       prompt = ch->pcdata->prompt;
+
    if( ansi )
    {
       mudstrlcpy( pbuf, ANSI_RESET, MAX_STRING_LENGTH );
@@ -3584,27 +3585,33 @@ void display_prompt( DESCRIPTOR_DATA * d )
          continue;
       }
       ++prompt;
+
       if( !*prompt )
          break;
+
       if( *prompt == *( prompt - 1 ) )
       {
          *( pbuf++ ) = *prompt;
          continue;
       }
+
       switch ( *( prompt - 1 ) )
       {
          default:
             bug( "%s: bad command char '%c'.", __func__, *( prompt - 1 ) );
             break;
+
          case '%':
             *pbuf = '\0';
             pstat = 0x80000000;
+
             switch ( *prompt )
             {
                case '%':
                   *pbuf++ = '%';
                   *pbuf = '\0';
                   break;
+
                case 'a':
                   if( ch->level >= 10 )
                      pstat = ch->alignment;
@@ -3615,10 +3622,12 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "neutral", MAX_STRING_LENGTH );
                   break;
+
                case 'A':
                   snprintf( pbuf, MAX_STRING_LENGTH, "%s%s%s", IS_AFFECTED( ch, AFF_INVISIBLE ) ? "I" : "",
                             IS_AFFECTED( ch, AFF_HIDE ) ? "H" : "", IS_AFFECTED( ch, AFF_SNEAK ) ? "S" : "" );
                   break;
+
                case 'C':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3654,6 +3663,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                         mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
+
                case 'c':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3687,24 +3697,29 @@ void display_prompt( DESCRIPTOR_DATA * d )
                         mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
+
                case 'h':
                   pstat = ch->hit;
                   break;
+
                case 'H':
                   pstat = ch->max_hit;
                   break;
+
                case 'm':
                   if( IS_VAMPIRE( ch ) )
                      pstat = 0;
                   else
                      pstat = ch->mana;
                   break;
+
                case 'M':
                   if( IS_VAMPIRE( ch ) )
                      pstat = 0;
                   else
                      pstat = ch->max_mana;
                   break;
+
                case 'N':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3721,6 +3736,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
+
                case 'n':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3735,6 +3751,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
+
                case 'T':
                   if( time_info.hour < 5 )
                      mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
@@ -3747,45 +3764,56 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
                   break;
+
                case 'b':
                   if( IS_VAMPIRE( ch ) )
                      pstat = ch->pcdata->condition[COND_BLOODTHIRST];
                   else
                      pstat = 0;
                   break;
+
                case 'B':
                   if( IS_VAMPIRE( ch ) )
                      pstat = ch->level + 10;
                   else
                      pstat = 0;
                   break;
+
                case 'u':
                   pstat = num_descriptors;
                   break;
+
                case 'U':
                   pstat = sysdata.maxplayers;
                   break;
+
                case 'v':
                   pstat = ch->move;
                   break;
+
                case 'V':
                   pstat = ch->max_move;
                   break;
+
                case 'g':
                   pstat = ch->gold;
                   break;
+
                case 'r':
                   if( IS_IMMORTAL( och ) )
                      pstat = ch->in_room->vnum;
                   break;
+
                case 'F':
                   if( IS_IMMORTAL( och ) )
                      snprintf( pbuf, MAX_STRING_LENGTH, "%s", ext_flag_string( &ch->in_room->room_flags, r_flags ) );
                   break;
+
                case 'R':
                   if( xIS_SET( och->act, PLR_ROOMVNUM ) )
                      snprintf( pbuf, MAX_STRING_LENGTH, "<#%d> ", ch->in_room->vnum );
                   break;
+
                case 'D': /*display DND status*/
                   if( IS_IMMORTAL(ch) )
                   {
@@ -3793,22 +3821,28 @@ void display_prompt( DESCRIPTOR_DATA * d )
                         mudstrlcpy( pbuf, "DND", MAX_STRING_LENGTH );
                   }
                   break;
+
                case 'x':
                   pstat = ch->exp;
                   break;
+
                case 'X':
                   pstat = exp_level( ch, ch->level + 1 ) - ch->exp;
                   break;
+
                case 'w':
                   pstat = ch->carry_weight;
                   break;
+
                case 'W':
                   pstat = can_carry_w(ch);
                   break;
+
                case 'o':  /* display name of object on auction */
                   if( auction->item )
                      mudstrlcpy( pbuf, auction->item->name, MAX_STRING_LENGTH );
                   break;
+
                case 'S':
                   if( ch->style == STYLE_BERSERK )
                      mudstrlcpy( pbuf, "B", MAX_STRING_LENGTH );
@@ -3821,6 +3855,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "S", MAX_STRING_LENGTH );
                   break;
+
                case 'i':
                   if( ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_WIZINVIS ) ) ||
                       ( IS_NPC( ch ) && xIS_SET( ch->act, ACT_MOBINVIS ) ) )
@@ -3829,6 +3864,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else if( IS_AFFECTED( ch, AFF_INVISIBLE ) )
                      mudstrlcpy( pbuf, "(Invis) ", MAX_STRING_LENGTH );
                   break;
+
                case 'I':
                   pstat = ( IS_NPC( ch ) ? ( xIS_SET( ch->act, ACT_MOBINVIS ) ? ch->mobinvis : 0 )
                             : ( xIS_SET( ch->act, PLR_WIZINVIS ) ? ch->pcdata->wizinvis : 0 ) );
