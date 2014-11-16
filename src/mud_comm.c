@@ -873,7 +873,9 @@ void do_mpoload( CHAR_DATA* ch, const char* argument)
 
    obj = create_object( pObjIndex, level );
    obj->timer = timer;
-   if( CAN_WEAR( obj, ITEM_TAKE ) )
+
+   // Bugfix - objects & rooms use supermob, so he should ALWAYS drop stuff.
+   if( CAN_WEAR( obj, ITEM_TAKE ) && ch != supermob )
       obj_to_char( obj, ch );
    else
       obj_to_room( obj, ch->in_room );
