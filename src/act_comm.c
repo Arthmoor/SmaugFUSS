@@ -38,7 +38,8 @@ char *scramble( const char *argument, int modifier )
    short conversion = 0;
 
    modifier %= number_range( 80, 300 );   /* Bitvectors get way too large #s */
-   for( position = 0; position < MAX_INPUT_LENGTH; position++ )
+   // Bugfix - CPPCheck flagged this as an out of bounds access. Changed to < MIL -1 by Samson.
+   for( position = 0; position < (MAX_INPUT_LENGTH - 1); position++ )
    {
       if( argument[position] == '\0' )
       {
@@ -416,7 +417,7 @@ void talk_channel( CHAR_DATA * ch, const char *argument, int channel, const char
       return;
    }
 
-   if( IS_SET( ch->deaf, channel ) && ( channel != CHANNEL_WARTALK || channel != CHANNEL_YELL ) )
+   if( IS_SET( ch->deaf, channel ) && channel != CHANNEL_WARTALK && channel != CHANNEL_YELL )
    {
       ch_printf( ch, "You don't have the %s channel turned on. To turn it on, use the Channels command.\r\n", verb );
       return;

@@ -5685,7 +5685,6 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
    const char *stxt = "burst of energy";
    int count;
 
-
    if( argument && argument[0] != '\0' && argument[0] == '\'' )
    {
       one_argument( argument, temp );
@@ -5819,6 +5818,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
          return rNONE;
       }
    }
+
    if( vch )
    {
       if( !IS_NPC( vch ) && !IS_NPC( ch ) && xIS_SET( ch->act, PLR_NICE ) )

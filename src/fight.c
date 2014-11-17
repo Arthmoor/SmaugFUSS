@@ -38,6 +38,12 @@ bool loot_coins_from_corpse( CHAR_DATA * ch, OBJ_DATA * corpse )
    OBJ_DATA *content, *content_next;
    int oldgold = ch->gold;
 
+   if( !corpse )
+   {
+      bug( "%s: NULL corpse!", __func__ );
+      return FALSE;
+   }
+
    for( content = corpse->first_content; content; content = content_next )
    {
       content_next = content->next_content;
@@ -3760,7 +3766,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
    /*
     * Get the weapon index 
     */
-   if( dt > 0 && dt < ( unsigned int )num_skills )
+   if( dt < ( unsigned int )num_skills )
    {
       w_index = 0;
    }
@@ -3770,7 +3776,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
    }
    else
    {
-      bug( "Dam_message: bad dt %d from %s in %d.", dt, ch->name, ch->in_room->vnum );
+      bug( "%s: bad dt %d from %s in %d.", __func__, dt, ch->name, ch->in_room->vnum );
       dt = TYPE_HIT;
       w_index = 0;
    }
@@ -3883,7 +3889,6 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
       else
       {
          bug( "Dam_message: bad dt %d from %s in %d.", dt, ch->name, ch->in_room->vnum );
-         dt = TYPE_HIT;
          attack = attack_table[0];
       }
 
@@ -3891,7 +3896,6 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
       snprintf( buf2, 256, "Your %s %s $N%c", attack, vp, punct );
       snprintf( buf3, 256, "$n's %s %s you%c", attack, vp, punct );
    }
-
 
    act( AT_ACTION, buf1, ch, NULL, victim, TO_NOTVICT );
    if( !gcflag )
@@ -3904,7 +3908,6 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
       char_from_room( ch );
       char_to_room( ch, was_in_room );
    }
-   return;
 }
 
 #ifndef dam_message

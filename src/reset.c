@@ -1157,7 +1157,7 @@ void do_reset( CHAR_DATA* ch, const char* argument)
    if( !str_cmp( arg, "random" ) )
    {
       RESET_DATA *pReset;
-      int door = -1;
+      int door;
 
       argument = one_argument( argument, arg );
       door = get_dir( arg );

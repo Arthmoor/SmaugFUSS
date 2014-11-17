@@ -12,10 +12,10 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *	    Misc module for general commands: not skills or spells	    *
+ *          Misc module for general commands: not skills or spells          *
  ****************************************************************************
  * Note: Most of the stuff in here would go in act_obj.c, but act_obj was   *
- * getting big.								    *
+ * getting big.                                                             *
  ****************************************************************************/
 
 #include <stdio.h>

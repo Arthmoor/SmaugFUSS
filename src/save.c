@@ -1214,7 +1214,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                ch->perm_con = x5;
                ch->perm_cha = x6;
                ch->perm_lck = x7;
-               if( !x7 || x7 == 0 )
+               if( x7 == 0 )
                   ch->perm_lck = 13;
                fMatch = TRUE;
                break;

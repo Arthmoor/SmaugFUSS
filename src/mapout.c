@@ -12,7 +12,6 @@
  *	             Room qualities based on map code. Can add & remove rms      *
  *	                from a map. (Somewhat) intelligent exit decisions.       *
  * v. 1.1: 7/11/95:  Various display options.  See comments over draw_map   *
-
  ****************************************************************************/
 
 #include <stdio.h>
@@ -387,8 +386,6 @@ int add_new_room_to_map( CHAR_DATA * ch, char code )
             location->sector_type = SECT_AIR;
          else if( code == 'D' )
             location->sector_type = SECT_DESERT;
-         else if( code == 'U' )
-            location->sector_type = SECT_DUNNO;
          else if( code == 'O' )
             location->sector_type = SECT_OCEANFLOOR;
          else if( code == 'u' )

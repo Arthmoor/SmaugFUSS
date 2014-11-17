@@ -5014,7 +5014,7 @@ void separate_obj( OBJ_DATA * obj )
 bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
 {
    OBJ_DATA *otmp, *otmp_next;
-   CHAR_DATA *ch = obj->carried_by;
+   CHAR_DATA *ch;
    bool movedsome = FALSE;
 
    if( !obj )
@@ -5022,6 +5022,8 @@ bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
       bug( "%s: NULL obj", __func__ );
       return FALSE;
    }
+
+   ch = obj->carried_by;
 
    if( destobj || ( !destroom && !ch && ( destobj = obj->in_obj ) != NULL ) )
    {

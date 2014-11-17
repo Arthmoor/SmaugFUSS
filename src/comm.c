@@ -1353,7 +1353,7 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
    /*
     * Look for at least one new line.
     */
-   for( i = 0; d->inbuf[i] != '\n' && d->inbuf[i] != '\r' && i < MAX_INBUF_SIZE; i++ )
+   for( i = 0; i < MAX_INBUF_SIZE && d->inbuf[i] != '\n' && d->inbuf[i] != '\r'; i++ )
    {
       if( d->inbuf[i] == '\0' )
          return;
@@ -1467,6 +1467,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
       memcpy( buf, d->outbuf, 512 );
       d->outtop -= 512;
       memmove( d->outbuf, d->outbuf + 512, d->outtop );
+
       if( d->snoop_by )
       {
          char snoopbuf[MAX_INPUT_LENGTH];
@@ -1483,6 +1484,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
          write_to_buffer( d->snoop_by, "% ", 2 );
          write_to_buffer( d->snoop_by, buf, 0 );
       }
+
       if( !write_to_descriptor( d, buf, 512 ) )
       {
          d->outtop = 0;
@@ -3871,7 +3873,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   break;
             }
             if( pstat != 0x80000000 )
-               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%d", pstat );
+               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%u", pstat );
             pbuf += strlen( pbuf );
             break;
       }

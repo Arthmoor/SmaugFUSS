@@ -3188,8 +3188,8 @@ bool imc_read_buffer( void )
    if( k < 0 )
       k = 0;
 
-   for( i = 0; this_imcmud->inbuf[i] != '\0'
-        && this_imcmud->inbuf[i] != '\n' && this_imcmud->inbuf[i] != '\r' && i < IMC_BUFF_SIZE; i++ )
+   for( i = 0; i < IMC_BUFF_SIZE && this_imcmud->inbuf[i] != '\0'
+        && this_imcmud->inbuf[i] != '\n' && this_imcmud->inbuf[i] != '\r'; i++ )
    {
       this_imcmud->incomm[k++] = this_imcmud->inbuf[i];
    }
@@ -4198,7 +4198,7 @@ void imc_readhelp( IMC_HELP_DATA * help, FILE * fp )
             {
                int num = 0;
 
-               while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+               while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
                   num++;
                hbuf[num] = '\0';
                help->text = IMCSTRALLOC( hbuf );
@@ -4208,7 +4208,7 @@ void imc_readhelp( IMC_HELP_DATA * help, FILE * fp )
             break;
       }
       if( !fMatch )
-         imcbug( "imc_readhelp: no match: %s", word );
+         imcbug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -4837,49 +4837,49 @@ void imc_load_who_template( void )
 
       if( !strcasecmp( word, "Head:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->head = IMCSTRALLOC( parse_who_header( hbuf ) );
       }
       else if( !strcasecmp( word, "Tail:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->tail = IMCSTRALLOC( parse_who_tail( hbuf ) );
       }
       else if( !strcasecmp( word, "Plrline:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->plrline = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Immline:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->immline = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Immheader:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->immheader = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Plrheader:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->plrheader = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Master:" ) )
       {
-         while( ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' && num < ( LGST - 2 ) )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
             ++num;
          hbuf[num] = '\0';
          whot->master = IMCSTRALLOC( hbuf );
@@ -4897,13 +4897,12 @@ void imc_load_templates( void )
 int ipv4_connect( void )
 {
    struct sockaddr_in sa;
-   struct hostent *hostp;
 #ifdef WIN32
    ULONG r;
 #else
    int r;
 #endif
-   int desc = -1;
+   int desc;
 
    memset( &sa, 0, sizeof( sa ) );
    sa.sin_family = AF_INET;
@@ -4917,7 +4916,7 @@ int ipv4_connect( void )
     */
    if( !inet_aton( this_imcmud->rhost, &sa.sin_addr ) )
    {
-      hostp = gethostbyname( this_imcmud->rhost );
+      struct hostent *hostp = gethostbyname( this_imcmud->rhost );
       if( !hostp )
       {
          imclog( "%s", "imc_connect_to: Cannot resolve server hostname." );

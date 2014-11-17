@@ -2662,7 +2662,7 @@ void do_mp_close_passage( CHAR_DATA* ch, const char* argument)
    argument = one_argument( argument, arg2 );
    argument = one_argument( argument, arg3 );
 
-   if( arg1[0] == '\0' || arg2[0] == '\0' || arg2[0] == '\0' )
+   if( arg1[0] == '\0' || arg2[0] == '\0' )
    {
       progbug( "MpClosePassage - Bad syntax", ch );
       return;

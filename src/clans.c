@@ -259,6 +259,10 @@ void fread_memberlist( CLAN_DATA * clan, FILE * fp )
       if( !fMatch )
          bug( "%s: no match: %s", __func__, word );
    }
+
+   bug( "%s: Fell through to bottom!", __func__ );
+   STRFREE( roster->name );
+   DISPOSE( roster );
 }
 
 void free_one_clan( CLAN_DATA * clan )

@@ -7313,6 +7313,7 @@ void do_hell( CHAR_DATA* ch, const char* argument)
       send_to_char( "Hell who, and for how long?\r\n", ch );
       return;
    }
+
    if( !( victim = get_char_world( ch, arg ) ) || IS_NPC( victim ) )
    {
       send_to_char( "They aren't here.\r\n", ch );

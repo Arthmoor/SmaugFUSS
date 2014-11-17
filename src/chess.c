@@ -445,6 +445,18 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
 
 static int is_valid_move( CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, int dx, int dy )
 {
+   if( !ch )
+   {
+      bug( "%s: NULL ch!", __func__ );
+      return MOVE_INVALID;
+   }
+
+   if( !board )
+   {
+      bug( "%s: NULL board!", __func__ );
+      return MOVE_INVALID;
+   }
+
    if( dx < 0 || dy < 0 || dx > 7 || dy > 7 )
       return MOVE_OFFBOARD;
 
@@ -1166,7 +1178,7 @@ void do_chess( CHAR_DATA* ch, const char* argument)
 #ifdef IMC
             if( ch->pcdata->game_board->type == TYPE_IMC )
             {
-               snprintf( arg, LGST, "move %d%d %d%d", x, y, dx, dy );
+               snprintf( arg, MAX_INPUT_LENGTH, "move %d%d %d%d", x, y, dx, dy );
                imc_send_chess( ch->pcdata->game_board->player1, ch->pcdata->game_board->player2, arg );
             }
 #endif

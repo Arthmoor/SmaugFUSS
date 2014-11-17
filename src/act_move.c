@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			   Player movement module			    *
+ *                            Player movement module                        *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -254,7 +254,7 @@ void decorate_room( ROOM_INDEX_DATA * room )
          len = strlen( buf );
          if( len == 0 )
          {
-            switch ( number_range( 1, 2 * ( iRand == nRand - 1 ) ? 1 : 2 ) )
+            switch ( number_range( 1, ( 2 * ( iRand == nRand - 1 ) ) ? 1 : 2 ) )
             {
                case 1:
                   pre = "You notice ";

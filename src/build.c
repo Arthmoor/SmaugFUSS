@@ -3959,12 +3959,14 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "condition" ) )
             tmp = 0;
          break;
+
       case ITEM_ARMOR:
          if( !str_cmp( arg2, "condition" ) )
             tmp = 3;
          if( !str_cmp( arg2, "ac" ) )
             tmp = 1;
          break;
+
       case ITEM_SALVE:
          if( !str_cmp( arg2, "slevel" ) )
             tmp = 0;
@@ -3981,6 +3983,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( tmp >= 4 && tmp <= 5 )
             value = skill_lookup( arg3 );
          break;
+
       case ITEM_SCROLL:
       case ITEM_POTION:
       case ITEM_PILL:
@@ -3995,6 +3998,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( tmp >= 1 && tmp <= 3 )
             value = skill_lookup( arg3 );
          break;
+
       case ITEM_STAFF:
       case ITEM_WAND:
          if( !str_cmp( arg2, "slevel" ) )
@@ -4009,6 +4013,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "charges" ) )
             tmp = 2;
          break;
+
       case ITEM_CONTAINER:
          if( !str_cmp( arg2, "capacity" ) )
             tmp = 0;
@@ -4017,6 +4022,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "key" ) )
             tmp = 2;
          break;
+
       case ITEM_TRAP:
          if( !str_cmp( arg2, "trapflags" ) )
          {
@@ -4024,7 +4030,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
             {
                argument = one_argument( argument, arg3 );
                tmp = get_trapflag( arg3 );
-               if( tmp >= 0 || tmp < 32 )
+               if( tmp >= 0 && tmp < 32 )
                   TOGGLE_BIT( value, 1 << tmp );
                else
                   send_to_char( "Oset: TRAP: bad flag\r\n", ch );
@@ -4032,6 +4038,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
             tmp = 3;
          }
          break;
+
       case ITEM_SWITCH:
       case ITEM_LEVER:
       case ITEM_PULLCHAIN:
@@ -4055,6 +4062,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          }
          break;
    }
+
    if( tmp >= 0 && tmp <= 3 )
    {
       if( !can_omodify( ch, obj ) )
