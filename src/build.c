@@ -892,13 +892,13 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch", __FUNCTION__ );
+      bug( "%s: null ch", __func__ );
       return str_dup( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       return str_dup( "" );
    }
 
@@ -925,13 +925,13 @@ const char *copy_buffer( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch", __FUNCTION__ );
+      bug( "%s: null ch", __func__ );
       return STRALLOC( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       return STRALLOC( "" );
    }
 
@@ -3150,7 +3150,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !ch->dest_buf )
          {
             send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
-            bug( "%s: sub_obj_extra: NULL ch->dest_buf", __FUNCTION__ );
+            bug( "%s: sub_obj_extra: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -3173,7 +3173,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !ch->dest_buf )
          {
             send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
-            bug( "%s: sub_obj_long: NULL ch->dest_buf", __FUNCTION__ );
+            bug( "%s: sub_obj_long: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -4139,7 +4139,7 @@ void do_rdig( CHAR_DATA* ch, const char* argument)
       location = make_room( vnum, pArea );
       if( !location )
       {
-         bug( "%s: make_room failed", __FUNCTION__ );
+         bug( "%s: make_room failed", __func__ );
          return;
       }
       location->area = ch->pcdata->area;
@@ -4271,7 +4271,7 @@ void do_rgrid( CHAR_DATA* ch, const char* argument)
          location = make_room( vnum, pArea );
          if( !location )
          {
-            bug( "%s: make_room failed", __FUNCTION__ );
+            bug( "%s: make_room failed", __func__ );
             return;
          }
 
@@ -5687,14 +5687,14 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    if( d->connected != CON_EDITING )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: d->connected != CON_EDITING", __FUNCTION__ );
+      bug( "%s: d->connected != CON_EDITING", __func__ );
       return;
    }
 
    if( ch->substate <= SUB_PAUSE )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: illegal ch->substate (%d)", __FUNCTION__, ch->substate );
+      bug( "%s: illegal ch->substate (%d)", __func__, ch->substate );
       d->connected = CON_PLAYING;
       return;
    }
@@ -5702,7 +5702,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    if( !ch->editor )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       d->connected = CON_PLAYING;
       return;
    }
@@ -6677,7 +6677,7 @@ void fold_area( AREA_DATA * tarea, const char *fname, bool install )
    rename( fname, buf );
    if( !( fpout = fopen( fname, "w" ) ) )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( fname );
       return;
    }
@@ -9859,26 +9859,26 @@ void RelCreate( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
+      bug( "%s: invalid type (%d)", __func__, tp );
       return;
    }
 
    if( !actor )
    {
-      bug( "%s: NULL actor", __FUNCTION__ );
+      bug( "%s: NULL actor", __func__ );
       return;
    }
 
    if( !subject )
    {
-      bug( "%s: NULL subject", __FUNCTION__ );
+      bug( "%s: NULL subject", __func__ );
       return;
    }
 
    for( tmp = first_relation; tmp; tmp = tmp->next )
       if( tmp->Type == tp && tmp->Actor == actor && tmp->Subject == subject )
       {
-         bug( "%s: duplicated relation", __FUNCTION__ );
+         bug( "%s: duplicated relation", __func__ );
          return;
       }
 
@@ -9899,19 +9899,19 @@ void RelDestroy( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
+      bug( "%s: invalid type (%d)", __func__, tp );
       return;
    }
 
    if( !actor )
    {
-      bug( "%s: NULL actor", __FUNCTION__ );
+      bug( "%s: NULL actor", __func__ );
       return;
    }
 
    if( !subject )
    {
-      bug( "%s: NULL subject", __FUNCTION__ );
+      bug( "%s: NULL subject", __func__ );
       return;
    }
 

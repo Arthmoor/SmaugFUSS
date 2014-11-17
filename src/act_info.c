@@ -2442,7 +2442,7 @@ void do_hset( CHAR_DATA* ch, const char* argument)
       rename( "help.are", "help.are.bak" );
       if( ( fpout = fopen( "help.are", "w" ) ) == NULL )
       {
-         bug( "%s: cant open help.are", __FUNCTION__ );
+         bug( "%s: cant open help.are", __func__ );
          perror( "help.are" );
          return;
       }
@@ -4680,7 +4680,7 @@ void do_slist( CHAR_DATA* ch, const char* argument)
             {
                default:
                   snprintf( buf, MAX_INPUT_LENGTH, "%s", "Invalid" );
-                  bug( "%s: skill with invalid minpos, skill=%s", __FUNCTION__, skill->name );
+                  bug( "%s: skill with invalid minpos, skill=%s", __func__, skill->name );
                   break;
 
                case POS_DEAD:

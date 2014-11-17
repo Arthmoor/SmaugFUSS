@@ -185,11 +185,11 @@ bool load_class_file( const char *fname )
                sn = skill_lookup( word );
                if( cl < 0 || cl >= MAX_CLASS )
                {
-                  bug( "%s: Skill %s -- class bad/not found (%d)", __FUNCTION__, word, cl );
+                  bug( "%s: Skill %s -- class bad/not found (%d)", __func__, word, cl );
                }
                else if( !IS_VALID_SN( sn ) )
                {
-                  bug( "%s: Skill %s unknown", __FUNCTION__, word );
+                  bug( "%s: Skill %s unknown", __func__, word );
                }
                else
                {
@@ -223,7 +223,7 @@ bool load_class_file( const char *fname )
                   ++tlev;
                }
                else
-                  bug( "%s: Too many titles", __FUNCTION__ );
+                  bug( "%s: Too many titles", __func__ );
                fMatch = TRUE;
                break;
             }
@@ -237,7 +237,7 @@ bool load_class_file( const char *fname )
       }
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -511,7 +511,7 @@ bool load_race_file( const char *fname )
                fp = NULL;
                if( ra < 0 || ra >= MAX_RACE )
                {
-                  bug( "%s: Race (%s) bad/not found (%d)", __FUNCTION__,
+                  bug( "%s: Race (%s) bad/not found (%d)", __func__,
                        race->race_name ? race->race_name : "name not found", ra );
                   STRFREE( race_name );
                   for( i = 0; i < MAX_WHERE_NAME; ++i )
@@ -573,11 +573,11 @@ bool load_race_file( const char *fname )
                sn = skill_lookup( word );
                if( ra < 0 || ra >= MAX_RACE )
                {
-                  bug( "%s: Skill %s -- race bad/not found (%d)", __FUNCTION__, word, ra );
+                  bug( "%s: Skill %s -- race bad/not found (%d)", __func__, word, ra );
                }
                else if( !IS_VALID_SN( sn ) )
                {
-                  bug( "%s: Skill %s unknown", __FUNCTION__, word );
+                  bug( "%s: Skill %s unknown", __func__, word );
                }
                else
                {
@@ -602,7 +602,7 @@ bool load_race_file( const char *fname )
                {
                   char *tmp;
 
-                  bug( "%s: Title -- race bad/not found (%d)", __FUNCTION__, ra );
+                  bug( "%s: Title -- race bad/not found (%d)", __func__, ra );
                   tmp = fread_string_nohash( fp );
                   DISPOSE( tmp );
                   tmp = fread_string_nohash( fp );
@@ -627,7 +627,7 @@ bool load_race_file( const char *fname )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1115,7 +1115,7 @@ SKILLTYPE *fread_skill( FILE * fp )
                }
                else
                {
-                  bug( "%s: unknown skill/spell %s", __FUNCTION__, w );
+                  bug( "%s: unknown skill/spell %s", __func__, w );
                   skill->spell_fun = spell_null;
                }
                break;
@@ -1137,7 +1137,7 @@ SKILLTYPE *fread_skill( FILE * fp )
             {
                if( skill->saves != 0 && SPELL_SAVE( skill ) == SE_NONE )
                {
-                  bug( "%s (%s):  Has saving throw (%d) with no saving effect.", __FUNCTION__, skill->name, skill->saves );
+                  bug( "%s (%s):  Has saving throw (%d) with no saving effect.", __func__, skill->name, skill->saves );
                   SET_SSAV( skill, SE_NEGATE );
                }
                return skill;
@@ -1306,7 +1306,7 @@ SKILLTYPE *fread_skill( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1333,7 +1333,7 @@ void load_skill_table(  )
 
          if( letter != '#' )
          {
-            bug( "%s: # not found.", __FUNCTION__ );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -1342,7 +1342,7 @@ void load_skill_table(  )
          {
             if( num_skills >= MAX_SKILL )
             {
-               bug( "%s: more skills than MAX_SKILL %d", __FUNCTION__, MAX_SKILL );
+               bug( "%s: more skills than MAX_SKILL %d", __func__, MAX_SKILL );
                fclose( fp );
                fp = NULL;
                return;
@@ -1354,7 +1354,7 @@ void load_skill_table(  )
             break;
          else
          {
-            bug( "%s: bad section.", __FUNCTION__ );
+            bug( "%s: bad section.", __func__ );
             continue;
          }
       }
@@ -1390,7 +1390,7 @@ void load_herb_table(  )
 
          if( letter != '#' )
          {
-            bug( "%s: # not found.", __FUNCTION__ );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -1399,7 +1399,7 @@ void load_herb_table(  )
          {
             if( top_herb >= MAX_HERB )
             {
-               bug( "%s: more herbs than MAX_HERB %d", __FUNCTION__, MAX_HERB );
+               bug( "%s: more herbs than MAX_HERB %d", __func__, MAX_HERB );
                fclose( fp );
                fp = NULL;
                return;
@@ -1413,7 +1413,7 @@ void load_herb_table(  )
             break;
          else
          {
-            bug( "%s: bad section.", __FUNCTION__ );
+            bug( "%s: bad section.", __func__ );
             continue;
          }
       }
@@ -1578,13 +1578,13 @@ void fread_command( FILE * fp )
             {
                if( !command->name )
                {
-                  bug( "%s: Name not found", __FUNCTION__ );
+                  bug( "%s: Name not found", __func__ );
                   free_command( command );
                   return;
                }
                if( !command->fun_name )
                {
-                  bug( "%s: No function name supplied for %s", __FUNCTION__, command->name );
+                  bug( "%s: No function name supplied for %s", __func__, command->name );
                   free_command( command );
                   return;
                }
@@ -1596,7 +1596,7 @@ void fread_command( FILE * fp )
                command->do_fun = skill_function( command->fun_name );
                if( command->do_fun == skill_notfound )
                {
-                  bug( "%s: Function %s not found for %s", __FUNCTION__, command->fun_name, command->name );
+                  bug( "%s: Function %s not found for %s", __func__, command->fun_name, command->name );
                   free_command( command );
                   return;
                }

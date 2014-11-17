@@ -108,7 +108,7 @@ void write_hint( void )
    sprintf( filename, "%s", HINT_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( filename );
       return;
    }
@@ -379,7 +379,7 @@ HINT_DATA *read_hint( char *filename, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
    }
    STRFREE( hintData->text );
    DISPOSE( hintData );

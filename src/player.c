@@ -1006,7 +1006,7 @@ void set_title( CHAR_DATA * ch, const char *title )
 
    if( IS_NPC( ch ) )
    {
-      bug( "%s: NPC.", __FUNCTION__ );
+      bug( "%s: NPC.", __func__ );
       return;
    }
 
@@ -1113,14 +1113,14 @@ void do_description( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )
    {
-      bug( "%s: no descriptor", __FUNCTION__ );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
    switch ( ch->substate )
    {
       default:
-         bug( "%s: illegal substate", __FUNCTION__ );
+         bug( "%s: illegal substate", __func__ );
          return;
 
       case SUB_RESTRICTED:
@@ -1159,14 +1159,14 @@ void do_bio( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )
    {
-      bug( "%s: no descriptor", __FUNCTION__ );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
    switch ( ch->substate )
    {
       default:
-         bug( "%s: illegal substate", __FUNCTION__ );
+         bug( "%s: illegal substate", __func__ );
          return;
 
       case SUB_RESTRICTED:

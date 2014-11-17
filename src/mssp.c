@@ -93,7 +93,7 @@ void save_mssp_info( void )
 
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s: can't open file", __FUNCTION__ );
+      bug( "%s: can't open file", __func__ );
       perror( filename );
    }
    else
@@ -182,7 +182,7 @@ bool load_mssp_data( void )
 
          if( letter != '#' )
          {
-            bug( "%s: # not found.", __FUNCTION__ );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -196,7 +196,7 @@ bool load_mssp_data( void )
             break;
          else
          {
-            bug( "%s: bad section.", __FUNCTION__ );
+            bug( "%s: bad section.", __func__ );
             break;
          }
       }
@@ -323,7 +323,7 @@ void fread_mssp_info( FILE * fp )
             break;
       }
       if( !fMatch )
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -333,7 +333,7 @@ void show_mssp( CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s: NULL ch", __FUNCTION__ );
+      bug( "%s: NULL ch", __func__ );
       return;
    }
 
@@ -645,12 +645,12 @@ void mssp_reply( DESCRIPTOR_DATA * d, const char *var, const char *fmt, ... )
 
    if( !d )
    {
-      bug( "%s: NULL d", __FUNCTION__ );
+      bug( "%s: NULL d", __func__ );
       return;
    }
    if( !var || var[0] == '\0' )
    {
-      bug( "%s: NULL var", __FUNCTION__ );
+      bug( "%s: NULL var", __func__ );
       return;
    }
 
@@ -690,7 +690,7 @@ void send_mssp_data( DESCRIPTOR_DATA * d )
 {
    if( !d )
    {
-      bug( "%s: NULL d", __FUNCTION__ );
+      bug( "%s: NULL d", __func__ );
       return;
    }
 

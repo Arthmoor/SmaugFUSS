@@ -1642,7 +1642,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
    switch ( 1 << bit )
    {
       default:
-         bug( "%s: uknown/unused item_wear bit %d", __FUNCTION__, bit );
+         bug( "%s: uknown/unused item_wear bit %d", __func__, bit );
          if( fReplace )
             send_to_char( "You can't wear, wield, or hold that.\r\n", ch );
          return;
@@ -1677,7 +1677,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
             return;
          }
 
-         bug( "%s: no free finger.", __FUNCTION__ );
+         bug( "%s: no free finger.", __func__ );
          send_to_char( "You already wear something on both fingers.\r\n", ch );
          return;
 
@@ -1711,7 +1711,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
             return;
          }
 
-         bug( "%s: no free neck.", __FUNCTION__ );
+         bug( "%s: no free neck.", __func__ );
          send_to_char( "You already wear two neck items.\r\n", ch );
          return;
 
@@ -1944,7 +1944,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
             return;
          }
 
-         bug( "%s: no free ankle.", __FUNCTION__ );
+         bug( "%s: no free ankle.", __func__ );
          send_to_char( "You already wear two ankle items.\r\n", ch );
          return;
 
@@ -2428,7 +2428,7 @@ void do_brandish( CHAR_DATA* ch, const char* argument)
 
    if( ( sn = staff->value[3] ) < 0 || sn >= num_skills || skill_table[sn]->spell_fun == NULL )
    {
-      bug( "%s: bad sn %d.", __FUNCTION__, sn );
+      bug( "%s: bad sn %d.", __func__, sn );
       return;
    }
 

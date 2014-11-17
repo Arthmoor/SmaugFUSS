@@ -59,12 +59,12 @@ TRV_DATA *trvch_create( CHAR_DATA * ch, trv_type tp )
    {
       if( !ch )
       {
-         bug( "%s: NULL ch.", __FUNCTION__ );
+         bug( "%s: NULL ch.", __func__ );
          return NULL;
       }
       else if( !ch->in_room )
       {
-         bug( "%s: type %d with NULL room.", __FUNCTION__, tp );
+         bug( "%s: type %d with NULL room.", __func__, tp );
          return NULL;
       }
    }
@@ -106,21 +106,21 @@ TRV_DATA *trvch_create( CHAR_DATA * ch, trv_type tp )
          break; */
 
       default:
-         bug( "%s: bad type (%d).", __FUNCTION__, tp );
+         bug( "%s: bad type (%d).", __func__, tp );
          return NULL;
    }
 
    New = ( TRV_DATA * ) malloc( sizeof( TRV_DATA ) );
    if( !New )
    {
-      bug( "%s: malloc() failure for %d nodes.", __FUNCTION__, count );
+      bug( "%s: malloc() failure for %d nodes.", __func__, count );
       return NULL;
    }
 
    New->el = (void**) malloc( count * sizeof(void*) );
    if( !New->el )
    {
-      bug( "%s: malloc() failure for %d nodes.", __FUNCTION__, count );
+      bug( "%s: malloc() failure for %d nodes.", __func__, count );
       return NULL;
    }
 
@@ -168,25 +168,25 @@ TRV_DATA *trvobj_create( OBJ_DATA * obj, trv_type tp )
 
    if( !obj && tp >= TR_OBJ_ROOM_FORW && tp <= TR_OBJ_OBJ_BACK )
    {
-      bug( "%s: NULL obj.", __FUNCTION__ );
+      bug( "%s: NULL obj.", __func__ );
       return NULL;
    }
 
    if( ( tp == TR_OBJ_ROOM_FORW || tp == TR_OBJ_ROOM_BACK ) && !obj->in_room )
    {
-      bug( "%s: type %d in NULL room.", __FUNCTION__, tp );
+      bug( "%s: type %d in NULL room.", __func__, tp );
       return NULL;
    }
 
    if( ( tp == TR_OBJ_CHAR_FORW || tp == TR_OBJ_CHAR_BACK ) && !obj->carried_by )
    {
-      bug( "%s: type %d in NULL carrier.", __FUNCTION__, tp );
+      bug( "%s: type %d in NULL carrier.", __func__, tp );
       return NULL;
    }
 
    if( ( tp == TR_OBJ_OBJ_FORW || tp == TR_OBJ_OBJ_BACK ) && !obj->in_obj )
    {
-      bug( "%s: type %d in NULL container.", __FUNCTION__, tp );
+      bug( "%s: type %d in NULL container.", __func__, tp );
       return NULL;
    }
 
@@ -278,21 +278,21 @@ TRV_DATA *trvobj_create( OBJ_DATA * obj, trv_type tp )
             }
          break; */
       default:
-         bug( "%s: bad type (%d).", __FUNCTION__, tp );
+         bug( "%s: bad type (%d).", __func__, tp );
          return NULL;
    }
 
    New = ( TRV_DATA * ) malloc( sizeof( TRV_DATA ) );
    if( !New )
    {
-      bug( "%s: malloc() failure, %d nodes, type %d.", __FUNCTION__, count, tp );
+      bug( "%s: malloc() failure, %d nodes, type %d.", __func__, count, tp );
       return NULL;
    }
 
    New->el = (void**) malloc(count * sizeof(void*) );
    if( !New->el )
    {
-      bug( "%s: malloc() failure, %d nodes, type %d.", __FUNCTION__, count, tp );
+      bug( "%s: malloc() failure, %d nodes, type %d.", __func__, count, tp );
       return NULL;
    }
 
@@ -345,7 +345,7 @@ void trv_dispose( TRV_DATA ** p )
       *p = NULL;
    }
    else
-      bug( "%s: NULL pointer.", __FUNCTION__ );
+      bug( "%s: NULL pointer.", __func__ );
 }
 
 CHAR_DATA *trvch_next( TRV_DATA * lc )
@@ -358,7 +358,7 @@ CHAR_DATA *trvch_next( TRV_DATA * lc )
 
    if( lc->type < TR_CHAR_WORLD_FORW || lc->type > TR_CHAR_ROOM_BACK )
    {
-      bug( "%s: called on a type %d structure.", __FUNCTION__, lc->type );
+      bug( "%s: called on a type %d structure.", __func__, lc->type );
       return NULL;
    }
 
@@ -407,7 +407,7 @@ OBJ_DATA *trvobj_next( TRV_DATA * lc )
 
    if( lc->type < TR_OBJ_WORLD_FORW || lc->type > TR_OBJ_OBJ_BACK )
    {
-      bug( "%s: called on a type %d structure.", __FUNCTION__, lc->type );
+      bug( "%s: called on a type %d structure.", __func__, lc->type );
       return NULL;
    }
 
@@ -453,13 +453,13 @@ TRV_WORLD *trworld_create( trv_type tp )
 
    if( tp != TR_CHAR_WORLD_FORW && tp != TR_CHAR_WORLD_BACK && tp != TR_OBJ_WORLD_FORW && tp != TR_OBJ_WORLD_BACK )
    {
-      bug( "%s: invalid type %d.", __FUNCTION__, tp );
+      bug( "%s: invalid type %d.", __func__, tp );
       return NULL;
    }
 
    if( trw_loops >= TRW_MAXHEAP )
    {
-      bug( "%s: heap limit exceeded.", __FUNCTION__ );
+      bug( "%s: heap limit exceeded.", __func__ );
       return NULL;
    }
 
@@ -493,7 +493,7 @@ void trworld_dispose( TRV_WORLD ** trash )
 
    if( ( trw_heap + --trw_loops ) != *trash )
    {
-      bug( "%s: midlist control block (%zd).", __FUNCTION__, *trash - trw_heap );
+      bug( "%s: midlist control block (%zd).", __func__, *trash - trw_heap );
       ++trw_loops;
    }
    else
@@ -506,7 +506,7 @@ CHAR_DATA *trvch_wnext( TRV_WORLD * lc )
 
    if( lc->type != TR_CHAR_WORLD_FORW && lc->type != TR_CHAR_WORLD_BACK )
    {
-      bug( "%s: invalid type (%d).", __FUNCTION__, lc->type );
+      bug( "%s: invalid type (%d).", __func__, lc->type );
       return NULL;
    }
 
@@ -527,7 +527,7 @@ OBJ_DATA *trvobj_wnext( TRV_WORLD * lc )
 
    if( lc->type != TR_OBJ_WORLD_FORW && lc->type != TR_OBJ_WORLD_BACK )
    {
-      bug( "%s: invalid type (%d).", __FUNCTION__, lc->type );
+      bug( "%s: invalid type (%d).", __func__, lc->type );
       return NULL;
    }
 
@@ -1145,7 +1145,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
    switch ( location )
    {
       default:
-         bug( "%s: unknown location %d. (%s)", __FUNCTION__, paf->location, ch->name );
+         bug( "%s: unknown location %d. (%s)", __func__, paf->location, ch->name );
          return;
 
       case APPLY_NONE:
@@ -1476,13 +1476,13 @@ void affect_to_char( CHAR_DATA * ch, AFFECT_DATA * paf )
 
    if( !ch )
    {
-      bug( "%s (NULL, %d)", __FUNCTION__, paf ? paf->type : 0 );
+      bug( "%s (NULL, %d)", __func__, paf ? paf->type : 0 );
       return;
    }
 
    if( !paf )
    {
-      bug( "%s (%s, NULL)", __FUNCTION__, ch->name );
+      bug( "%s (%s, NULL)", __func__, ch->name );
       return;
    }
 
@@ -1512,7 +1512,7 @@ void affect_remove( CHAR_DATA * ch, AFFECT_DATA * paf )
 {
    if( !ch->first_affect )
    {
-      bug( "%s (%s, %d): no affect.", __FUNCTION__, ch->name, paf ? paf->type : 0 );
+      bug( "%s (%s, %d): no affect.", __func__, ch->name, paf ? paf->type : 0 );
       return;
    }
 
@@ -1808,13 +1808,13 @@ void char_to_room( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex )
 
    if( !ch )
    {
-      bug( "%s: NULL ch!", __FUNCTION__ );
+      bug( "%s: NULL ch!", __func__ );
       return;
    }
 
    if( !pRoomIndex || !get_room_index( pRoomIndex->vnum ) )
    {
-      bug( "%s: %s -> NULL room!  Putting char in limbo (%d)", __FUNCTION__, ch->name, ROOM_VNUM_LIMBO );
+      bug( "%s: %s -> NULL room!  Putting char in limbo (%d)", __func__, ch->name, ROOM_VNUM_LIMBO );
       /*
        * This used to just return, but there was a problem with crashing
        * and I saw no reason not to just put the char in limbo.  -Narn
@@ -2019,7 +2019,7 @@ void obj_from_char( OBJ_DATA * obj )
 
    if( ( ch = obj->carried_by ) == NULL )
    {
-      bug( "%s: null ch.", __FUNCTION__ );
+      bug( "%s: null ch.", __func__ );
       return;
    }
 
@@ -2133,13 +2133,13 @@ void equip_char( CHAR_DATA * ch, OBJ_DATA * obj, int iWear )
 
    if( obj->carried_by != ch )
    {
-      bug( "%s: obj not being carried by ch!", __FUNCTION__ );
+      bug( "%s: obj not being carried by ch!", __func__ );
       return;
    }
 
    if( ( otmp = get_eq_char( ch, iWear ) ) != NULL && ( !otmp->pIndexData->layers || !obj->pIndexData->layers ) )
    {
-      bug( "%s: %s already equipped (%d).", __FUNCTION__, ch->name, iWear );
+      bug( "%s: %s already equipped (%d).", __func__, ch->name, iWear );
       return;
    }
 
@@ -2194,7 +2194,7 @@ void unequip_char( CHAR_DATA * ch, OBJ_DATA * obj )
 
    if( obj->wear_loc == WEAR_NONE )
    {
-      bug( "%s: already unequipped.", __FUNCTION__ );
+      bug( "%s: already unequipped.", __func__ );
       return;
    }
 
@@ -2371,7 +2371,7 @@ void obj_from_obj( OBJ_DATA * obj )
 
    if( ( obj_from = obj->in_obj ) == NULL )
    {
-      bug( "%s: null obj_from.", __FUNCTION__ );
+      bug( "%s: null obj_from.", __func__ );
       return;
    }
 
@@ -2409,7 +2409,7 @@ void extract_obj( OBJ_DATA * obj )
 
    if( obj_extracted( obj ) )
    {
-      bug( "%s: obj %d already extracted!", __FUNCTION__, obj->pIndexData->vnum );
+      bug( "%s: obj %d already extracted!", __func__, obj->pIndexData->vnum );
       return;
    }
 
@@ -2521,25 +2521,25 @@ void extract_char( CHAR_DATA * ch, bool fPull )
 
    if( !ch )
    {
-      bug( "%s: NULL ch.", __FUNCTION__ );
+      bug( "%s: NULL ch.", __func__ );
       return;
    }
 
    if( !ch->in_room )
    {
-      bug( "%s: %s in NULL room.", __FUNCTION__, ch->name ? ch->name : "???" );
+      bug( "%s: %s in NULL room.", __func__, ch->name ? ch->name : "???" );
       return;
    }
 
    if( ch == supermob )
    {
-      bug( "%s: ch == supermob!", __FUNCTION__ );
+      bug( "%s: ch == supermob!", __func__ );
       return;
    }
 
    if( char_died( ch ) )
    {
-      bug( "%s: %s already died!", __FUNCTION__, ch->name );
+      bug( "%s: %s already died!", __func__, ch->name );
       return;
    }
 
@@ -2682,7 +2682,7 @@ void extract_char( CHAR_DATA * ch, bool fPull )
    if( ch->desc )
    {
       if( ch->desc->character != ch )
-         bug( "%s: char's descriptor points to another char", __FUNCTION__ );
+         bug( "%s: char's descriptor points to another char", __func__ );
       else
       {
          ch->desc->character = NULL;
@@ -3303,7 +3303,7 @@ bool room_is_dark( ROOM_INDEX_DATA * pRoomIndex )
 {
    if( !pRoomIndex )
    {
-      bug( "%s:: NULL pRoomIndex", __FUNCTION__ );
+      bug( "%s:: NULL pRoomIndex", __func__ );
       return TRUE;
    }
 
@@ -5019,7 +5019,7 @@ bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
 
    if( !obj )
    {
-      bug( "%s: NULL obj", __FUNCTION__ );
+      bug( "%s: NULL obj", __func__ );
       return FALSE;
    }
 
@@ -5091,7 +5091,7 @@ bool empty_obj( OBJ_DATA * obj, OBJ_DATA * destobj, ROOM_INDEX_DATA * destroom )
       return movedsome;
    }
 
-   bug( "%s: could not determine a destination for vnum %d", __FUNCTION__, obj->pIndexData->vnum );
+   bug( "%s: could not determine a destination for vnum %d", __func__, obj->pIndexData->vnum );
    return FALSE;
 }
 

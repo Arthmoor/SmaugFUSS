@@ -356,7 +356,7 @@ int add_new_room_to_map( CHAR_DATA * ch, char code )
       {
          if( !( location = make_room( i, ch->pcdata->area ) ) )
          {
-            bug( "%s: make_room failed", __FUNCTION__ );
+            bug( "%s: make_room failed", __func__ );
             return -1;
          }
          /*
@@ -437,7 +437,7 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 
    if( !ch->pnote )
    {
-      bug( "%s: ch->pnote==NULL!", __FUNCTION__ );
+      bug( "%s: ch->pnote==NULL!", __func__ );
       return;
    }
 

@@ -69,7 +69,7 @@ int load_imm_host(  )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -132,7 +132,7 @@ int fread_imm_host( FILE * fp, IMMORTAL_HOST * data )
       }
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }

@@ -49,7 +49,7 @@ void load_banlist( void )
 
    if( !( fp = fopen( SYSTEM_DIR BAN_LIST, "r" ) ) )
    {
-      bug( "%s: Cannot open %s", __FUNCTION__, BAN_LIST );
+      bug( "%s: Cannot open %s", __func__, BAN_LIST );
       perror( BAN_LIST );
       return;
    }
@@ -1332,7 +1332,7 @@ void dispose_ban( BAN_DATA * pban, int type )
 
    if( type != BAN_SITE && type != BAN_CLASS && type != BAN_RACE )
    {
-      bug( "%s: Unknown Ban Type %d.", __FUNCTION__, type );
+      bug( "%s: Unknown Ban Type %d.", __func__, type );
       return;
    }
 

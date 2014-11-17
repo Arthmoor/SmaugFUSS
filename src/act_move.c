@@ -2546,7 +2546,7 @@ ch_ret pullcheck( CHAR_DATA * ch, int pulse )
 
    if( ( room = ch->in_room ) == NULL )
    {
-      bug( "%s: %s not in a room?!?", __FUNCTION__, ch->name );
+      bug( "%s: %s not in a room?!?", __func__, ch->name );
       return rNONE;
    }
 

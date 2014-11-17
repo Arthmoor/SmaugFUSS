@@ -2782,7 +2782,7 @@ void add_follower( CHAR_DATA * ch, CHAR_DATA * master )
 {
    if( ch->master )
    {
-      bug( "%s: non-null master.", __FUNCTION__ );
+      bug( "%s: non-null master.", __func__ );
       return;
    }
 
@@ -2807,7 +2807,7 @@ void stop_follower( CHAR_DATA * ch )
 {
    if( !ch->master )
    {
-      bug( "%s: null master.", __FUNCTION__ );
+      bug( "%s: null master.", __func__ );
       return;
    }
 

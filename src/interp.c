@@ -252,13 +252,13 @@ void interpret( CHAR_DATA * ch, char *argument )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return;
    }
 
    if( !ch->in_room )
    {
-      bug( "%s: null in_room!", __FUNCTION__ );
+      bug( "%s: null in_room!", __func__ );
       return;
    }
 
@@ -270,7 +270,7 @@ void interpret( CHAR_DATA * ch, char *argument )
       if( ( fun = ch->last_cmd ) == NULL )
       {
          ch->substate = SUB_NONE;
-         bug( "%s: SUB_REPEATCMD with NULL last_cmd", __FUNCTION__ );
+         bug( "%s: SUB_REPEATCMD with NULL last_cmd", __func__ );
          return;
       }
       else
@@ -295,7 +295,7 @@ void interpret( CHAR_DATA * ch, char *argument )
          if( !found )
          {
             cmd = NULL;
-            bug( "%s: SUB_REPEATCMD: last_cmd invalid", __FUNCTION__ );
+            bug( "%s: SUB_REPEATCMD: last_cmd invalid", __func__ );
             return;
          }
          snprintf( logline, MAX_INPUT_LENGTH, "(%s) %s", cmd->name, argument );
@@ -309,7 +309,7 @@ void interpret( CHAR_DATA * ch, char *argument )
        */
       if( !argument || !strcmp( argument, "" ) )
       {
-         bug( "%s: null argument!", __FUNCTION__ );
+         bug( "%s: null argument!", __func__ );
          return;
       }
 

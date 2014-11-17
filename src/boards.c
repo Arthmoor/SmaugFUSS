@@ -1656,7 +1656,7 @@ BOARD_DATA *read_board( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1757,7 +1757,7 @@ NOTE_DATA *read_note( FILE * fp )
       pnote->prev = NULL;
       return pnote;
    }
-   bug( "%s: bad key word.", __FUNCTION__ );
+   bug( "%s: bad key word.", __func__ );
    return NULL;
 }
 
@@ -2317,7 +2317,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
 
    if( !ch->desc )
    {
-      bug( "%s: no descriptor", __FUNCTION__ );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -2328,7 +2328,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
       case SUB_JOURNAL_WRITE:
          if( ( journal = get_eq_char( ch, WEAR_HOLD ) ) == NULL || journal->item_type != ITEM_JOURNAL )
          {
-            bug( "%s: Player not holding journal. (Player: %s)", __FUNCTION__, ch->name );
+            bug( "%s: Player not holding journal. (Player: %s)", __func__, ch->name );
             stop_editing( ch );
             return;
          }
@@ -2391,7 +2391,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
       if( journal->value[0] > 50 )
       {
          journal->value[0] = 50;
-         bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __FUNCTION__, ch->name );
+         bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __func__, ch->name );
       }
 
       set_char_color( AT_GREY, ch );
@@ -2439,7 +2439,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
          if( journal->value[0] > 50 )
          {
             journal->value[0] = 50;
-            bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __FUNCTION__, ch->name );
+            bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __func__, ch->name );
          }
          set_char_color( AT_GREY, ch );
          ch_printf( ch, "There are %d pages in this journal.\r\n", journal->value[0] );
@@ -2481,7 +2481,7 @@ void do_journal( CHAR_DATA * ch, const char *argument )
       if( journal->value[0] > 50 )
       {
          journal->value[0] = 50;
-         bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __FUNCTION__, ch->name );
+         bug( "%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __func__, ch->name );
       }
 
       set_char_color( AT_GREY, ch );

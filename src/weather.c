@@ -2258,7 +2258,7 @@ void save_weathermap( void )
    snprintf( filename, MIL, "%s%s", SYSTEM_DIR, WEATHER_FILE );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( filename );
       return;
    }
@@ -2380,7 +2380,7 @@ void fread_cell( FILE * fp, int x, int y )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -2413,7 +2413,7 @@ bool load_weathermap( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return FALSE;
       }
 
@@ -2434,7 +2434,7 @@ bool load_weathermap( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          continue;
       }
    }

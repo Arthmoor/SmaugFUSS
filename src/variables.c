@@ -572,7 +572,7 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
                {
                   default:
                   {
-                     bug( "%s: invalid/incomplete variable: %s", __FUNCTION__, pvd->tag );
+                     bug( "%s: invalid/incomplete variable: %s", __func__, pvd->tag );
                      DISPOSE( pvd->tag );
                      DISPOSE( pvd );
                      break;
@@ -581,7 +581,7 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
                   case vtXBIT:
                      if( !pvd->data )
                      {
-                        bug( "%s: invalid/incomplete variable: %s", __FUNCTION__, pvd->tag );
+                        bug( "%s: invalid/incomplete variable: %s", __func__, pvd->tag );
                         DISPOSE( pvd->tag );
                         DISPOSE( pvd );
                         break;
@@ -602,7 +602,7 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
             if( !str_cmp( word, "Int" ) )
             {
                if( pvd->type != vtINT )
-                  bug( "%s: Type mismatch -- type(%d) != vtInt", __FUNCTION__, pvd->type );
+                  bug( "%s: Type mismatch -- type(%d) != vtInt", __func__, pvd->type );
                else
                {
                   pvd->data = ( void * )( ( long )fread_number( fp ) );
@@ -624,7 +624,7 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
             if( !str_cmp( word, "Str" ) )
             {
                if( pvd->type != vtSTR )
-                  bug( "%s: Type mismatch -- type(%d) != vtSTR", __FUNCTION__, pvd->type );
+                  bug( "%s: Type mismatch -- type(%d) != vtSTR", __func__, pvd->type );
                else
                {
                   pvd->data = fread_string_nohash( fp );
@@ -648,7 +648,7 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
             if( !str_cmp( word, "Xbit" ) )
             {
                if( pvd->type != vtXBIT )
-                  bug( "%s: Type mismatch -- type(%d) != vtXBIT", __FUNCTION__, pvd->type );
+                  bug( "%s: Type mismatch -- type(%d) != vtXBIT", __func__, pvd->type );
                else
                {
                   CREATE( pvd->data, EXT_BV, 1 );
@@ -661,6 +661,6 @@ void fread_variable( CHAR_DATA * ch, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }

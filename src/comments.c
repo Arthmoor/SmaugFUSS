@@ -28,13 +28,13 @@ void comment_remove( CHAR_DATA * victim, NOTE_DATA * pnote )
 {
    if( !victim->comments )
    {
-      bug( "%s: null board", __FUNCTION__ );
+      bug( "%s: null board", __func__ );
       return;
    }
 
    if( !pnote )
    {
-      bug( "%s: null pnote", __FUNCTION__ );
+      bug( "%s: null pnote", __func__ );
       return;
    }
 
@@ -105,13 +105,13 @@ void do_comment( CHAR_DATA* ch, const char* argument)
       case SUB_WRITING_NOTE:
          if( !ch->pnote )
          {
-            bug( "%s: note got lost?", __FUNCTION__ );
+            bug( "%s: note got lost?", __func__ );
             send_to_char( "Your note got lost!\r\n", ch );
             stop_editing( ch );
             return;
          }
          if( ch->dest_buf != ch->pnote )
-            bug( "%s: sub_writing_note: ch->dest_buf != ch->pnote", __FUNCTION__ );
+            bug( "%s: sub_writing_note: ch->dest_buf != ch->pnote", __func__ );
          STRFREE( ch->pnote->text );
          ch->pnote->text = copy_buffer( ch );
          stop_editing( ch );
@@ -488,5 +488,5 @@ void fread_comment( CHAR_DATA * ch, FILE * fp )
       return;
    }
 
-   bug( "%s: bad key word. strap in!", __FUNCTION__ );
+   bug( "%s: bad key word. strap in!", __func__ );
 }

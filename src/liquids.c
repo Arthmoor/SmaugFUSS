@@ -88,7 +88,7 @@ void save_liquids( void )
    snprintf( filename, 256, "%sliquids.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: cannot open %s for writing", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for writing", __func__, filename );
       return;
    }
 
@@ -179,7 +179,7 @@ LIQ_TABLE *fread_liquid( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -214,7 +214,7 @@ void load_liquids( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return;
       }
 
@@ -224,7 +224,7 @@ void load_liquids( void )
          LIQ_TABLE *liq = fread_liquid( fp );
 
          if( !liq )
-            bug( "%s: returned NULL liquid", __FUNCTION__ );
+            bug( "%s: returned NULL liquid", __func__ );
          else
          {
             liquid_table[liq->vnum] = liq;
@@ -238,7 +238,7 @@ void load_liquids( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          continue;
       }
    }
@@ -257,7 +257,7 @@ void save_mixtures( void )
    snprintf( filename, 256, "%smixtures.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: cannot open %s for writing", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for writing", __func__, filename );
       return;
    }
 
@@ -335,7 +335,7 @@ MIX_TABLE *fread_mixture( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -350,7 +350,7 @@ void load_mixtures( void )
    snprintf( filename, 256, "%smixtures.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "%s: cannot open %s for reading", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for reading", __func__, filename );
       return;
    }
 
@@ -367,7 +367,7 @@ void load_mixtures( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return;
       }
 
@@ -386,7 +386,7 @@ void load_mixtures( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          break;
       }
    }
@@ -443,7 +443,7 @@ LIQ_TABLE *get_liq_vnum( int vnum )
     */
    if( vnum < 0 || vnum >= top_liquid )
    {
-      bug( "%s: Invalid vnum %d, returning NULL", __FUNCTION__, vnum );
+      bug( "%s: Invalid vnum %d, returning NULL", __func__, vnum );
       return NULL;
    }
 
@@ -1372,7 +1372,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
 
          if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
          {
-            bug( "%s: bad liquid number %d.", __FUNCTION__, obj->value[2] );
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
             liq = get_liq_vnum( 0 );
          }
 
@@ -1417,7 +1417,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
 
          if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
          {
-            bug( "%s: bad liquid number %d.", __FUNCTION__, obj->value[2] );
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
             liq = get_liq_vnum( 0 );
          }
 
@@ -1523,13 +1523,13 @@ void do_drink( CHAR_DATA* ch, const char* argument)
 
          if( obj->value[1] <= 0 )
          { 
-            bug( "%s: empty puddle %d.", __FUNCTION__, obj->in_room->vnum ); 
+            bug( "%s: empty puddle %d.", __func__, obj->in_room->vnum ); 
             return; 
          } 
 
          if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
          { 
-            bug( "%s: bad liquid number %d.", __FUNCTION__, obj->value[2] );
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
             liq = get_liq_vnum( 0 );
          }
 
@@ -1983,7 +1983,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
    switch ( source->item_type )
    {
       default:
-         bug( "%s: got bad item type: %d", __FUNCTION__, source->item_type );
+         bug( "%s: got bad item type: %d", __func__, source->item_type );
          send_to_char( "Something went wrong...\r\n", ch );
          return;
 

@@ -82,7 +82,7 @@ void load_specfuns( void )
    snprintf( filename, 256, "%sspecfuns.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "%s: FATAL - cannot load specfuns.dat, exiting.", __FUNCTION__ );
+      bug( "%s: FATAL - cannot load specfuns.dat, exiting.", __func__ );
       perror( filename );
       exit( 1 );
    }
@@ -92,7 +92,7 @@ void load_specfuns( void )
       {
          if( feof( fp ) )
          {
-            bug( "%s: Premature end of file!", __FUNCTION__ );
+            bug( "%s: Premature end of file!", __func__ );
             fclose( fp );
             fp = NULL;
             return;

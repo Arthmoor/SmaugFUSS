@@ -278,7 +278,7 @@ void map_exits( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoom, int x, int y, int depth
       default:
          dmap[x][y].tegn = 'O';
          dmap[x][y].sector = -1;
-         bug( "%s: Bad sector type (%d) in room %d.", __FUNCTION__, pRoom->sector_type, pRoom->vnum );
+         bug( "%s: Bad sector type (%d) in room %d.", __func__, pRoom->sector_type, pRoom->vnum );
          break;
    }
 

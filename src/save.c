@@ -246,7 +246,7 @@ void save_char_obj( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return;
    }
 
@@ -294,7 +294,7 @@ void save_char_obj( CHAR_DATA * ch )
       if( ( fp = fopen( strback, "w" ) ) == NULL )
       {
          perror( strback );
-         bug( "%s: cant open %s", __FUNCTION__, strback );
+         bug( "%s: cant open %s", __func__, strback );
       }
       else
       {
@@ -322,7 +322,7 @@ void save_char_obj( CHAR_DATA * ch )
          perror( TEMP_FILE );
       else
          perror( strsave );
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
    }
    else
    {
@@ -350,7 +350,7 @@ void save_char_obj( CHAR_DATA * ch )
          if( ferr )
          {
             perror( strsave );
-            bug( "%s: Error writing temp file for %s -- not copying", __FUNCTION__, strsave );
+            bug( "%s: Error writing temp file for %s -- not copying", __func__, strsave );
          }
          else
             rename( TEMP_FILE, strsave );
@@ -625,13 +625,13 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
 
    if( iNest >= MAX_NEST )
    {
-      bug( "%s: iNest hit MAX_NEST %d", __FUNCTION__, iNest );
+      bug( "%s: iNest hit MAX_NEST %d", __func__, iNest );
       return;
    }
 
    if( !obj )
    {
-      bug( "%s: NULL obj", __FUNCTION__ );
+      bug( "%s: NULL obj", __func__ );
       return;
    }
 
@@ -907,7 +907,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
 
          if( letter != '#' )
          {
-            bug( "%s: # not found. (%s)", __FUNCTION__, name );
+            bug( "%s: # not found. (%s)", __func__, name );
             break;
          }
 
@@ -935,7 +935,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
                xSET_BIT( mob->affected_by, AFF_CHARM );
             }
             else
-               bug( "%s: Deleted mob saved on %s - skipping", __FUNCTION__, ch->name );
+               bug( "%s: Deleted mob saved on %s - skipping", __func__, ch->name );
          }
          else if( !str_cmp( word, "VARIABLE" ) )   // Quest Flags
             fread_variable( ch, fp );
@@ -943,7 +943,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
             break;
          else
          {
-            bug( "%s: bad section: %s", __FUNCTION__, word );
+            bug( "%s: bad section: %s", __func__, word );
             break;
          }
       }
@@ -1070,7 +1070,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
 
       if( word[0] == '\0' )
       {
-         bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+         bug( "%s: EOF encountered reading file!", __func__ );
          word = "End";
       }
       fMatch = FALSE;
@@ -1103,7 +1103,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                      sn = find_ability( NULL, fread_word( fp ), FALSE );
 
                   if( sn < 0 )
-                     bug( "%s: unknown skill.", __FUNCTION__ );
+                     bug( "%s: unknown skill.", __func__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1449,7 +1449,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                 */
                if( ign >= MAX_IGN )
                {
-                  bug( "%s: too many ignored names", __FUNCTION__ );
+                  bug( "%s: too many ignored names", __func__ );
                }
                else
                {
@@ -1480,7 +1480,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
             if( !strcmp( word, "Killed" ) )
             {
                if( killcnt >= MAX_KILLTRACK )
-                  bug( "%s: killcnt (%d) >= MAX_KILLTRACK", __FUNCTION__, killcnt );
+                  bug( "%s: killcnt (%d) >= MAX_KILLTRACK", __func__, killcnt );
                else
                {
                   ch->pcdata->killed[killcnt].vnum = fread_number( fp );
@@ -1720,7 +1720,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                      sn = find_skill( NULL, fread_word( fp ), FALSE );
 
                   if( sn < 0 )
-                     bug( "%s: unknown skill.", __FUNCTION__ );
+                     bug( "%s: unknown skill.", __func__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1755,7 +1755,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
 
                   sn = find_spell( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s: unknown spell.", __FUNCTION__ );
+                     bug( "%s: unknown spell.", __func__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1863,7 +1863,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
 
                   sn = find_tongue( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s: unknown tongue.", __FUNCTION__ );
+                     bug( "%s: unknown tongue.", __func__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1918,7 +1918,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
 
                   sn = find_weapon( NULL, fread_word( fp ), FALSE );
                   if( sn < 0 )
-                     bug( "%s: unknown weapon.", __FUNCTION__ );
+                     bug( "%s: unknown weapon.", __func__ );
                   else
                   {
                      ch->pcdata->learned[sn] = value;
@@ -1940,7 +1940,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1987,7 +1987,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
       if( word[0] == '\0' )
       {
-         bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+         bug( "%s: EOF encountered reading file!", __func__ );
          word = "End";
       }
       fMatch = FALSE;
@@ -2017,7 +2017,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
                   sn = skill_lookup( fread_word( fp ) );
                   if( sn < 0 )
-                     bug( "%s: unknown skill.", __FUNCTION__ );
+                     bug( "%s: unknown skill.", __func__ );
                   else
                      paf->type = sn;
                }
@@ -2067,7 +2067,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                {
                   if( !check_owner( obj ) )
                   {
-                     bug( "%s: house key found not belonging to correct house", __FUNCTION__ );
+                     bug( "%s: house key found not belonging to correct house", __func__ );
                      if( obj->name )
                         STRFREE( obj->name );
                      if( obj->description )
@@ -2082,9 +2082,9 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                if( !fNest || !fVnum )
                {
                   if( obj->name )
-                     bug( "%s: %s incomplete object.", __FUNCTION__, obj->name );
+                     bug( "%s: %s incomplete object.", __func__, obj->name );
                   else
-                     bug( "%s: incomplete object.", __FUNCTION__ );
+                     bug( "%s: incomplete object.", __func__ );
                   free_obj( obj );
                   return;
                }
@@ -2174,7 +2174,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                            }
                         }
                         if( x == MAX_LAYERS )
-                           bug( "%s: too many layers %d", __FUNCTION__, wear_loc );
+                           bug( "%s: too many layers %d", __func__, wear_loc );
                      }
                      obj = obj_to_char( obj, ch );
                      if( reslot && slot != -1 )
@@ -2193,7 +2193,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                         obj = obj_to_obj( obj, rgObjNest[iNest - 1] );
                      }
                      else
-                        bug( "%s: nest layer missing %d", __FUNCTION__, iNest - 1 );
+                        bug( "%s: nest layer missing %d", __func__, iNest - 1 );
                   }
                   if( fNest )
                      rgObjNest[iNest] = obj;
@@ -2218,7 +2218,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                iNest = fread_number( fp );
                if( iNest < 0 || iNest >= MAX_NEST )
                {
-                  bug( "%s: bad nest %d.", __FUNCTION__, iNest );
+                  bug( "%s: bad nest %d.", __func__, iNest );
                   iNest = 0;
                   fNest = FALSE;
                }
@@ -2252,9 +2252,9 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                iValue = fread_number( fp );
                sn = skill_lookup( fread_word( fp ) );
                if( iValue < 0 || iValue > 5 )
-                  bug( "%s: bad iValue %d.", __FUNCTION__, iValue );
+                  bug( "%s: bad iValue %d.", __func__, iValue );
                else if( sn < 0 )
-                  bug( "%s: unknown skill.", __FUNCTION__ );
+                  bug( "%s: unknown skill.", __func__ );
                else
                   obj->value[iValue] = sn;
                fMatch = TRUE;
@@ -2484,7 +2484,7 @@ void load_corpses( void )
             }
             if( letter != '#' )
             {
-               bug( "%s: # not found.", __FUNCTION__ );
+               bug( "%s: # not found.", __func__ );
                break;
             }
             word = fread_word( cfp );
@@ -2496,7 +2496,7 @@ void load_corpses( void )
                break;
             else
             {
-               bug( "%s: bad section.", __FUNCTION__ );
+               bug( "%s: bad section.", __func__ );
                break;
             }
          }
@@ -2556,7 +2556,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
 
    if( word[0] == '\0' )
    {
-      bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+      bug( "%s: EOF encountered reading file!", __func__ );
       word = "EndMobile";
    }
 
@@ -2574,7 +2574,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
 
             if( word[0] == '\0' )
             {
-               bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+               bug( "%s: EOF encountered reading file!", __func__ );
                word = "EndMobile";
             }
 
@@ -2585,7 +2585,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
             if( !str_cmp( word, "EndMobile" ) )
                break;
          }
-         bug( "%s: No index data for vnum %d", __FUNCTION__, vnum );
+         bug( "%s: No index data for vnum %d", __func__, vnum );
          return NULL;
       }
    }
@@ -2597,7 +2597,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
 
          if( word[0] == '\0' )
          {
-            bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+            bug( "%s: EOF encountered reading file!", __func__ );
             word = "EndMobile";
          }
 
@@ -2608,7 +2608,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
          if( !str_cmp( word, "EndMobile" ) )
             break;
       }
-      bug( "%s: Vnum not found", __FUNCTION__ );
+      bug( "%s: Vnum not found", __func__ );
       return NULL;
    }
 
@@ -2618,7 +2618,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
 
       if( word[0] == '\0' )
       {
-         bug( "%s: EOF encountered reading file!", __FUNCTION__ );
+         bug( "%s: EOF encountered reading file!", __func__ );
          word = "EndMobile";
       }
 
@@ -2711,7 +2711,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -2756,7 +2756,7 @@ void read_char_mobile( char *argument )
    }
    mob = fread_mobile( fp );
    if( !mob )
-      bug( "%s: failed to fread_mobile.", __FUNCTION__ );
+      bug( "%s: failed to fread_mobile.", __func__ );
    fclose( fp );
    return;
 }

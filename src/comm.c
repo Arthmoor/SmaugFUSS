@@ -1194,7 +1194,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dn = d->next;
          if( d == dclose )
          {
-            bug( "%s: %s desc:%p found, prev should be:%p, fixing.", __FUNCTION__, ch ? ch->name : d->host, ( void * )dclose,
+            bug( "%s: %s desc:%p found, prev should be:%p, fixing.", __func__, ch ? ch->name : d->host, ( void * )dclose,
                  ( void * )dp );
             dclose->prev = dp;
             break;
@@ -1203,7 +1203,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->prev )
       {
-         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
+         bug( "%s: %s desc:%p could not be found!.", __func__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
@@ -1211,7 +1211,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    if( !dclose->next && dclose != last_descriptor )
    {
       DESCRIPTOR_DATA *dp, *dn;
-      bug( "%s: %s desc:%p != last_desc:%p and desc->next = NULL!", __FUNCTION__,
+      bug( "%s: %s desc:%p != last_desc:%p and desc->next = NULL!", __func__,
            ch ? ch->name : d->host, ( void * )dclose, ( void * )last_descriptor );
       dn = NULL;
       for( d = last_descriptor; d; d = dp )
@@ -1219,7 +1219,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dp = d->prev;
          if( d == dclose )
          {
-            bug( "%s: %s desc:%p found, next should be:%p, fixing.", __FUNCTION__, ch ? ch->name : d->host, ( void * )dclose,
+            bug( "%s: %s desc:%p found, next should be:%p, fixing.", __func__, ch ? ch->name : d->host, ( void * )dclose,
                  ( void * )dn );
             dclose->next = dn;
             break;
@@ -1228,7 +1228,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->next )
       {
-         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
+         bug( "%s: %s desc:%p could not be found!.", __func__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
@@ -1566,7 +1566,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 {
    if( !d )
    {
-      bug( "%s: NULL descriptor", __FUNCTION__ );
+      bug( "%s: NULL descriptor", __func__ );
       return;
    }
 
@@ -2054,7 +2054,7 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
    d->character = NULL;
    fOld = load_char_obj( d, buf, FALSE, FALSE );
    if( !fOld )
-      bug( "%s: failed to load_char_obj for %s.", __FUNCTION__, buf );
+      bug( "%s: failed to load_char_obj for %s.", __func__, buf );
 
    if( !d->character )
    {
@@ -2505,7 +2505,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
             if( IS_SET( race_table[ch->race]->language, 1 << iLang ) )
             {
                if( ( uLang = skill_lookup( lang_names[iLang] ) ) < 0 )
-                  bug( "%s: cannot find racial language [%s].", __FUNCTION__, lang_names[iLang] );
+                  bug( "%s: cannot find racial language [%s].", __func__, lang_names[iLang] );
                else
                   ch->pcdata->learned[uLang] = 100;
             }
@@ -2658,7 +2658,7 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
    switch ( d->connected )
    {
       default:
-         bug( "%s: bad d->connected %d.", __FUNCTION__, d->connected );
+         bug( "%s: bad d->connected %d.", __func__, d->connected );
          close_socket( d, TRUE );
          return;
 
@@ -3228,7 +3228,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
    if( !ch )
    {
-      bug( "%s: null ch. (%s)", __FUNCTION__, format );
+      bug( "%s: null ch. (%s)", __func__, format );
       return;
    }
 
@@ -3244,7 +3244,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          switch ( *str )
          {
             default:
-               bug( "%s: bad code %c for format %s.", __FUNCTION__, *str, format );
+               bug( "%s: bad code %c for format %s.", __func__, *str, format );
                break;
 
             case 't':
@@ -3289,13 +3289,13 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
    if( flags1 != ACTF_NONE && flags1 != ACTF_TXT && flags1 != ACTF_CH && flags1 != ACTF_OBJ )
    {
-      bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __func__, format );
       obj1 = NULL;
    }
 
    if( flags2 != ACTF_NONE && flags2 != ACTF_TXT && flags2 != ACTF_CH && flags2 != ACTF_OBJ )
    {
-      bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __func__, format );
       vch = NULL;
       obj2 = NULL;
    }
@@ -3543,7 +3543,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
    if( !ch )
    {
-      bug( "%s: NULL ch", __FUNCTION__ );
+      bug( "%s: NULL ch", __func__ );
       return;
    }
 

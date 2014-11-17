@@ -1848,13 +1848,13 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return rERROR;
    }
 
    if( !victim )
    {
-      bug( "%s: null victim!", __FUNCTION__ );
+      bug( "%s: null victim!", __func__ );
       return rVICT_DIED;
    }
 
@@ -3081,7 +3081,7 @@ void set_fighting( CHAR_DATA * ch, CHAR_DATA * victim )
 
    if( ch->fighting )
    {
-      bug( "%s: %s -> %s (already fighting %s)", __FUNCTION__, ch->name, victim->name, ch->fighting->who->name );
+      bug( "%s: %s -> %s (already fighting %s)", __func__, ch->name, victim->name, ch->fighting->who->name );
       return;
    }
 
@@ -3154,7 +3154,7 @@ void free_fight( CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return;
    }
 
@@ -3294,7 +3294,7 @@ void death_cry( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return;
    }
 
@@ -3355,7 +3355,7 @@ void death_cry( CHAR_DATA * ch )
 
       if( !get_obj_index( vnum ) )
       {
-         bug( "%s: invalid vnum", __FUNCTION__ );
+         bug( "%s: invalid vnum", __func__ );
          return;
       }
 
@@ -3399,7 +3399,7 @@ OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
 
    if( !victim )
    {
-      bug( "%s: null victim!", __FUNCTION__ );
+      bug( "%s: null victim!", __func__ );
       return NULL;
    }
 
@@ -3408,7 +3408,7 @@ OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
     */
    if( NOT_AUTHED( victim ) )
    {
-      bug( "%s: killing unauthed", __FUNCTION__ );
+      bug( "%s: killing unauthed", __func__ );
       return NULL;
    }
 
@@ -3462,7 +3462,7 @@ OBJ_DATA *raw_kill( CHAR_DATA * ch, CHAR_DATA * victim )
    extract_char( victim, FALSE );
    if( !victim )
    {
-      bug( "%s: oops! extract_char destroyed pc char", __FUNCTION__ );
+      bug( "%s: oops! extract_char destroyed pc char", __func__ );
       return NULL;
    }
    while( victim->first_affect )
@@ -3554,7 +3554,7 @@ void group_gain( CHAR_DATA * ch, CHAR_DATA * victim )
 
    if( members == 0 )
    {
-      bug( "%s: members %d", __FUNCTION__, members );
+      bug( "%s: members %d", __func__, members );
       members = 1;
    }
 

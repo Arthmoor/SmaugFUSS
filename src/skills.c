@@ -837,7 +837,7 @@ void do_skin( CHAR_DATA* ch, const char* argument)
 
    if( !( korps = get_obj_index( OBJ_VNUM_CORPSE_PC ) ) )
    {
-      bug( "Vnum %d (OBJ_VNUM_CORPSE_PC) not found for %s!", OBJ_VNUM_CORPSE_PC, __FUNCTION__ );
+      bug( "Vnum %d (OBJ_VNUM_CORPSE_PC) not found for %s!", OBJ_VNUM_CORPSE_PC, __func__ );
       return;
    }
 
@@ -3084,7 +3084,7 @@ void do_meditate( CHAR_DATA * ch, const char *argument )
          if( !ch->alloc_ptr )
          {
             send_to_char_color( "&BYour meditation was interrupted.\r\n", ch );
-            bug( "%s: alloc_ptr NULL or not numeric", __FUNCTION__ );
+            bug( "%s: alloc_ptr NULL or not numeric", __func__ );
             return;
          }
          arg = str_dup( ch->alloc_ptr );
@@ -3191,7 +3191,7 @@ void do_trance( CHAR_DATA * ch, const char *argument )
          if( !ch->alloc_ptr )
          {
             send_to_char_color( "&BYour trance was interrupted.\r\n", ch );
-            bug( "%s: alloc_ptr NULL or not numeric", __FUNCTION__ );
+            bug( "%s: alloc_ptr NULL or not numeric", __func__ );
             return;
          }
          arg = str_dup( ch->alloc_ptr );

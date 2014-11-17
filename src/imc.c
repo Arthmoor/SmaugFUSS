@@ -1043,13 +1043,13 @@ void imc_new_channel( const char *chan, const char *owner, const char *ops, cons
 
    if( !chan || chan[0] == '\0' )
    {
-      imclog( "%s: NULL channel name received, skipping", __FUNCTION__ );
+      imclog( "%s: NULL channel name received, skipping", __func__ );
       return;
    }
 
    if( !strchr( chan, ':' ) )
    {
-      imclog( "%s: Improperly formatted channel name: %s", __FUNCTION__, chan );
+      imclog( "%s: Improperly formatted channel name: %s", __func__, chan );
       return;
    }
 
@@ -1214,7 +1214,7 @@ char *imcfread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s: EOF encountered on read.", __FUNCTION__ );
+         imclog( "%s: EOF encountered on read.", __func__ );
          word[0] = '\0';
          return word;
       }
@@ -1237,7 +1237,7 @@ char *imcfread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s: EOF encountered on read.", __FUNCTION__ );
+         imclog( "%s: EOF encountered on read.", __func__ );
          *pword = '\0';
          return word;
       }
@@ -1250,7 +1250,7 @@ char *imcfread_word( FILE * fp )
          return word;
       }
    }
-   imclog( "%s: word too long", __FUNCTION__ );
+   imclog( "%s: word too long", __func__ );
    return NULL;
 }
 
@@ -1379,7 +1379,7 @@ char *imc_getData( char *output, const char *key, const char *packet )
 
    if( !packet || packet[0] == '\0' || !key || key[0] == '\0' )
    {
-      imcbug( "%s: Invalid input", __FUNCTION__ );
+      imcbug( "%s: Invalid input", __func__ );
       return output;
    }
 
@@ -1445,7 +1445,7 @@ void imc_write_buffer( const char *txt )
     */
    if( !this_imcmud || this_imcmud->desc < 1 )
    {
-      imcbug( "%s: Configuration or socket is invalid!", __FUNCTION__ );
+      imcbug( "%s: Configuration or socket is invalid!", __func__ );
       return;
    }
 
@@ -1454,7 +1454,7 @@ void imc_write_buffer( const char *txt )
     */
    if( !this_imcmud->outbuf )
    {
-      imcbug( "%s: Output buffer has not been allocated!", __FUNCTION__ );
+      imcbug( "%s: Output buffer has not been allocated!", __func__ );
       return;
    }
 
@@ -1527,19 +1527,19 @@ IMC_PACKET *imc_newpacket( const char *from, const char *type, const char *to )
 
    if( !type || type[0] == '\0' )
    {
-      imcbug( "%s: Attempt to build packet with no type field.", __FUNCTION__ );
+      imcbug( "%s: Attempt to build packet with no type field.", __func__ );
       return NULL;
    }
 
    if( !from || from[0] == '\0' )
    {
-      imcbug( "%s: Attempt to build %s packet with no from field.", __FUNCTION__, type );
+      imcbug( "%s: Attempt to build %s packet with no from field.", __func__, type );
       return NULL;
    }
 
    if( !to || to[0] == '\0' )
    {
-      imcbug( "%s: Attempt to build %s packet with no to field.", __FUNCTION__, type );
+      imcbug( "%s: Attempt to build %s packet with no to field.", __func__, type );
       return NULL;
    }
 
@@ -2624,7 +2624,7 @@ PFUN( imc_recv_iceupdate )
 
    if( chan[0] == '\0' )
    {
-      imclog( "%s: NULL channel name received, skipping", __FUNCTION__ );
+      imclog( "%s: NULL channel name received, skipping", __func__ );
       return;
    }
 
@@ -3247,7 +3247,7 @@ bool imc_read_socket( void )
          break;
       else if( nRead == -1 )
       {
-         imclog( "%s: Descriptor error on #%d: %s", __FUNCTION__, this_imcmud->desc, strerror( iErr ) );
+         imclog( "%s: Descriptor error on #%d: %s", __func__, this_imcmud->desc, strerror( iErr ) );
          return FALSE;
       }
    }
@@ -4637,7 +4637,7 @@ void imcfread_config_file( FILE * fin )
             break;
       }
       if( !fMatch )
-         imcbug( "%s: Bad keyword: %s\r\n", __FUNCTION__, word );
+         imcbug( "%s: Bad keyword: %s\r\n", __func__, word );
    }
 }
 
@@ -4820,7 +4820,7 @@ void imc_load_who_template( void )
 
    if( !( fp = fopen( IMC_WHO_FILE, "r" ) ) )
    {
-      imclog( "%s: Unable to load template file for imcwho", __FUNCTION__ );
+      imclog( "%s: Unable to load template file for imcwho", __func__ );
       whot = NULL;
       return;
    }
@@ -4961,7 +4961,7 @@ int ipv4_connect( void )
    {
       if( errno != EINPROGRESS )
       {
-         imclog( "%s: Failed connect: Error %d: %s", __FUNCTION__, errno, strerror( errno ) );
+         imclog( "%s: Failed connect: Error %d: %s", __func__, errno, strerror( errno ) );
          perror( "connect" );
          close( desc );
          return -1;
@@ -5008,7 +5008,7 @@ bool imc_server_connect( void )
 
    if( n )
    {
-      imclog( "%s: getaddrinfo: %s", __FUNCTION__, gai_strerror( n ) );
+      imclog( "%s: getaddrinfo: %s", __func__, gai_strerror( n ) );
       return FALSE;
    }
 
@@ -5025,7 +5025,7 @@ bool imc_server_connect( void )
    freeaddrinfo( ai_list );
    if( ai == NULL )
    {
-      imclog( "%s: socket or connect: failed for %s port %hu", __FUNCTION__, this_imcmud->rhost, this_imcmud->rport );
+      imclog( "%s: socket or connect: failed for %s port %hu", __func__, this_imcmud->rhost, this_imcmud->rport );
       imcwait = 100; /* So it will try again according to the reconnect count. */
       return FALSE;
    }
@@ -5201,7 +5201,7 @@ void imc_hotboot( void )
    if( this_imcmud && this_imcmud->state == IMC_ONLINE )
    {
       if( !( fp = fopen( IMC_HOTBOOT_FILE, "w" ) ) )
-         imcbug( "%s: Unable to open IMC hotboot file for write.", __FUNCTION__ );
+         imcbug( "%s: Unable to open IMC hotboot file for write.", __func__ );
       else
       {
          fprintf( fp, "%s %s\n", ( this_imcmud->network ? this_imcmud->network : "Unknown" ),
@@ -5246,7 +5246,7 @@ bool imc_startup_network( bool connected )
       char netname[SMST], server[SMST];
 
       if( !( fp = fopen( IMC_HOTBOOT_FILE, "r" ) ) )
-         imcbug( "%s: Unable to load IMC hotboot file.", __FUNCTION__ );
+         imcbug( "%s: Unable to load IMC hotboot file.", __func__ );
       else
       {
          unlink( IMC_HOTBOOT_FILE );
@@ -5288,7 +5288,7 @@ void imc_startup( bool force, int desc, bool connected )
 
    if( this_imcmud && this_imcmud->state > IMC_OFFLINE )
    {
-      imclog( "%s: Network startup called when already engaged!", __FUNCTION__ );
+      imclog( "%s: Network startup called when already engaged!", __func__ );
       return;
    }
 
@@ -5302,7 +5302,7 @@ void imc_startup( bool force, int desc, bool connected )
    {
       if( !imc_load_commands(  ) )
       {
-         imcbug( "%s: Unable to load command table!", __FUNCTION__ );
+         imcbug( "%s: Unable to load command table!", __func__ );
          return;
       }
    }

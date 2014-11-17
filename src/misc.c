@@ -551,7 +551,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
        */
       if( !( pObjIndex = get_obj_index( obj->value[1] ) ) )
       {
-         bug( "%s: obj points to invalid object vnum %d", __FUNCTION__, obj->value[1] );
+         bug( "%s: obj points to invalid object vnum %d", __func__, obj->value[1] );
          return;
       }
       /*
@@ -563,7 +563,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
        */
       if( obj->value[2] > 0 && !( room = get_room_index( obj->value[2] ) ) )
       {
-         bug( "%s: obj points to invalid room vnum %d", __FUNCTION__, obj->value[2] );
+         bug( "%s: obj points to invalid room vnum %d", __func__, obj->value[2] );
          return;
       }
       /*
@@ -571,7 +571,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
        */
       if( !( tobj = create_object( pObjIndex, URANGE( 0, obj->value[3], MAX_LEVEL ) ) ) )
       {
-         bug( "%s: obj couldnt create_obj vnum %d at level %d", __FUNCTION__, obj->value[1], obj->value[3] );
+         bug( "%s: obj couldnt create_obj vnum %d at level %d", __func__, obj->value[1], obj->value[3] );
          return;
       }
       if( room )
@@ -599,7 +599,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
        */
       if( !( pMobIndex = get_mob_index( obj->value[1] ) ) )
       {
-         bug( "%s: obj points to invalid mob vnum %d", __FUNCTION__, obj->value[1] );
+         bug( "%s: obj points to invalid mob vnum %d", __func__, obj->value[1] );
          return;
       }
       /*
@@ -611,12 +611,12 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
        */
       if( obj->value[2] > 0 && !( room = get_room_index( obj->value[2] ) ) )
       {
-         bug( "%s: obj points to invalid room vnum %d", __FUNCTION__, obj->value[2] );
+         bug( "%s: obj points to invalid room vnum %d", __func__, obj->value[2] );
          return;
       }
       if( !( mob = create_mobile( pMobIndex ) ) )
       {
-         bug( "%s: obj couldnt create_mobile vnum %d", __FUNCTION__, obj->value[1] );
+         bug( "%s: obj couldnt create_mobile vnum %d", __func__, obj->value[1] );
          return;
       }
       char_to_room( mob, room );
@@ -630,7 +630,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
    {
       if( obj->value[1] <= 0 || !IS_VALID_SN( obj->value[1] ) )
       {
-         bug( "%s: obj points to invalid sn [%d]", __FUNCTION__, obj->value[1] );
+         bug( "%s: obj points to invalid sn [%d]", __func__, obj->value[1] );
          return;
       }
       obj_cast_spell( obj->value[1], URANGE( 1, ( obj->value[2] > 0 ) ? obj->value[2] : ch->level, MAX_LEVEL ), ch, ch,
@@ -650,7 +650,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
          room = obj->in_room;
       if( !room )
       {
-         bug( "%s: obj points to invalid room %d", __FUNCTION__, obj->value[1] );
+         bug( "%s: obj points to invalid room %d", __func__, obj->value[1] );
          return;
       }
 
@@ -661,12 +661,12 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
       }
       if( !container )
       {
-         bug( "%s: obj points to a container [%d] thats not where it should be?", __FUNCTION__, obj->value[2] );
+         bug( "%s: obj points to a container [%d] thats not where it should be?", __func__, obj->value[2] );
          return;
       }
       if( container->item_type != ITEM_CONTAINER )
       {
-         bug( "%s: obj points to object [%d], but it isn't a container.", __FUNCTION__, obj->value[2] );
+         bug( "%s: obj points to object [%d], but it isn't a container.", __func__, obj->value[2] );
          return;
       }
       /*

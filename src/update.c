@@ -674,7 +674,7 @@ void mobile_update( void )
 
       if( ch != cur_char )
       {
-         bug( "%s: ch != cur_char after spec_fun", __FUNCTION__ );
+         bug( "%s: ch != cur_char after spec_fun", __func__ );
          continue;
       }
 
@@ -1787,7 +1787,7 @@ void aggr_update( void )
 
          if( !victim )
          {
-            bug( "%s: null victim. %d", __FUNCTION__, count );
+            bug( "%s: null victim. %d", __func__, count );
             continue;
          }
 

@@ -287,7 +287,7 @@ void do_mpkill( CHAR_DATA* ch, const char* argument)
 
    if( !ch )
    {
-      bug( "%s: Nonexistent ch!", __FUNCTION__ );
+      bug( "%s: Nonexistent ch!", __func__ );
       return;
    }
 
@@ -3148,7 +3148,7 @@ ch_ret simple_damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return rERROR;
    }
 

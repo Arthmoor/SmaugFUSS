@@ -88,7 +88,7 @@ void save_deity( DEITY_DATA * deity )
 
    if( !deity )
    {
-      bug( "%s: null deity pointer!", __FUNCTION__ );
+      bug( "%s: null deity pointer!", __func__ );
       return;
    }
 

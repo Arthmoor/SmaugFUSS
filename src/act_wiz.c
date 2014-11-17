@@ -1285,7 +1285,7 @@ void transfer_char( CHAR_DATA * ch, CHAR_DATA * victim, ROOM_INDEX_DATA * locati
 {
    if( !victim->in_room )
    {
-      bug( "%s: victim in NULL room: %s", __FUNCTION__, victim->name );
+      bug( "%s: victim in NULL room: %s", __func__, victim->name );
       return;
    }
 
@@ -5719,7 +5719,7 @@ void do_loadup( CHAR_DATA* ch, const char* argument)
 
       loaded = load_char_obj( d, name, FALSE, FALSE );
       if( !loaded )
-         bug( "%s: Failed to load_char_object for %s.", __FUNCTION__, name );
+         bug( "%s: Failed to load_char_object for %s.", __func__, name );
 
       add_char( d->character );
       old_room_vnum = d->character->in_room->vnum;
@@ -9690,7 +9690,7 @@ void save_reserved( void )
 
    if( !( fp = fopen( SYSTEM_DIR RESERVED_LIST, "w" ) ) )
    {
-      bug( "%s: cannot open %s", __FUNCTION__, RESERVED_LIST );
+      bug( "%s: cannot open %s", __func__, RESERVED_LIST );
       perror( RESERVED_LIST );
       return;
    }
@@ -9781,7 +9781,7 @@ void do_khistory( CHAR_DATA* ch, const char* argument)
 
       if( !tmob )
       {
-         bug( "%s: unknown mob vnum", __FUNCTION__ );
+         bug( "%s: unknown mob vnum", __func__ );
          continue;
       }
 
@@ -11108,7 +11108,7 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
 
    if( !victim->pcdata->area )
    {
-      bug( "%s: assign_area failed", __FUNCTION__ );
+      bug( "%s: assign_area failed", __func__ );
       return;
    }
 
@@ -11119,13 +11119,13 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
     */
    if( !( room = make_room( lo, tarea ) ) )
    {
-      bug( "%s: make_room failed to initialize first room.", __FUNCTION__ );
+      bug( "%s: make_room failed to initialize first room.", __func__ );
       return;
    }
 
    if( !( room = make_room( hi, tarea ) ) )
    {
-      bug( "%s: make_room failed to initialize last room.", __FUNCTION__ );
+      bug( "%s: make_room failed to initialize last room.", __func__ );
       return;
    }
 
@@ -11134,7 +11134,7 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
     */
    if( !( pMobIndex = make_mobile( lo, 0, "first mob" ) ) )
    {
-      bug( "%s: make_mobile failed to initialize first mob.", __FUNCTION__ );
+      bug( "%s: make_mobile failed to initialize first mob.", __func__ );
       return;
    }
    mob = create_mobile( pMobIndex );
@@ -11145,7 +11145,7 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
     */
    if( !( pMobIndex = make_mobile( hi, 0, "last mob" ) ) )
    {
-      bug( "%s: make_mobile failed to initialize last mob.", __FUNCTION__ );
+      bug( "%s: make_mobile failed to initialize last mob.", __func__ );
       return;
    }
    mob = create_mobile( pMobIndex );
@@ -11156,7 +11156,7 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
     */
    if( !( pObjIndex = make_object( lo, 0, "first obj" ) ) )
    {
-      bug( "%s: make_object failed to initialize first obj.", __FUNCTION__ );
+      bug( "%s: make_object failed to initialize first obj.", __func__ );
       return;
    }
    obj = create_object( pObjIndex, 0 );
@@ -11167,7 +11167,7 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
     */
    if( !( pObjIndex = make_object( hi, 0, "last obj" ) ) )
    {
-      bug( "%s: make_object failed to initialize last obj.", __FUNCTION__ );
+      bug( "%s: make_object failed to initialize last obj.", __func__ );
       return;
    }
    obj = create_object( pObjIndex, 0 );

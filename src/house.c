@@ -50,7 +50,7 @@ void fwrite_house( HOME_DATA * homedata )
 
    if( !homedata || !homedata->name || homedata->name[0] == '\0' )
    {
-      bug( "%s: NULL homedata", __FUNCTION__ );
+      bug( "%s: NULL homedata", __func__ );
       return;
    }
 
@@ -58,7 +58,7 @@ void fwrite_house( HOME_DATA * homedata )
 
    if( ( fpout = fopen( strsave, "w" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s for writing.", __FUNCTION__, strsave );
+      bug( "%s: Cannot open %s for writing.", __func__, strsave );
       return;
    }
 
@@ -100,7 +100,7 @@ void save_residence( ROOM_INDEX_DATA * location )
 
    if( !location )
    {
-      bug( "%s: NULL Location", __FUNCTION__ );
+      bug( "%s: NULL Location", __func__ );
       return;
    }
 
@@ -123,7 +123,7 @@ void save_residence( ROOM_INDEX_DATA * location )
       }
    }
 
-   bug( "%s: Location doesn't have an area.", __FUNCTION__ );
+   bug( "%s: Location doesn't have an area.", __func__ );
    return;
 }
 
@@ -159,7 +159,7 @@ void update_house_list(  )
 
    if( ( fpout = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s: FATAL: cannot open %s for writing!", __FUNCTION__, filename );
+      bug( "%s: FATAL: cannot open %s for writing!", __func__, filename );
       return;
    }
 
@@ -415,7 +415,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
 
    if( !location || !home || !argument || argument[0] == '\0' )
    {
-      bug( "%s: passed null information", __FUNCTION__ );
+      bug( "%s: passed null information", __func__ );
       return FALSE;
    }
 
@@ -427,7 +427,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
 
    if( !pArea )
    {
-      bug( "%s: housing area file not found in installed areas.", __FUNCTION__ );
+      bug( "%s: housing area file not found in installed areas.", __func__ );
       return FALSE;
    }
 
@@ -437,7 +437,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
       {
          if( ( addloc = make_room( i, pArea ) ) == NULL )
          {
-            bug( "%s: make_room unable to complete.", __FUNCTION__ );
+            bug( "%s: make_room unable to complete.", __func__ );
             return FALSE;
          }
          break;
@@ -446,7 +446,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
 
    if( !addloc )
    {
-      bug( "%s: housing area appears to be full.", __FUNCTION__ );
+      bug( "%s: housing area appears to be full.", __func__ );
       return FALSE;
    }
 
@@ -454,7 +454,7 @@ bool add_room( HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argumen
        || ( rexit = make_exit( addloc, location, rev_dir[get_dir( argument )] ) ) == NULL )
    {
       delete_room( addloc );
-      bug( "%s: exits not able to be created for room.  location deleted.", __FUNCTION__ );
+      bug( "%s: exits not able to be created for room.  location deleted.", __func__ );
       return FALSE;
    }
 
@@ -568,7 +568,7 @@ void do_house( CHAR_DATA * ch, const char *argument )
          location = ( ROOM_INDEX_DATA * ) ch->dest_buf;
          if( !location )
          {
-            bug( "%s: sub_room_desc: NULL ch->dest_buf", __FUNCTION__ );
+            bug( "%s: sub_room_desc: NULL ch->dest_buf", __func__ );
             location = ch->in_room;
          }
          STRFREE( location->description );
@@ -1025,7 +1025,7 @@ void do_residence( CHAR_DATA * ch, const char *argument )
    {
       if( ( room = get_room_index( home->vnum[0] ) ) == NULL )
       {
-         bug( "%s: Residence: NULL start room vnum - C:%s V:%d", __FUNCTION__, home->name, home->vnum[0] );
+         bug( "%s: Residence: NULL start room vnum - C:%s V:%d", __func__, home->name, home->vnum[0] );
          continue;
       }
 
@@ -1112,7 +1112,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
          {
             if( ( obj = get_obj_index( acc->vnum ) ) == NULL )
             {
-               bug( "%s: Accessories list: object vnum %d does not exist.", __FUNCTION__, acc->vnum );
+               bug( "%s: Accessories list: object vnum %d does not exist.", __func__, acc->vnum );
                ch_printf_color( ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i );
                ++i;
                continue;
@@ -1123,7 +1123,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
          {
             if( ( mob = get_mob_index( acc->vnum ) ) == NULL )
             {
-               bug( "%s: Accessories list: mob vnum %d does not exist.", __FUNCTION__, acc->vnum );
+               bug( "%s: Accessories list: mob vnum %d does not exist.", __func__, acc->vnum );
                ch_printf_color( ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i );
                ++i;
                continue;
@@ -1349,7 +1349,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
       }
       else
       {
-         bug( "%s: Accessory show: accessory does not exist - V: %d  #: %d", __FUNCTION__, acc->vnum, i );
+         bug( "%s: Accessory show: accessory does not exist - V: %d  #: %d", __func__, acc->vnum, i );
          send_to_char( "Error: Accessory doesn't exist.\r\n", ch );
          return;
       }
@@ -1399,7 +1399,7 @@ void save_homebuy(  )
 
    if( ( fpout = fopen( HOMEBUY_FILE, "w" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s for writing", __FUNCTION__, HOMEBUY_FILE );
+      bug( "%s: Cannot open %s for writing", __func__, HOMEBUY_FILE );
       perror( HOMEBUY_FILE );
       return;
    }
@@ -1535,7 +1535,7 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
 
          if( ( location = get_room_index( homeb->vnum ) ) == NULL )
          {
-            bug( "%s: Homebuy list: location does not exist.  -V:%d  #:%d", __FUNCTION__, homeb->vnum, i );
+            bug( "%s: Homebuy list: location does not exist.  -V:%d  #:%d", __func__, homeb->vnum, i );
             ch_printf_color( ch, "&c%2d&C| &RThis residence not currently available.", i );
             continue;
          }
@@ -1640,7 +1640,7 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
 
       if( ( location = get_room_index( homeb->vnum ) ) == NULL )
       {
-         bug( "%s: Homebuy show: location does not exist. -V: %d, #: %d", __FUNCTION__, homeb->vnum, i );
+         bug( "%s: Homebuy show: location does not exist. -V: %d, #: %d", __func__, homeb->vnum, i );
          send_to_char( "That residence does not exist.  Please contact an immortal.\r\n", ch );
          return;
       }
@@ -1891,7 +1891,7 @@ int fread_house( FILE * fp )
             {
                if( !homedata->name )
                {
-                  bug( "%s: NULL Name", __FUNCTION__ );
+                  bug( "%s: NULL Name", __func__ );
                   DISPOSE( homedata );
                   return -1;
                }
@@ -1929,7 +1929,7 @@ int fread_house( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
       }
    }
 }
@@ -1968,7 +1968,7 @@ bool load_house_file( const char *name )
       if( letter != '#' )
       {
 
-         bug( "%s: # not found in %s.", __FUNCTION__, filename );
+         bug( "%s: # not found in %s.", __func__, filename );
          break;
       }
 
@@ -1979,7 +1979,7 @@ bool load_house_file( const char *name )
          pRoom = get_room_index( vnum = fread_house( fp ) );
          if( !pRoom )
          {
-            bug( "%s: bad house vnum in %s.  Vnum %d", __FUNCTION__, filename, vnum );
+            bug( "%s: bad house vnum in %s.  Vnum %d", __func__, filename, vnum );
             return FALSE;
          }
          rset_supermob( pRoom );
@@ -1998,7 +1998,7 @@ bool load_house_file( const char *name )
       }
       else
       {
-         bug( "%s: bad section: %s in file %s.", __FUNCTION__, word, filename );
+         bug( "%s: bad section: %s in file %s.", __func__, word, filename );
          break;
       }
    }
@@ -2030,7 +2030,7 @@ void load_homedata(  )
 
    if( ( fpList = fopen( list, "r" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s for reading. Home loading aborted.", __FUNCTION__, HOUSE_LIST );
+      bug( "%s: Cannot open %s for reading. Home loading aborted.", __func__, HOUSE_LIST );
       return;
    }
 
@@ -2043,7 +2043,7 @@ void load_homedata(  )
 
       if( !load_house_file( filename ) )
       {
-         bug( "%s: Cannot load house file: %s", __FUNCTION__, filename );
+         bug( "%s: Cannot load house file: %s", __func__, filename );
       }
 
    }
@@ -2076,7 +2076,7 @@ void save_accessories(  )
 
    if( ( fpout = fopen( ACCESSORIES_FILE, "w" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s for writing", __FUNCTION__, ACCESSORIES_FILE );
+      bug( "%s: Cannot open %s for writing", __func__, ACCESSORIES_FILE );
       perror( ACCESSORIES_FILE );
       return;
    }
@@ -2112,7 +2112,7 @@ void load_accessories(  )
 
    if( ( fp = fopen( ACCESSORIES_FILE, "r" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s. Aborting loadup of accessories data.", __FUNCTION__, ACCESSORIES_FILE );
+      bug( "%s: Cannot open %s. Aborting loadup of accessories data.", __func__, ACCESSORIES_FILE );
       return;
    }
 
@@ -2131,7 +2131,7 @@ void load_accessories(  )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found.", __FUNCTION__ );
+         bug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -2146,7 +2146,7 @@ void load_accessories(  )
          break;
       else
       {
-         bug( "%s: bad section.", __FUNCTION__ );
+         bug( "%s: bad section.", __func__ );
          continue;
       }
    }
@@ -2183,7 +2183,7 @@ void fread_accessories( FILE * fp )
                if( ( newacc->mob && ( get_mob_index( newacc->vnum ) ) == NULL )
                    || ( !newacc->mob && ( get_obj_index( newacc->vnum ) ) == NULL ) )
                {
-                  bug( "%s: Accessory doesn't exist", __FUNCTION__ );
+                  bug( "%s: Accessory doesn't exist", __func__ );
                   DISPOSE( newacc );
                   return;
                }
@@ -2210,7 +2210,7 @@ void fread_accessories( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
       }
    }
 }
@@ -2254,7 +2254,7 @@ void fread_homebuy( FILE * fp )
             {
                if( ( get_room_index( newhome->vnum ) ) == NULL )
                {
-                  bug( "%s: Residence doesn't exist", __FUNCTION__ );
+                  bug( "%s: Residence doesn't exist", __func__ );
                   DISPOSE( newhome );
                   return;
                }
@@ -2277,7 +2277,7 @@ void fread_homebuy( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
       }
    }
 }
@@ -2288,7 +2288,7 @@ void load_homebuy(  )
 
    if( ( fp = fopen( HOMEBUY_FILE, "r" ) ) == NULL )
    {
-      bug( "%s: Cannot open %s. Aborting loadup of home auction data.", __FUNCTION__, HOMEBUY_FILE );
+      bug( "%s: Cannot open %s. Aborting loadup of home auction data.", __func__, HOMEBUY_FILE );
       return;
    }
 
@@ -2307,7 +2307,7 @@ void load_homebuy(  )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found.", __FUNCTION__ );
+         bug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -2322,7 +2322,7 @@ void load_homebuy(  )
          break;
       else
       {
-         bug( "%s: bad section: %s", __FUNCTION__, word );
+         bug( "%s: bad section: %s", __func__, word );
          continue;
       }
    }
@@ -2466,11 +2466,11 @@ void homebuy_update(  )
 
       if( home->seller[0] == '\0' || ( seller = load_player( home->seller ) ) == NULL )
       {
-         bug( "%s: Seller of residence with vnum %d could not be found.", __FUNCTION__, home->vnum );
+         bug( "%s: Seller of residence with vnum %d could not be found.", __func__, home->vnum );
 
          if( !remove_homebuy( home ) )
          {
-            bug( "%s: this is an error", __FUNCTION__ );
+            bug( "%s: this is an error", __func__ );
             return;
          }
 
@@ -2502,8 +2502,8 @@ void homebuy_update(  )
       if( get_trust( seller ) < LEVEL_GREATER )
          if( !remove_house( seller ) )
          {
-            bug( "%s: residence could not be removed from seller after sale.", __FUNCTION__ );
-            bug( "%s: Vnum: %d  Seller: %s   Bidder: %s", __FUNCTION__, home->vnum, seller->name, bidder->name );
+            bug( "%s: residence could not be removed from seller after sale.", __func__ );
+            bug( "%s: Vnum: %d  Seller: %s   Bidder: %s", __func__, home->vnum, seller->name, bidder->name );
 
             logoff( bidder );
             logoff( seller );
@@ -2512,8 +2512,8 @@ void homebuy_update(  )
 
       if( !set_house( bidder, home->vnum, home->apartment ) )
       {
-         bug( "%s: residence could not be setup after sale.", __FUNCTION__ );
-         bug( "%s: Vnum: %d  Seller: %s   Bidder: %s", __FUNCTION__, home->vnum, seller->name, bidder->name );
+         bug( "%s: residence could not be setup after sale.", __func__ );
+         bug( "%s: Vnum: %d  Seller: %s   Bidder: %s", __func__, home->vnum, seller->name, bidder->name );
 
          logoff( bidder );
          logoff( seller );
@@ -2523,12 +2523,12 @@ void homebuy_update(  )
       seller->gold += home->bid;
       bidder->gold -= home->bid;
 
-      log_printf( "%s: Home successfully sold B:%s S:%s V:%d", __FUNCTION__, bidder->name, seller->name, home->vnum );
+      log_printf( "%s: Home successfully sold B:%s S:%s V:%d", __func__, bidder->name, seller->name, home->vnum );
 
 
       if( !give_key( bidder, home->vnum, bidder->name, home->apartment ) )
       {
-         bug( "%s: Key for residence with vnum %d could not be given.", __FUNCTION__, home->vnum );
+         bug( "%s: Key for residence with vnum %d could not be given.", __func__, home->vnum );
       }
 
       remove_homebuy( home );

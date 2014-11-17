@@ -199,7 +199,7 @@ CHAR_DATA *load_mobile( FILE * fp )
       vnum = fread_number( fp );
       if( get_mob_index( vnum ) == NULL )
       {
-         bug( "%s: No index data for vnum %d", __FUNCTION__, vnum );
+         bug( "%s: No index data for vnum %d", __func__, vnum );
          return NULL;
       }
       mob = create_mobile( get_mob_index( vnum ) );
@@ -215,7 +215,7 @@ CHAR_DATA *load_mobile( FILE * fp )
             if( !str_cmp( word, "EndMobile" ) )
                break;
          }
-         bug( "%s: Unable to create mobile for vnum %d", __FUNCTION__, vnum );
+         bug( "%s: Unable to create mobile for vnum %d", __func__, vnum );
          return NULL;
       }
    }
@@ -232,7 +232,7 @@ CHAR_DATA *load_mobile( FILE * fp )
             break;
       }
       extract_char( mob, TRUE );
-      bug( "%s: Vnum not found", __FUNCTION__ );
+      bug( "%s: Vnum not found", __func__ );
       return NULL;
    }
 
@@ -273,7 +273,7 @@ CHAR_DATA *load_mobile( FILE * fp )
                   if( ( sn = skill_lookup( sname ) ) < 0 )
                   {
                      if( ( sn = herb_lookup( sname ) ) < 0 )
-                        bug( "%s: unknown skill.", __FUNCTION__ );
+                        bug( "%s: unknown skill.", __func__ );
                      else
                         sn += TYPE_HERB;
                   }
@@ -407,7 +407,7 @@ CHAR_DATA *load_mobile( FILE * fp )
 
       if( !fMatch && str_cmp( word, "End" ) )
       {
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -453,7 +453,7 @@ void read_obj_file( char *dirname, char *filename )
 
          if( letter != '#' )
          {
-            bug( "%s: # not found.", __FUNCTION__ );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -464,7 +464,7 @@ void read_obj_file( char *dirname, char *filename )
             break;
          else
          {
-            bug( "%s: bad section: %s", __FUNCTION__, word );
+            bug( "%s: bad section: %s", __func__, word );
             break;
          }
       }

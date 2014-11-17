@@ -171,7 +171,7 @@ int skill_lookup( const char *name )
             // have we reached the end of the skills?
             if( !skill_table[sn] || !skill_table[sn]->name )
             {
-               bug( "%s: WARNING: skill table entry %d had bad skill", __FUNCTION__, sn );
+               bug( "%s: WARNING: skill table entry %d had bad skill", __func__, sn );
                return -1;
             }
 
@@ -340,7 +340,7 @@ int slot_lookup( int slot )
 
    if( fBootDb )
    {
-      bug( "%s: bad slot %d.", __FUNCTION__, slot );
+      bug( "%s: bad slot %d.", __func__, slot );
       abort(  );
    }
    return -1;
@@ -1172,7 +1172,7 @@ void *locate_targets( CHAR_DATA * ch, char *arg, int sn, CHAR_DATA ** victim, OB
    switch ( skill->target )
    {
       default:
-         bug( "%s: bad target for sn %d.", __FUNCTION__, sn );
+         bug( "%s: bad target for sn %d.", __func__, sn );
          return &pAbort;
 
       case TAR_IGNORE:
@@ -1865,7 +1865,7 @@ ch_ret obj_cast_spell( int sn, int level, CHAR_DATA * ch, CHAR_DATA * victim, OB
       return retcode;
    if( !skill || !skill->spell_fun )
    {
-      bug( "%s: bad sn %d.", __FUNCTION__, sn );
+      bug( "%s: bad sn %d.", __func__, sn );
       return rERROR;
    }
 
@@ -1921,7 +1921,7 @@ ch_ret obj_cast_spell( int sn, int level, CHAR_DATA * ch, CHAR_DATA * victim, OB
    switch ( skill->target )
    {
       default:
-         bug( "%s: bad target for sn %d.", __FUNCTION__, sn );
+         bug( "%s: bad target for sn %d.", __func__, sn );
          return rERROR;
 
       case TAR_IGNORE:
