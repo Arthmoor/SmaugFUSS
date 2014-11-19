@@ -180,6 +180,7 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
           r_area->low_obj < ch->pcdata->o_range_lo || r_area->hi_obj > ch->pcdata->o_range_hi ||
           r_area->low_mob < ch->pcdata->m_range_lo || r_area->hi_mob > ch->pcdata->m_range_hi )
       {
+         DISPOSE( r_area );
          ch_printf( ch, "The renumbered area would be outside your assigned vnum range.\r\n" );
          return;
       }
@@ -190,8 +191,8 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
           r_area->low_obj < area->low_o_vnum || r_area->hi_obj > area->hi_o_vnum ||
           r_area->low_mob < area->low_m_vnum || r_area->hi_mob > area->hi_m_vnum )
       {
-         ch_printf( ch,
-                    "Moving a proto area out of its range would create problems.\r\nWait till the area is finished to move it.\r\n" );
+         DISPOSE( r_area );
+         ch_printf( ch, "Moving a proto area out of its range would create problems.\r\nWait till the area is finished to move it.\r\n" );
          return;
       }
    }

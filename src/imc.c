@@ -3188,7 +3188,7 @@ bool imc_read_buffer( void )
    if( k < 0 )
       k = 0;
 
-   for( i = 0; i < IMC_BUFF_SIZE && this_imcmud->inbuf[i] != '\0'
+   for( i = 0; i < (IMC_BUFF_SIZE -1) && this_imcmud->inbuf[i] != '\0'
         && this_imcmud->inbuf[i] != '\n' && this_imcmud->inbuf[i] != '\r'; i++ )
    {
       this_imcmud->incomm[k++] = this_imcmud->inbuf[i];
