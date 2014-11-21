@@ -1,18 +1,18 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			     Mud constants module			    *
+ *                           Mud constants module                           *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -35,10 +35,9 @@ const char *const npc_race[MAX_NPC_RACE] = {
    "monster", "god"
 };
 
-
 const char *const npc_class[MAX_NPC_CLASS] = {
    "mage", "cleric", "thief", "warrior", "vampire", "druid", "ranger",
-   "augurer", "paladin", "nephandi", "savage", "pirate", "pc12", "pc13",
+   "augurer", "paladin", "nephandi", "savage", "pc11", "pc12", "pc13",
    "pc14", "pc15", "pc16", "pc17", "pc18", "pc19",
    "baker", "butcher", "blacksmith", "mayor", "king", "queen"
 };
@@ -75,8 +74,6 @@ const struct str_app_type str_app[26] = {
    {10, 12, 999, 60} /* 25   */
 };
 
-
-
 const struct int_app_type int_app[26] = {
    {3},  /*  0 */
    {5},  /*  1 */
@@ -105,8 +102,6 @@ const struct int_app_type int_app[26] = {
    {85},
    {99}  /* 25 */
 };
-
-
 
 const struct wis_app_type wis_app[26] = {
    {0},  /*  0 */
@@ -137,8 +132,6 @@ const struct wis_app_type wis_app[26] = {
    {7}   /* 25 */
 };
 
-
-
 const struct dex_app_type dex_app[26] = {
    {60}, /* 0 */
    {50}, /* 1 */
@@ -168,8 +161,6 @@ const struct dex_app_type dex_app[26] = {
    {-120}   /* 25 */
 };
 
-
-
 const struct con_app_type con_app[26] = {
    {-4, 20},   /*  0 */
    {-3, 25},   /*  1 */
@@ -198,7 +189,6 @@ const struct con_app_type con_app[26] = {
    {7, 99},
    {8, 99}  /* 25 */
 };
-
 
 const struct cha_app_type cha_app[26] = {
    {-60},   /* 0 */
@@ -257,35 +247,6 @@ const struct lck_app_type lck_app[26] = {
    {-90},
    {-105},
    {-120}   /* 25 */
-};
-
-
-/*
- * Liquid properties.
- * Used in #OBJECT section of area file.
- */
-const struct liq_type liq_table[LIQ_MAX] = {
-   {"water", "clear", {0, 1, 10}},  /*  0 */
-   {"beer", "amber", {3, 2, 5}},
-   {"wine", "rose", {5, 2, 5}},
-   {"ale", "brown", {2, 2, 5}},
-   {"dark ale", "dark", {1, 2, 5}},
-
-   {"whisky", "golden", {6, 1, 4}}, /*  5 */
-   {"lemonade", "pink", {0, 1, 8}},
-   {"firebreather", "boiling", {10, 0, 0}},
-   {"local specialty", "everclear", {3, 3, 3}},
-   {"slime mold juice", "green", {0, 4, -8}},
-
-   {"milk", "white", {0, 3, 6}}, /* 10 */
-   {"tea", "tan", {0, 1, 6}},
-   {"coffee", "black", {0, 1, 6}},
-   {"blood", "red", {0, 2, -1}},
-   {"salt water", "clear", {0, 1, -2}},
-
-   {"cola", "cherry", {0, 1, 5}},   /* 15 */
-   {"mead", "honey color", {4, 2, 5}}, /* 16 */
-   {"grog", "thick brown", {3, 2, 5}}  /* 17 */
 };
 
 const char *const attack_table[18] = {

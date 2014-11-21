@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -160,6 +160,7 @@ typedef struct variable_data VARIABLE_DATA;
 typedef struct game_board_data GAME_BOARD_DATA;
 typedef struct mpsleep_data MPSLEEP_DATA;
 typedef struct lmsg_data LMSG_DATA;
+typedef struct vault_data VAULT_DATA;
 
 /*
  * Function types.
@@ -228,21 +229,21 @@ typedef bool SPEC_FUN( CHAR_DATA * ch );
  * Increase the max'es if you add more of something.
  * Adjust the pulse numbers to suit yourself.
  */
-#define MAX_EXP_WORTH	       500000
-#define MIN_EXP_WORTH		   20
-#define MAX_FIGHT               8
+#define MAX_EXP_WORTH         500000
+#define MIN_EXP_WORTH         20
+#define MAX_FIGHT             8
 
-#define MAX_VNUM 100000 /* Game can hold up to 2 billion but this is set low for protection in certain cases */
-#define MAX_RGRID_ROOMS      30000
-#define MAX_REXITS		   20 /* Maximum exits allowed in 1 room */
-#define MAX_SKILL		  500
+#define MAX_VNUM              100000 /* Game can hold up to 2 billion but this is set low for protection in certain cases */
+#define MAX_RGRID_ROOMS       30000
+#define MAX_REXITS            20 /* Maximum exits allowed in 1 room */
+#define MAX_SKILL             500
 #define SPELL_SILENT_MARKER   "silent" /* No OK. or Failed. */
-#define MAX_CLASS           	   20
-#define MAX_NPC_CLASS		   26
-#define MAX_RACE                   20
-#define MAX_NPC_RACE		   91
-#define MAX_MSG			   18
-#define MAX_OINVOKE_QUANTITY 20
+#define MAX_CLASS             20
+#define MAX_NPC_CLASS         26
+#define MAX_RACE              20
+#define MAX_NPC_RACE          91
+#define MAX_MSG               18
+#define MAX_OINVOKE_QUANTITY  20
 extern int MAX_PC_RACE;
 extern int MAX_PC_CLASS;
 extern bool mud_down;
@@ -318,7 +319,7 @@ Version 3: Stock 1.8 areas.
 typedef enum
 {
    LOG_NORMAL, LOG_ALWAYS, LOG_NEVER, LOG_BUILD, LOG_HIGH, LOG_COMM,
-   LOG_WARN, LOG_ALL
+   LOG_WARN, LOG_BUG, LOG_ALL
 } log_types;
 
 /* short cut crash bug fix provided by gfinello@mail.karmanet.it*/
@@ -356,6 +357,7 @@ typedef enum
 #define ECHOTAR_ALL	0
 #define ECHOTAR_PC	1
 #define ECHOTAR_IMM	2
+#define ECHOTAR_PK	3
 
 /* defines for new do_who */
 #define WT_MORTAL	0
@@ -370,10 +372,11 @@ typedef enum
 #ifndef INTBITS
 #define INTBITS	32
 #endif
-#define XBM		31 /* extended bitmask   ( INTBITS - 1 )  */
-#define RSV		5  /* right-shift value  ( sqrt(XBM+1) )  */
-#define XBI		4  /* integers in an extended bitvector   */
-#define MAX_BITS	XBI * INTBITS
+#define XBM       31 /* extended bitmask   ( INTBITS - 1 )  */
+#define RSV       5  /* right-shift value  ( sqrt(XBM+1) )  */
+#define XBI       4  /* integers in an extended bitvector   */
+#define MAX_BITS  (XBI * INTBITS)
+
 /*
  * Structure for extended bitvectors -- Thoric
  */
@@ -387,16 +390,14 @@ struct extended_bitvector
 #include "hotboot.h"
 #include "calendar.h" /* AFKMud Calendar Replacement - Samson */
 #include "weather.h"  /* Weather System Replacement - Kayle */
-#include "liquids.h" /* SMAUG Liquidtable Replacement - Nopey */
+#include "liquids.h"  /* SMAUG Liquidtable Replacement - Nopey */
 #ifdef IMC
 #include "imc.h"
 #endif
 
 /*
  * Structure for a morph -- Shaddai
- */
-/*
- *  Morph structs.
+ * Morph structs.
  */
 #define ONLY_PKILL  	1
 #define ONLY_PEACEFULL  2
@@ -533,6 +534,13 @@ struct lang_data
    LCNV_DATA *last_cnv;
 };
 
+struct vault_data
+{
+   VAULT_DATA *next;
+   VAULT_DATA *prev;
+   int vnum;
+};
+
 struct specfun_list
 {
    SPEC_LIST *next;
@@ -600,6 +608,7 @@ struct nuisance_data
    int power;  /* Power of nuisance */
 };
 
+// Login Messages
 struct lmsg_data
 {
    LMSG_DATA *next;
@@ -734,10 +743,7 @@ typedef enum
 /* Uncomment this if using Samson's Reroll code */
 /* CON_ROLL_STATS, */
 
-   CON_COPYOVER_RECOVER, CON_PLAYING = 0,
-
-/* Uncomment this if using Samson's delete code */
-/* CON_DELETE, */
+   CON_COPYOVER_RECOVER, CON_PLAYING = 0, CON_DELETE,
 
 /* Uncomment this if using Mudworld's Oasis OLC port */
 /* CON_OEDIT,		 CON_MEDIT,			CON_REDIT, */
@@ -758,7 +764,7 @@ typedef enum
    SUB_ROOM_EXTRA, SUB_ROOM_EXIT_DESC, SUB_WRITING_NOTE, SUB_MPROG_EDIT,
    SUB_HELP_EDIT, SUB_WRITING_MAP, SUB_PERSONAL_BIO, SUB_REPEATCMD,
    SUB_RESTRICTED, SUB_DEITYDESC, SUB_MORPH_DESC, SUB_MORPH_HELP,
-   SUB_PROJ_DESC, SUB_NEWS_POST, SUB_NEWS_EDIT,
+   SUB_PROJ_DESC, SUB_NEWS_POST, SUB_NEWS_EDIT, SUB_JOURNAL_WRITE,
    /*
     * timer types ONLY below this point 
     */
@@ -857,18 +863,18 @@ typedef enum
 /* npc races */
 #define	RACE_DRAGON	    31
 
-#define CLASS_NONE	   -1 /* For skill/spells according to guild */
-#define CLASS_MAGE	    0
-#define CLASS_CLERIC	    1
-#define CLASS_THIEF	    2
-#define CLASS_WARRIOR	    3
-#define CLASS_VAMPIRE	    4
-#define CLASS_DRUID	    5
-#define CLASS_RANGER	    6
-#define CLASS_AUGURER	    7 /* 7-7-96 SB */
-#define CLASS_PALADIN	    8 /* 7-7-96 SB */
-#define CLASS_NEPHANDI	    9
-#define CLASS_SAVAGE	   10
+#define CLASS_NONE     -1 /* For skill/spells according to guild */
+#define CLASS_MAGE      0
+#define CLASS_CLERIC    1
+#define CLASS_THIEF     2
+#define CLASS_WARRIOR   3
+#define CLASS_VAMPIRE   4
+#define CLASS_DRUID     5
+#define CLASS_RANGER    6
+#define CLASS_AUGURER   7 /* 7-7-96 SB */
+#define CLASS_PALADIN   8 /* 7-7-96 SB */
+#define CLASS_NEPHANDI  9
+#define CLASS_SAVAGE    10
 
 /*
  * Languages -- Altrag
@@ -977,7 +983,8 @@ struct mob_prog_act_list
    const char *buf;
    CHAR_DATA *ch;
    OBJ_DATA *obj;
-   const void *vo;
+   CHAR_DATA *victim;
+   OBJ_DATA *target;
 };
 
 struct mob_prog_data
@@ -1021,11 +1028,12 @@ struct mpsleep_data
    CHAR_DATA *actor;
    OBJ_DATA *obj;
    CHAR_DATA *victim;
-   const void *vo;
+   OBJ_DATA *target;
    bool single_step;
 };
 
 extern bool MOBtrigger;
+extern bool MPSilent;
 
 /*
  * Per-class stuff.
@@ -1127,6 +1135,7 @@ struct clan_data
    ROSTER_DATA *last_member;
    const char *filename;   /* Clan filename        */
    const char *name; /* Clan name            */
+   const char *abbrev;  /* Clan Abbreviation       */
    const char *motto;   /* Clan motto           */
    const char *description;   /* A brief description of the clan  */
    const char *deity;   /* Clan's deity            */
@@ -1172,9 +1181,11 @@ struct council_data
    const char *head; /* Council head         */
    const char *head2;   /* Council co-head                      */
    const char *powers;  /* Council powers       */
+   const char *abbrev;  /* council abbreviation       */
    short members; /* Number of council members     */
    int board;  /* Vnum of council board      */
    int meeting;   /* Vnum of council's meeting room   */
+   int storeroom; /* Vnum of council's store room         */
 };
 
 struct deity_data
@@ -1234,11 +1245,15 @@ struct note_data
    const char *date;
    const char *to_list;
    const char *subject;
-   int voting;
    const char *yesvotes;
    const char *novotes;
    const char *abstentions;
    const char *text;
+   int voting;
+   int yestally;
+   int notally;
+   int abstaintally;
+   int no_remove;
 };
 
 struct board_data
@@ -1252,6 +1267,7 @@ struct board_data
    const char *post_group; /* council, clan, guild etc        */
    const char *extra_readers; /* Can give read rights to players */
    const char *extra_removers;   /* Can give remove rights to players */
+   const char *extra_ballots; /* Can give rights to read ballot names */
    const char *otakemessg; /* Next items set what is seen when */
    const char *opostmessg; /* that action is taken. --Shaddai  */
    const char *oremovemessg;
@@ -1265,6 +1281,7 @@ struct board_data
    short min_post_level;   /* Minimum level to post a note    */
    short min_remove_level; /* Minimum level to remove a note  */
    short max_posts;  /* Maximum amount of notes allowed */
+   short min_ballot_level;
    int type;   /* Normal board or mail board? */
 };
 
@@ -1318,38 +1335,38 @@ struct smaug_affect
  * ACT bits for mobs.
  * Used in #MOBILES.
  */
-#define ACT_IS_NPC		  0   /* Auto set for mobs */
-#define ACT_SENTINEL		  1   /* Stays in one room */
-#define ACT_SCAVENGER		  2   /* Picks up objects  */
-/* 3 is available for use */
-/* 4 is available for use */
-#define ACT_AGGRESSIVE		  5   /* Attacks PC's      */
-#define ACT_STAY_AREA		  6   /* Won't leave area  */
-#define ACT_WIMPY		  7   /* Flees when hurt   */
-#define ACT_PET			  8   /* Auto set for pets */
-#define ACT_TRAIN		  9   /* Can train PC's */
-#define ACT_PRACTICE		 10   /* Can practice PC's */
-#define ACT_IMMORTAL		 11   /* Cannot be killed  */
-#define ACT_DEADLY		 12   /* Has a deadly poison  */
-#define ACT_POLYSELF		 13
-#define ACT_META_AGGR		 14   /* Attacks other mobs   */
-#define ACT_GUARDIAN		 15   /* Protects master   */
-#define ACT_RUNNING		 16   /* Hunts quickly  */
-#define ACT_NOWANDER		 17   /* Doesn't wander */
-#define ACT_MOUNTABLE		 18   /* Can be mounted */
-#define ACT_MOUNTED		 19   /* Is mounted     */
-#define ACT_SCHOLAR              20 /* Can teach languages  */
-#define ACT_SECRETIVE		 21   /* actions aren't seen  */
-#define ACT_HARDHAT	         22 /* Immune to falling item damage */
-#define ACT_MOBINVIS		 23   /* Like wizinvis  */
-#define ACT_NOASSIST		 24   /* Doesn't assist mobs  */
-#define ACT_AUTONOMOUS		 25   /* Doesn't auto switch tanks */
-#define ACT_PACIFIST             26 /* Doesn't ever fight   */
-#define ACT_NOATTACK		 27   /* No physical attacks */
-#define ACT_ANNOYING		 28   /* Other mobs will attack */
-#define ACT_STATSHIELD		 29   /* prevent statting */
-#define ACT_PROTOTYPE		 30   /* A prototype mob   */
-/* 28 acts */
+#define ACT_IS_NPC         0  /* Auto set for mobs */
+#define ACT_SENTINEL       1  /* Stays in one room */
+#define ACT_SCAVENGER      2  /* Picks up objects  */
+#define ACT_STOP_SCRIPT    3  /* Don't execute script progs */
+#define ACT_NOSTEAL        4  /* Cannot be stolen from, ever */
+#define ACT_AGGRESSIVE     5  /* Attacks PC's      */
+#define ACT_STAY_AREA      6  /* Won't leave area  */
+#define ACT_WIMPY          7  /* Flees when hurt   */
+#define ACT_PET            8  /* Auto set for pets */
+#define ACT_TRAIN          9  /* Can train PC's */
+#define ACT_PRACTICE       10 /* Can practice PC's */
+#define ACT_IMMORTAL       11 /* Cannot be killed  */
+#define ACT_DEADLY         12 /* Has a deadly poison  */
+#define ACT_POLYSELF       13
+#define ACT_META_AGGR      14 /* Attacks other mobs   */
+#define ACT_GUARDIAN       15 /* Protects master   */
+#define ACT_RUNNING        16 /* Hunts quickly  */
+#define ACT_NOWANDER       17 /* Doesn't wander */
+#define ACT_MOUNTABLE      18 /* Can be mounted */
+#define ACT_MOUNTED        19 /* Is mounted     */
+#define ACT_SCHOLAR        20 /* Can teach languages  */
+#define ACT_SECRETIVE      21 /* actions aren't seen  */
+#define ACT_HARDHAT        22 /* Immune to falling item damage */
+#define ACT_MOBINVIS       23 /* Like wizinvis  */
+#define ACT_NOASSIST       24 /* Doesn't assist mobs  */
+#define ACT_AUTONOMOUS     25 /* Doesn't auto switch tanks */
+#define ACT_PACIFIST       26 /* Doesn't ever fight   */
+#define ACT_NOATTACK       27 /* No physical attacks */
+#define ACT_ANNOYING       28 /* Other mobs will attack */
+#define ACT_STATSHIELD     29 /* prevent statting */
+#define ACT_PROTOTYPE      30 /* A prototype mob   */
+/* 31 acts */
 
 /*
  * Bits for 'affected_by'.
@@ -1366,7 +1383,7 @@ typedef enum
    AFF_FLYING, AFF_PASS_DOOR, AFF_FLOATING, AFF_TRUESIGHT, AFF_DETECTTRAPS,
    AFF_SCRYING, AFF_FIRESHIELD, AFF_SHOCKSHIELD, AFF_HAUS1, AFF_ICESHIELD,
    AFF_POSSESS, AFF_BERSERK, AFF_AQUA_BREATH, AFF_RECURRINGSPELL,
-   AFF_CONTAGIOUS, AFF_ACIDMIST, AFF_VENOMSHIELD, MAX_AFFECTED_BY
+   AFF_CONTAGIOUS, AFF_ACIDMIST, AFF_VENOMSHIELD, AFF_GRAPPLE, MAX_AFFECTED_BY
 } affected_by_types;
 
 /*
@@ -1407,7 +1424,7 @@ typedef enum
    ATCK_LIGHTNBREATH, ATCK_GASBREATH, ATCK_POISON, ATCK_NASTYPOISON, ATCK_GAZE,
    ATCK_BLINDNESS, ATCK_CAUSESERIOUS, ATCK_EARTHQUAKE, ATCK_CAUSECRITICAL,
    ATCK_CURSE, ATCK_FLAMESTRIKE, ATCK_HARM, ATCK_FIREBALL, ATCK_COLORSPRAY,
-   ATCK_WEAKEN, ATCK_SPIRALBLAST, MAX_ATTACK_TYPE
+   ATCK_WEAKEN, ATCK_SPIRALBLAST, ATCK_POUNCE, MAX_ATTACK_TYPE
 } attack_types;
 
 /*
@@ -1457,6 +1474,7 @@ typedef enum
 #define PART_PAWS		  BV27
 #define PART_FORELEGS	  BV28
 #define PART_FEATHERS	  BV29
+#define PART_HUSK_SHELL	  BV30
 
 /*
  * Autosave flags
@@ -1477,6 +1495,7 @@ typedef enum
 #define SV_QUITBACKUP	  BV13   /* Backup on quit only --Blod */
 #define SV_FILL		  BV14   /* Save on do_fill */
 #define SV_EMPTY		  BV15   /* Save on do_empty */
+#define SV_TMPSAVE		  BV16   /* Tmp file to save into */
 
 /*
  * Pipe flags
@@ -1527,6 +1546,7 @@ typedef enum
 #define SF_NOFIGHT		  BV19   /* stops if char fighting       */
 #define SF_NODISPEL               BV20 /* stops spell from being dispelled */
 #define SF_RANDOMTARGET		  BV21   /* chooses a random target */
+#define SF_NOMOB		  BV22   /* cannot be cast on mobiles */
 typedef enum
 { SS_NONE, SS_POISON_DEATH, SS_ROD_WANDS, SS_PARA_PETRI,
    SS_BREATH, SS_SPELL_STAFF
@@ -1640,6 +1660,8 @@ typedef enum
 #define OBJ_VNUM_NOTE		     36
 #define OBJ_VNUM_DEITY		     64
 
+#define OBJ_VNUM_PUDDLE		     95
+
 /* Academy eq */
 #define OBJ_VNUM_SCHOOL_MACE	  10315
 #define OBJ_VNUM_SCHOOL_DAGGER	  10312
@@ -1664,8 +1686,9 @@ typedef enum
    ITEM_PULLCHAIN, ITEM_BUTTON, ITEM_DIAL, ITEM_RUNE, ITEM_RUNEPOUCH,
    ITEM_MATCH, ITEM_TRAP, ITEM_MAP, ITEM_PORTAL, ITEM_PAPER,
    ITEM_TINDER, ITEM_LOCKPICK, ITEM_SPIKE, ITEM_DISEASE, ITEM_OIL, ITEM_FUEL,
-   ITEM_EMPTY1, ITEM_EMPTY2, ITEM_MISSILE_WEAPON, ITEM_PROJECTILE, ITEM_QUIVER,
-   ITEM_SHOVEL, ITEM_SALVE, ITEM_COOK, ITEM_KEYRING, ITEM_ODOR, ITEM_CHANCE, ITEM_DRINK_MIX
+   ITEM_PUDDLE, ITEM_JOURNAL, ITEM_MISSILE_WEAPON, ITEM_PROJECTILE, ITEM_QUIVER,
+   ITEM_SHOVEL, ITEM_SALVE, ITEM_COOK, ITEM_KEYRING, ITEM_ODOR, ITEM_CHANCE,
+   ITEM_PIECE, ITEM_HOUSEKEY, ITEM_DRINK_MIX
 } item_types;
 
 #define MAX_ITEM_TYPE		     ITEM_DRINK_MIX
@@ -1683,18 +1706,19 @@ typedef enum
    ITEM_CLANOBJECT, ITEM_CLANCORPSE, ITEM_ANTI_VAMPIRE, ITEM_ANTI_DRUID,
    ITEM_HIDDEN, ITEM_POISONED, ITEM_COVERING, ITEM_DEATHROT, ITEM_BURIED,
    ITEM_PROTOTYPE, ITEM_NOLOCATE, ITEM_GROUNDROT, ITEM_LOOTABLE, ITEM_PERSONAL,
-   ITEM_MULTI_INVOKE, ITEM_ENCHANTED, MAX_ITEM_FLAG
+   ITEM_MULTI_INVOKE, ITEM_ENCHANTED, ITEM_PERMANENT, ITEM_NOFILL, ITEM_DEATHDROP,
+   ITEM_SKINNED, MAX_ITEM_FLAG
 } item_extra_flags;
 
 /* Magic flags - extra extra_flags for objects that are used in spells */
-#define ITEM_RETURNING		BV00
-#define ITEM_BACKSTABBER  	BV01
-#define ITEM_BANE		BV02
-#define ITEM_MAGIC_LOYAL	BV03
-#define ITEM_HASTE		BV04
-#define ITEM_DRAIN		BV05
-#define ITEM_LIGHTNING_BLADE  	BV06
-#define ITEM_PKDISARMED		BV07  /* Maybe temporary, not a perma flag */
+#define ITEM_RETURNING        BV00
+#define ITEM_BACKSTABBER      BV01
+#define ITEM_BANE             BV02
+#define ITEM_MAGIC_LOYAL      BV03
+#define ITEM_HASTE            BV04
+#define ITEM_DRAIN            BV05
+#define ITEM_LIGHTNING_BLADE  BV06
+#define ITEM_PKDISARMED       BV07  /* Maybe temporary, not a perma flag */
 
 /* Lever/dial/switch/button/pullchain flags */
 #define TRIG_UP			BV00
@@ -1839,12 +1863,12 @@ typedef enum
  */
 typedef enum
 {
-   ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_INDOORS, ROOM_LAWFUL, ROOM_NEUTRAL, ROOM_CHAOTIC,
+   ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_INDOORS, ROOM_HOUSE, ROOM_NEUTRAL, ROOM_CHAOTIC,
    ROOM_NO_MAGIC, ROOM_TUNNEL, ROOM_PRIVATE, ROOM_SAFE, ROOM_SOLITARY, ROOM_PET_SHOP,
    ROOM_NO_RECALL, ROOM_DONATION, ROOM_NODROPALL, ROOM_SILENCE, ROOM_LOGSPEECH, ROOM_NODROP,
    ROOM_CLANSTOREROOM, ROOM_NO_SUMMON, ROOM_NO_ASTRAL, ROOM_TELEPORT, ROOM_TELESHOWDESC,
-   ROOM_NOFLOOR, ROOM_NOSUPPLICATE, ROOM_ARENA, ROOM_NOMISSILE, ROOM_R4, ROOM_R5,
-   ROOM_PROTOTYPE, ROOM_DND, ROOM_BFS_MARK, ROOM_MAX
+   ROOM_NOFLOOR, ROOM_NOSUPPLICATE, ROOM_ARENA, ROOM_NOMISSILE, ROOM_NOYELL, ROOM_NOQUIT,
+   ROOM_PROTOTYPE, ROOM_DND, ROOM_TRACK, ROOM_NOWHERE, ROOM_NOTRACK, ROOM_MAX
 } room_flags;
 
 /*
@@ -1987,28 +2011,30 @@ typedef enum
 } player_flags;
 
 /* Bits for pc_data->flags. */
-#define PCFLAG_R1                  BV00
-#define PCFLAG_DEADLY              BV01
-#define PCFLAG_UNAUTHED		   BV02
-#define PCFLAG_NORECALL            BV03
-#define PCFLAG_NOINTRO             BV04
-#define PCFLAG_GAG		   BV05
-#define PCFLAG_RETIRED             BV06
-#define PCFLAG_GUEST               BV07
-#define PCFLAG_NOSUMMON		   BV08
-#define PCFLAG_PAGERON		   BV09
-#define PCFLAG_NOTITLE             BV10
-#define PCFLAG_GROUPWHO		   BV11
-#define PCFLAG_DIAGNOSE		   BV12
-#define PCFLAG_HIGHGAG		   BV13
-#define PCFLAG_WATCH		   BV14  /* see function "do_watch" */
-#define PCFLAG_HELPSTART	   BV15  /* Force new players to help start */
-#define PCFLAG_DND      	   BV16  /* Do Not Disturb flage */
-  /*
-   * DND flag prevents unwanted transfers of imms by lower level imms 
-   */
-#define PCFLAG_IDLE		BV17  /* Player is Linkdead */
+#define PCFLAG_R1             BV00
+#define PCFLAG_DEADLY         BV01
+#define PCFLAG_UNAUTHED       BV02
+#define PCFLAG_NORECALL       BV03
+#define PCFLAG_NOINTRO        BV04
+#define PCFLAG_GAG            BV05
+#define PCFLAG_RETIRED        BV06
+#define PCFLAG_GUEST          BV07
+#define PCFLAG_NOSUMMON       BV08
+#define PCFLAG_PAGERON        BV09
+#define PCFLAG_NOTITLE        BV10
+#define PCFLAG_GROUPWHO       BV11
+#define PCFLAG_DIAGNOSE       BV12
+#define PCFLAG_HIGHGAG        BV13
+#define PCFLAG_WATCH          BV14 /* see function "do_watch" */
+#define PCFLAG_HELPSTART      BV15 /* Force new players to help start */
+#define PCFLAG_DND            BV16 /* Do Not Disturb flag, prevents unwanted transfers of imms by lower level imms etc. */
+#define PCFLAG_IDLE           BV17 /* Player is Linkdead */
 #define PCFLAG_HINTS          BV18
+#define PCFLAG_BECKON         BV19 /* Cannot be beckoned/beeped - Set by player in do_config */
+#define PCFLAG_NOBECKON       BV20 /* Cannot beckon/beep */
+#define PCFLAG_NODESC         BV21 /* Cannot set a description */
+#define PCFLAG_NOBIO          BV22 /* Cannot set a bio */
+#define PCFLAG_NOHOMEPAGE     BV23 /* Cannot set a homepage */
 
 typedef enum
 {
@@ -2029,47 +2055,57 @@ struct timer_data
 /*
  * Channel bits.
  */
-#define	CHANNEL_AUCTION		   BV00
-#define	CHANNEL_CHAT		   BV01
-#define	CHANNEL_QUEST		   BV02
-#define	CHANNEL_IMMTALK		   BV03
-#define	CHANNEL_MUSIC		   BV04
-#define	CHANNEL_ASK		   BV05
-#define	CHANNEL_SHOUT		   BV06
-#define	CHANNEL_YELL		   BV07
-#define CHANNEL_MONITOR		   BV08
-#define CHANNEL_LOG		   BV09
-#define CHANNEL_HIGHGOD		   BV10
-#define CHANNEL_CLAN		   BV11
-#define CHANNEL_BUILD		   BV12
-#define CHANNEL_HIGH		   BV13
-#define CHANNEL_AVTALK		   BV14
-#define CHANNEL_PRAY		   BV15
-#define CHANNEL_COUNCIL 	   BV16
-#define CHANNEL_GUILD              BV17
-#define CHANNEL_COMM		   BV18
-#define CHANNEL_TELLS		   BV19
-#define CHANNEL_ORDER              BV20
-#define CHANNEL_NEWBIE             BV21
-#define CHANNEL_WARTALK            BV22
-#define CHANNEL_RACETALK           BV23
-#define CHANNEL_WARN               BV24
-#define CHANNEL_WHISPER		   BV25
-#define CHANNEL_AUTH		   BV26
-#define CHANNEL_TRAFFIC		   BV27
+#define CHANNEL_AUCTION    BV00
+#define CHANNEL_CHAT       BV01
+#define CHANNEL_QUEST      BV02
+#define CHANNEL_IMMTALK    BV03
+#define CHANNEL_MUSIC      BV04
+#define CHANNEL_ASK        BV05
+#define CHANNEL_SHOUT      BV06
+#define CHANNEL_YELL       BV07
+#define CHANNEL_MONITOR    BV08
+#define CHANNEL_LOG        BV09
+#define CHANNEL_HIGHGOD    BV10
+#define CHANNEL_CLAN       BV11
+#define CHANNEL_BUILD      BV12
+#define CHANNEL_HIGH       BV13
+#define CHANNEL_AVTALK     BV14
+#define CHANNEL_PRAY       BV15
+#define CHANNEL_COUNCIL    BV16
+#define CHANNEL_GUILD      BV17
+#define CHANNEL_COMM       BV18
+#define CHANNEL_TELLS      BV19
+#define CHANNEL_ORDER      BV20
+#define CHANNEL_NEWBIE     BV21
+#define CHANNEL_WARTALK    BV22
+#define CHANNEL_RACETALK   BV23
+#define CHANNEL_WARN       BV24
+#define CHANNEL_WHISPER    BV25
+#define CHANNEL_AUTH       BV26
+#define CHANNEL_TRAFFIC    BV27
+#define CHANNEL_RETIRED    BV28
+#define CHANNEL_BUG        BV29
+#define CHANNEL_DEATH      BV30
 
 /* Area defines - Scryn 8/11
  *
  */
-#define AREA_DELETED		   BV00
-#define AREA_LOADED                BV01
+#define AREA_DELETED       BV00
+#define AREA_LOADED        BV01
 
 /* Area flags - Narn Mar/96 */
-#define AFLAG_NOPKILL               BV00
-#define AFLAG_FREEKILL		    BV01
-#define AFLAG_NOTELEPORT	    BV02
-#define AFLAG_SPELLLIMIT	    BV03
-#define AFLAG_PROTOTYPE             BV04
+#define AFLAG_NOPKILL         BV00
+#define AFLAG_FREEKILL        BV01
+#define AFLAG_NOTELEPORT      BV02
+#define AFLAG_SPELLLIMIT      BV03
+#define AFLAG_PROTOTYPE       BV04
+#define AFLAG_HIDDEN          BV05 /* Hidden from area list. - Blod*/
+#define AFLAG_SILENCE         BV06
+#define AFLAG_NOPORTALIN      BV07
+#define AFLAG_NOPORTALOUT     BV08
+#define AFLAG_NOMAGIC         BV09
+#define AFLAG_NOASTRAL        BV10
+#define AFLAG_NOWHERE         BV11
 
 /*
  * Prototype for a mob.
@@ -2304,6 +2340,7 @@ struct char_data
    int home_vnum; /* hotboot tracker */
    int resetvnum;
    int resetnum;
+   bool loadedself; /* Used to see if mpmloaded self, if so skip changing the reset for it currently */
 };
 
 struct killed_data
@@ -2337,6 +2374,7 @@ struct pc_data
    NUISANCE_DATA *nuisance;   /* New Nuisance structure */
    KILLED_DATA killed[MAX_KILLTRACK];
    const char *homepage;
+   const char *pointing;
    const char *clan_name;
    const char *council_name;
    const char *deity_name;
@@ -2347,6 +2385,8 @@ struct pc_data
    const char *rank;
    const char *title;
    const char *bestowments;   /* Special bestowed commands     */
+   const char *recent_site;   /* site a player started their most recent session from */
+   const char *prev_site;     /* site a player last quit from */
    long int outcast_time;  /* The time at which the char was outcast */
    long int restore_time;  /* The last time the char did a restore all */
    int flags;  /* Whether the player is deadly and whatever else we add.      */
@@ -2394,19 +2434,6 @@ struct pc_data
    short month;
    short year;
    int timezone;
-};
-
-/*
- * Liquids.
- */
-#define LIQ_WATER        0
-#define LIQ_MAX		18
-
-struct liq_type
-{
-   const char *liq_name;
-   const char *liq_color;
-   short liq_affect[3];
 };
 
 /*
@@ -2645,6 +2672,8 @@ struct system_data
    void *dlHandle;
    const char *time_of_max;   /* Time of max ever */
    const char *mud_name;   /* Name of mud */
+   const char *port_name;  /* Name of port */
+   const char *admin_email; /* Email address of the MUD admin */
    const char *guild_overseer;   /* Pointer to char containing the name of the */
    const char *guild_advisor; /* guild overseer and advisor. */
    int save_flags;   /* Toggles for saving conditions */
@@ -2675,6 +2704,9 @@ struct system_data
    short dodge_mod;  /* Divide dodge chance by */
    short parry_mod;  /* Divide parry chance by */
    short tumble_mod; /* Divide tumble chance by */
+   short tumble_pk; /* Divide tumble chance by for pk */
+   short dam_nonav_vs_mob;   /* Damage mod non-avatar vs. mobile */
+   short dam_mob_vs_nonav;   /* Damage mod mobile vs non-avatar */
    short dam_plr_vs_plr;   /* Damage mod player vs. player */
    short dam_plr_vs_mob;   /* Damage mod player vs. mobile */
    short dam_mob_vs_plr;   /* Damage mod mobile vs. player */
@@ -2683,10 +2715,14 @@ struct system_data
    short level_forcepc; /* The level at which you can use force on players. */
    short bestow_dif; /* Max # of levels between trust and command level for a bestow to work --Blodkai */
    short max_sn;  /* Max skills */
+   short peaceful_exp_mod;   /* Peaceful char exp mod */
+   short deadly_exp_mod;  /* Deadly char exp mod */
    short save_frequency;   /* How old to autosave someone */
    short check_imm_host;   /* Do we check immortal's hosts? */
    short morph_opt;  /* Do we optimize morph's? */
    short save_pets;  /* Do pets save? */
+   short pk_channels;  /* Turn off all public channels but clantalk and wartalk for pkillers */
+   short pk_silence;   /* Turn off even clantalk and wartalk */
    short ban_site_level;   /* Level to ban sites */
    short ban_class_level;  /* Level to ban classes */
    short ban_race_level;   /* Level to ban races */
@@ -2760,6 +2796,8 @@ struct room_index_data
    int mpactnum;  /* mudprogs */
    int vnum;
    int tele_vnum;
+   int weight;
+   int max_weight;
    short light;   /* amount of light in the room */
    short sector_type;
    short winter_sector;
@@ -2841,6 +2879,7 @@ struct skill_type
    short range;   /* Range of spell (rooms)  */
    int info;   /* Spell action/class/etc  */
    int flags;  /* Flags       */
+   short alignment; /* Caster has to be this align  */
    const char *hit_char;   /* Success message to caster  */
    const char *hit_vict;   /* Success message to victim  */
    const char *hit_room;   /* Success message to room */
@@ -2916,7 +2955,10 @@ extern short gsn_mount;
 extern short gsn_bashdoor;
 extern short gsn_berserk;
 extern short gsn_hitall;
-
+extern short gsn_pounce;
+extern short gsn_grapple;
+extern short gsn_meditate;
+extern short gsn_trance;
 extern short gsn_disarm;
 extern short gsn_enhanced_damage;
 extern short gsn_kick;
@@ -2934,6 +2976,7 @@ extern short gsn_broach;
 extern short gsn_mistwalk;
 
 extern short gsn_aid;
+extern short gsn_cleave;
 
 /* used to do specific lookups */
 // see db.c for documentation
@@ -2991,6 +3034,7 @@ extern short gsn_orcish;
 extern short gsn_trollish;
 extern short gsn_goblin;
 extern short gsn_halfling;
+extern short gsn_gnomish;
 
 /*
  * Cmd flag names --Shaddai
@@ -3268,9 +3312,9 @@ do								\
                                   sect == SECT_OCEANFLOOR ||               \
                                   sect == SECT_UNDERGROUND )
 
-#define IS_DRUNK(ch, drunk)     (number_percent() < \
-			        ( (ch)->pcdata->condition[COND_DRUNK] \
-				* 2 / (drunk) ) )
+#define IS_DRUNK(ch, drunk)     (number_percent() < ( (ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk) ) )
+
+#define IS_CHARMED(ch)      (IS_AFFECTED((ch),AFF_CHARM))
 
 #define IS_CLANNED(ch)		(!IS_NPC((ch))				    \
 				&& (ch)->pcdata->clan			    \
@@ -3401,9 +3445,11 @@ do								\
 /*
  *  Defines for the command flags. --Shaddai
  */
-#define	CMD_FLAG_POSSESS	BV00
-#define CMD_FLAG_POLYMORPHED	BV01
-#define CMD_WATCH		BV02  /* FB */
+#define CMD_FLAG_POSSESS      BV00
+#define CMD_FLAG_POLYMORPHED  BV01
+#define CMD_WATCH             BV02  /* FB */
+#define CMD_FLAG_RETIRED      BV03
+#define CMD_FLAG_NO_ABORT     BV04
 
 /*
  * Structure for a command in the command lookup table.
@@ -3458,7 +3504,6 @@ extern const struct lck_app_type lck_app[26];
 
 extern const struct race_type _race_table[MAX_RACE];
 extern struct race_type *race_table[MAX_RACE];
-extern const struct liq_type liq_table[LIQ_MAX];
 extern const char *const attack_table[18];
 
 extern const char **const s_message_table[18];
@@ -3511,6 +3556,8 @@ extern const char *const wind_msg[];
 extern const char *const wear_locs[];
 extern const char *const ex_flags[];
 extern const char *const sec_flags[];
+
+extern const char *const login_msg[];
 
 /*
  * Global variables.
@@ -3611,6 +3658,8 @@ extern CHAR_DATA *saving_char;
 extern OBJ_DATA *all_obj;
 extern SPEC_LIST *first_specfun;
 extern SPEC_LIST *last_specfun;
+extern VAULT_DATA *first_vault;
+extern VAULT_DATA *last_vault;
 
 extern time_t current_time;
 extern bool fLogAll;
@@ -3633,6 +3682,7 @@ DECLARE_DO_FUN( do_aassign );
 DECLARE_DO_FUN( do_add_imm_host );
 DECLARE_DO_FUN( do_adminlist );
 DECLARE_DO_FUN( do_advance );
+DECLARE_DO_FUN( do_aecho );
 DECLARE_DO_FUN( do_affected );
 DECLARE_DO_FUN( do_afk );
 DECLARE_DO_FUN( do_aid );
@@ -3659,6 +3709,7 @@ DECLARE_DO_FUN( do_watch );
 DECLARE_DO_FUN( do_ban );
 DECLARE_DO_FUN( do_bash );
 DECLARE_DO_FUN( do_bashdoor );
+DECLARE_DO_FUN( do_beckon );
 DECLARE_DO_FUN( do_berserk );
 DECLARE_DO_FUN( do_bestow );
 DECLARE_DO_FUN( do_bestowarea );
@@ -3686,13 +3737,16 @@ DECLARE_DO_FUN( do_circle );
 DECLARE_DO_FUN( do_clans );
 DECLARE_DO_FUN( do_clantalk );
 DECLARE_DO_FUN( do_claw );
+DECLARE_DO_FUN( do_cleave );
 DECLARE_DO_FUN( do_climb );
 DECLARE_DO_FUN( do_close );
 DECLARE_DO_FUN( do_cmdtable );
 DECLARE_DO_FUN( do_commands );
 DECLARE_DO_FUN( do_comment );
 DECLARE_DO_FUN( do_compare );
+DECLARE_DO_FUN( do_compass );
 DECLARE_DO_FUN( do_config );
+DECLARE_DO_FUN( do_connect );
 DECLARE_DO_FUN( do_consider );
 DECLARE_DO_FUN( do_cook );
 DECLARE_DO_FUN( do_council_induct );
@@ -3701,8 +3755,11 @@ DECLARE_DO_FUN( do_councils );
 DECLARE_DO_FUN( do_counciltalk );
 DECLARE_DO_FUN( do_credits );
 DECLARE_DO_FUN( do_cset );
+DECLARE_DO_FUN( do_defeats );
 DECLARE_DO_FUN( do_deities );
 DECLARE_DO_FUN( do_delay );
+DECLARE_DO_FUN( do_delet );
+DECLARE_DO_FUN( do_delete );
 DECLARE_DO_FUN( do_deny );
 DECLARE_DO_FUN( do_description );
 DECLARE_DO_FUN( do_destro );
@@ -3731,6 +3788,8 @@ DECLARE_DO_FUN( do_enter );
 DECLARE_DO_FUN( do_equipment );
 DECLARE_DO_FUN( do_examine );
 DECLARE_DO_FUN( do_exits );
+DECLARE_DO_FUN( do_extinguish	);
+DECLARE_DO_FUN( do_favor );
 DECLARE_DO_FUN( do_feed );
 DECLARE_DO_FUN( do_fill );
 DECLARE_DO_FUN( do_findnote );
@@ -3755,6 +3814,7 @@ DECLARE_DO_FUN( do_glance );
 DECLARE_DO_FUN( do_gold );
 DECLARE_DO_FUN( do_goto );
 DECLARE_DO_FUN( do_gouge );
+DECLARE_DO_FUN( do_grapple );
 DECLARE_DO_FUN( do_group );
 DECLARE_DO_FUN( do_gtell );
 DECLARE_DO_FUN( do_guilds );
@@ -3784,12 +3844,14 @@ DECLARE_DO_FUN( do_instazone );
 DECLARE_DO_FUN( do_inventory );
 DECLARE_DO_FUN( do_invis );
 DECLARE_DO_FUN( do_ipcompare );
+DECLARE_DO_FUN( do_journal );
 DECLARE_DO_FUN( do_khistory );
 DECLARE_DO_FUN( do_kick );
 DECLARE_DO_FUN( do_kill );
 DECLARE_DO_FUN( do_languages );
 DECLARE_DO_FUN( do_last );
 DECLARE_DO_FUN( do_laws );
+DECLARE_DO_FUN( do_lead );
 DECLARE_DO_FUN( do_leave );
 DECLARE_DO_FUN( do_level );
 DECLARE_DO_FUN( do_light );
@@ -3800,6 +3862,7 @@ DECLARE_DO_FUN( do_loadup );
 DECLARE_DO_FUN( do_lock );
 DECLARE_DO_FUN( do_log );
 DECLARE_DO_FUN( do_look );
+DECLARE_DO_FUN( do_loop );
 DECLARE_DO_FUN( do_low_purge );
 DECLARE_DO_FUN( do_mailroom );
 DECLARE_DO_FUN( do_make );
@@ -3812,7 +3875,9 @@ DECLARE_DO_FUN( do_makeguild );
 DECLARE_DO_FUN( do_makerepair );
 DECLARE_DO_FUN( do_makeshop );
 DECLARE_DO_FUN( do_makewizlist );
+DECLARE_DO_FUN( do_meditate );
 DECLARE_DO_FUN( do_memory );
+DECLARE_DO_FUN( do_message	);
 DECLARE_DO_FUN( do_mcreate );
 DECLARE_DO_FUN( do_mdelete );
 DECLARE_DO_FUN( do_mfind );
@@ -3820,6 +3885,7 @@ DECLARE_DO_FUN( do_minvoke );
 DECLARE_DO_FUN( do_mistwalk );
 DECLARE_DO_FUN( do_mix );
 DECLARE_DO_FUN( do_mlist );
+DECLARE_DO_FUN( do_mobinvade );
 DECLARE_DO_FUN( do_morphcreate );
 DECLARE_DO_FUN( do_morphdestroy );
 DECLARE_DO_FUN( do_morphlist );
@@ -3839,7 +3905,11 @@ DECLARE_DO_FUN( do_newbiechat );
 DECLARE_DO_FUN( do_newbieset );
 DECLARE_DO_FUN( do_news );
 DECLARE_DO_FUN( do_newzones );
+DECLARE_DO_FUN( do_nobeckon );
+DECLARE_DO_FUN( do_nobio );
+DECLARE_DO_FUN( do_nodesc );
 DECLARE_DO_FUN( do_noemote );
+DECLARE_DO_FUN( do_nohomepage );
 DECLARE_DO_FUN( do_noresolve );
 DECLARE_DO_FUN( do_north );
 DECLARE_DO_FUN( do_northeast );
@@ -3874,6 +3944,7 @@ DECLARE_DO_FUN( do_pick );
 DECLARE_DO_FUN( do_plist );
 DECLARE_DO_FUN( do_poison_weapon );
 DECLARE_DO_FUN( do_pose );
+DECLARE_DO_FUN( do_pounce );
 DECLARE_DO_FUN( do_practice );
 DECLARE_DO_FUN( do_project );
 DECLARE_DO_FUN( do_prompt );
@@ -3922,11 +3993,13 @@ DECLARE_DO_FUN( do_restoretime );
 DECLARE_DO_FUN( do_restrict );
 DECLARE_DO_FUN( do_retell );
 DECLARE_DO_FUN( do_retire );
+DECLARE_DO_FUN( do_retiredtalk );
 DECLARE_DO_FUN( do_retran );
 DECLARE_DO_FUN( do_return );
 DECLARE_DO_FUN( do_revert );
 DECLARE_DO_FUN( do_rip );
 DECLARE_DO_FUN( do_rlist );
+DECLARE_DO_FUN( do_rloop );
 DECLARE_DO_FUN( do_rolldie );
 DECLARE_DO_FUN( do_roster );
 DECLARE_DO_FUN( do_rstat );
@@ -3934,6 +4007,7 @@ DECLARE_DO_FUN( do_sacrifice );
 DECLARE_DO_FUN( do_save );
 DECLARE_DO_FUN( do_savearea );
 DECLARE_DO_FUN( do_say );
+DECLARE_DO_FUN( do_say_to );
 DECLARE_DO_FUN( do_scan );
 DECLARE_DO_FUN( do_scatter );
 DECLARE_DO_FUN( do_score );
@@ -3950,6 +4024,7 @@ DECLARE_DO_FUN( do_setliquid );
 DECLARE_DO_FUN( do_setmixture );
 DECLARE_DO_FUN( do_setmssp );
 DECLARE_DO_FUN( do_setrace );
+DECLARE_DO_FUN( do_setvault );
 DECLARE_DO_FUN( do_setweather );
 DECLARE_DO_FUN( do_shops );
 DECLARE_DO_FUN( do_shopset );
@@ -4006,6 +4081,7 @@ DECLARE_DO_FUN( do_time );
 DECLARE_DO_FUN( do_timecmd );
 DECLARE_DO_FUN( do_title );
 DECLARE_DO_FUN( do_track );
+DECLARE_DO_FUN( do_trance );
 DECLARE_DO_FUN( do_traffic );
 DECLARE_DO_FUN( do_transfer );
 DECLARE_DO_FUN( do_trust );
@@ -4107,6 +4183,7 @@ DECLARE_DO_FUN( do_mpsoundat );
 DECLARE_DO_FUN( do_mpmusic );
 DECLARE_DO_FUN( do_mpmusicaround );
 DECLARE_DO_FUN( do_mpmusicat );
+DECLARE_DO_FUN( do_mpplace );
 
 /*
  * Spell functions.
@@ -4171,6 +4248,7 @@ DECLARE_SPELL_FUN( spell_smaug );
 DECLARE_SPELL_FUN( spell_solar_flight );
 DECLARE_SPELL_FUN( spell_summon );
 DECLARE_SPELL_FUN( spell_teleport );
+DECLARE_SPELL_FUN( spell_group_teleport );
 DECLARE_SPELL_FUN( spell_ventriloquate );
 DECLARE_SPELL_FUN( spell_weaken );
 DECLARE_SPELL_FUN( spell_word_of_recall );
@@ -4184,7 +4262,7 @@ DECLARE_SPELL_FUN( spell_scorching_surge );
 DECLARE_SPELL_FUN( spell_helical_flow );
 DECLARE_SPELL_FUN( spell_transport );
 DECLARE_SPELL_FUN( spell_portal );
-
+DECLARE_SPELL_FUN( spell_close_portal );
 DECLARE_SPELL_FUN( spell_ethereal_fist );
 DECLARE_SPELL_FUN( spell_spectral_furor );
 DECLARE_SPELL_FUN( spell_hand_of_chaos );
@@ -4215,65 +4293,67 @@ DECLARE_SPELL_FUN( spell_sacral_divinity );
  * Most output files (bug, idea, typo, shutdown) are append-only.
  *
  */
-#define PLAYER_DIR	"../player/"   /* Player files         */
-#define BACKUP_DIR	"../backup/"   /* Backup Player files   */
-#define GOD_DIR		"../gods/"  /* God Info Dir         */
-#define BOARD_DIR	      "../boards/"   /* Board data dir    */
-#define CLAN_DIR	      "../clans/" /* Clan data dir     */
-#define COUNCIL_DIR  	"../councils/" /* Council data dir    */
-#define DEITY_DIR	      "../deity/" /* Deity data dir    */
-#define BUILD_DIR       "../building/" /* Online building save dir     */
-#define SYSTEM_DIR	"../system/"   /* Main system files    */
-#define PROG_DIR	      "../mudprogs/" /* MUDProg files     */
-#define CORPSE_DIR	"../corpses/"  /* Corpses        */
-#define CLASS_DIR	      "../classes/"  /* Classes        */
-#define RACE_DIR 	      "../races/" /* Races */
-#define WATCH_DIR	      "../watch/" /* Imm watch files --Gorog      */
+#define PLAYER_DIR  "../player/"   /* Player files         */
+#define BACKUP_DIR  "../backup/"   /* Backup Player files   */
+#define GOD_DIR     "../gods/"     /* God Info Dir         */
+#define BOARD_DIR   "../boards/"   /* Board data dir    */
+#define CLAN_DIR    "../clans/"    /* Clan data dir     */
+#define COUNCIL_DIR "../councils/" /* Council data dir    */
+#define DEITY_DIR   "../deity/"    /* Deity data dir    */
+#define BUILD_DIR   "../building/" /* Online building save dir     */
+#define SYSTEM_DIR  "../system/"   /* Main system files    */
+#define PROG_DIR    "../mudprogs/" /* MUDProg files     */
+#define CORPSE_DIR  "../corpses/"  /* Corpses        */
+#define CLASS_DIR   "../classes/"  /* Classes        */
+#define RACE_DIR    "../races/"    /* Races */
+#define WATCH_DIR   "../watch/"    /* Imm watch files --Gorog      */
+#define VAULT_DIR   "../vault/"    /* storage vaults */ 
 
 /*
  * The watch directory contains a maximum of one file for each immortal
  * that contains output from "player watches". The name of each file
  * in this directory is the name of the immortal who requested the watch
  */
-
-#define AREA_LIST	      "area.lst"  /* List of areas     */
+#define AREA_LIST       "area.lst"  /* List of areas     */
 #define WATCH_LIST      "watch.lst" /* List of watches              */
 #define BAN_LIST        "ban.lst"   /* List of bans                 */
-#define RESERVED_LIST	"reserved.lst" /* List of reserved names  */
-#define CLAN_LIST	      "clan.lst"  /* List of clans     */
-#define COUNCIL_LIST	"council.lst"  /* List of councils     */
+#define RESERVED_LIST   "reserved.lst" /* List of reserved names  */
+#define CLAN_LIST       "clan.lst"  /* List of clans     */
+#define COUNCIL_LIST    "council.lst"  /* List of councils     */
 #define GUILD_LIST      "guild.lst" /* List of guilds               */
-#define GOD_LIST	      "gods.lst"  /* List of gods         */
-#define DEITY_LIST	"deity.lst" /* List of deities      */
-#define CLASS_LIST	"class.lst" /* List of classes      */
-#define RACE_LIST	      "race.lst"  /* List of races     */
+#define GOD_LIST        "gods.lst"  /* List of gods         */
+#define DEITY_LIST      "deity.lst" /* List of deities      */
+#define CLASS_LIST      "class.lst" /* List of classes      */
+#define RACE_LIST       "race.lst"  /* List of races     */
 #define MORPH_FILE      "morph.dat" /* For morph data */
-#define BOARD_FILE	"boards.txt"   /* For bulletin boards   */
-#define SHUTDOWN_FILE	"shutdown.txt" /* For 'shutdown'  */
+#define BOARD_FILE      "boards.txt"   /* For bulletin boards   */
+#define SHUTDOWN_FILE   "shutdown.txt" /* For 'shutdown'  */
 #define IMM_HOST_FILE   SYSTEM_DIR "immortal.host" /* For stoping hackers */
-#define RIPSCREEN_FILE	SYSTEM_DIR "mudrip.rip"
-#define RIPTITLE_FILE	SYSTEM_DIR "mudtitle.rip"
-#define ANSITITLE_FILE	SYSTEM_DIR "mudtitle.ans"
-#define ASCTITLE_FILE	SYSTEM_DIR "mudtitle.asc"
-#define BOOTLOG_FILE	SYSTEM_DIR "boot.txt"   /* Boot up error file  */
-#define PBUG_FILE	      SYSTEM_DIR "pbugs.txt"  /* For 'bug' command   */
-#define IDEA_FILE	      SYSTEM_DIR "ideas.txt"  /* For 'idea'       */
-#define TYPO_FILE	      SYSTEM_DIR "typos.txt"  /* For 'typo'       */
-#define FIXED_FILE	SYSTEM_DIR "fixed.txt"  /* For 'fixed' command */
-#define LOG_FILE	      SYSTEM_DIR "log.txt" /* For talking in logged rooms */
-#define MOBLOG_FILE	SYSTEM_DIR "moblog.txt" /* For mplog messages  */
-#define WIZLIST_FILE	SYSTEM_DIR "WIZLIST" /* Wizlist       */
-#define WHO_FILE	      SYSTEM_DIR "WHO"  /* Who output file  */
-#define WEBWHO_FILE	SYSTEM_DIR "WEBWHO"  /* WWW Who output file */
-#define REQUEST_PIPE	SYSTEM_DIR "REQUESTS"   /* Request FIFO  */
-#define SKILL_FILE	SYSTEM_DIR "skills.dat" /* Skill table   */
-#define LOGIN_MSG	"login.msg" /* List of login msgs      */
-#define HERB_FILE	      SYSTEM_DIR "herbs.dat"  /* Herb table       */
-#define TONGUE_FILE	SYSTEM_DIR "tongues.dat"   /* Tongue tables    */
-#define SOCIAL_FILE	SYSTEM_DIR "socials.dat"   /* Socials       */
-#define COMMAND_FILE	SYSTEM_DIR "commands.dat"  /* Commands      */
-#define PROJECTS_FILE	SYSTEM_DIR "projects.txt"  /* For projects  */
-#define PLANE_FILE	SYSTEM_DIR "planes.dat" /* For planes       */
+#define RIPSCREEN_FILE  SYSTEM_DIR "mudrip.rip"
+#define RIPTITLE_FILE   SYSTEM_DIR "mudtitle.rip"
+#define ANSITITLE_FILE  SYSTEM_DIR "mudtitle.ans"
+#define ASCTITLE_FILE   SYSTEM_DIR "mudtitle.asc"
+#define BOOTLOG_FILE    SYSTEM_DIR "boot.txt"     /* Boot up error file  */
+#define PBUG_FILE       SYSTEM_DIR "pbugs.txt"    /* For 'bug' command   */
+#define IDEA_FILE       SYSTEM_DIR "ideas.txt"    /* For 'idea'       */
+#define TYPO_FILE       SYSTEM_DIR "typos.txt"    /* For 'typo'       */
+#define FIXED_FILE      SYSTEM_DIR "fixed.txt"    /* For 'fixed' command */
+#define LOG_FILE        SYSTEM_DIR "log.txt"      /* For talking in logged rooms */
+#define MOBLOG_FILE     SYSTEM_DIR "moblog.txt"   /* For mplog messages  */
+#define WIZLIST_FILE    SYSTEM_DIR "WIZLIST"      /* Wizlist       */
+#define WHO_FILE        SYSTEM_DIR "WHO"          /* Who output file  */
+#define WEBWHO_FILE     SYSTEM_DIR "WEBWHO"       /* WWW Who output file */
+#define REQUEST_PIPE    SYSTEM_DIR "REQUESTS"     /* Request FIFO  */
+#define SKILL_FILE      SYSTEM_DIR "skills.dat"   /* Skill table   */
+#define LOGIN_MSG       "login.msg"               /* List of login msgs      */
+#define HERB_FILE       SYSTEM_DIR "herbs.dat"    /* Herb table       */
+#define TONGUE_FILE     SYSTEM_DIR "tongues.dat"  /* Tongue tables    */
+#define SOCIAL_FILE     SYSTEM_DIR "socials.dat"  /* Socials       */
+#define COMMAND_FILE    SYSTEM_DIR "commands.dat" /* Commands      */
+#define PROJECTS_FILE   SYSTEM_DIR "projects.txt" /* For projects  */
+#define PLANE_FILE      SYSTEM_DIR "planes.dat"   /* For planes       */
+#define VAULT_LIST      "vault.lst"               /* list of storage vaults */
+#define TEMP_FILE       PLAYER_DIR "charsave.tmp" /* More char save protect */
 
 /*
  * Our function prototypes.
@@ -4417,6 +4497,10 @@ void save_clan( CLAN_DATA * clan );
 CO *get_council( const char *name );
 void load_councils( void );
 void save_council( COUNCIL_DATA * council );
+void save_vault_list( void );
+void load_vaults( void );
+void sort_vaults( VAULT_DATA *vault );
+void save_storeroom( CHAR_DATA *ch, int vnum );
 
 /* deity.c */
 DE *get_deity( const char *name );
@@ -4446,8 +4530,10 @@ RD *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1, int arg
 void reset_area( AREA_DATA * pArea );
 
 /* db.c */
-void add_loginmsg( char *name, short type, char *argument );
+void add_loginmsg( const char *name, short type, const char *argument );
+void check_loginmsg( CHAR_DATA * ch );
 void show_file( CHAR_DATA * ch, const char *filename );
+void show_file_vnum( CHAR_DATA *ch, const char *filename, int lo, int hi );
 char *str_dup( char const *str );
 void boot_db( bool fCopyOver );
 void area_update( void );
@@ -4558,6 +4644,7 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer );
 void make_blood args( ( CHAR_DATA * ch ) );
 void make_bloodstain args( ( CHAR_DATA * ch ) );
 void make_scraps args( ( OBJ_DATA * obj ) );
+void make_puddle args( ( CHAR_DATA * ch, OBJ_DATA * cont ) );
 void make_fire args( ( ROOM_INDEX_DATA * in_room, short timer ) );
 OD *make_trap args( ( int v0, int v1, int v2, int v3 ) );
 OD *create_money args( ( int amount ) );
@@ -4571,10 +4658,12 @@ EXT_BV multimeb( int bit, ... );
 const char *mprog_type_to_name( int type );
 
 /* mud_prog.c */
-bool mprog_wordlist_check( const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * object, const void *vo, int type );
-void mprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * object, void *vo, int type );
-void mprog_act_trigger( const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj, const void *vo );
+bool mprog_wordlist_check( const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * object, CHAR_DATA * victim, OBJ_DATA * target, int type );
+void mprog_percent_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * object, CHAR_DATA * victim, OBJ_DATA * target, int type );
+void mprog_act_trigger( const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target );
 void mprog_bribe_trigger( CHAR_DATA * mob, CHAR_DATA * ch, int amount );
+void mprog_login_trigger( CHAR_DATA * mob );
+void mprog_void_trigger( CHAR_DATA * mob );
 void mprog_entry_trigger( CHAR_DATA * mob );
 void mprog_give_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj );
 void mprog_greet_trigger( CHAR_DATA * mob );
@@ -4828,6 +4917,7 @@ ch_ret chain_spells( int sn, int level, CHAR_DATA * ch, void *vo, short chain );
 /* object saving defines for fread/write_obj. -- Altrag */
 #define OS_CARRY	0
 #define OS_CORPSE	1
+#define OS_VAULT 2
 void save_char_obj args( ( CHAR_DATA * ch ) );
 bool load_char_obj args( ( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover ) );
 void set_alarm args( ( long seconds ) );
@@ -4972,7 +5062,8 @@ typedef enum
    TIME_PROG, WEAR_PROG, REMOVE_PROG, SAC_PROG, LOOK_PROG, EXA_PROG, ZAP_PROG,
    GET_PROG, DROP_PROG, DAMAGE_PROG, REPAIR_PROG, RANDIW_PROG, SPEECHIW_PROG,
    PULL_PROG, PUSH_PROG, SLEEP_PROG, REST_PROG, LEAVE_PROG, SCRIPT_PROG,
-   USE_PROG, SELL_PROG, TELL_PROG, CMD_PROG
+   USE_PROG, SELL_PROG, TELL_PROG, CMD_PROG, LOGIN_PROG, VOID_PROG, GREET_IN_FIGHT_PROG,
+   IMMINFO_PROG, LOAD_PROG
 } prog_types;
 
 /*
@@ -4994,19 +5085,15 @@ void rprog_speech_trigger( const char *txt, CHAR_DATA * ch );
 void rprog_random_trigger( CHAR_DATA * ch );
 void rprog_time_trigger( CHAR_DATA * ch );
 void rprog_hour_trigger( CHAR_DATA * ch );
+void rprog_login_trigger( CHAR_DATA *ch );
+void rprog_void_trigger( CHAR_DATA *ch );
+void rprog_imminfo_trigger( CHAR_DATA *ch );
 char *rprog_type_to_name( int type );
+void oprog_act_trigger( const char *buf, OBJ_DATA * mobj, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target );
+void rprog_act_trigger( const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target );
 
-#define OPROG_ACT_TRIGGER
-#ifdef OPROG_ACT_TRIGGER
-void oprog_act_trigger( const char *buf, OBJ_DATA * mobj, CHAR_DATA * ch, OBJ_DATA * obj, const void *vo );
-#endif
-#define RPROG_ACT_TRIGGER
-#ifdef RPROG_ACT_TRIGGER
-void rprog_act_trigger( const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, OBJ_DATA * obj, const void *vo );
-#endif
-
-#define GET_ADEPT(ch,sn)    (  skill_table[(sn)]->skill_adept[(ch)->Class])
-#define LEARNED(ch,sn)	    (IS_NPC(ch) ? 80 : URANGE(0, ch->pcdata->learned[sn], 101))
+#define GET_ADEPT(ch,sn)    ( IS_IMMORTAL(ch) ? 100 : skill_table[(sn)]->skill_adept[(ch)->Class] )
+#define LEARNED(ch,sn)	    (IS_NPC(ch) ? 80 : URANGE(0, (ch)->pcdata->learned[(sn)], 101))
 
 /* List handling v2.0, expanded a bit - Luc 06/2007
    Whoa! Eight years since I wrote v1.0...  :( */

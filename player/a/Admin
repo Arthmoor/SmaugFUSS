@@ -7,10 +7,10 @@ Race         1
 Age          0 23 9 605
 Languages    -1 1
 Level        65
-Played       68995
+Played       75025
 Room         1200
-HpManaMove   24 24 145 145 110 110
-Gold         10000
+HpManaMove   49 24 145 145 110 110
+Gold         15420
 Exp          2000
 Height          24
 Weight          42
@@ -21,7 +21,7 @@ Style     2
 Practice     4
 SavingThrows 0 0 0 0 0
 Alignment    0
-Favor	       0
+Favor        0
 Glory        0
 MGlory       0
 Hitroll      0
@@ -34,13 +34,14 @@ WizInvis     65
 Flags        33280
 PKills       0
 PDeaths      0
-MKills       0
+MKills       19
 MDeaths      0
 IllegalPK    0
+Timezone     0
 AttrPerm     10 14 16 16 11 16 12
 AttrMod      0 0 0 0 0 0 0
-Condition    0 48 40 10
-Site         66.218.49.118
+Condition    0 48 40 75
+Site         127.0.0.1
 Spell        100 'acetum primus'
 Spell        100 'acid blast'
 Spell        100 'acid breath'
@@ -310,16 +311,26 @@ Spell        100 'weaken'
 Spell        100 'winter mist'
 Spell        100 'word of recall'
 Spell        100 'Wrath of Dominus'
-MaxColors    111
-Colors       0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 7 7 14 14 14 15 15 11 11 9 46 40 12 7 7 10 6 11 9 10 1 15 11 15 11 10 13 12 10 11 12 10 3 12 9 15 11 15 14 2 5 15 9 7 2 9 12 10 2 10 15 7 7 15 12 12 12 10 14 14 14 10 10 10 13 2 10 14 10 10 2 6 1 9 2 10 7 10 15 
+Killed       10409 1
+Killed       21045 8
+Killed       10415 10
+MaxColors    115
+Colors       0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 7 7 14 14 14 15 15 11 11 9 46 40 12 7 7 10 6 11 9 10 1 15 11 15 11 10 13 12 10 11 12 10 3 12 9 15 11 15 14 2 5 15 9 7 2 9 12 10 2 10 15 7 7 15 12 12 12 10 14 14 14 10 10 10 13 2 10 14 10 10 2 6 1 9 2 10 7 10 15 10 10 10 10 
 IMCPerm      5
 IMCFlags     256
 End
 
 #OBJECT
 Vnum         10333
-WearLoc      17
 Values       5 5 0 0 0 0
+End
+
+#OBJECT
+Vnum         24823
+WearLoc      17
+Level        65
+Values       60 3 3 102 0 0
+Spell 3      'energy drain'
 End
 
 #END

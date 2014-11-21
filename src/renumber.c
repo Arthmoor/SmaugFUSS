@@ -74,12 +74,15 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
     * first, area 
     */
    argument = one_argument( argument, arg1 );
+
    if( arg1[0] == '\0' )
    {
       ch_printf( ch, "What area do you want to renumber?\r\n" );
       return;
    }
+
    area = find_area( arg1, &is_proto );
+
    if( area == NULL )
    {
       ch_printf( ch, "No such area '%s'.\r\n", arg1 );
@@ -95,11 +98,13 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
       ch_printf( ch, "What will be the new vnum base for this area?\r\n" );
       return;
    }
+
    if( !is_number( arg1 ) )
    {
       ch_printf( ch, "Sorry, '%s' is not a valid vnum base number!\r\n", arg1 );
       return;
    }
+
    new_base = atoi( arg1 );
 
    /*
@@ -107,9 +112,11 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
     */
    fill_gaps = FALSE;
    verbose = FALSE;
+
    for( ;; )
    {
       argument = one_argument( argument, arg1 );
+
       if( arg1[0] == '\0' )
          break;
       else if( !str_prefix( arg1, "fillgaps" ) )
@@ -141,11 +148,13 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
       ch_printf( ch, "Yeah, right.\r\n" );
       return;
    }
+
    if( ch->level < LEVEL_SAVIOR )
    {
       ch_printf( ch, "You don't have enough privileges.\r\n" );
       return;
    }
+
    if( ch->level == LEVEL_SAVIOR )
    {
       if( area->low_r_vnum < ch->pcdata->r_range_lo || area->hi_r_vnum > ch->pcdata->r_range_hi ||
@@ -171,6 +180,7 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
           r_area->low_obj < ch->pcdata->o_range_lo || r_area->hi_obj > ch->pcdata->o_range_hi ||
           r_area->low_mob < ch->pcdata->m_range_lo || r_area->hi_mob > ch->pcdata->m_range_hi )
       {
+         DISPOSE( r_area );
          ch_printf( ch, "The renumbered area would be outside your assigned vnum range.\r\n" );
          return;
       }
@@ -181,17 +191,23 @@ void do_renumber( CHAR_DATA* ch, const char* argument)
           r_area->low_obj < area->low_o_vnum || r_area->hi_obj > area->hi_o_vnum ||
           r_area->low_mob < area->low_m_vnum || r_area->hi_mob > area->hi_m_vnum )
       {
-         ch_printf( ch,
-                    "Moving a proto area out of its range would create problems.\r\nWait till the area is finished to move it.\r\n" );
+         DISPOSE( r_area );
+         ch_printf( ch, "Moving a proto area out of its range would create problems.\r\nWait till the area is finished to move it.\r\n" );
          return;
       }
    }
 
    /*
-    * no overwriting of dest vnums 
+    * no overwriting of dest vnums
+    *
+    * Bugfix - Memory leak if r_area was valid.
     */
    if( check_vnums( ch, area, r_area ) )
+   {
+      if( r_area )
+         DISPOSE( r_area );
       return;
+   }
 
    /*
     * another sanity check :) 
@@ -229,6 +245,12 @@ bool check_vnums( CHAR_DATA * ch, AREA_DATA * tarea, RENUMBER_AREA * r_area )
    int high, low;
    AREA_DATA *area;
    bool proto;
+
+   if( !r_area )
+   {
+      bug( "%s: NULL r_area!", __func__ );
+      return TRUE;
+   }
 
    /*
     * this function assumes all the lows are allways gonna be

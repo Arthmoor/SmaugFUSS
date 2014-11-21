@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -88,7 +88,7 @@ void save_deity( DEITY_DATA * deity )
 
    if( !deity )
    {
-      bug( "%s: null deity pointer!", __FUNCTION__ );
+      bug( "%s: null deity pointer!", __func__ );
       return;
    }
 
@@ -433,7 +433,13 @@ void do_setdeity( CHAR_DATA* ch, const char* argument)
          {
             if( vch->pcdata->deity == deity )
             {
-               ch_printf( ch, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name );
+               char buf[MAX_STRING_LENGTH];
+
+               snprintf( buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name );
+               if( !vch->desc )
+                  add_loginmsg( vch->name, 18, buf );
+               else
+                  send_to_char_color( buf, vch );
 
                xREMOVE_BITS( vch->affected_by, vch->pcdata->deity->affected );
                REMOVE_BIT( vch->resistant, vch->pcdata->deity->element );
@@ -1160,11 +1166,12 @@ void do_supplicate( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   if( !str_cmp( arg, "corpse" ) && !IS_PKILL( ch ) )
+   if( !str_cmp( arg, "corpse" ) )
    {
       char buf2[MAX_STRING_LENGTH];
       OBJ_DATA *obj;
       bool found;
+      bool retr = FALSE;
 
       if( ch->pcdata->favor < ch->pcdata->deity->scorpse )
       {
@@ -1185,16 +1192,27 @@ void do_supplicate( CHAR_DATA* ch, const char* argument)
          if( obj->in_room && !str_cmp( buf2, obj->short_descr ) && ( obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC ) )
          {
             found = TRUE;
+
+            if( IS_PKILL( ch ) && obj->timer > 19 )
+            {
+               if( retr )
+                  ch->pcdata->favor -= ch->pcdata->deity->scorpse;
+               send_to_char( "So soon?  Have patience...\n\r", ch );
+               return;
+            }
+
             if( xIS_SET( obj->in_room->room_flags, ROOM_NOSUPPLICATE ) )
             {
                act( AT_MAGIC, "The image of your corpse appears, but suddenly wavers away.", ch, NULL, NULL, TO_CHAR );
                return;
             }
+
             act( AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, NULL, NULL, TO_CHAR );
             act( AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, NULL, NULL, TO_ROOM );
             obj_from_room( obj );
             obj = obj_to_room( obj, ch->in_room );
             xREMOVE_BIT( obj->extra_flags, ITEM_BURIED );
+            retr = TRUE;
          }
       }
 

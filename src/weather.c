@@ -30,7 +30,6 @@
 #include <stdio.h>
 #include "mud.h"
 
-
 const char *const hemisphere_name[] = {
    "northern", "southern"
 };
@@ -205,8 +204,6 @@ void ApplyDeltaChanges( void )
                   WeatherMessage( "&BThe rain continues to pound the earth in a downpour.&D\r\n&YThunder and lightning boom and cackle and light up the sky.&D\r\n", x, y );
                else
                   WeatherMessage( "&BThe rain continues to pound the earth in a downpour.&D\r\n", x, y );
-
-
          }
          else if( isRainingCatsAndDogs( getPrecip( cell ) ) )
          {
@@ -786,9 +783,6 @@ void CalculateCellToCellChanges( void )
       break;
    }
 
-
-
-
    /*
    *  Iterate over every cell and set up the changes
    *  that will occur in that cell and it's neighbors
@@ -798,7 +792,6 @@ void CalculateCellToCellChanges( void )
    {
       for( x = 0; x < WEATHER_SIZE_X; x++ )
       {
-
          struct	WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
          struct	WeatherCell *delta = &weatherDelta[x][y]; //  Where we accumulate the changes to apply
 
@@ -834,7 +827,6 @@ void CalculateCellToCellChanges( void )
             delta->cloudcover	+= number_range( -2, 2 );
          else if( ( humidityAndPrecip / 2 ) <= 40 )
             delta->cloudcover	+= ( cell->humidity / 5 );
-
 
          int totalPressure = cell->pressure;
          int numPressureCells = 1;
@@ -873,7 +865,6 @@ void CalculateCellToCellChanges( void )
                *  wind increase towards them!
                *  So if they are west neighbor (dx < 0)
                */
-
                int	pressureDelta = cell->pressure - neighborCell->pressure;
                int windSpeedDelta = pressureDelta / 4;
 
@@ -891,7 +882,6 @@ void CalculateCellToCellChanges( void )
 
                int humidityDelta = cell->humidity - neighborCell->humidity;
                humidityDelta /= 16;
-
 
                if(   ( cell->windSpeedX < 0 && dx < 0 )
                   || ( cell->windSpeedX > 0 && dx > 0 )
@@ -1226,7 +1216,6 @@ void EnforceClimateConditions( void )
    }
 }
 
-
 void UpdateWeather( void )
 {
    ClearWeatherDeltas(  );
@@ -1253,7 +1242,6 @@ void RandomizeCells( void )
    {
       for( x = 0; x < WEATHER_SIZE_X; x++ )
       {
-
          struct	WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
 
          if( cell->hemisphere == HEMISPHERE_NORTH )
@@ -2270,7 +2258,7 @@ void save_weathermap( void )
    snprintf( filename, MIL, "%s%s", SYSTEM_DIR, WEATHER_FILE );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( filename );
       return;
    }
@@ -2392,12 +2380,11 @@ void fread_cell( FILE * fp, int x, int y )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
 }
-
 
 bool load_weathermap( void )
 {
@@ -2426,7 +2413,7 @@ bool load_weathermap( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return FALSE;
       }
 
@@ -2447,7 +2434,7 @@ bool load_weathermap( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          continue;
       }
    }
@@ -2544,8 +2531,6 @@ void DecreaseWindY( struct WeatherCell *cell, int change )
 {
    cell->windSpeedY -= change;
 }
-
-
 
 /* Cloud cover Information */
 int getCloudCover( struct WeatherCell *cell )
@@ -3059,7 +3044,6 @@ bool isGaleForceWindS( int windy )
    else
       return FALSE;
 } 
-
 
 void do_setweather( CHAR_DATA* ch, const char* argument)
 {

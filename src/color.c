@@ -9,13 +9,12 @@
  * Levi Beckerson (Whir), Michael Ward (Tarl), Erik Wolfe (Dwip),           *
  * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine, and Adjani.    *
  * All Rights Reserved.                                                     *
- * Registered with the United States Copyright Office. TX 5-877-286         *
  *                                                                          *
  * External contributions from Xorith, Quixadhal, Zarius, and many others.  *
  *                                                                          *
- * Original SMAUG 1.4a written by Thoric (Derek Snider) with Altrag,        *
+ * Original SMAUG 1.8b written by Thoric (Derek Snider) with Altrag,        *
  * Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,        *
- * Grishnakh, Fireblade, and Nivek.                                         *
+ * Grishnakh, Fireblade, Edmond, Conran, and Nivek.                         *
  *                                                                          *
  * Original MERC 2.1 code by Hatchet, Furey, and Kahn.                      *
  *                                                                          *
@@ -94,7 +93,8 @@ const char *const pc_displays[MAX_COLORS] = {
    "intermud", "helpfiles", "who5", "score5",
    "who6", "who7", "prac", "prac2",
    "prac3", "prac4", "mxpprompt", "guildtalk",
-   "board", "board2", "board3"
+   "board", "board2", "board3", "avtalk",
+   "music", "quest", "ask"
 };
 
 /* All defaults are set to Alsherok default scheme, if you don't 
@@ -127,7 +127,8 @@ const short default_set[MAX_COLORS] = {
    AT_GREEN, AT_PINK, AT_DGREEN, AT_CYAN, /* 98 */
    AT_RED, AT_WHITE, AT_BLUE, AT_DGREEN,  /* 102 */
    AT_CYAN, AT_BLOOD, AT_RED, AT_DGREEN,  /* 106 */
-   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE  /* 110 */
+   AT_GREEN, AT_GREY, AT_GREEN, AT_WHITE, /* 110 */
+   AT_GREEN, AT_GREEN, AT_GREEN, AT_GREEN /* 114 */
 };
 
 const char *const valid_color[] = {
@@ -278,7 +279,7 @@ void reset_colors( CHAR_DATA * ch )
       return;
    }
    else
-      log_printf( "%s: Attempting to reset NPC colors: %s", __FUNCTION__, ch->short_descr );
+      log_printf( "%s: Attempting to reset NPC colors: %s", __func__, ch->short_descr );
 }
 
 void do_color( CHAR_DATA* ch, const char* argument)
@@ -1431,7 +1432,7 @@ void set_char_color( short AType, CHAR_DATA * ch )
    write_to_buffer( ch->desc, color_str( AType, ch ), 0 );
    if( !ch->desc )
    {
-      bug( "set_char_color: NULL descriptor after WTB! CH: %s", ch->name ? ch->name : "Unknown?!?" );
+      bug( "%s: NULL descriptor after WTB! CH: %s", __func__, ch->name ? ch->name : "Unknown?!?" );
       return;
    }
    ch->desc->pagecolor = ch->colors[AType];
@@ -1467,16 +1468,20 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length )
    pageroffset = d->pagepoint - d->pagebuf;  /* pager fix (goofup fixed 08/21/97) */
    while( d->pagetop + length >= d->pagesize )
    {
-      if( d->pagesize > MAX_STRING_LENGTH * 16 )
+      if( d->pagesize > MAX_STRING_LENGTH * 24 )
       {
-         bug( "%s", "Pager overflow.  Ignoring.\r\n" );
          d->pagetop = 0;
          d->pagepoint = NULL;
          DISPOSE( d->pagebuf );
          d->pagesize = MAX_STRING_LENGTH;
+         // Move bug call here to avoid infinite loops.  Compliments of Daltorak -- Alty
+         bug( "Pager overflow (%s).  Ignoring.", d->character ? d->character->name : "???" );
          return;
       }
-      d->pagesize *= 2;
+      if( d->pagesize < 8 * MAX_STRING_LENGTH )
+         d->pagesize *= 2;
+      else
+         d->pagesize = 24 * MAX_STRING_LENGTH;
       RECREATE( d->pagebuf, char, d->pagesize );
    }
    d->pagepoint = d->pagebuf + pageroffset;  /* pager fix (goofup fixed 08/21/97) */
@@ -1496,7 +1501,7 @@ void set_pager_color( short AType, CHAR_DATA * ch )
    write_to_pager( ch->desc, color_str( AType, ch ), 0 );
    if( !ch->desc )
    {
-      bug( "%s: NULL descriptor after WTP! CH: %s", __FUNCTION__, ch->name ? ch->name : "Unknown?!?" );
+      bug( "%s: NULL descriptor after WTP! CH: %s", __func__, ch->name ? ch->name : "Unknown?!?" );
       return;
    }
    ch->desc->pagecolor = ch->colors[AType];
@@ -1507,7 +1512,7 @@ void send_to_desc_color( const char *txt, DESCRIPTOR_DATA * d )
 {
    if( !d )
    {
-      bug( "%s: NULL *d", __FUNCTION__ );
+      bug( "%s: NULL *d", __func__ );
       return;
    }
 
@@ -1524,7 +1529,7 @@ void send_to_char( const char *txt, CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s: NULL ch!", __FUNCTION__ );
+      bug( "%s: NULL ch!", __func__ );
       return;
    }
 
@@ -1536,7 +1541,7 @@ void send_to_pager( const char *txt, CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s: NULL ch!", __FUNCTION__ );
+      bug( "%s: NULL ch!", __func__ );
       return;
    }
 

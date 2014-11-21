@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -82,7 +82,7 @@ void load_specfuns( void )
    snprintf( filename, 256, "%sspecfuns.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "%s: FATAL - cannot load specfuns.dat, exiting.", __FUNCTION__ );
+      bug( "%s: FATAL - cannot load specfuns.dat, exiting.", __func__ );
       perror( filename );
       exit( 1 );
    }
@@ -92,7 +92,7 @@ void load_specfuns( void )
       {
          if( feof( fp ) )
          {
-            bug( "%s: Premature end of file!", __FUNCTION__ );
+            bug( "%s: Premature end of file!", __func__ );
             fclose( fp );
             fp = NULL;
             return;
@@ -251,28 +251,20 @@ bool spec_breath_any( CHAR_DATA * ch )
    return FALSE;
 }
 
-
-
 bool spec_breath_acid( CHAR_DATA * ch )
 {
    return dragon( ch, "acid breath" );
 }
-
-
 
 bool spec_breath_fire( CHAR_DATA * ch )
 {
    return dragon( ch, "fire breath" );
 }
 
-
-
 bool spec_breath_frost( CHAR_DATA * ch )
 {
    return dragon( ch, "frost breath" );
 }
-
-
 
 bool spec_breath_gas( CHAR_DATA * ch )
 {
@@ -289,14 +281,10 @@ bool spec_breath_gas( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_breath_lightning( CHAR_DATA * ch )
 {
    return dragon( ch, "lightning breath" );
 }
-
-
 
 bool spec_cast_adept( CHAR_DATA * ch )
 {
@@ -359,11 +347,8 @@ bool spec_cast_adept( CHAR_DATA * ch )
          return TRUE;
 
    }
-
    return FALSE;
 }
-
-
 
 bool spec_cast_cleric( CHAR_DATA * ch )
 {
@@ -449,8 +434,6 @@ bool spec_cast_cleric( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_cast_mage( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
@@ -534,8 +517,6 @@ bool spec_cast_mage( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_cast_undead( CHAR_DATA * ch )
 {
    CHAR_DATA *victim;
@@ -610,8 +591,6 @@ bool spec_cast_undead( CHAR_DATA * ch )
    return TRUE;
 }
 
-
-
 bool spec_executioner( CHAR_DATA * ch )
 {
    char buf[MAX_STRING_LENGTH];
@@ -652,7 +631,7 @@ bool spec_executioner( CHAR_DATA * ch )
    }
 
    snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!  MORE BLOOOOD!!!", victim->name, crime );
-   do_shout( ch, buf );
+   do_yell( ch, buf );
    multi_hit( ch, victim, TYPE_UNDEFINED );
    if( char_died( ch ) )
       return TRUE;
@@ -673,8 +652,6 @@ bool spec_executioner( CHAR_DATA * ch )
    char_to_room( create_mobile( cityguard ), ch->in_room );
    return TRUE;
 }
-
-
 
 bool spec_fido( CHAR_DATA * ch )
 {
@@ -705,8 +682,6 @@ bool spec_fido( CHAR_DATA * ch )
 
    return FALSE;
 }
-
-
 
 bool spec_guard( CHAR_DATA * ch )
 {
@@ -757,7 +732,7 @@ bool spec_guard( CHAR_DATA * ch )
    if( victim )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!!  BANZAI!!", victim->name, crime );
-      do_shout( ch, buf );
+      do_yell( ch, buf );
       multi_hit( ch, victim, TYPE_UNDEFINED );
       return TRUE;
    }
@@ -893,8 +868,6 @@ bool spec_mayor( CHAR_DATA * ch )
    pos++;
    return FALSE;
 }
-
-
 
 bool spec_poison( CHAR_DATA * ch )
 {

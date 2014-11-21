@@ -159,4 +159,3 @@ bool isBlusteryWindS( int windy );
 bool isWindyWindS( int windy );
 bool isGustyWindS( int windy );
 bool isGaleForceWindS( int windy );
-

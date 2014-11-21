@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -49,7 +49,7 @@ void load_banlist( void )
 
    if( !( fp = fopen( SYSTEM_DIR BAN_LIST, "r" ) ) )
    {
-      bug( "%s: Cannot open %s", __FUNCTION__, BAN_LIST );
+      bug( "%s: Cannot open %s", __func__, BAN_LIST );
       perror( BAN_LIST );
       return;
    }
@@ -631,7 +631,7 @@ void do_warn( CHAR_DATA* ch, const char* argument)
    char arg2[MAX_STRING_LENGTH];
    char *name;
    int count = -1, type;
-   BAN_DATA *pban, *start, *end;
+   BAN_DATA *pban;
 
    /*
     * Don't want mobs or link-deads doing this.
@@ -685,22 +685,16 @@ void do_warn( CHAR_DATA* ch, const char* argument)
    if( type == BAN_CLASS )
    {
       pban = first_ban_class;
-      start = first_ban_class;
-      end = last_ban_class;
       arg2[0] = toupper( arg2[0] );
    }
    else if( type == BAN_RACE )
    {
       pban = first_ban_race;
-      start = first_ban_race;
-      end = last_ban_race;
       arg2[0] = toupper( arg2[0] );
    }
    else if( type == BAN_SITE )
    {
       pban = first_ban;
-      start = first_ban;
-      end = last_ban;
    }
    else
       goto syntax_message;
@@ -1338,7 +1332,7 @@ void dispose_ban( BAN_DATA * pban, int type )
 
    if( type != BAN_SITE && type != BAN_CLASS && type != BAN_RACE )
    {
-      bug( "%s: Unknown Ban Type %d.", __FUNCTION__, type );
+      bug( "%s: Unknown Ban Type %d.", __func__, type );
       return;
    }
 

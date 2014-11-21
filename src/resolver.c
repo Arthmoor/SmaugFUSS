@@ -8,16 +8,16 @@
  * AFKMud Copyright 1997-2002 Alsherok. Contributors: Samson, Dwip, Whir,   *
  * Cyberfox, Karangi, Rathian, Cam, Raine, and Tarl.                        *
  *                                                                          *
- * Original SMAUG 1.4a written by Thoric (Derek Snider) with Altrag,        *
+ * Original SMAUG 1.8b written by Thoric (Derek Snider) with Altrag,        *
  * Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,        *
- * Grishnakh, Fireblade, and Nivek.                                         *
+ * Grishnakh, Fireblade, Edmond, Conran, and Nivek.                         *
  *                                                                          *
  * Original MERC 2.1 code by Hatchet, Furey, and Kahn.                      *
  *                                                                          *
  * Original DikuMUD code by: Hans Staerfeldt, Katja Nyboe, Tom Madsen,      *
  * Michael Seifert, and Sebastian Hammer.                                   *
  ****************************************************************************
- *			 External DNS Resolver Module			                *
+ *			 External DNS Resolver Module                                      *
  ****************************************************************************/
 
 /***************************************************************************

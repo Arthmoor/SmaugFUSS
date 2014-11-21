@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -1194,7 +1194,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dn = d->next;
          if( d == dclose )
          {
-            bug( "Close_socket: %s desc:%p found, prev should be:%p, fixing.", ch ? ch->name : d->host, ( void * )dclose,
+            bug( "%s: %s desc:%p found, prev should be:%p, fixing.", __func__, ch ? ch->name : d->host, ( void * )dclose,
                  ( void * )dp );
             dclose->prev = dp;
             break;
@@ -1203,7 +1203,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->prev )
       {
-         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
+         bug( "%s: %s desc:%p could not be found!.", __func__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
@@ -1211,7 +1211,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    if( !dclose->next && dclose != last_descriptor )
    {
       DESCRIPTOR_DATA *dp, *dn;
-      bug( "Close_socket: %s desc:%p != last_desc:%p and desc->next = NULL!",
+      bug( "%s: %s desc:%p != last_desc:%p and desc->next = NULL!", __func__,
            ch ? ch->name : d->host, ( void * )dclose, ( void * )last_descriptor );
       dn = NULL;
       for( d = last_descriptor; d; d = dp )
@@ -1219,7 +1219,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dp = d->prev;
          if( d == dclose )
          {
-            bug( "%s: %s desc:%p found, next should be:%p, fixing.", __FUNCTION__, ch ? ch->name : d->host, ( void * )dclose,
+            bug( "%s: %s desc:%p found, next should be:%p, fixing.", __func__, ch ? ch->name : d->host, ( void * )dclose,
                  ( void * )dn );
             dclose->next = dn;
             break;
@@ -1228,14 +1228,14 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       }
       if( !dclose->next )
       {
-         bug( "%s: %s desc:%p could not be found!.", __FUNCTION__, ch ? ch->name : dclose->host, ( void * )dclose );
+         bug( "%s: %s desc:%p could not be found!.", __func__, ch ? ch->name : dclose->host, ( void * )dclose );
          DoNotUnlink = TRUE;
       }
    }
 
    if( dclose->character )
    {
-      log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "Closing link to %s.", ch->pcdata->filename );
+      log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "Closing link to %s. (INRoom %d)", ch->pcdata->filename, ( ch->in_room ? ch->in_room->vnum : -1 ) );
 
       if( dclose->connected == CON_EDITING )
       {
@@ -1246,7 +1246,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          dclose->connected = CON_PLAYING;
       }
 
-      if( dclose->connected == CON_PLAYING || dclose->connected == CON_EDITING )
+      if( dclose->connected == CON_PLAYING || dclose->connected == CON_EDITING || dclose->connected == CON_DELETE )
       {
          act( AT_ACTION, "$n has lost $s link.", ch, NULL, NULL, TO_CANSEE );
          ch->desc = NULL;
@@ -1281,7 +1281,6 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    return;
 }
 
-
 bool read_from_descriptor( DESCRIPTOR_DATA * d )
 {
    unsigned int iStart;
@@ -1300,9 +1299,7 @@ bool read_from_descriptor( DESCRIPTOR_DATA * d )
    if( iStart >= sizeof( d->inbuf ) - 10 )
    {
       log_printf( "%s input overflow!", d->host );
-      write_to_descriptor( d,
-                           "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n",
-                           0 );
+      write_to_descriptor( d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0 );
       return FALSE;
    }
 
@@ -1356,7 +1353,7 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
    /*
     * Look for at least one new line.
     */
-   for( i = 0; d->inbuf[i] != '\n' && d->inbuf[i] != '\r' && i < MAX_INBUF_SIZE; i++ )
+   for( i = 0; i < MAX_INBUF_SIZE && d->inbuf[i] != '\n' && d->inbuf[i] != '\r'; i++ )
    {
       if( d->inbuf[i] == '\0' )
          return;
@@ -1431,9 +1428,7 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
          {
 /*		log_printf( "%s input spamming!", d->host );
 */
-            write_to_descriptor( d,
-                                 "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n",
-                                 0 );
+            write_to_descriptor( d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0 );
             mudstrlcpy( d->incomm, "quit", MAX_INPUT_LENGTH );
          }
       }
@@ -1472,6 +1467,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
       memcpy( buf, d->outbuf, 512 );
       d->outtop -= 512;
       memmove( d->outbuf, d->outbuf + 512, d->outtop );
+
       if( d->snoop_by )
       {
          char snoopbuf[MAX_INPUT_LENGTH];
@@ -1488,6 +1484,7 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
          write_to_buffer( d->snoop_by, "% ", 2 );
          write_to_buffer( d->snoop_by, buf, 0 );
       }
+
       if( !write_to_descriptor( d, buf, 512 ) )
       {
          d->outtop = 0;
@@ -1495,7 +1492,6 @@ bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt )
       }
       return TRUE;
    }
-
 
    /*
     * Bust a prompt.
@@ -1572,9 +1568,12 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 {
    if( !d )
    {
-      bug( "Write_to_buffer: NULL descriptor" );
+      bug( "%s: NULL descriptor", __func__ );
       return;
    }
+
+   if( MPSilent )
+      return;
 
    /*
     * Normally a bug... but can happen if loadup is used.
@@ -1638,8 +1637,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 }
 
 /*
-* This is the MCCP version. Use write_to_descriptor_old to send non-compressed
-* text.
+* This is the MCCP version. Use write_to_descriptor_old to send non-compressed text.
 * Updated to run with the block checks by Orion... if it doesn't work, blame
 * him.;P -Orion
 */
@@ -1886,11 +1884,15 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    fOld = load_char_obj( d, argument, TRUE, FALSE );
    if( !d->character )
    {
+      char cbuf[MAX_STRING_LENGTH];
+
       log_printf( "Bad player file %s@%s.", argument, d->host );
-      write_to_buffer( d, "Your playerfile is corrupt...Please notify Thoric@mud.compulink.com.\r\n", 0 );
+      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
+      write_to_buffer( d, cbuf, 0 );
       close_socket( d, FALSE );
       return;
    }
+
    ch = d->character;
    if( check_bans( ch, BAN_SITE ) )
    {
@@ -1914,6 +1916,7 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
          return;
       }
    }
+
    if( xIS_SET( ch->act, PLR_DENY ) )
    {
       log_printf_plus( LOG_COMM, sysdata.log_level, "Denying access to %s@%s.", argument, d->host );
@@ -1930,11 +1933,11 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       close_socket( d, FALSE );
       return;
    }
+
    /*
     *  Make sure the immortal host is from the correct place.
     *  Shaddai
     */
-
    if( IS_IMMORTAL( ch ) && sysdata.check_imm_host && !check_immortal_domain( ch, d->host ) )
    {
       log_printf_plus( LOG_COMM, sysdata.log_level, "%s's char being hacked from %s.", argument, d->host );
@@ -1942,7 +1945,6 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       close_socket( d, FALSE );
       return;
    }
-
 
    chk = check_reconnect( d, argument, FALSE );
    if( chk == BERR )
@@ -1967,13 +1969,14 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    {
       if( d->newstate != 0 )
       {
-         write_to_buffer( d, "That name is already taken.  Please choose another: ", 0 );
+         write_to_buffer( d, "That name is already taken. Please choose another: ", 0 );
          d->connected = CON_GET_NAME;
          d->character->desc = NULL;
          free_char( d->character ); /* Big Memory Leak before --Shaddai */
          d->character = NULL;
          return;
       }
+
       /*
        * Old player
        */
@@ -1987,19 +1990,16 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
       /*
        * if ( !check_parse_name( argument ) )
        * {
-       * write_to_buffer( d, "Illegal name, try another.\r\nName: ", 0 );
+       * write_to_buffer( d, "hat name is reserved, please try another.\r\nName: ", 0 );
        * return;
        * }
        */
-
       if( d->newstate == 0 )
       {
          /*
           * No such player
           */
-         write_to_buffer( d,
-                          "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ",
-                          0 );
+         write_to_buffer( d, "\r\nNo such player exists.\r\nPlease check your spelling, or type new to start a new player.\r\n\r\nName: ", 0 );
          d->connected = CON_GET_NAME;
          d->character->desc = NULL;
          free_char( d->character ); /* Big Memory Leak before --Shaddai */
@@ -2055,6 +2055,20 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
    free_char( d->character );
    d->character = NULL;
    fOld = load_char_obj( d, buf, FALSE, FALSE );
+   if( !fOld )
+      bug( "%s: failed to load_char_obj for %s.", __func__, buf );
+
+   if( !d->character )
+   {
+      char cbuf[MAX_STRING_LENGTH];
+
+      log_printf( "Bad player file %s@%s.", argument, d->host );
+      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
+      write_to_buffer( d, cbuf, 0 );
+      close_socket( d, FALSE );
+      return;
+   }
+
    ch = d->character;
    if( ch->position == POS_FIGHTING
        || ch->position == POS_EVASIVE
@@ -2388,9 +2402,6 @@ void nanny_press_enter( DESCRIPTOR_DATA * d, const char *argument )
    else
       REMOVE_BIT( ch->pcdata->flags, PCFLAG_WATCH );
 
-   if( ch->position == POS_MOUNTED )
-      ch->position = POS_STANDING;
-
    set_pager_color( AT_PLAIN, ch );
    if( xIS_SET( ch->act, PLR_RIP ) )
       send_rip_screen( ch );
@@ -2414,14 +2425,12 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
+   char motdbuf[MAX_STRING_LENGTH];
    ch = d->character;
 
-   {
-      char motdbuf[MAX_STRING_LENGTH];
+   snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
+   write_to_buffer( d, motdbuf, 0 );
 
-      snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
-      write_to_buffer( d, motdbuf, 0 );
-   }
    add_char( ch );
    d->connected = CON_PLAYING;
 
@@ -2498,7 +2507,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
             if( IS_SET( race_table[ch->race]->language, 1 << iLang ) )
             {
                if( ( uLang = skill_lookup( lang_names[iLang] ) ) < 0 )
-                  bug( "%s: cannot find racial language [%s].", __FUNCTION__, lang_names[iLang] );
+                  bug( "%s: cannot find racial language [%s].", __func__, lang_names[iLang] );
                else
                   ch->pcdata->learned[uLang] = 100;
             }
@@ -2522,6 +2531,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
       ch->hit = UMAX( 1, ch->max_hit );
       ch->mana = UMAX( 1, ch->max_mana );
       ch->move = ch->max_move;
+      ch->gold = 0;
       /*
        * Set player birthday to current mud day, -17 years - Samson 10-25-99
        */
@@ -2582,12 +2592,15 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
       char_to_room( ch, get_room_index( ROOM_VNUM_TEMPLE ) );
    }
 
-
    if( get_timer( ch, TIMER_SHOVEDRAG ) > 0 )
       remove_timer( ch, TIMER_SHOVEDRAG );
 
    if( get_timer( ch, TIMER_PKILLED ) > 0 )
       remove_timer( ch, TIMER_PKILLED );
+
+   /* Login trigger by Edmond */
+   rprog_login_trigger( ch );
+   mprog_login_trigger( ch );
 
    act( AT_ACTION, "$n has entered the game.", ch, NULL, NULL, TO_CANSEE );
    if( ch->pcdata->pet )
@@ -2597,6 +2610,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
    }
    do_look( ch, "auto" );
    mail_count( ch );
+   check_loginmsg( ch );
 
    if( !ch->was_in_room && ch->in_room == get_room_index( ROOM_VNUM_TEMPLE ) )
       ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
@@ -2604,6 +2618,35 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
       ch->was_in_room = get_room_index( ROOM_VNUM_TEMPLE );
    else if( !ch->was_in_room )
       ch->was_in_room = ch->in_room;
+}
+
+void nanny_delete_char( DESCRIPTOR_DATA * d, const char *argument )
+{
+   CHAR_DATA *ch = d->character;
+
+   if( !ch )
+   {
+      bug( "%s: NULL ch!", __func__ );
+      d->connected = CON_PLAYING;
+      return;
+   }
+
+   write_to_buffer( d, "\r\n", 2 );
+
+   if( str_cmp( sha256_crypt( argument ), ch->pcdata->pwd ) )
+   {
+      write_to_buffer( d, "Wrong password entered, deletion cancelled.\r\n", 0 );
+      write_to_buffer( d, (const char *)echo_on_str, 0 );
+      d->connected = CON_PLAYING;
+      return;
+   }
+   else
+   {
+      write_to_buffer( d, "\r\nYou've deleted your character!!!\r\n", 0 );
+      log_printf( "Player: %s has deleted.", capitalize( ch->name ) );
+      do_destroy( ch, ch->name );
+      return;
+   }
 }
 
 /*
@@ -2617,7 +2660,7 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
    switch ( d->connected )
    {
       default:
-         bug( "%s: bad d->connected %d.", __FUNCTION__, d->connected );
+         bug( "%s: bad d->connected %d.", __func__, d->connected );
          close_socket( d, TRUE );
          return;
 
@@ -2664,8 +2707,11 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
       case CON_READ_MOTD:
          nanny_read_motd( d, argument );
          break;
-   }
 
+      case CON_DELETE:
+         nanny_delete_char( d, argument );
+         break;
+   }
    return;
 }
 
@@ -2695,12 +2741,6 @@ bool check_parse_name( const char *name, bool newchar )
 
    if( is_reserved_name( name ) && newchar )
       return FALSE;
-
-   /*
-    * Outdated stuff -- Alty
-    */
-/*     if ( is_name( name, "all auto immortal self someone god supreme demigod dog guard cityguard cat cornholio spock hicaine hithoric death ass fuck shit piss crap quit" ) )
-       return FALSE;*/
 
    /*
     * Length restrictions.
@@ -2737,7 +2777,6 @@ bool check_parse_name( const char *name, bool newchar )
     * themselves after mobs... this caused much havoc when new areas
     * would go in...
     */
-
    return TRUE;
 }
 
@@ -2783,10 +2822,15 @@ bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
             ch->desc = d;
             ch->timer = 0;
             send_to_char( "Reconnecting.\r\n", ch );
+            if( d->host )
+               ch->pcdata->recent_site = STRALLOC( d->host );
+            rprog_login_trigger( ch );
+            mprog_login_trigger( ch );
             act( AT_ACTION, "$n has reconnected.", ch, NULL, NULL, TO_CANSEE );
             log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s (%s) reconnected.", ch->name, d->host );
             d->connected = CON_PLAYING;
             do_look( ch, "auto" );
+            check_loginmsg( ch );
          }
          return TRUE;
       }
@@ -2811,7 +2855,7 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
       {
          cstate = dold->connected;
          ch = dold->original ? dold->original : dold->character;
-         if( !ch->name || ( cstate != CON_PLAYING && cstate != CON_EDITING ) )
+         if( !ch->name || ( cstate != CON_PLAYING && cstate != CON_EDITING && cstate != CON_DELETE ) )
          {
             write_to_buffer( d, "Already connected - try again.\r\n", 0 );
             log_printf_plus( LOG_COMM, sysdata.log_level, "%s already connected.", ch->pcdata->filename );
@@ -2834,7 +2878,12 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
             do_return( ch->switched, "" );
          ch->switched = NULL;
          send_to_char( "Reconnecting.\r\n", ch );
+         if( d->host )
+            ch->pcdata->recent_site = STRALLOC( d->host );
+         rprog_login_trigger( ch );
+         mprog_login_trigger( ch );
          do_look( ch, "auto" );
+         check_loginmsg( ch );
          act( AT_ACTION, "$n has reconnected, kicking off old link.", ch, NULL, NULL, TO_CANSEE );
          log_printf_plus( LOG_COMM, UMAX( sysdata.log_level, ch->level ), "%s@%s reconnected, kicking off old link.",
                           ch->pcdata->filename, d->host );
@@ -2842,32 +2891,15 @@ bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
          return TRUE;
       }
    }
-
    return FALSE;
 }
-
-
 
 void stop_idling( CHAR_DATA * ch )
 {
    ROOM_INDEX_DATA *was_in_room;
 
-   /*
-    * if ( !ch
-    * ||   !ch->desc
-    * ||    ch->desc->connected != CON_PLAYING
-    * ||   !ch->was_in_room
-    * ||    ch->in_room != get_room_index( ROOM_VNUM_LIMBO ) )
-    * return;
-    */
-
    if( !ch || !ch->desc || ch->desc->connected != CON_PLAYING || !IS_IDLE( ch ) )
       return;
-
-   /*
-    * if ( IS_IMMORTAL(ch) )
-    * return;
-    */
 
    ch->timer = 0;
    was_in_room = ch->was_in_room;
@@ -2878,6 +2910,11 @@ void stop_idling( CHAR_DATA * ch )
     * ch->was_in_room  = NULL;
     */
    REMOVE_BIT( ch->pcdata->flags, PCFLAG_IDLE );
+
+   /* Void triggers by Edmond */
+   rprog_void_trigger( ch );
+   mprog_void_trigger( ch );
+
    act( AT_ACTION, "$n has returned from the void.", ch, NULL, NULL, TO_ROOM );
    return;
 }
@@ -2902,7 +2939,6 @@ const char *myobj( OBJ_DATA * obj )
       return obj->short_descr + 5;
    return obj->short_descr;
 }
-
 
 const char *obj_short( OBJ_DATA * obj )
 {
@@ -3052,30 +3088,39 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                break;
 
             case 'p':
-               if( !obj1 )
+               if( !to || can_see_obj( to, obj1 ) )
                {
-                  bug( "act_string: $p used with NULL obj1!" );
-                  i = "something";
+                  /*
+                   * Prevents act programs from triggering off note shorts 
+                   */
+                  if( ( !to || IS_NPC( to ) ) && ( obj1->item_type == ITEM_PAPER ) )
+                     i = obj1->pIndexData->short_descr;
+                  else
+                     i = obj_short( obj1 );
                }
                else
-                  i = should_upper ? ( ( !to || can_see_obj( to, obj1 ) ) ? capitalize( obj_short( obj1 ) ) : "Something" )
-                                     :( ( !to || can_see_obj( to, obj1 ) ) ? obj_short( obj1 ) : "something" );
+                  i = "something";
                break;
 
             case 'P':
-               if( !obj2 )
+               if( !to || can_see_obj( to, obj2 ) )
                {
-                  bug( "act_string: $P used with NULL obj2!" );
-                  i = "something";
+                  /*
+                   * Prevents act programs from triggering off note shorts 
+                   */
+                  if( ( !to || IS_NPC( to ) ) && ( obj2->item_type == ITEM_PAPER ) )
+                     i = obj2->pIndexData->short_descr;
+                  else
+                     i = obj_short( obj2 );
                }
                else
-                  i = should_upper ? (  !to || can_see_obj( to, obj2 ) ? capitalize( obj_short( obj2 ) ) : "Something" )
-                                     :(  !to || can_see_obj( to, obj2 ) ? obj_short( obj2 ) : "something" );
+                  i = "something";
                break;
 
             case 'q':
                i = ( to == ch ) ? "" : "s";
                break;
+
             case 'Q':
                i = ( to == ch ) ? "your" : his_her[URANGE( 0, ch->sex, 2 )];
                break;
@@ -3105,11 +3150,25 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                break;
 
             case 't':
-               i = ( char * )arg1;
+               /* bug fix - Edmond  i = (char *) arg1;         break; */
+               if ( arg1 )
+                  i = (char *) arg1;
+               else
+               {
+                  bug( "Act: Bad variable $t" );
+                  i = " <@@@> ";
+               }
                break;
 
             case 'T':
-               i = ( char * )arg2;
+               /* same bug fix as above -  i = (char *) arg2;          break; */
+               if ( arg2 )
+                  i = (char *) arg2;
+               else
+               {
+                  bug( "Act: Bad variable $T" );
+                  i = " <@@@> ";
+               }
                break;
          }
       }
@@ -3118,6 +3177,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
          ++point, ++i;
    }
    mudstrlcpy( point, "\r\n", MSL );
+
    if( !DONT_UPPER )
    {
       bool bUppercase = true;     //Always uppercase first letter
@@ -3158,9 +3218,8 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 #define ACTF_TXT  BV00
 #define ACTF_CH   BV01
 #define ACTF_OBJ  BV02
-
-   const OBJ_DATA *obj1 = ( const OBJ_DATA * ) arg1;
-   const OBJ_DATA *obj2 = ( const OBJ_DATA * ) arg2;
+   OBJ_DATA *obj1 = ( OBJ_DATA * ) arg1;
+   OBJ_DATA *obj2 = ( OBJ_DATA * ) arg2;
    int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
    /*
@@ -3171,7 +3230,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
    if( !ch )
    {
-      bug( "Act: null ch. (%s)", format );
+      bug( "%s: null ch. (%s)", __func__, format );
       return;
    }
 
@@ -3187,7 +3246,7 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          switch ( *str )
          {
             default:
-               bug( "Act: bad code %c for format %s.", *str, format );
+               bug( "%s: bad code %c for format %s.", __func__, *str, format );
                break;
 
             case 't':
@@ -3232,13 +3291,13 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
    if( flags1 != ACTF_NONE && flags1 != ACTF_TXT && flags1 != ACTF_CH && flags1 != ACTF_OBJ )
    {
-      bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      bug( "%s: arg1 has more than one type in format %s. Setting all NULL.", __func__, format );
       obj1 = NULL;
    }
 
    if( flags2 != ACTF_NONE && flags2 != ACTF_TXT && flags2 != ACTF_CH && flags2 != ACTF_OBJ )
    {
-      bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __FUNCTION__, format );
+      bug( "%s: arg2 has more than one type in format %s. Setting all NULL.", __func__, format );
       vch = NULL;
       obj2 = NULL;
    }
@@ -3279,10 +3338,10 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
 
       txt = act_string( format, NULL, ch, arg1, arg2, STRING_IMM );
       if( HAS_PROG( to->in_room, ACT_PROG ) )
-         rprog_act_trigger( txt, to->in_room, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+         rprog_act_trigger( txt, to->in_room, ch, obj1, vch, obj2 );
       for( to_obj = to->in_room->first_content; to_obj; to_obj = to_obj->next_content )
          if( HAS_PROG( to_obj->pIndexData, ACT_PROG ) )
-            oprog_act_trigger( txt, to_obj, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+            oprog_act_trigger( txt, to_obj, ch, obj1, vch, obj2 );
    }
 
    /*
@@ -3302,11 +3361,9 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          continue;
       if( type == TO_NOTVICT && ( to == ch || to == vch ) )
          continue;
-      if( type == TO_CANSEE && ( to == ch ||
-                                 ( !IS_IMMORTAL( to ) && !IS_NPC( ch ) && ( xIS_SET( ch->act, PLR_WIZINVIS )
-                                                                            && ( get_trust( to ) <
-                                                                                 ( ch->pcdata ? ch->pcdata->
-                                                                                   wizinvis : 0 ) ) ) ) ) )
+      if( type == TO_CANSEE && ( to == ch
+         || ( !IS_NPC(ch) && (xIS_SET(ch->act, PLR_WIZINVIS)
+         && ( get_trust(to) < ( ch->pcdata ? ch->pcdata->wizinvis : 0 ) ) ) ) ) )
          continue;
 
       if( IS_IMMORTAL( to ) )
@@ -3319,12 +3376,13 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
          set_char_color( AType, to );
          send_to_char( txt, to );
       }
+
       if( MOBtrigger )
       {
          /*
           * Note: use original string, not string with ANSI. -- Alty 
           */
-         mprog_act_trigger( txt, to, ch, ( OBJ_DATA * ) arg1, ( void * )arg2 );
+         mprog_act_trigger( txt, to, ch, obj1, vch, obj2 );
       }
    }
    MOBtrigger = TRUE;
@@ -3349,9 +3407,12 @@ void do_name( CHAR_DATA* ch, const char* argument)
 
    if( !check_parse_name( ucase_argument, TRUE ) )
    {
-      send_to_char( "Illegal name, try another.\r\n", ch );
+      send_to_char( "That name is reserved, please try another.\r\n", ch );
       return;
    }
+
+   if( check_playing( ch->desc, argument, FALSE ) == BERR )
+      return;
 
    if( !str_cmp( ch->name, ucase_argument ) )
    {
@@ -3384,6 +3445,47 @@ void do_name( CHAR_DATA* ch, const char* argument)
    ch->pcdata->filename = STRALLOC( ucase_argument );
    send_to_char( "Your name has been changed.  Please apply again.\r\n", ch );
    ch->pcdata->auth_state = 0;
+   return;
+}
+
+/* Alternate Self delete command provided by Waldemar Thiel (Swiv) */
+/* Allows characters to delete themselves - Installed 1-18-98 by Samson */
+void do_delet( CHAR_DATA *ch, const char *argument )
+{
+   send_to_char( "If you want to DELETE, spell it out.\r\n", ch );
+   return;
+}
+
+void do_delete( CHAR_DATA *ch, const char *argument )
+{
+   if( IS_NPC(ch) )
+   {
+      send_to_char ( "Yeah, right. Mobs can't delete themselves.\r\n", ch );
+      return;
+   }
+
+   if( ch->fighting != NULL )
+   {
+      send_to_char( "Wait until the fight is over before deleting yourself.\r\n", ch );
+      return;
+   }
+
+   /* Reimbursement warning added to code by Samson 1-18-98 */
+   set_char_color( AT_YELLOW, ch );
+   send_to_char( "Remember, this decision is IRREVERSABLE. There are no reimbursements!\r\n", ch );
+
+   /* Immortals warning added to code by Samson 1-18-98 */
+   if( IS_IMMORTAL(ch) )
+   {
+      ch_printf( ch, "Consider this carefuly %s, if you delete, you will not\r\nbe reinstated as an immortal!\r\n", ch->name );
+      send_to_char( "Any area data you have will also be lost if you proceed.\r\n", ch );
+   }
+
+   set_char_color( AT_RED, ch );
+   send_to_char( "\r\nType your password if you wish to delete your character.\r\n", ch );
+   send_to_char( "[DELETE] Password: ", ch );
+   write_to_buffer( ch->desc, (const char *)echo_off_str, 0 );
+   ch->desc->connected = CON_DELETE;
    return;
 }
 
@@ -3443,7 +3545,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
    if( !ch )
    {
-      bug( "%s: NULL ch", __FUNCTION__ );
+      bug( "%s: NULL ch", __func__ );
       return;
    }
 
@@ -3462,12 +3564,14 @@ void display_prompt( DESCRIPTOR_DATA * d )
    }
    else
       prompt = ch->pcdata->prompt;
+
    if( ansi )
    {
       mudstrlcpy( pbuf, ANSI_RESET, MAX_STRING_LENGTH );
       d->prevcolor = 0x08;
       pbuf += 4;
    }
+
    /*
     * Clear out old color stuff 
     */
@@ -3483,27 +3587,33 @@ void display_prompt( DESCRIPTOR_DATA * d )
          continue;
       }
       ++prompt;
+
       if( !*prompt )
          break;
+
       if( *prompt == *( prompt - 1 ) )
       {
          *( pbuf++ ) = *prompt;
          continue;
       }
+
       switch ( *( prompt - 1 ) )
       {
          default:
-            bug( "Display_prompt: bad command char '%c'.", *( prompt - 1 ) );
+            bug( "%s: bad command char '%c'.", __func__, *( prompt - 1 ) );
             break;
+
          case '%':
             *pbuf = '\0';
             pstat = 0x80000000;
+
             switch ( *prompt )
             {
                case '%':
                   *pbuf++ = '%';
                   *pbuf = '\0';
                   break;
+
                case 'a':
                   if( ch->level >= 10 )
                      pstat = ch->alignment;
@@ -3514,10 +3624,12 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "neutral", MAX_STRING_LENGTH );
                   break;
+
                case 'A':
                   snprintf( pbuf, MAX_STRING_LENGTH, "%s%s%s", IS_AFFECTED( ch, AFF_INVISIBLE ) ? "I" : "",
                             IS_AFFECTED( ch, AFF_HIDE ) ? "H" : "", IS_AFFECTED( ch, AFF_SNEAK ) ? "S" : "" );
                   break;
+
                case 'C':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3553,6 +3665,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                         mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
+
                case 'c':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3586,24 +3699,29 @@ void display_prompt( DESCRIPTOR_DATA * d )
                         mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
+
                case 'h':
                   pstat = ch->hit;
                   break;
+
                case 'H':
                   pstat = ch->max_hit;
                   break;
+
                case 'm':
                   if( IS_VAMPIRE( ch ) )
                      pstat = 0;
                   else
                      pstat = ch->mana;
                   break;
+
                case 'M':
                   if( IS_VAMPIRE( ch ) )
                      pstat = 0;
                   else
                      pstat = ch->max_mana;
                   break;
+
                case 'N':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3620,6 +3738,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
+
                case 'n':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
                      mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
@@ -3634,6 +3753,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
+
                case 'T':
                   if( time_info.hour < 5 )
                      mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
@@ -3646,55 +3766,85 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
                   break;
+
                case 'b':
                   if( IS_VAMPIRE( ch ) )
                      pstat = ch->pcdata->condition[COND_BLOODTHIRST];
                   else
                      pstat = 0;
                   break;
+
                case 'B':
                   if( IS_VAMPIRE( ch ) )
                      pstat = ch->level + 10;
                   else
                      pstat = 0;
                   break;
+
                case 'u':
                   pstat = num_descriptors;
                   break;
+
                case 'U':
                   pstat = sysdata.maxplayers;
                   break;
+
                case 'v':
                   pstat = ch->move;
                   break;
+
                case 'V':
                   pstat = ch->max_move;
                   break;
+
                case 'g':
                   pstat = ch->gold;
                   break;
+
                case 'r':
                   if( IS_IMMORTAL( och ) )
                      pstat = ch->in_room->vnum;
                   break;
+
                case 'F':
                   if( IS_IMMORTAL( och ) )
                      snprintf( pbuf, MAX_STRING_LENGTH, "%s", ext_flag_string( &ch->in_room->room_flags, r_flags ) );
                   break;
+
                case 'R':
                   if( xIS_SET( och->act, PLR_ROOMVNUM ) )
                      snprintf( pbuf, MAX_STRING_LENGTH, "<#%d> ", ch->in_room->vnum );
                   break;
+
+               case 'D': /*display DND status*/
+                  if( IS_IMMORTAL(ch) )
+                  {
+                     if( IS_SET( ch->pcdata->flags, PCFLAG_DND ) )
+                        mudstrlcpy( pbuf, "DND", MAX_STRING_LENGTH );
+                  }
+                  break;
+
                case 'x':
                   pstat = ch->exp;
                   break;
+
                case 'X':
                   pstat = exp_level( ch, ch->level + 1 ) - ch->exp;
                   break;
+
+               case 'w':
+                  pstat = ch->carry_weight;
+                  break;
+
+               case 'W':
+                  pstat = can_carry_w(ch);
+                  break;
+
                case 'o':  /* display name of object on auction */
                   if( auction->item )
                      mudstrlcpy( pbuf, auction->item->name, MAX_STRING_LENGTH );
                   break;
+
                case 'S':
                   if( ch->style == STYLE_BERSERK )
                      mudstrlcpy( pbuf, "B", MAX_STRING_LENGTH );
@@ -3707,6 +3857,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else
                      mudstrlcpy( pbuf, "S", MAX_STRING_LENGTH );
                   break;
+
                case 'i':
                   if( ( !IS_NPC( ch ) && xIS_SET( ch->act, PLR_WIZINVIS ) ) ||
                       ( IS_NPC( ch ) && xIS_SET( ch->act, ACT_MOBINVIS ) ) )
@@ -3715,13 +3866,14 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   else if( IS_AFFECTED( ch, AFF_INVISIBLE ) )
                      mudstrlcpy( pbuf, "(Invis) ", MAX_STRING_LENGTH );
                   break;
+
                case 'I':
                   pstat = ( IS_NPC( ch ) ? ( xIS_SET( ch->act, ACT_MOBINVIS ) ? ch->mobinvis : 0 )
                             : ( xIS_SET( ch->act, PLR_WIZINVIS ) ? ch->pcdata->wizinvis : 0 ) );
                   break;
             }
             if( pstat != 0x80000000 )
-               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%d", pstat );
+               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%u", pstat );
             pbuf += strlen( pbuf );
             break;
       }
@@ -3774,13 +3926,13 @@ bool pager_output( DESCRIPTOR_DATA * d )
          d->pagesize = MAX_STRING_LENGTH;
          return TRUE;
    }
-   while( lines < 0 && d->pagepoint >= d->pagebuf )
-      if( *( --d->pagepoint ) == '\n' )
+   while( lines < 0 && --d->pagepoint >= d->pagebuf )
+      if( *d->pagepoint == '\n' )
          ++lines;
-   if( *d->pagepoint == '\r' && *( ++d->pagepoint ) == '\n' )
-      ++d->pagepoint;
    if( d->pagepoint < d->pagebuf )
       d->pagepoint = d->pagebuf;
+   if( *d->pagepoint == '\r' && *( ++d->pagepoint ) == '\n' )
+      ++d->pagepoint;
    for( lines = 0, last = d->pagepoint; lines < pclines; ++last )
       if( !*last )
          break;
@@ -3820,7 +3972,6 @@ bool pager_output( DESCRIPTOR_DATA * d )
    }
    return ret;
 }
-
 
 #ifdef WIN32
 

@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.0 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -64,11 +64,12 @@ const char *const sec_flags[] = {
 };
 
 const char *const r_flags[] = {
-   "dark", "death", "nomob", "indoors", "lawful", "neutral", "chaotic",
+   "dark", "death", "nomob", "indoors", "house", "neutral", "chaotic",
    "nomagic", "tunnel", "private", "safe", "solitary", "petshop", "norecall",
    "donation", "nodropall", "silence", "logspeech", "nodrop", "clanstoreroom",
    "nosummon", "noastral", "teleport", "teleshowdesc", "nofloor",
-   "nosupplicate", "arena", "nomissile", "r4", "r5", "prototype", "dnd", "bfs_mark"
+   "nosupplicate", "arena", "nomissile", "noyell", "noquit", "prototype", "dnd",
+   "_track_", "nowhere", "notrack"
 };
 
 const char *const o_flags[] = {
@@ -77,7 +78,8 @@ const char *const o_flags[] = {
    "antimage", "antithief", "antiwarrior", "anticleric", "organic", "metal",
    "donation", "clanobject", "clancorpse", "antivampire", "antidruid",
    "hidden", "poisoned", "covering", "deathrot", "buried", "prototype",
-   "nolocate", "groundrot", "lootable", "personal", "multi_invoke", "enchanted"
+   "nolocate", "groundrot", "lootable", "personal", "multi_invoke", "enchanted",
+   "permanent", "nofill", "deathdrop", "skinned"
 };
 
 /* Compiler says these aren't in use, so for now they'll be blocked out.
@@ -102,8 +104,9 @@ const char *const item_w_flags[] = {
 };
 
 const char *const area_flags[] = {
-   "nopkill", "freekill", "noteleport", "spelllimit", "prototype", "r5", "r6", "r7", "r8",
-   "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17",
+   "nopkill", "freekill", "noteleport", "spelllimit", "prototype", "hidden",
+   "silence", "noportalin", "noportalout", "nomagic", "noastral",
+   "nowhere", "r12", "r13", "r14", "r15", "r16", "r17",
    "r18", "r19", "r20", "r21", "r22", "r23", "r24",
    "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
@@ -116,8 +119,8 @@ const char *const o_types[] = {
    "scraps", "pipe", "herbcon", "herb", "incense", "fire", "book", "switch",
    "lever", "pullchain", "button", "dial", "rune", "runepouch", "match", "trap",
    "map", "portal", "paper", "tinder", "lockpick", "spike", "disease", "oil",
-   "fuel", "_empty1", "_empty2", "missileweapon", "projectile", "quiver", "shovel",
-   "salve", "cook", "keyring", "odor", "chance", "mix"
+   "fuel", "puddle", "journal", "missileweapon", "projectile", "quiver", "shovel",
+   "salve", "cook", "keyring", "odor", "chance", "piece", "housekey", "mix"
 };
 
 const char *const a_types[] = {
@@ -141,11 +144,11 @@ const char *const a_flags[] = {
    "charm", "flying", "pass_door", "floating", "truesight", "detect_traps",
    "scrying", "fireshield", "shockshield", "r1", "iceshield", "possess",
    "berserk", "aqua_breath", "recurringspell", "contagious", "acidmist",
-   "venomshield"
+   "venomshield", "grapple"
 };
 
 const char *const act_flags[] = {
-   "npc", "sentinel", "scavenger", "r1", "r2", "aggressive", "stayarea",
+   "npc", "sentinel", "scavenger", "stopscript", "nosteal", "aggressive", "stayarea",
    "wimpy", "pet", "train", "practice", "immortal", "deadly", "polyself",
    "meta_aggr", "guardian", "running", "nowander", "mountable", "mounted",
    "scholar", "secretive", "hardhat", "mobinvis", "noassist", "autonomous",
@@ -156,8 +159,8 @@ const char *const pc_flags[] = {
    "r1", "deadly", "unauthed", "norecall", "nointro", "gag", "retired", "guest",
 /* changed "r8" to "" so players on watch can't see it  -- Gorog */
    "nosummon", "pager", "notitled", "groupwho", "diagnose", "highgag", "",
-   "nstart", "dnd", "idle", "hints", "r19", "r20", "r21", "r22", "r23", "r24",
-   "r25", "r26", "r27", "r28", "r29", "r30", "r31"
+   "nstart", "dnd", "idle", "hints", "beckon", "nobeckon", "nodesc", "nobio",
+   "nohomepage", "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
 
 const char *const plr_flags[] = {
@@ -176,9 +179,10 @@ const char *const trap_flags[] = {
 };
 
 const char *const cmd_flags[] = {
-   "possessed", "polymorphed", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8",
+   "possessed", "polymorphed", "watch", "retired", "noabort", "r5", "r6", "r7", "r8",
    "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17", "r18", "r19",
    "r20", "r21", "r22", "r23", "r24", "r25", "r26", "r27", "r28", "r29", "r30"
+   "r31"
 };
 
 const char *const wear_locs[] = {
@@ -208,7 +212,7 @@ const char *const part_flags[] = {
    "ear", "eye", "long_tongue", "eyestalks", "tentacles", "fins", "wings",
    "tail", "scales", "claws", "fangs", "horns", "tusks", "tailattack",
    "sharpscales", "beak", "haunches", "hooves", "paws", "forelegs", "feathers",
-   "r1", "r2"
+   "shell", "r2"
 };
 
 const char *const attack_flags[] = {
@@ -254,7 +258,8 @@ const char *const mprog_flags[] = {
    "allgreet", "give", "bribe", "hour", "time", "wear", "remove", "sac",
    "look", "exa", "zap", "get", "drop", "damage", "repair", "randiw",
    "speechiw", "pull", "push", "sleep", "rest", "leave", "script", "use",
-   "sell", "tell", "command"
+   "sell", "tell", "command", "login", "void", "greetinfight", "imminfo",
+   "load"
 };
 
 const char *flag_string( int bitvector, const char *const flagarray[] )
@@ -887,13 +892,13 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch", __FUNCTION__ );
+      bug( "%s: null ch", __func__ );
       return str_dup( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       return str_dup( "" );
    }
 
@@ -920,13 +925,13 @@ const char *copy_buffer( CHAR_DATA * ch )
 
    if( !ch )
    {
-      bug( "%s: null ch", __FUNCTION__ );
+      bug( "%s: null ch", __func__ );
       return STRALLOC( "" );
    }
 
    if( !ch->editor )
    {
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       return STRALLOC( "" );
    }
 
@@ -981,8 +986,8 @@ void do_goto( CHAR_DATA* ch, const char* argument)
    {
       if( !IS_NPC( fch ) && get_trust( ch ) < get_trust( fch ) && IS_SET( fch->pcdata->flags, PCFLAG_DND ) )
       {
-         pager_printf( ch, "Sorry. %s does not wish to be disturbed.\r\n", fch->name );
-         pager_printf( fch, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
+         ch_printf( ch, "Sorry. %s does not wish to be disturbed.\r\n", fch->name );
+         ch_printf( fch, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
          return;
       }
    }
@@ -1025,8 +1030,8 @@ void do_goto( CHAR_DATA* ch, const char* argument)
 
    if( ( victim = room_is_dnd( ch, location ) ) )
    {
-      pager_printf( ch, "That room is \"do not disturb\" right now.\r\n" );
-      pager_printf( victim, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
+      ch_printf( ch, "That room is \"do not disturb\" right now.\r\n" );
+      ch_printf( victim, "Your DND flag just foiled %s's goto command.\r\n", ch->name );
       return;
    }
 
@@ -2031,6 +2036,7 @@ void do_mset( CHAR_DATA* ch, const char* argument)
             }
             save_clan( victim->pcdata->clan );
          }
+         remove_roster( victim->pcdata->clan, victim->name );
          STRFREE( victim->pcdata->clan_name );
          victim->pcdata->clan_name = STRALLOC( "" );
          victim->pcdata->clan = NULL;
@@ -2978,8 +2984,10 @@ void do_mset( CHAR_DATA* ch, const char* argument)
          if( ch != victim )
             send_to_char( "That player is now pkill.\r\n", ch );
       }
+
       if( victim->pcdata->clan && !IS_IMMORTAL( victim ) )
       {
+         remove_roster( victim->pcdata->clan, victim->name );
          if( victim->pcdata->clan->clan_type == CLAN_GUILD )
          {
             int sn;
@@ -3142,7 +3150,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !ch->dest_buf )
          {
             send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
-            bug( "%s: sub_obj_extra: NULL ch->dest_buf", __FUNCTION__ );
+            bug( "%s: sub_obj_extra: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -3165,7 +3173,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !ch->dest_buf )
          {
             send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
-            bug( "%s: sub_obj_long: NULL ch->dest_buf", __FUNCTION__ );
+            bug( "%s: sub_obj_long: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -3951,12 +3959,14 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "condition" ) )
             tmp = 0;
          break;
+
       case ITEM_ARMOR:
          if( !str_cmp( arg2, "condition" ) )
             tmp = 3;
          if( !str_cmp( arg2, "ac" ) )
             tmp = 1;
          break;
+
       case ITEM_SALVE:
          if( !str_cmp( arg2, "slevel" ) )
             tmp = 0;
@@ -3973,6 +3983,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( tmp >= 4 && tmp <= 5 )
             value = skill_lookup( arg3 );
          break;
+
       case ITEM_SCROLL:
       case ITEM_POTION:
       case ITEM_PILL:
@@ -3987,6 +3998,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( tmp >= 1 && tmp <= 3 )
             value = skill_lookup( arg3 );
          break;
+
       case ITEM_STAFF:
       case ITEM_WAND:
          if( !str_cmp( arg2, "slevel" ) )
@@ -4001,6 +4013,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "charges" ) )
             tmp = 2;
          break;
+
       case ITEM_CONTAINER:
          if( !str_cmp( arg2, "capacity" ) )
             tmp = 0;
@@ -4009,6 +4022,23 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          if( !str_cmp( arg2, "key" ) )
             tmp = 2;
          break;
+
+      case ITEM_TRAP:
+         if( !str_cmp( arg2, "trapflags" ) )
+         {
+            while( argument[0] != '\0' )
+            {
+               argument = one_argument( argument, arg3 );
+               tmp = get_trapflag( arg3 );
+               if( tmp >= 0 && tmp < 32 )
+                  TOGGLE_BIT( value, 1 << tmp );
+               else
+                  send_to_char( "Oset: TRAP: bad flag\r\n", ch );
+            }
+            tmp = 3;
+         }
+         break;
+
       case ITEM_SWITCH:
       case ITEM_LEVER:
       case ITEM_PULLCHAIN:
@@ -4032,6 +4062,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
          }
          break;
    }
+
    if( tmp >= 0 && tmp <= 3 )
    {
       if( !can_omodify( ch, obj ) )
@@ -4116,7 +4147,7 @@ void do_rdig( CHAR_DATA* ch, const char* argument)
       location = make_room( vnum, pArea );
       if( !location )
       {
-         bug( "%s: make_room failed", __FUNCTION__ );
+         bug( "%s: make_room failed", __func__ );
          return;
       }
       location->area = ch->pcdata->area;
@@ -4248,7 +4279,7 @@ void do_rgrid( CHAR_DATA* ch, const char* argument)
          location = make_room( vnum, pArea );
          if( !location )
          {
-            bug( "%s: make_room failed", __FUNCTION__ );
+            bug( "%s: make_room failed", __func__ );
             return;
          }
 
@@ -4646,6 +4677,69 @@ void remove_room_affect( ROOM_INDEX_DATA * location, CHAR_DATA * ch, bool indexa
    return;
 }
 
+void do_rloop( CHAR_DATA * ch, const char *argument )
+{
+   char arg1[MAX_INPUT_LENGTH];
+   char arg2[MAX_INPUT_LENGTH];
+   ROOM_INDEX_DATA *location;
+   ROOM_INDEX_DATA *original;
+   AREA_DATA *pArea;
+   int Start, End, vnum;
+
+   set_char_color( AT_IMMORT, ch );
+
+   argument = one_argument( argument, arg1 );
+   argument = one_argument( argument, arg2 );
+
+   if( arg1[0] == '\0' || arg2[0] == '\0' || argument[0] == '\0' )
+   {
+      send_to_char( "Syntax: rloop <start> <end> redit <arguments>\r\n", ch );
+      return;
+   }
+
+   Start = atoi( arg1 );
+   End = atoi( arg2 );
+   if( Start < 1 || End < Start || Start > End || Start == End )
+   {
+      send_to_char( "Invalid range.\r\n", ch );
+      return;
+   }
+
+   if( !ch->pcdata || !( pArea = ch->pcdata->area ) )
+   {
+      send_to_char( "You must have an assigned area to rloop in.\r\n", ch );
+      return;
+   }
+
+   if( Start < pArea->low_r_vnum || Start > pArea->hi_r_vnum || End < pArea->low_r_vnum || End > pArea->hi_r_vnum )
+   {
+      send_to_char( "You can only rloop within your assigned area.\r\n", ch );
+      return;
+   }
+
+   if( strncmp( argument, "redit ", 6 ) )
+   {
+      send_to_char( "Rloop is restricted to redit commands only.\r\n", ch );
+      send_to_char( "Syntax: rloop <start> <end> redit <arguments>\r\n", ch );
+      return;
+   }
+
+   original = ch->in_room;
+   for( vnum = Start; vnum <= End; vnum++ )
+   {
+      if( ( location = get_room_index( vnum ) ) == NULL )
+         continue;
+      char_from_room( ch );
+      char_to_room( ch, location );
+      interpret( ch, argument );
+   }
+
+   char_from_room( ch );
+   char_to_room( ch, original );
+   send_to_char( "Done.\r\n", ch );
+   return;
+}
+
 void do_redit( CHAR_DATA* ch, const char* argument)
 {
    char arg[MAX_INPUT_LENGTH];
@@ -4774,6 +4868,12 @@ void do_redit( CHAR_DATA* ch, const char* argument)
       ch->substate = SUB_ROOM_DESC;
       ch->dest_buf = location;
       start_editing( ch, location->description );
+      return;
+   }
+
+   if( !str_cmp( arg, "maxweight" ) )
+   {
+      location->max_weight = atoi( argument );
       return;
    }
 
@@ -5595,14 +5695,14 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    if( d->connected != CON_EDITING )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: d->connected != CON_EDITING", __FUNCTION__ );
+      bug( "%s: d->connected != CON_EDITING", __func__ );
       return;
    }
 
    if( ch->substate <= SUB_PAUSE )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: illegal ch->substate (%d)", __FUNCTION__, ch->substate );
+      bug( "%s: illegal ch->substate (%d)", __func__, ch->substate );
       d->connected = CON_PLAYING;
       return;
    }
@@ -5610,7 +5710,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    if( !ch->editor )
    {
       send_to_char( "You can't do that!\r\n", ch );
-      bug( "%s: null editor", __FUNCTION__ );
+      bug( "%s: null editor", __func__ );
       d->connected = CON_PLAYING;
       return;
    }
@@ -5891,7 +5991,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
       mudstrlcpy( edit->line[edit->on_line++], buf, MAX_STRING_LENGTH );
       if( edit->on_line > edit->numlines )
          edit->numlines++;
-      if( edit->numlines > max_buf_lines )
+      if( edit->numlines >= max_buf_lines )
       {
          edit->numlines = max_buf_lines;
          send_to_char( "Buffer full.\r\n", ch );
@@ -5997,8 +6097,10 @@ void do_aassign( CHAR_DATA* ch, const char* argument)
 
 /*	if ( get_trust(ch) >= sysdata.level_modify_proto )   */
 
-   if( get_trust( ch ) >= LEVEL_SUB_IMPLEM
-       || ( is_name( buf, ch->pcdata->bestowments ) && get_trust( ch ) >= sysdata.level_modify_proto ) )
+   if( get_trust( ch ) >= LEVEL_GREATER
+       || ( is_name( buf, ch->pcdata->bestowments )
+            && get_trust( ch ) >= sysdata.level_modify_proto )
+       || ( ch->pcdata->council && is_name( buf, ch->pcdata->council->powers ) ) )
       for( tmp = first_area; tmp; tmp = tmp->next )
          if( !str_cmp( buf, tmp->filename ) )
          {
@@ -6012,8 +6114,10 @@ void do_aassign( CHAR_DATA* ch, const char* argument)
          {
 /*		if ( get_trust(ch) >= sysdata.level_modify_proto  */
             if( get_trust( ch ) >= LEVEL_GREATER
-                || is_name( tmp->filename, ch->pcdata->bestowments ) ||
-                ( ch->pcdata->council && is_name( "aassign", ch->pcdata->council->powers ) ) )
+                || is_name( tmp->filename, ch->pcdata->bestowments )
+                || ( ch->pcdata->council
+                     && ( is_name( buf, ch->pcdata->council->powers )
+                          || is_name( "aassign", ch->pcdata->council->powers ) ) ) )
             {
                tarea = tmp;
                break;
@@ -6037,7 +6141,6 @@ void do_aassign( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Assigning you: %s\r\n", tarea->name );
    return;
 }
-
 
 EXTRA_DESCR_DATA *SetRExtra( ROOM_INDEX_DATA * room, const char *keywords )
 {
@@ -6306,7 +6409,7 @@ void fwrite_fuss_room( FILE * fpout, ROOM_INDEX_DATA * room, bool install )
    }
 
    // Get rid of the track markers before saving.
-   xREMOVE_BIT( room->room_flags, ROOM_BFS_MARK );
+   xREMOVE_BIT( room->room_flags, ROOM_TRACK );
 
    fprintf( fpout, "%s", "#ROOM\n" );
    fprintf( fpout, "Vnum     %d\n", room->vnum );
@@ -6315,7 +6418,7 @@ void fwrite_fuss_room( FILE * fpout, ROOM_INDEX_DATA * room, bool install )
    if( !xIS_EMPTY( room->room_flags ) )
       fprintf( fpout, "Flags    %s~\n", ext_flag_string( &room->room_flags, r_flags ) );
    if( room->tele_delay > 0 || room->tele_vnum > 0 || room->tunnel > 0 )
-      fprintf( fpout, "Stats    %d %d %d\n", room->tele_delay, room->tele_vnum, room->tunnel );
+      fprintf( fpout, "Stats    %d %d %d %d\n", room->tele_delay, room->tele_vnum, room->tunnel, room->max_weight );
    if( room->description && room->description[0] != '\0' )
       fprintf( fpout, "Desc     %s~\n", strip_cr( room->description ) );
 
@@ -6582,7 +6685,7 @@ void fold_area( AREA_DATA * tarea, const char *fname, bool install )
    rename( fname, buf );
    if( !( fpout = fopen( fname, "w" ) ) )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( fname );
       return;
    }
@@ -6659,7 +6762,6 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
    fprintf( fpout, "%d %d %d %d\n", tarea->low_soft_range,
             tarea->hi_soft_range, tarea->low_hard_range, tarea->hi_hard_range );
    fprintf( fpout, "$\n\n" );
-   fprintf( fpout, "#SPELLLIMIT %d\n", tarea->spelllimit );
    if( tarea->resetmsg )   /* Rennard */
       fprintf( fpout, "#RESETMSG %s~\n\n", tarea->resetmsg );
    if( tarea->reset_frequency )
@@ -6936,9 +7038,9 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
       fprintf( fpout, "#%d\n", vnum );
       fprintf( fpout, "%s~\n", room->name );
       fprintf( fpout, "%s~\n", strip_cr( room->description ) );
-      if( ( room->tele_delay > 0 && room->tele_vnum > 0 ) || room->tunnel > 0 )
-         fprintf( fpout, "0 %s %d %d %d %d\n", print_bitvector( &room->room_flags ),
-                  room->sector_type, room->tele_delay, room->tele_vnum, room->tunnel );
+      if( ( room->tele_delay > 0 && room->tele_vnum > 0 ) || room->tunnel > 0 || room->max_weight > 0 )
+         fprintf( fpout, "0 %s %d %d %d %d %d\n", print_bitvector( &room->room_flags ),
+                  room->sector_type, room->tele_delay, room->tele_vnum, room->tunnel, room->max_weight );
       else
          fprintf( fpout, "0 %s %d\n", print_bitvector( &room->room_flags ), room->sector_type );
       for( xit = room->first_exit; xit; xit = xit->next )
@@ -8182,6 +8284,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
       send_to_char( "Program being one of:\r\n", ch );
       send_to_char( "  act speech rand fight hitprcnt greet allgreet\r\n", ch );
       send_to_char( "  entry give bribe death time hour script\r\n", ch );
+      send_to_char( "  greetinfight\r\n", ch );
       return;
    }
 
@@ -8207,12 +8310,14 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
       send_to_char( "You can't do that!\r\n", ch );
       return;
    }
+
    if( get_trust( ch ) < LEVEL_GREATER && IS_NPC( victim ) && xIS_SET( victim->act, ACT_STATSHIELD ) )
    {
       set_pager_color( AT_IMMORT, ch );
       send_to_pager( "Their godly glow prevents you from getting close enough.\r\n", ch );
       return;
    }
+
    if( !can_mmodify( ch, victim ) )
       return;
 
@@ -8231,7 +8336,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
       cnt = 0;
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\r\n", ch );
+         ch_printf( ch, "No programs on mobile:  %s - #%d\r\n", victim->name, victim->pIndexData->vnum );
          return;
       }
 
@@ -8276,7 +8381,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
    {
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\r\n", ch );
+         ch_printf( ch, "No programs on mobile:  %s - #%d\r\n", victim->name, victim->pIndexData->vnum );
          return;
       }
       argument = one_argument( argument, arg4 );
@@ -8319,7 +8424,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
 
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\r\n", ch );
+         ch_printf( ch, "No programs on mobile:  %s - #%d\r\n", victim->name, victim->pIndexData->vnum );
          return;
       }
       argument = one_argument( argument, arg4 );
@@ -8379,7 +8484,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
    {
       if( !mprog )
       {
-         send_to_char( "That mobile has no mob programs.\r\n", ch );
+         ch_printf( ch, "No programs on mobile:  %s - #%d\r\n", victim->name, victim->pIndexData->vnum );
          return;
       }
       argument = one_argument( argument, arg4 );
@@ -8550,8 +8655,41 @@ void do_opedit( CHAR_DATA* ch, const char* argument)
          send_to_char( "That object has no obj programs.\r\n", ch );
          return;
       }
+
+      if( value < 1 )
+      {
+         if( strcmp( "full", arg3 ) )
+         {
+            for( mprg = mprog; mprg; mprg = mprg->next )
+            {
+               ch_printf( ch, "%d>%s %s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist );
+            }
+
+            return;
+         }
+         else
+         {
+            for( mprg = mprog; mprg; mprg = mprg->next )
+            {
+               ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+            }
+
+            return;
+         }
+      }
+
       for( mprg = mprog; mprg; mprg = mprg->next )
-         ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+      {
+         if( ++cnt == value )
+         {
+            ch_printf( ch, "%d>%s %s\r\n%s\r\n", cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+            break;
+         }
+      }
+
+      if( !mprg )
+         send_to_char( "Program not found.\r\n", ch );
+
       return;
    }
 
@@ -8727,8 +8865,6 @@ void do_opedit( CHAR_DATA* ch, const char* argument)
    do_opedit( ch, "" );
 }
 
-
-
 /*
  * RoomProg Support
  */
@@ -8831,8 +8967,41 @@ void do_rpedit( CHAR_DATA* ch, const char* argument)
          send_to_char( "This room has no room programs.\r\n", ch );
          return;
       }
+
+      if( value < 1 )
+      {
+         if( strcmp( "full", arg2 ) )
+         {
+            for( mprg = mprog; mprg; mprg = mprg->next )
+            {
+               ch_printf( ch, "%d>%s %s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist );
+            }
+
+            return;
+         }
+         else
+         {
+            for( mprg = mprog; mprg; mprg = mprg->next )
+            {
+               ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+            }
+
+            return;
+         }
+      }
+
       for( mprg = mprog; mprg; mprg = mprg->next )
-         ch_printf( ch, "%d>%s %s\r\n%s\r\n", ++cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+      {
+         if( ++cnt == value )
+         {
+            ch_printf( ch, "%d>%s %s\r\n%s\r\n", cnt, mprog_type_to_name( mprg->type ), mprg->arglist, mprg->comlist );
+            break;
+         }
+      }
+
+      if( !mprg )
+         send_to_char( "Program not found.\r\n", ch );
+
       return;
    }
 
@@ -9036,10 +9205,9 @@ void do_rdelete( CHAR_DATA* ch, const char* argument)
    /*
     * Does the player have the right to delete this room? 
     */
-   if( get_trust( ch ) < sysdata.level_modify_proto
-       && ( location->vnum < ch->pcdata->area->low_r_vnum || location->vnum > ch->pcdata->area->hi_r_vnum ) )
+   if( !can_rmodify( ch, location ) )
    {
-      send_to_char( "That room is not in your assigned range.\r\n", ch );
+      send_to_char( "You can't delete this room.\r\n", ch );
       return;
    }
 
@@ -9049,7 +9217,7 @@ void do_rdelete( CHAR_DATA* ch, const char* argument)
    return;
 }
 
-void do_odelete( CHAR_DATA* ch, const char* argument)
+void do_odelete( CHAR_DATA* ch, const char* argument )
 {
    OBJ_INDEX_DATA *obj;
    int vnum;
@@ -9084,14 +9252,15 @@ void do_odelete( CHAR_DATA* ch, const char* argument)
    }
 
    /*
-    * Does the player have the right to delete this object? 
+    * Does the player have the right to delete this object?
     */
    if( get_trust( ch ) < sysdata.level_modify_proto
        && ( obj->vnum < ch->pcdata->area->low_o_vnum || obj->vnum > ch->pcdata->area->hi_o_vnum ) )
    {
-      send_to_char( "That object is not in your assigned range.\r\n", ch );
+      send_to_char( "That obj is not in your assigned range.\n\r", ch );
       return;
    }
+
    delete_obj( obj );
    ch_printf( ch, "Object %d has been deleted.\r\n", vnum );
    return;
@@ -9140,6 +9309,7 @@ void do_mdelete( CHAR_DATA* ch, const char* argument)
       send_to_char( "That mob is not in your assigned range.\r\n", ch );
       return;
    }
+
    delete_mob( mob );
    ch_printf( ch, "Mob %d has been deleted.\r\n", vnum );
    return;
@@ -9150,7 +9320,6 @@ void do_mdelete( CHAR_DATA* ch, const char* argument)
  *  Last modified Feb. 24 1999
  *  Mystaric
  */
-
 void mpcopy( MPROG_DATA * source, MPROG_DATA * destination )
 {
    destination->type = source->type;
@@ -9382,6 +9551,7 @@ void do_mpcopy( CHAR_DATA* ch, const char* argument)
       send_to_char( "Program being one of:\r\n", ch );
       send_to_char( "  act speech rand fight hitprcnt greet allgreet\r\n", ch );
       send_to_char( "  entry give bribe death time hour script\r\n", ch );
+      send_to_char( "  greetinfight\r\n", ch );
       return;
    }
 
@@ -9697,26 +9867,26 @@ void RelCreate( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
+      bug( "%s: invalid type (%d)", __func__, tp );
       return;
    }
 
    if( !actor )
    {
-      bug( "%s: NULL actor", __FUNCTION__ );
+      bug( "%s: NULL actor", __func__ );
       return;
    }
 
    if( !subject )
    {
-      bug( "%s: NULL subject", __FUNCTION__ );
+      bug( "%s: NULL subject", __func__ );
       return;
    }
 
    for( tmp = first_relation; tmp; tmp = tmp->next )
       if( tmp->Type == tp && tmp->Actor == actor && tmp->Subject == subject )
       {
-         bug( "%s: duplicated relation", __FUNCTION__ );
+         bug( "%s: duplicated relation", __func__ );
          return;
       }
 
@@ -9737,19 +9907,19 @@ void RelDestroy( relation_type tp, void *actor, void *subject )
 
    if( tp < relMSET_ON || tp > relOSET_ON )
    {
-      bug( "%s: invalid type (%d)", __FUNCTION__, tp );
+      bug( "%s: invalid type (%d)", __func__, tp );
       return;
    }
 
    if( !actor )
    {
-      bug( "%s: NULL actor", __FUNCTION__ );
+      bug( "%s: NULL actor", __func__ );
       return;
    }
 
    if( !subject )
    {
-      bug( "%s: NULL subject", __FUNCTION__ );
+      bug( "%s: NULL subject", __func__ );
       return;
    }
 

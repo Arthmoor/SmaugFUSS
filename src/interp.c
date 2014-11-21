@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -140,7 +140,7 @@ bool valid_watch( char *logline )
    int len = strlen( logline );
    char c = logline[0];
 
-   if( len == 1 && ( c == 'n' || c == 's' || c == 'e' || c == 'w' || c == 'u' || c == 'd' ) )
+   if( len == 1 && ( c == 'l' || c == 'n' || c == 's' || c == 'e' || c == 'w' || c == 'u' || c == 'd' ) )
       return FALSE;
    if( len == 2 && c == 'n' && ( logline[1] == 'e' || logline[1] == 'w' ) )
       return FALSE;
@@ -252,13 +252,13 @@ void interpret( CHAR_DATA * ch, char *argument )
 
    if( !ch )
    {
-      bug( "%s: null ch!", __FUNCTION__ );
+      bug( "%s: null ch!", __func__ );
       return;
    }
 
    if( !ch->in_room )
    {
-      bug( "%s: null in_room!", __FUNCTION__ );
+      bug( "%s: null in_room!", __func__ );
       return;
    }
 
@@ -270,7 +270,7 @@ void interpret( CHAR_DATA * ch, char *argument )
       if( ( fun = ch->last_cmd ) == NULL )
       {
          ch->substate = SUB_NONE;
-         bug( "%s: SUB_REPEATCMD with NULL last_cmd", __FUNCTION__ );
+         bug( "%s: SUB_REPEATCMD with NULL last_cmd", __func__ );
          return;
       }
       else
@@ -295,7 +295,7 @@ void interpret( CHAR_DATA * ch, char *argument )
          if( !found )
          {
             cmd = NULL;
-            bug( "%s: SUB_REPEATCMD: last_cmd invalid", __FUNCTION__ );
+            bug( "%s: SUB_REPEATCMD: last_cmd invalid", __func__ );
             return;
          }
          snprintf( logline, MAX_INPUT_LENGTH, "(%s) %s", cmd->name, argument );
@@ -309,7 +309,7 @@ void interpret( CHAR_DATA * ch, char *argument )
        */
       if( !argument || !strcmp( argument, "" ) )
       {
-         bug( "%s: null argument!", __FUNCTION__ );
+         bug( "%s: null argument!", __func__ );
          return;
       }
 
@@ -362,6 +362,8 @@ void interpret( CHAR_DATA * ch, char *argument )
                   || ( !IS_NPC( ch ) && ch->pcdata->council
                        && is_name( cmd->name, ch->pcdata->council->powers )
                        && cmd->level <= ( trust + MAX_CPD ) )
+                  || ( !IS_NPC( ch ) && IS_SET( ch->pcdata->flags, PCFLAG_RETIRED )
+                       && IS_SET( cmd->flags, CMD_FLAG_RETIRED ) )
                   || ( !IS_NPC( ch ) && ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0'
                        && is_name( cmd->name, ch->pcdata->bestowments ) && cmd->level <= ( trust + sysdata.bestow_dif ) ) ) )
          {
@@ -434,7 +436,7 @@ void interpret( CHAR_DATA * ch, char *argument )
    /*
     * check for a timer delayed command (search, dig, detrap, etc) 
     */
-   if( ( timer = get_timerptr( ch, TIMER_DO_FUN ) ) != NULL )
+   if( ( ( timer = get_timerptr( ch, TIMER_DO_FUN ) ) != NULL ) && ( !found || !IS_SET( cmd->flags, CMD_FLAG_NO_ABORT ) ) )
    {
       int tempsub;
 
@@ -532,7 +534,6 @@ void interpret( CHAR_DATA * ch, char *argument )
    /*
     * Nuisance stuff -- Shaddai
     */
-
    if( !IS_NPC( ch ) && ch->pcdata->nuisance && ch->pcdata->nuisance->flags > 9
        && number_percent(  ) < ( ( ch->pcdata->nuisance->flags - 9 ) * 10 * ch->pcdata->nuisance->power ) )
    {
@@ -548,6 +549,7 @@ void interpret( CHAR_DATA * ch, char *argument )
    start_timer( &time_used );
    ( *cmd->do_fun ) ( ch, argument );
    end_timer( &time_used );
+
    /*
     * Update the record of how many times this command has been used (haus)
     */
@@ -667,7 +669,7 @@ bool check_social( CHAR_DATA * ch, const char *command, const char *argument )
          else
          {
             set_char_color( AT_IGNORE, victim );
-            ch_printf( victim, "You attempt to ignore %s," " but are unable to do so.\r\n", ch->name );
+            ch_printf( victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see( victim, ch ) ? "Someone" : ch->name );
          }
       }
    }
@@ -712,8 +714,8 @@ bool check_social( CHAR_DATA * ch, const char *command, const char *argument )
       act( AT_SOCIAL, social->char_found, ch, NULL, victim, TO_CHAR );
       act( AT_SOCIAL, social->vict_found, ch, NULL, victim, TO_VICT );
 
-      if( !IS_NPC( ch ) && IS_NPC( victim )
-          && !IS_AFFECTED( victim, AFF_CHARM ) && IS_AWAKE( victim ) && !HAS_PROG( victim->pIndexData, ACT_PROG ) )
+      if( !IS_NPC( ch ) && IS_NPC( victim ) && !IS_AFFECTED( victim, AFF_CHARM ) && IS_AWAKE( victim ) && !victim->desc // This was just really annoying.. lemme do my own socials! -- Alty
+          && !HAS_PROG( victim->pIndexData, ACT_PROG ) )
       {
          switch ( number_bits( 4 ) )
          {

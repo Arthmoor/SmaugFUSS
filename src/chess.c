@@ -1,7 +1,7 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
@@ -445,6 +445,18 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
 
 static int is_valid_move( CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, int dx, int dy )
 {
+   if( !ch )
+   {
+      bug( "%s: NULL ch!", __func__ );
+      return MOVE_INVALID;
+   }
+
+   if( !board )
+   {
+      bug( "%s: NULL board!", __func__ );
+      return MOVE_INVALID;
+   }
+
    if( dx < 0 || dy < 0 || dx > 7 || dy > 7 )
       return MOVE_OFFBOARD;
 
@@ -1166,7 +1178,7 @@ void do_chess( CHAR_DATA* ch, const char* argument)
 #ifdef IMC
             if( ch->pcdata->game_board->type == TYPE_IMC )
             {
-               snprintf( arg, LGST, "move %d%d %d%d", x, y, dx, dy );
+               snprintf( arg, MAX_INPUT_LENGTH, "move %d%d %d%d", x, y, dx, dy );
                imc_send_chess( ch->pcdata->game_board->player1, ch->pcdata->game_board->player2, arg );
             }
 #endif
@@ -1258,7 +1270,7 @@ void do_chess( CHAR_DATA* ch, const char* argument)
             break;
 
          default:
-            bug( "%s: Unknown return value", __FUNCTION__ );
+            bug( "%s: Unknown return value", __func__ );
             break;
       }
 #undef SEND_TO_OPP

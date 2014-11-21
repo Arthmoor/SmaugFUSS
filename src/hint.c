@@ -1,7 +1,7 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
@@ -50,7 +50,6 @@ void SwapHint( HINT_DATA * pHint1, HINT_DATA * pHint2 )
 const char *get_hint( int level )
 {
    HINT_DATA *hintData;
-   bool found = FALSE;
    static char buf[MAX_STRING_LENGTH];
    int count, which;
 
@@ -62,7 +61,6 @@ const char *get_hint( int level )
    }
    else
    {
-      found = FALSE;
       hintData = first_hint;
       for( hintData = first_hint; hintData; hintData = hintData->next )
       {
@@ -110,7 +108,7 @@ void write_hint( void )
    sprintf( filename, "%s", HINT_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s: fopen", __FUNCTION__ );
+      bug( "%s: fopen", __func__ );
       perror( filename );
       return;
    }
@@ -381,7 +379,7 @@ HINT_DATA *read_hint( char *filename, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "%s: no match: %s", __FUNCTION__, word );
+         bug( "%s: no match: %s", __func__, word );
    }
    STRFREE( hintData->text );
    DISPOSE( hintData );

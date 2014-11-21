@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -1764,7 +1764,7 @@ MORPH_DATA *fread_morph( FILE * fp )
             KEY( "Charisma", morph->cha, fread_number( fp ) );
             if( !str_cmp( word, "Class" ) )
             {
-               arg = fread_string( fp );
+               arg = fread_flagstring( fp );
                while( arg[0] != '\0' )
                {
                   arg = one_argument( arg, temp );
@@ -2271,6 +2271,7 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
    CREATE( morph, CHAR_MORPH, 1 );
    clear_char_morph( morph );
    ch->morph = morph;
+
    for( ;; )
    {
       word = feof( fp ) ? "End" : fread_word( fp );
@@ -2282,39 +2283,47 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "Affect", morph->affected_by, fread_bitvector( fp ) );
             KEY( "Armor", morph->ac, fread_number( fp ) );
             break;
+
          case 'C':
             KEY( "Charisma", morph->cha, fread_number( fp ) );
             KEY( "Constitution", morph->con, fread_number( fp ) );
             break;
+
          case 'D':
             KEY( "Damroll", morph->damroll, fread_number( fp ) );
             KEY( "Dexterity", morph->dex, fread_number( fp ) );
             KEY( "Dodge", morph->dodge, fread_number( fp ) );
             break;
+
          case 'E':
             if( !str_cmp( "End", word ) )
                return;
             break;
+
          case 'H':
             KEY( "Hit", morph->hit, fread_number( fp ) );
             KEY( "Hitroll", morph->hitroll, fread_number( fp ) );
             break;
+
          case 'I':
             KEY( "Immune", morph->immune, fread_number( fp ) );
             KEY( "Intelligence", morph->inte, fread_number( fp ) );
             break;
+
          case 'L':
             KEY( "Luck", morph->lck, fread_number( fp ) );
             break;
+
          case 'M':
             KEY( "Mana", morph->mana, fread_number( fp ) );
             KEY( "Move", morph->move, fread_number( fp ) );
             break;
+
          case 'N':
             if( !str_cmp( "Name", word ) )
             {
                if( morph->morph )
-                  if( str_cmp( morph->morph->name, fread_string( fp ) ) )
+                  if( str_cmp( morph->morph->name, fread_flagstring( fp ) ) )
                      bug( "Morph Name doesn't match vnum %d.", morph->morph->vnum );
                fMatch = TRUE;
                break;
@@ -2324,12 +2333,15 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "NoResistant", morph->no_resistant, fread_number( fp ) );
             KEY( "NoSuscept", morph->no_suscept, fread_number( fp ) );
             break;
+
          case 'P':
             KEY( "Parry", morph->parry, fread_number( fp ) );
             break;
+
          case 'R':
             KEY( "Resistant", morph->resistant, fread_number( fp ) );
             break;
+
          case 'S':
             KEY( "Save1", morph->saving_breath, fread_number( fp ) );
             KEY( "Save2", morph->saving_para_petri, fread_number( fp ) );
@@ -2339,10 +2351,12 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             KEY( "Strength", morph->str, fread_number( fp ) );
             KEY( "Suscept", morph->suscept, fread_number( fp ) );
             break;
+
          case 'T':
             KEY( "Timer", morph->timer, fread_number( fp ) );
             KEY( "Tumble", morph->tumble, fread_number( fp ) );
             break;
+
          case 'V':
             if( !str_cmp( "Vnum", word ) )
             {
@@ -2351,17 +2365,18 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
                break;
             }
             break;
+
          case 'W':
             KEY( "Wisdom", morph->wis, fread_number( fp ) );
             break;
       }
+
       if( !fMatch )
       {
-         bug( "Fread_morph_data: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
-   return;
 }
 
 /* 

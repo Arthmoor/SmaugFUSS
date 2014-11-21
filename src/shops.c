@@ -1,18 +1,18 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			 Shop and repair shop module                              *
+ *                       Shop and repair shop module                        *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -47,7 +47,7 @@ CHAR_DATA *find_keeper( CHAR_DATA * ch )
    {
       do_say( keeper, "Murderers are not welcome here!" );
       snprintf( buf, MAX_STRING_LENGTH, "%s the KILLER is over here!\r\n", ch->name );
-      do_shout( keeper, buf );
+      do_yell( keeper, buf );
       return NULL;
    }
 
@@ -55,7 +55,7 @@ CHAR_DATA *find_keeper( CHAR_DATA * ch )
    {
       do_say( keeper, "Thieves are not welcome here!" );
       snprintf( buf, MAX_STRING_LENGTH, "%s the THIEF is over here!\r\n", ch->name );
-      do_shout( keeper, buf );
+      do_yell( keeper, buf );
       return NULL;
    }
 
@@ -171,7 +171,7 @@ CHAR_DATA *find_fixer( CHAR_DATA * ch )
    {
       do_say( keeper, "Murderers are not welcome here!" );
       snprintf( buf, MAX_STRING_LENGTH, "%s the KILLER is over here!\r\n", ch->name );
-      do_shout( keeper, buf );
+      do_yell( keeper, buf );
       return NULL;
    }
 
@@ -179,7 +179,7 @@ CHAR_DATA *find_fixer( CHAR_DATA * ch )
    {
       do_say( keeper, "Thieves are not welcome here!" );
       snprintf( buf, MAX_STRING_LENGTH, "%s the THIEF is over here!\r\n", ch->name );
-      do_shout( keeper, buf );
+      do_yell( keeper, buf );
       return NULL;
    }
 
@@ -347,7 +347,12 @@ int get_repaircost( CHAR_DATA * keeper, OBJ_DATA * obj )
    {
       if( obj->item_type == rShop->fix_type[itype] )
       {
-         cost = ( int )( obj->cost * rShop->profit_fix / 1000 );
+         if( obj->item_type == ITEM_ARMOR && obj->cost == 0 )
+            cost = ( int )( ( obj->pIndexData->cost * 66 ) / 100 * rShop->profit_fix / 1000 );
+         else if( obj->item_type == ITEM_WEAPON && obj->cost == 0 )
+            cost = ( int )( ( obj->pIndexData->cost * 66 ) / 100 * rShop->profit_fix / 1000 );
+         else
+            cost = ( int )( obj->cost * rShop->profit_fix / 1000 );
          found = TRUE;
          break;
       }
@@ -413,7 +418,7 @@ void do_buy( CHAR_DATA* ch, const char* argument)
       pRoomIndexNext = get_room_index( ch->in_room->vnum + 1 );
       if( !pRoomIndexNext )
       {
-         bug( "%s: bad pet shop at vnum %d.", __FUNCTION__, ch->in_room->vnum );
+         bug( "%s: bad pet shop at vnum %d.", __func__, ch->in_room->vnum );
          send_to_char( "Sorry, you can't buy that here.\r\n", ch );
          return;
       }
@@ -903,7 +908,7 @@ void repair_one_obj( CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj,
    int cost;
 
    if( !can_drop_obj( ch, obj ) )
-      ch_printf( ch, "You can't let go of %s.\r\n", obj->name );
+      ch_printf( ch, "You can't let go of %s.\r\n", obj->short_descr );
    else if( ( cost = get_repaircost( keeper, obj ) ) < 0 )
    {
       if( cost != -2 )
@@ -919,7 +924,7 @@ void repair_one_obj( CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj,
    {
       snprintf( buf, MAX_STRING_LENGTH,
                 "$N tells you, 'It will cost %d piece%s of gold to %s %s...'", cost,
-                cost == 1 ? "" : "s", fixstr, obj->name );
+                cost == 1 ? "" : "s", fixstr, obj->short_descr );
       act( AT_TELL, buf, ch, NULL, keeper, TO_CHAR );
       act( AT_TELL, "$N tells you, 'Which I see you can't afford.'", ch, NULL, keeper, TO_CHAR );
    }
@@ -1031,7 +1036,7 @@ void appraise_all( CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr )
       {
 
          if( !can_drop_obj( ch, obj ) )
-            ch_printf( ch, "You can't let go of %s.\r\n", obj->name );
+            ch_printf( ch, "You can't let go of %s.\r\n", obj->short_descr );
          else if( ( cost = get_repaircost( keeper, obj ) ) < 0 )
          {
             if( cost != -2 )
@@ -1043,7 +1048,7 @@ void appraise_all( CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr )
          {
             snprintf( buf, MAX_STRING_LENGTH,
                       "$N tells you, 'It will cost %d piece%s of gold to %s %s'",
-                      cost, cost == 1 ? "" : "s", fixstr, obj->name );
+                      cost, cost == 1 ? "" : "s", fixstr, obj->short_descr );
             act( AT_TELL, buf, ch, NULL, keeper, TO_CHAR );
             total += cost;
          }

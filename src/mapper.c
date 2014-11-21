@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -278,7 +278,7 @@ void map_exits( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoom, int x, int y, int depth
       default:
          dmap[x][y].tegn = 'O';
          dmap[x][y].sector = -1;
-         bug( "%s: Bad sector type (%d) in room %d.", __FUNCTION__, pRoom->sector_type, pRoom->vnum );
+         bug( "%s: Bad sector type (%d) in room %d.", __func__, pRoom->sector_type, pRoom->vnum );
          break;
    }
 

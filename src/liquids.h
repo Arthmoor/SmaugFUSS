@@ -91,6 +91,7 @@ struct mixture_list
 };
 
 LIQ_TABLE *get_liq_vnum( int vnum );
+LIQ_TABLE *get_liq( const char *str );
 void load_liquids( void );
 void load_mixtures( void );
 void free_liquiddata( void );

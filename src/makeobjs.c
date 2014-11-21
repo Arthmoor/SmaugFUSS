@@ -1,18 +1,18 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			Specific object creation module			    *
+ *                     Specific object creation module                      *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -173,7 +173,7 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
          corpse->value[3] = 0;
    }
 
-   if( CAN_PKILL( ch ) && CAN_PKILL( killer ) && ch != killer )
+   if( CAN_PKILL( ch ) && CAN_PKILL( killer ) && ch != killer && sysdata.pk_loot )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s", killer->name );
       STRFREE( corpse->action_desc );
@@ -198,18 +198,89 @@ OBJ_DATA *make_corpse( CHAR_DATA * ch, CHAR_DATA * killer )
    for( obj = ch->first_carrying; obj; obj = obj_next )
    {
       obj_next = obj->next_content;
+      /*
+       * don't put perm player eq in the corpse 
+       */
+      if( !IS_NPC( ch ) && IS_OBJ_STAT( obj, ITEM_PERMANENT ) )
+         continue;
       obj_from_char( obj );
       if( IS_OBJ_STAT( obj, ITEM_INVENTORY ) || IS_OBJ_STAT( obj, ITEM_DEATHROT ) )
          extract_obj( obj );
+      else if( IS_OBJ_STAT( obj, ITEM_DEATHDROP ) )
+      {
+         obj_to_room( obj, ch->in_room );
+         oprog_drop_trigger( ch, obj );   /* mudprogs */
+      }
       else
          obj_to_obj( obj, corpse );
    }
    return obj_to_room( corpse, ch->in_room );
 }
 
+void make_puddle( CHAR_DATA * ch, OBJ_DATA * cont )
+{
+   OBJ_DATA *obj;
+   char buf[20];
+   char buf2[70];
+   bool found = FALSE;
+   LIQ_TABLE *liq = NULL;
+
+   for(obj = ch->in_room->first_content; obj; obj = obj->next_content )
+   {
+      if( obj->pIndexData->item_type == ITEM_PUDDLE )
+      {
+         if( obj->value[2] == cont->value[2] )
+         {
+            obj->value[1] += cont->value[1];
+            obj->value[3] += cont->value[3];
+            obj->timer = number_range( 2, 4 );
+            found = TRUE;
+            break;
+         }
+      }
+   }
+
+   if( !found )
+   {
+      obj = create_object( get_obj_index( OBJ_VNUM_PUDDLE ), 0 );
+      obj->timer = number_range( 2, 4 );
+      obj->value[1] += cont->value[1];
+      obj->value[2] = cont->value[2];
+      obj->value[3] = cont->value[3];
+      obj_to_room( obj, ch->in_room );
+   }
+
+   liq = get_liq_vnum( obj->value[2] );
+
+   if( obj->value[1] > 15 )
+      mudstrlcpy( buf, "large", 20 );
+   else if( obj->value[1] > 10 )
+      mudstrlcpy( buf, "rather large", 20 );
+   else if( obj->value[1] > 5 )
+      mudstrlcpy( buf, "rather small", 20 );
+   else
+      mudstrlcpy( buf, "small", 20 );
+   snprintf( buf2, 70, "There is a %s puddle of %s.", buf, ( liq == NULL ? "water" : liq->name ) );
+   obj->description = STRALLOC( buf2 );
+   return;
+}
+
 void make_blood( CHAR_DATA * ch )
 {
    OBJ_DATA *obj;
+   OBJ_DATA *obj_next;
+
+   for( obj = ch->in_room->first_content; obj; obj = obj_next )
+   {
+      if( obj->pIndexData->vnum == OBJ_VNUM_BLOOD )
+      {
+         obj->description = STRALLOC( "A large pool of spilled blood lies here." );
+         obj->value[1] += number_range( 3, UMIN( 5, ch->level ) );
+         obj->timer = number_range( 2, 4 );
+         return;
+      }
+      obj_next = obj->next_content;
+   }
 
    obj = create_object( get_obj_index( OBJ_VNUM_BLOOD ), 0 );
    obj->timer = number_range( 2, 4 );
@@ -225,7 +296,6 @@ void make_bloodstain( CHAR_DATA * ch )
    obj->timer = number_range( 1, 2 );
    obj_to_room( obj, ch->in_room );
 }
-
 
 /*
  * make some coinage

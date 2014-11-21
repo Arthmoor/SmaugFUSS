@@ -32,8 +32,8 @@ Stats3     4 10 200
 Stats4     0 0 0 0 0
 Attribs    13 13 13 13 13 13 13
 Saves      0 0 0 0 0
-Speaks     common elvish orcish trollese insectoid spiritual magical clan gnome~
-Speaking   common elvish orcish trollese insectoid spiritual magical clan gnome~
+Speaks     common elvish orcish trollese insectoid spiritual magical clan gnomish~
+Speaking   common elvish orcish trollese insectoid spiritual magical clan gnomish~
 Immune     sleep charm nonmagic magic paralysis~
 Attacks    claws~
 Defenses   parry dodge~
@@ -1717,6 +1717,17 @@ Stats    5000 5000 500 0 0
 #ENDOBJECT
 
 #OBJECT
+Vnum     79
+Keywords husk shell~
+Type     trash~
+Short    a sturdy shell from %s~
+Long     A sturdy shell from %s lies here.~
+WFlags   take~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
 Vnum     80
 Keywords feather~
 Type     trash~
@@ -1847,6 +1858,16 @@ You cannot leave if engaged in combat.
 ~
 #ENDEXDESC
 
+#ENDOBJECT
+
+#OBJECT
+Vnum     95
+Keywords puddle~
+Type     puddle~
+Short    a puddle of %s~
+Long     A puddle of %s is here.~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
 #ENDOBJECT
 
 #OBJECT

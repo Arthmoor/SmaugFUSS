@@ -1,11 +1,11 @@
 /****************************************************************************
  * [S]imulated [M]edieval [A]dventure multi[U]ser [G]ame      |   \\._.//   *
  * -----------------------------------------------------------|   (0...0)   *
- * SMAUG 1.4 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
+ * SMAUG 1.8 (C) 1994, 1995, 1996, 1998  by Derek Snider      |    ).:.(    *
  * -----------------------------------------------------------|    {o o}    *
  * SMAUG code team: Thoric, Altrag, Blodkai, Narn, Haus,      |   / ' ' \   *
  * Scryn, Rennard, Swordbearer, Gorog, Grishnakh, Nivek,      |~'~.VxvxV.~'~*
- * Tricops and Fireblade                                      |             *
+ * Tricops, Fireblade, Edmond, Conran                         |             *
  * ------------------------------------------------------------------------ *
  * Merc 2.1 Diku Mud improvments copyright (C) 1992, 1993 by Michael        *
  * Chastain, Michael Quan, and Mitchell Tse.                                *
@@ -81,8 +81,8 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( roomname, room->name, MAX_STRING_LENGTH );
          else
             strncpy( roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH );
-         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d]\r\n", *num, mobname, pReset->arg1,
-                   roomname, pReset->arg3, pReset->arg2 );
+         snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d] %s\r\n", *num, mobname, pReset->arg1,
+                   roomname, pReset->arg3, pReset->arg2, pReset->sreset ? "[Not Reset]" : "[Reset]" );
 
          for( tReset = pReset->first_reset; tReset; tReset = tReset->next_reset )
          {
@@ -476,15 +476,9 @@ int count_obj_list( OBJ_INDEX_DATA * pObjIndex, OBJ_DATA * list )
    int nMatch = 0;
 
    for( obj = list; obj; obj = obj->next_content )
-   {
       if( obj->pIndexData == pObjIndex )
-      {
-         if( obj->count > 1 )
-            nMatch += obj->count;
-         else
-            nMatch++;
-      }
-   }
+         nMatch += obj->count;
+
    return nMatch;
 }
 
@@ -516,18 +510,18 @@ void reset_room( ROOM_INDEX_DATA * room )
       switch ( pReset->command )
       {
          default:
-            bug( "%s: %s: bad command %c.", __FUNCTION__, filename, pReset->command );
+            bug( "%s: %s: bad command %c.", __func__, filename, pReset->command );
             break;
 
          case 'M':
             if( !( pMobIndex = get_mob_index( pReset->arg1 ) ) )
             {
-               bug( "%s: %s: 'M': bad mob vnum %d.", __FUNCTION__, filename, pReset->arg1 );
+               bug( "%s: %s: 'M': bad mob vnum %d.", __func__, filename, pReset->arg1 );
                continue;
             }
             if( !( pRoomIndex = get_room_index( pReset->arg3 ) ) )
             {
-               bug( "%s: %s: 'M': bad room vnum %d.", __FUNCTION__, filename, pReset->arg3 );
+               bug( "%s: %s: 'M': bad room vnum %d.", __func__, filename, pReset->arg3 );
                continue;
             }
             if( !pReset->sreset )
@@ -561,7 +555,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                      case 'E':
                         if( !( pObjIndex = get_obj_index( tReset->arg1 ) ) )
                         {
-                           bug( "%s: %s: 'E' or 'G': bad obj vnum %d.", __FUNCTION__, filename, tReset->arg1 );
+                           bug( "%s: %s: 'E' or 'G': bad obj vnum %d.", __func__, filename, tReset->arg1 );
                            continue;
                         }
                         if( !mob )
@@ -615,19 +609,19 @@ void reset_room( ROOM_INDEX_DATA * room )
                                  case 'P':
                                     if( !( pObjIndex = get_obj_index( gReset->arg1 ) ) )
                                     {
-                                       bug( "%s: %s: 'P': bad obj vnum %d.", __FUNCTION__, filename, gReset->arg1 );
+                                       bug( "%s: %s: 'P': bad obj vnum %d.", __func__, filename, gReset->arg1 );
                                        continue;
                                     }
                                     iNest = gReset->extra;
 
                                     if( !( pObjToIndex = get_obj_index( gReset->arg3 ) ) )
                                     {
-                                       bug( "%s: %s: 'P': bad objto vnum %d.", __FUNCTION__, filename, gReset->arg3 );
+                                       bug( "%s: %s: 'P': bad objto vnum %d.", __func__, filename, gReset->arg3 );
                                        continue;
                                     }
                                     if( iNest >= MAX_NEST )
                                     {
-                                       bug( "%s: %s: 'P': Exceeded nesting limit of %d", __FUNCTION__, filename, MAX_NEST );
+                                       bug( "%s: %s: 'P': Exceeded nesting limit of %d", __func__, filename, MAX_NEST );
                                        obj = NULL;
                                        break;
                                     }
@@ -679,12 +673,12 @@ void reset_room( ROOM_INDEX_DATA * room )
          case 'O':
             if( !( pObjIndex = get_obj_index( pReset->arg1 ) ) )
             {
-               bug( "%s: %s: 'O': bad obj vnum %d.", __FUNCTION__, filename, pReset->arg1 );
+               bug( "%s: %s: 'O': bad obj vnum %d.", __func__, filename, pReset->arg1 );
                continue;
             }
             if( !( pRoomIndex = get_room_index( pReset->arg3 ) ) )
             {
-               bug( "%s: %s: 'O': bad room vnum %d.", __FUNCTION__, filename, pReset->arg3 );
+               bug( "%s: %s: 'O': bad room vnum %d.", __func__, filename, pReset->arg3 );
                continue;
             }
 
@@ -737,7 +731,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                      case 'T':
                         if( !IS_SET( tReset->extra, TRAP_OBJ ) )
                         {
-                           bug( "%s: Room reset found on object reset list", __FUNCTION__ );
+                           bug( "%s: Room reset found on object reset list", __func__ );
                            break;
                         }
                         else
@@ -751,7 +745,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                            {
                               if( !( pObjToIndex = get_obj_index( tReset->arg3 ) ) )
                               {
-                                 bug( "%s: %s: 'T': bad objto vnum %d.", __FUNCTION__, filename, tReset->arg3 );
+                                 bug( "%s: %s: 'T': bad objto vnum %d.", __func__, filename, tReset->arg3 );
                                  continue;
                               }
                               if( room->area->nplayer > 0 || !( to_obj = get_obj_type( pObjToIndex ) ) ||
@@ -772,20 +766,20 @@ void reset_room( ROOM_INDEX_DATA * room )
                      case 'P':
                         if( !( pObjIndex = get_obj_index( tReset->arg1 ) ) )
                         {
-                           bug( "%s: %s: 'P': bad obj vnum %d.", __FUNCTION__, filename, tReset->arg1 );
+                           bug( "%s: %s: 'P': bad obj vnum %d.", __func__, filename, tReset->arg1 );
                            continue;
                         }
                         iNest = tReset->extra;
 
                         if( !( pObjToIndex = get_obj_index( tReset->arg3 ) ) )
                         {
-                           bug( "%s: %s: 'P': bad objto vnum %d.", __FUNCTION__, filename, tReset->arg3 );
+                           bug( "%s: %s: 'P': bad objto vnum %d.", __func__, filename, tReset->arg3 );
                            continue;
                         }
 
                         if( iNest >= MAX_NEST )
                         {
-                           bug( "%s: %s: 'P': Exceeded nesting limit of %d. Room %d.", __FUNCTION__, filename, MAX_NEST,
+                           bug( "%s: %s: 'P': Exceeded nesting limit of %d. Room %d.", __func__, filename, MAX_NEST,
                                 room->vnum );
                            obj = NULL;
                            break;
@@ -833,14 +827,14 @@ void reset_room( ROOM_INDEX_DATA * room )
          case 'T':
             if( IS_SET( pReset->extra, TRAP_OBJ ) )
             {
-               bug( "%s: Object trap found in room %d reset list", __FUNCTION__, room->vnum );
+               bug( "%s: Object trap found in room %d reset list", __func__, room->vnum );
                break;
             }
             else
             {
                if( !( pRoomIndex = get_room_index( pReset->arg3 ) ) )
                {
-                  bug( "%s: %s: 'T': bad room %d.", __FUNCTION__, filename, pReset->arg3 );
+                  bug( "%s: %s: 'T': bad room %d.", __func__, filename, pReset->arg3 );
                   continue;
                }
                if( room->area->nplayer > 0
@@ -854,7 +848,7 @@ void reset_room( ROOM_INDEX_DATA * room )
          case 'D':
             if( !( pRoomIndex = get_room_index( pReset->arg1 ) ) )
             {
-               bug( "%s: %s: 'D': bad room vnum %d.", __FUNCTION__, filename, pReset->arg1 );
+               bug( "%s: %s: 'D': bad room vnum %d.", __func__, filename, pReset->arg1 );
                continue;
             }
             if( !( pexit = get_exit( pRoomIndex, pReset->arg2 ) ) )
@@ -883,7 +877,7 @@ void reset_room( ROOM_INDEX_DATA * room )
          case 'R':
             if( !( pRoomIndex = get_room_index( pReset->arg1 ) ) )
             {
-               bug( "%s: %s: 'R': bad room vnum %d.", __FUNCTION__, filename, pReset->arg1 );
+               bug( "%s: %s: 'R': bad room vnum %d.", __func__, filename, pReset->arg1 );
                continue;
             }
             randomize_exits( pRoomIndex, pReset->arg2 - 1 );
@@ -950,7 +944,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
 
    if( !room )
    {
-      bug( "%s: NULL room!", __FUNCTION__ );
+      bug( "%s: NULL room!", __func__ );
       return NULL;
    }
 
@@ -968,7 +962,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
       case 'G':
          if( !room->last_mob_reset )
          {
-            bug( "%s: Can't add '%c' reset to room: last_mob_reset is NULL.", __FUNCTION__, letter );
+            bug( "%s: Can't add '%c' reset to room: last_mob_reset is NULL.", __func__, letter );
             return NULL;
          }
          room->last_obj_reset = pReset;
@@ -978,7 +972,7 @@ RESET_DATA *add_reset( ROOM_INDEX_DATA * room, char letter, int extra, int arg1,
       case 'P':
          if( !room->last_obj_reset )
          {
-            bug( "%s: Can't add '%c' reset to room: last_obj_reset is NULL.", __FUNCTION__, letter );
+            bug( "%s: Can't add '%c' reset to room: last_obj_reset is NULL.", __func__, letter );
             return NULL;
          }
          LINK( pReset, room->last_obj_reset->first_reset, room->last_obj_reset->last_reset, next_reset, prev_reset );
@@ -1163,29 +1157,27 @@ void do_reset( CHAR_DATA* ch, const char* argument)
    if( !str_cmp( arg, "random" ) )
    {
       RESET_DATA *pReset;
-      int vnum = get_dir( arg );
+      int door;
 
       argument = one_argument( argument, arg );
+      door = get_dir( arg );
 
-      if( vnum < 0 || vnum > 9 )
+      if( door < 0 || door > 9 )
       {
-         send_to_char( "Reset which random doors?\r\n", ch );
+         send_to_char( "Reset which directions randomly?\r\n", ch );
+         send_to_char( "3 would randomize north, south, east, west.\r\n", ch );
+         send_to_char( "5 would do those and up, down.\r\n", ch );
+         send_to_char( "9 would do those and ne, nw, se, sw.\r\n", ch );
          return;
       }
 
-      if( vnum == 0 )
+      if( door == 0 )
       {
          send_to_char( "There is no point in randomizing one door.\r\n", ch );
          return;
       }
 
-      if( !get_room_index( vnum ) )
-      {
-         send_to_char( "Target room does not exist.\r\n", ch );
-         return;
-      }
-
-      pReset = make_reset( 'R', 0, ch->in_room->vnum, vnum, 0 );
+      pReset = make_reset( 'R', 0, ch->in_room->vnum, door, 0 );
       pReset->prev = NULL;
       pReset->next = ch->in_room->first_reset;
       if( ch->in_room->first_reset )
@@ -1332,6 +1324,9 @@ void update_room_reset( CHAR_DATA *ch, bool setting )
    int nfind = 0;
 
    if( !ch )
+      return;
+
+   if( ch->loadedself )
       return;
 
    if( !( room = get_room_index( ch->resetvnum ) ) )

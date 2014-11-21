@@ -69,6 +69,8 @@ const char *const mod_types[MAX_CONDS] = {
    "Drunk", "Full", "Thirst", "Bloodthirst"
 };
 
+void save_house_by_vnum( int vnum );
+
 /* locals */
 int top_liquid;
 int liq_count;
@@ -86,7 +88,7 @@ void save_liquids( void )
    snprintf( filename, 256, "%sliquids.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: cannot open %s for writing", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for writing", __func__, filename );
       return;
    }
 
@@ -177,7 +179,7 @@ LIQ_TABLE *fread_liquid( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -212,7 +214,7 @@ void load_liquids( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return;
       }
 
@@ -222,7 +224,7 @@ void load_liquids( void )
          LIQ_TABLE *liq = fread_liquid( fp );
 
          if( !liq )
-            bug( "%s: returned NULL liquid", __FUNCTION__ );
+            bug( "%s: returned NULL liquid", __func__ );
          else
          {
             liquid_table[liq->vnum] = liq;
@@ -236,7 +238,7 @@ void load_liquids( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          continue;
       }
    }
@@ -255,7 +257,7 @@ void save_mixtures( void )
    snprintf( filename, 256, "%smixtures.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s: cannot open %s for writing", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for writing", __func__, filename );
       return;
    }
 
@@ -333,7 +335,7 @@ MIX_TABLE *fread_mixture( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -348,7 +350,7 @@ void load_mixtures( void )
    snprintf( filename, 256, "%smixtures.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "%s: cannot open %s for reading", __FUNCTION__, filename );
+      bug( "%s: cannot open %s for reading", __func__, filename );
       return;
    }
 
@@ -365,7 +367,7 @@ void load_mixtures( void )
 
       if( letter != '#' )
       {
-         bug( "%s: # not found (%c)", __FUNCTION__, letter );
+         bug( "%s: # not found (%c)", __func__, letter );
          return;
       }
 
@@ -376,7 +378,7 @@ void load_mixtures( void )
 
          mix = fread_mixture( fp );
          if( !mix )
-            bug( "%s", "load_mixtures(): mixture returned NULL" );
+            bug( "%s: mixture returned NULL", __func__ );
          else
             LINK( mix, first_mixture, last_mixture, next, prev );
       }
@@ -384,7 +386,7 @@ void load_mixtures( void )
          break;
       else
       {
-         bug( "%s: no match for %s", __FUNCTION__, word );
+         bug( "%s: no match for %s", __func__, word );
          break;
       }
    }
@@ -421,7 +423,7 @@ LIQ_TABLE *get_liq( const char *str )
    {
       i = atoi( str );
 
-      return liquid_table[i];
+      return get_liq_vnum( i );
    }
    else
    {
@@ -434,6 +436,17 @@ LIQ_TABLE *get_liq( const char *str )
 
 LIQ_TABLE *get_liq_vnum( int vnum )
 {
+   /*
+    * Bugfix - This could have crashed things if the number was out of range.
+    * Calling function should be validating for NULLs, or it'll crash there instead.
+    * Samson 11-09-2014
+    */
+   if( vnum < 0 || vnum > top_liquid )
+   {
+      bug( "%s: Invalid vnum %d, returning NULL", __func__, vnum );
+      return NULL;
+   }
+
    return liquid_table[vnum];
 }
 
@@ -447,6 +460,32 @@ MIX_TABLE *get_mix( const char *str )
          return mix;
 
    return NULL;
+}
+
+void free_liquiddata( void )
+{
+   MIX_TABLE *mix, *mix_next;
+   LIQ_TABLE *liq;
+   int loopa;
+
+   for( mix = first_mixture; mix; mix = mix_next )
+   {
+      mix_next = mix->next;
+      UNLINK( mix, first_mixture, last_mixture, next, prev );
+      STRFREE( mix->name );
+      DISPOSE( mix );
+   }
+
+   for( loopa = 0; loopa <= top_liquid; ++loopa )
+   {
+      liq = get_liq_vnum( loopa );
+
+      STRFREE( liq->name );
+      STRFREE( liq->color );
+      STRFREE( liq->shortdesc );
+      DISPOSE( liq );
+   }
+   return;
 }
 
 /* Function to display liquid list. - Tarl 9 Jan 03 */
@@ -1219,7 +1258,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
    if( arg[0] == '\0' )
    {
       for( obj = ch->in_room->first_content; obj; obj = obj->next_content )
-         if( obj->item_type == ITEM_FOUNTAIN )
+         if( ( obj->item_type == ITEM_FOUNTAIN ) || ( obj->item_type == ITEM_BLOOD ) || ( obj->item_type == ITEM_PUDDLE ) )
             break;
 
       if( !obj )
@@ -1333,7 +1372,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
 
          if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
          {
-            bug( "Do_drink: bad liquid number %d.", obj->value[2] );
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
             liq = get_liq_vnum( 0 );
          }
 
@@ -1378,7 +1417,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
 
          if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
          {
-            bug( "%s: bad liquid number %d.", __FUNCTION__, obj->value[2] );
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
             liq = get_liq_vnum( 0 );
          }
 
@@ -1396,6 +1435,7 @@ void do_drink( CHAR_DATA* ch, const char* argument)
          gain_condition( ch, COND_DRUNK, liq->mod[COND_DRUNK] );
          gain_condition( ch, COND_FULL, liq->mod[COND_FULL] );
          gain_condition( ch, COND_THIRST, liq->mod[COND_THIRST] );
+
          if( IS_VAMPIRE( ch ) )
             gain_condition( ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST] );
 
@@ -1476,6 +1516,117 @@ void do_drink( CHAR_DATA* ch, const char* argument)
          }
          break;
       }
+
+      case ITEM_PUDDLE: 
+      {
+         LIQ_TABLE *liq = NULL;
+
+         if( obj->value[1] <= 0 )
+         { 
+            bug( "%s: empty puddle %d.", __func__, obj->in_room->vnum ); 
+            return; 
+         } 
+
+         if( ( liq = get_liq_vnum( obj->value[2] ) ) == NULL )
+         { 
+            bug( "%s: bad liquid number %d.", __func__, obj->value[2] );
+            liq = get_liq_vnum( 0 );
+         }
+
+         if( !oprog_use_trigger( ch, obj, NULL, NULL ) )
+         { 
+            act( AT_ACTION, "$n stoops to the ground and drinks from $p.", ch, obj, NULL, TO_ROOM );
+            act( AT_ACTION, "You stoop to the ground and drink $T from $p.", ch, obj, liq->name, TO_CHAR );
+         }
+
+         amount = 1;
+
+         gain_condition( ch, COND_DRUNK, liq->mod[COND_DRUNK] );
+         gain_condition( ch, COND_FULL, liq->mod[COND_FULL] );
+         gain_condition( ch, COND_THIRST, liq->mod[COND_THIRST] );
+
+         if( IS_VAMPIRE( ch ) )
+            gain_condition( ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST] );
+
+         if( liq->type == LIQTYPE_POISON )
+         {
+            act( AT_POISON, "$n sputters and gags.", ch, NULL, NULL, TO_ROOM );
+            act( AT_POISON, "You sputter and gag.", ch, NULL, NULL, TO_CHAR );
+            ch->mental_state = URANGE( 20, ch->mental_state + 5, 100 );
+            af.type = gsn_poison;
+            af.duration = obj->value[3];
+            af.location = APPLY_NONE;
+            af.modifier = 0;
+            af.bitvector = meb( AFF_POISON );
+            affect_join( ch, &af );
+         }
+
+         if( !IS_NPC( ch ) )
+         {
+            if( ch->pcdata->condition[COND_DRUNK] > ( MAX_COND_VALUE / 2 )
+                && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .4 ) )
+               send_to_char( "You feel quite sloshed.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .4 )
+                     && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .6 ) )
+               send_to_char( "You start to feel a little drunk.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .6 )
+                     && ch->pcdata->condition[COND_DRUNK] < ( MAX_COND_VALUE * .9 ) )
+               send_to_char( "Your vision starts to get blurry.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] >= ( MAX_COND_VALUE * .9 )
+                     && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE )
+               send_to_char( "You feel very drunk.\r\n", ch );
+            else if( ch->pcdata->condition[COND_DRUNK] == MAX_COND_VALUE )
+               send_to_char( "You feel like your going to pass out.\r\n", ch );
+
+            if( ch->pcdata->condition[COND_THIRST] > ( MAX_COND_VALUE / 2 )
+                && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .4 ) )
+               send_to_char( "Your stomach begins to slosh around.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .4 )
+                     && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .6 ) )
+               send_to_char( "You start to feel bloated.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .6 )
+                     && ch->pcdata->condition[COND_THIRST] < ( MAX_COND_VALUE * .9 ) )
+               send_to_char( "You feel bloated.\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] >= ( MAX_COND_VALUE * .9 )
+                     && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE )
+               send_to_char( "You stomach is almost filled to it's brim!\r\n", ch );
+            else if( ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE )
+               send_to_char( "Your stomach is full, you can't manage to get anymore down.\r\n", ch );
+
+            /*
+             * Hopefully this is the reason why that crap was happening. =0P 
+             */
+            if( IS_VAMPIRE( ch ) )
+            {
+               if( ch->pcdata->condition[COND_BLOODTHIRST] > ( MAX_COND_VALUE / 2 )
+                   && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .4 ) )
+                  send_to_char( "&rYou replenish your body with the vidal fluid.\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .4 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .6 ) )
+                  send_to_char( "&rYour thirst for blood begins to decrease.\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .6 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < ( MAX_COND_VALUE * .9 ) )
+                  send_to_char( "&rThe thirst for blood begins to leave you...\r\n", ch );
+               else if( ch->pcdata->condition[COND_BLOODTHIRST] >= ( MAX_COND_VALUE * .9 )
+                        && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE )
+                  send_to_char( "&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch );
+            }
+            else if( !IS_VAMPIRE( ch ) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE )
+            {
+               ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
+            }
+         }
+
+         obj->value[1] -= amount;
+         if( obj->value[1] <= 0 )
+         {
+            send_to_char( "The remainder of the puddle seeps into the ground.\r\n", ch );
+            if( cur_obj == obj->serial )
+               global_objcode = rOBJ_DRUNK;
+            extract_obj( obj );
+         }
+         break;
+      }
    }
 
    if( who_fighting( ch ) && IS_PKILL( ch ) )
@@ -1534,6 +1685,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
       case ITEM_DRINK_CON:
          src_item1 = ITEM_FOUNTAIN;
          src_item2 = ITEM_BLOOD;
+         src_item3 = ITEM_PUDDLE;
          break;
       case ITEM_HERB_CON:
          src_item1 = ITEM_HERB;
@@ -1634,7 +1786,10 @@ void do_fill( CHAR_DATA* ch, const char* argument)
          src_next = source->next_content;
          if( dest_item == ITEM_CONTAINER )
          {
-            if( !CAN_WEAR( source, ITEM_TAKE ) || IS_OBJ_STAT( source, ITEM_BURIED )
+            if( !CAN_WEAR( source, ITEM_TAKE )
+                || IS_OBJ_STAT( source, ITEM_NOFILL )
+                || IS_SET( source->magic_flags, ITEM_PKDISARMED )
+                || IS_OBJ_STAT( source, ITEM_BURIED )
                 || ( IS_OBJ_STAT( source, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
                 || ch->carry_weight + get_obj_weight( source ) > can_carry_w( ch )
                 || ( get_real_obj_weight( source ) + get_real_obj_weight( obj ) / obj->count ) > obj->value[0] )
@@ -1659,6 +1814,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
             break;
          }
       }
+
       if( !found )
       {
          switch ( src_item1 )
@@ -1667,7 +1823,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
                send_to_char( "There is nothing appropriate here!\r\n", ch );
                return;
             case ITEM_FOUNTAIN:
-               send_to_char( "There is no fountain or pool here!\r\n", ch );
+               send_to_char( "There is no fountain, pool, or puddle here!\r\n", ch );
                return;
             case ITEM_BLOOD:
                send_to_char( "There is no blood pool here!\r\n", ch );
@@ -1680,10 +1836,14 @@ void do_fill( CHAR_DATA* ch, const char* argument)
                return;
          }
       }
+
       if( dest_item == ITEM_CONTAINER )
       {
          act( AT_ACTION, "You fill $p.", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n fills $p.", ch, obj, NULL, TO_ROOM );
+
+         if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+            save_house_by_vnum( ch->in_room->vnum );
          return;
       }
    }
@@ -1706,7 +1866,10 @@ void do_fill( CHAR_DATA* ch, const char* argument)
       {
          default:   /* put something in container */
             if( !source->in_room /* disallow inventory items */
-                || !CAN_WEAR( source, ITEM_TAKE ) || ( IS_OBJ_STAT( source, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
+                || !CAN_WEAR( source, ITEM_TAKE )
+                || IS_OBJ_STAT( source, ITEM_NOFILL )
+                || IS_SET( source->magic_flags, ITEM_PKDISARMED )
+                || ( IS_OBJ_STAT( source, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
                 || ch->carry_weight + get_obj_weight( source ) > can_carry_w( ch )
                 || ( get_real_obj_weight( source ) + get_real_obj_weight( obj ) / obj->count ) > obj->value[0] )
             {
@@ -1782,7 +1945,9 @@ void do_fill( CHAR_DATA* ch, const char* argument)
             {
                otmp_next = otmp->next_content;
 
-               if( !CAN_WEAR( otmp, ITEM_TAKE ) || ( IS_OBJ_STAT( otmp, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
+               if( !CAN_WEAR( otmp, ITEM_TAKE )
+                   || IS_OBJ_STAT( otmp, ITEM_NOFILL )
+                   || ( IS_OBJ_STAT( otmp, ITEM_PROTOTYPE ) && !can_take_proto( ch ) )
                    || ch->carry_number + otmp->count > can_carry_n( ch )
                    || ch->carry_weight + get_obj_weight( otmp ) > can_carry_w( ch )
                    || ( get_real_obj_weight( source ) + get_real_obj_weight( obj ) / obj->count ) > obj->value[0] )
@@ -1794,6 +1959,8 @@ void do_fill( CHAR_DATA* ch, const char* argument)
             }
             if( found )
             {
+               if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+                  save_house_by_vnum( ch->in_room->vnum );
                act( AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR );
                act( AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM );
             }
@@ -1816,7 +1983,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
    switch ( source->item_type )
    {
       default:
-         bug( "%s: got bad item type: %d", __FUNCTION__, source->item_type );
+         bug( "%s: got bad item type: %d", __func__, source->item_type );
          send_to_char( "Something went wrong...\r\n", ch );
          return;
 
@@ -1896,6 +2063,48 @@ void do_fill( CHAR_DATA* ch, const char* argument)
          act( AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR );
          act( AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM );
          return;
+
+      case ITEM_PUDDLE:
+         if( obj->value[1] != 0 && obj->value[2] != source->value[2] )
+         {
+            send_to_char( "There is already another liquid in it.\r\n", ch );
+            return;
+         }
+         obj->value[2] = source->value[2];
+
+         if( source->value[1] < diff )
+	         diff = source->value[1];
+
+         obj->value[1] += diff;
+         source->value[1] -= diff;
+
+         if( source->item_type == ITEM_PUDDLE )
+         {
+            char buf[20];
+            char buf2[70];
+            LIQ_TABLE *liq = get_liq_vnum( source->value[2] );
+
+            if( source->value[1] > 15 )
+               mudstrlcpy( buf, "large", 20 );
+            else if( source->value[1] > 10 )
+               mudstrlcpy( buf, "rather large", 20 );
+            else if( source->value[1] > 5 )
+               mudstrlcpy( buf, "rather small", 20 );
+            else
+               mudstrlcpy( buf, "small", 20 );
+            snprintf( buf2, 70, "There is a %s puddle of %s.", buf, ( liq == NULL ? "water" : liq->name ) );
+            source->description = STRALLOC( buf2 );
+         }
+         act( AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR );
+         act( AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM );
+
+         if( source->value[1] < 1 )
+         {
+            act( AT_ACTION, "The remaining contents of the puddle seep into the ground.", ch, NULL, NULL, TO_CHAR );
+            act( AT_ACTION, "The remaining contents of the puddle seep into the ground.",ch, NULL, NULL, TO_ROOM );
+            extract_obj( source );
+         }
+         return;
    }
 }
 
@@ -1922,6 +2131,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
       send_to_char( "You aren't carrying that.\r\n", ch );
       return;
    }
+
    if( obj->count > 1 )
       separate_obj( obj );
 
@@ -1931,6 +2141,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
          act( AT_ACTION, "You shake $p in an attempt to empty it...", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n begins to shake $p in an attempt to empty it...", ch, obj, NULL, TO_ROOM );
          return;
+
       case ITEM_PIPE:
          act( AT_ACTION, "You gently tap $p and empty it out.", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n gently taps $p and empties it out.", ch, obj, NULL, TO_ROOM );
@@ -1945,6 +2156,7 @@ void do_empty( CHAR_DATA* ch, const char* argument)
             send_to_char( "It's already empty.\r\n", ch );
             return;
          }
+         make_puddle( ch, obj );
          act( AT_ACTION, "You empty $p.", ch, obj, NULL, TO_CHAR );
          act( AT_ACTION, "$n empties $p.", ch, obj, NULL, TO_ROOM );
          obj->value[1] = 0;
@@ -2023,30 +2235,17 @@ void do_empty( CHAR_DATA* ch, const char* argument)
             else
                act( AT_ACTION, "$P is too full.", ch, obj, dest, TO_CHAR );
          }
+         if( ch->in_room && xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
+            save_house_by_vnum( ch->in_room->vnum );
+
+         if( xIS_SET( ch->in_room->room_flags, ROOM_CLANSTOREROOM ) )
+         {
+            VAULT_DATA *vault;
+
+            for( vault = first_vault; vault; vault = vault->next )
+               if( vault->vnum == ch->in_room->vnum )
+                  save_storeroom( ch, vault->vnum );
+         }
          return;
    }
-}
-
-void free_liquiddata( void )
-{
-   MIX_TABLE *mix, *mix_next;
-   LIQ_TABLE *liq;
-   int loopa;
-
-   for( mix = first_mixture; mix; mix = mix_next )
-   {
-      mix_next = mix->next;
-      UNLINK( mix, first_mixture, last_mixture, next, prev );
-      STRFREE( mix->name );
-      DISPOSE( mix );
-   }
-   for( loopa = 0; loopa <= top_liquid; loopa++ )
-   {
-      liq = get_liq_vnum( loopa );
-      STRFREE( liq->name );
-      STRFREE( liq->color );
-      STRFREE( liq->shortdesc );
-      DISPOSE( liq );
-   }
-   return;
 }
