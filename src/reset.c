@@ -501,8 +501,10 @@ void reset_room( ROOM_INDEX_DATA * room )
    mob = NULL;
    obj = NULL;
    lastobj = NULL;
+
    if( !room->first_reset )
       return;
+
    level = 0;
    for( pReset = room->first_reset; pReset; pReset = pReset->next )
    {
@@ -519,16 +521,19 @@ void reset_room( ROOM_INDEX_DATA * room )
                bug( "%s: %s: 'M': bad mob vnum %d.", __func__, filename, pReset->arg1 );
                continue;
             }
+
             if( !( pRoomIndex = get_room_index( pReset->arg3 ) ) )
             {
                bug( "%s: %s: 'M': bad room vnum %d.", __func__, filename, pReset->arg3 );
                continue;
             }
+
             if( !pReset->sreset )
             {
                mob = NULL;
                break;
             }
+
             mob = create_mobile( pMobIndex );
             {
                ROOM_INDEX_DATA *pRoomPrev = get_room_index( pReset->arg3 - 1 );
@@ -536,6 +541,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                if( pRoomPrev && xIS_SET( pRoomPrev->room_flags, ROOM_PET_SHOP ) )
                   xSET_BIT( mob->act, ACT_PET );
             }
+
             if( room_is_dark( pRoomIndex ) )
                xSET_BIT( mob->affected_by, AFF_INFRARED );
             mob->resetvnum = pRoomIndex->vnum;
@@ -558,6 +564,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                            bug( "%s: %s: 'E' or 'G': bad obj vnum %d.", __func__, filename, tReset->arg1 );
                            continue;
                         }
+
                         if( !mob )
                         {
                            lastobj = NULL;
@@ -619,12 +626,14 @@ void reset_room( ROOM_INDEX_DATA * room )
                                        bug( "%s: %s: 'P': bad objto vnum %d.", __func__, filename, gReset->arg3 );
                                        continue;
                                     }
+
                                     if( iNest >= MAX_NEST )
                                     {
                                        bug( "%s: %s: 'P': Exceeded nesting limit of %d", __func__, filename, MAX_NEST );
                                        obj = NULL;
                                        break;
                                     }
+
                                     if( count_obj_list( pObjIndex, to_obj->first_content ) > 0 )
                                     {
                                        obj = NULL;
