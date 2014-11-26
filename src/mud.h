@@ -861,7 +861,7 @@ typedef enum
 } race_types;
 
 /* npc races */
-#define	RACE_DRAGON	    31
+#define	RACE_DRAGON	    32
 
 #define CLASS_NONE     -1 /* For skill/spells according to guild */
 #define CLASS_MAGE      0
