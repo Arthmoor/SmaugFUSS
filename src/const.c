@@ -19,20 +19,23 @@
 #include "mud.h"
 
 const char *const npc_race[MAX_NPC_RACE] = {
-   "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",
-   "half-orc", "half-troll", "half-elf", "gith", "drow", "sea-elf",
-   "lizardman", "gnome", "r5", "r6", "r7", "r8", "troll",
-   "ant", "ape", "baboon", "bat", "bear", "bee",
-   "beetle", "boar", "bugbear", "cat", "dog", "dragon", "ferret", "fly",
-   "gargoyle", "gelatin", "ghoul", "gnoll", "gnome", "goblin", "golem",
-   "gorgon", "harpy", "hobgoblin", "kobold", "lizardman", "locust",
-   "lycanthrope", "minotaur", "mold", "mule", "neanderthal", "ooze", "orc",
-   "rat", "rustmonster", "shadow", "shapeshifter", "shrew", "shrieker",
-   "skeleton", "slime", "snake", "spider", "stirge", "thoul", "troglodyte",
-   "undead", "wight", "wolf", "worm", "zombie", "bovine", "canine", "feline",
-   "porcine", "mammal", "rodent", "avis", "reptile", "amphibian", "fish",
-   "crustacean", "insect", "spirit", "magical", "horse", "animal", "humanoid",
-   "monster", "god"
+   // Playable races - MAX_RACE in mud.h must be raised before more can be added after r9.
+   "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",       // 6 (start from 0)
+   "half-orc", "half-troll", "half-elf", "gith", "drow", "sea-elf",            // 12
+   "lizardman", "gnome", "r5", "r6", "r7", "r8", "r9",                         // 19
+
+   // NPCs only
+   "troll", "ant", "ape", "baboon", "bat", "bear", "bee",                      // 26
+   "beetle", "boar", "bugbear", "cat", "dog", "dragon", "ferret", "fly",       // 34
+   "gargoyle", "gelatin", "ghoul", "gnoll", "goblin", "golem",                 // 40
+   "gorgon", "harpy", "hobgoblin", "kobold", "locust",                         // 45
+   "lycanthrope", "minotaur", "mold", "mule", "neanderthal", "ooze", "orc",    // 52
+   "rat", "rustmonster", "shadow", "shapeshifter", "shrew", "shrieker",        // 58
+   "skeleton", "slime", "snake", "spider", "stirge", "thoul", "troglodyte",    // 65
+   "undead", "wight", "wolf", "worm", "zombie", "bovine", "canine", "feline",  // 73
+   "porcine", "mammal", "rodent", "avis", "reptile", "amphibian", "fish",      // 80
+   "crustacean", "insect", "spirit", "magical", "horse", "animal", "humanoid", // 87
+   "monster", "god", "???"                                                     // 90
 };
 
 const char *const npc_class[MAX_NPC_CLASS] = {
