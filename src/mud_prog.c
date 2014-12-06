@@ -2015,7 +2015,7 @@ void mprog_driver( const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ
     *
     * BUGFIX - Reported by Aurin on the SmaugMuds.org forum.
     *  Adapted for simplicity by Samson. The random pick wasn't as random as one might like.
-    *  It had a heavy bias toward the first chosen target, but her fix relied
+    *  It had a heavy bias toward the first chosen target, but his fix relied
     *  on what looked like dodgy dynamic array allocation. This is safer as it doesn't
     *  need to do anything like that.
     */
