@@ -3633,23 +3633,27 @@ void do_practice( CHAR_DATA* ch, const char* argument)
              && ( skill->guild != CLASS_NONE && ( !IS_GUILDED( ch ) || ( ch->pcdata->clan->Class != skill->guild ) ) ) )
             continue;
 
-         if( mob )
+         /**
+         * mob will only display practice skills it can train a player in (up to its own level in rank)  
+         * (e.g. A level 10 NPC trainer mob will display the skills and spells a character can train
+         * up to level 10) 
+         **/
+         if( mob )  
          {
-            if( skill->skill_level[mob->Class] > mob->level && skill->race_level[mob->race] > mob->level )
+            if( skill->skill_level[ch->Class] > mob->level && skill->race_level[ch->race] > mob->level )
                continue;
          }
-         else
-         {
-            is_ok = FALSE;
+        
+         is_ok = FALSE;
 
-            if( ch->level >= skill->skill_level[ch->Class] )
-               is_ok = TRUE;
-            if( ch->level >= skill->race_level[ch->race] )
-               is_ok = TRUE;
+         if( ch->level >= skill->skill_level[ch->Class] )
+            is_ok = TRUE;
+         if( ch->level >= skill->race_level[ch->race] )
+            is_ok = TRUE;
 
-            if( !is_ok )
-               continue;
-         }
+         if( !is_ok )
+            continue;
+          
 
          if( ch->pcdata->learned[sn] <= 0 && SPELL_FLAG( skill, SF_SECRETSKILL ) )
             continue;
