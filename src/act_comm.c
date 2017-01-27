@@ -1253,7 +1253,6 @@ void do_say( CHAR_DATA* ch, const char* argument)
             act( AT_SAY, "$n says '$t'", ch, sbuf, vch, TO_VICT );
             break;
       }
-      act( AT_SAY, "$n says '$t'", ch, sbuf, vch, TO_VICT );
    }
 
    ch->act = actflags;
