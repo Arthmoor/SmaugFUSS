@@ -3005,15 +3005,6 @@ Log         0
 End
 
 #COMMAND
-Name        sayto~
-Code        do_say_to
-Position    106
-Level       1
-Log         0
-Flags       4
-End
-
-#COMMAND
 Name        se~
 Code        do_southeast
 Position    112
@@ -3034,6 +3025,15 @@ Name        say~
 Code        do_say
 Position    106
 Level       0
+Log         0
+Flags       4
+End
+
+#COMMAND
+Name        sayto~
+Code        do_say_to
+Position    106
+Level       1
 Log         0
 Flags       4
 End
