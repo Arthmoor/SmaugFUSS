@@ -5990,11 +5990,14 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
          return ranged_got_target( ch, victim, weapon, projectile, dist, dt, stxt, color );
       }
 
-      if( dist == range )
+      if( dist == range || dir == 10 )
       {
          if( projectile )
          {
-            act( color, "Your $t falls harmlessly to the $T.", ch, myobj( projectile ), dir_name[dir], TO_CHAR );
+			if ( dir == 4 || dir == 5 || dir == 10 )
+  		       act( color, "Your $t falls harmlessly to the ground.", ch, myobj(projectile), NULL, TO_CHAR );
+            else
+               act( color, "Your $t falls harmlessly to the $T.", ch, myobj( projectile ), dir_name[dir], TO_CHAR );
             act( color, "$p flies in from $T and falls harmlessly to the ground.", ch, projectile, dtxt, TO_ROOM );
             if( projectile->in_obj )
                obj_from_obj( projectile );
