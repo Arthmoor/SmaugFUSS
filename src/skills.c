@@ -3761,7 +3761,7 @@ void disarm( CHAR_DATA * ch, CHAR_DATA * victim )
       return;
    }
 
-   if( check_grip( ch, victim ) )
+   if( check_grip( ch, victim ) || IS_OBJ_STAT( obj, ITEM_NOREMOVE ) )
    {
       learn_from_failure( ch, gsn_disarm );
       return;
