@@ -668,7 +668,7 @@ bool fread_storage( int rnum, const char *filename )
          word = fread_word( fp );
          if( !str_cmp( word, "OBJECT" ) )  /* Objects */
          {
-            fread_obj( supermob, fp, OS_VAULT );
+            fread_obj( supermob, fp, OS_CARRY );
          }
          else if( !str_cmp( word, "END" ) )  /* Done */
             break;
