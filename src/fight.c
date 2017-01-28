@@ -749,7 +749,8 @@ void violence_update( void )
              && ( who_fighting( rch->fighting->who ) == ch )
              && ( !xIS_SET( rch->fighting->who->act, ACT_AUTONOMOUS ) ) && ( rch->style < ch->style ) )
          {
-            rch->fighting->who->fighting->who = rch;
+             stop_fighting( rch->fighting->who, FALSE );
+	         set_fighting( rch->fighting->who, rch ); 
          }
 
          if( IS_AWAKE( rch ) && !rch->fighting )
