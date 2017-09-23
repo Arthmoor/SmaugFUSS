@@ -280,17 +280,17 @@ char *format_obj_to_char( OBJ_DATA * obj, CHAR_DATA * ch, bool fShort )
    if( ( IS_AFFECTED( ch, AFF_DETECT_EVIL ) || ch->Class == CLASS_PALADIN ) && IS_OBJ_STAT( obj, ITEM_EVIL ) )
       mudstrlcat( buf, "(Red Aura) ", MAX_STRING_LENGTH );
 
-   if ( ch->Class==CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Smouldering Grey-White) ", MAX_STRING_LENGTH  );
-   if ( ch->Class==CLASS_PALADIN && ( !IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && ( !IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Smouldering Red-White) ", MAX_STRING_LENGTH  );
-   if ( ch->Class==CLASS_PALADIN && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Smouldering Red-Grey) ", MAX_STRING_LENGTH  );
-   if ( ch->Class==CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Burning White) ", MAX_STRING_LENGTH  );
-   if ( ch->Class==CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && ( IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Burning Grey) ", MAX_STRING_LENGTH  );
-   if ( ch->Class==CLASS_PALADIN && ( !IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
+   if ( ch->Class == CLASS_PALADIN && ( !IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))   )
       mudstrlcat( buf, "(Burning Red) ", MAX_STRING_LENGTH  );
 
    if( ( IS_AFFECTED( ch, AFF_DETECT_MAGIC ) || xIS_SET( ch->act, PLR_HOLYLIGHT ) ) && IS_OBJ_STAT( obj, ITEM_MAGIC ) )
