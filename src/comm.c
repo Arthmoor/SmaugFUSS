@@ -3444,7 +3444,7 @@ void do_name( CHAR_DATA* ch, const char* argument)
    STRFREE( ch->pcdata->filename );
    ch->pcdata->filename = STRALLOC( ucase_argument );
    send_to_char( "Your name has been changed.  Please apply again.\r\n", ch );
-   ch->pcdata->auth_state = 0;
+   ch->pcdata->auth_state = 1;
    return;
 }
 
