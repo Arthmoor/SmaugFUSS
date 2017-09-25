@@ -1306,7 +1306,7 @@ DefPos     standing~
 Gender     male~
 Actflags   npc sentinel practice~
 Affected   detect_invis detect_hidden sanctuary truesight~
-Stats1     1000 1 0 94 100 0
+Stats1     1000 10 0 94 100 0
 Stats2     1 1 1000
 Stats3     0 0 0
 Stats4     0 0 0 0 0
@@ -4011,7 +4011,7 @@ Long     A charm bracelet from the academy lies here~
 WFlags   take wrist~
 Values   2 2 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 31 0
+Affect       -1 -1 1 31 0d
 #EXDESC
 ExDescKey    bracelet charm~
 ExDesc       This is a bracelet that will bring you luck in your travels. It can
@@ -4037,7 +4037,7 @@ Long     A pair of black combat boots from the Academy lies here~
 WFlags   take feet~
 Values   3 3 0 0 0 0
 Stats    3 0 0 0 0
-Affect       -1 -1 100 14 0
+Affect       -1 -1 100 14 0d
 #EXDESC
 ExDescKey    combat boots~
 ExDesc       This boots are so comfortable and light, you feel you can walk a lot
@@ -4063,7 +4063,7 @@ Long     A braided leather belt from the Academy lies here~
 WFlags   take waist~
 Values   2 2 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 5 0
+Affect       -1 -1 1 5 0d
 #EXDESC
 ExDescKey    belt leather~
 ExDesc       This belt is made of a fine leather, braided for strength. You can get
@@ -4114,7 +4114,7 @@ Long     A wrought iron helmet from the Academy~
 WFlags   take head~
 Values   3 3 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 3 0
+Affect       -1 -1 1 3 0d
 #EXDESC
 ExDescKey    helmet iron~
 ExDesc       This is a helmet made of fine iron, from the Darkhaven Academy.  It will
@@ -4192,8 +4192,8 @@ Flags    magic~
 WFlags   take eyes~
 Values   2 0 0 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 1 4 0
-Affect       -1 -1 1 3 0
+Affect       -1 -1 1 4 0d
+Affect       -1 -1 1 3 0d
 #EXDESC
 ExDescKey    visor completion~
 ExDesc       Congratulations! You have completed the Darkhaven Academy and can now
@@ -4238,7 +4238,7 @@ Long     Lightweight tin sleeves from the academy~
 WFlags   take arms~
 Values   3 3 0 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 1 1 0
+Affect       -1 -1 1 1 0d
 #EXDESC
 ExDescKey    sleeves tin~
 ExDesc       This sleeves will protect your arms until you can find something better.
@@ -4283,7 +4283,7 @@ Flags    glow magic~
 WFlags   take~
 Values   0 0 -1 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 -1 24 0
+Affect       -1 -1 -1 24 0d
 #ENDOBJECT
 
 #OBJECT
@@ -4296,8 +4296,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 1 6 11 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #ENDOBJECT
 
 #OBJECT
@@ -4310,8 +4310,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #EXDESC
 ExDescKey    sword~
 ExDesc       Made of decent quality, this sword should serve you well in your battles
@@ -4342,8 +4342,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 3 6 7 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #EXDESC
 ExDescKey    mace~
 ExDesc       Made of decent quality this weapon shall servre you well in the battles
@@ -4385,8 +4385,8 @@ Flags    magic antigood antivampire~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    3 0 0 0 0
-Affect       -1 -1 3 19 0
-Affect       -1 -1 -1 1 0
+Affect       -1 -1 3 19 0d
+Affect       -1 -1 -1 1 0d
 #ENDOBJECT
 
 #OBJECT
@@ -4398,7 +4398,7 @@ Long     A pair of kid gloves from the Academy lie here~
 WFlags   take hands~
 Values   3 0 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 2 0
+Affect       -1 -1 1 2 0d
 #MUDPROG
 Progtype  drop_prog~
 Arglist   100~
@@ -4568,9 +4568,9 @@ Flags    metal~
 WFlags   take hold~
 Values   5 5 0 0 0 0
 Stats    1 1234 123 0 0
-Affect       -1 -1 1 3 0
-Affect       -1 -1 1 5 0
-Affect       -1 -1 1 4 0
+Affect       -1 -1 1 3 0d
+Affect       -1 -1 1 5 0d
+Affect       -1 -1 1 4 0d
 #EXDESC
 ExDescKey    sets~
 ExDesc       Regular equipment setup:              Equipment setup during dual wield:
@@ -4653,7 +4653,7 @@ Flags    metal~
 WFlags   take neck~
 Values   0 3 0 0 0 0
 Stats    2 1 0 0 0
-Affect       -1 -1 -3 17 0
+Affect       -1 -1 -3 17 0d
 #ENDOBJECT
 
 #OBJECT
@@ -5114,8 +5114,8 @@ Flags    dark magic~
 WFlags   take wield~
 Values   12 1 6 11 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #EXDESC
 ExDescKey    menacing granitic blade~
 ExDesc       Of rough but usable quality, it should serve you well in your early years.
@@ -5134,8 +5134,8 @@ Flags    hum magic bless metal~
 WFlags   take wield~
 Values   12 0 0 7 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #EXDESC
 ExDescKey    adamantium mace~
 ExDesc       Forged of a gleaming metal, this mace will serve you well in your early years.
@@ -5154,8 +5154,8 @@ Flags    magic metal~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0
-Affect       -1 -1 1 19 0
+Affect       -1 -1 2 18 0d
+Affect       -1 -1 1 19 0d
 #EXDESC
 ExDescKey    broadsword broad sword~
 ExDesc       Made of a heavy iron alloy, it will serve you well in your early years.
@@ -5174,8 +5174,8 @@ Flags    organic buried~
 WFlags   take hold~
 Values   20 -1 -1 -1 0 0
 Stats    3 1200 120 0 0
-Affect       -1 -1 1 5 0
-Affect       -1 -1 1 4 0
+Affect       -1 -1 1 5 0d
+Affect       -1 -1 1 4 0d
 Spells   'cure critical' 'restore mana' 'NONE'
 #ENDOBJECT
 
@@ -5301,16 +5301,6 @@ Desc      Abbigayle's Language Lessons.
 #ENDEXIT
 
 #MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -5320,6 +5310,16 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -7410,8 +7410,8 @@ Flags     isdoor closed~
 
 Reset D 0 10361 4 1
 #MUDPROG
-Progtype  act_prog~
-Arglist   P from the east.~
+Progtype  rand_prog~
+Arglist   50~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -7419,8 +7419,8 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  rand_prog~
-Arglist   50~
+Progtype  act_prog~
+Arglist   P from the east.~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -8177,16 +8177,6 @@ Flags     nomob~
 Reset D 0 10382 0 1
 Reset O 0 10401 1 10382
 #MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
-endif
-~
-#ENDPROG
-
-#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -8196,6 +8186,16 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
+endif
+~
+#ENDPROG
+
+#MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -8647,11 +8647,12 @@ Desc      Entrance to Darkhaven Academy
 
 Reset O 0 10367 1 10398
 #MUDPROG
-Progtype  leave_prog~
+Progtype  entry_prog~
 Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
+Comlist   if ispc($n)
+if level($n) == 1
+mpforce $n config -brief
+endif
 endif
 ~
 #ENDPROG
@@ -8677,12 +8678,11 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  entry_prog~
+Progtype  leave_prog~
 Arglist   100~
-Comlist   if ispc($n)
-if level($n) == 1
-mpforce $n config -brief
-endif
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
 endif
 ~
 #ENDPROG
