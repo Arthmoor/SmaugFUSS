@@ -374,7 +374,7 @@ void do_morphset( CHAR_DATA* ch, const char* argument)
       case SUB_MORPH_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_morphset: sub_morph_desc: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -391,7 +391,7 @@ void do_morphset( CHAR_DATA* ch, const char* argument)
       case SUB_MORPH_HELP:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_morphset: sub_morph_help: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;

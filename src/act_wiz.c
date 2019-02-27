@@ -3671,7 +3671,7 @@ void do_balzhur( CHAR_DATA* ch, const char* argument)
       send_to_char( "Player's immortal data destroyed.\r\n", ch );
    else if( errno != ENOENT )
    {
-      ch_printf( ch, "Unknown error #%d - %s (immortal data). Report to www.smaugmuds.org\r\n", errno, strerror( errno ) );
+      ch_printf( ch, "Unknown error #%d - %s (immortal data). Report to smaugmuds.afkmods.com\r\n", errno, strerror( errno ) );
       snprintf( buf2, MAX_STRING_LENGTH, "%s balzhuring %s", ch->name, buf );
       perror( buf2 );
    }
@@ -3689,7 +3689,7 @@ void do_balzhur( CHAR_DATA* ch, const char* argument)
             send_to_char( "Player's area data destroyed.  Area saved as backup.\r\n", ch );
          else if( errno != ENOENT )
          {
-            ch_printf( ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno, strerror( errno ) );
+            ch_printf( ch, "Unknown error #%d - %s (area data). Report to smaugmuds.afkmods.com\r\n", errno, strerror( errno ) );
             snprintf( buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf );
             perror( buf2 );
          }
@@ -6525,7 +6525,7 @@ void do_destroy( CHAR_DATA* ch, const char* argument)
          send_to_char( "Player's immortal data destroyed.\r\n", ch );
       else if( errno != ENOENT )
       {
-         ch_printf( ch, "Unknown error #%d - %s (immortal data). Report to www.smaugmuds.org\r\n", errno,
+         ch_printf( ch, "Unknown error #%d - %s (immortal data). Report to smaugmuds.afkmods.com\r\n", errno,
                     strerror( errno ) );
          snprintf( buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf );
          perror( buf2 );
@@ -6545,7 +6545,7 @@ void do_destroy( CHAR_DATA* ch, const char* argument)
                send_to_char( "Player's area data destroyed.  Area saved as backup.\r\n", ch );
             else if( errno != ENOENT )
             {
-               ch_printf( ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno,
+               ch_printf( ch, "Unknown error #%d - %s (area data). Report to smaugmuds.afkmods.com\r\n", errno,
                           strerror( errno ) );
                snprintf( buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf );
                perror( buf2 );
@@ -6561,7 +6561,7 @@ void do_destroy( CHAR_DATA* ch, const char* argument)
    else
    {
       set_char_color( AT_WHITE, ch );
-      ch_printf( ch, "Unknown error #%d - %s. Report to www.smaugmuds.org\r\n", errno, strerror( errno ) );
+      ch_printf( ch, "Unknown error #%d - %s. Report to smaugmuds.afkmods.com\r\n", errno, strerror( errno ) );
       snprintf( buf, MAX_STRING_LENGTH, "%s destroying %s", ch->name, arg );
       perror( buf );
    }

@@ -1128,7 +1128,7 @@ void do_mset( CHAR_DATA* ch, const char* argument)
       case SUB_MOB_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_mset: sub_mob_desc: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -3149,7 +3149,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
       case SUB_OBJ_EXTRA:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s: sub_obj_extra: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
@@ -3172,7 +3172,7 @@ void do_oset( CHAR_DATA* ch, const char* argument)
       case SUB_OBJ_LONG:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s: sub_obj_long: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
@@ -8257,7 +8257,7 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_mpedit: sub_mprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -8583,7 +8583,7 @@ void do_opedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
@@ -8917,7 +8917,7 @@ void do_rpedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to www.smaugmuds.org\r\n", ch );
+            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
             bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
             ch->substate = SUB_NONE;
             return;
