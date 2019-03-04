@@ -18,7 +18,7 @@ EXPORT_SYMBOLS = -export-dynamic
 #IMC2 - Comment out to disable IMC2 support
 IMC = 1
 
-W_FLAGS = -Wall -Werror -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls
+W_FLAGS = -Wall -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls
 
 C_FLAGS = -g2 $(W_FLAGS) $(SOLARIS_FLAG) $(PROF) $(EXPORT_SYMBOLS)
 L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)

@@ -136,8 +136,8 @@ bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
  * Other local functions (OS-independent).
  */
 bool check_parse_name( const char *name, bool newchar );
-bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn );
-bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick );
+short check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn );
+short check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick );
 int main( int argc, char **argv );
 void nanny( DESCRIPTOR_DATA * d, char *argument );
 bool flush_buffer( DESCRIPTOR_DATA * d, bool fPrompt );
@@ -1811,7 +1811,8 @@ void show_title( DESCRIPTOR_DATA * d )
 void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
 {
    CHAR_DATA *ch;
-   bool fOld, chk;
+   bool fOld;
+   short chk;
    char buf[MAX_STRING_LENGTH];
 
    ch = d->character;
@@ -2018,7 +2019,8 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
-   bool fOld, chk;
+   bool fOld;
+   short chk;
 
    ch = d->character;
    write_to_buffer( d, "\r\n", 2 );
@@ -2783,7 +2785,7 @@ bool check_parse_name( const char *name, bool newchar )
 /*
  * Look for link-dead player to reconnect.
  */
-bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
+short check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
 {
    CHAR_DATA *ch;
 
@@ -2841,7 +2843,7 @@ bool check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
 /*
  * Check if already playing.
  */
-bool check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
+short check_playing( DESCRIPTOR_DATA * d, const char *name, bool kick )
 {
    CHAR_DATA *ch;
    DESCRIPTOR_DATA *dold;

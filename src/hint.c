@@ -205,12 +205,12 @@ void do_hintedit( CHAR_DATA* ch, const char* argument)
    }
    else if( !str_cmp( arg, "add" ) )
    {
-      if( arg2 == '\0' )
+      if( arg2[0] == '\0' )
       {
          send_to_char( "What is the minimum level for this hint?\r\n", ch );
          return;
       }
-      if( arg3 == '\0' )
+      if( arg3[0] == '\0' )
       {
          send_to_char( "What is the maximum level for this hint?\r\n", ch );
          return;

@@ -870,7 +870,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
    argument = one_argument( argument, arg2 );
    argument = one_argument( argument, arg3 );
 
-   if( arg1 == '\0' || !str_cmp( arg1, " " ) )
+   if( arg1[0] == '\0' || !str_cmp( arg1, " " ) )
    {
       send_to_char( "Syntax : setholiday <name> <field> <argument>\r\n", ch );
       send_to_char( "Field can be : day name create announce save delete\r\n", ch );
@@ -935,7 +935,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
 
    if( !str_cmp( arg2, "day" ) )
    {
-      if( arg3 == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.dayspermonth || atoi( arg3 ) <= 1 )
+      if( arg3[0] == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.dayspermonth || atoi( arg3 ) <= 1 )
       {
          ch_printf( ch, "You must specify a numeric value : %d - %d", 1, sysdata.dayspermonth );
          return;
@@ -951,13 +951,13 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
    {
 /* Go through the months and find arg3 */
 
-      if( arg3 == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.monthsperyear || atoi( arg3 ) <= 1 )
+      if( arg3[0] == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.monthsperyear || atoi( arg3 ) <= 1 )
       {
          send_to_char( "You must specify a valid month number:\r\n", ch );
 
 /* List all the months with a counter next to them*/
          count = 1;
-         while( month_name[x] != '\0' && str_cmp(month_name[x], " ") && x < sysdata.monthsperyear)
+         while( month_name[x][0] != '\0' && str_cmp(month_name[x], " ") && x < sysdata.monthsperyear)
 
          {
             ch_printf( ch, "&R(&W%d&R)&Y%s\r\n", count, month_name[x] );
@@ -976,7 +976,7 @@ return;
 
    if( !str_cmp( arg2, "announce" ) )
    {
-      if( arg3 == '\0' || !str_cmp( arg3, " " ) || is_number( arg3 ) )
+      if( arg3[0] == '\0' || !str_cmp( arg3, " " ) || is_number( arg3 ) )
       {
          send_to_char( "Set the annoucement to what?\r\n", ch );
          return;
@@ -992,7 +992,7 @@ return;
 /* Change the name */
    if( !str_cmp( arg2, "name" ) )
    {
-      if( arg3 == '\0' || !str_cmp( arg3, " " ) || is_number( arg3 ) )
+      if( arg3[0] == '\0' || !str_cmp( arg3, " " ) || is_number( arg3 ) )
       {
          send_to_char( "Set the name to what?\r\n", ch );
          return;

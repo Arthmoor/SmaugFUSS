@@ -1562,7 +1562,7 @@ void imc_update_tellhistory( CHAR_DATA * ch, const char *msg )
 
    for( x = 0; x < MAX_IMCTELLHISTORY; x++ )
    {
-      if( IMCTELLHISTORY( ch, x ) == '\0' )
+      if( IMCTELLHISTORY( ch, x ) == NULL )
       {
          IMCTELLHISTORY( ch, x ) = IMCSTRALLOC( new_msg );
          break;
