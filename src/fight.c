@@ -3722,6 +3722,8 @@ int xp_compute( CHAR_DATA * gch, CHAR_DATA * victim )
          xp >>= 3;
       else if( xp_ratio > 2000 ) /* 1/16 */
          xp >>= 4;
+      else
+         xp >>= 5; // 1/32 - Bugfix for Issue #15 @ GitHub
    }
 
    /*
