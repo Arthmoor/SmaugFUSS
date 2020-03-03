@@ -626,7 +626,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
       for( preset = room->first_reset; preset; preset = preset->next )
       {
          translate_reset( preset, r_area );
-         for( treset = preset->first_reset; treset; treset = preset->next_reset )
+         for( treset = preset->first_reset; treset; treset = treset->next_reset )
             translate_reset( treset, r_area );
       }
    }
