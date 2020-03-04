@@ -8831,7 +8831,7 @@ bool create_new_race( int rcindex, char *argument )
    if( argument[0] != '\0' )
       argument[0] = UPPER( argument[0] );
 
-   snprintf( race_table[rcindex]->race_name, 16, "%-.16s", argument );
+   snprintf( race_table[rcindex]->race_name, 16, "%-.15s", argument );
    race_table[rcindex]->class_restriction = 0;
    race_table[rcindex]->str_plus = 0;
    race_table[rcindex]->dex_plus = 0;

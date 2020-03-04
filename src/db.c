@@ -6005,6 +6005,7 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
                   else
                      SET_BIT( pexit->exit_info, 1 << value );
                }
+               fMatch = TRUE;
                break;
             }
             break;
@@ -6125,6 +6126,7 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
                         default:
                            break;
                      }
+                     fMatch = TRUE;
                      break;
                   }
                   break;
@@ -6137,12 +6139,14 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
                   if( !str_cmp( word, "Progtype" ) )
                   {
                      mprg->type = mprog_name_to_type( fread_flagstring( progfile ) );
+                     fMatch = TRUE;
                      break;
                   }
                   break;
             }
          }
       }
+
       if( !fMatch )
       {
          bug( "%s: unknown word: %s", __func__, word );

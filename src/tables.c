@@ -623,7 +623,7 @@ bool load_race_file( const char *fname )
       }
 
       if( race_name != NULL )
-         snprintf( race->race_name, 16, "%-.16s", race_name );
+         snprintf( race->race_name, 16, "%-.15s", race_name );
 
       if( !fMatch )
       {
