@@ -3246,13 +3246,11 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
    OBJ_DATA *die;
 
    char output_string[MAX_STRING_LENGTH];
-   char roll_string[MAX_STRING_LENGTH];
-   char total_string[MAX_STRING_LENGTH];
+   char roll_string[MAX_INPUT_LENGTH];
+   char total_string[MAX_INPUT_LENGTH];
 
    const char *verb;
 
-/*  char* face_string = NULL;
-  char** face_table = NULL;*/
    int rollsum = 0;
    int roll_count = 0;
 
@@ -3299,7 +3297,7 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
       }
    }
 
-   snprintf( roll_string, MAX_STRING_LENGTH, "%s", " " );
+   snprintf( roll_string, MAX_INPUT_LENGTH, "%s", " " );
 
    while( roll_count++ < numrolls )
    {
@@ -3318,9 +3316,9 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
       rollsum += current_roll;
 
       if( roll_count > 1 )
-         mudstrlcat( roll_string, ", ", MAX_STRING_LENGTH );
+         mudstrlcat( roll_string, ", ", MAX_INPUT_LENGTH );
       if( numrolls > 1 && roll_count == numrolls )
-         mudstrlcat( roll_string, "and ", MAX_STRING_LENGTH );
+         mudstrlcat( roll_string, "and ", MAX_INPUT_LENGTH );
 
       if( die->value[1] == 1 )
       {
@@ -3336,16 +3334,16 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
       }
       else
          snprintf( current_roll_string, MAX_STRING_LENGTH, "%d", current_roll );
-      mudstrlcat( roll_string, current_roll_string, MAX_STRING_LENGTH );
+      mudstrlcat( roll_string, current_roll_string, MAX_INPUT_LENGTH );
    }
 
    if( numrolls > 1 && die->value[2] == 1 )
    {
-      snprintf( total_string, MAX_STRING_LENGTH, ", for a total of %d", rollsum );
-      mudstrlcat( roll_string, total_string, MAX_STRING_LENGTH );
+      snprintf( total_string, MAX_INPUT_LENGTH, ", for a total of %d", rollsum );
+      mudstrlcat( roll_string, total_string, MAX_INPUT_LENGTH );
    }
 
-   mudstrlcat( roll_string, ".\r\n", MAX_STRING_LENGTH );
+   mudstrlcat( roll_string, ".\r\n", MAX_INPUT_LENGTH );
 
    snprintf( output_string, MAX_STRING_LENGTH, "You %s%s", verb, roll_string );
    act( AT_GREEN, output_string, ch, NULL, NULL, TO_CHAR );

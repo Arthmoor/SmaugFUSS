@@ -245,7 +245,7 @@ void do_track( CHAR_DATA* ch, const char* argument)
 void found_prey( CHAR_DATA * ch, CHAR_DATA * victim )
 {
    char buf[MAX_STRING_LENGTH];
-   char victname[MAX_STRING_LENGTH];
+   char victname[MAX_INPUT_LENGTH];
 
    if( victim == NULL )
    {
@@ -259,7 +259,7 @@ void found_prey( CHAR_DATA * ch, CHAR_DATA * victim )
       return;
    }
 
-   mudstrlcpy( victname, IS_NPC( victim ) ? victim->short_descr : victim->name, MAX_STRING_LENGTH );
+   mudstrlcpy( victname, IS_NPC( victim ) ? victim->short_descr : victim->name, MAX_INPUT_LENGTH );
 
    if( !can_see( ch, victim ) )
    {

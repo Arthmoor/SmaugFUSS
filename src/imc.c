@@ -208,11 +208,11 @@ size_t imcstrlcat( char *dst, const char *src, size_t siz )
 /* Generic log function which will route the log messages to the appropriate system logging function */
 void imclog( const char *format, ... )
 {
-   char buf[LGST], buf2[LGST];
+   char buf[LGST-5], buf2[LGST];
    va_list ap;
 
    va_start( ap, format );
-   vsnprintf( buf, LGST, format, ap );
+   vsnprintf( buf, LGST-5, format, ap );
    va_end( ap );
 
    snprintf( buf2, LGST, "IMC: %s", buf );
@@ -222,11 +222,11 @@ void imclog( const char *format, ... )
 /* Generic bug logging function which will route the message to the appropriate function that handles bug logs */
 void imcbug( const char *format, ... )
 {
-   char buf[LGST], buf2[LGST];
+   char buf[LGST-6], buf2[LGST];
    va_list ap;
 
    va_start( ap, format );
-   vsnprintf( buf, LGST, format, ap );
+   vsnprintf( buf, LGST-6, format, ap );
    va_end( ap );
 
    snprintf( buf2, LGST, " IMC: %s", buf );
@@ -1597,7 +1597,7 @@ void imc_send_tell( const char *from, const char *to, const char *txt, int reply
 PFUN( imc_recv_tell )
 {
    CHAR_DATA *vic;
-   char txt[LGST], isreply[SMST], buf[LGST];
+   char txt[SMST], isreply[SMST], buf[LGST];
    int reply;
 
    imc_getData( txt, "text", packet );
@@ -1699,7 +1699,7 @@ PFUN( imc_recv_emote )
 
 void update_imchistory( IMC_CHANNEL * channel, char *message )
 {
-   char msg[LGST], buf[LGST];
+   char msg[SMST], buf[LGST];
    struct tm *local;
    int x;
 
@@ -5823,7 +5823,7 @@ IMC_CMD( imclisten )
 
 IMC_CMD( imctell )
 {
-   char buf[LGST], buf1[LGST];
+   char buf[LGST-30], buf1[LGST];
 
    if( IMCIS_SET( IMCFLAG( ch ), IMC_DENYTELL ) )
    {
@@ -6972,8 +6972,7 @@ IMC_CMD( imcchanwho )
 IMC_CMD( imcremoteadmin )
 {
    REMOTEINFO *r;
-   char server[SMST], cmd[SMST], to[SMST];
-   char pwd[LGST];
+   char server[SMST], cmd[SMST], to[SMST], pwd[SMST];
    IMC_PACKET *p;
 
    argument = imcone_argument( argument, server );

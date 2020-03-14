@@ -3123,7 +3123,7 @@ void do_who( CHAR_DATA* ch, const char* argument)
          snprintf( invis_str, MAX_INPUT_LENGTH, "(%d) ", wch->pcdata->wizinvis );
       else
          invis_str[0] = '\0';
-      snprintf( buf, MAX_STRING_LENGTH, "%*s%-15s %s%s%s%s%s%s%s%s.%s%s%s\r\n",
+      int bc = snprintf( buf, MAX_STRING_LENGTH, "%*s%-15s %s%s%s%s%s%s%s%s.%s%s%s\r\n",
                 ( fGroup ? whogr->indent : 0 ), "",
                 Class,
                 invis_str,
@@ -3133,6 +3133,8 @@ void do_who( CHAR_DATA* ch, const char* argument)
                 xIS_SET( wch->act, PLR_KILLER ) ? "(KILLER) " : "",
                 xIS_SET( wch->act, PLR_THIEF ) ? "(THIEF) " : "",
                 char_name, wch->pcdata->title, extra_title, clan_name, council_name );
+      if( bc < 0 )
+         bug( "%s: Output buffer error!:", __func__ ); // Shut up GCC 8.
 
       /*
        * This is where the old code would display the found player to the ch.
@@ -4742,10 +4744,8 @@ void do_whois( CHAR_DATA* ch, const char* argument)
 {
    CHAR_DATA *victim;
    CLAN_DATA *pclan;
-   char buf[MAX_STRING_LENGTH];
+   char buf[MAX_INPUT_LENGTH];
    char buf2[MAX_STRING_LENGTH];
-
-   buf[0] = '\0';
 
    if( IS_NPC( ch ) )
       return;
@@ -4756,8 +4756,8 @@ void do_whois( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   mudstrlcat( buf, "0.", MAX_STRING_LENGTH );
-   mudstrlcat( buf, argument, MAX_STRING_LENGTH );
+   mudstrlcpy( buf, "0.", MAX_INPUT_LENGTH );
+   mudstrlcat( buf, argument, MAX_INPUT_LENGTH );
    if( ( ( victim = get_char_world( ch, buf ) ) == NULL ) )
    {
       send_to_pager( "No such character online.\r\n", ch );

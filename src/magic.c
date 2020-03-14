@@ -574,7 +574,7 @@ void immune_casting( SKILLTYPE * skill, CHAR_DATA * ch, CHAR_DATA * victim, OBJ_
  */
 void say_spell( CHAR_DATA * ch, int sn )
 {
-   char buf[MAX_STRING_LENGTH];
+   char buf[MAX_INPUT_LENGTH];
    char buf2[MAX_STRING_LENGTH];
    CHAR_DATA *rch;
    const char *pName;
@@ -629,7 +629,7 @@ void say_spell( CHAR_DATA * ch, int sn )
       {
          if( !str_prefix( syl_table[iSyl].old, pName ) )
          {
-            mudstrlcat( buf, syl_table[iSyl].cnew, MAX_STRING_LENGTH );
+            mudstrlcat( buf, syl_table[iSyl].cnew, MAX_INPUT_LENGTH );
             break;
          }
       }
@@ -639,7 +639,7 @@ void say_spell( CHAR_DATA * ch, int sn )
    }
 
    snprintf( buf2, MAX_STRING_LENGTH, "$n utters the words, '%s'.", buf );
-   snprintf( buf, MAX_STRING_LENGTH, "$n utters the words, '%s'.", skill->name );
+   snprintf( buf, MAX_INPUT_LENGTH, "$n utters the words, '%s'.", skill->name );
 
    for( rch = ch->in_room->first_person; rch; rch = rch->next_in_room )
    {
@@ -1365,7 +1365,7 @@ void do_cast( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
-   static char staticbuf[MAX_INPUT_LENGTH];
+   static char staticbuf[MAX_STRING_LENGTH];
    CHAR_DATA *victim;
    OBJ_DATA *obj;
    void *vo = NULL;
@@ -1599,7 +1599,7 @@ void do_cast( CHAR_DATA* ch, const char* argument)
          add_timer( ch, TIMER_DO_FUN, UMIN( skill->beats / 10, 3 ), do_cast, 1 );
          act( AT_MAGIC, "You begin to chant...", ch, NULL, NULL, TO_CHAR );
          act( AT_MAGIC, "$n begins to chant...", ch, NULL, NULL, TO_ROOM );
-         snprintf( staticbuf, MAX_INPUT_LENGTH, "%s %s", arg2, target_name );
+         snprintf( staticbuf, MAX_STRING_LENGTH, "%s %s", arg2, target_name );
          ch->alloc_ptr = str_dup( staticbuf );
          ch->tempnum = sn;
          return;

@@ -3116,7 +3116,7 @@ void do_mset( CHAR_DATA* ch, const char* argument)
    return;
 }
 
-void do_oset( CHAR_DATA* ch, const char* argument)
+void do_oset( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH], arg3[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH], outbuf[MAX_STRING_LENGTH];
@@ -4089,10 +4089,10 @@ void do_oset( CHAR_DATA* ch, const char* argument)
 }
 
 /* rdig command by Dracones */
-void do_rdig( CHAR_DATA* ch, const char* argument)
+void do_rdig( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
-   char tmpcmd[MAX_INPUT_LENGTH];
+   char tmpcmd[MAX_STRING_LENGTH];
    ROOM_INDEX_DATA *location, *ch_location;
    AREA_DATA *pArea;
    EXIT_DATA *xit;
@@ -4152,9 +4152,8 @@ void do_rdig( CHAR_DATA* ch, const char* argument)
       }
       location->area = ch->pcdata->area;
 
-      snprintf( tmpcmd, MAX_INPUT_LENGTH, "bexit %s %d", arg, vnum );
+      snprintf( tmpcmd, MAX_STRING_LENGTH, "bexit %s %d", arg, vnum );
       do_redit( ch, tmpcmd );
-
    }
    else
    {
@@ -5273,7 +5272,7 @@ void do_redit( CHAR_DATA* ch, const char* argument)
    if( !str_cmp( arg, "bexit" ) )
    {
       EXIT_DATA *nxit, *rxit;
-      char tmpcmd[MAX_INPUT_LENGTH];
+      char tmpcmd[MAX_STRING_LENGTH];
       ROOM_INDEX_DATA *tmploc;
       int vnum, exnum;
       char rvnum[MAX_INPUT_LENGTH];
@@ -5323,7 +5322,7 @@ void do_redit( CHAR_DATA* ch, const char* argument)
          else
             rxit = NULL;
       }
-      snprintf( tmpcmd, MAX_INPUT_LENGTH, "exit %s %s %s", arg2, arg3, argument );
+      snprintf( tmpcmd, MAX_STRING_LENGTH, "exit %s %s %s", arg2, arg3, argument );
       do_redit( ch, tmpcmd );
       if( numnotdir )
          nxit = get_exit_num( tmploc, exnum );
@@ -5341,7 +5340,7 @@ void do_redit( CHAR_DATA* ch, const char* argument)
       }
       if( vnum )
       {
-         snprintf( tmpcmd, MAX_INPUT_LENGTH, "%d redit exit %d %s %s", vnum, rev_dir[edir], rvnum, argument );
+         snprintf( tmpcmd, MAX_STRING_LENGTH, "%d redit exit %d %s %s", vnum, rev_dir[edir], rvnum, argument );
          do_at( ch, tmpcmd );
       }
       return;

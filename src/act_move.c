@@ -254,7 +254,7 @@ void decorate_room( ROOM_INDEX_DATA * room )
          len = strlen( buf );
          if( len == 0 )
          {
-            switch ( number_range( 1, ( 2 * ( iRand == nRand - 1 ) ) ? 1 : 2 ) )
+            switch ( number_range( 1, ( ( 2 * ( iRand == nRand - 1 ) ) > 0 ) ? 1 : 2 ) ) 
             {
                case 1:
                   pre = "You notice ";

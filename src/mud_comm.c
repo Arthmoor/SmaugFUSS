@@ -886,10 +886,10 @@ void do_mpoload( CHAR_DATA* ch, const char* argument)
 /* mpplace by Edmond 010731 */
 void do_mpplace( CHAR_DATA * ch, const char *argument )
 {
-   char arg1[MAX_STRING_LENGTH];
-   char arg2[MAX_STRING_LENGTH];
-   char arg3[MAX_STRING_LENGTH];
-   char buf[MAX_INPUT_LENGTH];
+   char arg1[MAX_INPUT_LENGTH];
+   char arg2[MAX_INPUT_LENGTH];
+   char arg3[MAX_INPUT_LENGTH];
+   char buf[MAX_STRING_LENGTH];
    OBJ_DATA *obj;
    ROOM_INDEX_DATA *pRoomIndex;
    AREA_DATA *tarea;
@@ -984,7 +984,7 @@ void do_mpplace( CHAR_DATA * ch, const char *argument )
             break;
    }
 
-   snprintf( buf, MAX_INPUT_LENGTH, "%d drop %s", pRoomIndex->vnum, arg1 );
+   snprintf( buf, MAX_STRING_LENGTH, "%d drop %s", pRoomIndex->vnum, arg1 );
    do_mpat( ch, buf );
    return;
 }
@@ -1764,12 +1764,12 @@ void do_mpunnuisance( CHAR_DATA* ch, const char* argument)
 /*
  * mpbodybag for mobs to do cr's  --Shaddai
  */
-void do_mpbodybag( CHAR_DATA* ch, const char* argument)
+void do_mpbodybag( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    OBJ_DATA *obj;
-   char arg[MAX_STRING_LENGTH];
-   char buf2[MAX_STRING_LENGTH];
+   char arg[MAX_INPUT_LENGTH];
+   char buf2[MAX_STRING_LENGTH-30];
    char buf4[MAX_STRING_LENGTH];
 
    if( !IS_NPC( ch ) || ch->desc || IS_AFFECTED( ch, AFF_CHARM ) )
@@ -1799,7 +1799,7 @@ void do_mpbodybag( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   snprintf( buf2, MAX_STRING_LENGTH, "the corpse of %s", arg );
+   snprintf( buf2, MAX_STRING_LENGTH-30, "the corpse of %s", arg );
    for( obj = first_object; obj; obj = obj->next )
    {
       if( obj->in_room && obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC && !str_cmp( buf2, obj->short_descr ) )

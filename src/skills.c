@@ -1788,8 +1788,10 @@ void do_sset( CHAR_DATA* ch, const char* argument)
    {
       if( ( sn = skill_lookup( arg1 ) ) >= 0 )
       {
-         snprintf( arg1, MAX_INPUT_LENGTH, "%d %s %s", sn, arg2, argument );
-         do_sset( ch, arg1 );
+         char buf[MAX_STRING_LENGTH];
+
+         snprintf( buf, MAX_STRING_LENGTH, "%d %s %s", sn, arg2, argument );
+         do_sset( ch, buf );
       }
       else
          send_to_char( "They aren't here.\r\n", ch );
