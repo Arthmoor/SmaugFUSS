@@ -2284,7 +2284,7 @@ void do_bug( CHAR_DATA *ch, const char *argument )
    }
    else
    {
-      sprintf( buf, "(%-2.2d/%-2.2d):  %s", t->tm_mon + 1, t->tm_mday, argument );
+      snprintf( buf, MAX_STRING_LENGTH, "(%-2.2d/%-2.2d):  %s", t->tm_mon + 1, t->tm_mday, argument );
       append_file( ch, PBUG_FILE, buf );
       send_to_char( "Thanks, your bug notice has been recorded.\r\n", ch );
    }

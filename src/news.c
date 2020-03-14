@@ -492,7 +492,7 @@ void save_news( void )
    FILE *fp = NULL;
    char filename[256];
 
-   sprintf( filename, "%s%s", SYSTEM_DIR, NEWS_FILE );
+   snprintf( filename, 256, "%s%s", SYSTEM_DIR, NEWS_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
       perror( "save_news(): cannot open file" );
@@ -534,7 +534,7 @@ void load_news( void )
    FILE *fp = NULL;
    char filename[256];
 
-   sprintf( filename, "%s%s", SYSTEM_DIR, NEWS_FILE );
+   snprintf( filename, 256, "%s%s", SYSTEM_DIR, NEWS_FILE );
    if( ( fp = fopen( filename, "r" ) ) == NULL )
    {
       perror( "load_news(): cannot open file" );
@@ -604,7 +604,7 @@ void link_news_to_type( NEWS * news )
 {
    NEWS_TYPE *type = NULL;
 
-   sprintf( local_buf, "%d", news->type );
+   snprintf( local_buf, MAX_INPUT_LENGTH, "%d", news->type );
    if( ( type = figure_type( local_buf ) ) == NULL )
    {
       bug( "link_news_to_type(): invaild news->type %d", news->type );
@@ -751,7 +751,7 @@ void write_html_news( void )
    FILE *fp = NULL;
    char filename[256];
 
-   sprintf( filename, "%s%s", sysdata.news_html_path, NEWS_INCLUDE_FILE );
+   snprintf( filename, 256, "%s%s", sysdata.news_html_path, NEWS_INCLUDE_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
       bug( "write_html_news(): cannot open %s for writing", filename );
@@ -770,21 +770,21 @@ void snarf_news( FILE * fp )
 {
    NEWS *news = NULL;
    int x = 0;
-   char buf[1024];
+   char buf[MAX_INPUT_LENGTH];
 
    for( news = last_news; x < sysdata.max_html_news; news = news->prev )
    {
       ++x;
       fprintf( fp, "<div align='center'>" );
       fprintf( fp, "\n<table width='399' border='1' height='56' bgcolor='#990000'>" );
-      sprintf( buf,
+      snprintf( buf, MAX_INPUT_LENGTH,
                "\n<tr><td><font face='Arial, Helvetica, sans-serif' size='2'>%s</font></tr></td><tr><td><font size='1' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>[</font><font color='#FFFFFF' size='2'>%s</font><font size='1' color='#FFFFFF'>]</font>",
                news->title, news->name );
       fprintf( fp, buf );
       fprintf( fp, "\n<font size='1'><font face='Arial, Helvetica, sans-serif'>[<b><font size='2' color='#FFFFFF'>" );
-      sprintf( buf, "\n%s\r\n</font></b>]</font></font></td></tr><tr><td height='2' bgcolor='#000000'>", news->date );
+      snprintf( buf, MAX_INPUT_LENGTH, "\n%s\r\n</font></b>]</font></font></td></tr><tr><td height='2' bgcolor='#000000'>", news->date );
       fprintf( fp, buf );
-      sprintf( buf,
+      snprintf( buf, MAX_INPUT_LENGTH,
                "\n<p><font face='Arial, Helvetica, sans-serif' size='2' color='#FFFFFF'>%s</font><p></td></tr></table></div>",
                news->post );
       fprintf( fp, buf );
@@ -810,7 +810,7 @@ bool news_cmd_hook( CHAR_DATA * ch, char *cmd, char *argument )
       {
          NEWS_TYPE *type = NULL;
 
-         sprintf( local_buf, "%d", x );
+         snprintf( local_buf, MAX_INPUT_LENGTH, "%d", x );
          if( ( type = figure_type( local_buf ) ) == NULL )
          {
             bug( "news_cmd_hook(): cannot find type for cmd %s", cmd );

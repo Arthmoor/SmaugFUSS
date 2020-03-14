@@ -621,7 +621,7 @@ void show_map( CHAR_DATA * ch, char *text )
          pos = get_line( p, 63 );
          char col[10], c[2];
 
-         strcpy( c, whatColor( text, p ) );
+         mudstrlcpy( c, whatColor( text, p ), 2 );
          if( c[0] == '\0' )
             mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
          else
@@ -630,7 +630,7 @@ void show_map( CHAR_DATA * ch, char *text )
          if( pos > 0 )
          {
             mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            strncat( buf, p, pos );
+            mudstrlcat( buf, p, pos );
             p += pos;
          }
          else
@@ -652,7 +652,7 @@ void show_map( CHAR_DATA * ch, char *text )
       char col[10], c[2];
       pos = get_line( p, 63 );
 
-      strcpy( c, whatColor( text, p ) );
+      mudstrlcpy( c, whatColor( text, p ), 2 );
       if( c[0] == '\0' )
          mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
       else
@@ -661,7 +661,7 @@ void show_map( CHAR_DATA * ch, char *text )
       if( pos > 0 )
       {
          mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-         strncat( buf, p, pos );
+         mudstrlcat( buf, p, pos );
          p += pos;
          mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
       }
@@ -687,7 +687,7 @@ void show_map( CHAR_DATA * ch, char *text )
           */
          pos = get_line( p, 78 );
 
-         strcpy( c, whatColor( text, p ) );
+         mudstrlcpy( c, whatColor( text, p ), 2 );
          if( c[0] == '\0' )
             mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
          else
@@ -696,7 +696,7 @@ void show_map( CHAR_DATA * ch, char *text )
          if( pos > 0 )
          {
             mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            strncat( buf, p, pos );
+            mudstrlcat( buf, p, pos );
             p += pos;
             mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
          }

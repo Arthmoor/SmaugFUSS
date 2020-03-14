@@ -1299,10 +1299,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
       }
       else
       {
-         char buf[MAX_STRING_LENGTH];
-
-         sprintf( buf, "Accessory buy: accessory does not exist - V: %d  #: %d", acc->vnum, i );
-         bug( buf, 0 );
+         bug( "%s: accessory does not exist - V: %d  #: %d", __func__, acc->vnum, i );
          return;
       }
 
@@ -1540,7 +1537,7 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
             continue;
          }
 
-         strcpy( area, location->area->name );
+         mudstrlcpy( area, location->area->name, MAX_INPUT_LENGTH );
          if( homeb->apartment )
             snprintf( name, MAX_INPUT_LENGTH, "(A) %s", location->name );
          else
@@ -1551,7 +1548,6 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
 
          ch_printf_color( ch, "&c%2d&C|&c%-22.22s&C|&c%-16.16s&C|&c%10d&C|&c%10d&C|&c%2d &CDays &c%2d &CHrs|\r\n", i, name,
                           area, homeb->bid, bidinc, days, ( ( homeb->endtime - ( days * 48 ) ) / 2 ) );
-
       }
 
       send_to_char_color( "&C--------------------------------------------------------------------------------\r\n", ch );

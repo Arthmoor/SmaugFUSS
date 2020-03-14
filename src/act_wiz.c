@@ -1867,7 +1867,7 @@ void do_ostat( CHAR_DATA* ch, const char* argument)
       ch_printf_color( ch, "&cAffects &w%s &cby &w%d.\r\n", affect_loc_name( paf->location ), paf->modifier );
 }
 
-void do_vstat( CHAR_DATA* ch, const char* argument)
+void do_vstat( CHAR_DATA* ch, const char* argument )
 {
    VARIABLE_DATA *vd;
    CHAR_DATA *victim;
@@ -1939,7 +1939,7 @@ void do_vstat( CHAR_DATA* ch, const char* argument)
                   }
 
                   for( x = 1; x <= started; x++ )
-                     strcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 " );
+                     mudstrlcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 ", MAX_STRING_LENGTH );
 
                   if( buf[0] != '\0' )
                      buf[strlen( buf ) - 1] = '\0';
@@ -2226,7 +2226,7 @@ void do_mstat( CHAR_DATA* ch, const char* argument)
                   }
 
                   for( x = 1; x <= started; x++ )
-                     strcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 " );
+                     mudstrlcat( buf, xIS_SET( *( EXT_BV * ) vd->data, x ) ? "1 " : "0 ", MAX_STRING_LENGTH );
 
                   if( buf[0] != '\0' )
                      buf[strlen( buf ) - 1] = '\0';

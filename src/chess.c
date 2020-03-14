@@ -65,35 +65,35 @@ static char *print_big_board( CHAR_DATA * ch, GAME_BOARD_DATA * board )
    char s1[16], s2[16];
    int x, y;
 
-   sprintf( s1, "&Y&W" );
-   sprintf( s2, "&z&z" );
+   mudstrlcpy( s1, "&Y&W", 16 );
+   mudstrlcpy( s2, "&z&z", 16 );
 
-   sprintf( retbuf, WHITE_FOREGROUND "\n\r&g     1      2      3      4      5      6      7      8\n\r" );
+   snprintf( retbuf, MAX_STRING_LENGTH * 2, WHITE_FOREGROUND "\n\r&g     1      2      3      4      5      6      7      8\n\r" );
 
    for( x = 0; x < 8; x++ )
    {
-      strcat( retbuf, "  " );
+      mudstrlcat( retbuf, "  ", MAX_STRING_LENGTH * 2 );
       for( y = 0; y < 8; y++ )
       {
-         sprintf( buf, "%s%s",
+         snprintf( buf, MAX_STRING_LENGTH, "%s%s",
                   x % 2 == 0 ? ( y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND ) :
                   ( y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND ), big_pieces[board->board[x][y]][0] );
-         sprintf( buf2, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
-         strcat( retbuf, buf2 );
+         snprintf( buf2, MAX_STRING_LENGTH, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
+         mudstrlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
       }
-      strcat( retbuf, BLACK_BACKGROUND "\n\r" );
+      mudstrlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
 
-      sprintf( buf, WHITE_FOREGROUND "&g%c ", 'A' + x );
-      strcat( retbuf, buf );
+      snprintf( buf, MAX_STRING_LENGTH, WHITE_FOREGROUND "&g%c ", 'A' + x );
+      mudstrlcat( retbuf, buf, MAX_STRING_LENGTH * 2 );
       for( y = 0; y < 8; y++ )
       {
-         sprintf( buf, "%s%s",
+         snprintf( buf, MAX_STRING_LENGTH, "%s%s",
                   x % 2 == 0 ? ( y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND ) :
                   ( y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND ), big_pieces[board->board[x][y]][1] );
-         sprintf( buf2, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
-         strcat( retbuf, buf2 );
+         snprintf( buf2, MAX_STRING_LENGTH, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
+         mudstrlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
       }
-      strcat( retbuf, BLACK_BACKGROUND "\n\r" );
+      mudstrlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
    }
 
    return ( retbuf );
@@ -701,17 +701,6 @@ void imc_send_chess( const char *from, const char *to, const char *argument )
    p = imc_newpacket( from, "chess", to );
    imc_addtopacket( p, "text=%s", argument );
    imc_write_packet( p );
-
-   /*
-    * setdata(&out, getdata(ch));
-    * 
-    * imc_sncpy(out.to, to, IMC_NAME_LENGTH);
-    * strcpy(out.type, "chess");
-    * imc_addkey(&out.data, "text", argument);
-    * 
-    * imc_send(&out);
-    * imc_freedata(&out.data); 
-    */
 }
 
 PFUN( imc_recv_chess )

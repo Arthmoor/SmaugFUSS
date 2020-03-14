@@ -155,14 +155,14 @@ void save_mssp_info( void )
  */
 bool load_mssp_data( void )
 {
-   char filename[MAX_INPUT_LENGTH];
+   char filename[256];
    FILE *fp;
    bool found;
 
    CREATE( mssp_info, struct mssp_info, 1 );
 
    found = FALSE;
-   sprintf( filename, "%s", MSSP_FILE );
+   snprintf( filename, 256, "%s", MSSP_FILE );
 
    if( ( fp = fopen( filename, "r" ) ) != NULL )
    {

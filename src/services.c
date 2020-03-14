@@ -447,7 +447,7 @@ static VOID worker_thread( VOID * notused )
 
 // remove last part of file name to get working directory
 
-   strcpy( directory, fullfilename );
+   mudstrlcpy( directory, fullfilename, MAX_PATH );
 
    p = strrchr( directory, '\\' );
    if( p )

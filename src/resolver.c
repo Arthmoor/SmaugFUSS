@@ -5,8 +5,14 @@
  *                /-----\  |      | \  |  v  | |     | |  /                 *
  *               /       \ |      |  \ |     | +-----+ +-/                  *
  ****************************************************************************
- * AFKMud Copyright 1997-2002 Alsherok. Contributors: Samson, Dwip, Whir,   *
- * Cyberfox, Karangi, Rathian, Cam, Raine, and Tarl.                        *
+ * AFKMud Copyright 1997-2019 by Roger Libiez (Samson),                     *
+ * Levi Beckerson (Whir), Michael Ward (Tarl), Erik Wolfe (Dwip),           *
+ * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine,                *
+ * Xorith, and Adjani.                                                      *
+ * All Rights Reserved.                                                     *
+ *                                                                          *
+ *                                                                          *
+ * External contributions from Remcon, Quixadhal, Zarius, and many others.  *
  *                                                                          *
  * Original SMAUG 1.8b written by Thoric (Derek Snider) with Altrag,        *
  * Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,        *
@@ -17,7 +23,7 @@
  * Original DikuMUD code by: Hans Staerfeldt, Katja Nyboe, Tom Madsen,      *
  * Michael Seifert, and Sebastian Hammer.                                   *
  ****************************************************************************
- *			 External DNS Resolver Module                                      *
+ *                      External DNS Resolver Module                        *
  ****************************************************************************/
 
 /***************************************************************************
@@ -50,8 +56,7 @@ char *resolve_address( int address )
     
    if( ( from = gethostbyaddr( (char*)&address, sizeof(address), AF_INET ) ) != NULL )
    {
-      strcpy( addr_str, 
-    	strcmp( from->h_name, "localhost" ) ? from->h_name : "local-host" );
+      strncpy( addr_str, strcmp( from->h_name, "localhost" ) ? from->h_name : "local-host", 256 );
    }
    else
    {

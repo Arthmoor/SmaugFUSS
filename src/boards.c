@@ -1379,7 +1379,7 @@ void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
          ed = SetOExtra( paper, "_to_" );
          STRFREE( ed->description );
          ed->description = QUICKLINK( pnote->sender );
-         sprintf( notebuf, "Re: %s", pnote->subject );
+         snprintf( notebuf, MAX_STRING_LENGTH, "Re: %s", pnote->subject );
          ed = SetOExtra( paper, "_subject_" );
          STRFREE( ed->description );
          ed->description = STRALLOC( notebuf );

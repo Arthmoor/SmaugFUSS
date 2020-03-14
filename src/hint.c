@@ -105,7 +105,7 @@ void write_hint( void )
    FILE *fp;
    char filename[256];
 
-   sprintf( filename, "%s", HINT_FILE );
+   snprintf( filename, 256, "%s", HINT_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
       bug( "%s: fopen", __func__ );

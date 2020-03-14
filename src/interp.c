@@ -821,12 +821,12 @@ int number_argument( const char *argument, char *arg )
 
          free(numPortion);
 
-         strcpy( arg, pdot + 1 );
+         mudstrlcpy( arg, pdot + 1, MAX_INPUT_LENGTH );
          return number;
       }
    }
 
-   strcpy( arg, argument );
+   mudstrlcpy( arg, argument, MAX_INPUT_LENGTH );
    return 1;
 }
 
