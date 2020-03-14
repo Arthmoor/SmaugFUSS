@@ -900,7 +900,7 @@ int colorcode( const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int 
             case '[':  /* Symbolic color name */
                if( ( sympos = strchr( src + 2, ']' ) ) )
                {
-                  register int subcnt = 0;
+                  int subcnt = 0;
                   unsigned int sublen = 0;
 
                   sublen = sympos - src - 2;
@@ -1297,7 +1297,7 @@ int colorcode( const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int 
  */
 int color_strlen( const char *src )
 {
-   register unsigned int i = 0;
+   unsigned int i = 0;
    int len = 0;
 
    if( !src || !*src )  /* Move along, nothing to see here */
@@ -1370,7 +1370,7 @@ char *colorize( const char *txt, DESCRIPTOR_DATA * d )
 
       while( ( colstr = strpbrk( prevstr, "&^}hH" ) ) != NULL )
       {
-         register int reslen = 0;
+         int reslen = 0;
 
          if( colstr > prevstr )
          {
