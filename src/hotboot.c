@@ -161,8 +161,7 @@ void save_world( void )
             }
             fwrite_obj( NULL, pRoomIndex->last_content, objfp, 0, OS_CARRY, TRUE );
             fprintf( objfp, "%s", "#END\n" );
-            fclose( objfp );
-            objfp = NULL;
+            FCLOSE( objfp );
          }
       }
    }
@@ -177,8 +176,7 @@ void save_world( void )
             save_mobile( mobfp, rch );
       }
       fprintf( mobfp, "%s", "#END\n" );
-      fclose( mobfp );
-      mobfp = NULL;
+      FCLOSE( mobfp );
    }
    return;
 }
@@ -468,8 +466,7 @@ void read_obj_file( char *dirname, char *filename )
             break;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       unlink( fname );
       for( tobj = supermob->first_carrying; tobj; tobj = tobj_next )
       {
@@ -565,8 +562,7 @@ void load_world( void )
       }
    }
 
-   fclose( mobfp );
-   mobfp = NULL;
+   FCLOSE( mobfp );
 
    load_obj_files(  );
 
@@ -673,8 +669,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
 
    fprintf( fp, "0 0 0 0 %d maxp maxp\n", sysdata.maxplayers );
    fprintf( fp, "%s", "-1\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 
 #ifdef IMC
    imc_hotboot(  );
@@ -828,8 +823,7 @@ void hotboot_recover( void )
 #endif
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    if( maxp > sysdata.maxplayers )
       sysdata.maxplayers = maxp;
    log_string( "Hotboot recovery complete." );

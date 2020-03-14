@@ -35,7 +35,6 @@
 #include <unistd.h>
 #include "mud.h"
 
-
 HOLIDAY_DATA *first_holiday;
 HOLIDAY_DATA *last_holiday;
 
@@ -430,7 +429,7 @@ bool load_timedata( void )
             break;
          }
       }
-      fclose( fp );
+      FCLOSE( fp );
    }
 
    return found;
@@ -461,7 +460,7 @@ void save_timedata( void )
       fprintf( fp, "%s", "End\n\n" );
       fprintf( fp, "%s", "#END\n" );
    }
-   fclose( fp );
+   FCLOSE( fp );
    return;
 }
 
@@ -796,7 +795,7 @@ void load_holidays( void )
             if( daycount >= sysdata.maxholiday )
             {
                bug( "load_holidays: more holidays than %d, increase Max Holiday in cset.", sysdata.maxholiday );
-               fclose( fp );
+               FCLOSE( fp );
                return;
             }
             CREATE( day, HOLIDAY_DATA, 1 );
@@ -813,7 +812,7 @@ void load_holidays( void )
             continue;
          }
       }
-      fclose( fp );
+      FCLOSE( fp );
    }
 
    return;
@@ -845,7 +844,7 @@ void save_holidays( void )
          fprintf( fp, "%s", "End\n\n" );
       }
       fprintf( fp, "%s", "#END\n" );
-      fclose( fp );
+      FCLOSE( fp );
    }
    return;
 }

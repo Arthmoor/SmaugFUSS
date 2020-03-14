@@ -185,7 +185,7 @@ void do_watch( CHAR_DATA* ch, const char* argument)
          fgets( s, MAX_STRING_LENGTH, fp );
       }
       pager_printf( ch, "You have %d lines in your watch file.\r\n", rec_count );
-      fclose( fp );
+      FCLOSE( fp );
       return;
    }
 
@@ -229,7 +229,7 @@ void do_watch( CHAR_DATA* ch, const char* argument)
                         "Type 'help watch' to see how to print the rest of the list.\r\n\r\n"
                         "Your watch file is large. Perhaps you should clear it?\r\n", ch );
 
-      fclose( fp );
+      FCLOSE( fp );
       return;
    }
 
@@ -5165,7 +5165,7 @@ void save_watchlist( void )
       fprintf( fp, "%d %s~%s~%s~\n", pwatch->imm_level, pwatch->imm_name,
                pwatch->target_name ? pwatch->target_name : " ", pwatch->player_site ? pwatch->player_site : " " );
    fprintf( fp, "-1\n" );
-   fclose( fp );
+   FCLOSE( fp );
 }
 
 void do_wizlock( CHAR_DATA* ch, const char* argument)
@@ -8461,8 +8461,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
          fprintf( fpList, "%s.class\n", class_table[i]->who_name );
 
       fprintf( fpList, "%s", "$\n" );
-      fclose( fpList );
-      fpList = NULL;
+      FCLOSE( fpList );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -8553,8 +8552,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
          fprintf( fpList, "%s%s.class\n", CLASS_DIR, class_table[i]->who_name );
 
       fprintf( fpList, "%s", "$\n" );
-      fclose( fpList );
-      fpList = NULL;
+      FCLOSE( fpList );
       return;
    }
 
@@ -8909,8 +8907,7 @@ void do_setrace( CHAR_DATA* ch, const char* argument )
       for( i = 0; i < MAX_PC_RACE; ++i )
          fprintf( fpList, "%s.race\n", race_table[i]->race_name );
       fprintf( fpList, "%s", "$\n" );
-      fclose( fpList );
-      fpList = NULL;
+      FCLOSE( fpList );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -8968,8 +8965,7 @@ void do_setrace( CHAR_DATA* ch, const char* argument )
       for( i = 0; i < MAX_PC_RACE; ++i )
          fprintf( fpList, "%s.race\n", race_table[i]->race_name );
       fprintf( fpList, "%s", "$\n" );
-      fclose( fpList );
-      fpList = NULL;
+      FCLOSE( fpList );
       send_to_char( "Race name set.\r\n", ch );
       return;
    }
@@ -9585,7 +9581,9 @@ void do_fixed( CHAR_DATA* ch, const char* argument)
    {
       FILE *fp = fopen( FIXED_FILE, "w" );
       if( fp )
-         fclose( fp );
+      {
+         FCLOSE( fp );
+      }
       send_to_char( "Fixed file cleared.\r\n", ch );
       return;
    }
@@ -9662,8 +9660,7 @@ void save_reserved( void )
    for( res = first_reserved; res; res = res->next )
       fprintf( fp, "%s~\n", res->name );
    fprintf( fp, "$~\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void do_reserve( CHAR_DATA* ch, const char* argument)

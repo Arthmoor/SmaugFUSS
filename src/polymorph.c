@@ -334,8 +334,7 @@ void save_morphs( void )
    for( morph = morph_start; morph; morph = morph->next )
       fwrite_morph( fp, morph );
    fprintf( fp, "%s", "#END\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -1951,8 +1950,7 @@ void load_morphs( void )
          case '#':
             if( !str_cmp( word, "#END" ) )
             {
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                fMatch = TRUE;
                my_continue = FALSE;
                break;

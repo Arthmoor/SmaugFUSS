@@ -89,8 +89,7 @@ void fwrite_house( HOME_DATA * homedata )
    }
 
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 void save_residence( ROOM_INDEX_DATA * location )
@@ -167,8 +166,7 @@ void update_house_list(  )
       fprintf( fpout, "%s\n", capitalize( tmphome->name ) );
 
    fprintf( fpout, "$\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 bool set_house( CHAR_DATA * ch, int vnum, bool apartment )
@@ -1418,8 +1416,7 @@ void save_homebuy(  )
    }
 
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 bool add_homebuy( CHAR_DATA * seller, int vnum, bool apartment, int price )
@@ -1999,8 +1996,7 @@ bool load_house_file( const char *name )
       }
    }
 
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 
    while( ( obj = supermob->first_carrying ) != NULL )
    {
@@ -2044,8 +2040,7 @@ void load_homedata(  )
 
    }
 
-   fclose( fpList );
-   fpList = NULL;
+   FCLOSE( fpList );
    return;
 }
 
@@ -2098,8 +2093,7 @@ void save_accessories(  )
    }
 
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 void load_accessories(  )
@@ -2147,8 +2141,7 @@ void load_accessories(  )
       }
    }
 
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void fread_accessories( FILE * fp )
@@ -2323,8 +2316,7 @@ void load_homebuy(  )
       }
    }
 
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 CHAR_DATA *load_player( const char *pname )

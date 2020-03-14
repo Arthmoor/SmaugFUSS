@@ -36,7 +36,6 @@ BAN_DATA *last_ban_class;
 BAN_DATA *first_ban_race;
 BAN_DATA *last_ban_race;
 
-
 /*
  * Load all those nasty bans up :)
  * 	Shaddai
@@ -69,7 +68,7 @@ void load_banlist( void )
          case 'E':
             if( !str_cmp( word, "END" ) ) /*File should always contain END */
             {
-               fclose( fp );
+               FCLOSE( fp );
                log_string( "Done." );
                return;
             }
@@ -241,7 +240,7 @@ void save_banlist( void )
       fprintf( fp, "%s~\n%s~\n%s~\n", pban->ban_by, pban->ban_time, pban->note );
    }
    fprintf( fp, "END\n" ); /* File must have an END even if empty */
-   fclose( fp );
+   FCLOSE( fp );
    return;
 }
 

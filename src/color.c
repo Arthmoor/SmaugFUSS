@@ -258,13 +258,11 @@ void reset_colors( CHAR_DATA * ch )
 
          if( !str_cmp( word, "End" ) )
          {
-            fclose( fp );
-            fp = NULL;
+            FCLOSE( fp );
             return;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       return;
    }
    else
@@ -327,8 +325,7 @@ void do_color( CHAR_DATA* ch, const char* argument)
       for( x = 0; x < MAX_COLORS; ++x )
          fprintf( fp, " %d", ch->colors[x] );
       fprintf( fp, "%s", "\nEnd\n" );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       ch_printf( ch, "Color theme %s saved.\r\n", argument );
       return;
    }
@@ -378,15 +375,13 @@ void do_color( CHAR_DATA* ch, const char* argument)
 
          if( !str_cmp( word, "End" ) )
          {
-            fclose( fp );
-            fp = NULL;
+            FCLOSE( fp );
             ch_printf( ch, "Color theme has been changed to %s.\r\n", argument );
             save_char_obj( ch );
             return;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       ch_printf( ch, "An error occured while trying to set color theme %s.\r\n", argument );
       return;
    }

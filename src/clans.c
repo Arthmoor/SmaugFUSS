@@ -361,7 +361,7 @@ void write_clan_list(  )
    for( tclan = first_clan; tclan; tclan = tclan->next )
       fprintf( fpout, "%s\n", tclan->filename );
    fprintf( fpout, "$\n" );
-   fclose( fpout );
+   FCLOSE( fpout );
 }
 
 void write_council_list(  )
@@ -380,7 +380,7 @@ void write_council_list(  )
    for( tcouncil = first_council; tcouncil; tcouncil = tcouncil->next )
       fprintf( fpout, "%s\n", tcouncil->filename );
    fprintf( fpout, "$\n" );
-   fclose( fpout );
+   FCLOSE( fpout );
 }
 
 /*
@@ -458,8 +458,7 @@ void save_clan( CLAN_DATA * clan )
       fwrite_memberlist( fp, clan );
       fprintf( fp, "%s", "#END\n" );
 
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    return;
 }
@@ -514,8 +513,7 @@ void save_council( COUNCIL_DATA * council )
          fprintf( fp, "Powers       %s~\n", council->powers );
       fprintf( fp, "End\n\n" );
       fprintf( fp, "#END\n" );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    return;
 }
@@ -565,8 +563,7 @@ void save_vault_list( )
    for( vault = first_vault; vault; vault = vault->next )
       fprintf( fpout, "%d\n", vault->vnum );
    fprintf( fpout, "$\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }                                                                                                                                               
 
 void load_vaults( )
@@ -609,8 +606,7 @@ void load_vaults( )
       }
    }
 
-   fclose( fpList );
-   fpList = NULL;
+   FCLOSE( fpList );
 
    log_string(" Done vaults " );
    return;
@@ -678,8 +674,7 @@ bool fread_storage( int rnum, const char *filename )
             break;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
 
       for( tobj = supermob->first_carrying; tobj; tobj = tobj_next )
       {
@@ -1035,8 +1030,7 @@ bool load_clan_file( const char *clanfile )
             break;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
 
    if( found )
@@ -1110,7 +1104,7 @@ bool load_council_file( const char *councilfile )
             break;
          }
       }
-      fclose( fp );
+      FCLOSE( fp );
    }
 
    if( found )
@@ -1166,7 +1160,7 @@ void load_clans(  )
          bug( "%s: Cannot load clan file: %s", __func__, filename );
       }
    }
-   fclose( fpList );
+   FCLOSE( fpList );
    log_string( " Done clans " );
    return;
 }
@@ -1204,7 +1198,7 @@ void load_councils(  )
          bug( "Cannot load council file: %s", filename );
       }
    }
-   fclose( fpList );
+   FCLOSE( fpList );
    log_string( " Done councils " );
    return;
 }
@@ -1249,8 +1243,7 @@ void save_storeroom( CHAR_DATA *ch, int vnum )
       fprintf( fp, "#END\n" );
 
       ch->level = templvl;
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       return;
    }
    return;
@@ -2827,8 +2820,7 @@ void do_defeats( CHAR_DATA * ch, const char *argument )
          FILE *fp = fopen( filename, "w" );
          if( fp )
          {
-            fclose( fp );
-            fp = NULL;
+            FCLOSE( fp );
          }
          send_to_char( "\r\nDefeats ledger has been cleared.\r\n", ch );
          return;
@@ -2864,7 +2856,9 @@ void do_victories( CHAR_DATA* ch, const char* argument)
       {
          FILE *fp = fopen( filename, "w" );
          if( fp )
-            fclose( fp );
+         {
+            FCLOSE( fp );
+         }
          send_to_pager( "\r\nVictories ledger has been cleared.\r\n", ch );
          return;
       }

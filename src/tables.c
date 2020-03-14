@@ -136,8 +136,7 @@ bool load_class_file( const char *fname )
          case 'E':
             if( !str_cmp( word, "End" ) )
             {
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                if( cl < 0 || cl >= MAX_CLASS )
                {
                   bug( "Load_class_file: Class (%s) bad/not found (%d)",
@@ -281,8 +280,7 @@ void load_classes(  )
       else
          ++MAX_PC_CLASS;
    }
-   fclose( fpList );
-   fpList = NULL;
+   FCLOSE( fpList );
    for( i = 0; i < MAX_CLASS; ++i )
    {
       if( class_table[i] == NULL )
@@ -334,8 +332,7 @@ void write_class_file( int cl )
    for( x = 0; x <= MAX_LEVEL; ++x )
       fprintf( fpout, "Title\n%s~\n%s~\n", title_table[cl][x][0], title_table[cl][x][1] );
    fprintf( fpout, "End\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 /*
@@ -381,8 +378,7 @@ void load_races(  )
          snprintf( race_table[i]->race_name, 16, "%s", "unused" );
       }
    }
-   fclose( fpList );
-   fpList = NULL;
+   FCLOSE( fpList );
    return;
 }
 
@@ -448,8 +444,7 @@ void write_race_file( int ra )
          fprintf( fpout, "Skill '%s' %d %d\n", skill_table[x]->name, y, skill_table[x]->race_adept[ra] );
    }
    fprintf( fpout, "End\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 bool load_race_file( const char *fname )
@@ -507,8 +502,7 @@ bool load_race_file( const char *fname )
          case 'E':
             if( !str_cmp( word, "End" ) )
             {
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                if( ra < 0 || ra >= MAX_RACE )
                {
                   bug( "%s: Race (%s) bad/not found (%d)", __func__,
@@ -866,8 +860,7 @@ void save_skill_table(  )
       fwrite_skill( fpout, skill_table[x] );
    }
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 /*
@@ -893,8 +886,7 @@ void save_herb_table(  )
       fwrite_skill( fpout, herb_table[x] );
    }
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 /*
@@ -944,8 +936,7 @@ void save_socials(  )
       }
    }
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 int get_skill( const char *skilltype )
@@ -1009,8 +1000,7 @@ void save_commands(  )
       }
    }
    fprintf( fpout, "#END\n" );
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 SKILLTYPE *fread_skill( FILE * fp )
@@ -1343,8 +1333,7 @@ void load_skill_table(  )
             if( num_skills >= MAX_SKILL )
             {
                bug( "%s: more skills than MAX_SKILL %d", __func__, MAX_SKILL );
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                return;
             }
             skill_table[num_skills++] = fread_skill( fp );
@@ -1358,8 +1347,7 @@ void load_skill_table(  )
             continue;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    else
    {
@@ -1400,8 +1388,7 @@ void load_herb_table(  )
             if( top_herb >= MAX_HERB )
             {
                bug( "%s: more herbs than MAX_HERB %d", __func__, MAX_HERB );
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                return;
             }
             herb_table[top_herb++] = fread_skill( fp );
@@ -1417,8 +1404,7 @@ void load_herb_table(  )
             continue;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    else
    {
@@ -1534,8 +1520,7 @@ void load_socials(  )
             continue;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    else
    {
@@ -1713,8 +1698,7 @@ void load_commands(  )
             continue;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    else
    {
@@ -1836,8 +1820,7 @@ void load_tongues(  )
       fread_to_eol( fp );
       LINK( lng, first_lang, last_lang, next, prev );
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -1863,7 +1846,6 @@ void fwrite_langs( void )
       fprintf( fp, "\n" );
    }
    fprintf( fp, "#end\n\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }

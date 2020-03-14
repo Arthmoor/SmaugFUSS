@@ -110,8 +110,7 @@ void save_liquids( void )
       fprintf( fp, "%s", "End\n\n" );
    }
    fprintf( fp, "%s", "#END\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -242,8 +241,7 @@ void load_liquids( void )
          continue;
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -270,8 +268,7 @@ void save_mixtures( void )
       fprintf( fp, "%s", "End\n" );
    }
    fprintf( fp, "%s", "#END\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -390,8 +387,7 @@ void load_mixtures( void )
          break;
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 

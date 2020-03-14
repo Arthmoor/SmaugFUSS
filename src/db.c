@@ -307,8 +307,7 @@ void shutdown_mud( const char *reason )
    if( ( fp = fopen( SHUTDOWN_FILE, "a" ) ) != NULL )
    {
       fprintf( fp, "%s\n", reason );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
 }
 
@@ -687,8 +686,7 @@ void boot_db( bool fCopyOver )
 
          load_area_file( NULL, strArea );
       }
-      fclose( fpList );
-      fpList = NULL;
+      FCLOSE( fpList );
    }
 
 #ifdef PLANES
@@ -4250,7 +4248,7 @@ void append_file( CHAR_DATA * ch, const char *file, const char *str )
    else
    {
       fprintf( fp, "[%5d] %s: %s\n", ch->in_room ? ch->in_room->vnum : 0, ch->name, str );
-      fclose( fp );
+      FCLOSE( fp );
    }
    return;
 }
@@ -4267,8 +4265,7 @@ void append_to_file( const char *file, const char *str )
    else
    {
       fprintf( fp, "%s\n", str );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    return;
 }
@@ -4323,8 +4320,7 @@ void bug( const char *str, ... )
          {
             fprintf( fp, "%s\n", buf );
             fprintf( fp, "[*****] FILE: %s LINE: %d\n", strArea, iLine );
-            fclose( fp );
-            fp = NULL;
+            FCLOSE( fp );
          }
       }
    }
@@ -4349,8 +4345,7 @@ void boot_log( const char *str, ... )
    if( ( fp = fopen( BOOTLOG_FILE, "a" ) ) != NULL )
    {
       fprintf( fp, "%s\n", buf );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    return;
 }
@@ -4385,8 +4380,7 @@ void show_file( CHAR_DATA * ch, const char *filename )
        * Thanks to stu <sprice@ihug.co.nz> from the mailing list in pointing
        * *  This out. 
        */
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
 }
 
@@ -4422,8 +4416,7 @@ void show_file_vnum( CHAR_DATA *ch, const char *filename, int lo, int hi )
          num = 0;
       }
       /* Thanks to stu <sprice@ihug.co.nz> from the mailing list in pointingThis out. */
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
 }
 
@@ -4531,8 +4524,7 @@ void towizfile( const char *line )
    if( wfp )
    {
       fputs( outline, wfp );
-      fclose( wfp );
-      wfp = NULL;
+      FCLOSE( wfp );
    }
 }
 
@@ -4617,8 +4609,7 @@ void make_wizlist(  )
                iflags = fread_number( gfp );
             else
                iflags = 0;
-            fclose( gfp );
-            gfp = NULL;
+            FCLOSE( gfp );
 
             if( IS_SET( iflags, PCFLAG_GUEST ) )
                ilevel = MAX_LEVEL - 16;
@@ -4887,8 +4878,7 @@ void mobprog_file_read( MOB_INDEX_DATA * mob, const char *f )
             break;
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -5002,8 +4992,7 @@ void objprog_file_read( OBJ_INDEX_DATA * obj, const char *f )
             break;
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -5117,8 +5106,7 @@ void roomprog_file_read( ROOM_INDEX_DATA * room, const char *f )
             break;
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -6153,8 +6141,7 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
          fread_to_eol( progfile );
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -6563,8 +6550,7 @@ void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
          fread_to_eol( progfile );
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -7028,8 +7014,7 @@ void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
          fread_to_eol( progfile );
       }
    }
-   fclose( progfile );
-   progfile = NULL;
+   FCLOSE( progfile );
    return;
 }
 
@@ -7936,8 +7921,7 @@ void load_area_file( AREA_DATA * tarea, const char *filename )
       else
       {
          bug( "%s: No # found at start of area file.", __func__ );
-         fclose( fpArea );
-         fpArea = NULL;
+         FCLOSE( fpArea );
          return;
       }
    }
@@ -7948,8 +7932,7 @@ void load_area_file( AREA_DATA * tarea, const char *filename )
    if( !str_cmp( word, "FUSSAREA" ) )
    {
       tarea = fread_fuss_area( tarea, fpArea );
-      fclose( fpArea );
-      fpArea = NULL;
+      FCLOSE( fpArea );
 
       if( tarea )
          process_sorting( tarea );
@@ -8035,14 +8018,12 @@ void load_area_file( AREA_DATA * tarea, const char *filename )
             exit( 1 );
          else
          {
-            fclose( fpArea );
-            fpArea = NULL;
+            FCLOSE( fpArea );
             return;
          }
       }
    }
-   fclose( fpArea );
-   fpArea = NULL;
+   FCLOSE( fpArea );
 
    if( tarea )
       process_sorting( tarea );
@@ -8063,7 +8044,7 @@ void load_reserved( void )
       if( feof( fp ) )
       {
          bug( "Load_reserved: no $ found." );
-         fclose( fp );
+         FCLOSE( fp );
          return;
       }
       CREATE( res, RESERVE_DATA, 1 );
@@ -8074,8 +8055,7 @@ void load_reserved( void )
    }
    DISPOSE( res->name );
    DISPOSE( res );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 /* Build list of in_progress areas.  Do not load areas.
@@ -8144,8 +8124,7 @@ void load_buildlist( void )
                olow = low, ohi = hi;
          }
 
-         fclose( fp );
-         fp = NULL;
+         FCLOSE( fp );
 
          if( rlow && rhi && !badfile )
          {
@@ -8162,8 +8141,7 @@ void load_buildlist( void )
             if( word[0] != '#' || strcmp( &word[1], "AREA" ) )
             {
                snprintf( buf, MAX_STRING_LENGTH, "%s: %s.are: no #AREA found.", __func__, dentry->d_name );
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
                dentry = readdir( dp );
                continue;
             }
@@ -8178,8 +8156,7 @@ void load_buildlist( void )
             snprintf( buf, MAX_STRING_LENGTH, "{PROTO} %s's area in progress", dentry->d_name );
             pArea->name = str_dup( buf );
 #endif
-            fclose( fp );
-            fp = NULL;
+            FCLOSE( fp );
 
             pArea->low_r_vnum = rlow;
             pArea->hi_r_vnum = rhi;
@@ -8527,8 +8504,7 @@ void save_sysdata( SYSTEM_DATA sys )
       fprintf( fp, "End\n\n" );
       fprintf( fp, "#END\n" );
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
@@ -8726,8 +8702,7 @@ bool load_systemdata( SYSTEM_DATA * sys )
             break;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       update_timers(  );
       update_calendar(  );
    }
@@ -8754,13 +8729,13 @@ void load_watchlist( void )
       if( feof( fp ) )
       {
          bug( "Load_watchlist: no -1 found." );
-         fclose( fp );
+         FCLOSE( fp );
          return;
       }
       number = fread_number( fp );
       if( number == -1 )
       {
-         fclose( fp );
+         FCLOSE( fp );
          return;
       }
 
@@ -9035,8 +9010,7 @@ void load_projects( void ) /* Copied load_boards structure for simplicity */
    // Bugfix - CPPcheck flagged this. It's possible for it to be closed in fread_project before getting back here.
    if( fp )
    {
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
 
    return;
@@ -9055,7 +9029,7 @@ PROJECT_DATA *read_project( FILE * fp )
       letter = getc( fp );
       if( feof( fp ) )
       {
-         fclose( fp );
+         FCLOSE( fp );
          return NULL;
       }
    }
@@ -9250,7 +9224,7 @@ void write_projects(  )
 
       fprintf( fpout, "End\n" );
    }
-   fclose( fpout );
+   FCLOSE( fpout );
 }
 
 size_t mudstrlcpy( char *dst, const char *src, size_t siz )
@@ -9451,8 +9425,7 @@ void load_loginmsg(  )
       }
    }
 
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void save_loginmsg(  )
@@ -9479,8 +9452,7 @@ void save_loginmsg(  )
    }
 
    fprintf( fp, "%s", "#END\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void add_loginmsg( const char *name, short type, const char *argument )

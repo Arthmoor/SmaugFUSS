@@ -150,8 +150,7 @@ void save_planes( void )
       fprintf( fp, "End\n\n" );
    }
    fprintf( fp, "#END\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
 }
 
 void read_plane( FILE * fp )
@@ -227,8 +226,7 @@ void load_planes( void )
          break;
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    fpArea = NULL;
 }
 

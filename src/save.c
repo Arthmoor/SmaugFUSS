@@ -306,8 +306,7 @@ void save_char_obj( CHAR_DATA * ch )
             fprintf( fp, "ObjRange     %d %d\n", ch->pcdata->o_range_lo, ch->pcdata->o_range_hi );
          if( ch->pcdata->m_range_lo && ch->pcdata->m_range_hi )
             fprintf( fp, "MobRange     %d %d\n", ch->pcdata->m_range_lo, ch->pcdata->m_range_hi );
-         fclose( fp );
-         fp = NULL;
+         FCLOSE( fp );
       }
    }
 
@@ -342,8 +341,7 @@ void save_char_obj( CHAR_DATA * ch )
       fprintf( fp, "#END\n" );
 
       ferr = ferror( fp );
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
 
       if( IS_SET( sysdata.save_flags, SV_TMPSAVE ) )
       {
@@ -947,8 +945,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
             break;
          }
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       fpArea = NULL;
       mudstrlcpy( strArea, "$", MAX_INPUT_LENGTH );
    }
@@ -2432,7 +2429,7 @@ void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem )
    if( fp )
    {
       fprintf( fp, "#END\n\n" );
-      fclose( fp );
+      FCLOSE( fp );
    }
    else
    {
@@ -2500,7 +2497,7 @@ void load_corpses( void )
                break;
             }
          }
-         fclose( cfp );
+         FCLOSE( cfp );
       }
    }
    cfp = NULL;
@@ -2736,7 +2733,7 @@ void write_char_mobile( CHAR_DATA * ch, char *argument )
    mob = ch->pcdata->pet;
    xSET_BIT( mob->affected_by, AFF_CHARM );
    fwrite_mobile( fp, mob );
-   fclose( fp );
+   FCLOSE( fp );
    return;
 }
 
@@ -2757,6 +2754,6 @@ void read_char_mobile( char *argument )
    mob = fread_mobile( fp );
    if( !mob )
       bug( "%s: failed to fread_mobile.", __func__ );
-   fclose( fp );
+   FCLOSE( fp );
    return;
 }

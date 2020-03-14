@@ -2439,8 +2439,7 @@ void do_hset( CHAR_DATA* ch, const char* argument)
          fprintf( fpout, "%d %s~\n%s~\n\n", pHelp->level, pHelp->keyword, help_fix( pHelp->text ) );
 
       fprintf( fpout, "0 $~\n\n\n#$\n" );
-      fclose( fpout );
-      fpout = NULL;
+      FCLOSE( fpout );
       send_to_char( "Saved.\r\n", ch );
       return;
    }
@@ -3287,7 +3286,7 @@ void do_who( CHAR_DATA* ch, const char* argument)
    if( !ch )
    {
       fprintf( whoout, "%d player%s.\r\n", nMatch, nMatch == 1 ? "" : "s" );
-      fclose( whoout );
+      FCLOSE( whoout );
       return;
    }
 

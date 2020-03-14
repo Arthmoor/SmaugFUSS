@@ -76,7 +76,7 @@ void write_deity_list(  )
       for( tdeity = first_deity; tdeity; tdeity = tdeity->next )
          fprintf( fpout, "%s\n", tdeity->filename );
       fprintf( fpout, "$\n" );
-      fclose( fpout );
+      FCLOSE( fpout );
    }
 }
 
@@ -150,7 +150,7 @@ void save_deity( DEITY_DATA * deity )
       fprintf( fp, "Objstat		%d\n", deity->objstat );
       fprintf( fp, "End\n\n" );
       fprintf( fp, "#END\n" );
-      fclose( fp );
+      FCLOSE( fp );
    }
    return;
 }
@@ -313,7 +313,7 @@ bool load_deity_file( const char *deityfile )
             break;
          }
       }
-      fclose( fp );
+      FCLOSE( fp );
    }
 
    return found;
@@ -349,7 +349,7 @@ void load_deity(  )
          bug( "Cannot load deity file: %s", filename );
       }
    }
-   fclose( fpList );
+   FCLOSE( fpList );
    log_string( " Done deities " );
    return;
 }

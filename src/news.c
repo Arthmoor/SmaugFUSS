@@ -523,8 +523,7 @@ void save_news( void )
  if(sysdata.news_html_path && sysdata.news_html_path[0] != '\0' && sysdata.max_html_news > 0)
   write_html_news( );
  */
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -592,8 +591,7 @@ void load_news( void )
          continue;
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    renumber_news(  );
    return;
 }
@@ -758,8 +756,7 @@ void write_html_news( void )
       return;
    }
    snarf_news( fp );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 

@@ -2257,8 +2257,7 @@ void do_bug( CHAR_DATA *ch, const char *argument )
 
             if( fp )
             {
-               fclose( fp );
-               fp = NULL;
+               FCLOSE( fp );
             }
             send_to_char( "Bug file cleared.\r\n", ch );
             return;
@@ -2326,8 +2325,7 @@ void do_typo( CHAR_DATA* ch, const char* argument)
       FILE *fp = fopen( TYPO_FILE, "w" );
       if( fp )
       {
-         fclose( fp );
-         fp = NULL;
+         FCLOSE( fp );
       }
       send_to_char( "Typo file cleared.\r\n", ch );
       return;
@@ -2466,7 +2464,7 @@ void send_rip_screen( CHAR_DATA * ch )
    {
       while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
          num++;
-      fclose( rpfile );
+      FCLOSE( rpfile );
       BUFF[num] = 0;
       write_to_buffer( ch->desc, BUFF, num );
    }
@@ -2482,7 +2480,7 @@ void send_rip_title( CHAR_DATA * ch )
    {
       while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
          num++;
-      fclose( rpfile );
+      FCLOSE( rpfile );
       BUFF[num] = 0;
       write_to_buffer( ch->desc, BUFF, num );
    }
@@ -2498,7 +2496,7 @@ void send_ansi_title( CHAR_DATA * ch )
    {
       while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
          num++;
-      fclose( rpfile );
+      FCLOSE( rpfile );
       BUFF[num] = 0;
       write_to_buffer( ch->desc, BUFF, num );
    }
@@ -2514,7 +2512,7 @@ void send_ascii_title( CHAR_DATA * ch )
    {
       while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
          num++;
-      fclose( rpfile );
+      FCLOSE( rpfile );
       BUFF[num] = 0;
       write_to_buffer( ch->desc, BUFF, num );
    }

@@ -223,8 +223,7 @@ void write_boards_txt( void )
          fprintf( fpout, "Postmessg	   %s~\n", tboard->postmessg );
       fprintf( fpout, "End\n" );
    }
-   fclose( fpout );
-   fpout = NULL;
+   FCLOSE( fpout );
 }
 
 BOARD_DATA *get_board( OBJ_DATA * obj )
@@ -310,8 +309,7 @@ void write_board( BOARD_DATA * board )
                   pnote->sender, pnote->date, pnote->to_list, pnote->subject, pnote->voting, pnote->yesvotes, pnote->novotes,
                   pnote->abstentions, pnote->yestally, pnote->notally, pnote->abstaintally, pnote->no_remove, pnote->text );
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
    }
    return;
 }
@@ -1558,7 +1556,7 @@ BOARD_DATA *read_board( FILE * fp )
       letter = getc( fp );
       if( feof( fp ) )
       {
-         fclose( fp );
+         FCLOSE( fp );
          return NULL;
       }
    }
@@ -1676,7 +1674,7 @@ NOTE_DATA *read_note( FILE * fp )
          letter = getc( fp );
          if( feof( fp ) )
          {
-            fclose( fp );
+            FCLOSE( fp );
             return NULL;
          }
       }

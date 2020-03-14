@@ -50,7 +50,7 @@ int load_imm_host(  )
          case '#':
             if( !str_cmp( word, "#END" ) )
             {
-               fclose( fp );
+               FCLOSE( fp );
                fMatch = TRUE;
                my_continue = FALSE;
             }
@@ -334,6 +334,6 @@ void do_write_imm_host( void )
       fprintf( fp, "End\n" );
    }
    fprintf( fp, "#END\n" );
-   fclose( fp );
+   FCLOSE( fp );
    return;
 }

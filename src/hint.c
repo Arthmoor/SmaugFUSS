@@ -121,8 +121,7 @@ void write_hint( void )
          fprintf( fp, "High %d\n", hintData->high );
          fprintf( fp, "%s", "End\n" );
       }
-      fclose( fp );
-      fp = NULL;
+      FCLOSE( fp );
       return;
    }
 }
@@ -332,8 +331,7 @@ HINT_DATA *read_hint( char *filename, FILE * fp )
       letter = getc( fp );
       if( feof( fp ) )
       {
-         fclose( fp );
-         fp = NULL;
+         FCLOSE( fp );
          return NULL;
       }
    }

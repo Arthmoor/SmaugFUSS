@@ -193,7 +193,7 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
                snprintf( buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
                          t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline );
                fputs( buf, fp );
-               fclose( fp );
+               FCLOSE( fp );
                found = TRUE;
             }
          }
@@ -216,7 +216,7 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
             snprintf( buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
                       t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline );
             fputs( buf, fp );
-            fclose( fp );
+            FCLOSE( fp );
          }
    }
 

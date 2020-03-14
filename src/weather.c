@@ -2280,8 +2280,7 @@ void save_weathermap( void )
       }
    }
    fprintf( fp, "\n#END\n\n" );
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return;
 }
 
@@ -2438,8 +2437,7 @@ bool load_weathermap( void )
          continue;
       }
    }
-   fclose( fp );
-   fp = NULL;
+   FCLOSE( fp );
    return TRUE;
 }
 
