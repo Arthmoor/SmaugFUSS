@@ -4608,8 +4608,8 @@ void	room_sort	args( ( ROOM_INDEX_DATA *pRoom ) );*/
 void sort_area args( ( AREA_DATA * pArea, bool proto ) );
 void sort_area_by_name args( ( AREA_DATA * pArea ) ); /* Fireblade */
 void write_projects args( ( void ) );
-size_t mudstrlcpy args( ( char *dst, const char *src, size_t siz ) );
-size_t mudstrlcat args( ( char *dst, const char *src, size_t siz ) );
+size_t mudstrlcat( char * __restrict dst, const char * __restrict src, size_t dsize );
+size_t mudstrlcpy( char * __restrict dst, const char * __restrict src, size_t dsize );
 
 /* fight.c */
 void violence_update args( ( void ) );
