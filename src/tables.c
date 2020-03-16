@@ -58,7 +58,7 @@ SPELL_FUN *spell_function( const char *name )
    funHandle = dlsym( sysdata.dlHandle, name );
    if( ( error = dlerror(  ) ) )
    {
-      bug( "Error locating %s in symbol table. %s", name, error );
+      bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
       return spell_notfound;
    }
    return ( SPELL_FUN * ) funHandle;
@@ -76,7 +76,7 @@ DO_FUN *skill_function( const char *name )
    funHandle = dlsym( sysdata.dlHandle, name );
    if( ( error = dlerror(  ) ) )
    {
-      bug( "Error locating %s in symbol table. %s", name, error );
+      bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
       return skill_notfound;
    }
    return ( DO_FUN * ) funHandle;
@@ -139,7 +139,7 @@ bool load_class_file( const char *fname )
                FCLOSE( fp );
                if( cl < 0 || cl >= MAX_CLASS )
                {
-                  bug( "Load_class_file: Class (%s) bad/not found (%d)",
+                  bug( "%s: Class (%s) bad/not found (%d)", __func__,
                        Class->who_name ? Class->who_name : "name not found", cl );
                   if( Class->who_name )
                      STRFREE( Class->who_name );
@@ -209,7 +209,7 @@ bool load_class_file( const char *fname )
                {
                   char *tmp;
 
-                  bug( "load_class_file: Title -- class bad/not found (%d)", cl );
+                  bug( "%s: Title -- class bad/not found (%d)", __func__, cl );
                   tmp = fread_string_nohash( fp );
                   DISPOSE( tmp );
                   tmp = fread_string_nohash( fp );
@@ -275,7 +275,7 @@ void load_classes(  )
 
       if( !load_class_file( filename ) )
       {
-         bug( "Cannot load class file: %s", filename );
+         bug( "%s: Cannot load class file: %s", __func__, filename );
       }
       else
          ++MAX_PC_CLASS;
@@ -302,7 +302,7 @@ void write_class_file( int cl )
    snprintf( filename, MAX_INPUT_LENGTH, "%s%s.class", CLASS_DIR, Class->who_name );
    if( ( fpout = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "Cannot open: %s for writing", filename );
+      bug( "%s: Cannot open: %s for writing", __func__, filename );
       return;
    }
    fprintf( fpout, "Name        %s~\n", Class->who_name );
@@ -366,7 +366,7 @@ void load_races(  )
          break;
 
       if( !load_race_file( filename ) )
-         bug( "Cannot load race file: %s", filename );
+         bug( "%s: Cannot load race file: %s", __func__, filename );
       else
          ++MAX_PC_RACE;
    }
@@ -392,14 +392,14 @@ void write_race_file( int ra )
 
    if( !race->race_name )
    {
-      bug( "Race %d has null name, not writing .race file.", ra );
+      bug( "%s: Race %d has null name, not writing .race file.", __func__, ra );
       return;
    }
 
    snprintf( filename, MAX_INPUT_LENGTH, "%s%s.race", RACE_DIR, race->race_name );
    if( ( fpout = fopen( filename, "w+" ) ) == NULL )
    {
-      bug( "Cannot open: %s for writing", filename );
+      bug( "%s: Cannot open: %s for writing", __func__, filename );
       return;
    }
 
@@ -609,7 +609,7 @@ bool load_race_file( const char *fname )
                   ++wear;
                }
                else
-                  bug( "load_race_file: Too many where_names" );
+                  bug( "%s: Too many where_names", __func__ );
                fMatch = TRUE;
                break;
             }
@@ -848,7 +848,7 @@ void save_skill_table(  )
    if( ( fpout = fopen( SKILL_FILE, "w" ) ) == NULL )
    {
       perror( SKILL_FILE );
-      bug( "Cannot open %s for writting", SKILL_FILE );
+      bug( "%s: Cannot open %s for writting", __func__, SKILL_FILE );
       return;
    }
 
@@ -873,7 +873,7 @@ void save_herb_table(  )
 
    if( !( fpout = fopen( HERB_FILE, "w" ) ) )
    {
-      bug( "Cannot open %s for writting", HERB_FILE );
+      bug( "%s: Cannot open %s for writting", __func__, HERB_FILE );
       perror( HERB_FILE );
       return;
    }
@@ -900,7 +900,7 @@ void save_socials(  )
 
    if( ( fpout = fopen( SOCIAL_FILE, "w" ) ) == NULL )
    {
-      bug( "Cannot open %s for writting", SOCIAL_FILE );
+      bug( "%s: Cannot open %s for writting", __func__, SOCIAL_FILE );
       perror( SOCIAL_FILE );
       return;
    }
@@ -911,7 +911,7 @@ void save_socials(  )
       {
          if( !social->name || social->name[0] == '\0' )
          {
-            bug( "Save_socials: blank social in hash bucket %d", x );
+            bug( "%s: blank social in hash bucket %d", __func__, x );
             continue;
          }
          fprintf( fpout, "#SOCIAL\n" );
@@ -919,7 +919,7 @@ void save_socials(  )
          if( social->char_no_arg )
             fprintf( fpout, "CharNoArg   %s~\n", social->char_no_arg );
          else
-            bug( "Save_socials: NULL char_no_arg in hash bucket %d", x );
+            bug( "%s: NULL char_no_arg in hash bucket %d", __func__, x );
          if( social->others_no_arg )
             fprintf( fpout, "OthersNoArg %s~\n", social->others_no_arg );
          if( social->char_found )
@@ -968,7 +968,7 @@ void save_commands(  )
 
    if( ( fpout = fopen( COMMAND_FILE, "w" ) ) == NULL )
    {
-      bug( "Cannot open %s for writing", COMMAND_FILE );
+      bug( "%s: Cannot open %s for writing", __func__, COMMAND_FILE );
       perror( COMMAND_FILE );
       return;
    }
@@ -979,7 +979,7 @@ void save_commands(  )
       {
          if( !command->name || command->name[0] == '\0' )
          {
-            bug( "Save_commands: blank command in hash bucket %d", x );
+            bug( "%s: blank command in hash bucket %d", __func__, x );
             continue;
          }
          fprintf( fpout, "#COMMAND\n" );
@@ -1352,7 +1352,7 @@ void load_skill_table(  )
    else
    {
       perror( SKILL_FILE );
-      bug( "Cannot open %s", SKILL_FILE );
+      bug( "%s: Cannot open %s", __func__, SKILL_FILE );
       exit( 0 );
    }
 }
@@ -1408,7 +1408,7 @@ void load_herb_table(  )
    }
    else
    {
-      bug( "Cannot open %s", HERB_FILE );
+      bug( "%s: Cannot open %s", __func__, HERB_FILE );
       exit( 0 );
    }
 }
@@ -1444,13 +1444,13 @@ void fread_social( FILE * fp )
             {
                if( !social->name )
                {
-                  bug( "%s", "Fread_social: Name not found" );
+                  bug( "%s: Name not found", __func__ );
                   free_social( social );
                   return;
                }
                if( !social->char_no_arg )
                {
-                  bug( "%s", "Fread_social: CharNoArg not found" );
+                  bug( "%s: CharNoArg not found", __func__ );
                   free_social( social );
                   return;
                }
@@ -1476,7 +1476,7 @@ void fread_social( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_social: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1502,7 +1502,7 @@ void load_socials(  )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_socials: # not found." );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -1516,7 +1516,7 @@ void load_socials(  )
             break;
          else
          {
-            bug( "%s", "Load_socials: bad section." );
+            bug( "%s: bad section.", __func__ );
             continue;
          }
       }
@@ -1524,7 +1524,7 @@ void load_socials(  )
    }
    else
    {
-      bug( "Cannot open %s", SOCIAL_FILE );
+      bug( "%s: Cannot open %s", __func__, SOCIAL_FILE );
       exit( 0 );
    }
 }
@@ -1654,7 +1654,7 @@ void fread_command( FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_command: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1680,7 +1680,7 @@ void load_commands(  )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_commands: # not found." );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -1694,7 +1694,7 @@ void load_commands(  )
             break;
          else
          {
-            bug( "%s", "Load_commands: bad section." );
+            bug( "%s: bad section.", __func__ );
             continue;
          }
       }
@@ -1702,7 +1702,7 @@ void load_commands(  )
    }
    else
    {
-      bug( "Cannot open %s", COMMAND_FILE );
+      bug( "%s: Cannot open %s", __func__, COMMAND_FILE );
       exit( 0 );
    }
 }
@@ -1805,7 +1805,7 @@ void load_tongues(  )
       }
       else if( letter != '#' )
       {
-         bug( "Letter '%c' not #.", letter );
+         bug( "%s: Letter '%c' not #.", __func__, letter );
          exit( 0 );
       }
       word = fread_word( fp );

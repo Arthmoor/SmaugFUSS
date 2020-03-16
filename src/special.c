@@ -137,7 +137,7 @@ SPEC_FUN *spec_lookup( const char *name )
    funHandle = dlsym( sysdata.dlHandle, name );
    if( ( error = dlerror(  ) ) )
    {
-      bug( "Error locating function %s in symbol table.", name );
+      bug( "%s: Error locating function %s in symbol table.", __func__, name );
       return NULL;
    }
    return ( SPEC_FUN * ) funHandle;
@@ -642,7 +642,7 @@ bool spec_executioner( CHAR_DATA * ch )
 
    if( !cityguard )
    {
-      bug( "Missing Cityguard - Vnum:[%d]", MOB_VNUM_CITYGUARD );
+      bug( "%s: Missing Cityguard - Vnum:[%d]", __func__, MOB_VNUM_CITYGUARD );
       return TRUE;
    }
 

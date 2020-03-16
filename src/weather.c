@@ -2316,7 +2316,7 @@ void fread_cell( FILE * fp, int x, int y )
                   climate = one_argument( climate, flag );
                   value = get_climate( flag );
                   if( value < 0 || value >= MAX_CLIMATE )
-                     bug( "Unknown climate: %s", flag );
+                     bug( "%s: Unknown climate: %s", __func__, flag );
                   else
                      cell->climate = value;
                }
@@ -2348,7 +2348,7 @@ void fread_cell( FILE * fp, int x, int y )
                   hemisphere = one_argument( hemisphere, flag );
                   value = get_hemisphere( flag );
                   if( value < 0 || value >= HEMISPHERE_MAX )
-                     bug( "Unknown hemisphere: %s", flag );
+                     bug( "%s: Unknown hemisphere: %s", __func__, flag );
                   else
                      cell->hemisphere = value;
                }
@@ -2396,7 +2396,7 @@ bool load_weathermap( void )
    snprintf( filename, 256, "%s%s", SYSTEM_DIR, WEATHER_FILE );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "load_weathermap(): cannot open %s for reading", filename );
+      bug( "%s: cannot open %s for reading", __func__, filename );
       return FALSE;
    }
    for( ;; )

@@ -3146,10 +3146,10 @@ do                                             \
       {                                        \
          if( in_hash_table( (char*)(point) ) ) \
          {                                     \
-            log_printf( "&RDISPOSE called on STRALLOC pointer: %s, line %d\n", __FILE__, __LINE__ ); \
+            log_printf( "%s: &RDISPOSE called on STRALLOC pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
             log_string( "Attempting to correct." ); \
             if( str_free( (char*)(point) ) == -1 ) \
-               log_printf( "&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__ ); \
+               log_printf( "%s: &RSTRFREEing bad pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
          }                                     \
          else                                  \
             free( (void*) (point) );           \
@@ -3172,7 +3172,7 @@ do                                              \
    if((point))                                  \
    {                                            \
       if( str_free((point)) == -1 )             \
-         bug( "&RSTRFREEing bad pointer: %s, line %d", __FILE__, __LINE__ ); \
+         bug( "%s: &RSTRFREEing bad pointer: %s, line %d", __func__, __FILE__, __LINE__ ); \
       (point) = NULL;                           \
    }                                            \
 } while(0)
@@ -3184,12 +3184,12 @@ do                                               \
    {                                             \
       if( !in_hash_table( (point) ) )            \
       {                                          \
-         log_printf( "&RSTRFREE called on str_dup pointer: %s, line %d\n", __FILE__, __LINE__ ); \
+         log_printf( "%s: &RSTRFREE called on str_dup pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
          log_string( "Attempting to correct." ); \
          free( (void*) (point) );                \
       }                                          \
       else if( str_free((point)) == -1 )         \
-         log_printf( "&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__ ); \
+         log_printf( "%s: &RSTRFREEing bad pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
       (point) = NULL;                            \
    }                                             \
    else                                          \
@@ -4513,6 +4513,8 @@ void adjust_favor( CHAR_DATA * ch, int field, int mod );
 
 /* comm.c */
 void close_socket( DESCRIPTOR_DATA * dclose, bool force );
+bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
+void descriptor_printf( DESCRIPTOR_DATA * d, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
 void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length );
 void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length );
 void send_to_char( const char *txt, CHAR_DATA * ch );

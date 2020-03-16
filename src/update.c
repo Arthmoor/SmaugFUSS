@@ -439,7 +439,7 @@ void gain_condition( CHAR_DATA * ch, int iCond, int value )
             retcode = rNONE;
             break;
          default:
-            bug( "Gain_condition: invalid condition type %d", iCond );
+            bug( "%s: invalid condition type %d", __func__, iCond );
             retcode = rNONE;
             break;
       }
@@ -2120,7 +2120,7 @@ void remove_portal( OBJ_DATA * portal )
 
    if( !portal )
    {
-      bug( "%s", "remove_portal: portal is NULL" );
+      bug( "%s: portal is NULL", __func__ );
       return;
    }
 
@@ -2128,7 +2128,7 @@ void remove_portal( OBJ_DATA * portal )
    found = FALSE;
    if( !fromRoom )
    {
-      bug( "%s", "remove_portal: portal->in_room is NULL" );
+      bug( "%s: portal->in_room is NULL", __func__ );
       return;
    }
 
@@ -2141,15 +2141,15 @@ void remove_portal( OBJ_DATA * portal )
 
    if( !found )
    {
-      bug( "remove_portal: portal not found in room %d!", fromRoom->vnum );
+      bug( "%s: portal not found in room %d!", __func__, fromRoom->vnum );
       return;
    }
 
    if( pexit->vdir != DIR_PORTAL )
-      bug( "remove_portal: exit in dir %d != DIR_PORTAL", pexit->vdir );
+      bug( "%s: exit in dir %d != DIR_PORTAL", __func__, pexit->vdir );
 
    if( ( toRoom = pexit->to_room ) == NULL )
-      bug( "%s", "remove_portal: toRoom is NULL" );
+      bug( "%s: toRoom is NULL", __func__ );
 
    extract_exit( fromRoom, pexit );
 }
@@ -2262,7 +2262,7 @@ void auction_update( void )
       case 3: /* SOLD! */
          if( !auction->buyer && auction->bet )
          {
-            bug( "Auction code reached SOLD, with NULL buyer, but %d gold bid", auction->bet );
+            bug( "%s: Auction code reached SOLD, with NULL buyer, but %d gold bid", __func__, auction->bet );
             auction->bet = 0;
          }
          if( auction->bet > 0 && auction->buyer != auction->seller )

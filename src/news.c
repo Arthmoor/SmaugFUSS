@@ -557,7 +557,7 @@ void load_news( void )
 
       if( letter != '#' )
       {
-         bug( "load_news(): # not found" );
+         bug( "%s: # not found", __func__ );
          break;
       }
 
@@ -587,7 +587,7 @@ void load_news( void )
          break;
       else
       {
-         bug( "load_news(): unknown section %s", word );
+         bug( "%s: unknown section %s", __func__, word );
          continue;
       }
    }
@@ -605,7 +605,7 @@ void link_news_to_type( NEWS * news )
    snprintf( local_buf, MAX_INPUT_LENGTH, "%d", news->type );
    if( ( type = figure_type( local_buf ) ) == NULL )
    {
-      bug( "link_news_to_type(): invaild news->type %d", news->type );
+      bug( "%s: invaild news->type %d", __func__, news->type );
       return;
    }
    LINK( news, type->first_news, type->last_news, next, prev );
@@ -672,7 +672,7 @@ void fread_news( NEWS * news, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "fread_news(): no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -725,7 +725,7 @@ void fread_news_type( NEWS_TYPE * type, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "fread_news_type(): no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -752,7 +752,7 @@ void write_html_news( void )
    snprintf( filename, 256, "%s%s", sysdata.news_html_path, NEWS_INCLUDE_FILE );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "write_html_news(): cannot open %s for writing", filename );
+      bug( "%s: cannot open %s for writing", __func__, filename );
       return;
    }
    snarf_news( fp );
@@ -810,7 +810,7 @@ bool news_cmd_hook( CHAR_DATA * ch, char *cmd, char *argument )
          snprintf( local_buf, MAX_INPUT_LENGTH, "%d", x );
          if( ( type = figure_type( local_buf ) ) == NULL )
          {
-            bug( "news_cmd_hook(): cannot find type for cmd %s", cmd );
+            bug( "%s: cannot find type for cmd %s", __func__, cmd );
             return FALSE;
          }
          if( get_trust( ch ) < type->level )

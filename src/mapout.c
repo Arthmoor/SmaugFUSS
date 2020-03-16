@@ -139,7 +139,7 @@ void map_stats( CHAR_DATA * ch, int *rooms, int *rows, int *cols )
 
    if( !ch->pnote )
    {
-      bug( "%s", "map_stats: ch->pnote == NULL!" );
+      bug( "%s: ch->pnote == NULL!", __func__ );
       return;
    }
    n = 0;
@@ -206,7 +206,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
 
    if( !ch )
    {
-      bug( "%s", "do_mapout: null ch" );
+      bug( "%s: null ch", __func__ );
       return;
    }
    if( IS_NPC( ch ) )
@@ -216,7 +216,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
    }
    if( !ch->desc )
    {
-      bug( "%s", "do_mapout: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
    switch ( ch->substate )
@@ -225,7 +225,7 @@ void do_mapout( CHAR_DATA* ch, const char* argument)
          break;
       case SUB_WRITING_NOTE:
          if( ch->dest_buf != ch->pnote )
-            bug( "%s", "do_mapout: sub_writing_map: ch->dest_buf != ch->pnote" );
+            bug( "%s: sub_writing_map: ch->dest_buf != ch->pnote", __func__ );
          STRFREE( ch->pnote->text );
          ch->pnote->text = copy_buffer( ch );
          stop_editing( ch );
@@ -434,7 +434,7 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
 
    if( !ch->pnote )
    {
-      bug( "%s: ch->pnote==NULL!", __func__ );
+      bug( "%s: ch->pnote == NULL!", __func__ );
       return;
    }
 
@@ -475,7 +475,7 @@ void map_to_rooms( CHAR_DATA * ch, MAP_INDEX_DATA * m_index )
    if( !map_index )
    {
       send_to_char( "Couldn't find or make a map_index for you!\r\n", ch );
-      bug( "%s", "map_to_rooms: Couldn't find or make a map_index\r\n" );
+      bug( "%s: Couldn't find or make a map_index\r\n", __func__ );
       /*
        * do something. return failed or somesuch 
        */

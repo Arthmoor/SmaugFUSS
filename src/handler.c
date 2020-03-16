@@ -1094,7 +1094,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
          if( IS_VALID_SN( mod ) && ( skill = skill_table[mod] ) != NULL && skill->type == SKILL_SPELL )
             xSET_BIT( ch->affected_by, AFF_RECURRINGSPELL );
          else
-            bug( "affect_modify(%s) APPLY_RECURRINGSPELL with bad sn %d", ch->name, mod );
+            bug( "%s: (%s) APPLY_RECURRINGSPELL with bad sn %d", __func__, ch->name, mod );
          return;
       }
    }
@@ -1111,7 +1111,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
       {
          mod = abs( mod );
          if( !IS_VALID_SN( mod ) || ( skill = skill_table[mod] ) == NULL || skill->type != SKILL_SPELL )
-            bug( "affect_modify(%s) APPLY_RECURRINGSPELL with bad sn %d", ch->name, mod );
+            bug( "%s: (%s) APPLY_RECURRINGSPELL with bad sn %d", __func__, ch->name, mod );
          xREMOVE_BIT( ch->affected_by, AFF_RECURRINGSPELL );
          return;
       }
@@ -1302,7 +1302,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
          if( IS_VALID_SN( mod ) )
             affect_strip( ch, mod );
          else
-            bug( "affect_modify: APPLY_STRIPSN invalid sn %d", mod );
+            bug( "%s: APPLY_STRIPSN invalid sn %d", __func__, mod );
          break;
 
          /*
@@ -1322,7 +1322,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
          {
             if( skill->target == TAR_IGNORE || skill->target == TAR_OBJ_INV )
             {
-               bug( "APPLY_WEARSPELL trying to apply bad target spell.  SN is %d.", mod );
+               bug( "A%s: PPLY_WEARSPELL trying to apply bad target spell.  SN is %d.", __func__, mod );
                return;
             }
             if( ( retcode = ( *skill->spell_fun ) ( mod, ch->level, ch, ch ) ) == rCHAR_DIED || char_died( ch ) )
@@ -1750,7 +1750,7 @@ void char_from_room( CHAR_DATA * ch )
 
    if( !ch->in_room )
    {
-      bug( "%s", "Char_from_room: NULL." );
+      bug( "%s: NULL in_room.", __func__ );
       return;
    }
 
@@ -2246,7 +2246,7 @@ void obj_from_room( OBJ_DATA * obj )
 
    if( ( in_room = obj->in_room ) == NULL )
    {
-      bug( "%s", "obj_from_room: NULL." );
+      bug( "%s: NULL in_room.", __func__ );
       return;
    }
 
@@ -2338,7 +2338,7 @@ OBJ_DATA *obj_to_obj( OBJ_DATA * obj, OBJ_DATA * obj_to )
 
    if( obj == obj_to )
    {
-      bug( "Obj_to_obj: trying to put object inside itself: vnum %d", obj->pIndexData->vnum );
+      bug( "%s: trying to put object inside itself: vnum %d", __func__, obj->pIndexData->vnum );
       return obj;
    }
 
@@ -3303,7 +3303,7 @@ bool room_is_dark( ROOM_INDEX_DATA * pRoomIndex )
 {
    if( !pRoomIndex )
    {
-      bug( "%s:: NULL pRoomIndex", __func__ );
+      bug( "%s: NULL pRoomIndex", __func__ );
       return TRUE;
    }
 
@@ -3332,7 +3332,7 @@ CHAR_DATA *room_is_dnd( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex )
 
    if( !pRoomIndex )
    {
-      bug( "%s", "room_is_dnd: NULL pRoomIndex" );
+      bug( "%s: NULL pRoomIndex", __func__ );
       return NULL;
    }
 
@@ -3348,7 +3348,6 @@ CHAR_DATA *room_is_dnd( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex )
    return NULL;
 }
 
-
 /*
  * True if room is private.
  */
@@ -3359,7 +3358,7 @@ bool room_is_private( ROOM_INDEX_DATA * pRoomIndex )
 
    if( !pRoomIndex )
    {
-      bug( "%s", "room_is_private: NULL pRoomIndex" );
+      bug( "%s: NULL pRoomIndex", __func__ );
       return FALSE;
    }
 
@@ -3521,7 +3520,7 @@ const char *item_type_name( OBJ_DATA * obj )
 {
    if( obj->item_type < 1 || obj->item_type > MAX_ITEM_TYPE )
    {
-      bug( "Item_type_name: unknown type %d.", obj->item_type );
+      bug( "%s: unknown type %d.", __func__, obj->item_type );
       return "(unknown)";
    }
 
@@ -3689,11 +3688,9 @@ const char *affect_loc_name( int location )
          return "teleport delay";
    };
 
-   bug( "Affect_location_name: unknown location %d.", location );
+   bug( "%s: unknown location %d.", __func__, location );
    return "(unknown)";
 }
-
-
 
 /*
  * Return ascii name of an affect bit vector.
@@ -4460,7 +4457,7 @@ void showaffect( CHAR_DATA * ch, AFFECT_DATA * paf )
 
    if( !paf )
    {
-      bug( "%s", "showaffect: NULL paf" );
+      bug( "%s: NULL paf", __func__ );
       return;
    }
    if( paf->location != APPLY_NONE && paf->modifier != 0 )
@@ -4651,7 +4648,7 @@ void queue_extracted_char( CHAR_DATA * ch, bool extract )
 
    if( !ch )
    {
-      bug( "%s", "queue_extracted char: ch = NULL" );
+      bug( "%s: ch = NULL", __func__ );
       return;
    }
    CREATE( ccd, EXTRACT_CHAR_DATA, 1 );
@@ -4735,7 +4732,7 @@ void extract_timer( CHAR_DATA * ch, TIMER * timer )
 {
    if( !timer )
    {
-      bug( "%s", "extract_timer: NULL timer" );
+      bug( "%s: NULL timer", __func__ );
       return;
    }
 
@@ -4800,7 +4797,6 @@ bool in_hard_range( CHAR_DATA * ch, AREA_DATA * tarea )
       return FALSE;
 }
 
-
 /*
  * Scryn, standard luck check 2/2/96
  */
@@ -4811,7 +4807,7 @@ bool chance( CHAR_DATA * ch, short percent )
 
    if( !ch )
    {
-      bug( "%s", "Chance: null ch!" );
+      bug( "%s: null ch!", __func__ );
       return FALSE;
    }
 
@@ -4857,7 +4853,7 @@ bool chance_attrib( CHAR_DATA * ch, short percent, short attrib )
 
    if( !ch )
    {
-      bug( "%s", "Chance: null ch!" );
+      bug( "%s: null ch!", __func__ );
       return FALSE;
    }
 
@@ -5211,7 +5207,6 @@ void economize_mobgold( CHAR_DATA * mob )
       lower_economy( tarea, mob->gold );
 }
 
-
 /*
  * Add another notch on that there belt... ;)
  * Keep track of the last so many kills by vnum			-Thoric
@@ -5223,12 +5218,12 @@ void add_kill( CHAR_DATA * ch, CHAR_DATA * mob )
 
    if( IS_NPC( ch ) )
    {
-      bug( "%s", "add_kill: trying to add kill to npc" );
+      bug( "%s: trying to add kill to npc", __func__ );
       return;
    }
    if( !IS_NPC( mob ) )
    {
-      bug( "%s", "add_kill: trying to add kill non-npc" );
+      bug( "%s: trying to add kill non-npc", __func__ );
       return;
    }
    vnum = mob->pIndexData->vnum;
@@ -5261,12 +5256,12 @@ int times_killed( CHAR_DATA * ch, CHAR_DATA * mob )
 
    if( IS_NPC( ch ) )
    {
-      bug( "%s", "times_killed: ch is not a player" );
+      bug( "%s: ch is not a player", __func__ );
       return 0;
    }
    if( !IS_NPC( mob ) )
    {
-      bug( "%s", "add_kill: mob is not a mobile" );
+      bug( "%s: mob is not a mobile", __func__ );
       return 0;
    }
 
@@ -5291,7 +5286,7 @@ AREA_DATA *get_area( char *name )
 
    if( !name )
    {
-      bug( "get_area: NULL input string." );
+      bug( "%s: NULL input string.", __func__ );
       return NULL;
    }
 
@@ -5319,7 +5314,7 @@ AREA_DATA *get_area_obj( OBJ_INDEX_DATA * pObjIndex )
 
    if( !pObjIndex )
    {
-      bug( "get_area_obj: pObjIndex is NULL." );
+      bug( "%s: pObjIndex is NULL.", __func__ );
       return NULL;
    }
    for( pArea = first_area; pArea; pArea = pArea->next )

@@ -186,7 +186,7 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
                snprintf( fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower( pw->imm_name ) );
                if( !( fp = fopen( fname, "a+" ) ) )
                {
-                  bug( "%s%s", "Write_watch_files: Cannot open ", fname );
+                  bug( "%s: Cannot open %s", __func__, fname );
                   perror( fname );
                   return;
                }
@@ -209,7 +209,7 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
             snprintf( fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower( pw->imm_name ) );
             if( !( fp = fopen( fname, "a+" ) ) )
             {
-               bug( "%s%s", "Write_watch_files: Cannot open ", fname );
+               bug( "%s: Cannot open %s", __func__, fname );
                perror( fname );
                return;
             }
@@ -962,7 +962,7 @@ void start_timer( struct timeval *sttime )
 {
    if( !sttime )
    {
-      bug( "%s", "Start_timer: NULL sttime." );
+      bug( "%s: NULL sttime.", __func__ );
       return;
    }
    gettimeofday( sttime, NULL );
@@ -979,7 +979,7 @@ time_t end_timer( struct timeval * sttime )
    gettimeofday( &etime, NULL );
    if( !sttime || ( !sttime->tv_sec && !sttime->tv_usec ) )
    {
-      bug( "%s", "End_timer: bad sttime." );
+      bug( "%s: bad sttime.", __func__ );
       return 0;
    }
    subtract_times( &etime, sttime );

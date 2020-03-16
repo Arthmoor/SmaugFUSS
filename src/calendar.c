@@ -370,15 +370,17 @@ void fread_timedata( FILE * fp )
             KEY( "Mmonth", time_info.month, fread_number( fp ) );
             KEY( "Myear", time_info.year, fread_number( fp ) );
             break;
-         /* Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-		 case 'P':
+
+#ifdef PFILECODE
+	 case 'P':
             KEY( "Purgetime", new_pfile_time_t, fread_number( fp ) );
-            break; */
+            break;
+#endif
       }
 
       if( !fMatch )
       {
-         bug( "Fread_timedata: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -412,7 +414,7 @@ bool load_timedata( void )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_timedata: # not found." );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -426,7 +428,7 @@ bool load_timedata( void )
             break;
          else
          {
-            bug( "Load_timedata: bad section - %s.", word );
+            bug( "%s: bad section - %s.", __func__, word );
             break;
          }
       }
@@ -446,7 +448,7 @@ void save_timedata( void )
 
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s", "pcdata->save_timedata: fopen" );
+      bug( "%s: pcdata->save_timedata: fopen", __func__ );
       perror( filename );
    }
    else
@@ -456,8 +458,9 @@ void save_timedata( void )
       fprintf( fp, "Mday	%d\n", time_info.day );
       fprintf( fp, "Mmonth	%d\n", time_info.month );
       fprintf( fp, "Myear	%d\n", time_info.year );
-      // Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-	  //fprintf( fp, "Purgetime %ld\n", ( long int )new_pfile_time_t );
+#ifdef PFILECODE
+      fprintf( fp, "Purgetime %ld\n", ( long int )new_pfile_time_t );
+#endif
       fprintf( fp, "%s", "End\n\n" );
       fprintf( fp, "%s", "#END\n" );
    }
@@ -465,12 +468,13 @@ void save_timedata( void )
    return;
 }
 
-void do_time( CHAR_DATA* ch, const char* argument)
+void do_time( CHAR_DATA* ch, const char* argument )
 {
    HOLIDAY_DATA *holiday;
    extern char str_boot_time[];
-   // Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-   //char buf[MSL];
+#ifdef PFILECODE
+   char buf[MSL];
+#endif
    const char *suf;
    short day;
 
@@ -508,7 +512,7 @@ void do_time( CHAR_DATA* ch, const char* argument)
          send_to_char( "&WToday is your &Pb&pi&Yr&Oth&Yd&pa&Py&R!&D\r\n", ch );
    }
 
-  /* Uncomment if you have Samson's Pfile Cleanup Snippet installed.
+#ifdef PFILECODE
    if( IS_IMMORTAL( ch ) && sysdata.CLEANPFILES == TRUE )
    {
       long ptime, curtime;
@@ -519,7 +523,8 @@ void do_time( CHAR_DATA* ch, const char* argument)
       buf[0] = '\0';
       sec_to_hms( ptime - curtime, buf );
       ch_printf( ch, "&wThe next pfile cleanup is in&W %s&w.&D\r\n", buf );
-   } */
+   }
+#endif
    return;
 }
 
@@ -752,7 +757,7 @@ void fread_day( HOLIDAY_DATA * day, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "fread_day: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -786,7 +791,7 @@ void load_holidays( void )
 
          if( letter != '#' )
          {
-            bug( "%s", "load_holidays: # not found." );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -795,7 +800,7 @@ void load_holidays( void )
          {
             if( daycount >= sysdata.maxholiday )
             {
-               bug( "load_holidays: more holidays than %d, increase Max Holiday in cset.", sysdata.maxholiday );
+               bug( "%s: more holidays than %d, increase Max Holiday in cset.", __func__, sysdata.maxholiday );
                FCLOSE( fp );
                return;
             }
@@ -809,7 +814,7 @@ void load_holidays( void )
             break;
          else
          {
-            bug( "load_holidays: bad section: %s.", word );
+            bug( "%s: bad section: %s.", __func__, word );
             continue;
          }
       }
@@ -830,7 +835,7 @@ void save_holidays( void )
 
    if( !( fp = fopen( filename, "w" ) ) )
    {
-      bug( "%s", "save_holidays: fopen" );
+      bug( "%s: fopen", __func__ );
       perror( filename );
    }
    else

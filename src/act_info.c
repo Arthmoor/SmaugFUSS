@@ -1807,13 +1807,13 @@ void do_examine( CHAR_DATA* ch, const char* argument)
 
    if( !argument )
    {
-      bug( "%s", "do_examine: null argument." );
+      bug( "%s: null argument.", __func__ );
       return;
    }
 
    if( !ch )
    {
-      bug( "%s", "do_examine: null ch." );
+      bug( "%s: null ch.", __func__ );
       return;
    }
 
@@ -2337,7 +2337,7 @@ void do_hedit( CHAR_DATA* ch, const char* argument)
       case SUB_HELP_EDIT:
          if( ( pHelp = ( HELP_DATA * ) ch->dest_buf ) == NULL )
          {
-            bug( "%s", "hedit: sub_help_edit: NULL ch->dest_buf" );
+            bug( "%s: sub_help_edit: NULL ch->dest_buf", __func__ );
             stop_editing( ch );
             return;
          }
@@ -2766,7 +2766,6 @@ void do_who( CHAR_DATA* ch, const char* argument)
     * #define WT_MORTAL 1;
     * #define WT_DEADLY 2;
     */
-
    WHO_DATA *cur_who = NULL;
    WHO_DATA *next_who = NULL;
    WHO_DATA *first_mortal = NULL;
@@ -2774,7 +2773,6 @@ void do_who( CHAR_DATA* ch, const char* argument)
    WHO_DATA *first_deadly = NULL;
    WHO_DATA *first_grouped = NULL;
    WHO_DATA *first_groupwho = NULL;
-
 
    /*
     * Set default arguments.
@@ -2913,7 +2911,7 @@ void do_who( CHAR_DATA* ch, const char* argument)
          whoout = fopen( WHO_FILE, "w" );
       if( !whoout )
       {
-         bug( "do_who: cannot open who file!" );
+         bug( "%s: cannot open who file!", __func__ );
          return;
       }
    }

@@ -56,8 +56,6 @@
 
 struct mssp_info *mssp_info;
 void fread_mssp_info( FILE * fp );
-bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
-void write_to_descriptor_printf( DESCRIPTOR_DATA * desc, const char *fmt, ... ) GNUC_FORMAT( 2, 3 ); 
 
 void free_mssp_info( void )
 {
@@ -656,7 +654,7 @@ void mssp_reply( DESCRIPTOR_DATA * d, const char *var, const char *fmt, ... )
    vsprintf( buf, fmt, args );
    va_end( args );
 
-   write_to_descriptor_printf( d, "%s\t%s\r\n", var, buf );
+   descriptor_printf( d, "%s\t%s\r\n", var, buf );
 }
 
 extern time_t mud_start_time;
@@ -754,17 +752,4 @@ void send_mssp_data( DESCRIPTOR_DATA * d )
    mssp_reply( d, "TRAINING SYSTEM", "%s", mssp_info->trainingSystem );
    mssp_reply( d, "WORLD ORIGINALITY", "%s", mssp_info->worldOriginality );
    write_to_descriptor( d, "MSSP-REPLY-END\r\n", 0 );
-}
-
-void write_to_descriptor_printf( DESCRIPTOR_DATA * desc, const char *fmt, ... )
-{
-    char buf[MAX_STRING_LENGTH * 2];
-
-    va_list args;
-
-    va_start( args, fmt );
-    vsprintf( buf, fmt, args );
-    va_end( args );
-
-    write_to_descriptor( desc, buf, strlen( buf ) );
 }

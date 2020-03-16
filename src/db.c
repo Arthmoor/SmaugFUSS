@@ -875,7 +875,7 @@ void load_economy( AREA_DATA * tarea, FILE * fp )
 {
    if( !tarea )
    {
-      bug( "Load_economy: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       if( fBootDb )
       {
          shutdown_mud( "No #AREA" );
@@ -919,7 +919,7 @@ void load_flags( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "Load_flags: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       if( fBootDb )
       {
          shutdown_mud( "No #AREA" );
@@ -950,7 +950,7 @@ void add_help( HELP_DATA * pHelp )
    for( tHelp = first_help; tHelp; tHelp = tHelp->next )
       if( pHelp->level == tHelp->level && strcmp( pHelp->keyword, tHelp->keyword ) == 0 )
       {
-         bug( "add_help: duplicate: %s.  Deleting.", pHelp->keyword );
+         bug( "%s: duplicate: %s.  Deleting.", __func__, pHelp->keyword );
          STRFREE( pHelp->text );
          STRFREE( pHelp->keyword );
          DISPOSE( pHelp );
@@ -1029,7 +1029,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "Load_mobiles: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       if( fBootDb )
       {
          shutdown_mud( "No #AREA" );
@@ -1050,7 +1050,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
       letter = fread_letter( fp );
       if( letter != '#' )
       {
-         bug( "Load_mobiles: # not found." );
+         bug( "%s: # not found.", __func__ );
          if( fBootDb )
          {
             shutdown_mud( "# not found" );
@@ -1070,7 +1070,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
       {
          if( tmpBootDb )
          {
-            bug( "Load_mobiles: vnum %d duplicated.", vnum );
+            bug( "%s: vnum %d duplicated.", __func__, vnum );
             shutdown_mud( "duplicate vnum" );
             exit( 1 );
          }
@@ -1235,7 +1235,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
 
       if( letter != 'S' && letter != 'C' )
       {
-         bug( "Load_mobiles: vnum %d: letter '%c' not S or C.", vnum, letter );
+         bug( "%s: vnum %d: letter '%c' not S or C.", __func__, vnum, letter );
          shutdown_mud( "bad mob data" );
          exit( 1 );
       }
@@ -1295,7 +1295,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
                   ln = one_argument( ln, flag );
                   value = get_langnum( flag );
                   if( value == -1 )
-                     bug( "Unknown speaks language: %s\r\n", flag );
+                     bug( "%s: Unknown speaks language: %s\r\n", __func__, flag );
                   else
                      TOGGLE_BIT( pMobIndex->speaks, 1 << value );
                }
@@ -1310,7 +1310,7 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
             {
                value = get_langnum( ln );
                if( value == -1 )
-                  bug( "Unknown speaking language: %s\r\n", ln );
+                  bug( "%s: Unknown speaking language: %s\r\n", __func__, ln );
                else
                   TOGGLE_BIT( pMobIndex->speaking, 1 << value );
             }
@@ -1391,7 +1391,7 @@ void load_objects( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "Load_objects: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       if( fBootDb )
       {
          shutdown_mud( "No #AREA" );
@@ -1411,7 +1411,7 @@ void load_objects( AREA_DATA * tarea, FILE * fp )
       letter = fread_letter( fp );
       if( letter != '#' )
       {
-         bug( "Load_objects: # not found." );
+         bug( "%s: # not found.", __func__ );
          if( fBootDb )
          {
             shutdown_mud( "# not found" );
@@ -1431,7 +1431,7 @@ void load_objects( AREA_DATA * tarea, FILE * fp )
       {
          if( tmpBootDb )
          {
-            bug( "Load_objects: vnum %d duplicated.", vnum );
+            bug( "%s: vnum %d duplicated.", __func__, vnum );
             shutdown_mud( "duplicate vnum" );
             exit( 1 );
          }
@@ -1628,7 +1628,7 @@ void load_resets( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "%s", "Load_resets: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       if( fBootDb )
       {
          shutdown_mud( "No #AREA" );
@@ -2023,7 +2023,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "Load_rooms: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       shutdown_mud( "No #AREA" );
       exit( 1 );
    }
@@ -2043,7 +2043,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
       letter = fread_letter( fp );
       if( letter != '#' )
       {
-         bug( "Load_rooms: # not found." );
+         bug( "%s: # not found.", __func__ );
          if( fBootDb )
          {
             shutdown_mud( "# not found" );
@@ -2063,7 +2063,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
       {
          if( tmpBootDb )
          {
-            bug( "Load_rooms: vnum %d duplicated.", vnum );
+            bug( "%s: vnum %d duplicated.", __func__, vnum );
             shutdown_mud( "duplicate vnum" );
             exit( 1 );
          }
@@ -2123,7 +2123,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
 
       if( pRoomIndex->sector_type < 0 || pRoomIndex->sector_type >= SECT_MAX )
       {
-         bug( "Fread_rooms: vnum %d has bad sector_type %d.", vnum, pRoomIndex->sector_type );
+         bug( "%s: vnum %d has bad sector_type %d.", __func__, vnum, pRoomIndex->sector_type );
          pRoomIndex->sector_type = 1;
       }
       if( xIS_SET( pRoomIndex->room_flags, ROOM_HOUSE ) )
@@ -2147,7 +2147,7 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
             door = fread_number( fp );
             if( door < 0 || door > 10 )
             {
-               bug( "Fread_rooms: vnum %d has bad door number %d.", vnum, door );
+               bug( "%s: vnum %d has bad door number %d.", __func__, vnum, door );
                if( fBootDb )
                   exit( 1 );
             }
@@ -2210,11 +2210,10 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
          }
          else
          {
-            bug( "Load_rooms: vnum %d has flag '%c' not 'DES'.", vnum, letter );
+            bug( "%s: vnum %d has flag '%c' not 'DES'.", __func__, vnum, letter );
             shutdown_mud( "Room flag not DES" );
             exit( 1 );
          }
-
       }
 
       if( !oldroom )
@@ -2326,7 +2325,7 @@ void load_specials( FILE * fp )
       switch ( letter = fread_letter( fp ) )
       {
          default:
-            bug( "Load_specials: letter '%c' not *MS.", letter );
+            bug( "%s: letter '%c' not *MS.", __func__, letter );
             exit( 1 );
 
          case 'S':
@@ -2370,7 +2369,7 @@ void load_ranges( AREA_DATA * tarea, FILE * fp )
 
    if( !tarea )
    {
-      bug( "Load_ranges: no #AREA seen yet." );
+      bug( "%s: no #AREA seen yet.", __func__ );
       shutdown_mud( "No #AREA" );
       exit( 1 );
    }
@@ -2391,7 +2390,6 @@ void load_ranges( AREA_DATA * tarea, FILE * fp )
       tarea->hi_hard_range = x4;
    }
    return;
-
 }
 
 /*
@@ -2471,7 +2469,7 @@ void fix_exits( void )
                   boot_log( "Fix_exits: room %d, exit %s leads to bad vnum (%d)",
                             pRoomIndex->vnum, dir_name[pexit->vdir], pexit->vnum );
 
-               bug( "Deleting %s exit in room %d", dir_name[pexit->vdir], pRoomIndex->vnum );
+               bug( "%s: Deleting %s exit in room %d", __func__, dir_name[pexit->vdir], pRoomIndex->vnum );
                extract_exit( pRoomIndex, pexit );
             }
             else
@@ -2551,7 +2549,7 @@ void sort_exits( ROOM_INDEX_DATA * room )
       exits[nexits++] = pexit;
       if( nexits > MAX_REXITS )
       {
-         bug( "sort_exits: more than %d exits in room... fatal", nexits );
+         bug( "%s: more than %d exits in room... fatal", __func__, nexits );
          return;
       }
    }
@@ -2783,7 +2781,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
 
    if( !pObjIndex )
    {
-      bug( "Create_object: NULL pObjIndex." );
+      bug( "%s: NULL pObjIndex.", __func__ );
       exit( 1 );
    }
 
@@ -2824,7 +2822,7 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
    switch ( obj->item_type )
    {
       default:
-         bug( "Read_object: vnum %d bad type.", pObjIndex->vnum );
+         bug( "%s: vnum %d bad type.", __func__, pObjIndex->vnum );
          bug( "------------------------>  %d ", obj->item_type );
          break;
 
@@ -3157,8 +3155,6 @@ void free_char( CHAR_DATA * ch )
    return;
 }
 
-
-
 /*
  * Get an extra description from a list.
  */
@@ -3170,8 +3166,6 @@ const char *get_extra_descr( const char *name, EXTRA_DESCR_DATA * ed )
 
    return NULL;
 }
-
-
 
 /*
  * Translates mob virtual number to its mob index struct.
@@ -3189,12 +3183,10 @@ MOB_INDEX_DATA *get_mob_index( int vnum )
          return pMobIndex;
 
    if( fBootDb )
-      bug( "Get_mob_index: bad vnum %d.", vnum );
+      bug( "%s: bad vnum %d.", __func__, vnum );
 
    return NULL;
 }
-
-
 
 /*
  * Translates obj virtual number to its obj index struct.
@@ -3212,7 +3204,7 @@ OBJ_INDEX_DATA *get_obj_index( int vnum )
          return pObjIndex;
 
    if( fBootDb )
-      bug( "Get_obj_index: bad vnum %d.", vnum );
+      bug( "%s: bad vnum %d.", __func__, vnum );
 
    return NULL;
 }
@@ -3249,7 +3241,6 @@ ROOM_INDEX_DATA *get_room_index( int vnum )
  * -- Altrag
  */
 
-
 /*
  * Read a letter from a file.
  */
@@ -3261,7 +3252,7 @@ char fread_letter( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_letter: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return '\0';
@@ -3272,8 +3263,6 @@ char fread_letter( FILE * fp )
 
    return c;
 }
-
-
 
 /*
  * Read a number from a file.
@@ -3288,7 +3277,7 @@ int fread_number( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_number: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return 0;
@@ -3312,7 +3301,7 @@ int fread_number( FILE * fp )
 
    if( !isdigit( c ) )
    {
-      bug( "Fread_number: bad format. (%c)", c );
+      bug( "%s: bad format. (%c)", __func__, c );
       if( fBootDb )
          exit( 1 );
       return 0;
@@ -3322,7 +3311,7 @@ int fread_number( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_number: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return number;
@@ -3493,7 +3482,7 @@ const char *fread_string( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_string: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return STRALLOC( "" );
@@ -3509,7 +3498,7 @@ const char *fread_string( FILE * fp )
    {
       if( ln >= ( MAX_STRING_LENGTH - 1 ) )
       {
-         bug( "fread_string: string too long" );
+         bug( "%s: string too long", __func__ );
          *plast = '\0';
          return STRALLOC( buf );
       }
@@ -3521,7 +3510,7 @@ const char *fread_string( FILE * fp )
             break;
 
          case EOF:
-            bug( "Fread_string: EOF" );
+            bug( "%s: EOF", __func__ );
             if( fBootDb )
                exit( 1 );
             *plast = '\0';
@@ -3567,7 +3556,7 @@ char *fread_string_nohash( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_string_no_hash: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return str_dup( "" );
@@ -3583,7 +3572,7 @@ char *fread_string_nohash( FILE * fp )
    {
       if( ln >= ( MAX_STRING_LENGTH - 1 ) )
       {
-         bug( "fread_string_no_hash: string too long" );
+         bug( "%s: string too long", __func__ );
          *plast = '\0';
          return str_dup( buf );
       }
@@ -3595,7 +3584,7 @@ char *fread_string_nohash( FILE * fp )
             break;
 
          case EOF:
-            bug( "Fread_string_no_hash: EOF" );
+            bug( "%s: EOF", __func__ );
             if( fBootDb )
                exit( 1 );
             *plast = '\0';
@@ -3619,8 +3608,6 @@ char *fread_string_nohash( FILE * fp )
    }
 }
 
-
-
 /*
  * Read to end of line (for comments).
  */
@@ -3632,7 +3619,7 @@ void fread_to_eol( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_to_eol: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          return;
@@ -3673,7 +3660,7 @@ char *fread_line( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_line: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          mudstrlcpy( line, "", MAX_STRING_LENGTH );
@@ -3688,7 +3675,7 @@ char *fread_line( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_line: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          *pline = '\0';
@@ -3699,7 +3686,7 @@ char *fread_line( FILE * fp )
       ln++;
       if( ln >= ( MAX_STRING_LENGTH - 1 ) )
       {
-         bug( "fread_line: line too long" );
+         bug( "%s: line too long", __func__ );
          break;
       }
    }
@@ -3729,7 +3716,7 @@ char *fread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_word: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          word[0] = '\0';
@@ -3754,7 +3741,7 @@ char *fread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         bug( "fread_word: EOF encountered on read.\r\n" );
+         bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
          word[0] = '\0';
@@ -4035,7 +4022,7 @@ bool str_cmp( const char *astr, const char *bstr )
 {
    if( !astr )
    {
-      bug( "Str_cmp: null astr." );
+      bug( "%s: null astr.", __func__ );
       if( bstr )
          fprintf( stderr, "str_cmp: astr: (null)  bstr: %s\n", bstr );
       return TRUE;
@@ -4043,7 +4030,7 @@ bool str_cmp( const char *astr, const char *bstr )
 
    if( !bstr )
    {
-      bug( "Str_cmp: null bstr." );
+      bug( "%s: null bstr.", __func__ );
       if( astr )
          fprintf( stderr, "str_cmp: astr: %s  bstr: (null)\n", astr );
       return TRUE;
@@ -4067,13 +4054,13 @@ bool str_prefix( const char *astr, const char *bstr )
 {
    if( !astr )
    {
-      bug( "Strn_cmp: null astr." );
+      bug( "%s: null astr.", __func__ );
       return TRUE;
    }
 
    if( !bstr )
    {
-      bug( "Strn_cmp: null bstr." );
+      bug( "%s: null bstr.", __func__ );
       return TRUE;
    }
 
@@ -4218,7 +4205,7 @@ const char *aoran( const char *str )
 
    if( !str )
    {
-      bug( "Aoran(): NULL str" );
+      bug( "%s: NULL str", __func__ );
       return "";
    }
 
@@ -5424,7 +5411,7 @@ void delete_mob( MOB_INDEX_DATA * mob )
       if( prev )
          prev->next = mob->next;
       else
-         bug( "delete_mob: mobile %d not in hash bucket %d.", mob->vnum, hash );
+         bug( "%s: mobile %d not in hash bucket %d.", __func__, mob->vnum, hash );
    }
    DISPOSE( mob );
    --top_mob_index;
@@ -5989,7 +5976,7 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
                   exitflags = one_argument( exitflags, flag );
                   value = get_exflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown exitflag: %s", flag );
+                     bug( "%s: Unknown exitflag: %s", __func__, flag );
                   else
                      SET_BIT( pexit->exit_info, 1 << value );
                }
@@ -6320,7 +6307,7 @@ void fread_fuss_room( FILE * fp, AREA_DATA * tarea )
                   roomflags = one_argument( roomflags, flag );
                   value = get_rflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown roomflag: %s", flag );
+                     bug( "%s: nknown roomflag: %s", __func__, flag );
                   else
                      xSET_BIT( pRoomIndex->room_flags, value );
                }
@@ -6719,7 +6706,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
                   eflags = one_argument( eflags, flag );
                   value = get_oflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown object extraflag: %s", flag );
+                     bug( "%s: Unknown object extraflag: %s", __func__, flag );
                   else
                      xSET_BIT( pObjIndex->extra_flags, value );
                }
@@ -6887,7 +6874,7 @@ void fread_fuss_object( FILE * fp, AREA_DATA * tarea )
                   wflags = one_argument( wflags, flag );
                   value = get_wflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown wear flag: %s", flag );
+                     bug( "%s: Unknown wear flag: %s", __func__, flag );
                   else
                      SET_BIT( pObjIndex->wear_flags, 1 << value );
                }
@@ -7169,7 +7156,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   actflags = one_argument( actflags, flag );
                   value = get_actflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown actflag: %s", flag );
+                     bug( "%s: Unknown actflag: %s", __func__, flag );
                   else
                      xSET_BIT( pMobIndex->act, value );
                }
@@ -7189,7 +7176,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   affectflags = one_argument( affectflags, flag );
                   value = get_aflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown affectflag: %s", flag );
+                     bug( "%s: Unknown affectflag: %s", __func__, flag );
                   else
                      xSET_BIT( pMobIndex->affected_by, value );
                }
@@ -7207,7 +7194,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   attacks = one_argument( attacks, flag );
                   value = get_attackflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown attackflag: %s", flag );
+                     bug( "%s: Unknown attackflag: %s", __func__, flag );
                   else
                      xSET_BIT( pMobIndex->attacks, value );
                }
@@ -7247,7 +7234,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   bodyparts = one_argument( bodyparts, flag );
                   value = get_partflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown bodypart: %s", flag );
+                     bug( "%s: Unknown bodypart: %s", __func__, flag );
                   else
                      SET_BIT( pMobIndex->xflags, 1 << value );
                }
@@ -7285,7 +7272,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   defenses = one_argument( defenses, flag );
                   value = get_defenseflag( flag );
                   if( value < 0 || value >= MAX_BITS )
-                     bug( "Unknown defenseflag: %s", flag );
+                     bug( "%s: Unknown defenseflag: %s", __func__, flag );
                   else
                      xSET_BIT( pMobIndex->defenses, value );
                }
@@ -7340,7 +7327,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   immune = one_argument( immune, flag );
                   value = get_risflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown RIS flag (I): %s", flag );
+                     bug( "%s: Unknown RIS flag (I): %s", __func__, flag );
                   else
                      SET_BIT( pMobIndex->immune, 1 << value );
                }
@@ -7423,7 +7410,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   resist = one_argument( resist, flag );
                   value = get_risflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown RIS flag (R): %s", flag );
+                     bug( "%s: Unknown RIS flag (R): %s", __func__, flag );
                   else
                      SET_BIT( pMobIndex->resistant, 1 << value );
                }
@@ -7487,7 +7474,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   speaks = one_argument( speaks, flag );
                   value = get_langnum( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown speaks language: %s", flag );
+                     bug( "%s: Unknown speaks language: %s", __func__, flag );
                   else
                      SET_BIT( pMobIndex->speaks, 1 << value );
                }
@@ -7508,7 +7495,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   speaking = one_argument( speaking, flag );
                   value = get_langnum( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown speaking language: %s", flag );
+                     bug( "%s: Unknown speaking language: %s", __func__, flag );
           	      else
                      SET_BIT( pMobIndex->speaking, 1 << value );
                }
@@ -7616,7 +7603,7 @@ void fread_fuss_mobile( FILE * fp, AREA_DATA * tarea )
                   suscep = one_argument( suscep, flag );
                   value = get_risflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown RIS flag (S): %s", flag );
+                     bug( "%s: Unknown RIS flag (S): %s", __func__, flag );
                   else
                      SET_BIT( pMobIndex->susceptible, 1 << value );
                }
@@ -7752,7 +7739,7 @@ void fread_fuss_areadata( FILE * fp, AREA_DATA * tarea )
                   areaflags = one_argument( areaflags, flag );
                   value = get_areaflag( flag );
                   if( value < 0 || value > 31 )
-                     bug( "Unknown area flag: %s", flag );
+                     bug( "%s: Unknown area flag: %s", __func__, flag );
                   else
                      SET_BIT( tarea->flags, 1 << value );
                }
@@ -8043,7 +8030,7 @@ void load_reserved( void )
    {
       if( feof( fp ) )
       {
-         bug( "Load_reserved: no $ found." );
+         bug( "%s: no $ found.", __func__ );
          FCLOSE( fp );
          return;
       }
@@ -8140,7 +8127,7 @@ void load_buildlist( void )
             mudstrlcpy( word, fread_word( fp ), MAX_INPUT_LENGTH );
             if( word[0] != '#' || strcmp( &word[1], "AREA" ) )
             {
-               snprintf( buf, MAX_STRING_LENGTH, "%s: %s.are: no #AREA found.", __func__, dentry->d_name );
+               bug( "%s: %s.are: no #AREA found.", __func__, dentry->d_name );
                FCLOSE( fp );
                dentry = readdir( dp );
                continue;
@@ -8194,7 +8181,7 @@ void sort_reserved( RESERVE_DATA * pRes )
 
    if( !pRes )
    {
-      bug( "Sort_reserved: NULL pRes" );
+      bug( "%s: NULL pRes", __func__ );
       return;
    }
 
@@ -8228,7 +8215,7 @@ void sort_area_by_name( AREA_DATA * pArea )
 
    if( !pArea )
    {
-      bug( "Sort_area_by_name: NULL pArea" );
+      bug( "%s: NULL pArea", __func__ );
       return;
    }
    for( temp_area = first_area_name; temp_area; temp_area = temp_area->next_sort_name )
@@ -8257,7 +8244,7 @@ void sort_area( AREA_DATA * pArea, bool proto )
 
    if( !pArea )
    {
-      bug( "Sort_area: NULL pArea" );
+      bug( "%s: NULL pArea", __func__ );
       return;
    }
 
@@ -8436,7 +8423,7 @@ void save_sysdata( SYSTEM_DATA sys )
    snprintf( filename, MAX_INPUT_LENGTH, "%ssysdata.dat", SYSTEM_DIR );
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "save_sysdata: fopen" );
+      bug( "%s: fopen", __func__ );
       perror( filename );
    }
    else
@@ -8728,7 +8715,7 @@ void load_watchlist( void )
    {
       if( feof( fp ) )
       {
-         bug( "Load_watchlist: no -1 found." );
+         bug( "%s: no -1 found.", __func__ );
          FCLOSE( fp );
          return;
       }
@@ -9188,7 +9175,7 @@ NOTE_DATA *read_log( FILE * fp )
          STRFREE( nlog->subject );
          STRFREE( nlog->text );
          DISPOSE( nlog );
-         bug( "%s", "read_log: bad key word." );
+         bug( "%s: bad key word.", __func__ );
          return NULL;
       }
    }
@@ -9205,7 +9192,7 @@ void write_projects(  )
    fpout = fopen( filename, "w" );
    if( !fpout )
    {
-      bug( "FATAL: cannot open %s for writing!\r\n", filename );
+      bug( "FATAL: %s: cannot open %s for writing!\r\n", __func__, filename );
       return;
    }
    for( project = first_project; project; project = project->next )

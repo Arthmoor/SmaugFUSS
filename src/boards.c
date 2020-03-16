@@ -188,7 +188,7 @@ void write_boards_txt( void )
    fpout = fopen( filename, "w" );
    if( !fpout )
    {
-      bug( "FATAL: cannot open %s for writing!", filename );
+      bug( "FATAL: %s: cannot open %s for writing!", __func__, filename );
       return;
    }
 
@@ -335,13 +335,13 @@ void note_remove( BOARD_DATA * board, NOTE_DATA * pnote )
 
    if( !board )
    {
-      bug( "%s", "note remove: null board" );
+      bug( "%s: null board", __func__ );
       return;
    }
 
    if( !pnote )
    {
-      bug( "%s", "note remove: null pnote" );
+      bug( "%s: null pnote", __func__ );
       return;
    }
 
@@ -475,7 +475,7 @@ void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
 
    if( !ch->desc )
    {
-      bug( "%s", "do_note: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -486,7 +486,7 @@ void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
       case SUB_WRITING_NOTE:
          if( ( paper = get_eq_char( ch, WEAR_HOLD ) ) == NULL || paper->item_type != ITEM_PAPER )
          {
-            bug( "%s", "do_note: player not holding paper" );
+            bug( "%s: player not holding paper", __func__ );
             stop_editing( ch );
             return;
          }

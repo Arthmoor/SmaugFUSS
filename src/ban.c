@@ -89,7 +89,7 @@ void load_banlist( void )
       }
       if( !fMatch )
       {
-         bug( "Load_banlist: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }  /* End of switch statement */
    }  /* End of for loop */
@@ -167,7 +167,7 @@ void fread_ban( FILE * fp, int type )
          pban->flag = i;
       else  /* The file is corupted throw out this ban structure */
       {
-         bug( "Bad class structure %d.\r\n", i );
+         bug( "%s: Bad class structure %d.\r\n", __func__, i );
          free_ban( pban );
          return;
       }
@@ -180,7 +180,7 @@ void fread_ban( FILE * fp, int type )
       LINK( pban, first_ban, last_ban, next, prev );
    else  /* Bad type throw out the ban structure */
    {
-      bug( "Fread_ban: Bad type %d", type );
+      bug( "%s: Bad type %d", __func__, type );
       free_ban( pban );
    }
    return;
@@ -198,7 +198,7 @@ void save_banlist( void )
 
    if( !( fp = fopen( SYSTEM_DIR BAN_LIST, "w" ) ) )
    {
-      bug( "Save_banlist: Cannot open %s", BAN_LIST );
+      bug( "%s: Cannot open %s", __func__, BAN_LIST );
       perror( BAN_LIST );
       return;
    }
@@ -248,7 +248,6 @@ void save_banlist( void )
  * The main command for ban, lots of arguments so be carefull what you
  * change here.		Shaddai
  */
-
 void do_ban( CHAR_DATA* ch, const char* argument)
 {
    char arg1[MAX_INPUT_LENGTH];
@@ -267,7 +266,7 @@ void do_ban( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )   /* No desc means no go :) */
    {
-      bug( "%s", "do_ban: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -306,7 +305,7 @@ void do_ban( CHAR_DATA* ch, const char* argument)
    switch ( ch->substate )
    {
       default:
-         bug( "%s", "do_ban: illegal substate" );
+         bug( "%s: illegal substate", __func__ );
          return;
       case SUB_RESTRICTED:
          send_to_char( "You cannot use this command from within another command.\r\n", ch );
@@ -496,7 +495,7 @@ void do_allow( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )   /* No desc is a bad thing */
    {
-      bug( "%s", "do_allow: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -644,7 +643,7 @@ void do_warn( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )
    {
-      bug( "%s", "do_warn: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -766,7 +765,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
    switch ( ch->substate )
    {
       default:
-         bug( "%s", "add_ban: illegal substate" );
+         bug( "%s: illegal substate", __func__ );
          return 0;
 
       case SUB_RESTRICTED:
@@ -800,7 +799,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
             level = BAN_WARN;
          else
          {
-            bug( "%s", "Bad string for flag in add_ban." );
+            bug( "%s: Bad string for flag in add_ban.", __func__ );
             return 0;
          }
 
@@ -1039,7 +1038,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                break;
             }
             default:
-               bug( "Bad type in add_ban: %d.", type );
+               bug( "%s: Bad type in add_ban: %d.", __func__, type );
                return 0;
          }
          snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
@@ -1069,7 +1068,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
          pban = ( BAN_DATA * ) ch->dest_buf;
          if( !pban )
          {
-            bug( "%s", "do_ban: sub_ban_desc: NULL ch->dest_buf" );
+            bug( "%s: sub_ban_desc: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return 0;
          }
@@ -1128,7 +1127,7 @@ void show_bans( CHAR_DATA * ch, int type )
          pban = first_ban_class;
          break;
       default:
-         bug( "Bad type in show_bans: %d", type );
+         bug( "%s: Bad type in show_bans: %d", __func__, type );
          return;
    }
    send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\r\n", ch );
@@ -1235,7 +1234,7 @@ bool check_bans( CHAR_DATA * ch, int type )
          new_host[i] = '\0';
          break;
       default:
-         bug( "Ban type in check_bans: %d.", type );
+         bug( "%s: Ban type in check_bans: %d.", __func__, type );
          return FALSE;
    }
    for( ; pban; pban = pban->next )

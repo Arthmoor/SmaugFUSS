@@ -208,7 +208,7 @@ const char *drunk_speech( const char *argument, CHAR_DATA * ch )
 
    if( !argument )
    {
-      bug( "%s", "Drunk_speech: NULL argument" );
+      bug( "%s: NULL argument", __func__ );
       return "";
    }
 
@@ -3415,7 +3415,7 @@ bool can_learn_lang( CHAR_DATA * ch, int language )
                return FALSE;
             if( ( sn = skill_lookup( lang_names[lang] ) ) < 0 )
             {
-               bug( "Can_learn_lang: valid language without sn: %d", lang );
+               bug( "%s: valid language without sn: %d", __func__, lang );
                continue;
             }
             if( ch->pcdata->learned[sn] >= 99 )

@@ -628,7 +628,7 @@ const char *color_str( short AType, CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s", "color_str: NULL ch!" );
+      bug( "%s: NULL ch!", __func__ );
       return ( "" );
    }
 
@@ -1373,7 +1373,7 @@ char *colorize( const char *txt, DESCRIPTOR_DATA * d )
          {
             if( ( MAX_STRING_LENGTH - ( reslen = strlen( result ) ) ) <= ( colstr - prevstr ) )
             {
-               bug( "%s: OVERFLOW in internal MAX_STRING_LENGTH buffer!", __PRETTY_FUNCTION__ );
+               bug( "%s: OVERFLOW in internal MAX_STRING_LENGTH buffer!", __func__ );
                break;
             }
             strncat( result, prevstr, ( colstr - prevstr ) );  /* Leave this one alone! BAD THINGS(TM) will happen if you don't! */
@@ -1467,7 +1467,7 @@ void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length )
          DISPOSE( d->pagebuf );
          d->pagesize = MAX_STRING_LENGTH;
          // Move bug call here to avoid infinite loops.  Compliments of Daltorak -- Alty
-         bug( "Pager overflow (%s).  Ignoring.", d->character ? d->character->name : "???" );
+         bug( "%s: Pager overflow (%s).  Ignoring.", __func__, d->character ? d->character->name : "???" );
          return;
       }
 

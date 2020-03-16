@@ -1979,7 +1979,7 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 
    if( dam > maxdam )
    {
-      bug( "Damage: %d more than %d points!", dam, maxdam );
+      bug( "%s: %d more than %d points!", __func__, dam, maxdam );
       bug( "** %s (lvl %d) -> %s **", ch->name, ch->level, victim->name );
       dam = maxdam;
    }
@@ -2545,8 +2545,6 @@ ch_ret damage( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
    return rNONE;
 }
 
-
-
 /*
  * Changed is_safe to have the show_messg boolian.  This is so if you don't
  * want to show why you can't kill someone you can't turn it off.  This is
@@ -2565,12 +2563,13 @@ bool is_safe( CHAR_DATA * ch, CHAR_DATA * victim, bool show_messg )
 
    if( !victim )  /*Gonna find this is_safe crash bug -Blod */
    {
-      bug( "Is_safe: %s opponent does not exist!", ch->name );
+      bug( "%s: %s opponent does not exist!", __func__, ch->name );
       return TRUE;
    }
+
    if( !victim->in_room )
    {
-      bug( "Is_safe: %s has no physical location!", victim->name );
+      bug( "%s: %s has no physical location!", __func__, victim->name );
       return TRUE;
    }
 
@@ -2867,7 +2866,7 @@ void check_killer( CHAR_DATA * ch, CHAR_DATA * victim )
    {
       if( !ch->master )
       {
-         bug( "Check_killer: %s bad AFF_CHARM", IS_NPC( ch ) ? ch->short_descr : ch->name );
+         bug( "%s: %s bad AFF_CHARM", __func__, IS_NPC( ch ) ? ch->short_descr : ch->name );
          affect_strip( ch, gsn_charm_person );
          xREMOVE_BIT( ch->affected_by, AFF_CHARM );
          return;
@@ -2962,7 +2961,6 @@ void check_killer( CHAR_DATA * ch, CHAR_DATA * victim )
  */
 void check_attacker( CHAR_DATA * ch, CHAR_DATA * victim )
 {
-
 /* 
  * Made some changes to this function Apr 6/96 to reduce the prolifiration
  * of attacker flags in the realms. -Narn
@@ -2992,7 +2990,7 @@ void check_attacker( CHAR_DATA * ch, CHAR_DATA * victim )
    {
       if( !ch->master )
       {
-         bug( "Check_attacker: %s bad AFF_CHARM", IS_NPC( ch ) ? ch->short_descr : ch->name );
+         bug( "%s: %s bad AFF_CHARM", __func__, IS_NPC( ch ) ? ch->short_descr : ch->name );
          affect_strip( ch, gsn_charm_person );
          xREMOVE_BIT( ch->affected_by, AFF_CHARM );
          return;
@@ -3027,7 +3025,6 @@ void check_attacker( CHAR_DATA * ch, CHAR_DATA * victim )
    return;
 }
 
-
 /*
  * Set position of a victim.
  */
@@ -3035,7 +3032,7 @@ void update_pos( CHAR_DATA * victim )
 {
    if( !victim )
    {
-      bug( "%s", "update_pos: null victim" );
+      bug( "%s: null victim", __func__ );
       return;
    }
 
@@ -3144,12 +3141,11 @@ void set_fighting( CHAR_DATA * ch, CHAR_DATA * victim )
    return;
 }
 
-
 CHAR_DATA *who_fighting( CHAR_DATA * ch )
 {
    if( !ch )
    {
-      bug( "%s", "who_fighting: null ch" );
+      bug( "%sg: null ch", __func__ );
       return NULL;
    }
    if( !ch->fighting )
@@ -3828,7 +3824,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
          attack = attack_table[dt - TYPE_HIT];
       else
       {
-         bug( "Dam_message: bad dt %d from %s in %d.", dt, ch->name, ch->in_room->vnum );
+         bug( "%s: bad dt %d from %s in %d.", __func__, dt, ch->name, ch->in_room->vnum );
          dt = TYPE_HIT;
          attack = attack_table[0];
       }
@@ -3891,7 +3887,7 @@ void new_dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, unsigned int 
       }
       else
       {
-         bug( "Dam_message: bad dt %d from %s in %d.", dt, ch->name, ch->in_room->vnum );
+         bug( "%s: bad dt %d from %s in %d.", __func__, dt, ch->name, ch->in_room->vnum );
          attack = attack_table[0];
       }
 

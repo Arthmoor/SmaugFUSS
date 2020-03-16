@@ -40,7 +40,6 @@ void save_sysdata( SYSTEM_DATA sys );
 int generate_itemlevel( AREA_DATA * pArea, OBJ_INDEX_DATA * pObjIndex );
 
 /* from comm.c */
-bool write_to_descriptor( int desc, const char *txt, int length );
 bool check_parse_name( const char *name, bool newchar );
 
 /* from boards.c */
@@ -947,7 +946,7 @@ void do_disconnect( CHAR_DATA* ch, const char* argument)
          return;
       }
    }
-   bug( "%s", "Do_disconnect: *** desc not found ***." );
+   bug( "%s: *** desc not found ***.", __func__ );
    send_to_char( "Descriptor not found!\r\n", ch );
 }
 
@@ -2642,12 +2641,12 @@ void do_owhere( CHAR_DATA* ch, const char* argument)
                    obj->in_room->name );
       else if( obj->in_obj )
       {
-         bug( "%s", "do_owhere: obj->in_obj after NULL!" );
+         bug( "%s: obj->in_obj after NULL!", __func__ );
          mudstrlcat( buf, "object??\r\n", MAX_STRING_LENGTH );
       }
       else
       {
-         bug( "%s", "do_owhere: object doesnt have location!" );
+         bug( "%s: object doesnt have location!", __func__ );
          mudstrlcat( buf, "nowhere??\r\n", MAX_STRING_LENGTH );
       }
       send_to_pager( buf, ch );
@@ -2675,7 +2674,7 @@ void do_owhere( CHAR_DATA* ch, const char* argument)
                    obj->in_obj->pIndexData->vnum, obj_short( obj->in_obj ) );
       else
       {
-         bug( "%s", "do_owhere: object doesnt have location!" );
+         bug( "%s: object doesnt have location!", __func__ );
          mudstrlcat( buf, "nowhere??\r\n", MAX_STRING_LENGTH );
       }
       send_to_pager( buf, ch );
@@ -2971,13 +2970,13 @@ void do_snoop( CHAR_DATA* ch, const char* argument)
 /*  Snoop notification for higher imms, if desired, uncomment this */
 #ifdef TOOSNOOPY
    if( get_trust( victim ) > LEVEL_GOD && get_trust( ch ) < LEVEL_SUPREME )
-      write_to_descriptor( victim->desc->descriptor, "\r\nYou feel like someone is watching your every move...\r\n", 0 );
+      write_to_descriptor( victim->desc, "\r\nYou feel like someone is watching your every move...\r\n", 0 );
 #endif
    victim->desc->snoop_by = ch->desc;
    send_to_char( "Ok.\r\n", ch );
 }
 
-void do_statshield( CHAR_DATA* ch, const char* argument)
+void do_statshield( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3566,7 +3565,7 @@ void do_loop( CHAR_DATA *ch, const char *argument )
    send_to_char( "Done.\r\n", ch );
 }
 
-void do_balzhur( CHAR_DATA* ch, const char* argument)
+void do_balzhur( CHAR_DATA* ch, const char* argument )
 {
    char ebuf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -5156,7 +5155,7 @@ void save_watchlist( void )
 
    if( !( fp = fopen( SYSTEM_DIR WATCH_LIST, "w" ) ) )
    {
-      bug( "Save_watchlist: Cannot open %s", WATCH_LIST );
+      bug( "%s: Cannot open %s", __func__, WATCH_LIST );
       perror( WATCH_LIST );
       return;
    }
@@ -7523,7 +7522,7 @@ void unlink_social( SOCIALTYPE * social )
 
    if( !social )
    {
-      bug( "%s", "Unlink_social: NULL social" );
+      bug( "%s: NULL social", __func__ );
       return;
    }
 
@@ -7559,19 +7558,19 @@ void add_social( SOCIALTYPE * social )
 
    if( !social )
    {
-      bug( "%s", "Add_social: NULL social" );
+      bug( "%s: NULL social", __func__ );
       return;
    }
 
    if( !social->name )
    {
-      bug( "%s", "Add_social: NULL social->name" );
+      bug( "%s: NULL social->name", __func__ );
       return;
    }
 
    if( !social->char_no_arg )
    {
-      bug( "%s", "Add_social: NULL social->char_no_arg" );
+      bug( "%s: NULL social->char_no_arg", __func__ );
       return;
    }
 
@@ -7598,7 +7597,7 @@ void add_social( SOCIALTYPE * social )
    {
       if( ( x = strcmp( social->name, tmp->name ) ) == 0 )
       {
-         bug( "Add_social: trying to add duplicate name to bucket %d", hash );
+         bug( "%s: trying to add duplicate name to bucket %d", __func__, hash );
          free_social( social );
          return;
       }
@@ -7856,7 +7855,7 @@ void unlink_command( CMDTYPE * command )
 
    if( !command )
    {
-      bug( "%s", "Unlink_command NULL command" );
+      bug( "%s: NULL command", __func__ );
       return;
    }
 
@@ -7888,19 +7887,19 @@ void add_command( CMDTYPE * command )
 
    if( !command )
    {
-      bug( "%s", "Add_command: NULL command" );
+      bug( "%s: NULL command", __func__ );
       return;
    }
 
    if( !command->name )
    {
-      bug( "%s", "Add_command: NULL command->name" );
+      bug( "%s: NULL command->name", __func__ );
       return;
    }
 
    if( !command->do_fun )
    {
-      bug( "%s", "Add_command: NULL command->do_fun" );
+      bug( "%s: NULL command->do_fun", __func__ );
       return;
    }
 
@@ -8453,7 +8452,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
       snprintf( classlist, 256, "%s%s", CLASS_DIR, CLASS_LIST );
       if( !( fpList = fopen( classlist, "w" ) ) )
       {
-         bug( "%s", "Can't open class list for writing." );
+         bug( "%s: Can't open class list for writing.", __func__ );
          return;
       }
 
@@ -8544,7 +8543,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
       snprintf( classlist, 256, "%s%s", CLASS_DIR, CLASS_LIST );
       if( !( fpList = fopen( classlist, "w" ) ) )
       {
-         bug( "%s", "Can't open class list for writing." );
+         bug( "%s: Can't open class list for writing.", __func__ );
          return;
       }
 
@@ -8901,7 +8900,7 @@ void do_setrace( CHAR_DATA* ch, const char* argument )
       snprintf( racelist, 256, "%s%s", RACE_DIR, RACE_LIST );
       if( !( fpList = fopen( racelist, "w" ) ) )
       {
-         bug( "%s", "Error opening racelist." );
+         bug( "%s: Error opening racelist.", __func__ );
          return;
       }
       for( i = 0; i < MAX_PC_RACE; ++i )
@@ -9772,7 +9771,7 @@ void do_project( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )
    {
-      bug( "%s", "do_project: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 
@@ -9783,13 +9782,13 @@ void do_project( CHAR_DATA* ch, const char* argument)
       case SUB_WRITING_NOTE:
          if( !ch->pnote )
          {
-            bug( "%s", "do_project: log got lost?" );
+            bug( "%s: log got lost?", __func__ );
             send_to_char( "Your log was lost!\r\n", ch );
             stop_editing( ch );
             return;
          }
          if( ch->dest_buf != ch->pnote )
-            bug( "%s", "do_project: sub_writing_note: ch->dest_buf != ch->pnote" );
+            bug( "%s: sub_writing_note: ch->dest_buf != ch->pnote", __func__ );
          STRFREE( ch->pnote->text );
          ch->pnote->text = copy_buffer( ch );
          stop_editing( ch );
@@ -9798,7 +9797,7 @@ void do_project( CHAR_DATA* ch, const char* argument)
          if( !ch->dest_buf )
          {
             send_to_char( "Your description was lost!", ch );
-            bug( "%s", "do_project: sub_project_desc: NULL ch->dest_buf" );
+            bug( "%s: sub_project_desc: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }

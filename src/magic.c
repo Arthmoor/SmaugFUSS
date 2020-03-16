@@ -1610,7 +1610,7 @@ void do_cast( CHAR_DATA* ch, const char* argument)
             if( ( skill = get_skilltype( sn ) ) == NULL )
             {
                send_to_char( "Something went wrong...\r\n", ch );
-               bug( "do_cast: SUB_TIMER_DO_ABORT: bad sn %d", sn );
+               bug( "%s: SUB_TIMER_DO_ABORT: bad sn %d", __func__, sn );
                return;
             }
             mana = IS_NPC( ch ) ? 0 : UMAX( skill->min_mana, 100 / ( 2 + ch->level - skill->skill_level[ch->Class] ) );
@@ -1631,13 +1631,13 @@ void do_cast( CHAR_DATA* ch, const char* argument)
          if( ( skill = get_skilltype( sn ) ) == NULL )
          {
             send_to_char( "Something went wrong...\r\n", ch );
-            bug( "do_cast: substate 1: bad sn %d", sn );
+            bug( "%s: substate 1: bad sn %d", __func__, sn );
             return;
          }
          if( !ch->alloc_ptr || !IS_VALID_SN( sn ) || skill->type != SKILL_SPELL )
          {
             send_to_char( "Something cancels out the spell!\r\n", ch );
-            bug( "do_cast: ch->alloc_ptr NULL or bad sn (%d)", sn );
+            bug( "%s: ch->alloc_ptr NULL or bad sn (%d)", __func__, sn );
             return;
          }
          mana = IS_NPC( ch ) ? 0 : UMAX( skill->min_mana, 100 / ( 2 + ch->level - skill->skill_level[ch->Class] ) );
@@ -3177,7 +3177,7 @@ ch_ret spell_gate( int sn, int level, CHAR_DATA * ch, void *vo )
    MOB_INDEX_DATA *temp;
    if( ( temp = get_mob_index( MOB_VNUM_VAMPIRE ) ) == NULL )
    {
-      bug( "Spell_gate: Vampire vnum %d doesn't exist.", MOB_VNUM_VAMPIRE );
+      bug( "%s: Vampire vnum %d doesn't exist.", __func__, MOB_VNUM_VAMPIRE );
       return rSPELL_FAILED;
    }
    char_to_room( create_mobile( temp ), ch->in_room );
@@ -3550,7 +3550,7 @@ ch_ret spell_locate_object( int sn, int level, CHAR_DATA * ch, void *vo )
          ;
       if( cnt >= MAX_NEST )
       {
-         bug( "spell_locate_obj: object [%d] %s is nested more than %d times!",
+         bug( "%s: object [%d] %s is nested more than %d times!", __func__,
               obj->pIndexData->vnum, obj->short_descr, MAX_NEST );
          continue;
       }
@@ -5056,13 +5056,13 @@ ch_ret spell_animate_dead( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( get_mob_index( MOB_VNUM_ANIMATED_CORPSE ) == NULL )
    {
-      bug( "%s", "Vnum 5 not found for spell_animate_dead!" );
+      bug( "%s: Vnum 5 not found for spell_animate_dead!", __func__ );
       return rNONE;
    }
 
    if( ( pMobIndex = get_mob_index( ( int )abs( corpse->cost ) ) ) == NULL )
    {
-      bug( "%s", "Can not find mob for cost of corpse, spell_animate_dead" );
+      bug( "%s: Can not find mob for cost of corpse, spell_animate_dead", __func__ );
       return rSPELL_FAILED;
    }
 
@@ -5778,7 +5778,7 @@ ch_ret spell_affect( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( !skill->first_affect )
    {
-      bug( "spell_affect has no affects sn %d", sn );
+      bug( "%s: has no affects sn %d", __func__, sn );
       return rNONE;
    }
    if( SPELL_FLAG( skill, SF_GROUPSPELL ) )
@@ -5863,7 +5863,7 @@ ch_ret spell_affect( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( !victim )
    {
-      bug( "spell_affect: could not find victim: sn %d", sn );
+      bug( "%s: could not find victim: sn %d", __func__, sn );
       failed_casting( skill, ch, victim, NULL );
       return rSPELL_FAILED;
    }
@@ -6234,7 +6234,7 @@ ch_ret spell_smaug( int sn, int level, CHAR_DATA * ch, void *vo )
 
    if( !skill )
    {
-      bug( "spell_smaug: Called with a null skill for sn %d", sn );
+      bug( "%s: Called with a null skill for sn %d", __func__, sn );
       return rERROR;
    }
 

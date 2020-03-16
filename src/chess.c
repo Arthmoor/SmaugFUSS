@@ -677,7 +677,7 @@ static int is_valid_move( CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y,
       }
          break;
       default:
-         bug( "Invaild piece: %d", board->board[x][y] );
+         bug( "%s: Invaild piece: %d", __func__, board->board[x][y] );
          return MOVE_INVALID;
    }
 

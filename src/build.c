@@ -816,7 +816,6 @@ void smush_tilde( char *str )
    return;
 }
 
-
 void start_editing( CHAR_DATA * ch, const char *data )
 {
    EDITOR_DATA *edit;
@@ -825,11 +824,11 @@ void start_editing( CHAR_DATA * ch, const char *data )
 
    if( !ch->desc )
    {
-      bug( "%s", "Fatal: start_editing: no desc" );
+      bug( "%s: Fatal: start_editing: no desc", __func__ );
       return;
    }
    if( ch->substate == SUB_RESTRICTED )
-      bug( "%s", "NOT GOOD: start_editing: ch->substate == SUB_RESTRICTED" );
+      bug( "%s: NOT GOOD: start_editing: ch->substate == SUB_RESTRICTED", __func__ );
 
    set_char_color( AT_GREEN, ch );
    send_to_char( "Begin entering your text now (/? = help /s = save /c = clear /l = list)\r\n", ch );
@@ -845,7 +844,7 @@ void start_editing( CHAR_DATA * ch, const char *data )
    lpos = 0;
    lines = 0;
    if( !data )
-      bug( "%s", "editor: data is NULL!\r\n" );
+      bug( "%s: data is NULL!\r\n", __func__ );
    else
       for( ;; )
       {
@@ -961,7 +960,7 @@ void stop_editing( CHAR_DATA * ch )
    ch->substate = SUB_NONE;
    if( !ch->desc )
    {
-      bug( "%s", "Fatal: stop_editing: no desc" );
+      bug( "%s: Fatal: stop_editing: no desc", __func__ );
       return;
    }
    ch->desc->connected = CON_PLAYING;
@@ -1021,7 +1020,7 @@ void do_goto( CHAR_DATA* ch, const char* argument)
       location = make_room( vnum, ch->pcdata->area );
       if( !location )
       {
-         bug( "%s", "Goto: make_room failed" );
+         bug( "%s: Goto: make_room failed", __func__ );
          return;
       }
       set_char_color( AT_WHITE, ch );
@@ -1128,8 +1127,8 @@ void do_mset( CHAR_DATA* ch, const char* argument)
       case SUB_MOB_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_mset: sub_mob_desc: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_mob_desc: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -3149,7 +3148,7 @@ void do_oset( CHAR_DATA* ch, const char* argument )
       case SUB_OBJ_EXTRA:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
             bug( "%s: sub_obj_extra: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
@@ -3172,7 +3171,7 @@ void do_oset( CHAR_DATA* ch, const char* argument )
       case SUB_OBJ_LONG:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
             bug( "%s: sub_obj_long: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
@@ -4767,7 +4766,7 @@ void do_redit( CHAR_DATA* ch, const char* argument)
          location = ( ROOM_INDEX_DATA * ) ch->dest_buf;
          if( !location )
          {
-            bug( "%s", "redit: sub_room_desc: NULL ch->dest_buf" );
+            bug( "%s: sub_room_desc: NULL ch->dest_buf", __func__ );
             location = ch->in_room;
          }
          STRFREE( location->description );
@@ -4779,7 +4778,7 @@ void do_redit( CHAR_DATA* ch, const char* argument)
          ed = ( EXTRA_DESCR_DATA * ) ch->dest_buf;
          if( !ed )
          {
-            bug( "%s", "redit: sub_room_extra: NULL ch->dest_buf" );
+            bug( "%s: sub_room_extra: NULL ch->dest_buf", __func__ );
             stop_editing( ch );
             return;
          }
@@ -6745,7 +6744,7 @@ void old_fold_area( AREA_DATA * tarea, char *filename, bool install )
    rename( filename, buf );
    if( ( fpout = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "fold_area: cant open %s", filename );
+      bug( "%s: cant open %s", __func__, filename );
       perror( filename );
       return;
    }
@@ -7442,7 +7441,7 @@ void write_area_list( void )
    fpout = fopen( AREA_LIST, "w" );
    if( !fpout )
    {
-      bug( "FATAL: cannot open %s for writing!", AREA_LIST );
+      bug( "FATAL: %s: cannot open %s for writing!", __func__, AREA_LIST );
       return;
    }
    fprintf( fpout, "help.are\n" );
@@ -8255,8 +8254,8 @@ void do_mpedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_mpedit: sub_mprog_edit: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_mprog_edit: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -8581,8 +8580,8 @@ void do_opedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_oprog_edit: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -8915,8 +8914,8 @@ void do_rpedit( CHAR_DATA* ch, const char* argument)
       case SUB_MPROG_EDIT:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_opedit: sub_oprog_edit: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_oprog_edit: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }

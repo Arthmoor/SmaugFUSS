@@ -25,7 +25,6 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
    char arg2[MAX_INPUT_LENGTH];
    char arg3[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH];
-   char log_buf[MAX_STRING_LENGTH];
    char outbuf[MAX_STRING_LENGTH];
    CHAR_DATA *victim;
    int value, v2;
@@ -413,8 +412,7 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
          progbug( "MpMset: Invalid pc qp", ch );
          return;
       }
-      snprintf( log_buf, MAX_STRING_LENGTH, "%s raising glory of %s by %d ...", ch->name, victim->name, value );
-      log_string( log_buf );
+      log_printf( "%s raising glory of %s by %d ...", ch->name, victim->name, value );
       victim->pcdata->quest_curr += value;
       victim->pcdata->quest_accum += value;
       return;

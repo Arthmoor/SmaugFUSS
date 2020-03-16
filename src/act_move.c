@@ -413,7 +413,7 @@ EXIT_DATA *get_exit( ROOM_INDEX_DATA * room, short dir )
 
    if( !room )
    {
-      bug( "%s", "Get_exit: NULL room" );
+      bug( "%s: NULL room", __func__ );
       return NULL;
    }
 
@@ -432,7 +432,7 @@ EXIT_DATA *get_exit_to( ROOM_INDEX_DATA * room, short dir, int vnum )
 
    if( !room )
    {
-      bug( "%s", "Get_exit: NULL room" );
+      bug( "%s: NULL room", __func__ );
       return NULL;
    }
 
@@ -452,7 +452,7 @@ EXIT_DATA *get_exit_num( ROOM_INDEX_DATA * room, short count )
 
    if( !room )
    {
-      bug( "%s", "Get_exit: NULL room" );
+      bug( "%s: NULL room", __func__ );
       return NULL;
    }
 
@@ -498,7 +498,7 @@ bool will_fall( CHAR_DATA * ch, int fall )
    {
       if( fall > 80 )
       {
-         bug( "Falling (in a loop?) more than 80 rooms: vnum %d", ch->in_room->vnum );
+         bug( "%s: Falling (in a loop?) more than 80 rooms: vnum %d", __func__, ch->in_room->vnum );
          char_from_room( ch );
          char_to_room( ch, get_room_index( ROOM_VNUM_TEMPLE ) );
          fall = 0;
@@ -2375,7 +2375,7 @@ void teleport( CHAR_DATA * ch, int room, int flags )
 
    if( !( dest = get_room_index( room ) ) )
    {
-      bug( "teleport: bad room vnum %d", room );
+      bug( "%s: bad room vnum %d", __func__, room );
       return;
    }
 

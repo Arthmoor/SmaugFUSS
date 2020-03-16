@@ -139,7 +139,7 @@ void save_planes( void )
    if( !( fp = fopen( PLANE_FILE, "w" ) ) )
    {
       perror( PLANE_FILE );
-      bug( "save_planes: can't open plane file" );
+      bug( "%s: can't open plane file", __func__ );
       return;
    }
 
@@ -173,7 +173,7 @@ void read_plane( FILE * fp )
             {
                if( plane_lookup( p->name ) )
                {
-                  bug( "read_plane: duplicate plane name!" );
+                  bug( "%s: duplicate plane name!", __func__ );
                   STRFREE( p->name );
                   DISPOSE( p );
                }
@@ -204,7 +204,7 @@ void load_planes( void )
    if( !( fp = fopen( PLANE_FILE, "r" ) ) )
    {
       perror( PLANE_FILE );
-      bug( "load_planes: can't open plane file for read." );
+      bug( "%s: can't open plane file for read.", __func__ );
       return;
    }
    for( ; !feof( fp ); )

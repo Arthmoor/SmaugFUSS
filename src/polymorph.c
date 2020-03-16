@@ -327,7 +327,7 @@ void save_morphs( void )
 
    if( !( fp = fopen( SYSTEM_DIR MORPH_FILE, "w" ) ) )
    {
-      bug( "%s", "Save_morph: fopen" );
+      bug( "%s: fopen", __func__ );
       perror( SYSTEM_DIR MORPH_FILE );
       return;
    }
@@ -373,8 +373,8 @@ void do_morphset( CHAR_DATA* ch, const char* argument)
       case SUB_MORPH_DESC:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_morphset: sub_morph_desc: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_morph_desc: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -390,8 +390,8 @@ void do_morphset( CHAR_DATA* ch, const char* argument)
       case SUB_MORPH_HELP:
          if( !ch->dest_buf )
          {
-            send_to_char( "Fatal error: report to smaugmuds.afkmods.com\r\n", ch );
-            bug( "%s", "do_morphset: sub_morph_help: NULL ch->dest_buf" );
+            send_to_char( "Fatal error: report to the admins.\r\n", ch );
+            bug( "%s: sub_morph_help: NULL ch->dest_buf", __func__ );
             ch->substate = SUB_NONE;
             return;
          }
@@ -1906,7 +1906,7 @@ MORPH_DATA *fread_morph( FILE * fp )
       }
       if( !fMatch )
       {
-         bug( "Fread_morph: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          /*
           * Bailing out on this morph as something may be messed up 
           * * this is going to have lots of bugs from the load_morphs this
@@ -1934,7 +1934,7 @@ void load_morphs( void )
 
    if( !( fp = fopen( SYSTEM_DIR MORPH_FILE, "r" ) ) )
    {
-      bug( "%s", "Load_morph: fopen" );
+      bug( "%s: fopen", __func__ );
       perror( SYSTEM_DIR MORPH_FILE );
       return;
    }
@@ -1966,7 +1966,7 @@ void load_morphs( void )
       }
       if( !fMatch )
       {
-         bug( "Fread_morph: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
       if( morph )
@@ -2322,7 +2322,7 @@ void fread_morph_data( CHAR_DATA * ch, FILE * fp )
             {
                if( morph->morph )
                   if( str_cmp( morph->morph->name, fread_flagstring( fp ) ) )
-                     bug( "Morph Name doesn't match vnum %d.", morph->morph->vnum );
+                     bug( "%s: Morph Name doesn't match vnum %d.", __func__, morph->morph->vnum );
                fMatch = TRUE;
                break;
             }

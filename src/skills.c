@@ -299,7 +299,7 @@ bool check_ability( CHAR_DATA * ch, char *command, char *argument )
       switch ( skill_table[sn]->target )
       {
          default:
-            bug( "Check_ability: bad target for sn %d.", sn );
+            bug( "%s: bad target for sn %d.", __func__, sn );
             send_to_char( "Something went wrong...\r\n", ch );
             return TRUE;
 
@@ -575,7 +575,7 @@ bool check_skill( CHAR_DATA * ch, char *command, char *argument )
       switch ( skill_table[sn]->target )
       {
          default:
-            bug( "Check_skill: bad target for sn %d.", sn );
+            bug( "%s: bad target for sn %d.", __func__, sn );
             send_to_char( "Something went wrong...\r\n", ch );
             return TRUE;
 
@@ -831,13 +831,13 @@ void do_skin( CHAR_DATA* ch, const char* argument)
 
    if( get_obj_index( OBJ_VNUM_SKIN ) == NULL )
    {
-      bug( "Vnum %d (OBJ_VNUM_SKIN) not found for do_skin!", OBJ_VNUM_SKIN );
+      bug( "%s: Vnum %d (OBJ_VNUM_SKIN) not found!", __func__, OBJ_VNUM_SKIN );
       return;
    }
 
    if( !( korps = get_obj_index( OBJ_VNUM_CORPSE_PC ) ) )
    {
-      bug( "Vnum %d (OBJ_VNUM_CORPSE_PC) not found for %s!", OBJ_VNUM_CORPSE_PC, __func__ );
+      bug( "%s: Vnum %d (OBJ_VNUM_CORPSE_PC) not found!", __func__, OBJ_VNUM_CORPSE_PC );
       return;
    }
 
@@ -2232,7 +2232,7 @@ void do_detrap( CHAR_DATA* ch, const char* argument)
          if( !ch->alloc_ptr )
          {
             send_to_char( "Your detrapping was interrupted!\r\n", ch );
-            bug( "%s", "do_detrap: ch->alloc_ptr NULL!" );
+            bug( "%s: ch->alloc_ptr NULL!", __func__ );
             return;
          }
          mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
@@ -2366,7 +2366,7 @@ void do_dig( CHAR_DATA* ch, const char* argument)
          {
             send_to_char( "Your digging was interrupted!\r\n", ch );
             act( AT_PLAIN, "$n's digging was interrupted!", ch, NULL, NULL, TO_ROOM );
-            bug( "%s", "do_dig: alloc_ptr NULL" );
+            bug( "%s: alloc_ptr NULL", __func__ );
             return;
          }
          mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
@@ -2518,7 +2518,7 @@ void do_search( CHAR_DATA* ch, const char* argument)
          if( !ch->alloc_ptr )
          {
             send_to_char( "Your search was interrupted!\r\n", ch );
-            bug( "%s", "do_search: alloc_ptr NULL" );
+            bug( "%s: alloc_ptr NULL", __func__ );
             return;
          }
          mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
@@ -5894,7 +5894,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
    }
    else
    {
-      bug( "Ranged_attack: no projectile, no skill dt %d", dt );
+      bug( "%s: no projectile, no skill dt %d", __func__, dt );
       return rNONE;
    }
 
@@ -6284,13 +6284,13 @@ void do_slice( CHAR_DATA* ch, const char* argument)
 
    if( ( pMobIndex = get_mob_index( ( short )-( corpse->value[2] ) ) ) == NULL )
    {
-      bug( "%s", "Can not find mob for value[2] of corpse, do_slice" );
+      bug( "%s: Can not find mob for value[2] of corpse", __func__ );
       return;
    }
 
    if( get_obj_index( OBJ_VNUM_SLICE ) == NULL )
    {
-      bug( "Vnum %d not found for do_slice!", OBJ_VNUM_SLICE );
+      bug( "%s: Vnum %d not found!", __func__, OBJ_VNUM_SLICE );
       return;
    }
 

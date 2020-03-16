@@ -44,7 +44,6 @@
 #define MAX_NEST	100
 static OBJ_DATA *rgObjNest[MAX_NEST];
 
-bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
 bool write_to_descriptor_old( int desc, const char *txt, int length );
 void update_room_reset( CHAR_DATA *ch, bool setting );
 
@@ -139,7 +138,7 @@ void save_world( void )
    snprintf( filename, 256, "%s%s", SYSTEM_DIR, MOB_FILE );
    if( !( mobfp = fopen( filename, "w" ) ) )
    {
-      bug( "%s", "save_world: fopen mob file" );
+      bug( "%s: fopen mob file", __func__ );
       perror( filename );
    }
    else
@@ -159,7 +158,7 @@ void save_world( void )
             snprintf( filename, 256, "%s%d", HOTBOOT_DIR, pRoomIndex->vnum );
             if( ( objfp = fopen( filename, "w" ) ) == NULL )
             {
-               bug( "save_world: fopen %d", pRoomIndex->vnum );
+               bug( "%s: fopen %d", __func__, pRoomIndex->vnum );
                perror( filename );
                continue;
             }
@@ -427,7 +426,7 @@ void read_obj_file( char *dirname, char *filename )
 
    if( ( room = get_room_index( vnum ) ) == NULL )
    {
-      bug( "read_obj_file: ARGH! Missing room index for %d!", vnum );
+      bug( "%s: ARGH! Missing room index for %d!", __func__, vnum );
       unlink( fname );
       return;
    }
@@ -542,7 +541,7 @@ void load_world( void )
    snprintf( file1, 256, "%s%s", SYSTEM_DIR, MOB_FILE );
    if( ( mobfp = fopen( file1, "r" ) ) == NULL )
    {
-      bug( "%s", "load_world: fopen mob file" );
+      bug( "%s: fopen mob file", __func__ );
       perror( file1 );
    }
    else
@@ -630,7 +629,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    if( !fp )
    {
       send_to_char( "Hotboot file not writeable, aborted.\r\n", ch );
-      bug( "Could not write to hotboot file: %s. Hotboot aborted.", HOTBOOT_FILE );
+      bug( "%s: Could not write to hotboot file: %s. Hotboot aborted.", __func__, HOTBOOT_FILE );
       perror( "do_copyover:fopen" );
       return;
    }
@@ -716,11 +715,11 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    sysdata.dlHandle = dlopen( NULL, RTLD_LAZY );
    if( !sysdata.dlHandle )
    {
-      bug( "%s", "FATAL ERROR: Unable to reopen system executable handle!" );
+      bug( "FATAL ERROR: %s: Unable to reopen system executable handle!", __func__ );
       exit( 1 );
    }
 
-   bug( "%s", "Hotboot execution failed!!" );
+   bug( "%s: Hotboot execution failed!!", __func__ );
    send_to_char( "Hotboot FAILED!\r\n", ch );
 }
 
@@ -739,7 +738,7 @@ void hotboot_recover( void )
    if( !fp )   /* there are some descriptors open which will hang forever then ? */
    {
       perror( "hotboot_recover: fopen" );
-      bug( "%s", "Hotboot file not found. Exitting." );
+      bug( "%s: Hotboot file not found. Exitting.", __func__ );
       exit( 1 );
    }
 

@@ -477,7 +477,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
 
       if( ( room = get_room_index( obj->value[1] ) ) == NULL )
       {
-         bug( "PullOrPush: obj points to invalid room %d", obj->value[1] );
+         bug( "%s: obj points to invalid room %d", __func__, obj->value[1] );
          return;
       }
       flags = 0;
@@ -498,7 +498,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
 
       if( ( room = get_room_index( obj->value[1] ) ) == NULL )
       {
-         bug( "PullOrPush: obj points to invalid room %d", obj->value[1] );
+         bug( "%s: obj points to invalid room %d", __func__, obj->value[1] );
          return;
       }
 
@@ -698,7 +698,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
          room = obj->in_room;
       if( !room )
       {
-         bug( "PullOrPush: obj points to invalid room %d", obj->value[1] );
+         bug( "%s: obj points to invalid room %d", __func__, obj->value[1] );
          return;
       }
       if( IS_SET( obj->value[0], TRIG_D_NORTH ) )
@@ -733,7 +733,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
       }
       else
       {
-         bug( "%s", "PullOrPush: door: no direction flag set." );
+         bug( "%s: door: no direction flag set.", __func__ );
          return;
       }
       pexit = get_exit( room, edir );
@@ -741,13 +741,13 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
       {
          if( !IS_SET( obj->value[0], TRIG_PASSAGE ) )
          {
-            bug( "PullOrPush: obj points to non-exit %d", obj->value[1] );
+            bug( "%s: obj points to non-exit %d", __func__, obj->value[1] );
             return;
          }
          to_room = get_room_index( obj->value[2] );
          if( !to_room )
          {
-            bug( "PullOrPush: dest points to invalid room %d", obj->value[2] );
+            bug( "%s: dest points to invalid room %d", __func__, obj->value[2] );
             return;
          }
          pexit = make_exit( room, to_room, edir );
@@ -1001,7 +1001,7 @@ void do_smoke( CHAR_DATA* ch, const char* argument)
             return;
       }
       else
-         bug( "do_smoke: bad herb type %d", opipe->value[2] );
+         bug( "%s: bad herb type %d", __func__, opipe->value[2] );
 
       SET_BIT( opipe->value[3], PIPE_HOT );
       if( --opipe->value[1] < 1 )
@@ -1264,7 +1264,7 @@ void do_apply( CHAR_DATA* ch, const char* argument)
       retcode = obj_cast_spell( salve->value[5], salve->value[0], ch, victim, NULL );
    if( retcode == rCHAR_DIED || retcode == rBOTH_DIED )
    {
-      bug( "%s", "do_apply:  char died" );
+      bug( "%s:  char died", __func__ );
       return;
    }
 

@@ -193,7 +193,7 @@ void load_liquids( void )
    snprintf( filename, 256, "%sliquids.dat", SYSTEM_DIR );
    if( !( fp = fopen( filename, "r" ) ) )
    {
-      bug( "load_liquids(): cannot open %s for reading", filename );
+      bug( "%s: cannot open %s for reading", __func__, filename );
       return;
    }
 

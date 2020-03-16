@@ -2513,7 +2513,7 @@ int mprog_do_command( const char *cmnd, CHAR_DATA * mob, CHAR_DATA * actor,
     */
    if( char_died( mob ) )
    {
-      bug( "Mob died while executing program, vnum %d.", vnum );
+      bug( "%s: Mob died while executing program, vnum %d.", __func__, vnum );
       return BERR;
    }
 
@@ -3918,11 +3918,11 @@ void progbug( const char *str, CHAR_DATA * mob )
        * was set to indicate the object or room, so we just need to show
        * the description in the bug message.
        */
-      bug( "%s, %s.", str, mob->description == NULL ? "(unknown)" : mob->description );
+      bug( "%s: %s, %s.", __func__, str, mob->description == NULL ? "(unknown)" : mob->description );
    }
    else
    {
-      bug( "%s, Mob #%d.", str, vnum );
+      bug( "%s: %s, Mob #%d.", __func__, str, vnum );
    }
    return;
 }

@@ -84,7 +84,7 @@ void do_comment( CHAR_DATA* ch, const char* argument)
 
    if( !ch->desc )
    {
-      bug( "%s", "do_comment: no descriptor" );
+      bug( "%s: no descriptor", __func__ );
       return;
    }
 

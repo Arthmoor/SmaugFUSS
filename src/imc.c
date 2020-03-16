@@ -222,29 +222,27 @@ size_t imcstrlcat( char * __restrict dst, const char * __restrict src, size_t ds
 /* Generic log function which will route the log messages to the appropriate system logging function */
 void imclog( const char *format, ... )
 {
-   char buf[LGST-5], buf2[LGST];
+   char buf[LGST];
    va_list ap;
 
    va_start( ap, format );
    vsnprintf( buf, LGST-5, format, ap );
    va_end( ap );
 
-   snprintf( buf2, LGST, "IMC: %s", buf );
-   log_string( buf2 );
+   log_printf( " IMC: %s", buf );
 }
 
 /* Generic bug logging function which will route the message to the appropriate function that handles bug logs */
 void imcbug( const char *format, ... )
 {
-   char buf[LGST-6], buf2[LGST];
+   char buf[LGST];
    va_list ap;
 
    va_start( ap, format );
-   vsnprintf( buf, LGST-6, format, ap );
+   vsnprintf( buf, LGST, format, ap );
    va_end( ap );
 
-   snprintf( buf2, LGST, " IMC: %s", buf );
-   bug( "%s", buf2 );
+   bug( " IMC: %s", buf );
 }
 
 /*
@@ -491,13 +489,13 @@ bool imcstr_prefix( const char *astr, const char *bstr )
 {
    if( !astr )
    {
-      imcbug( "Strn_cmp: null astr." );
+      imcbug( "%s: null astr.", __func__ );
       return TRUE;
    }
 
    if( !bstr )
    {
-      imcbug( "Strn_cmp: null bstr." );
+      imcbug( "%s: null bstr.", __func__ );
       return TRUE;
    }
 
@@ -969,7 +967,7 @@ void imc_freechan( IMC_CHANNEL * c )
 
    if( !c )
    {
-      imcbug( "%s", "imc_freechan: Freeing NULL channel!" );
+      imcbug( "%s: Freeing NULL channel!", __func__ );
       return;
    }
    IMCUNLINK( c, first_imc_channel, last_imc_channel, next, prev );
@@ -1168,7 +1166,7 @@ char *imcfread_line( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imcbug( "%s", "imcfread_line: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          imcstrlcpy( line, "", LGST );
          return IMCSTRALLOC( line );
       }
@@ -1182,7 +1180,7 @@ char *imcfread_line( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imcbug( "%s", "imcfread_line: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          *pline = '\0';
          return IMCSTRALLOC( line );
       }
@@ -1191,7 +1189,7 @@ char *imcfread_line( FILE * fp )
       ln++;
       if( ln >= ( LGST - 1 ) )
       {
-         imcbug( "%s", "imcfread_line: line too long" );
+         imcbug( "%s: line too long", __func__ );
          break;
       }
    }
@@ -1486,7 +1484,7 @@ void imc_write_buffer( const char *txt )
           * empty buffer 
           */
          this_imcmud->outtop = 0;
-         imcbug( "Buffer overflow: %ld. Purging.", this_imcmud->outsize );
+         imcbug( "%s: Buffer overflow: %ld. Purging.", __func__, this_imcmud->outsize );
          return;
       }
       this_imcmud->outsize *= 2;
@@ -1719,13 +1717,13 @@ void update_imchistory( IMC_CHANNEL * channel, char *message )
 
    if( !channel )
    {
-      imcbug( "%s", "update_imchistory: NULL channel received!" );
+      imcbug( "%s: NULL channel received!", __func__ );
       return;
    }
 
    if( !message || message[0] == '\0' )
    {
-      imcbug( "%s", "update_imchistory: NULL message received!" );
+      imcbug( "%s: NULL message received!", __func__ );
       return;
    }
 
@@ -1746,7 +1744,7 @@ void update_imchistory( IMC_CHANNEL * channel, char *message )
             if( !( fp = fopen( buf, "a" ) ) )
             {
                perror( buf );
-               imcbug( "Could not open file %s!", buf );
+               imcbug( "%s: Could not open file %s!", __func__, buf );
             }
             else
             {
@@ -1785,7 +1783,7 @@ void update_imchistory( IMC_CHANNEL * channel, char *message )
             if( !( fp = fopen( buf, "a" ) ) )
             {
                perror( buf );
-               imcbug( "Could not open file %s!", buf );
+               imcbug( "%s: Could not open file %s!", __func__, buf );
             }
             else
             {
@@ -3818,7 +3816,7 @@ void imc_save_channels( void )
 
    if( !( fp = fopen( IMC_CHANNEL_FILE, "w" ) ) )
    {
-      imcbug( "Can't write to %s", IMC_CHANNEL_FILE );
+      imcbug( "%s: Can't write to %s", __func__, IMC_CHANNEL_FILE );
       return;
    }
 
@@ -3894,7 +3892,7 @@ void imc_readchannel( IMC_CHANNEL * channel, FILE * fp )
       }
 
       if( !fMatch )
-         imcbug( "imc_readchannel: no match: %s", word );
+         imcbug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -3910,7 +3908,7 @@ void imc_loadchannels( void )
 
    if( !( fp = fopen( IMC_CHANNEL_FILE, "r" ) ) )
    {
-      imcbug( "%s", "Can't open imc channel file" );
+      imcbug( "%s: Can't open imc channel file", __func__ );
       return;
    }
 
@@ -3928,7 +3926,7 @@ void imc_loadchannels( void )
 
       if( letter != '#' )
       {
-         imcbug( "%s", "imc_loadchannels: # not found." );
+         imcbug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -3952,7 +3950,7 @@ void imc_loadchannels( void )
          break;
       else
       {
-         imcbug( "imc_loadchannels: bad section: %s.", word );
+         imcbug( "%s: bad section: %s.", __func__, word );
          continue;
       }
    }
@@ -3967,7 +3965,7 @@ void imc_savebans( void )
 
    if( !( out = fopen( IMC_BAN_FILE, "w" ) ) )
    {
-      imcbug( "%s", "imc_savebans: error opening ban file for write" );
+      imcbug( "%s: error opening ban file for write", __func__ );
       return;
    }
 
@@ -3991,14 +3989,14 @@ void imc_readbans( void )
 
    if( !( inf = fopen( IMC_BAN_FILE, "r" ) ) )
    {
-      imcbug( "%s", "imc_readbans: couldn't open ban file" );
+      imcbug( "%s: couldn't open ban file", __func__ );
       return;
    }
 
    word = imcfread_word( inf );
    if( strcasecmp( word, "#IGNORES" ) )
    {
-      imcbug( "%s", "imc_readbans: Corrupt file" );
+      imcbug( "%s: Corrupt file", __func__ );
       IMCFCLOSE( inf );
       return;
    }
@@ -4082,7 +4080,7 @@ void imc_readcolor( IMC_COLOR * color, FILE * fp )
             break;
       }
       if( !fMatch )
-         imcbug( "imc_readcolor: no match: %s", word );
+         imcbug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -4115,7 +4113,7 @@ void imc_load_color_table( void )
 
       if( letter != '#' )
       {
-         imcbug( "%s", "imc_load_color_table: # not found." );
+         imcbug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -4131,7 +4129,7 @@ void imc_load_color_table( void )
          break;
       else
       {
-         imcbug( "imc_load_color_table: bad section: %s.", word );
+         imcbug( "%s: bad section: %s.", __func__, word );
          continue;
       }
    }
@@ -4197,7 +4195,7 @@ void imc_readhelp( IMC_HELP_DATA * help, FILE * fp )
 
                if( permvalue < 0 || permvalue > IMCPERM_IMP )
                {
-                  imcbug( "imc_readhelp: Command %s loaded with invalid permission. Set to Imp.", help->name );
+                  imcbug( "%s: Command %s loaded with invalid permission. Set to Imp.", __func__, help->name );
                   help->level = IMCPERM_IMP;
                }
                else
@@ -4255,7 +4253,7 @@ void imc_load_helps( void )
 
       if( letter != '#' )
       {
-         imcbug( "%s", "imc_load_helps: # not found." );
+         imcbug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -4271,7 +4269,7 @@ void imc_load_helps( void )
          break;
       else
       {
-         imcbug( "imc_load_helps: bad section: %s.", word );
+         imcbug( "%s: bad section: %s.", __func__, word );
          continue;
       }
    }
@@ -4350,7 +4348,7 @@ void imc_readcommand( IMC_CMD_DATA * cmd, FILE * fp )
                word = imcfread_word( fp );
                cmd->function = imc_function( word );
                if( cmd->function == NULL )
-                  imcbug( "imc_readcommand: Command %s loaded with invalid function. Set to NULL.", cmd->name );
+                  imcbug( "%s: Command %s loaded with invalid function. Set to NULL.", __func__, cmd->name );
                fMatch = TRUE;
                break;
             }
@@ -4368,7 +4366,7 @@ void imc_readcommand( IMC_CMD_DATA * cmd, FILE * fp )
 
                if( permvalue < 0 || permvalue > IMCPERM_IMP )
                {
-                  imcbug( "imc_readcommand: Command %s loaded with invalid permission. Set to Imp.", cmd->name );
+                  imcbug( "%s: Command %s loaded with invalid permission. Set to Imp.", __func__, cmd->name );
                   cmd->level = IMCPERM_IMP;
                }
                else
@@ -4379,7 +4377,7 @@ void imc_readcommand( IMC_CMD_DATA * cmd, FILE * fp )
             break;
       }
       if( !fMatch )
-         imcbug( "imc_readcommand: no match: %s", word );
+         imcbug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -4412,7 +4410,7 @@ bool imc_load_commands( void )
 
       if( letter != '#' )
       {
-         imcbug( "%s", "imc_load_commands: # not found." );
+         imcbug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -4428,7 +4426,7 @@ bool imc_load_commands( void )
          break;
       else
       {
-         imcbug( "imc_load_commands: bad section: %s.", word );
+         imcbug( "%s: bad section: %s.", __func__, word );
          continue;
       }
    }
@@ -4471,7 +4469,7 @@ void imc_readucache( IMCUCACHE_DATA * user, FILE * fp )
             break;
       }
       if( !fMatch )
-         imcbug( "imc_readucache: no match: %s", word );
+         imcbug( "%s: no match: %s", __func__, word );
    }
 }
 
@@ -4502,7 +4500,7 @@ void imc_load_ucache( void )
 
       if( letter != '#' )
       {
-         imcbug( "%s", "imc_load_ucahe: # not found." );
+         imcbug( "%s: # not found.", __func__ );
          break;
       }
 
@@ -4518,7 +4516,7 @@ void imc_load_ucache( void )
          break;
       else
       {
-         imcbug( "imc_load_ucache: bad section: %s.", word );
+         imcbug( "%s: bad section: %s.", __func__, word );
          continue;
       }
    }
@@ -4688,7 +4686,7 @@ bool imc_read_config( int desc )
 
       if( letter != '$' )
       {
-         imcbug( "%s", "imc_read_config: $ not found" );
+         imcbug( "%s: $ not found", __func__ );
          break;
       }
 
@@ -4716,7 +4714,7 @@ bool imc_read_config( int desc )
          break;
       else
       {
-         imcbug( "imc_read_config: Bad section in config file: %s", word );
+         imcbug( "%s: Bad section in config file: %s", __func__, word );
          continue;
       }
    }
@@ -4724,43 +4722,37 @@ bool imc_read_config( int desc )
 
    if( !this_imcmud )
    {
-      imcbug( "%s", "imc_read_config: No server connection information!!" );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: No server connection information!! Network configuration aborted.", __func__ );
       return FALSE;
    }
 
    if( !this_imcmud->rhost || !this_imcmud->clientpw || !this_imcmud->serverpw )
    {
-      imcbug( "%s", "imc_read_config: Missing required configuration info." );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: Missing required configuration info. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
    if( !this_imcmud->localname || this_imcmud->localname[0] == '\0' )
    {
-      imcbug( "%s", "imc_read_config: Mud name not loaded in configuration file." );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: Mud name not loaded in configuration file. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
    if( !this_imcmud->fullname || this_imcmud->fullname[0] == '\0' )
    {
-      imcbug( "%s", "imc_read_config: Missing InfoName parameter in configuration file." );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: Missing InfoName parameter in configuration file. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
    if( !this_imcmud->ihost || this_imcmud->ihost[0] == '\0' )
    {
-      imcbug( "%s", "imc_read_config: Missing InfoHost parameter in configuration file." );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: Missing InfoHost parameter in configuration file. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
    if( !this_imcmud->email || this_imcmud->email[0] == '\0' )
    {
-      imcbug( "%s", "imc_read_config: Missing InfoEmail parameter in configuration file." );
-      imcbug( "%s", "Network configuration aborted." );
+      imcbug( "%s: Missing InfoEmail parameter in configuration file. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
@@ -4995,19 +4987,19 @@ bool imc_server_connect( void )
 
    if( !this_imcmud )
    {
-      imcbug( "%s", "No connection data loaded" );
+      imcbug( "%s: No connection data loaded", __func__ );
       return FALSE;
    }
 
    if( this_imcmud->state != IMC_AUTH1 )
    {
-      imcbug( "%s", "Connection is not in proper state." );
+      imcbug( "%s: Connection is not in proper state.", __func__ );
       return FALSE;
    }
 
    if( this_imcmud->desc > 0 )
    {
-      imcbug( "%s", "Already connected" );
+      imcbug( "%s: Already connected", __func__ );
       return FALSE;
    }
 
@@ -8025,13 +8017,13 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
 
    if( !this_imcmud )
    {
-      imcbug( "%s", "Ooops. IMC being called with no configuration!" );
+      imcbug( "%s: Ooops. IMC being called with no configuration!", __func__ );
       return FALSE;
    }
 
    if( !first_imc_command )
    {
-      imcbug( "%s", "ACK! There's no damn command data loaded!" );
+      imcbug( "%s: ACK! There's no damn command data loaded!", __func__ );
       return FALSE;
    }
 
@@ -8074,7 +8066,7 @@ bool imc_command_hook( CHAR_DATA * ch, const char *command, const char *argument
          if( cmd->function == NULL )
          {
             imc_to_char( "That command has no code set. Inform the administration.\r\n", ch );
-            imcbug( "imc_command_hook: Command %s has no code set!", cmd->name );
+            imcbug( "%s: Command %s has no code set!", __func__, cmd->name );
             return TRUE;
          }
 

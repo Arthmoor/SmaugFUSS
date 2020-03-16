@@ -355,7 +355,7 @@ void write_clan_list(  )
    fpout = fopen( filename, "w" );
    if( !fpout )
    {
-      bug( "FATAL: cannot open %s for writing!\r\n", filename );
+      bug( "FATAL: %s: cannot open %s for writing!\r\n", __func__, filename );
       return;
    }
    for( tclan = first_clan; tclan; tclan = tclan->next )
@@ -374,7 +374,7 @@ void write_council_list(  )
    fpout = fopen( filename, "w" );
    if( !fpout )
    {
-      bug( "FATAL: cannot open %s for writing!\r\n", filename );
+      bug( "FATAL: %s: cannot open %s for writing!\r\n", __func__, filename );
       return;
    }
    for( tcouncil = first_council; tcouncil; tcouncil = tcouncil->next )
@@ -393,7 +393,7 @@ void save_clan( CLAN_DATA * clan )
 
    if( !clan )
    {
-      bug( "%s", "save_clan: null clan pointer!" );
+      bug( "%s: null clan pointer!", __func__ );
       return;
    }
 
@@ -407,7 +407,7 @@ void save_clan( CLAN_DATA * clan )
 
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "save_clan: cant open %s", filename );
+      bug( "%s: cant open %s", __func__, filename );
       perror( filename );
    }
    else
@@ -473,13 +473,13 @@ void save_council( COUNCIL_DATA * council )
 
    if( !council )
    {
-      bug( "%s", "save_council: null council pointer!" );
+      bug( "%s: null council pointer!", __func__ );
       return;
    }
 
    if( !council->filename || council->filename[0] == '\0' )
    {
-      bug( "save_council: %s has no filename", council->name );
+      bug( "%s: %s has no filename", __func__, council->name );
       return;
    }
 
@@ -487,7 +487,7 @@ void save_council( COUNCIL_DATA * council )
 
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "save_council: cant open %s", filename );
+      bug( "%s: cant open %s", __func__, filename );
       perror( filename );
    }
    else
@@ -877,7 +877,7 @@ void fread_clan( CLAN_DATA * clan, FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_clan: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -957,7 +957,7 @@ void fread_council( COUNCIL_DATA * council, FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_council: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -1195,7 +1195,7 @@ void load_councils(  )
 
       if( !load_council_file( filename ) )
       {
-         bug( "Cannot load council file: %s", filename );
+         bug( "%s: Cannot load council file: %s", __func__, filename );
       }
    }
    FCLOSE( fpList );

@@ -128,7 +128,7 @@ int find_first_step( ROOM_INDEX_DATA * src, ROOM_INDEX_DATA * target, int maxdis
 
    if( !src || !target )
    {
-      bug( "%s", "Illegal value passed to find_first_step (track.c)" );
+      bug( "%s: Illegal value passed to find_first_step (track.c)", __func__ );
       return BFS_ERROR;
    }
 
@@ -241,7 +241,6 @@ void do_track( CHAR_DATA* ch, const char* argument)
    }
 }
 
-
 void found_prey( CHAR_DATA * ch, CHAR_DATA * victim )
 {
    char buf[MAX_STRING_LENGTH];
@@ -249,13 +248,13 @@ void found_prey( CHAR_DATA * ch, CHAR_DATA * victim )
 
    if( victim == NULL )
    {
-      bug( "%s", "Found_prey: null victim" );
+      bug( "%s: null victim", __func__ );
       return;
    }
 
    if( victim->in_room == NULL )
    {
-      bug( "%s", "Found_prey: null victim->in_room" );
+      bug( "%s: null victim->in_room", __func__ );
       return;
    }
 
@@ -384,7 +383,7 @@ void hunt_victim( CHAR_DATA * ch )
    {
       if( ( pexit = get_exit( ch->in_room, ret ) ) == NULL )
       {
-         bug( "%s", "Hunt_victim: lost exit?" );
+         bug( "%s: lost exit?", __func__ );
          return;
       }
       move_char( ch, pexit, FALSE );
@@ -399,7 +398,7 @@ void hunt_victim( CHAR_DATA * ch )
       {
          if( !ch->in_room )
          {
-            bug( "Hunt_victim: no ch->in_room!  Mob #%d, name: %s.  Placing mob in limbo.", ch->pIndexData->vnum, ch->name );
+            bug( "%s: no ch->in_room!  Mob #%d, name: %s.  Placing mob in limbo.", __func__, ch->pIndexData->vnum, ch->name );
             char_to_room( ch, get_room_index( ROOM_VNUM_LIMBO ) );
             return;
          }

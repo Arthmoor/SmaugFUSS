@@ -132,13 +132,13 @@ void de_equip_char( CHAR_DATA * ch )
             }
             if( x == MAX_LAYERS )
             {
-               bug( "%s had on more than %d layers of clothing in one location (%d): %s",
+               bug( "%s: %s had on more than %d layers of clothing in one location (%d): %s", __func__,
                     ch->name, MAX_LAYERS, obj->wear_loc, obj->name );
             }
          }
          else
          {
-            bug( "%s had on %s:  ch->level = %d  obj->level = %d", ch->name, obj->name, ch->level, obj->level );
+            bug( "%s: %s had on %s:  ch->level = %d  obj->level = %d", __func__, ch->name, obj->name, ch->level, obj->level );
          }
          unequip_char( ch, obj );
       }
@@ -1142,7 +1142,7 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                   if( ( sn = skill_lookup( sname ) ) < 0 )
                   {
                      if( ( sn = herb_lookup( sname ) ) < 0 )
-                        bug( "Fread_char: unknown skill %s.", sname );
+                        bug( "%s: unknown skill %s.", __func__, sname );
                      else
                         sn += TYPE_HERB;
                   }
@@ -2121,7 +2121,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                   {
                      if( !room )
                      {
-                        bug( "%s", "Fread_obj: Corpse without room" );
+                        bug( "%s: Corpse without room", __func__ );
                         room = get_room_index( ROOM_VNUM_LIMBO );
                      }
 
@@ -2292,9 +2292,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                int vnum;
 
                vnum = fread_number( fp );
-               /*
-                * bug( "Fread_obj: bad vnum %d.", vnum );  
-                */
+
                if( ( obj->pIndexData = get_obj_index( vnum ) ) == NULL )
                   fVnum = FALSE;
                else
@@ -2316,7 +2314,6 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
             KEY( "WearLoc", obj->wear_loc, fread_number( fp ) );
             KEY( "Weight", obj->weight, fread_number( fp ) );
             break;
-
       }
 
       if( !fMatch )
@@ -2324,8 +2321,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
          EXTRA_DESCR_DATA *ed;
          AFFECT_DATA *paf;
 
-         bug( "%s", "Fread_obj: no match." );
-         bug( "%s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
          if( obj->name )
             STRFREE( obj->name );
@@ -2400,7 +2396,7 @@ void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem )
     */
    if( ch && IS_NPC( ch ) )
    {
-      bug( "%s", "Write_corpses: writing NPC corpse." );
+      bug( "%s: writing NPC corpse.", __func__ );
       return;
    }
    if( ch )
@@ -2419,7 +2415,7 @@ void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem )
             snprintf( buf, 127, "%s%s", CORPSE_DIR, capitalize( name ) );
             if( !( fp = fopen( buf, "w" ) ) )
             {
-               bug( "Write_corpses: Cannot open file %s.", buf );
+               bug( "%s: Cannot open file %s.", __func__, buf );
                perror( buf );
                return;
             }
@@ -2451,7 +2447,7 @@ void load_corpses( void )
 
    if( !( dp = opendir( CORPSE_DIR ) ) )
    {
-      bug( "Load_corpses: can't open %s", CORPSE_DIR );
+      bug( "%s: can't open %s", __func__, CORPSE_DIR );
       perror( CORPSE_DIR );
       return;
    }
@@ -2727,7 +2723,7 @@ void write_char_mobile( CHAR_DATA * ch, char *argument )
 
    if( ( fp = fopen( argument, "w" ) ) == NULL )
    {
-      bug( "Write_char_mobile: couldn't open %s for writing!\r\n", argument );
+      bug( "%s: couldn't open %s for writing!\r\n", __func__, argument );
       return;
    }
    mob = ch->pcdata->pet;
@@ -2748,7 +2744,7 @@ void read_char_mobile( char *argument )
 
    if( ( fp = fopen( argument, "r" ) ) == NULL )
    {
-      bug( "Read_char_mobile: couldn't open %s for reading!\r\n", argument );
+      bug( "%s: couldn't open %s for reading!\r\n", __func__, argument );
       return;
    }
    mob = fread_mobile( fp );

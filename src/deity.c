@@ -70,7 +70,7 @@ void write_deity_list(  )
    snprintf( filename, 256, "%s%s", DEITY_DIR, DEITY_LIST );
    fpout = fopen( filename, "w" );
    if( !fpout )
-      bug( "FATAL: cannot open %s for writing!\r\n", filename );
+      bug( "FATAL: %s: cannot open %s for writing!\r\n", __func__, filename );
    else
    {
       for( tdeity = first_deity; tdeity; tdeity = tdeity->next )
@@ -94,7 +94,7 @@ void save_deity( DEITY_DATA * deity )
 
    if( !deity->filename || deity->filename[0] == '\0' )
    {
-      bug( "save_deity: %s has no filename", deity->name );
+      bug( "%s: %s has no filename", __func__, deity->name );
       return;
    }
 
@@ -102,7 +102,7 @@ void save_deity( DEITY_DATA * deity )
 
    if( ( fp = fopen( filename, "w" ) ) == NULL )
    {
-      bug( "%s", "save_deity: fopen" );
+      bug( "%s: fopen", __func__ );
       perror( filename );
    }
    else
@@ -260,7 +260,7 @@ void fread_deity( DEITY_DATA * deity, FILE * fp )
 
       if( !fMatch )
       {
-         bug( "Fread_deity: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
          fread_to_eol( fp );
       }
    }
@@ -294,7 +294,7 @@ bool load_deity_file( const char *deityfile )
 
          if( letter != '#' )
          {
-            bug( "%s", "Load_deity_file: # not found." );
+            bug( "%s: # not found.", __func__ );
             break;
          }
 
@@ -309,7 +309,7 @@ bool load_deity_file( const char *deityfile )
          }
          else
          {
-            bug( "Load_deity_file: bad section: %s.", word );
+            bug( "%s: bad section: %s.", __func__, word );
             break;
          }
       }
@@ -346,7 +346,7 @@ void load_deity(  )
          break;
       if( !load_deity_file( filename ) )
       {
-         bug( "Cannot load deity file: %s", filename );
+         bug( "%s: Cannot load deity file: %s", __func__, filename );
       }
    }
    FCLOSE( fpList );

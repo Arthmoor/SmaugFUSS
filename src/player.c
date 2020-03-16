@@ -767,7 +767,7 @@ const char *tiny_affect_loc_name( int location )
          return " TELEDY";
    };
 
-   bug( "Affect_location_name: unknown location %d.", location );
+   bug( "%s: unknown location %d.", __func__, location );
    return "(?)";
 }
 
@@ -779,7 +779,6 @@ const char *get_class( CHAR_DATA * ch )
       return class_table[ch->Class]->who_name;
    return ( "Unknown" );
 }
-
 
 const char *get_race( CHAR_DATA * ch )
 {

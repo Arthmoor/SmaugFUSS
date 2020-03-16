@@ -585,7 +585,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                         {
                            if( obj->carried_by != mob )
                            {
-                              bug( "'E' reset: can't give object %d to mob %d.", obj->pIndexData->vnum,
+                              bug( "%s: 'E' reset: can't give object %d to mob %d.", __func__, obj->pIndexData->vnum,
                                    mob->pIndexData->vnum );
                               break;
                            }

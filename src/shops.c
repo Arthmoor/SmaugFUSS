@@ -656,7 +656,7 @@ void do_list( CHAR_DATA* ch, const char* argument)
       pRoomIndexNext = get_room_index( ch->in_room->vnum + 1 );
       if( !pRoomIndexNext )
       {
-         bug( "Do_list: bad pet shop at vnum %d.", ch->in_room->vnum );
+         bug( "%s: bad pet shop at vnum %d.", __func__, ch->in_room->vnum );
          send_to_char( "You can't do that here.\r\n", ch );
          return;
       }

@@ -130,7 +130,6 @@ void game_loop( void );
 int init_socket( int mudport );
 void new_descriptor( int new_desc );
 bool read_from_descriptor( DESCRIPTOR_DATA * d );
-bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
 
 /*
  * Other local functions (OS-independent).
@@ -650,7 +649,7 @@ void caught_alarm( int signum )
 {
    char buf[MAX_STRING_LENGTH];
 
-   bug( "ALARM CLOCK!  In section %s", alarm_section );
+   bug( "%s: ALARM CLOCK!  In section %s", __func__, alarm_section );
    mudstrlcpy( buf, "Alas, the hideous malevalent entity known only as 'Lag' rises once more!\r\n", MAX_STRING_LENGTH );
    echo_to_all( AT_IMMORT, buf, ECHOTAR_ALL );
    if( newdesc )
@@ -739,7 +738,7 @@ void accept_new( int ctrl )
 
    if( FD_ISSET( ctrl, &exc_set ) )
    {
-      bug( "Exception raise on controlling descriptor %d", ctrl );
+      bug( "%s: Exception raise on controlling descriptor %d", __func__, ctrl );
       FD_CLR( ctrl, &in_set );
       FD_CLR( ctrl, &out_set );
    }
@@ -783,7 +782,7 @@ void game_loop( void )
       {
          if( d == d->next )
          {
-            bug( "descriptor_loop: loop found & fixed" );
+            bug( "%s: loop found & fixed", __func__ );
             d->next = NULL;
          }
          d_next = d->next;
@@ -1072,7 +1071,7 @@ void new_descriptor( int new_desc )
    {
       DESCRIPTOR_DATA *d;
 
-      bug( "New_descriptor: last_desc is NULL, but first_desc is not! ...fixing" );
+      bug( "%s: last_desc is NULL, but first_desc is not! ...fixing", __func__ );
       for( d = first_descriptor; d; d = d->next )
          if( !d->next )
             last_descriptor = d;
@@ -1171,7 +1170,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
          do_return( ch, "" );
       else
       {
-         bug( "Close_socket: dclose->original without character %s",
+         bug( "%s: dclose->original without character %s", __func__,
               ( dclose->original->name ? dclose->original->name : "unknown" ) );
          dclose->character = dclose->original;
          dclose->original = NULL;
@@ -1186,7 +1185,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
    if( !dclose->prev && dclose != first_descriptor )
    {
       DESCRIPTOR_DATA *dp, *dn;
-      bug( "Close_socket: %s desc:%p != first_desc:%p and desc->prev = NULL!",
+      bug( "%s: %s desc:%p != first_desc:%p and desc->prev = NULL!", __func__,
            ch ? ch->name : d->host, ( void * )dclose, ( void * )first_descriptor );
       dp = NULL;
       for( d = first_descriptor; d; d = dn )
@@ -1590,7 +1589,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
 /* Uncomment if debugging or something
     if ( length != strlen(txt) )
     {
-	bug( "Write_to_buffer: length(%d) != strlen(txt)!", length );
+	bug( "%s: length(%d) != strlen(txt)!", __func__, length );
 	length = strlen(txt);
     }
 */
@@ -1619,7 +1618,7 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
          /*
           * Bugfix by Samson - moved bug() call up 
           */
-         bug( "Buffer overflow. Closing (%s).", d->character ? d->character->name : "???" );
+         bug( "%s: Buffer overflow. Closing (%s).", __func__, d->character ? d->character->name : "???" );
          close_socket( d, TRUE );
          return;
       }
@@ -1740,6 +1739,19 @@ bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length )
       }
    }
    return TRUE;
+}
+
+void descriptor_printf( DESCRIPTOR_DATA * d, const char *fmt, ... )
+{
+    char buf[MAX_STRING_LENGTH * 2];
+
+    va_list args;
+
+    va_start( args, fmt );
+    vsprintf( buf, fmt, args );
+    va_end( args );
+
+    write_to_descriptor( d, buf, strlen( buf ) );
 }
 
 /*
@@ -2495,7 +2507,7 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
          ch->alignment = 1000;
 
       if( ( iLang = skill_lookup( "common" ) ) < 0 )
-         bug( "%s", "Nanny: cannot find common language." );
+         bug( "%s: cannot find common language.", __func__ );
       else
          ch->pcdata->learned[iLang] = 100;
 
@@ -2998,8 +3010,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
       ++str;
       if( !arg2 && *str >= 'A' && *str <= 'Z' )
       {
-         bug( "Act: missing arg2 for code %c:", *str );
-         bug( "%s", format );
+         bug( "%s: missing arg2 for code %c: %s", __func__, *str, format );
          i = " <@@@> ";
       }
       else
@@ -3007,7 +3018,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
          switch ( *str )
          {
             default:
-               bug( "Act: bad code %c.", *str );
+               bug( "%s: bad code %c.", __func__, *str );
                i = " <@@@> ";
                break;
 
@@ -3024,7 +3035,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 'e':
                if( ch->sex > 2 || ch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, ch->name, ch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3036,7 +3047,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 'E':
                if( vch->sex > 2 || vch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, vch->name, vch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3048,7 +3059,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 'm':
                if( ch->sex > 2 || ch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, ch->name, ch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3060,7 +3071,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 'M':
                if( vch->sex > 2 || vch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, vch->name, vch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3130,7 +3141,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 's':
                if( ch->sex > 2 || ch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", ch->name, ch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, ch->name, ch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3142,7 +3153,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
             case 'S':
                if( vch->sex > 2 || vch->sex < 0 )
                {
-                  bug( "act_string: player %s has sex set at %d!", vch->name, vch->sex );
+                  bug( "%s: player %s has sex set at %d!", __func__, vch->name, vch->sex );
                   i = should_upper ? "It" : "it";
                }
                else
@@ -3157,7 +3168,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                   i = (char *) arg1;
                else
                {
-                  bug( "Act: Bad variable $t" );
+                  bug( "%s: Bad variable $t", __func__ );
                   i = " <@@@> ";
                }
                break;
@@ -3168,7 +3179,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
                   i = (char *) arg2;
                else
                {
-                  bug( "Act: Bad variable $T" );
+                  bug( "%s: Bad variable $T", __func__ );
                   i = " <@@@> ";
                }
                break;
@@ -3321,13 +3332,13 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
    {
       if( !vch )
       {
-         bug( "%s", "Act: null vch with TO_VICT." );
+         bug( "%s: null vch with TO_VICT.", __func__ );
          bug( "%s (%s)", ch->name, format );
          return;
       }
       if( !vch->in_room )
       {
-         bug( "%s", "Act: vch in NULL room!" );
+         bug( "%s: vch in NULL room!", __func__ );
          bug( "%s -> %s (%s)", ch->name, vch->name, format );
          return;
       }

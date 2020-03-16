@@ -142,7 +142,7 @@ void fread_dns( DNS_DATA * cache, FILE * fp )
       }
 
       if( !fMatch )
-         bug( "fread_dns: no match: %s", word );
+         bug( "%s: no match: %s", __func__, word );
    }
 }
 

@@ -54,8 +54,6 @@
 const unsigned char will_compress2_str[] = { IAC, WILL, TELOPT_COMPRESS2, '\0' };
 const unsigned char start_compress2_str[] = { IAC, SB, TELOPT_COMPRESS2, IAC, SE, '\0' };
 
-bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
-
 bool process_compressed( DESCRIPTOR_DATA * d )
 {
    int iStart = 0, nBlock, nWrite, len;

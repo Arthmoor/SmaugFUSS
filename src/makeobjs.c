@@ -307,7 +307,7 @@ OBJ_DATA *create_money( int amount )
 
    if( amount <= 0 )
    {
-      bug( "Create_money: zero or negative money %d.", amount );
+      bug( "%s: zero or negative money %d.", __func__, amount );
       amount = 1;
    }
 

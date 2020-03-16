@@ -317,7 +317,7 @@ void do_write_imm_host( void )
 
    if( ( fp = fopen( IMM_HOST_FILE, "w" ) ) == NULL )
    {
-      bug( "Do_write_imm_host: cant open %s", IMM_HOST_FILE );
+      bug( "%s: cant open %s", __func__, IMM_HOST_FILE );
       perror( IMM_HOST_FILE );
       return;
    }

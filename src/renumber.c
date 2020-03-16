@@ -421,7 +421,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
       room = get_room_index( r_data->old_vnum );
       if( !room )
       {
-         bug( "renumber_area: NULL room %d", r_data->old_vnum );
+         bug( "%s: NULL room %d", __func__, r_data->old_vnum );
          continue;
       }
 
@@ -437,7 +437,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
             ;
          if( room_prev == NULL )
          {
-            bug( "renumber_area: Couldn't find a room in the hash table! Skipping it.\r\n" );
+            bug( "%s: Couldn't find a room in the hash table! Skipping it.\r\n", __func__ );
             continue;
          }
          room_prev->next = room->next;
@@ -487,7 +487,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
       mob = get_mob_index( r_data->old_vnum );
       if( !mob )
       {
-         bug( "renumber_area: NULL mob %d", r_data->old_vnum );
+         bug( "%s: NULL mob %d", __func__, r_data->old_vnum );
          continue;
       }
 
@@ -519,7 +519,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
             ;
          if( mob_prev == NULL )
          {
-            bug( "renumber_area: Couldn't find a mob in the hash table! Skipping it.\r\n" );
+            bug( "%s: Couldn't find a mob in the hash table! Skipping it.\r\n", __func__ );
             continue;
          }
          mob_prev->next = mob->next;
@@ -562,7 +562,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
       obj = get_obj_index( r_data->old_vnum );
       if( !obj )
       {
-         bug( "renumber_area: NULL obj %d", r_data->old_vnum );
+         bug( "%s: NULL obj %d", __func__, r_data->old_vnum );
          continue;
       }
 
@@ -578,7 +578,7 @@ void renumber_area( CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, bo
             ;
          if( obj_prev == NULL )
          {
-            bug( "renumber_area: Couldn't find an obj in the hash table! Skipping it.\r\n" );
+            bug( "%s: Couldn't find an obj in the hash table! Skipping it.\r\n", __func__ );
             continue;
          }
          obj_prev->next = obj->next;
@@ -834,7 +834,6 @@ void warn_in_prog( CHAR_DATA * ch, int low, int high, const char *where, int vnu
    }
 }
 
-
 void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
 /* this function translates a reset according to the renumber data in r_data */
 {
@@ -862,7 +861,7 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
          r_table = r_data->r_obj;
       else
       {
-         bug( "translate_reset: Invalid 'T' reset found.\r\n" );
+         bug( "%s: Invalid 'T' reset found.\r\n", __func__ );
          return;
       }
       new_vnum = find_translation( reset->arg3, r_table );
@@ -876,7 +875,7 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
     */
    if( reset->command == 'B' )
    {
-      bug( "translate_reset: B command found." );
+      bug( "%s: B command found.", __func__ );
       if( ( reset->arg2 & BIT_RESET_TYPE_MASK ) == BIT_RESET_DOOR ||
           ( reset->arg2 & BIT_RESET_TYPE_MASK ) == BIT_RESET_ROOM )
       {
@@ -902,7 +901,7 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
                r_table = r_data->r_room;
             else
             {
-               bug( "translate_reset: Invalid action found in action table.\r\n" );
+               bug( "%s: Invalid action found in action table.\r\n", __func__ );
                p += 2;
                continue;
             }
@@ -916,7 +915,7 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
                parg = &( reset->arg3 );
             else
             {
-               bug( "translate_reset: Invalid argument number found in action table.\r\n" );
+               bug( "%s: Invalid argument number found in action table.\r\n", __func__ );
                p++;
                continue;
             }
@@ -932,7 +931,7 @@ void translate_reset( RESET_DATA * reset, RENUMBER_AREA * r_data )
    }
 
    if( action_table[i] == NULL )
-      bug( "translate_reset: Invalid reset '%c' found.\r\n", reset->command );
+      bug( "%s: Invalid reset '%c' found.\r\n", __func__, reset->command );
 }
 
 int find_translation( int vnum, RENUMBER_DATA * r_data )
@@ -949,7 +948,6 @@ int find_translation( int vnum, RENUMBER_DATA * r_data )
    }
    return NOT_FOUND;
 }
-
 
 AREA_DATA *find_area( char *filename, bool * p_is_proto )
 /* simply returns a pointer to a "filename" or NULL if no such area. stores

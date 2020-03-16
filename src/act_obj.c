@@ -1910,7 +1910,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
             return;
          }
 
-         bug( "%s", "Wear_obj: no free wrist." );
+         bug( "%s: no free wrist.", __func__ );
          send_to_char( "You already wear two wrist items.\r\n", ch );
          return;
 
@@ -2570,7 +2570,7 @@ void do_zap( CHAR_DATA* ch, const char* argument)
       retcode = obj_cast_spell( wand->value[3], wand->value[0], ch, victim, obj );
       if( retcode == rCHAR_DIED || retcode == rBOTH_DIED )
       {
-         bug( "%s", "do_zap: char died" );
+         bug( "%s: char died", __func__ );
          return;
       }
    }
@@ -3027,7 +3027,7 @@ void obj_fall( OBJ_DATA * obj, bool through )
 
    if( fall_count > 30 )
    {
-      bug( "%s", "object falling in loop more than 30 times" );
+      bug( "%s: object falling in loop more than 30 times", __func__ );
       extract_obj( obj );
       fall_count = 0;
       return;
@@ -3035,7 +3035,6 @@ void obj_fall( OBJ_DATA * obj, bool through )
 
    if( xIS_SET( obj->in_room->room_flags, ROOM_NOFLOOR ) && CAN_GO( obj, DIR_DOWN ) && !IS_OBJ_STAT( obj, ITEM_MAGIC ) )
    {
-
       pexit = get_exit( obj->in_room, DIR_DOWN );
       to_room = pexit->to_room;
 
@@ -3046,7 +3045,7 @@ void obj_fall( OBJ_DATA * obj, bool through )
 
       if( obj->in_room == to_room )
       {
-         bug( "Object falling into same room, room %d", to_room->vnum );
+         bug( "%s: Object falling into same room, room %d", __func__, to_room->vnum );
          extract_obj( obj );
          return;
       }
@@ -3292,7 +3291,7 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
       face_seen_table = ( bool * ) calloc( numsides, sizeof( bool ) );
       if( !face_seen_table )
       {
-         bug( "%s", "do_rolldie: cannot allocate memory for face_seen_table array, terminating.\r\n" );
+         bug( "%s: cannot allocate memory for face_seen_table array, terminating.\r\n", __func__ );
          return;
       }
    }
