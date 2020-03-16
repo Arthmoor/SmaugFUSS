@@ -5,16 +5,18 @@
  *                /-----\  |      | \  |  v  | |     | |  /                 *
  *               /       \ |      |  \ |     | +-----+ +-/                  *
  ****************************************************************************
- * AFKMud Copyright 1997-2005 by Roger Libiez (Samson),                     *
+ * AFKMud Copyright 1997-2019 by Roger Libiez (Samson),                     *
  * Levi Beckerson (Whir), Michael Ward (Tarl), Erik Wolfe (Dwip),           *
- * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine, and Adjani.    *
+ * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine,                *
+ * Xorith, and Adjani.                                                      *
  * All Rights Reserved.                                                     *
  *                                                                          *
- * External contributions from Xorith, Quixadhal, Zarius, and many others.  *
  *                                                                          *
- * Original SMAUG 1.4a written by Thoric (Derek Snider) with Altrag,        *
+ * External contributions from Remcon, Quixadhal, Zarius, and many others.  *
+ *                                                                          *
+ * Original SMAUG 1.8b written by Thoric (Derek Snider) with Altrag,        *
  * Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,        *
- * Grishnakh, Fireblade, and Nivek.                                         *
+ * Grishnakh, Fireblade, Edmond, Conran, and Nivek.                         *
  *                                                                          *
  * Original MERC 2.1 code by Hatchet, Furey, and Kahn.                      *
  *                                                                          *
@@ -56,7 +58,7 @@ DECLARE_DO_FUN( do_color );
 #define ANSI_GREY    "\033[0;37m"
 #define ANSI_DGREY   "\033[1;30m"
 #define ANSI_RED     "\033[1;31m"
-#define ANSI_GREEN	"\033[1;32m"
+#define ANSI_GREEN   "\033[1;32m"
 #define ANSI_YELLOW  "\033[1;33m"
 #define ANSI_BLUE    "\033[1;34m"
 #define ANSI_PINK    "\033[1;35m"

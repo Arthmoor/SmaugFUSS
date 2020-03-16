@@ -5,10 +5,14 @@
  *                /-----\  |      | \  |  v  | |     | |  /                 *
  *               /       \ |      |  \ |     | +-----+ +-/                  *
  ****************************************************************************
- * AFKMud Copyright 1997-2003 by Roger Libiez (Samson),                     *
+ * AFKMud Copyright 1997-2019 by Roger Libiez (Samson),                     *
  * Levi Beckerson (Whir), Michael Ward (Tarl), Erik Wolfe (Dwip),           *
- * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine, and Adjani.    *
+ * Cameron Carroll (Cam), Cyberfox, Karangi, Rathian, Raine,                *
+ * Xorith, and Adjani.                                                      *
  * All Rights Reserved.                                                     *
+ *                                                                          *
+ *                                                                          *
+ * External contributions from Remcon, Quixadhal, Zarius, and many others.  *
  *                                                                          *
  * Original SMAUG 1.8b written by Thoric (Derek Snider) with Altrag,        *
  * Blodkai, Haus, Narn, Scryn, Swordbearer, Tricops, Gorog, Rennard,        *
