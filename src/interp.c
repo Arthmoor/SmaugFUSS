@@ -916,7 +916,7 @@ const char *one_argument2( const char *argument, char *arg_first )
    return argument;
 }
 
-void do_timecmd( CHAR_DATA* ch, const char* argument)
+void do_timecmd( CHAR_DATA* ch, const char* argument )
 {
    struct timeval sttime;
    struct timeval etime;

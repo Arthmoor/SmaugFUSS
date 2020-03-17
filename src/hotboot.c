@@ -583,7 +583,6 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    CHAR_DATA *victim = NULL;
    DESCRIPTOR_DATA *d, *de_next;
    char buf[100], buf2[100], buf3[100];
-   char log_buf[MAX_STRING_LENGTH];
    extern int control;
    int count = 0;
    bool found = FALSE;
@@ -621,8 +620,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-   snprintf( log_buf, MAX_STRING_LENGTH, "Hotboot initiated by %s.", ch->name );
-   log_string( log_buf );
+   log_printf( "Hotboot initiated by %s.", ch->name );
 
    fp = fopen( HOTBOOT_FILE, "w" );
 
@@ -643,7 +641,8 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    log_string( "Saving player files and connection states...." );
    if( ch && ch->desc )
       write_to_descriptor( ch->desc, "\033[0m", 0 );
-   snprintf( buf, 100, "\r\nThe flow of time is halted momentarily as the world is reshaped!\r\n" );
+
+   mudstrlcpy( buf, "\r\nThe flow of time is halted momentarily as the world is reshaped!\r\n", 100 );
    /*
     * For each playing descriptor, save its state 
     */
