@@ -4514,7 +4514,6 @@ void adjust_favor( CHAR_DATA * ch, int field, int mod );
 /* comm.c */
 void close_socket( DESCRIPTOR_DATA * dclose, bool force );
 bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length );
-void descriptor_printf( DESCRIPTOR_DATA * d, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
 void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length );
 void write_to_pager( DESCRIPTOR_DATA * d, const char *txt, size_t length );
 void send_to_char( const char *txt, CHAR_DATA * ch );
@@ -4526,6 +4525,8 @@ void ch_printf( CHAR_DATA * ch, const char *fmt, ... ) __attribute__ ( ( format(
 void ch_printf_color( CHAR_DATA * ch, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
 void pager_printf( CHAR_DATA * ch, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
 void pager_printf_color( CHAR_DATA * ch, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
+void descriptor_printf( DESCRIPTOR_DATA * d, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
+void buffer_printf( DESCRIPTOR_DATA * d, const char *fmt, ... ) __attribute__ ( ( format( printf, 2, 3 ) ) );
 void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, const void *arg2, int type );
 const char *myobj( OBJ_DATA * obj );
 

@@ -312,7 +312,6 @@ void do_score( CHAR_DATA* ch, const char* argument )
    pager_printf( ch, "CON  : %2.2d(%2.2d)      Pos'n: %-21.21s  Weight: %5.5d (max %7.7d)\r\n",
                  get_curr_con( ch ), ch->perm_con, buf, ch->carry_weight, can_carry_w( ch ) );
 
-
    /*
     * Fighting style support -haus
     */
@@ -551,7 +550,6 @@ void do_score( CHAR_DATA* ch, const char* argument )
                     ? ch->pcdata->bamfin : "appears in a swirling mist." );
       pager_printf( ch, "Bamfout: %s %s\r\n", ch->name, ( ch->pcdata->bamfout[0] != '\0' )
                     ? ch->pcdata->bamfout : "leaves in a swirling mist." );
-
 
       /*
        * Area Loaded info - Scryn 8/11

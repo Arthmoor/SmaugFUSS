@@ -1635,6 +1635,19 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
    return;
 }
 
+void buffer_printf( DESCRIPTOR_DATA * d, const char *fmt, ... )
+{
+    char buf[MAX_STRING_LENGTH * 2];
+
+    va_list args;
+
+    va_start( args, fmt );
+    vsprintf( buf, fmt, args );
+    va_end( args );
+
+    write_to_buffer( d, buf, strlen( buf ) );
+}
+   
 /*
 * This is the MCCP version. Use write_to_descriptor_old to send non-compressed text.
 * Updated to run with the block checks by Orion... if it doesn't work, blame
@@ -1825,7 +1838,6 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    CHAR_DATA *ch;
    bool fOld;
    short chk;
-   char buf[MAX_STRING_LENGTH];
 
    ch = d->character;
 
@@ -1897,11 +1909,8 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
    fOld = load_char_obj( d, argument, TRUE, FALSE );
    if( !d->character )
    {
-      char cbuf[MAX_STRING_LENGTH];
-
       log_printf( "Bad player file %s@%s.", argument, d->host );
-      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
-      write_to_buffer( d, cbuf, 0 );
+      buffer_printf( d, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
       close_socket( d, FALSE );
       return;
    }
@@ -2020,8 +2029,7 @@ void nanny_get_name( DESCRIPTOR_DATA * d, char *argument )
          return;
       }
 
-      snprintf( buf, MAX_STRING_LENGTH, "Did I get that right, %s (Y/N)? ", argument );
-      write_to_buffer( d, buf, 0 );
+      buffer_printf( d, "Did I get that right, %s (Y/N)? ", argument );
       d->connected = CON_CONFIRM_NEW_NAME;
       return;
    }
@@ -2074,11 +2082,8 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
 
    if( !d->character )
    {
-      char cbuf[MAX_STRING_LENGTH];
-
       log_printf( "Bad player file %s@%s.", argument, d->host );
-      snprintf( cbuf, MAX_STRING_LENGTH, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
-      write_to_buffer( d, cbuf, 0 );
+      buffer_printf( d, "Your playerfile is corrupt... Please notify %s\r\n", sysdata.admin_email );
       close_socket( d, FALSE );
       return;
    }
@@ -2096,7 +2101,6 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
 void nanny_confirm_new_name( DESCRIPTOR_DATA * d, char *argument )
 {
    CHAR_DATA *ch;
-   char buf[MAX_STRING_LENGTH];
 
    ch = d->character;
 
@@ -2104,10 +2108,9 @@ void nanny_confirm_new_name( DESCRIPTOR_DATA * d, char *argument )
    {
       case 'y':
       case 'Y':
-         snprintf( buf, MAX_STRING_LENGTH,
+         buffer_printf( d,
                    "\r\nMake sure to use a password that won't be easily guessed by someone else."
                    "\r\nPick a good password for %s: %s", ch->name, echo_off_str );
-         write_to_buffer( d, buf, 0 );
          d->connected = CON_GET_NEW_PASSWORD;
          break;
 
@@ -2337,7 +2340,6 @@ void nanny_get_new_race( DESCRIPTOR_DATA * d, const char *argument )
       return;
    }
 
-
    for( iRace = 0; iRace < MAX_PC_RACE; iRace++ )
    {
       if( toupper( arg[0] ) == toupper( race_table[iRace]->race_name[0] )
@@ -2439,11 +2441,9 @@ void nanny_read_motd( DESCRIPTOR_DATA * d, const char *argument )
 {
    CHAR_DATA *ch;
    char buf[MAX_STRING_LENGTH];
-   char motdbuf[MAX_STRING_LENGTH];
    ch = d->character;
 
-   snprintf( motdbuf, MAX_STRING_LENGTH, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
-   write_to_buffer( d, motdbuf, 0 );
+   buffer_printf( d, "\r\nWelcome to %s...\r\n", sysdata.mud_name );
 
    add_char( ch );
    d->connected = CON_PLAYING;
