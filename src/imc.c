@@ -1098,7 +1098,7 @@ int imcfread_number( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s", "imcfread_number: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          return 0;
       }
       c = getc( fp );
@@ -1118,7 +1118,7 @@ int imcfread_number( FILE * fp )
 
    if( !isdigit( c ) )
    {
-      imclog( "imcfread_number: bad format. (%c)", c );
+      imcbug( "%s: bad format. (%c)", __func__, c );
       return 0;
    }
 
@@ -1126,7 +1126,7 @@ int imcfread_number( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s", "imcfread_number: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          return number;
       }
       number = number * 10 + c - '0';
@@ -1226,7 +1226,7 @@ char *imcfread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s: EOF encountered on read.", __func__ );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          word[0] = '\0';
          return word;
       }
@@ -1249,7 +1249,7 @@ char *imcfread_word( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s: EOF encountered on read.", __func__ );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          *pword = '\0';
          return word;
       }
@@ -1262,7 +1262,7 @@ char *imcfread_word( FILE * fp )
          return word;
       }
    }
-   imclog( "%s: word too long", __func__ );
+   imcbug( "%s: word too long", __func__ );
    return NULL;
 }
 
@@ -1277,7 +1277,7 @@ void imcfread_to_eol( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s", "imcfread_to_eol: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          return;
       }
       c = getc( fp );
@@ -1304,7 +1304,7 @@ char imcfread_letter( FILE * fp )
    {
       if( feof( fp ) )
       {
-         imclog( "%s", "imcfread_letter: EOF encountered on read." );
+         imcbug( "%s: EOF encountered on read.", __func__ );
          return '\0';
       }
       c = getc( fp );
@@ -2174,7 +2174,7 @@ char *process_plrline( char *plrrank, char *plrflags, char *plrname, char *plrti
 {
    static char pline[LGST];
 
-   imcstrlcpy( pline, whot->immline, LGST );
+   imcstrlcpy( pline, whot->plrline, LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charrank%>", plrrank ), LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charflags%>", plrflags ), LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charname%>", plrname ), LGST );
@@ -2188,7 +2188,7 @@ char *process_immline( char *plrrank, char *plrflags, char *plrname, char *plrti
 {
    static char pline[LGST];
 
-   imcstrlcpy( pline, whot->plrline, LGST );
+   imcstrlcpy( pline, whot->immline, LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charrank%>", plrrank ), LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charflags%>", plrflags ), LGST );
    imcstrlcpy( pline, imcstrrep( pline, "<%charname%>", plrname ), LGST );
@@ -2728,7 +2728,7 @@ void imc_save_ucache( void )
 
    if( !( fp = fopen( IMC_UCACHE_FILE, "w" ) ) )
    {
-      imclog( "%s", "Couldn't write to IMC2 ucache file." );
+      imcbug( "%s: Couldn't write to IMC2 ucache file.", __func__ );
       return;
    }
 
@@ -3025,10 +3025,10 @@ void imc_handle_autosetup( char *source, char *servername, char *cmd, char *txt,
 
    if( !strcasecmp( cmd, "accept" ) )
    {
-      imclog( "Autosetup completed successfully." );
+      imclog( "%s", "Autosetup completed successfully." );
       if( encrypt && encrypt[0] != '\0' && !strcasecmp( encrypt, "SHA256-SET" ) )
       {
-         imclog( "SHA-256 Authentication has been enabled." );
+         imclog( "%s", "SHA-256 Authentication has been enabled." );
          this_imcmud->sha256pass = TRUE;
          imc_save_config(  );
       }
@@ -3160,7 +3160,7 @@ void imc_process_authentication( const char *packet )
       imclog( "%s", "Standard Authentication completed." );
       if( encrypt[0] != '\0' && !strcasecmp( encrypt, "SHA256-SET" ) )
       {
-         imclog( "SHA-256 Authentication has been enabled." );
+         imclog( "%s", "SHA-256 Authentication has been enabled." );
          this_imcmud->sha256pass = TRUE;
          imc_save_config(  );
       }
@@ -4029,7 +4029,7 @@ void imc_savecolor( void )
 
    if( !( fp = fopen( IMC_COLOR_FILE, "w" ) ) )
    {
-      imclog( "%s", "Couldn't write to IMC2 color file." );
+      imcbug( "%s: Couldn't write to IMC2 color file.", __func__ );
       return;
    }
 
@@ -4095,7 +4095,7 @@ void imc_load_color_table( void )
 
    if( !( fp = fopen( IMC_COLOR_FILE, "r" ) ) )
    {
-      imclog( "%s", "No color table found." );
+      imcbug( "%s: No color table found.", __func__ );
       return;
    }
 
@@ -4143,7 +4143,7 @@ void imc_savehelps( void )
 
    if( !( fp = fopen( IMC_HELP_FILE, "w" ) ) )
    {
-      imclog( "%s", "Couldn't write to IMC2 help file." );
+      imcbug( "%s: Couldn't write to IMC2 help file.", __func__ );
       return;
    }
 
@@ -4210,7 +4210,7 @@ void imc_readhelp( IMC_HELP_DATA * help, FILE * fp )
             {
                int num = 0;
 
-               while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+               while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
                   num++;
                hbuf[num] = '\0';
                help->text = IMCSTRALLOC( hbuf );
@@ -4235,7 +4235,7 @@ void imc_load_helps( void )
 
    if( !( fp = fopen( IMC_HELP_FILE, "r" ) ) )
    {
-      imclog( "%s", "No help file found." );
+      imcbug( "%s: No help file found.", __func__ );
       return;
    }
 
@@ -4284,7 +4284,7 @@ void imc_savecommands( void )
 
    if( !( fp = fopen( IMC_CMD_FILE, "w" ) ) )
    {
-      imclog( "%s", "Couldn't write to IMC2 command file." );
+      imcbug( "%s: Couldn't write to IMC2 command file.", __func__ );
       return;
    }
 
@@ -4392,7 +4392,7 @@ bool imc_load_commands( void )
 
    if( !( fp = fopen( IMC_CMD_FILE, "r" ) ) )
    {
-      imclog( "%s", "No command table found." );
+      imcbug( "%s: No command table found.", __func__ );
       return FALSE;
    }
 
@@ -4482,7 +4482,7 @@ void imc_load_ucache( void )
 
    if( !( fp = fopen( IMC_UCACHE_FILE, "r" ) ) )
    {
-      imclog( "%s", "No ucache data found." );
+      imcbug( "%s: No ucache data found.", __func__ );
       return;
    }
 
@@ -4531,7 +4531,7 @@ void imc_save_config( void )
 
    if( !( fp = fopen( IMC_CONFIG_FILE, "w" ) ) )
    {
-      imclog( "%s", "Couldn't write to config file." );
+      imcbug( "%s: Couldn't write to config file.", __func__ );
       return;
    }
 
@@ -4666,8 +4666,7 @@ bool imc_read_config( int desc )
 
    if( !( fin = fopen( IMC_CONFIG_FILE, "r" ) ) )
    {
-      imclog( "%s", "Can't open configuration file" );
-      imclog( "%s", "Network configuration aborted." );
+      imcbug( "%s: Can't open configuration file. Network configuration aborted.", __func__ );
       return FALSE;
    }
 
@@ -4826,7 +4825,7 @@ void imc_load_who_template( void )
 
    if( !( fp = fopen( IMC_WHO_FILE, "r" ) ) )
    {
-      imclog( "%s: Unable to load template file for imcwho", __func__ );
+      imcbug( "%s: Unable to load template file for imcwho", __func__ );
       whot = NULL;
       return;
    }
@@ -4843,49 +4842,49 @@ void imc_load_who_template( void )
 
       if( !strcasecmp( word, "Head:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->head = IMCSTRALLOC( parse_who_header( hbuf ) );
       }
       else if( !strcasecmp( word, "Tail:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->tail = IMCSTRALLOC( parse_who_tail( hbuf ) );
       }
       else if( !strcasecmp( word, "Plrline:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->plrline = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Immline:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->immline = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Immheader:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->immheader = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Plrheader:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->plrheader = IMCSTRALLOC( hbuf );
       }
       else if( !strcasecmp( word, "Master:" ) )
       {
-         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '¢' )
+         while( num < ( LGST - 2 ) && ( hbuf[num] = fgetc( fp ) ) != EOF && hbuf[num] != '\xa2' )
             ++num;
          hbuf[num] = '\0';
          whot->master = IMCSTRALLOC( hbuf );
@@ -4925,7 +4924,7 @@ int ipv4_connect( void )
       struct hostent *hostp = gethostbyname( this_imcmud->rhost );
       if( !hostp )
       {
-         imclog( "%s", "imc_connect_to: Cannot resolve server hostname." );
+         imcbug( "%s: Cannot resolve server hostname.", __func__ );
          imc_shutdown( FALSE );
          return -1;
       }
@@ -4966,7 +4965,7 @@ int ipv4_connect( void )
    {
       if( errno != EINPROGRESS )
       {
-         imclog( "%s: Failed connect: Error %d: %s", __func__, errno, strerror( errno ) );
+         imcbug( "%s: Failed connect: Error %d: %s", __func__, errno, strerror( errno ) );
          perror( "connect" );
          close( desc );
          return -1;
@@ -5013,7 +5012,7 @@ bool imc_server_connect( void )
 
    if( n )
    {
-      imclog( "%s: getaddrinfo: %s", __func__, gai_strerror( n ) );
+      imcbug( "%s: getaddrinfo: %s", __func__, gai_strerror( n ) );
       return FALSE;
    }
 
@@ -5030,7 +5029,7 @@ bool imc_server_connect( void )
    freeaddrinfo( ai_list );
    if( ai == NULL )
    {
-      imclog( "%s: socket or connect: failed for %s port %hu", __func__, this_imcmud->rhost, this_imcmud->rport );
+      imcbug( "%s: socket or connect: failed for %s port %hu", __func__, this_imcmud->rhost, this_imcmud->rport );
       imcwait = 100; /* So it will try again according to the reconnect count. */
       return FALSE;
    }
@@ -5293,7 +5292,7 @@ void imc_startup( bool force, int desc, bool connected )
 
    if( this_imcmud && this_imcmud->state > IMC_OFFLINE )
    {
-      imclog( "%s: Network startup called when already engaged!", __func__ );
+      imcbug( "%s: Network startup called when already engaged!", __func__ );
       return;
    }
 
