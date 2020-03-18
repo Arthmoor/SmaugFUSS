@@ -1,5 +1,10 @@
-/*-
- * Copyright 2005 Colin Percival
+/*
+ * FIPS 180-2 SHA-224/256/384/512 implementation
+ * Last update: 02/02/2007
+ * Issue date:  04/30/2005
+ *
+ * Copyright (C) 2013, Con Kolivas <kernel@kolivas.org>
+ * Copyright (C) 2005, 2007 Olivier Gay <olivier.gay@a3.epfl.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,11 +15,14 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the project nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * THIS SOFTWARE IS PROVIDED BY THE PROJECT AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE PROJECT OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
  * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
@@ -22,29 +30,40 @@
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
- *
- * $FreeBSD: src/lib/libmd/sha256.h,v 1.1 2005/03/09 19:23:04 cperciva Exp $
  */
 
-#ifndef _SHA256_H_
-#define _SHA256_H_
+#ifndef SHA2_H
+#define SHA2_H
 
+#include <stdint.h>
 #include <sys/types.h>
 
-typedef struct SHA256Context
-{
-   int state[8];
-   int count[2];
-   unsigned char buf[64];
-} SHA256_CTX;
+#define SHA256_DIGEST_SIZE ( 256 / 8)
+#define SHA256_BLOCK_SIZE  ( 512 / 8)
 
-void SHA256_Init( SHA256_CTX * );
-void SHA256_Update( SHA256_CTX *, const unsigned char *, size_t );
-void SHA256_Final( unsigned char[32], SHA256_CTX * );
-char *SHA256_End( SHA256_CTX *, char * );
-char *SHA256_File( const char *, char * );
-char *SHA256_FileChunk( const char *, char *, off_t, off_t );
-char *SHA256_Data( const unsigned char *, unsigned int, char * );
+#define SHFR(x, n)    (x >> n)
+#define ROTR(x, n)   ((x >> n) | (x << ((sizeof(x) << 3) - n)))
+#define CHx(x, y, z)  ((x & y) ^ (~x & z))
+#define MAJ(x, y, z) ((x & y) ^ (x & z) ^ (y & z))
+
+#define SHA256_F1(x) (ROTR(x,  2) ^ ROTR(x, 13) ^ ROTR(x, 22))
+#define SHA256_F2(x) (ROTR(x,  6) ^ ROTR(x, 11) ^ ROTR(x, 25))
+#define SHA256_F3(x) (ROTR(x,  7) ^ ROTR(x, 18) ^ SHFR(x,  3))
+#define SHA256_F4(x) (ROTR(x, 17) ^ ROTR(x, 19) ^ SHFR(x, 10))
+
+typedef struct
+{
+   unsigned int tot_len;
+   unsigned int len;
+   unsigned char block[2 * SHA256_BLOCK_SIZE];
+   uint32_t h[8];
+} sha256_ctx;
+
+extern uint32_t sha256_k[64];
+
+void sha256_init( sha256_ctx * ctx );
+void sha256_update( sha256_ctx *ctx, const unsigned char *message, unsigned int len );
+void sha256_final( sha256_ctx *ctx, unsigned char *digest );
 char *sha256_crypt( const char *pwd );
 
-#endif /* !_SHA256_H_ */
+#endif /* !SHA2_H */

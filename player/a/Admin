@@ -7,15 +7,15 @@ Race         1
 Age          0 23 9 605
 Languages    -1 1
 Level        65
-Played       75025
+Played       75092
 Room         1200
 HpManaMove   49 24 145 145 110 110
 Gold         15420
 Exp          2000
 Height          24
 Weight          42
-Act          1644189256&2
-AffectedBy   524288
+Act          1644189256d
+AffectedBy   524288d
 Position     112
 Style     2
 Practice     4
@@ -28,7 +28,7 @@ Hitroll      0
 Damroll      0
 Armor        100
 Susceptible  16
-Password     9c3a88f26d3623fcf0a4aa881518170c70f5e1d62e0d9f9fa7e9b3f07fa299b7~
+Password     8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918~
 Title         the Attendant~
 WizInvis     65
 Flags        33280
@@ -315,7 +315,7 @@ Killed       10409 1
 Killed       21045 8
 Killed       10415 10
 MaxColors    116
-Colors       0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 7 7 14 14 14 15 15 11 11 9 46 40 12 7 7 10 6 11 9 10 1 15 11 15 11 10 13 12 10 11 12 10 3 12 9 15 11 15 14 2 5 15 9 7 2 9 12 10 2 10 15 7 7 15 12 12 12 10 14 14 14 10 10 10 13 2 10 14 10 10 2 6 1 9 2 10 7 10 15 10 10 10 10 
+Colors       0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 7 7 14 14 14 15 15 11 11 9 46 40 12 7 7 10 6 11 9 10 1 15 11 15 11 10 13 12 10 11 12 10 3 12 9 15 11 15 14 2 5 15 9 7 2 9 12 10 2 10 15 7 7 15 12 12 12 10 14 14 14 10 10 10 13 2 10 14 10 10 2 6 1 9 2 10 7 10 15 10 10 10 10 10 
 IMCPerm      5
 IMCFlags     256
 End
