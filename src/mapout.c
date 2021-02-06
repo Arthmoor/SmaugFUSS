@@ -36,7 +36,6 @@ MAP_INDEX_DATA *get_map_index( int vnum );
 void init_maps( void );
 
 /* Useful Externals */
-extern int top_exit;
 void note_attach( CHAR_DATA * ch );
 
 /* Local function prototypes */
