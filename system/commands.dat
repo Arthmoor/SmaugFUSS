@@ -111,15 +111,6 @@ Log         0
 End
 
 #COMMAND
-Name        sellhouse~
-Code        do_sellhouse
-Position    104
-Level       5
-Log         0
-Flags       1
-End
-
-#COMMAND
 Name        auction~
 Code        do_auction
 Position    104
@@ -3118,6 +3109,15 @@ Code        do_sedit
 Position    100
 Level       58
 Log         1
+End
+
+#COMMAND
+Name        sellhouse~
+Code        do_sellhouse
+Position    104
+Level       5
+Log         0
+Flags       1
 End
 
 #COMMAND
