@@ -1421,7 +1421,10 @@ void do_favor( CHAR_DATA * ch, const char *argument )
 
    set_char_color( AT_GREEN, ch );
    if( !ch->pcdata->deity )
-      mudstrlcpy( buf, "N/A", MAX_STRING_LENGTH );
+   {
+      send_to_char( "You have not yet chosen a deity.\r\n", ch );
+      return;
+   }
    else if( ch->pcdata->favor > 2250 )
       mudstrlcpy( buf, "loved", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 2000 )
@@ -1457,6 +1460,5 @@ void do_favor( CHAR_DATA * ch, const char *argument )
    else
       mudstrlcpy( buf, "damned", MAX_STRING_LENGTH );
 
-   ch_printf( ch, "%s considers you to be %s.\n\r", ch->pcdata->deity->name, buf );
-   return;
+   ch_printf( ch, "%s considers you to be %s.\r\n", ch->pcdata->deity->name, buf );
 }
