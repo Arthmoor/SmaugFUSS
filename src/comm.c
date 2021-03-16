@@ -3885,8 +3885,8 @@ void display_prompt( DESCRIPTOR_DATA * d )
                             : ( xIS_SET( ch->act, PLR_WIZINVIS ) ? ch->pcdata->wizinvis : 0 ) );
                   break;
             }
-            if( pstat != 0x80000000 )
-               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%u", pstat );
+            if( pstat != 0x7FFFFFFF )
+               snprintf( pbuf, MAX_STRING_LENGTH - strlen (buf), "%d", pstat );
             pbuf += strlen( pbuf );
             break;
       }
