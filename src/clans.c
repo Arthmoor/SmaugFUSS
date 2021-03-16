@@ -330,7 +330,7 @@ CLAN_DATA *get_clan( const char *name )
    CLAN_DATA *clan;
 
    for( clan = first_clan; clan; clan = clan->next )
-      if( !str_cmp( name, clan->name ) || ( ( clan->abbrev[0] != '\0' ) && !str_cmp( name, clan->abbrev ) ) )
+      if( !str_cmp( name, clan->name ) || ( clan->abbrev && ( clan->abbrev[0] != '\0' ) && !str_cmp( name, clan->abbrev ) ) )
          return clan;
    return NULL;
 }
@@ -340,7 +340,7 @@ COUNCIL_DATA *get_council( const char *name )
    COUNCIL_DATA *council;
 
    for( council = first_council; council; council = council->next )
-      if( !str_cmp( name, council->name ) || ( ( council->abbrev[0] != '\0' ) && !str_cmp( name, council->abbrev ) ) )
+      if( !str_cmp( name, council->name ) || ( council->abbrev && ( council->abbrev[0] != '\0' ) && !str_cmp( name, council->abbrev ) ) )
          return council;
    return NULL;
 }
@@ -2431,7 +2431,6 @@ void do_setcouncil( CHAR_DATA* ch, const char* argument)
 /*
  * Added multiple levels on pkills and pdeaths. -- Shaddai
  */
-
 void do_showclan( CHAR_DATA* ch, const char* argument)
 {
    CLAN_DATA *clan;
@@ -2520,8 +2519,7 @@ void do_showcouncil( CHAR_DATA* ch, const char* argument)
    ch_printf_color( ch, "&wHead:      &W%s\r\n", council->head );
    ch_printf_color( ch, "&wHead2:     &W%s\r\n", council->head2 );
    ch_printf_color( ch, "&wMembers:   &W%-d\r\n", council->members );
-   ch_printf_color( ch, "&wBoard:     &W%-5d\r\n&wMeeting:   &W%-5d\r\n&wPowers:    &W%s\r\n",
-                    council->board, council->meeting, council->powers );
+   ch_printf_color( ch, "&wBoard:     &W%-5d\r\n&wMeeting:   &W%-5d\r\n&wPowers:    &W%s\r\n", council->board, council->meeting, council->powers );
    ch_printf_color( ch, "&wStoreroom: &W%-5d\r\n", council->storeroom );
    ch_printf_color( ch, "&wDescription:\r\n&W%s\r\n", council->description );
    return;
