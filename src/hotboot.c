@@ -232,7 +232,7 @@ CHAR_DATA *load_mobile( FILE * fp )
          if( !str_cmp( word, "EndMobile" ) )
             break;
       }
-      extract_char( mob, TRUE );
+
       bug( "%s: Vnum not found", __func__ );
       return NULL;
    }
