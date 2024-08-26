@@ -5037,14 +5037,32 @@ ch_ret spell_animate_dead( int sn, int level, CHAR_DATA * ch, void *vo )
 
    found = FALSE;
 
-   for( corpse = ch->in_room->first_content; corpse; corpse = corpse_next )
+   if ( target_name[0] != '\0' )
    {
-      corpse_next = corpse->next_content;
-
-      if( corpse->item_type == ITEM_CORPSE_NPC && corpse->cost != -5 )
+      if( ( corpse = get_obj_here( ch, target_name ) ) == NULL )
       {
+         send_to_char( "You cannot find that here.\r\n", ch );
+         return rSPELL_FAILED;
+      }
+      else if( corpse->item_type == ITEM_CORPSE_NPC && corpse->cost != -5 )
          found = TRUE;
-         break;
+      else
+      {
+         send_to_char( "That's not a suitable corpse.\r\n", ch );
+         return rSPELL_FAILED;
+      }
+   }
+   else
+   {
+      for( corpse = ch->in_room->first_content; corpse; corpse = corpse_next )
+      {
+         corpse_next = corpse->next_content;
+
+         if( corpse->item_type == ITEM_CORPSE_NPC && corpse->cost != -5 )
+         {
+            found = TRUE;
+            break;
+         }
       }
    }
 
