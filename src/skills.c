@@ -3777,7 +3777,10 @@ void disarm( CHAR_DATA * ch, CHAR_DATA * victim )
    if( obj == get_eq_char( victim, WEAR_WIELD ) && ( tmpobj = get_eq_char( victim, WEAR_DUAL_WIELD ) ) != NULL )
       tmpobj->wear_loc = WEAR_WIELD;
 
+   oprog_remove_trigger( victim, obj );
+
    obj_from_char( obj );
+
    if( !IS_NPC( victim ) && CAN_PKILL( victim ) )
    {
       char buf[MAX_STRING_LENGTH];
@@ -3806,7 +3809,7 @@ void disarm( CHAR_DATA * ch, CHAR_DATA * victim )
    return;
 }
 
-void do_disarm( CHAR_DATA* ch, const char* argument)
+void do_disarm( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    OBJ_DATA *obj;
