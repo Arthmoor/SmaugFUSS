@@ -23,7 +23,7 @@
 ROOM_INDEX_DATA *vroom_hash[64];
 
 const short movement_loss[SECT_MAX] = {
-   1, 2, 2, 3, 4, 6, 4, 1, 6, 10, 6, 5, 7, 4
+   1, 2, 2, 3, 4, 6, 4, 1, 6, 10, 6, 5, 7, 4, 7, 5, 5
 };
 
 const char *const dir_name[] = {
@@ -52,11 +52,12 @@ const char *const sect_names[SECT_MAX][2] = {
    {"In the water", "waters"}, {"In rough water", "waters"},
    {"Underwater", "underwaters"}, {"In the air", "air"},
    {"In a desert", "deserts"}, {"Somewhere", "unknown"},
-   {"ocean floor", "ocean floor"}, {"underground", "underground"}
+   {"ocean floor", "ocean floor"}, {"underground", "underground"},
+   {"In lava", "lava"}, {"In a swamp", "swamp"}, {"On ice", "ice"}
 };
 
 const int sent_total[SECT_MAX] = {
-   3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1
+   3, 5, 4, 4, 1, 1, 1, 1, 1, 2, 2, 25, 1, 1, 1, 1, 1
 };
 
 const char *const room_sents[SECT_MAX][25] = {
