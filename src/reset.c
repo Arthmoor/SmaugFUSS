@@ -698,7 +698,7 @@ void reset_room( ROOM_INDEX_DATA * room )
                   pObjIndex->count += ( num - 1 );
                obj->count = pReset->arg2;
                obj->level = UMIN( obj->level, LEVEL_AVATAR );
-               obj->cost = 0;
+               // obj->cost = 0; <-- This doesn't seem to have any logical reasoning to happen. All other methods of instancing an object leave the index cost intact except this. [https://smaugmuds.afkmods.com/topic/object-cost-for-o-resets-4796/]
                obj_to_room( obj, pRoomIndex );
             }
             else
