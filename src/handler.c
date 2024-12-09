@@ -630,8 +630,14 @@ int get_exp_worth( CHAR_DATA * ch )
       wexp += ( int )( wexp * 1.5 );
    if( IS_AFFECTED( ch, AFF_FIRESHIELD ) )
       wexp += ( int )( wexp * 1.2 );
+   if( IS_AFFECTED( ch, AFF_ICESHIELD ) )
+      wexp += ( int )( wexp * 1.2 ); 
    if( IS_AFFECTED( ch, AFF_SHOCKSHIELD ) )
       wexp += ( int )( wexp * 1.2 );
+   if( IS_AFFECTED( ch, AFF_VENOMSHIELD ) )
+      wexp += ( int )( wexp * 1.2 );
+   if( IS_AFFECTED( ch, AFF_ACIDMIST ) )
+      wexp += ( int )( wexp * 1.2 ); 
    wexp = URANGE( MIN_EXP_WORTH, wexp, MAX_EXP_WORTH );
 
    return wexp;
