@@ -1149,13 +1149,13 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
             return FALSE;
          if( chkchar->morph->morph == NULL )
             return FALSE;
-         return mprog_veval( chkchar->morph->morph->vnum, opr, rhsvl, mob );
+         return mprog_veval( chkchar->morph->morph->vnum, opr, atoi(rval), mob );
       }
       if( !str_cmp( chck, "nuisance" ) )
       {
          if( IS_NPC( chkchar ) || !chkchar->pcdata->nuisance )
             return FALSE;
-         return mprog_veval( chkchar->pcdata->nuisance->flags, opr, rhsvl, mob );
+         return mprog_veval( chkchar->pcdata->nuisance->flags, opr, atoi(rval), mob );
       }
       if( !str_cmp( chck, "clan" ) )
       {
