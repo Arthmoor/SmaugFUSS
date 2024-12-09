@@ -8794,7 +8794,7 @@ bool create_new_race( int rcindex, char *argument )
    if( argument[0] != '\0' )
       argument[0] = UPPER( argument[0] );
 
-   snprintf( race_table[rcindex]->race_name, 16, "%-.15s", argument );
+   race_table[rcindex]->race_name = STRALLOC( argument );
    race_table[rcindex]->class_restriction = 0;
    race_table[rcindex]->str_plus = 0;
    race_table[rcindex]->dex_plus = 0;
@@ -8962,7 +8962,8 @@ void do_setrace( CHAR_DATA* ch, const char* argument )
       snprintf( filename, 256, "%s%s.race", RACE_DIR, race->race_name );
       unlink( filename );
 
-      snprintf( race->race_name, 16, "%s", capitalize( argument ) );
+      STRFREE( race->race_name );
+      race->race_name = STRALLOC( capitalize( argument ) );
       write_race_file( ra );
       for( i = 0; i < MAX_PC_RACE; ++i )
          fprintf( fpList, "%s.race\n", race_table[i]->race_name );

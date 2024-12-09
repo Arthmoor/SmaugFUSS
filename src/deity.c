@@ -1197,7 +1197,7 @@ void do_supplicate( CHAR_DATA* ch, const char* argument)
             {
                if( retr )
                   ch->pcdata->favor -= ch->pcdata->deity->scorpse;
-               send_to_char( "So soon?  Have patience...\n\r", ch );
+               send_to_char( "So soon? Have patience...\r\n", ch );
                return;
             }
 

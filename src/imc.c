@@ -2551,7 +2551,7 @@ PFUN( imc_recv_isalive )
       r->network = IMCSTRALLOC( netname );
    }
 
-   if( q->route && q->route[0] != '\0' )
+   if( q->route[0] != '\0' )
    {
       IMCSTRFREE( r->path );
       r->path = IMCSTRALLOC( q->route );
@@ -3333,7 +3333,7 @@ void imc_loop( void )
    {
       if( !imc_read_socket(  ) )
       {
-         if( this_imcmud->inbuf && this_imcmud->inbuf[0] != '\0' )
+         if( this_imcmud->inbuf[0] != '\0' )
          {
             if( imc_read_buffer(  ) )
             {

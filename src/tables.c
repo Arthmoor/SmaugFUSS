@@ -375,7 +375,7 @@ void load_races(  )
       if( race_table[i] == NULL )
       {
          CREATE( race_table[i], struct race_type, 1 );
-         snprintf( race_table[i]->race_name, 16, "%s", "unused" );
+         race_table[i]->race_name = STRALLOC( "unused" );
       }
    }
    FCLOSE( fpList );
@@ -451,7 +451,6 @@ bool load_race_file( const char *fname )
 {
    char buf[MAX_STRING_LENGTH];
    const char *word;
-   const char *race_name = NULL;
    bool fMatch;
    struct race_type *race;
    int ra = -1;
@@ -507,14 +506,12 @@ bool load_race_file( const char *fname )
                {
                   bug( "%s: Race (%s) bad/not found (%d)", __func__,
                        race->race_name ? race->race_name : "name not found", ra );
-                  STRFREE( race_name );
                   for( i = 0; i < MAX_WHERE_NAME; ++i )
                      DISPOSE( race->where_name[i] );
                   DISPOSE( race );
                   return FALSE;
                }
                race_table[ra] = race;
-               STRFREE( race_name );
                return TRUE;
             }
 
@@ -545,7 +542,7 @@ bool load_race_file( const char *fname )
             break;
 
          case 'N':
-            KEY( "Name", race_name, fread_string( fp ) );
+            KEY( "Name", race->race_name, fread_string( fp ) );
             break;
 
          case 'R':
@@ -615,9 +612,6 @@ bool load_race_file( const char *fname )
             }
             break;
       }
-
-      if( race_name != NULL )
-         snprintf( race->race_name, 16, "%-.15s", race_name );
 
       if( !fMatch )
       {

@@ -1064,7 +1064,7 @@ struct class_type
 /* race dedicated stuff */
 struct race_type
 {
-   char race_name[16];  /* Race name         */
+   const char *race_name;  /* Race name         */
    EXT_BV affected;  /* Default affect bitvectors  */
    short str_plus;   /* Str bonus/penalty    */
    short dex_plus;   /* Dex      "        */

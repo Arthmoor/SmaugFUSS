@@ -948,7 +948,6 @@ ch_ret multi_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt )
    return retcode;
 }
 
-
 /*
  * Weapon types, haus
  */
@@ -4095,8 +4094,8 @@ bool in_arena( CHAR_DATA * ch )
 
 bool check_illegal_pk( CHAR_DATA * ch, CHAR_DATA * victim )
 {
-   char buf[MAX_STRING_LENGTH];
-   char buf2[MAX_STRING_LENGTH];
+   char buf[MAX_INPUT_LENGTH];
+   char buf2[MAX_INPUT_LENGTH];
    char log_buf[MAX_STRING_LENGTH];
 
    if( !IS_NPC( victim ) && !IS_NPC( ch ) )
