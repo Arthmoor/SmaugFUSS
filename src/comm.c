@@ -3988,7 +3988,7 @@ bool pager_output( DESCRIPTOR_DATA * d )
 
 #ifdef WIN32
 
-void shutdown_mud( char *reason );
+void shutdown_mud( const char *reason );
 
 void bailout( void )
 {
@@ -3999,7 +3999,6 @@ void bailout( void )
    mud_down = TRUE;  /* This will cause game_loop to exit */
    service_shut_down = TRUE;  /* This will cause characters to be saved */
    fflush( stderr );
-   return;
 }
 
 #endif
