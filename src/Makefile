@@ -18,10 +18,10 @@ EXPORT_SYMBOLS = -export-dynamic
 #IMC2 - Comment out to disable IMC2 support
 IMC = 1
 
-W_FLAGS = -std=c++1z -Wall -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls -fsanitize=address -fno-omit-frame-pointer
+W_FLAGS = -std=c++1z -Wall -Wshadow -Wformat-security -Wpointer-arith -Wcast-align -Wredundant-decls -fsanitize=address -fsanitize=leak -fno-omit-frame-pointer
 
 C_FLAGS = -g2 $(W_FLAGS) $(SOLARIS_FLAG) $(PROF) $(EXPORT_SYMBOLS)
-L_FLAGS = -fsanitize=address -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
+L_FLAGS = -fsanitize=address -fsanitize=leak -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
 #D_FLAGS : For the DNS Slave process. No need in linking all the extra libs for this.
 D_FLAGS = -g2 -O -fsanitize=address -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK)
 
@@ -98,5 +98,5 @@ indentclean:
 	rm *.c~ *.h~
 
 o/%.o: %.c
-	echo "  Compiling $@....";
+	echo "  Compiling $@...";
 	$(CC) -c $(C_FLAGS) $< -o $@

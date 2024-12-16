@@ -630,7 +630,7 @@ void show_map( CHAR_DATA * ch, char *text )
          if( pos > 0 )
          {
             mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, pos );
+            mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
             p += pos;
          }
          else
@@ -661,7 +661,7 @@ void show_map( CHAR_DATA * ch, char *text )
       if( pos > 0 )
       {
          mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-         mudstrlcat( buf, p, pos );
+         mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
          p += pos;
          mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
       }
@@ -696,7 +696,7 @@ void show_map( CHAR_DATA * ch, char *text )
          if( pos > 0 )
          {
             mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, pos );
+            mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
             p += pos;
             mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
          }
