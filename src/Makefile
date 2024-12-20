@@ -23,7 +23,7 @@ W_FLAGS = -std=c++1z -Wall -Wshadow -Wformat-security -Wpointer-arith -Wcast-ali
 C_FLAGS = -g2 $(W_FLAGS) $(SOLARIS_FLAG) $(PROF) $(EXPORT_SYMBOLS)
 L_FLAGS = -fsanitize=address -fsanitize=leak -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
 #D_FLAGS : For the DNS Slave process. No need in linking all the extra libs for this.
-D_FLAGS = -g2 -O -fsanitize=address -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK)
+D_FLAGS = -g2 -O -fsanitize=address -fsanitize=leak -fno-omit-frame-pointer $(PROF) $(SOLARIS_LINK)
 
 C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c boards.c \
           build.c calendar.c chess.c clans.c color.c comm.c comments.c const.c db.c deity.c \
