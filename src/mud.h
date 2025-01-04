@@ -1857,7 +1857,8 @@ typedef enum
 #define BVSECT_UNDERGROUND 		BV13
 #define BVSECT_LAVA			BV14
 #define BVSECT_SWAMP			BV15
-#define MAX_SECFLAG 			15
+#define BVSECT_ICE         BV16
+#define MAX_SECFLAG 			16
 
 /*
  * Room flags.           Holy cow!  Talked about stripped away..
