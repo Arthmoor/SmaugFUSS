@@ -2457,15 +2457,15 @@ void do_quit( CHAR_DATA* ch, const char* argument)
 void send_rip_screen( CHAR_DATA * ch )
 {
    FILE *rpfile;
-   int num = 0;
+   int num = 0, c = 0;
    char BUFF[MAX_STRING_LENGTH * 2];
 
    if( ( rpfile = fopen( RIPSCREEN_FILE, "r" ) ) != NULL )
    {
-      while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
-         num++;
+      while( ( c = fgetc( rpfile ) ) != EOF && ( num < ( MAX_STRING_LENGTH * 2 - 1 ) ) )  // stop at BUFF size - 1
+         BUFF[num++] = c;
       FCLOSE( rpfile );
-      BUFF[num] = 0;
+      BUFF[num] = '\0';
       write_to_buffer( ch->desc, BUFF, num );
    }
 }
@@ -2473,15 +2473,15 @@ void send_rip_screen( CHAR_DATA * ch )
 void send_rip_title( CHAR_DATA * ch )
 {
    FILE *rpfile;
-   int num = 0;
+   int num = 0, c = 0;
    char BUFF[MAX_STRING_LENGTH * 2];
 
    if( ( rpfile = fopen( RIPTITLE_FILE, "r" ) ) != NULL )
    {
-      while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
-         num++;
+      while( ( c = fgetc( rpfile ) ) != EOF && ( num < ( MAX_STRING_LENGTH * 2 - 1 ) ) )  // stop at BUFF size - 1
+         BUFF[num++] = c;
       FCLOSE( rpfile );
-      BUFF[num] = 0;
+      BUFF[num] = '\0';
       write_to_buffer( ch->desc, BUFF, num );
    }
 }
@@ -2489,15 +2489,15 @@ void send_rip_title( CHAR_DATA * ch )
 void send_ansi_title( CHAR_DATA * ch )
 {
    FILE *rpfile;
-   int num = 0;
+   int num = 0, c = 0;
    char BUFF[MAX_STRING_LENGTH * 2];
 
    if( ( rpfile = fopen( ANSITITLE_FILE, "r" ) ) != NULL )
    {
-      while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
-         num++;
+      while( ( c = fgetc( rpfile ) ) != EOF && ( num < ( MAX_STRING_LENGTH * 2 - 1 ) ) )  // stop at BUFF size - 1
+         BUFF[num++] = c;
       FCLOSE( rpfile );
-      BUFF[num] = 0;
+      BUFF[num] = '\0';
       write_to_buffer( ch->desc, BUFF, num );
    }
 }
@@ -2505,20 +2505,20 @@ void send_ansi_title( CHAR_DATA * ch )
 void send_ascii_title( CHAR_DATA * ch )
 {
    FILE *rpfile;
-   int num = 0;
+   int num = 0, c = 0;
    char BUFF[MAX_STRING_LENGTH];
 
    if( ( rpfile = fopen( ASCTITLE_FILE, "r" ) ) != NULL )
    {
-      while( ( BUFF[num] = fgetc( rpfile ) ) != EOF )
-         num++;
+      while( ( c = fgetc( rpfile ) ) != EOF && ( num < ( MAX_STRING_LENGTH * 2 - 1 ) ) )  // stop at BUFF size - 1
+         BUFF[num++] = c;
       FCLOSE( rpfile );
-      BUFF[num] = 0;
+      BUFF[num] = '\0';
       write_to_buffer( ch->desc, BUFF, num );
    }
 }
 
-void do_rip( CHAR_DATA* ch, const char* argument)
+void do_rip( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -2545,7 +2545,7 @@ void do_rip( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_ansi( CHAR_DATA* ch, const char* argument)
+void do_ansi( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -2572,7 +2572,7 @@ void do_ansi( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_save( CHAR_DATA* ch, const char* argument)
+void do_save( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
       return;
