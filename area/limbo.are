@@ -1861,6 +1861,17 @@ You cannot leave if engaged in combat.
 #ENDOBJECT
 
 #OBJECT
+Vnum     91
+Keywords parchment blank~
+Type     paper~
+Short    a blank parchment~
+Long     A blank parchment lays here gathering dust.~
+WFlags   take hold~
+Values   0 0 0 0 0 0
+Stats    1 0 0 0 0
+#ENDOBJECT
+
+#OBJECT
 Vnum     95
 Keywords puddle~
 Type     puddle~
