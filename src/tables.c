@@ -697,7 +697,7 @@ void remap_slot_numbers(  )
 
    log_string( "Remapping slots to sns" );
 
-   for( sn = 0; sn <= num_skills; ++sn )
+   for( sn = 0; sn < num_skills; ++sn )
    {
       if( ( skill = skill_table[sn] ) != NULL )
       {
