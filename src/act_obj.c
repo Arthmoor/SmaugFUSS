@@ -2406,7 +2406,7 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument)
    return;
 }
 
-void do_brandish( CHAR_DATA* ch, const char* argument)
+void do_brandish( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *vch;
    CHAR_DATA *vch_next;
@@ -2493,11 +2493,9 @@ void do_brandish( CHAR_DATA* ch, const char* argument)
          global_objcode = rOBJ_USED;
       extract_obj( staff );
    }
-
-   return;
 }
 
-void do_zap( CHAR_DATA* ch, const char* argument)
+void do_zap( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2583,7 +2581,6 @@ void do_zap( CHAR_DATA* ch, const char* argument)
          global_objcode = rOBJ_USED;
       extract_obj( wand );
    }
-   return;
 }
 
 /* put an item on auction, or see the stats on the current item or bet */

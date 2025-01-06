@@ -383,8 +383,39 @@ void cleanup_memory( void )
    }
 
    fprintf( stdout, "%s", "Cleanup complete, exiting.\n" );
-   return;
 }  /* cleanup memory */
+
+void open_mud_log( void )
+{
+   struct stat fst;
+   FILE *error_log;
+   char buf[256];
+   int logindex;
+
+   // Stop trying after 100K log files. If you have this many it's not good anyway.
+   for( logindex = 1000; logindex < 100000; ++logindex )
+   {
+      snprintf( buf, 256, "../log/%d.log", logindex );
+      if( stat( buf, &fst ) != -1 )
+         continue;
+      else if( logindex < 100000 )
+         break;
+      else
+      {
+         fprintf( stderr, "%s", "You have too damn many log files! Clean them up!" );
+         exit( 1 );
+      }
+   }
+
+   if( !( error_log = fopen( buf, "a" ) ) )
+   {
+      fprintf( stderr, "Unable to append to %s.", buf );
+      exit( 1 );
+   }
+
+   dup2( fileno( error_log ), STDERR_FILENO );
+   FCLOSE( error_log );
+}
 
 #ifdef WIN32
 int mainthread( int argc, char **argv )
@@ -508,6 +539,15 @@ int main( int argc, char **argv )
    }
 #endif /* WIN32 */
 
+   /*
+    * If this all goes well, we should be able to open a new log file during hotboot 
+    */
+   if( fCopyOver )
+   {
+      open_mud_log(  );
+      log_string( "Hotboot: Spawning new log file." );
+   }
+
    log_string( "Booting Database" );
    boot_db( fCopyOver );
    log_string( "Initializing socket" );
@@ -545,7 +585,6 @@ int main( int argc, char **argv )
    WSACleanup(  );   /* clean up */
    kill_timer(  );   /* stop timer thread */
 #endif
-
 
    /*
     * That's all, folks.
