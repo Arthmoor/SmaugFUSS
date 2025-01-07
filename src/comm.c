@@ -64,10 +64,6 @@ void shutdown_checkpoint( void );
 #include <netdb.h>
 #endif
 
-#ifdef IMC
-void imc_delete_info( void );
-void free_imcdata( bool complete );
-#endif
 void dispose_ban( BAN_DATA * ban, int type );
 void close_all_areas( void );
 void free_commands( void );
@@ -161,12 +157,6 @@ void cleanup_memory( void )
    CHAR_DATA *character;
    OBJ_DATA *object;
    DESCRIPTOR_DATA *desc, *desc_next;
-
-#ifdef IMC
-   fprintf( stdout, "%s", "IMC2 Data.\n" );
-   free_imcdata( TRUE );
-   imc_delete_info(  );
-#endif
 
    fprintf( stdout, "%s", "Project Data.\n" );
    free_projects(  );
@@ -425,10 +415,6 @@ int main( int argc, char **argv )
 {
    struct timeval now_time;
    bool fCopyOver = FALSE;
-#ifdef IMC
-   int imcsocket = -1;
-#endif
-
    DONT_UPPER = FALSE;
    num_descriptors = 0;
    first_descriptor = NULL;
@@ -500,9 +486,6 @@ int main( int argc, char **argv )
       {
          fCopyOver = TRUE;
          control = atoi( argv[3] );
-#ifdef IMC
-         imcsocket = atoi( argv[4] );
-#endif
       }
       else
          fCopyOver = FALSE;
@@ -554,13 +537,6 @@ int main( int argc, char **argv )
    if( !fCopyOver )  /* We have already the port if copyover'ed */
       control = init_socket( port );
 
-#ifdef IMC
-   /*
-    * Initialize and connect to IMC2 
-    */
-   imc_startup( FALSE, imcsocket, fCopyOver );
-#endif
-
    log_printf( "%s ready on port %d.", sysdata.mud_name, port );
 
    if( fCopyOver )
@@ -572,10 +548,6 @@ int main( int argc, char **argv )
    game_loop(  );
 
    close( control );
-
-#ifdef IMC
-   imc_shutdown( FALSE );
-#endif
 
 #ifdef WIN32
    /*
@@ -910,10 +882,6 @@ void game_loop( void )
          if( d == last_descriptor )
             break;
       }
-
-#ifdef IMC
-      imc_loop(  );
-#endif
 
       /*
        * Autonomous game motion.

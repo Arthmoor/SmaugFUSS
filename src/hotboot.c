@@ -577,7 +577,7 @@ void load_world( void )
 }
 
 /*  Warm reboot stuff, gotta make sure to thank Erwin for this :) */
-void do_hotboot( CHAR_DATA* ch, const char* argument)
+void do_hotboot( CHAR_DATA* ch, const char* argument )
 {
    FILE *fp;
    CHAR_DATA *victim = NULL;
@@ -586,6 +586,20 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    extern int control;
    int count = 0;
    bool found = FALSE;
+   bool debugging = FALSE;
+
+   if( argument[0] != '\0' )
+   {
+      if( str_cmp( argument, "debug" ) )
+      {
+         ch_printf( ch, "'%s' is not a valid option.\r\n", argument );
+         send_to_char( "Acceptable Syntax:\r\n\r\n", ch );
+         send_to_char( "Hotboot\r\n", ch );
+         send_to_char( "Hotboot debug\r\n", ch );
+         return;
+      }
+      debugging = TRUE;
+   }
 
    for( d = first_descriptor; d; d = d->next )
    {
@@ -659,13 +673,17 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
       {
          fprintf( fp, "%d %d %d %d %d %s %s\n", d->descriptor,
                   d->can_compress, och->in_room->vnum, d->port, d->idle, och->name, d->host );
-         /*
-          * One of two places this gets changed 
-          */
-         och->pcdata->hotboot = TRUE;
-         save_char_obj( och );
-         write_to_descriptor( d, buf, 0 );
-         compressEnd( d );
+
+         if( !debugging )
+         {
+            /*
+            * One of two places this gets changed 
+            */
+            och->pcdata->hotboot = TRUE;
+            save_char_obj( och );
+            write_to_descriptor( d, buf, 0 );
+            compressEnd( d );
+         }
       }
    }
 
@@ -673,14 +691,10 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
    fprintf( fp, "%s", "-1\n" );
    FCLOSE( fp );
 
-#ifdef IMC
-   imc_hotboot(  );
-#endif
-
    /*
     * added this in case there's a need to debug the contents of the various files 
     */
-   if( argument && !str_cmp( argument, "debug" ) )
+   if( debugging )
    {
       log_string( "Hotboot debug - Aborting before execl" );
       return;
@@ -693,14 +707,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument)
     */
    snprintf( buf, 100, "%d", port );
    snprintf( buf2, 100, "%d", control );
-#ifdef IMC
-   if( this_imcmud )
-      snprintf( buf3, 100, "%d", this_imcmud->desc );
-   else
-      strncpy( buf3, "-1", 100 );
-#else
    strncpy( buf3, "-1", 100 );
-#endif
 
    set_alarm( 0 );
    dlclose( sysdata.dlHandle );

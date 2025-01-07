@@ -39,6 +39,9 @@
 #pragma comment( lib, "winmm.lib" ) /* NJG */
 #endif
 
+#define CODENAME "SmaugFUSS"
+#define CODEVERSION "1.9.6"
+
 #ifndef __cplusplus
     typedef unsigned char bool;
     #define true 1
@@ -394,9 +397,6 @@ struct extended_bitvector
 #include "calendar.h" /* AFKMud Calendar Replacement - Samson */
 #include "weather.h"  /* Weather System Replacement - Kayle */
 #include "liquids.h"  /* SMAUG Liquidtable Replacement - Nopey */
-#ifdef IMC
-#include "imc.h"
-#endif
 
 /*
  * Structure for a morph -- Shaddai
@@ -2428,9 +2428,6 @@ struct pc_data
    IGNORE_DATA *last_ignored;
    const char **tell_history; /* for immortal only command lasttell */
    short lt_index;   /* last_tell index */
-#ifdef IMC
-   IMC_CHARDATA *imcchardata;
-#endif
    bool hotboot;  /* hotboot tracker */
    short age_bonus;
    short age;

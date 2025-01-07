@@ -3128,9 +3128,6 @@ void free_char( CHAR_DATA * ch )
          }
          DISPOSE( ch->pcdata->tell_history );
       }
-#ifdef IMC
-      imc_freechardata( ch );
-#endif
       DISPOSE( ch->pcdata );
    }
 
@@ -3152,7 +3149,6 @@ void free_char( CHAR_DATA * ch )
       DISPOSE( comments );
    }
    DISPOSE( ch );
-   return;
 }
 
 /*

@@ -63,5 +63,4 @@ void free_game( GAME_BOARD_DATA * board );
 #define MOVE_INCHECK	10
 
 #define TYPE_LOCAL	1
-#define TYPE_IMC	2
 #endif

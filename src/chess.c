@@ -20,7 +20,6 @@
 
 #include "mud.h"
 #include "chess.h"
-#include "imc.h"
 
 #define WHITE_BACKGROUND ""
 #define BLACK_BACKGROUND ""
@@ -690,183 +689,14 @@ static int is_valid_move( CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y,
 
 #undef SAME_COLOR
 
-#ifdef IMC
-void imc_send_chess( const char *from, const char *to, const char *argument )
-{
-   IMC_PACKET *p;
-
-   if( this_imcmud->state < IMC_ONLINE )
-      return;
-
-   p = imc_newpacket( from, "chess", to );
-   imc_addtopacket( p, "text=%s", argument );
-   imc_write_packet( p );
-}
-
-PFUN( imc_recv_chess )
-{
-   CHAR_DATA *victim;
-   char txt[LGST], buf[LGST];
-
-   imc_getData( txt, "text", packet );
-
-   /*
-    * Chess packets must have a specific destination 
-    */
-   if( !str_cmp( q->to, "*" ) )
-      return;
-
-   if( !( victim = imc_find_user( imc_nameof( q->to ) ) ) )
-   {
-      if( !str_cmp( txt, "stop" ) )
-         return;
-
-      snprintf( buf, LGST, "%s is not here.", imc_nameof( q->to ) );
-      imc_send_tell( "*", q->from, buf, 1 );
-      return;
-   }
-
-   if( !victim->pcdata->game_board )
-   {
-      if( !str_cmp( txt, "stop" ) )
-         return;
-
-      snprintf( buf, LGST, "%s is not ready to be joined in a game.", imc_nameof( q->to ) );
-      imc_send_tell( "*", q->from, buf, 1 );
-      imc_send_chess( victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from, "stop" );
-      return;
-   }
-
-   if( !str_cmp( txt, "start" ) )
-   {
-      if( victim->pcdata->game_board->player2 != NULL )
-      {
-         snprintf( buf, LGST, "%s is already playing a game.", imc_nameof( q->to ) );
-         imc_send_tell( "*", q->from, buf, 1 );
-         imc_send_chess( victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from, "stop" );
-         return;
-      }
-      victim->pcdata->game_board->player2 = str_dup( q->from );
-      victim->pcdata->game_board->turn = 0;
-      victim->pcdata->game_board->type = TYPE_IMC;
-      ch_printf( victim, "%s has joined your game.\r\n", q->from );
-      imc_send_chess( victim->name, q->from, "accepted" );
-      return;
-   }
-
-   if( !str_cmp( txt, "accepted" ) )
-   {
-      if( !victim->pcdata->game_board ||
-          victim->pcdata->game_board->player2 == NULL ||
-          victim->pcdata->game_board->type != TYPE_IMC || str_cmp( victim->pcdata->game_board->player2, q->from ) )
-      {
-         imc_send_chess( victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from, "stop" );
-         return;
-      }
-      ch_printf( victim, "You have joined %s in a game.\r\n", q->from );
-      if( victim->pcdata->game_board->player2 )
-         DISPOSE( victim->pcdata->game_board->player2 );
-      victim->pcdata->game_board->player2 = str_dup( q->from );
-      victim->pcdata->game_board->turn = 1;
-      return;
-   }
-
-   if( !str_cmp( txt, "stop" ) )
-   {
-      ch_printf( victim, "%s has stopped the game.\r\n", q->from );
-      free_game( victim->pcdata->game_board );
-      return;
-   }
-
-   if( !str_cmp( txt, "invalidmove" ) )
-   {
-      send_to_char( "You have issued an invalid move according to the other mud.\r\n", victim );
-      interpret( victim, "chess stop" );
-      return;
-   }
-
-   if( !str_cmp( txt, "moveok" ) )
-   {
-      send_to_char( "The other mud has accepted your move.\r\n", victim );
-      return;
-   }
-
-   if( !str_prefix( "move", txt ) )
-   {
-      char a, b;
-      int x, y, dx, dy, ret;
-
-      a = b = ' ';
-      x = y = dx = dy = -1;
-
-      if( sscanf( txt, "move %c%d %c%d", &a, &y, &b, &dy ) != 4 ||
-          a < '0' || a > '7' || b < '0' || b > '7' || y < 0 || y > 7 || dy < 0 || dy > 7 )
-      {
-         imc_send_chess( victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from,
-                         "invalidmove" );
-         return;
-      }
-
-      x = a - '0';
-      dx = b - '0';
-      x = ( 7 - x );
-      y = ( 7 - y );
-      dx = ( 7 - dx );
-      dy = ( 7 - dy );
-      log_printf( "%d, %d -> %d, %d", x, y, dx, dy );
-      ret = is_valid_move( NULL, victim->pcdata->game_board, x, y, dx, dy );
-      if( ret == MOVE_OK || ret == MOVE_TAKEN )
-      {
-         GAME_BOARD_DATA *board;
-         int piece, destpiece;
-
-         board = victim->pcdata->game_board;
-         piece = board->board[x][y];
-         destpiece = board->board[dx][dy];
-         board->board[dx][dy] = piece;
-         board->board[x][y] = NO_PIECE;
-
-         if( king_in_check( board, IS_WHITE( board->board[dx][dy] ) ? WHITE_KING : BLACK_KING ) &&
-             ( board->board[dx][dy] != WHITE_KING && board->board[dx][dy] != BLACK_KING ) )
-         {
-            board->board[dx][dy] = destpiece;
-            board->board[x][y] = piece;
-         }
-         else
-         {
-            board->turn++;
-            imc_send_chess( board->player1 ? board->player1 : NULL, q->from, "moveok" );
-            return;
-         }
-      }
-      imc_send_chess( victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from,
-                      "invalidmove" );
-      return;
-   }
-
-   log_printf( "Unknown chess command from: %s, %s", q->from, txt );
-}
-#endif
-
 void init_chess( void )
 {
-#ifdef IMC
-   imc_register_packet_handler( "chess", imc_recv_chess );
-#endif
 }
 
 void free_game( GAME_BOARD_DATA * board )
 {
    if( !board )
       return;
-
-#ifdef IMC
-   if( board->type == TYPE_IMC )
-   {
-      imc_send_chess( board->player1 ? board->player1 : NULL, board->player2, "stop" );
-      STRFREE( board->player2 );
-   }
-#endif
 
    if( board->player1 )
    {
@@ -890,7 +720,7 @@ void free_game( GAME_BOARD_DATA * board )
    DISPOSE( board );
 }
 
-void do_chess( CHAR_DATA* ch, const char* argument)
+void do_chess( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -938,41 +768,6 @@ void do_chess( CHAR_DATA* ch, const char* argument)
          send_to_char( "Join whom in a chess match?\r\n", ch );
          return;
       }
-
-#ifdef IMC
-      if( strstr( arg2, "@" ) )
-      {
-         if( !str_cmp( imc_mudof( arg2 ), this_imcmud->localname ) )
-         {
-            send_to_char( "You cannot join IMC chess on the local mud!\r\n", ch );
-            return;
-         }
-
-         if( !str_cmp( imc_mudof( arg2 ), "*" ) )
-         {
-            send_to_char( "* is not a valid mud name.\r\n", ch );
-            return;
-         }
-
-         if( !str_cmp( imc_nameof( arg2 ), "*" ) )
-         {
-            send_to_char( "* is not a valid player name.\r\n", ch );
-            return;
-         }
-
-         send_to_char( "Attempting to initiate IMC chess game...\r\n", ch );
-
-         CREATE( board, GAME_BOARD_DATA, 1 );
-         init_board( board );
-         board->type = TYPE_IMC;
-         board->player1 = QUICKLINK( ch->name );
-         board->player2 = STRALLOC( arg2 );
-         board->turn = -1;
-         ch->pcdata->game_board = board;
-         imc_send_chess( ch->name, arg2, "start" );
-         return;
-      }
-#endif
 
       if( !( vch = get_char_world( ch, arg2 ) ) )
       {
@@ -1164,13 +959,6 @@ void do_chess( CHAR_DATA* ch, const char* argument)
          else
          {
             ++board->turn;
-#ifdef IMC
-            if( ch->pcdata->game_board->type == TYPE_IMC )
-            {
-               snprintf( arg, MAX_INPUT_LENGTH, "move %d%d %d%d", x, y, dx, dy );
-               imc_send_chess( ch->pcdata->game_board->player1, ch->pcdata->game_board->player2, arg );
-            }
-#endif
          }
       }
 
@@ -1187,26 +975,12 @@ void do_chess( CHAR_DATA* ch, const char* argument)
             mudstrlcpy( opp_name, ch->pcdata->game_board->player1, MAX_INPUT_LENGTH );
       }
 
-#ifdef IMC
-#define SEND_TO_OPP(arg,opp) \
-      if( opp ) \
-      { \
-         if( ch->pcdata->game_board->type == TYPE_LOCAL ) \
-            ch_printf( (opp), "%s\r\n", (arg) ); \
-      } \
-      else \
-      { \
-         if( ch->pcdata->game_board->type == TYPE_IMC ) \
-            imc_send_tell( ch->name, opp_name, (arg), 1 ); \
-      }
-#else
 #define SEND_TO_OPP(arg,opp) \
       if( opp ) \
       { \
          if( ch->pcdata->game_board->type == TYPE_LOCAL ) \
             ch_printf( (opp), "%s\r\n", (arg) ); \
       }
-#endif
 
       switch ( ret )
       {

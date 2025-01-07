@@ -604,12 +604,7 @@ void fwrite_char( CHAR_DATA * ch, FILE * fp )
       fprintf( fp, "\n" );
    }
 
-#ifdef IMC
-   imc_savechar( ch, fp );
-#endif
-
    fprintf( fp, "End\n\n" );
-   return;
 }
 
 /*
@@ -854,10 +849,6 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
    ch->pcdata->lt_index = 0;  /* last tell index */
    ch->morph = NULL;
    ch->pcdata->hotboot = FALSE;  /* Never changed except when PC is saved during hotboot save */
-
-#ifdef IMC
-   imc_initchar( ch );
-#endif
 
    found = FALSE;
    snprintf( strsave, MAX_INPUT_LENGTH, "%s%c/%s", PLAYER_DIR, tolower( name[0] ), capitalize( name ) );
@@ -1467,10 +1458,6 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
             }
             KEY( "IllegalPK", ch->pcdata->illegal_pk, fread_number( fp ) );
             KEY( "Immune", ch->immune, fread_number( fp ) );
-#ifdef IMC
-            if( ( fMatch = imc_loadchar( ch, fp, word ) ) )
-               break;
-#endif
             break;
 
          case 'K':

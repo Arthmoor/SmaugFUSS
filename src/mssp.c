@@ -340,6 +340,7 @@ void show_mssp( CHAR_DATA * ch )
    ch_printf( ch, "&zLocation          &W%s\r\n", mssp_info->location );
    ch_printf( ch, "&zWebsite           &W%s\r\n", mssp_info->website );
    ch_printf( ch, "&zFamily            &W%s\r\n", mssp_info->family );
+   ch_printf( ch, "&zCodebase          &W%s %s\r\n", CODENAME, CODEVERSION );
    ch_printf( ch, "&zGenre             &W%s\r\n", mssp_info->genre );
    ch_printf( ch, "&zGamePlay          &W%s\r\n", mssp_info->gamePlay );
    ch_printf( ch, "&zGameSystem        &W%s\r\n", mssp_info->gameSystem );
@@ -667,7 +668,6 @@ extern int top_mob_index;
 extern int top_obj_index;
 extern short num_skills;
 extern int top_prog;
-#define codebase "SmaugFUSS 1.9"
 
 short player_count( void )
 {
@@ -696,7 +696,7 @@ void send_mssp_data( DESCRIPTOR_DATA * d )
    mssp_reply( d, "PORT", "%d", port );
    mssp_reply( d, "UPTIME", "%d", (int)mud_start_time );
    mssp_reply( d, "PLAYERS", "%d", player_count( ) );
-   mssp_reply( d, "CODEBASE", "%s", codebase );
+   mssp_reply( d, "CODEBASE", "%s %s", CODENAME, CODEVERSION );
    mssp_reply( d, "CONTACT", "%s", mssp_info->contact );
    mssp_reply( d, "CREATED", "%d", mssp_info->created );
    mssp_reply( d, "ICON", "%s", mssp_info->icon );
