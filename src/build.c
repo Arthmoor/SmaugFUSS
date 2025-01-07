@@ -939,7 +939,7 @@ const char *copy_buffer( CHAR_DATA * ch )
    {
       mudstrlcpy( tmp, ch->editor->line[x], 100 );
       len = strlen( tmp );
-      if( tmp[len - 1] == '~' )
+      if( len > 0 && tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
          mudstrlcat( tmp, "\n", 100 );
