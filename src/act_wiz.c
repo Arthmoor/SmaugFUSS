@@ -8375,7 +8375,7 @@ bool create_new_class( int rcindex, const char *argument )
 /*
  * Edit class information					-Thoric
  */
-void do_setclass( CHAR_DATA* ch, const char* argument)
+void do_setclass( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
    FILE *fpList;
@@ -8745,8 +8745,8 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
          send_to_char( "Invalid level.\r\n", ch );
          return;
       }
-      STRFREE( title_table[cl][x][SEX_MALE] );
-      title_table[cl][x][SEX_MALE] = STRALLOC( argument );
+      DISPOSE( title_table[cl][x][0] );
+      title_table[cl][x][0] = str_dup( argument );
       send_to_char( "Done.\r\n", ch );
       write_class_file( cl );
       return;
@@ -8768,11 +8768,11 @@ void do_setclass( CHAR_DATA* ch, const char* argument)
          send_to_char( "Invalid level.\r\n", ch );
          return;
       }
-      STRFREE( title_table[cl][x][SEX_FEMALE] );
+      DISPOSE( title_table[cl][x][1] );
       /*
        * Bug fix below -Shaddai
        */
-      title_table[cl][x][SEX_FEMALE] = STRALLOC( argument );
+      title_table[cl][x][1] = str_dup( argument );
       send_to_char( "Done\r\n", ch );
       write_class_file( cl );
       return;
