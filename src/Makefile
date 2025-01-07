@@ -38,7 +38,7 @@ C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c boards.c \
 
 O_FILES := $(patsubst %.c,o/%.o,$(C_FILES))
 
-H_FILES = $(wildcard *.h) 
+H_FILES = $(wildcard *.h)
 
 all:
 	$(MAKE) -s smaug

@@ -2402,7 +2402,7 @@ const char *help_fix( const char *text )
    return fixed;
 }
 
-void do_hset( CHAR_DATA* ch, const char* argument)
+void do_hset( CHAR_DATA* ch, const char* argument )
 {
    HELP_DATA *pHelp;
    char arg1[MAX_INPUT_LENGTH];
@@ -2495,7 +2495,7 @@ void do_hset( CHAR_DATA* ch, const char* argument)
    do_hset( ch, "" );
 }
 
-void do_hl( CHAR_DATA* ch, const char* argument)
+void do_hl( CHAR_DATA* ch, const char* argument )
 {
    send_to_char( "If you want to use HLIST, spell it out.\r\n", ch );
    return;

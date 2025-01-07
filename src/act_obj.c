@@ -3079,13 +3079,17 @@ void obj_fall( OBJ_DATA * obj, bool through )
             for( rch = obj->in_room->first_person; rch; rch = rch->next_in_room, chcnt++ )
                if( number_range( 0, chcnt ) == 0 )
                   vch = rch;
-            act( AT_WHITE, "$p falls on $n!", vch, obj, NULL, TO_ROOM );
-            act( AT_WHITE, "$p falls on you!", vch, obj, NULL, TO_CHAR );
 
-            if( IS_NPC( vch ) && xIS_SET( vch->act, ACT_HARDHAT ) )
-               act( AT_WHITE, "$p bounces harmlessly off your head!", vch, obj, NULL, TO_CHAR );
-            else
-               damage( vch, vch, dam * vch->level, TYPE_UNDEFINED );
+            if( vch )
+            {
+               act( AT_WHITE, "$p falls on $n!", vch, obj, NULL, TO_ROOM );
+               act( AT_WHITE, "$p falls on you!", vch, obj, NULL, TO_CHAR );
+
+               if( IS_NPC( vch ) && xIS_SET( vch->act, ACT_HARDHAT ) )
+                  act( AT_WHITE, "$p bounces harmlessly off your head!", vch, obj, NULL, TO_CHAR );
+               else
+                  damage( vch, vch, dam * vch->level, TYPE_UNDEFINED );
+            }
          }
          /*
           * Damage objects 
@@ -3121,7 +3125,6 @@ void obj_fall( OBJ_DATA * obj, bool through )
       }
       obj_fall( obj, TRUE );
    }
-   return;
 }
 
 /* Scryn, by request of Darkur, 12/04/98 */

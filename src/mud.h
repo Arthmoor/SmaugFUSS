@@ -216,19 +216,19 @@ typedef bool SPEC_FUN( CHAR_DATA * ch );
 /*
  * String and memory management parameters.
  */
-#define MAX_KEY_HASH		 2048
-#define MAX_STRING_LENGTH	 4096 /* buf */
-#define MAX_INPUT_LENGTH	 1024 /* arg */
-#define MAX_INBUF_SIZE		 1024
-#define MSL                    MAX_STRING_LENGTH 
-#define MIL                    MAX_INPUT_LENGTH
+#define MAX_KEY_HASH      2048
+#define MAX_STRING_LENGTH 4096 /* buf */
+#define MAX_INPUT_LENGTH  1024 /* arg */
+#define MAX_INBUF_SIZE    1024
+#define MSL               MAX_STRING_LENGTH 
+#define MIL               MAX_INPUT_LENGTH
 
 #define HASHSTR   /* use string hashing */
 
 #define MAX_LAYERS		 8 /* maximum clothing layers */
 #define MAX_NEST	       100  /* maximum container nesting */
 
-#define MAX_KILLTRACK		25 /* track mob vnums killed */
+#define MAX_KILLTRACK    25 /* track mob vnums killed */
 
 /*
  * Game parameters.
