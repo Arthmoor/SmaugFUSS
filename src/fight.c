@@ -4106,9 +4106,9 @@ bool check_illegal_pk( CHAR_DATA * ch, CHAR_DATA * victim )
           && !in_arena( ch ) && ch != victim && !( IS_IMMORTAL( ch ) && IS_IMMORTAL( victim ) ) )
       {
          if( IS_NPC( ch ) )
-            snprintf( buf, MAX_STRING_LENGTH, " (%s)", ch->name );
+            snprintf( buf, MAX_INPUT_LENGTH, " (%s)", ch->name );
          if( IS_NPC( victim ) )
-            snprintf( buf2, MAX_STRING_LENGTH, " (%s)", victim->name );
+            snprintf( buf2, MAX_INPUT_LENGTH, " (%s)", victim->name );
 
          snprintf( log_buf, MAX_STRING_LENGTH, "&p%s on %s%s in &W***&rILLEGAL PKILL&W*** &pattempt at %d",
                    ( lastplayercmd ),
@@ -4123,7 +4123,7 @@ bool check_illegal_pk( CHAR_DATA * ch, CHAR_DATA * victim )
    return FALSE;
 }
 
-void do_flee( CHAR_DATA* ch, const char* argument)
+void do_flee( CHAR_DATA* ch, const char* argument )
 {
    ROOM_INDEX_DATA *was_in;
    ROOM_INDEX_DATA *now_in;
