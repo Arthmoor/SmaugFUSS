@@ -75,21 +75,13 @@ typedef int obj_ret;
 
 /*
  * Short scalar types.
- * Diavolo reports AIX compiler has bugs with short types.
+ * Diavolo reports AIX compiler has bugs with short types. [2025 here - this hasn't been an issue for 20 years now]
  *
  * Left the definitions in for backward compatibility to old code. - Samson 6/27/07
  */
-#if !defined(FALSE)
-#define FALSE false
-#endif
-
-#if !defined(TRUE)
-#define TRUE true
-#endif
-
-#if !defined(BERR)
-#define BERR 255
-#endif
+const bool TRUE = true;
+const bool FALSE = false;
+const short BERR = 255;
 
 #define KEY( literal, field, value )   \
 if ( !str_cmp( word, (literal) ) )     \

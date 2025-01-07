@@ -843,8 +843,7 @@ static void CmdDisplayFormat( void )
 
 static char *convert_error( DWORD error )
 {
-
-   char *formattedmsg;
+   char *formattedmsg = NULL;
    static char buff[100];
 
    if( !FormatMessage( FORMAT_MESSAGE_FROM_SYSTEM |
