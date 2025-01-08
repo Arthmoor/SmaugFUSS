@@ -1,17 +1,14 @@
 # SmaugFUSS - Fixed Up Smaug Source
-===================================
 
 SmaugFUSS is an ongoing project to find and eliminate as many bugs in the Smaug MUD codebase as possible, while also modernizing and updating the code where needed.
 
 ## Development Environment
---------------------------
 
 A linux or BSD based system with the GCC compiler installed with G++ support. This should be the default for any standard GCC install these days.
 
 On Windows, CYGWIN can be used if you have no access to a linux or BSD based system.
 
 ## Installing and using the code
---------------------------------
 
 It should be fairly a straightforward process to install the mud. It is assumed you already know enough about unpacking files and working with linux/CYGWIN.
 
