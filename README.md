@@ -2,6 +2,8 @@
 
 SmaugFUSS is an ongoing project to find and eliminate as many bugs in the Smaug MUD codebase as possible, while also modernizing and updating the code where needed.
 
+More information about the project is available at https://smaugmuds.afkmods.com/
+
 ## Development Environment
 
 A linux or BSD based system with the GCC compiler installed with G++ support. This should be the default for any standard GCC install these days.
