@@ -67,15 +67,6 @@ Log         0
 End
 
 #COMMAND
-Name        gohome~
-Code        do_gohome
-Position    104
-Level       5
-Log         0
-Flags       1
-End
-
-#COMMAND
 Name        homebuy~
 Code        do_homebuy
 Position    104
@@ -1080,6 +1071,15 @@ Position    100
 Level       51
 Log         0
 Flags       4
+End
+
+#COMMAND
+Name        gohome~
+Code        do_gohome
+Position    104
+Level       5
+Log         0
+Flags       1
 End
 
 #COMMAND
