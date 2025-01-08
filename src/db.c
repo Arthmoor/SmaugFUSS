@@ -4250,7 +4250,6 @@ void append_to_file( const char *file, const char *str )
       fprintf( fp, "%s\n", str );
       FCLOSE( fp );
    }
-   return;
 }
 
 /*
@@ -4307,7 +4306,6 @@ void bug( const char *str, ... )
          }
       }
    }
-   return;
 }
 
 /*
@@ -4330,7 +4328,6 @@ void boot_log( const char *str, ... )
       fprintf( fp, "%s\n", buf );
       FCLOSE( fp );
    }
-   return;
 }
 
 /*

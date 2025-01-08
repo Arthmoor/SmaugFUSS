@@ -6386,7 +6386,7 @@ void close_all_areas( void )
    }
 }
 
-void do_destroy( CHAR_DATA* ch, const char* argument)
+void do_destroy( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    char arg[MAX_INPUT_LENGTH];

@@ -42,12 +42,6 @@
 #define CODENAME "SmaugFUSS"
 #define CODEVERSION "1.9.6"
 
-#ifndef __cplusplus
-    typedef unsigned char bool;
-    #define true 1
-    #define false 0
-#endif
-
 typedef int ch_ret;
 typedef int obj_ret;
 
