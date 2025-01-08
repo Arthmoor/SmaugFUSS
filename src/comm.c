@@ -2432,6 +2432,7 @@ void nanny_press_enter( DESCRIPTOR_DATA * d, const char *argument )
       send_to_pager( "\033[2J", ch );
    else
       send_to_pager( "\014", ch );
+   set_pager_color( AT_PLAIN, ch );
    if( IS_IMMORTAL( ch ) )
       do_help( ch, "imotd" );
    if( ch->level == LEVEL_AVATAR )
