@@ -417,14 +417,6 @@ Flags       4
 End
 
 #COMMAND
-Name        chess~
-Code        do_chess
-Position    100
-Level       10
-Log         0
-End
-
-#COMMAND
 Name        cast~
 Code        do_cast
 Position    104
@@ -488,6 +480,14 @@ Name        clans~
 Code        do_clans
 Position    100
 Level       0
+Log         0
+End
+
+#COMMAND
+Name        chess~
+Code        do_chess
+Position    100
+Level       10
 Log         0
 End
 
