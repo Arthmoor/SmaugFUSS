@@ -40,7 +40,7 @@
 #endif
 
 #define CODENAME "SmaugFUSS"
-#define CODEVERSION "1.9.6"
+#define CODEVERSION "1.9.7"
 
 typedef int ch_ret;
 typedef int obj_ret;
