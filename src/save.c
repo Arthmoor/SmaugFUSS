@@ -27,9 +27,9 @@
 
 /*
  * Increment with every major format change.
- * Upped to 5 for addition of new Age Setup. -Kayle 1/22/08
+ * Upped to 5 for addition of new Age Setup. - Kayle 1/22/08
  */
-#define SAVEVERSION 5
+const int SAVEVERSION = 5;
 
 /*
  * Array to keep track of equipment temporarily. - Thoric
@@ -661,6 +661,7 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
     */
    fprintf( fp, ( os_type == OS_CORPSE ? "#CORPSE\n" : "#OBJECT\n" ) );
 
+   fprintf( fp, "Version      %d\n", SAVEVERSION );
    if( iNest )
       fprintf( fp, "Nest         %d\n", iNest );
    if( obj->count > 1 )
@@ -685,6 +686,7 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
       fprintf( fp, "ExtraFlags   %s\n", print_bitvector( &obj->extra_flags ) );
    if( obj->wear_flags != obj->pIndexData->wear_flags )
       fprintf( fp, "WearFlags    %d\n", obj->wear_flags );
+
    wear_loc = WEAR_NONE;
    for( wear = 0; wear < MAX_WEAR && wear_loc == WEAR_NONE; wear++ )
    {
@@ -777,8 +779,6 @@ void fwrite_obj( CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_
 
    if( obj->first_content )
       fwrite_obj( ch, obj->last_content, fp, iNest + 1, OS_CARRY, hotboot );
-
-   return;
 }
 
 /*
@@ -1945,7 +1945,7 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 {
    OBJ_DATA *obj;
    const char *word;
-   int iNest;
+   int iNest, obj_file_ver = 0;
    bool fMatch, fNest, fVnum;
    ROOM_INDEX_DATA *room = NULL;
 
@@ -2047,6 +2047,9 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
 
             if( !strcmp( word, "End" ) )
             {
+               if( obj_file_ver == 0 )
+                  ; // Do nothing. This is just to keep GCC quiet.
+
                if( obj->item_type == ITEM_HOUSEKEY )
                {
                   if( !check_owner( obj ) )
@@ -2294,6 +2297,8 @@ void fread_obj( CHAR_DATA * ch, FILE * fp, short os_type )
                fMatch = TRUE;
                break;
             }
+
+            KEY( "Version", obj_file_ver, fread_number( fp ) );
             break;
 
          case 'W':
@@ -2486,7 +2491,6 @@ void load_corpses( void )
    cfp = NULL;
    closedir( dp );
    falling = 0;
-   return;
 }
 
 /*
@@ -2499,6 +2503,7 @@ void fwrite_mobile( FILE * fp, CHAR_DATA * mob )
       return;
    de_equip_char( mob );
    fprintf( fp, "#MOBILE\n" );
+   fprintf( fp, "Version %d\n", SAVEVERSION );
    fprintf( fp, "Vnum	%d\n", mob->pIndexData->vnum );
    if( mob->in_room )
       fprintf( fp, "Room	%d\n",
@@ -2518,7 +2523,6 @@ void fwrite_mobile( FILE * fp, CHAR_DATA * mob )
       fwrite_obj( mob, mob->last_carrying, fp, 0, OS_CARRY, FALSE );
    fprintf( fp, "EndMobile\n" );
    re_equip_char( mob );
-   return;
 }
 
 /*
@@ -2529,7 +2533,7 @@ CHAR_DATA *fread_mobile( FILE * fp )
    CHAR_DATA *mob = NULL;
    const char *word;
    bool fMatch;
-   int inroom = 0;
+   int inroom = 0, mob_file_ver = 0;
    ROOM_INDEX_DATA *pRoomIndex = NULL;
 
    word = ( feof( fp ) ? "EndMobile" : fread_word( fp ) );
@@ -2633,6 +2637,9 @@ CHAR_DATA *fread_mobile( FILE * fp )
          case 'E':
             if( !str_cmp( word, "EndMobile" ) )
             {
+               if( mob_file_ver == 0 )
+                  ; // Do nothing. This is just to keep GCC quiet.
+
                if( inroom == 0 )
                   inroom = ROOM_VNUM_TEMPLE;
                pRoomIndex = get_room_index( inroom );
@@ -2688,7 +2695,12 @@ CHAR_DATA *fread_mobile( FILE * fp )
                break;
             }
             break;
+
+         case 'V':
+            KEY( "Version", mob_file_ver, fread_number( fp ) );
+            break;
       }
+
       if( !fMatch )
       {
          bug( "%s: no match: %s", __func__, word );
@@ -2717,7 +2729,6 @@ void write_char_mobile( CHAR_DATA * ch, char *argument )
    xSET_BIT( mob->affected_by, AFF_CHARM );
    fwrite_mobile( fp, mob );
    FCLOSE( fp );
-   return;
 }
 
 /*
@@ -2738,5 +2749,4 @@ void read_char_mobile( char *argument )
    if( !mob )
       bug( "%s: failed to fread_mobile.", __func__ );
    FCLOSE( fp );
-   return;
 }
