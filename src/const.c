@@ -19,10 +19,10 @@
 #include "mud.h"
 
 const char *const npc_race[MAX_NPC_RACE] = {
-   // Playable races - MAX_RACE in mud.h must be raised before more can be added after r9.
-   "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",       // 6 (start from 0)
-   "half-orc", "half-troll", "half-elf", "gith", "drow", "sea-elf",            // 12
-   "lizardman", "gnome", "r5", "r6", "r7", "r8", "r9",                         // 19
+   // Playable races - MAX_RACE in mud.h must be raised before more can be added after r19.
+   "Human", "Elf", "Dwarf", "Halfling", "Pixie", "Vampire", "Half-Ogre",       // 6 (start from 0)
+   "Half-Orc", "Half-Troll", "Half-Elf", "Gith", "Drow", "Sea-Elf",            // 12
+   "Lizardman", "Gnome", "r5", "r16", "r17", "r18", "r19",                     // 19
 
    // NPCs only
    "troll", "ant", "ape", "baboon", "bat", "bear", "bee",                      // 26
@@ -39,10 +39,12 @@ const char *const npc_race[MAX_NPC_RACE] = {
 };
 
 const char *const npc_class[MAX_NPC_CLASS] = {
-   "mage", "cleric", "thief", "warrior", "vampire", "druid", "ranger",
-   "augurer", "paladin", "nephandi", "savage", "pc11", "pc12", "pc13",
+   "Mage", "Cleric", "Thief", "Warrior", "Vampire", "Druid", "Ranger",
+   "Augurer", "Paladin", "Nephandi", "Savage", "pc11", "pc12", "pc13",
    "pc14", "pc15", "pc16", "pc17", "pc18", "pc19",
-   "baker", "butcher", "blacksmith", "mayor", "king", "queen"
+
+   // NPCs only
+   "Baker", "Butcher", "Blacksmith", "Mayor", "King", "Queen"
 };
 
 /*

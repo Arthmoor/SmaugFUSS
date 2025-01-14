@@ -249,11 +249,13 @@ RESET_DATA *make_reset( char letter, int extra, int arg1, int arg2, int arg3 )
    RESET_DATA *pReset;
 
    CREATE( pReset, RESET_DATA, 1 );
+
    pReset->command = letter;
    pReset->extra = extra;
    pReset->arg1 = arg1;
    pReset->arg2 = arg2;
    pReset->arg3 = arg3;
+
    top_reset++;
    return pReset;
 }
@@ -283,7 +285,6 @@ void add_obj_reset( ROOM_INDEX_DATA * room, char cm, OBJ_DATA * obj, int v2, int
       add_obj_reset( room, 'P', inobj, inobj->count, obj->pIndexData->vnum );
    if( cm == 'P' )
       iNest--;
-   return;
 }
 
 void delete_reset( RESET_DATA * pReset )
@@ -299,7 +300,6 @@ void delete_reset( RESET_DATA * pReset )
    }
    pReset->first_reset = pReset->last_reset = NULL;
    DISPOSE( pReset );
-   return;
 }
 
 void instaroom( ROOM_INDEX_DATA * pRoom, bool dodoors )
@@ -322,8 +322,10 @@ void instaroom( ROOM_INDEX_DATA * pRoom, bool dodoors )
             add_obj_reset( pRoom, 'E', obj, 1, obj->wear_loc );
       }
    }
+
    for( obj = pRoom->first_content; obj; obj = obj->next_content )
       add_obj_reset( pRoom, 'O', obj, obj->count, pRoom->vnum );
+
    if( dodoors )
    {
       EXIT_DATA *pexit;
@@ -345,7 +347,6 @@ void instaroom( ROOM_INDEX_DATA * pRoom, bool dodoors )
          add_reset( pRoom, 'D', 0, pRoom->vnum, pexit->vdir, state );
       }
    }
-   return;
 }
 
 void wipe_resets( ROOM_INDEX_DATA * room )
@@ -360,7 +361,6 @@ void wipe_resets( ROOM_INDEX_DATA * room )
       delete_reset( pReset );
    }
    room->first_reset = room->last_reset = NULL;
-   return;
 }
 
 void wipe_area_resets( AREA_DATA * area )
@@ -372,11 +372,10 @@ void wipe_area_resets( AREA_DATA * area )
       for( room = area->first_room; room; room = room->next_aroom )
          wipe_resets( room );
    }
-   return;
 }
 
 /* Function modified from original form - Samson */
-void do_instaroom( CHAR_DATA* ch, const char* argument)
+void do_instaroom( CHAR_DATA* ch, const char* argument )
 {
    bool dodoors;
 
@@ -393,11 +392,13 @@ void do_instaroom( CHAR_DATA* ch, const char* argument)
 
    if( !can_rmodify( ch, ch->in_room ) )
       return;
+
    if( ch->in_room->area != ch->pcdata->area && get_trust( ch ) < LEVEL_GREATER )
    {
       send_to_char( "You cannot reset this room.\r\n", ch );
       return;
    }
+
    if( ch->in_room->first_reset )
       wipe_resets( ch->in_room );
    instaroom( ch->in_room, dodoors );
@@ -425,7 +426,6 @@ void do_instazone( CHAR_DATA* ch, const char* argument)
    for( pRoom = pArea->first_room; pRoom; pRoom = pRoom->next_aroom )
       instaroom( pRoom, dodoors );
    send_to_char( "Area resets installed.\r\n", ch );
-   return;
 }
 
 int generate_itemlevel( AREA_DATA * pArea, OBJ_INDEX_DATA * pObjIndex )
@@ -1322,7 +1322,6 @@ void do_reset( CHAR_DATA* ch, const char* argument)
       return;
    }
    do_reset( ch, "" );
-   return;
 }
 
 /* Update the mobile resets to let it know to reset it again */

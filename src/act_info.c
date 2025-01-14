@@ -5181,7 +5181,7 @@ bool is_ignoring( CHAR_DATA * ch, CHAR_DATA * ign_ch )
 }
 
 /* Version info -- Scryn */
-void do_version( CHAR_DATA* ch, const char* argument)
+void do_version( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
       return;
