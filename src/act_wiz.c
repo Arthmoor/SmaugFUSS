@@ -11060,7 +11060,6 @@ void do_vassign( CHAR_DATA* ch, const char* argument)
    assign_area( victim );
    send_to_char( "Done.\r\n", ch );
    ch_printf( victim, "%s has assigned you the vnum range %d - %d.\r\n", ch->name, lo, hi );
-   assign_area( victim );  /* Put back by Thoric on 02/07/96 */
 
    if( !victim->pcdata->area )
    {
