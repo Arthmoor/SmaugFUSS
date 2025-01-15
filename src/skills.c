@@ -5244,12 +5244,11 @@ void do_berserk( CHAR_DATA* ch, const char* argument)
    affect_to_char( ch, &af );
    send_to_char( "You start to lose control..\r\n", ch );
    learn_from_success( ch, gsn_berserk );
-   return;
 }
 
 /* External from fight.c */
-ch_ret one_hit args( ( CHAR_DATA * ch, CHAR_DATA * victim, int dt ) );
-void do_hitall( CHAR_DATA* ch, const char* argument)
+ch_ret one_hit( CHAR_DATA * ch, CHAR_DATA * victim, int dt );
+void do_hitall( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *vch;
    CHAR_DATA *vch_next;

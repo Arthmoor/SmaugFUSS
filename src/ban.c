@@ -22,10 +22,10 @@
 #include "mud.h"
 
 /* Local functions */
-void fread_ban args( ( FILE * fp, int type ) );
-bool check_expire args( ( BAN_DATA * ban ) );
-void dispose_ban args( ( BAN_DATA * ban, int type ) );
-void free_ban args( ( BAN_DATA * pban ) );
+void fread_ban( FILE * fp, int type );
+bool check_expire( BAN_DATA * ban );
+void dispose_ban( BAN_DATA * ban, int type );
+void free_ban( BAN_DATA * pban );
 
 /* Global Variables */
 

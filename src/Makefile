@@ -41,6 +41,8 @@ O_FILES := $(patsubst %.c,o/%.o,$(C_FILES))
 H_FILES = $(wildcard *.h)
 
 all:
+	$(info    Using C-Flags: $(C_FLAGS))
+	$(info    Using L-Flags: $(L_FLAGS))
 	$(MAKE) -s smaug
 	$(MAKE) -s dns
 
