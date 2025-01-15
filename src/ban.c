@@ -248,7 +248,7 @@ void save_banlist( void )
  * The main command for ban, lots of arguments so be carefull what you
  * change here.		Shaddai
  */
-void do_ban( CHAR_DATA* ch, const char* argument)
+void do_ban( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -276,22 +276,33 @@ void do_ban( CHAR_DATA* ch, const char* argument)
    argument = one_argument( argument, arg3 );
    argument = one_argument( argument, arg4 );
 
+   if( arg1[0] == '\0' || !str_cmp( arg1, "help" ) )
+   {
+      send_to_char( "Syntax: ban site  <address> <type> <duration>\r\n", ch );
+      send_to_char( "Syntax: ban race  <race>    <type> <duration>\r\n", ch );
+      send_to_char( "Syntax: ban class <class>   <type> <duration>\r\n", ch );
+      send_to_char( "Syntax: ban show  <field>   <number>\r\n", ch );
+      send_to_char( "Ban site lists current bans.\r\n", ch );
+      send_to_char( "Duration is the length of the ban in days.\r\n", ch );
+      send_to_char( "Type can be:  newbie, mortal, all, warn or level.\r\n", ch );
+      send_to_char( "In ban show, the <field> is site, race or class,", ch );
+      send_to_char( "  and the <number> is the ban number.\r\n", ch );
+      return;
+   }
+
    /*
     * Do we have a time duration for the ban? 
     */
-
    if( arg4[0] != '\0' && is_number( arg4 ) )
       btime = atoi( arg4 );
    else
       btime = -1;
-
 
    /*
     * -1 is default, but no reason the time should be greater than 1000
     * * or less than 1, after all if it is greater than 1000 you are talking
     * * around 3 years.
     */
-
    if( btime != -1 && ( btime < 1 || btime > 1000 ) )
    {
       send_to_char( "Time value is -1 (forever) or from 1 to 1000.\r\n", ch );
@@ -301,7 +312,6 @@ void do_ban( CHAR_DATA* ch, const char* argument)
    /*
     * Need to be carefull with sub-states or everything will get messed up.
     */
-
    switch ( ch->substate )
    {
       default:
@@ -317,19 +327,15 @@ void do_ban( CHAR_DATA* ch, const char* argument)
          /*
           * Returning to end the editing of the note 
           */
-
       case SUB_BAN_DESC:
          add_ban( ch, "", "", 0, 0 );
          return;
    }
-   if( arg1[0] == '\0' )
-      goto syntax_message;
 
    /*
     * If no args are sent after the class/site/race, show the current banned
     * * items.  Shaddai
     */
-
    if( !str_cmp( arg1, "site" ) )
    {
       if( arg2[0] == '\0' )
@@ -348,7 +354,10 @@ void do_ban( CHAR_DATA* ch, const char* argument)
          return;
       }
       if( arg3[0] == '\0' )
-         goto syntax_message;
+      {
+         do_ban( ch, "" );
+         return;
+      }
       if( !add_ban( ch, arg2, arg3, btime, BAN_SITE ) )
          return;
    }
@@ -370,7 +379,10 @@ void do_ban( CHAR_DATA* ch, const char* argument)
          return;
       }
       if( arg3[0] == '\0' )
-         goto syntax_message;
+      {
+         do_ban( ch, "" );
+         return;
+      }
       if( !add_ban( ch, arg2, arg3, btime, BAN_RACE ) )
          return;
    }
@@ -385,26 +397,30 @@ void do_ban( CHAR_DATA* ch, const char* argument)
       /*
        * Are they high enough to ban classes? 
        */
-
       if( get_trust( ch ) < sysdata.ban_class_level )
       {
          ch_printf( ch, "You must be %d level to add bans.\r\n", sysdata.ban_class_level );
          return;
       }
       if( arg3[0] == '\0' )
-         goto syntax_message;
+      {
+         do_ban( ch, "" );
+         return;
+      }
       if( !add_ban( ch, arg2, arg3, btime, BAN_CLASS ) )
          return;
    }
    else if( !str_cmp( arg1, "show" ) )
    {
-
       /*
        * This will show the note attached to a ban 
        */
-
       if( arg2[0] == '\0' || arg3[0] == '\0' )
-         goto syntax_message;
+      {
+         do_ban( ch, "" );
+         return;
+      }
+
       temp = arg3;
       if( arg3[0] == '#' ) /* Use #1 to show the first ban */
       {
@@ -422,6 +438,7 @@ void do_ban( CHAR_DATA* ch, const char* argument)
             return;
          }
       }
+
       if( !str_cmp( arg2, "site" ) )
       {
          pban = first_ban;
@@ -435,7 +452,11 @@ void do_ban( CHAR_DATA* ch, const char* argument)
       else if( !str_cmp( arg2, "race" ) )
          pban = first_ban_race;
       else
-         goto syntax_message;
+      {
+         do_ban( ch, "" );
+         return;
+      }
+
       for( ; pban; pban = pban->next )
          if( value == 1 || !str_cmp( pban->name, temp ) )
             break;
@@ -451,34 +472,13 @@ void do_ban( CHAR_DATA* ch, const char* argument)
       send_to_char( pban->note, ch );
       return;
    }
-   else
-      goto syntax_message;
-   return;
-
-/* Catch all syntax message, make sure that return stays above this or you
- * will get the syntax message everytime you issue the command even if it
- * is a valid one.  Shaddai
- */
-
- syntax_message:
-   send_to_char( "Syntax: ban site  <address> <type> <duration>\r\n", ch );
-   send_to_char( "Syntax: ban race  <race>    <type> <duration>\r\n", ch );
-   send_to_char( "Syntax: ban class <class>   <type> <duration>\r\n", ch );
-   send_to_char( "Syntax: ban show  <field>   <number>\r\n", ch );
-   send_to_char( "Ban site lists current bans.\r\n", ch );
-   send_to_char( "Duration is the length of the ban in days.\r\n", ch );
-   send_to_char( "Type can be:  newbie, mortal, all, warn or level.\r\n", ch );
-   send_to_char( "In ban show, the <field> is site, race or class,", ch );
-   send_to_char( "  and the <number> is the ban number.\r\n", ch );
-   return;
+   do_ban( ch, "" );
 }
-
 
 /*
  * Allow a already banned site/class or race.  Shaddai
  */
-
-void do_allow( CHAR_DATA* ch, const char* argument)
+void do_allow( CHAR_DATA* ch, const char* argument )
 {
    BAN_DATA *pban;
    char arg1[MAX_INPUT_LENGTH];
@@ -504,8 +504,14 @@ void do_allow( CHAR_DATA* ch, const char* argument)
 
    set_char_color( AT_IMMORT, ch );
 
-   if( arg1[0] == '\0' || arg2[0] == '\0' )
-      goto syntax_message;
+   if( arg1[0] == '\0' || arg2[0] == '\0' || !str_cmp( arg1, "help" ) )
+   {
+      send_to_char( "Syntax: allow site  <address>\r\n", ch );
+      send_to_char( "Syntax: allow race  <race>\r\n", ch );
+      send_to_char( "Syntax: allow class <class>\r\n", ch );
+      return;
+   }
+
    if( arg2[0] == '#' ) /* Use #1 to ban the first ban in the list specified */
    {
       temp = arg2;
@@ -517,6 +523,7 @@ void do_allow( CHAR_DATA* ch, const char* argument)
       }
       value = atoi( temp );
    }
+
    if( !str_cmp( arg1, "site" ) )
    {
       if( !value )
@@ -577,7 +584,6 @@ void do_allow( CHAR_DATA* ch, const char* argument)
    }
    else if( !str_cmp( arg1, "class" ) )
    {
-
       arg2[0] = toupper( arg2[0] );
       for( pban = first_ban_class; pban; pban = pban->next )
       {
@@ -598,7 +604,10 @@ void do_allow( CHAR_DATA* ch, const char* argument)
       }
    }
    else
-      goto syntax_message;
+   {
+      do_allow( ch, "" );
+      return;
+   }
 
    if( fMatch )
    {
@@ -607,23 +616,12 @@ void do_allow( CHAR_DATA* ch, const char* argument)
    }
    else
       ch_printf( ch, "%s was not banned.\r\n", arg2 );
-   return;
-
-/*
- *  Make sure that return above stays in!
- */
-
- syntax_message:
-   send_to_char( "Syntax: allow site  <address>\r\n", ch );
-   send_to_char( "Syntax: allow race  <race>\r\n", ch );
-   send_to_char( "Syntax: allow class <class>\r\n", ch );
-   return;
 }
 
 /* 
  *  Sets the warn flag on bans.
  */
-void do_warn( CHAR_DATA* ch, const char* argument)
+void do_warn( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_STRING_LENGTH];
    char arg2[MAX_STRING_LENGTH];
@@ -634,7 +632,6 @@ void do_warn( CHAR_DATA* ch, const char* argument)
    /*
     * Don't want mobs or link-deads doing this.
     */
-
    if( IS_NPC( ch ) )
    {
       send_to_char( "Monsters are too dumb to do that!\r\n", ch );
@@ -651,14 +648,25 @@ void do_warn( CHAR_DATA* ch, const char* argument)
    argument = one_argument( argument, arg2 );
 
    if( arg1[0] == '\0' || arg2[0] == '\0' )
-      goto syntax_message;
+   {
+      send_to_char( "Syntax: warn class <field>\r\n", ch );
+      send_to_char( "Syntax: warn race  <field>\r\n", ch );
+      send_to_char( "Syntax: warn site  <field>\r\n", ch );
+      send_to_char( "Field is either #(ban_number) or the site/class/race.\r\n", ch );
+      send_to_char( "Example:  warn class #1\r\n", ch );
+      return;
+   }
 
    if( arg2[0] == '#' )
    {
       name = arg2;
       name++;
       if( !is_number( name ) )
-         goto syntax_message;
+      {
+         do_warn( ch, "" );
+         return;
+      }
+
       count = atoi( name );
       if( count < 1 )
       {
@@ -679,7 +687,6 @@ void do_warn( CHAR_DATA* ch, const char* argument)
    else
       type = -1;
 
-
    if( type == BAN_CLASS )
    {
       pban = first_ban_class;
@@ -695,16 +702,20 @@ void do_warn( CHAR_DATA* ch, const char* argument)
       pban = first_ban;
    }
    else
-      goto syntax_message;
+   {
+      do_warn( ch, "" );
+      return;
+   }
+
    for( ; pban && count != 0; count--, pban = pban->next )
       if( count == -1 && !str_cmp( pban->name, arg2 ) )
          break;
+
    if( pban )
    {
       /*
        * If it is just a warn delete it, otherwise remove the warn flag. 
        */
-
       if( pban->warn )
       {
          if( pban->level == BAN_WARN )
@@ -726,21 +737,7 @@ void do_warn( CHAR_DATA* ch, const char* argument)
       save_banlist(  );
    }
    else
-   {
       ch_printf( ch, "%s was not found in the ban list.\r\n", arg2 );
-      return;
-   }
-   return;
-   /*
-    * The above return has to stay in! 
-    */
- syntax_message:
-   send_to_char( "Syntax: warn class <field>\r\n", ch );
-   send_to_char( "Syntax: warn race  <field>\r\n", ch );
-   send_to_char( "Syntax: warn site  <field>\r\n", ch );
-   send_to_char( "Field is either #(ban_number) or the site/class/race.\r\n", ch );
-   send_to_char( "Example:  warn class #1\r\n", ch );
-   return;
 }
 
 /*
@@ -761,7 +758,6 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
     * * writing the note and now?  Not sure but for right now we won't since
     * * do_ban checks for that.  Shaddai
     */
-
    switch ( ch->substate )
    {
       default:
@@ -1130,19 +1126,19 @@ void show_bans( CHAR_DATA * ch, int type )
          bug( "%s: Bad type in show_bans: %d", __func__, type );
          return;
    }
+
    send_to_pager( "---- ---- ---- ------------------------ --------------- ----  ---------------\r\n", ch );
    set_pager_color( AT_PLAIN, ch );
+
    for( bnum = 1; pban; pban = pban->next, bnum++ )
       pager_printf( ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %s\r\n", bnum,
                     ( pban->warn ) ? "YES" : "no", pban->level, pban->ban_time, pban->ban_by, pban->duration, pban->name );
-   return;
 }
 
 /*
  * Check for totally banned sites.  Need this because we don't have a
  * char struct yet.  Shaddai
  */
-
 bool check_total_bans( DESCRIPTOR_DATA * d )
 {
    BAN_DATA *pban;
@@ -1168,6 +1164,7 @@ bool check_total_bans( DESCRIPTOR_DATA * d )
          else
             return TRUE;
       }
+
       /*
        *   Bug of switched checks noticed by Cronel
        */
@@ -1182,6 +1179,7 @@ bool check_total_bans( DESCRIPTOR_DATA * d )
          else
             return TRUE;
       }
+
       if( pban->prefix && !str_suffix( pban->name, new_host ) )
       {
          if( check_expire( pban ) )
@@ -1193,6 +1191,7 @@ bool check_total_bans( DESCRIPTOR_DATA * d )
          else
             return TRUE;
       }
+
       if( !str_cmp( pban->name, new_host ) )
       {
          if( check_expire( pban ) )
@@ -1211,7 +1210,6 @@ bool check_total_bans( DESCRIPTOR_DATA * d )
 /*
  * The workhose, checks for bans on sites/classes and races. Shaddai
  */
-
 bool check_bans( CHAR_DATA * ch, int type )
 {
    BAN_DATA *pban;
@@ -1237,6 +1235,7 @@ bool check_bans( CHAR_DATA * ch, int type )
          bug( "%s: Ban type in check_bans: %d.", __func__, type );
          return FALSE;
    }
+
    for( ; pban; pban = pban->next )
    {
       if( type == BAN_CLASS && pban->flag == ch->Class )
@@ -1258,6 +1257,7 @@ bool check_bans( CHAR_DATA * ch, int type )
          else
             return TRUE;
       }
+
       if( type == BAN_RACE && pban->flag == ch->race )
       {
          if( check_expire( pban ) )
@@ -1277,6 +1277,7 @@ bool check_bans( CHAR_DATA * ch, int type )
          else
             return TRUE;
       }
+
       if( type == BAN_SITE )
       {
          if( pban->prefix && pban->suffix && strstr( new_host, pban->name ) )
@@ -1287,6 +1288,7 @@ bool check_bans( CHAR_DATA * ch, int type )
             fMatch = TRUE;
          else if( !str_cmp( pban->name, new_host ) )
             fMatch = TRUE;
+
          if( fMatch )
          {
             if( check_expire( pban ) )
@@ -1377,5 +1379,4 @@ void free_bans( void )
       ban_next = ban->next;
       dispose_ban( ban, BAN_CLASS );
    }
-   return;
 }
