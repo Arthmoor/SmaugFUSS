@@ -126,7 +126,7 @@ void write_hint( void )
    }
 }
 
-void do_hintedit( CHAR_DATA* ch, const char* argument)
+void do_hintedit( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_STRING_LENGTH];
    char arg2[MAX_STRING_LENGTH];
@@ -398,6 +398,4 @@ void load_hint( void )
 
    while( ( hintData = read_hint( filename, fp ) ) != NULL )
       LINK( hintData, first_hint, last_hint, next, prev );
-
-   return;
 }

@@ -262,7 +262,6 @@ void make_puddle( CHAR_DATA * ch, OBJ_DATA * cont )
       mudstrlcpy( buf, "small", 20 );
    snprintf( buf2, 70, "There is a %s puddle of %s.", buf, ( liq == NULL ? "water" : liq->name ) );
    obj->description = STRALLOC( buf2 );
-   return;
 }
 
 void make_blood( CHAR_DATA * ch )

@@ -657,7 +657,6 @@ void show_list_to_char( OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShow
    DISPOSE( prgpstrShow );
    DISPOSE( prgnShow );
    DISPOSE( pitShow );
-   return;
 }
 
 /*
@@ -974,7 +973,6 @@ void show_char_to_char_0( CHAR_DATA * victim, CHAR_DATA * ch )
    buf[0] = UPPER( buf[0] );
    send_to_char( buf, ch );
    show_visible_affects_to_char( victim, ch );
-   return;
 }
 
 void show_char_to_char_1( CHAR_DATA * victim, CHAR_DATA * ch )
@@ -1070,8 +1068,6 @@ void show_char_to_char_1( CHAR_DATA * victim, CHAR_DATA * ch )
    }
    else if( ch->pcdata->learned[gsn_peek] > 0 )
       learn_from_failure( ch, gsn_peek );
-
-   return;
 }
 
 void show_char_to_char( CHAR_DATA * list, CHAR_DATA * ch )
@@ -1093,7 +1089,6 @@ void show_char_to_char( CHAR_DATA * list, CHAR_DATA * ch )
          send_to_char( "The red form of a living creature is here.\r\n", ch );
       }
    }
-   return;
 }
 
 bool check_blind( CHAR_DATA * ch )
@@ -1184,7 +1179,6 @@ void print_compass( CHAR_DATA * ch )
                     exit_colors[exit_info[DIR_SOUTHWEST]], exit_info[DIR_SOUTHWEST] ? "SW" : "- ",
                     exit_colors[exit_info[DIR_SOUTH]], exit_info[DIR_SOUTH] ? "S" : "-",
                     exit_colors[exit_info[DIR_SOUTHEAST]], exit_info[DIR_SOUTHEAST] ? "SE" : " -" );
-   return;
 }
 
 char *roomdesc( CHAR_DATA * ch )
@@ -1640,6 +1634,7 @@ void show_race_line( CHAR_DATA * ch, CHAR_DATA * victim )
       ch_printf( ch, "%s is %d'%d\" and weighs %d pounds.\r\n", PERS( victim, ch ), feet, inches, victim->weight );
       return;
    }
+
    if( !IS_NPC( victim ) && ( victim == ch ) )
    {
       feet = victim->height / 12;
@@ -1794,10 +1789,9 @@ void do_glance( CHAR_DATA * ch, const char *argument )
       show_condition( ch, victim );
       return;
    }
-   return;
 }
 
-void do_examine( CHAR_DATA* ch, const char* argument)
+void do_examine( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -2048,10 +2042,9 @@ void do_examine( CHAR_DATA* ch, const char* argument)
 
       check_for_trap( ch, obj, TRAP_EXAMINE );
    }
-   return;
 }
 
-void do_exits( CHAR_DATA* ch, const char* argument)
+void do_exits( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    EXIT_DATA *pexit;
@@ -2109,7 +2102,6 @@ void do_exits( CHAR_DATA* ch, const char* argument)
    else if( fAuto )
       mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
    send_to_char( buf, ch );
-   return;
 }
 
 /*
@@ -2163,7 +2155,7 @@ HELP_DATA *get_help( CHAR_DATA * ch, const char *argument )
 /*
  * LAWS command
  */
-void do_laws( CHAR_DATA* ch, const char* argument)
+void do_laws( CHAR_DATA* ch, const char* argument )
 {
    char buf[1024];
 
@@ -2180,7 +2172,7 @@ void do_laws( CHAR_DATA* ch, const char* argument)
  * Now this is cleaner
  */
 /* Updated do_help command provided by Remcon of The Lands of Pabulum 03/20/2004 */
-void do_help( CHAR_DATA* ch, const char* argument)
+void do_help( CHAR_DATA* ch, const char* argument )
 {
    HELP_DATA *pHelp;
    const char *keyword;
@@ -2291,7 +2283,6 @@ void do_help( CHAR_DATA* ch, const char* argument)
       send_to_pager( pHelp->text + 1, ch );
    else
       send_to_pager( pHelp->text, ch );
-   return;
 }
 
 extern const char *help_greeting;   /* so we can edit the greeting online */
@@ -2302,7 +2293,6 @@ void free_help( HELP_DATA * pHelp )
    STRFREE( pHelp->text );
    STRFREE( pHelp->keyword );
    DISPOSE( pHelp );
-   return;
 }
 
 void free_helps( void )
@@ -2314,7 +2304,6 @@ void free_helps( void )
       pHelp_next = pHelp->next;
       free_help( pHelp );
    }
-   return;
 }
 
 /*
@@ -2498,7 +2487,6 @@ void do_hset( CHAR_DATA* ch, const char* argument )
 void do_hl( CHAR_DATA* ch, const char* argument )
 {
    send_to_char( "If you want to use HLIST, spell it out.\r\n", ch );
-   return;
 }
 
 /*
@@ -2506,7 +2494,7 @@ void do_hl( CHAR_DATA* ch, const char* argument )
  * Idea suggested by Gorog
  * prefix keyword indexing added by Fireblade
  */
-void do_hlist( CHAR_DATA* ch, const char* argument)
+void do_hlist( CHAR_DATA* ch, const char* argument )
 {
    int min, max, minlimit, maxlimit, cnt;
    char arg[MAX_INPUT_LENGTH];
@@ -2580,8 +2568,6 @@ void do_hlist( CHAR_DATA* ch, const char* argument)
 
    if( idx )
       STRFREE( idx );
-
-   return;
 }
 
 /* 
@@ -2728,7 +2714,7 @@ void create_whogr( CHAR_DATA * looker )
       }
 }
 
-void do_who( CHAR_DATA* ch, const char* argument)
+void do_who( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char clan_name[MAX_INPUT_LENGTH];
@@ -3181,9 +3167,7 @@ void do_who( CHAR_DATA* ch, const char* argument)
             first_imm = cur_who;
             break;
       }
-
    }
-
 
    /*
     * Ok, now we have three separate linked lists and what remains is to 
@@ -3290,10 +3274,9 @@ void do_who( CHAR_DATA* ch, const char* argument)
 
    set_char_color( AT_YELLOW, ch );
    ch_printf( ch, "%d player%s.\r\n", nMatch, nMatch == 1 ? "" : "s" );
-   return;
 }
 
-void do_compare( CHAR_DATA* ch, const char* argument)
+void do_compare( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -3385,10 +3368,9 @@ void do_compare( CHAR_DATA* ch, const char* argument)
    }
 
    act( AT_PLAIN, msg, ch, obj1, obj2, TO_CHAR );
-   return;
 }
 
-void do_where( CHAR_DATA* ch, const char* argument)
+void do_where( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3461,11 +3443,9 @@ void do_where( CHAR_DATA* ch, const char* argument)
       if( !found )
          act( AT_PLAIN, "You didn't find any $T.", ch, NULL, arg, TO_CHAR );
    }
-
-   return;
 }
 
-void do_consider( CHAR_DATA* ch, const char* argument)
+void do_consider( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3531,8 +3511,6 @@ void do_consider( CHAR_DATA* ch, const char* argument)
    else
       msg = "$N is built like a TANK!";
    act( AT_CONSIDER, msg, ch, NULL, victim, TO_CHAR );
-
-   return;
 }
 
 /*
@@ -3542,7 +3520,7 @@ void do_consider( CHAR_DATA* ch, const char* argument)
  */
 #define CANT_PRAC "Tongue"
 
-void do_practice( CHAR_DATA* ch, const char* argument)
+void do_practice( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *mob;
    char buf[MAX_STRING_LENGTH];
@@ -3770,10 +3748,9 @@ void do_practice( CHAR_DATA* ch, const char* argument)
          }
       }
    }
-   return;
 }
 
-void do_wimpy( CHAR_DATA* ch, const char* argument)
+void do_wimpy( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    int wimpy;
@@ -3809,10 +3786,9 @@ void do_wimpy( CHAR_DATA* ch, const char* argument)
    }
    ch->wimpy = wimpy;
    ch_printf( ch, "Wimpy set to %d hit points.\r\n", wimpy );
-   return;
 }
 
-void do_password( CHAR_DATA* ch, const char* argument)
+void do_password( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
    char *pArg, *pwdnew;
@@ -3902,7 +3878,7 @@ void do_password( CHAR_DATA* ch, const char* argument)
    send_to_char( "Ok.\r\n", ch );
 }
 
-void do_socials( CHAR_DATA* ch, const char* argument)
+void do_socials( CHAR_DATA* ch, const char* argument )
 {
    int iHash;
    int col = 0;
@@ -3919,10 +3895,9 @@ void do_socials( CHAR_DATA* ch, const char* argument)
 
    if( col % 6 != 0 )
       send_to_pager( "\r\n", ch );
-   return;
 }
 
-void do_commands( CHAR_DATA* ch, const char* argument)
+void do_commands( CHAR_DATA* ch, const char* argument )
 {
    int col;
    bool found;
@@ -3965,10 +3940,9 @@ void do_commands( CHAR_DATA* ch, const char* argument)
       if( !found )
          ch_printf( ch, "No command found under %s.\r\n", argument );
    }
-   return;
 }
 
-void do_channels( CHAR_DATA* ch, const char* argument)
+void do_channels( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    one_argument( argument, arg );
@@ -4232,7 +4206,6 @@ void do_channels( CHAR_DATA* ch, const char* argument)
 
       send_to_char( "Ok.\r\n", ch );
    }
-   return;
 }
 
 /*
@@ -4248,7 +4221,7 @@ void do_wizlist( CHAR_DATA* ch, const char* argument)
  * Contributed by Grodyn.
  * Display completely overhauled, 2/97 -- Blodkai
  */
-void do_config( CHAR_DATA* ch, const char* argument)
+void do_config( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -4448,10 +4421,9 @@ void do_config( CHAR_DATA* ch, const char* argument)
          return;
       }
    }
-   return;
 }
 
-void do_credits( CHAR_DATA* ch, const char* argument)
+void do_credits( CHAR_DATA* ch, const char* argument )
 {
    do_help( ch, "credits" );
 }
@@ -4469,7 +4441,7 @@ extern int top_area;
  *           area old        ->      list areas in order loaded
  *
  */
-void do_areas( CHAR_DATA* ch, const char* argument)
+void do_areas( CHAR_DATA* ch, const char* argument )
 {
    const char *header_string1 = "\r\n   Author    |             Area" "                     | " "Recommended |  Enforced\r\n";
    const char *header_string2 = "-------------+-----------------" "---------------------+----" "---------+-----------\r\n";
@@ -4561,7 +4533,7 @@ void do_areas( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_afk( CHAR_DATA* ch, const char* argument)
+void do_afk( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
       return;
@@ -4581,7 +4553,7 @@ void do_afk( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_slist( CHAR_DATA* ch, const char* argument)
+void do_slist( CHAR_DATA* ch, const char* argument )
 {
    int sn, i, lFound;
    char skn[MAX_INPUT_LENGTH];
@@ -4734,10 +4706,9 @@ void do_slist( CHAR_DATA* ch, const char* argument)
          }
       }
    }
-   return;
 }
 
-void do_whois( CHAR_DATA* ch, const char* argument)
+void do_whois( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    CLAN_DATA *pclan;
@@ -4944,7 +4915,7 @@ void do_whois( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_pager( CHAR_DATA* ch, const char* argument)
+void do_pager( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -4975,7 +4946,6 @@ void do_pager( CHAR_DATA* ch, const char* argument)
    if( ch->pcdata->pagerlen < 5 )
       ch->pcdata->pagerlen = 5;
    ch_printf( ch, "Page pausing set to %d lines.\r\n", ch->pcdata->pagerlen );
-   return;
 }
 
 /*
@@ -4994,7 +4964,7 @@ void do_pager( CHAR_DATA* ch, const char* argument)
  * Last Modified: June 26, 1997
  * - Fireblade
  */
-void do_ignore( CHAR_DATA* ch, const char* argument)
+void do_ignore( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    IGNORE_DATA *temp, *next;
@@ -5187,10 +5157,11 @@ void do_version( CHAR_DATA* ch, const char* argument )
       return;
 
    set_char_color( AT_YELLOW, ch );
-   ch_printf( ch, "SMAUG %s.%s\r\n", SMAUG_VERSION_MAJOR, SMAUG_VERSION_MINOR );
+   ch_printf( ch, "Original codebase: SMAUG %s.%s\r\n", SMAUG_VERSION_MAJOR, SMAUG_VERSION_MINOR );
+   ch_printf( ch, "Current codebase: %s %s\r\n", CODENAME, CODEVERSION );
 
    if( IS_IMMORTAL( ch ) )
       ch_printf( ch, "Compiled on %s at %s.\r\n", __DATE__, __TIME__ );
 
-   return;
+
 }

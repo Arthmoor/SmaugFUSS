@@ -150,7 +150,6 @@ void free_prog_actlists( void )
       apd_next = apd->next;
       DISPOSE( apd );
    }
-   return;
 }
 
 /*
@@ -399,10 +398,12 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
       if( !chkchar && !chkobj )
          return BERR;
    }
+
    if( !str_cmp( chck, "rand" ) )
    {
       return ( number_percent(  ) <= atoi( cvar ) );
    }
+
    if( !str_cmp( chck, "economy" ) )
    {
       int idx = atoi( cvar );
@@ -427,6 +428,7 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
       return mprog_veval( ( ( room->area->high_economy > 0 ) ? 1000000000 : 0 )
                           + room->area->low_economy, opr, atoi( rval ), mob );
    }
+
    if( !str_cmp( chck, "mobinarea" ) )
    {
       int vnum = atoi( cvar );
@@ -1418,6 +1420,7 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
          return mprog_veval( get_curr_lck( chkchar ), opr, atoi( rval ), mob );
       }
    }
+
    if( chkobj )
    {
       if( !str_cmp( chck, "objtype" ) )
@@ -1464,6 +1467,7 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
          return mprog_veval( chkobj->value[5], opr, atoi( rval ), mob );
       }
    }
+
    /*
     * The following checks depend on the fact that cval[1] can only contain
     * one character, and that NULL checks were made previously.
@@ -1479,10 +1483,12 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
       }
       return mprog_veval( chkobj->pIndexData->vnum, opr, atoi( rval ), mob );
    }
+
    if( !str_cmp( chck, "time" ) )
    {
       return mprog_veval( time_info.hour, opr, atoi( rval ), mob );
    }
+
    if( !str_cmp( chck, "name" ) )
    {
       if( chkchar )
@@ -1549,7 +1555,6 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
       return mprog_veval( count, opr, atoi( rval ), mob );
    }
 
-
    if( !str_cmp( chck, "mobcount" ) )  /* -- Gorog */
    {
       CHAR_DATA *tch;
@@ -1564,7 +1569,6 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
             count++;
       return mprog_veval( count, opr, atoi( rval ), mob );
    }
-
 
    if( !str_cmp( chck, "charcount" ) ) /* -- Gorog */
    {
@@ -1581,8 +1585,6 @@ int mprog_do_ifcheck( const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, O
             count++;
       return mprog_veval( count, opr, atoi( rval ), mob );
    }
-
-
 
    /*
     * Ok... all the ifchecks are done, so if we didnt find ours then something
@@ -1929,7 +1931,6 @@ void mprog_translate( char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
          progbug( "Bad $var", mob );
          break;
    }
-   return;
 }
 
 /*  The main focus of the MOBprograms.  This routine is called 
@@ -2730,7 +2731,6 @@ void mprog_time_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHAR_
          mprog_driver( mprg->comlist, mob, actor, obj, victim, target, FALSE );
       }
    }
-   return;
 }
 
 void mob_act_add( CHAR_DATA * mob )
@@ -2828,7 +2828,6 @@ void mprog_act_trigger( const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DA
       mob->mpactnum++;
       mob_act_add( mob );
    }
-   return;
 }
 
 void mprog_bribe_trigger( CHAR_DATA * mob, CHAR_DATA * ch, int amount )
@@ -2871,7 +2870,6 @@ void mprog_bribe_trigger( CHAR_DATA * mob, CHAR_DATA * ch, int amount )
       if( tprg )
          mprog_driver( tprg->comlist, mob, ch, obj, NULL, NULL, FALSE );
    }
-   return;
 }
 
 void mprog_death_trigger( CHAR_DATA * killer, CHAR_DATA * mob )
@@ -2883,7 +2881,6 @@ void mprog_death_trigger( CHAR_DATA * killer, CHAR_DATA * mob )
       mob->position = POS_DEAD;
    }
    death_cry( mob );
-   return;
 }
 
 /* login and void mob triggers by Edmond */
@@ -2904,7 +2901,6 @@ void mprog_login_trigger( CHAR_DATA *ch )
       if( HAS_PROG( vmob->pIndexData, LOGIN_PROG ) )
          mprog_percent_check( vmob, ch, NULL, NULL, NULL, LOGIN_PROG );
    }
-   return;
 }
 
 void mprog_void_trigger( CHAR_DATA *ch )
@@ -2924,23 +2920,18 @@ void mprog_void_trigger( CHAR_DATA *ch )
       if( HAS_PROG( vmob->pIndexData, VOID_PROG ) )
          mprog_percent_check( vmob, ch, NULL, NULL, NULL, VOID_PROG );
    }
-   return;
 }
 
 void mprog_entry_trigger( CHAR_DATA * mob )
 {
    if( IS_NPC( mob ) && HAS_PROG( mob->pIndexData, ENTRY_PROG ) )
       mprog_percent_check( mob, NULL, NULL, NULL, NULL, ENTRY_PROG );
-
-   return;
 }
 
 void mprog_fight_trigger( CHAR_DATA * mob, CHAR_DATA * ch )
 {
    if( IS_NPC( mob ) && HAS_PROG( mob->pIndexData, FIGHT_PROG ) )
       mprog_percent_check( mob, ch, NULL, NULL, NULL, FIGHT_PROG );
-
-   return;
 }
 
 void mprog_give_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj )
@@ -2968,7 +2959,6 @@ void mprog_give_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj )
          }
       }
    }
-   return;
 }
 
 void mprog_sell_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj )
@@ -2998,7 +2988,6 @@ void mprog_sell_trigger( CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj )
          }
       }
    }
-   return;
 }
 
 void mprog_greet_trigger( CHAR_DATA * ch )
@@ -3066,7 +3055,6 @@ void mprog_hitprcnt_trigger( CHAR_DATA * mob, CHAR_DATA * ch )
             break;
          }
    }
-   return;
 }
 
 void mprog_random_trigger( CHAR_DATA * mob )
@@ -3161,7 +3149,6 @@ void oprog_script_trigger( OBJ_DATA * obj )
                release_supermob(  );
             }
          }
-   return;
 }
 
 void rprog_script_trigger( ROOM_INDEX_DATA * room )
@@ -3180,7 +3167,6 @@ void rprog_script_trigger( ROOM_INDEX_DATA * room )
                release_supermob(  );
             }
          }
-   return;
 }
 
 /*
@@ -3286,8 +3272,6 @@ void oprog_speech_trigger( const char *txt, CHAR_DATA * ch )
    for( vobj = ch->in_room->first_content; vobj; vobj = vobj->next_content )
       if( HAS_PROG( vobj->pIndexData, SPEECH_PROG ) )
          oprog_wordlist_check( txt, supermob, ch, vobj, NULL, NULL, SPEECH_PROG, vobj );
-
-   return;
 }
 
 bool oprog_command_trigger( CHAR_DATA * ch, char *txt )
@@ -3879,7 +3863,6 @@ void rprog_time_check( CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, ROOM_
          mprog_driver( mprg->comlist, mob, actor, obj, NULL, NULL, FALSE );
       }
    }
-   return;
 }
 
 void rprog_time_trigger( CHAR_DATA * ch )
@@ -3924,7 +3907,6 @@ void progbug( const char *str, CHAR_DATA * mob )
    {
       bug( "%s: %s, Mob #%d.", __func__, str, vnum );
    }
-   return;
 }
 
 /* Room act prog updates.  Use a separate list cuz we dont really wanna go
@@ -3936,9 +3918,11 @@ void room_act_add( ROOM_INDEX_DATA * room )
    for( runner = room_act_list; runner; runner = runner->next )
       if( runner->vo == room )
          return;
+
    CREATE( runner, struct act_prog_data, 1 );
    runner->vo = room;
    runner->next = NULL;
+
    /*
     * The head of the list is being changed in
     * room_act_update, So append to the end of the list 
@@ -4039,5 +4023,4 @@ void obj_act_update( void )
       obj_act_list = runner->next;
       DISPOSE( runner );
    }
-   return;
 }

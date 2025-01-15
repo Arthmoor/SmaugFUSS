@@ -359,7 +359,6 @@ void save_char_obj( CHAR_DATA * ch )
 
    quitting_char = NULL;
    saving_char = NULL;
-   return;
 }
 
 /*
@@ -2352,7 +2351,7 @@ void set_alarm( long seconds )
 /*
  * Based on last time modified, show when a player was last on	-Thoric
  */
-void do_last( CHAR_DATA* ch, const char* argument)
+void do_last( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -2426,7 +2425,6 @@ void write_corpses( CHAR_DATA * ch, const char *name, OBJ_DATA * objrem )
       snprintf( buf, 127, "%s%s", CORPSE_DIR, capitalize( name ) );
       remove( buf );
    }
-   return;
 }
 
 void load_corpses( void )
@@ -2494,9 +2492,8 @@ void load_corpses( void )
 }
 
 /*
- * This will write one mobile structure pointed to be fp --Shaddai
+ * This will write one mobile structure pointed to by fp --Shaddai
  */
-
 void fwrite_mobile( FILE * fp, CHAR_DATA * mob )
 {
    if( !IS_NPC( mob ) || !fp )

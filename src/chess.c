@@ -101,9 +101,11 @@ static char *print_big_board( CHAR_DATA * ch, GAME_BOARD_DATA * board )
 static void init_board( GAME_BOARD_DATA * board )
 {
    int x, y;
+
    for( x = 0; x < 8; x++ )
       for( y = 0; y < 8; y++ )
          board->board[x][y] = 0;
+
    board->board[0][0] = WHITE_ROOK;
    board->board[0][1] = WHITE_KNIGHT;
    board->board[0][2] = WHITE_BISHOP;
@@ -112,10 +114,12 @@ static void init_board( GAME_BOARD_DATA * board )
    board->board[0][5] = WHITE_BISHOP;
    board->board[0][6] = WHITE_KNIGHT;
    board->board[0][7] = WHITE_ROOK;
+
    for( x = 0; x < 8; x++ )
       board->board[1][x] = WHITE_PAWN;
    for( x = 0; x < 8; x++ )
       board->board[6][x] = BLACK_PAWN;
+
    board->board[7][0] = BLACK_ROOK;
    board->board[7][1] = BLACK_KNIGHT;
    board->board[7][2] = BLACK_BISHOP;
@@ -142,8 +146,10 @@ static bool find_piece( GAME_BOARD_DATA * board, int *x, int *y, int piece )
       if( board->board[a][b] == piece )
          break;
    }
+
    *x = a;
    *y = b;
+
    if( board->board[a][b] == piece )
       return TRUE;
    return FALSE;
@@ -182,6 +188,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
        ( ( board->board[x - 2][y - 1] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x - 2][y - 1] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
       return TRUE;
+
    if( x - 2 >= 0 && y + 1 < 8 &&
        ( ( board->board[x - 2][y + 1] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x - 2][y + 1] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
@@ -191,6 +198,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
        ( ( board->board[x - 1][y - 2] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x - 1][y - 2] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
       return TRUE;
+
    if( x - 1 >= 0 && y + 2 < 8 &&
        ( ( board->board[x - 1][y + 2] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x - 1][y + 2] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
@@ -200,6 +208,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
        ( ( board->board[x + 1][y - 2] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x + 1][y - 2] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
       return TRUE;
+
    if( x + 1 < 8 && y + 2 < 8 &&
        ( ( board->board[x + 1][y + 2] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x + 1][y + 2] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
@@ -209,6 +218,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
        ( ( board->board[x + 2][y - 1] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x + 2][y - 1] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
       return TRUE;
+
    if( x + 2 < 8 && y + 1 < 8 &&
        ( ( board->board[x + 2][y + 1] == BLACK_KNIGHT && IS_WHITE( board->board[x][y] ) ) ||
          ( board->board[x + 2][y + 1] == WHITE_KNIGHT && IS_BLACK( board->board[x][y] ) ) ) )
@@ -227,6 +237,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( l = x - 1; l >= 0; l-- )
       if( board->board[l][y] != NO_PIECE )
       {
@@ -237,6 +248,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( m = y + 1; m < 8; m++ )
       if( board->board[x][m] != NO_PIECE )
       {
@@ -247,6 +259,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( m = y - 1; m >= 0; m-- )
       if( board->board[x][m] != NO_PIECE )
       {
@@ -257,6 +270,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    /*
     * diagonal long distance 
     */
@@ -270,6 +284,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( l = x - 1, m = y + 1; l >= 0 && m < 8; l--, m++ )
       if( board->board[l][m] != NO_PIECE )
       {
@@ -280,6 +295,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( l = x + 1, m = y - 1; l < 8 && m >= 0; l++, m-- )
       if( board->board[l][m] != NO_PIECE )
       {
@@ -290,6 +306,7 @@ static bool king_in_check( GAME_BOARD_DATA * board, int piece )
             return TRUE;
          break;
       }
+
    for( l = x - 1, m = y - 1; l >= 0 && m >= 0; l--, m-- )
       if( board->board[l][m] != NO_PIECE )
       {
@@ -321,6 +338,7 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
 
    dx = x + 1;
    dy = y + 1;
+
    if( dx < 8 && dy < 8 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -334,8 +352,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x - 1;
    dy = y + 1;
+
    if( dx >= 0 && dy < 8 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -349,8 +369,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x + 1;
    dy = y - 1;
+
    if( dx < 8 && dy >= 0 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -364,8 +386,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x - 1;
    dy = y - 1;
+
    if( dx >= 0 && dy >= 0 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -379,8 +403,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x;
    dy = y + 1;
+
    if( dy < 8 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -394,8 +420,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x;
    dy = y - 1;
+
    if( dy >= 0 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -409,8 +437,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x + 1;
    dy = y;
+
    if( dx < 8 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -424,8 +454,10 @@ static bool king_in_checkmate( GAME_BOARD_DATA * board, int piece )
       board->board[x][y] = sk;
       board->board[dx][dy] = NO_PIECE;
    }
+
    dx = x - 1;
    dy = y;
+
    if( dx >= 0 && board->board[dx][dy] == NO_PIECE )
    {
       sk = board->board[dx][dy] = board->board[x][y];
@@ -467,6 +499,7 @@ static int is_valid_move( CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y,
 
    if( IS_WHITE( board->board[x][y] ) && !str_cmp( board->player1, ch->name ) )
       return MOVE_WRONGCOLOR;
+
    if( IS_BLACK( board->board[x][y] ) && ( !str_cmp( board->player2, ch->name ) || !ch ) )
       return MOVE_WRONGCOLOR;
 

@@ -98,7 +98,7 @@ int tzone_lookup( const char *arg )
    return -1;
 }
 
-void do_timezone( CHAR_DATA* ch, const char* argument)
+void do_timezone( CHAR_DATA* ch, const char* argument )
 {
    int i;
 
@@ -465,7 +465,6 @@ void save_timedata( void )
       fprintf( fp, "%s", "#END\n" );
    }
    FCLOSE( fp );
-   return;
 }
 
 void do_time( CHAR_DATA* ch, const char* argument )
@@ -525,7 +524,6 @@ void do_time( CHAR_DATA* ch, const char* argument )
       ch_printf( ch, "&wThe next pfile cleanup is in&W %s&w.&D\r\n", buf );
    }
 #endif
-   return;
 }
 
 void start_winter( void )
@@ -552,7 +550,6 @@ void start_winter( void )
          }
       }
    }
-   return;
 }
 
 void start_spring( void )
@@ -576,19 +573,16 @@ void start_spring( void )
          }
       }
    }
-   return;
 }
 
 void start_summer( void )
 {
    echo_to_all( AT_YELLOW, "The days grow longer and hotter as summer grips the world.\r\n", ECHOTAR_ALL );
-   return;
 }
 
 void start_fall( void )
 {
    echo_to_all( AT_ORANGE, "The leaves begin changing colors signaling the start of fall.\r\n", ECHOTAR_ALL );
-   return;
 }
 
 void season_update( void )
@@ -627,7 +621,6 @@ void season_update( void )
          }
       }
    }
-   return;
 }
 
 /* PaB: Which season are we in? 
@@ -674,8 +667,6 @@ void calc_season( void )
    }
 
    season_update(  );   /* Maintain the season in case of reboot, check for holidays */
-
-   return;
 }
 
 void free_holiday( HOLIDAY_DATA * day )
@@ -684,7 +675,6 @@ void free_holiday( HOLIDAY_DATA * day )
    DISPOSE( day->announce );
    DISPOSE( day->name );
    DISPOSE( day );
-   return;
 }
 
 void free_holidays( void )
@@ -696,7 +686,6 @@ void free_holidays( void )
       day_next = day->next;
       free_holiday( day );
    }
-   return;
 }
 
 void do_holidays( CHAR_DATA* ch, const char* argument)
@@ -708,8 +697,6 @@ void do_holidays( CHAR_DATA* ch, const char* argument)
 
    for( day = first_holiday; day; day = day->next )
       pager_printf( ch, "&G%-21s	&g%-11s	%-2d\r\n", day->name, month_name[day->month - 1], day->day );
-
-   return;
 }
 
 /* Read in an individual holiday */
@@ -820,8 +807,6 @@ void load_holidays( void )
       }
       FCLOSE( fp );
    }
-
-   return;
 }
 
 /* Save the holidays to disk - Samson 5-6-99 */
@@ -852,19 +837,17 @@ void save_holidays( void )
       fprintf( fp, "%s", "#END\n" );
       FCLOSE( fp );
    }
-   return;
 }
 
-void do_saveholiday( CHAR_DATA* ch, const char* argument)
+void do_saveholiday( CHAR_DATA* ch, const char* argument )
 {
    save_holidays(  );
    send_to_char( "Holiday chart saved.\r\n", ch );
-   return;
 }
 
-/* Holiday OLC command - (c)Andrew Wilkie May-20-2005*/
+/* Holiday OLC command - (c)Andrew Wilkie May-20-2005 */
 /* Calendar code (c)The Alsherok Team*/
-void do_setholiday( CHAR_DATA* ch, const char* argument)
+void do_setholiday( CHAR_DATA* ch, const char* argument )
 {
    HOLIDAY_DATA *day, *newday;
    int count = 0;
@@ -882,8 +865,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-/* Save em all.. saves the work of saving individual 
-   holidays when mass-creating or editing*/
+   /* Save em all.. saves the work of saving individual holidays when mass-creating or editing */
    if( !str_cmp( arg1, "save" ) )
    {
       save_holidays(  );
@@ -891,7 +873,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-/* Create a new holiday by name arg1 */
+   /* Create a new holiday by name arg1 */
    if( !str_cmp( arg2, "create" ) )
    {
       for( day = first_holiday; day; day = day->next )
@@ -921,23 +903,21 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
       return;
    }
 
-/* Now... let's find that holiday */
-
+   /* Now... let's find that holiday */
    for( day = first_holiday; day; day = day->next )
    {
       if( !str_cmp( day->name, arg1 ) )
          break;
    }
 
-/* Anything match? */
+   /* Anything match? */
    if( !day )
    {
       send_to_char( "Which holiday was that?\r\n", ch );
       return;
    }
 
-/* Set the day */
-
+   /* Set the day */
    if( !str_cmp( arg2, "day" ) )
    {
       if( arg3[0] == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.dayspermonth || atoi( arg3 ) <= 1 )
@@ -946,7 +926,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
          return;
       }
 
-/* What day is it?... FRIDAY!.. oh... no... it's.. arg3? */
+      /* What day is it?... FRIDAY!.. oh... no... it's.. arg3? */
       day->day = atoi( arg3 );
       send_to_char( "Day changed.\r\n", ch );
       return;
@@ -954,13 +934,12 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
 
    if( !str_cmp( arg2, "month" ) )
    {
-/* Go through the months and find arg3 */
-
+      /* Go through the months and find arg3 */
       if( arg3[0] == '\0' || !is_number( arg3 ) || atoi( arg3 ) > sysdata.monthsperyear || atoi( arg3 ) <= 1 )
       {
          send_to_char( "You must specify a valid month number:\r\n", ch );
 
-/* List all the months with a counter next to them*/
+         /* List all the months with a counter next to them*/
          count = 1;
          while( month_name[x][0] != '\0' && str_cmp(month_name[x], " ") && x < sysdata.monthsperyear)
 
@@ -969,11 +948,10 @@ void do_setholiday( CHAR_DATA* ch, const char* argument)
             x++;
             count++;
          }
-return;
+         return;
       }
 
-
-/* What's the month? */
+      /* What's the month? */
       day->month = atoi( arg3 );
       send_to_char( "Month changed.\r\n", ch );
       return;
@@ -987,14 +965,14 @@ return;
          return;
       }
 
-/* Set the announcement */
+      /* Set the announcement */
       DISPOSE( day->announce );
       day->announce = str_dup( arg3 );
       send_to_char( "Announcement changed.\r\n", ch );
       return;
    }
 
-/* Change the name */
+   /* Change the name */
    if( !str_cmp( arg2, "name" ) )
    {
       if( arg3[0] == '\0' || !str_cmp( arg3, " " ) || is_number( arg3 ) )
@@ -1003,7 +981,7 @@ return;
          return;
       }
 
-/* Release the good...err... name */
+      /* Release the good...err... name */
       DISPOSE( day->name );
       day->name = str_dup( arg3 );
       send_to_char( "Name changed.\r\n", ch );
@@ -1025,5 +1003,4 @@ return;
 
    send_to_char( "Syntax: setholiday <name> <field> <argument>\r\n", ch );
    send_to_char( "Field can be: day name create announce save delete\r\n", ch );
-   return;
 }

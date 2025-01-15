@@ -175,7 +175,6 @@ void show_colorthemes( CHAR_DATA * ch )
 
    if( col % 6 != 0 )
       send_to_pager( "\r\n", ch );
-   return;
 }
 
 void show_colors( CHAR_DATA * ch )
@@ -220,7 +219,6 @@ void show_colors( CHAR_DATA * ch )
    }
    send_to_pager( "\r\n", ch );
    show_colorthemes( ch );
-   return;
 }
 
 void reset_colors( CHAR_DATA * ch )
@@ -570,7 +568,6 @@ void do_color( CHAR_DATA* ch, const char* argument )
       else
          ch_printf( ch, "Display %s set to color %s.\r\n", pc_displays[count], valid_color[y] );
    }
-   return;
 }
 
 const char *color_str( short AType, CHAR_DATA * ch )

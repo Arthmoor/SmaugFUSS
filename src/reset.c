@@ -112,6 +112,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                             *num, objname, tReset->arg1, mobname, tReset->arg2 );
                   break;
             }
+
             if( tReset->first_reset )
             {
                for( gReset = tReset->first_reset; gReset; gReset = gReset->next_reset )
@@ -145,6 +146,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             strncpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
          else
             strncpy( objname, obj->name, MAX_INPUT_LENGTH );
+
          room = get_room_index( pReset->arg3 );
          if( !room )
             strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
@@ -189,6 +191,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
       case 'D':
          if( pReset->arg2 < 0 || pReset->arg2 > MAX_DIR + 1 )
             pReset->arg2 = 0;
+
          if( !( room = get_room_index( pReset->arg1 ) ) )
          {
             strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
@@ -200,6 +203,7 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             snprintf( objname, MAX_INPUT_LENGTH, "%s%s", dir_name[pReset->arg2],
                       get_exit( room, pReset->arg2 ) ? "" : " (NO EXIT!)" );
          }
+
          switch ( pReset->arg3 )
          {
             default:
@@ -271,18 +275,24 @@ void add_obj_reset( ROOM_INDEX_DATA * room, char cm, OBJ_DATA * obj, int v2, int
          add_reset( room, 'T', obj->value[3], obj->value[1], obj->value[0], v3 );
       return;
    }
+
    add_reset( room, cm, ( cm == 'P' ? iNest : 0 ), obj->pIndexData->vnum, v2, v3 );
+
    if( cm == 'O' && IS_OBJ_STAT( obj, ITEM_HIDDEN ) && !CAN_WEAR( obj, ITEM_TAKE ) )
       add_reset( room, 'H', 1, 0, 0, 0 );
+
    for( inobj = obj->first_content; inobj; inobj = inobj->next_content )
    {
       if( inobj->pIndexData->vnum == OBJ_VNUM_TRAP )
          add_obj_reset( room, 'O', inobj, 0, 0 );
    }
+
    if( cm == 'P' )
       iNest++;
+
    for( inobj = obj->first_content; inobj; inobj = inobj->next_content )
       add_obj_reset( room, 'P', inobj, inobj->count, obj->pIndexData->vnum );
+
    if( cm == 'P' )
       iNest--;
 }
@@ -406,7 +416,7 @@ void do_instaroom( CHAR_DATA* ch, const char* argument )
 }
 
 /* Function modified from original form - Samson */
-void do_instazone( CHAR_DATA* ch, const char* argument)
+void do_instazone( CHAR_DATA* ch, const char* argument )
 {
    AREA_DATA *pArea;
    ROOM_INDEX_DATA *pRoom;
@@ -417,14 +427,18 @@ void do_instazone( CHAR_DATA* ch, const char* argument)
       send_to_char( "You don't have an assigned area to create resets for.\r\n", ch );
       return;
    }
+
    if( !str_cmp( argument, "nodoors" ) )
       dodoors = FALSE;
    else
       dodoors = TRUE;
+
    pArea = ch->pcdata->area;
    wipe_area_resets( pArea );
+
    for( pRoom = pArea->first_room; pRoom; pRoom = pRoom->next_aroom )
       instaroom( pRoom, dodoors );
+
    send_to_char( "Area resets installed.\r\n", ch );
 }
 

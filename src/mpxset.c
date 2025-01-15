@@ -19,7 +19,7 @@
 
 extern int top_affect;
 
-void do_mpmset( CHAR_DATA* ch, const char* argument)
+void do_mpmset( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -691,18 +691,21 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
       do_mpmset( ch, outbuf );
       return;
    }
+
    if( !str_cmp( arg2, "i" ) )
    {
       snprintf( outbuf, MAX_STRING_LENGTH, "%s immune %s", arg1, arg3 );
       do_mpmset( ch, outbuf );
       return;
    }
+
    if( !str_cmp( arg2, "s" ) )
    {
       snprintf( outbuf, MAX_STRING_LENGTH, "%s susceptible %s", arg1, arg3 );
       do_mpmset( ch, outbuf );
       return;
    }
+
    if( !str_cmp( arg2, "ri" ) )
    {
       snprintf( outbuf, MAX_STRING_LENGTH, "%s resistant %s", arg1, arg3 );
@@ -720,6 +723,7 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
       do_mpmset( ch, outbuf );
       return;
    }
+
    if( !str_cmp( arg2, "is" ) )
    {
       snprintf( outbuf, MAX_STRING_LENGTH, "%s immune %s", arg1, arg3 );
@@ -728,6 +732,7 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
       do_mpmset( ch, outbuf );
       return;
    }
+
    if( !str_cmp( arg2, "ris" ) )
    {
       snprintf( outbuf, MAX_STRING_LENGTH, "%s resistant %s", arg1, arg3 );
@@ -989,10 +994,9 @@ void do_mpmset( CHAR_DATA* ch, const char* argument)
    }
 
    progbug( "MpMset: Invalid field", ch );
-   return;
 }
 
-void do_mposet( CHAR_DATA* ch, const char* argument)
+void do_mposet( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -1462,5 +1466,4 @@ void do_mposet( CHAR_DATA* ch, const char* argument)
    }
 
    progbug( "MpOset: Invalid field", ch );
-   return;
 }

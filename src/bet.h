@@ -24,7 +24,6 @@
  * Completely cleaned up by Thoric
  */
 
-
 /*
   util function, converts an 'advanced' ASCII-number-string into a number.
   Used by parsebet() but could also be used by do_give or do_wimpy.
@@ -55,7 +54,6 @@
   function returns 0. It also returns 0 if 'k' or 'm' appear more than
   once.
 */
-
 int advatoi( char *s )
 {
    int number = 0;   /* number to be returned */
@@ -108,7 +106,6 @@ int advatoi( char *s )
    return number;
 }
 
-
 /*
   This function allows the following kinds of bets to be made:
 
@@ -129,7 +126,6 @@ int advatoi( char *s )
   The '*' or 'x' bet multiplies the current bet by the number specified,
   defaulting to 2. If the current bet is 1000, bet x  gives 2000, bet x10
   gives 10,000 etc.
-
 */
 int parsebet( const int currentbet, char *s )
 {

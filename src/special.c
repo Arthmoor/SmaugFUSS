@@ -106,7 +106,6 @@ void load_specfuns( void )
       }
       FCLOSE( fp );
    }
-   return;
 }
 
 /* Simple validation function to be sure a function can be used on mobs */
@@ -186,7 +185,6 @@ void summon_if_hating( CHAR_DATA * ch )
    else
       snprintf( buf, MAX_STRING_LENGTH, "summon %s", name );
    do_cast( ch, buf );
-   return;
 }
 
 /*

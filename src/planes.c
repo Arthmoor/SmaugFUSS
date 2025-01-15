@@ -20,7 +20,7 @@
 
 PLANE_DATA *first_plane, *last_plane;
 
-void do_plist( CHAR_DATA* ch, const char* argument)
+void do_plist( CHAR_DATA* ch, const char* argument )
 {
    PLANE_DATA *p;
 
@@ -29,7 +29,7 @@ void do_plist( CHAR_DATA* ch, const char* argument)
       ch_printf( ch, "%s\r\n", p->name );
 }
 
-void do_pstat( CHAR_DATA* ch, const char* argument)
+void do_pstat( CHAR_DATA* ch, const char* argument )
 {
    PLANE_DATA *p;
    char arg[MAX_INPUT_LENGTH];
@@ -43,7 +43,7 @@ void do_pstat( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Name: %s\r\n", p->name );
 }
 
-void do_pset( CHAR_DATA* ch, const char* argument)
+void do_pset( CHAR_DATA* ch, const char* argument )
 {
    PLANE_DATA *p;
    char arg[MAX_INPUT_LENGTH];
@@ -237,7 +237,6 @@ void build_prime_plane( void )
    CREATE( p, PLANE_DATA, 1 );
    p->name = STRALLOC( "Prime Material" );
    LINK( p, first_plane, last_plane, next, prev );
-   return;
 }
 
 void check_planes( PLANE_DATA * p )
@@ -253,7 +252,6 @@ void check_planes( PLANE_DATA * p )
       for( r = room_index_hash[vnum]; r; r = r->next )
          if( !r->plane || r->plane == p )
             r->plane = first_plane;
-   return;
 }
 
 void free_plane( PLANE_DATA * p )
@@ -263,7 +261,6 @@ void free_plane( PLANE_DATA * p )
    UNLINK( p, first_plane, last_plane, next, prev );
    STRFREE( p->name );
    DISPOSE( p );
-   return;
 }
 
 void free_all_planes( void )
@@ -275,5 +272,4 @@ void free_all_planes( void )
       p_next = p->next;
       free_plane( p );
    }
-   return;
 }

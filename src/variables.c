@@ -166,7 +166,6 @@ bool is_valid_tag( const char *tagname )
    return TRUE;
 }
 
-
 /*
  *  "tag" is a text identifier to refer to the variable and can
  *  be suffixed with a colon and a mob vnum  ie:  questobj:1101
@@ -182,11 +181,10 @@ bool is_valid_tag( const char *tagname )
  *  if isflagged($n,tag[,bit])
  */
 
-
 /*
  * mptag <victim> <tag> [value]
  */
-void do_mptag( CHAR_DATA* ch, const char* argument)
+void do_mptag( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    VARIABLE_DATA *vd;
@@ -273,7 +271,7 @@ void do_mptag( CHAR_DATA* ch, const char* argument)
 /*
  * mprmtag <victim> <tag>
  */
-void do_mprmtag( CHAR_DATA* ch, const char* argument)
+void do_mprmtag( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    char *p;
@@ -327,7 +325,7 @@ void do_mprmtag( CHAR_DATA* ch, const char* argument)
 /*
  * mpflag <victim> <tag> <flag>
  */
-void do_mpflag( CHAR_DATA* ch, const char* argument)
+void do_mpflag( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    VARIABLE_DATA *vd;
@@ -400,12 +398,14 @@ void do_mpflag( CHAR_DATA* ch, const char* argument)
          break;
       }
    }
+
    flag = atoi( arg3 );
    if( error || flag < 0 || flag >= MAX_BITS )
    {
       progbug( "Mpflag:  invalid flag value", ch );
       return;
    }
+
    if( ( vd = get_tag( victim, arg2, vnum ) ) != NULL )
    {
       if( vd->type != vtXBIT )
@@ -421,15 +421,15 @@ void do_mpflag( CHAR_DATA* ch, const char* argument)
       vd = make_variable( vtXBIT, vnum, arg2 );
       vd->timer = exp;
    }
+
    xSET_BIT( *( EXT_BV * ) vd->data, flag );
    tag_char( victim, vd, 1 );
 }
 
-
 /*
  * mprmflag <victim> <tag> <flag>
  */
-void do_mprmflag( CHAR_DATA* ch, const char* argument)
+void do_mprmflag( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    VARIABLE_DATA *vd;
@@ -477,6 +477,7 @@ void do_mprmflag( CHAR_DATA* ch, const char* argument)
       progbug( "Mprmflag:  invalid characters in tag", ch );
       return;
    }
+
    error = FALSE;
    for( p = arg3; *p; p++ )
    {
@@ -486,11 +487,13 @@ void do_mprmflag( CHAR_DATA* ch, const char* argument)
          break;
       }
    }
+
    if( error )
    {
       progbug( "Mprmflag:  invalid flag value", ch );
       return;
    }
+
    /*
     * Only bother doing anything if the tag exists
     */
@@ -526,6 +529,7 @@ void fwrite_variables( CHAR_DATA * ch, FILE * fp )
       fprintf( fp, "Rtime   %ld\n", vd->r_time );
       fprintf( fp, "Timer   %d\n", vd->timer );
       fprintf( fp, "Tag     %s~\n", vd->tag );
+
       switch ( vd->type )
       {
          case vtSTR:

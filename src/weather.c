@@ -2374,6 +2374,7 @@ void fread_cell( FILE * fp, int x, int y )
          }
          break;
       }
+
       if( !fMatch )
       {
          bug( "%s: no match for %s", __func__, word );
@@ -2396,6 +2397,7 @@ bool load_weathermap( void )
       bug( "%s: cannot open %s for reading", __func__, filename );
       return FALSE;
    }
+
    for( ;; )
    {
       char letter = fread_letter( fp );
@@ -2419,6 +2421,7 @@ bool load_weathermap( void )
          version = fread_number( fp );
          continue;
       }
+
       if( !str_cmp( word, "CELL" ) ) 
       { 
          x = fread_number( fp );

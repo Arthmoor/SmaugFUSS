@@ -392,7 +392,7 @@ int get_repaircost( CHAR_DATA * keeper, OBJ_DATA * obj )
    return cost;
 }
 
-void do_buy( CHAR_DATA* ch, const char* argument)
+void do_buy( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    int maxgold;
@@ -638,14 +638,13 @@ void do_buy( CHAR_DATA* ch, const char* argument)
  * the order in which the pets repop you can't guarantee a sorted list.
  * Last Modified: May 25, 1997 -- Fireblade
  */
-void do_list( CHAR_DATA* ch, const char* argument)
+void do_list( CHAR_DATA* ch, const char* argument )
 {
    /*
     * Constants for producing the flags 
     */
    const char *divleft  = "-----------------------------------[ ";
    const char *divright = " ]-----------------------------------";
-
 
    if( xIS_SET( ch->in_room->room_flags, ROOM_PET_SHOP ) )
    {
@@ -775,7 +774,7 @@ void do_list( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_sell( CHAR_DATA* ch, const char* argument)
+void do_sell( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -850,13 +849,9 @@ void do_sell( CHAR_DATA* ch, const char* argument)
       obj_from_char( obj );
       obj_to_char( obj, keeper );
    }
-
-   return;
 }
 
-
-
-void do_value( CHAR_DATA* ch, const char* argument)
+void do_value( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    CHAR_DATA *keeper;
@@ -894,8 +889,6 @@ void do_value( CHAR_DATA* ch, const char* argument)
    snprintf( buf, MAX_STRING_LENGTH, "$n tells you 'I'll give you %d gold coins for $p.'", cost );
    act( AT_TELL, buf, keeper, obj, ch, TO_VICT );
    ch->reply = keeper;
-
-   return;
 }
 
 /*
@@ -966,7 +959,7 @@ void repair_one_obj( CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj,
    }
 }
 
-void do_repair( CHAR_DATA* ch, const char* argument)
+void do_repair( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *keeper;
    OBJ_DATA *obj;
@@ -1064,7 +1057,7 @@ void appraise_all( CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr )
    }
 }
 
-void do_appraise( CHAR_DATA* ch, const char* argument)
+void do_appraise( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -1128,15 +1121,11 @@ void do_appraise( CHAR_DATA* ch, const char* argument)
    act( AT_TELL, buf, ch, NULL, keeper, TO_CHAR );
    if( cost > ch->gold )
       act( AT_TELL, "$N tells you, 'Which I see you can't afford.'", ch, NULL, keeper, TO_CHAR );
-
-   return;
 }
-
 
 /* ------------------ Shop Building and Editing Section ----------------- */
 
-
-void do_makeshop( CHAR_DATA* ch, const char* argument)
+void do_makeshop( CHAR_DATA* ch, const char* argument )
 {
    SHOP_DATA *shop;
    int vnum;
@@ -1175,11 +1164,9 @@ void do_makeshop( CHAR_DATA* ch, const char* argument)
    shop->close_hour = 23;
    mob->pShop = shop;
    send_to_char( "Done.\r\n", ch );
-   return;
 }
 
-
-void do_shopset( CHAR_DATA* ch, const char* argument)
+void do_shopset( CHAR_DATA* ch, const char* argument )
 {
    SHOP_DATA *shop;
    MOB_INDEX_DATA *mob, *mob2;
@@ -1357,11 +1344,9 @@ void do_shopset( CHAR_DATA* ch, const char* argument)
    }
 
    do_shopset( ch, "" );
-   return;
 }
 
-
-void do_shopstat( CHAR_DATA* ch, const char* argument)
+void do_shopstat( CHAR_DATA* ch, const char* argument )
 {
    SHOP_DATA *shop;
    MOB_INDEX_DATA *mob;
@@ -1395,11 +1380,9 @@ void do_shopstat( CHAR_DATA* ch, const char* argument)
               o_types[shop->buy_type[2]], o_types[shop->buy_type[3]], o_types[shop->buy_type[4]] );
    ch_printf( ch, "Profit:  buy %3d%%  sell %3d%%\r\n", shop->profit_buy, shop->profit_sell );
    ch_printf( ch, "Hours:   open %2d  close %2d\r\n", shop->open_hour, shop->close_hour );
-   return;
 }
 
-
-void do_shops( CHAR_DATA* ch, const char* argument)
+void do_shops( CHAR_DATA* ch, const char* argument )
 {
    SHOP_DATA *shop;
 
@@ -1415,14 +1398,11 @@ void do_shops( CHAR_DATA* ch, const char* argument)
                  shop->keeper, shop->profit_buy, shop->profit_sell,
                  shop->open_hour, shop->close_hour,
                  shop->buy_type[0], shop->buy_type[1], shop->buy_type[2], shop->buy_type[3], shop->buy_type[4] );
-   return;
 }
-
 
 /* -------------- Repair Shop Building and Editing Section -------------- */
 
-
-void do_makerepair( CHAR_DATA* ch, const char* argument)
+void do_makerepair( CHAR_DATA* ch, const char* argument )
 {
    REPAIR_DATA *repair;
    int vnum;
@@ -1461,10 +1441,9 @@ void do_makerepair( CHAR_DATA* ch, const char* argument)
    repair->close_hour = 23;
    mob->rShop = repair;
    send_to_char( "Done.\r\n", ch );
-   return;
 }
 
-void do_repairset( CHAR_DATA* ch, const char* argument)
+void do_repairset( CHAR_DATA* ch, const char* argument )
 {
    REPAIR_DATA *repair;
    MOB_INDEX_DATA *mob, *mob2;
@@ -1614,11 +1593,9 @@ void do_repairset( CHAR_DATA* ch, const char* argument)
    }
 
    do_repairset( ch, "" );
-   return;
 }
 
-
-void do_repairstat( CHAR_DATA* ch, const char* argument)
+void do_repairstat( CHAR_DATA* ch, const char* argument )
 {
    REPAIR_DATA *repair;
    MOB_INDEX_DATA *mob;
@@ -1650,10 +1627,9 @@ void do_repairstat( CHAR_DATA* ch, const char* argument)
               o_types[repair->fix_type[0]], o_types[repair->fix_type[1]], o_types[repair->fix_type[2]] );
    ch_printf( ch, "Profit: %3d%%  Type: %d\r\n", repair->profit_fix, repair->shop_type );
    ch_printf( ch, "Hours:   open %2d  close %2d\r\n", repair->open_hour, repair->close_hour );
-   return;
 }
 
-void do_repairshops( CHAR_DATA* ch, const char* argument)
+void do_repairshops( CHAR_DATA* ch, const char* argument )
 {
    REPAIR_DATA *repair;
 
@@ -1668,5 +1644,4 @@ void do_repairshops( CHAR_DATA* ch, const char* argument)
       ch_printf( ch, "Keeper: %5d Profit: %3d Type: %d Open: %2d Close: %2d Fix: %2d %2d %2d\r\n",
                  repair->keeper, repair->profit_fix, repair->shop_type,
                  repair->open_hour, repair->close_hour, repair->fix_type[0], repair->fix_type[1], repair->fix_type[2] );
-   return;
 }

@@ -408,7 +408,7 @@ void resolve_dns( DESCRIPTOR_DATA * d, long ip )
    }
 }
 
-void do_cache( CHAR_DATA* ch, const char* argument)
+void do_cache( CHAR_DATA* ch, const char* argument )
 {
    DNS_DATA *cache;
    int ip = 0;

@@ -67,7 +67,6 @@ void free_projects( void )
       project_next = project->next;
       delete_project( project );
    }
-   return;
 }
 
 bool can_remove( CHAR_DATA * ch, BOARD_DATA * board )
@@ -172,7 +171,6 @@ void free_boards( void )
       board_next = board->next;
       free_board( board );
    }
-   return;
 }
 
 /*
@@ -283,7 +281,6 @@ void note_attach( CHAR_DATA * ch )
    pnote->subject = STRALLOC( "" );
    pnote->text = STRALLOC( "" );
    ch->pnote = pnote;
-   return;
 }
 
 void write_board( BOARD_DATA * board )
@@ -311,7 +308,6 @@ void write_board( BOARD_DATA * board )
       }
       FCLOSE( fp );
    }
-   return;
 }
 
 void free_note( NOTE_DATA * pnote )
@@ -365,7 +361,7 @@ OBJ_DATA *find_quill( CHAR_DATA * ch )
    return NULL;
 }
 
-void do_noteroom( CHAR_DATA* ch, const char* argument)
+void do_noteroom( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
    char arg[MAX_STRING_LENGTH];
@@ -409,7 +405,7 @@ void do_noteroom( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_mailroom( CHAR_DATA* ch, const char* argument)
+void do_mailroom( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
    char arg[MAX_STRING_LENGTH];
@@ -1541,7 +1537,6 @@ void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
    }
 
    send_to_char( "Huh?  Type 'help note' for usage.\r\n", ch );
-   return;
 }
 
 BOARD_DATA *read_board( FILE * fp )
@@ -1792,10 +1787,9 @@ void load_boards( void )
          }
       }
    }
-   return;
 }
 
-void do_makeboard( CHAR_DATA* ch, const char* argument)
+void do_makeboard( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
 
@@ -1819,7 +1813,7 @@ void do_makeboard( CHAR_DATA* ch, const char* argument)
    board->min_ballot_level = LEVEL_IMMORTAL;
 }
 
-void do_bset( CHAR_DATA* ch, const char* argument)
+void do_bset( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
    bool found;
@@ -1916,6 +1910,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.  (posting group set)\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "postmessg" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -1936,6 +1931,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "opost" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -1956,6 +1952,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "oremove" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -1976,6 +1973,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "otake" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -1996,6 +1994,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "ocopy" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -2016,6 +2015,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "oread" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -2036,6 +2036,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "olist" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -2056,6 +2057,7 @@ void do_bset( CHAR_DATA* ch, const char* argument)
       send_to_char( "Done.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg2, "extra_removers" ) )
    {
       if( !argument || argument[0] == '\0' )
@@ -2190,10 +2192,9 @@ void do_bset( CHAR_DATA* ch, const char* argument)
    }
 
    do_bset( ch, "" );
-   return;
 }
 
-void do_bstat( CHAR_DATA* ch, const char* argument)
+void do_bstat( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
    bool found;
@@ -2242,10 +2243,9 @@ void do_bstat( CHAR_DATA* ch, const char* argument)
    ch_printf_color( ch, "&GOTake Message:   %s\r\n", board->otakemessg ? board->otakemessg : "Default Message" );
    ch_printf_color( ch, "&GOList Message:   %s\r\n", board->olistmessg ? board->olistmessg : "Default Message" );
    ch_printf_color( ch, "&GOCopy Message:   %s\r\n", board->ocopymessg ? board->ocopymessg : "Default Message" );
-   return;
 }
 
-void do_boards( CHAR_DATA* ch, const char* argument)
+void do_boards( CHAR_DATA* ch, const char* argument )
 {
    BOARD_DATA *board;
 
@@ -2281,7 +2281,6 @@ void mail_count( CHAR_DATA * ch )
 
    if( cnt_from )
       ch_printf( ch, "You have %d mail message%swritten by you.\r\n", cnt_from, ( cnt_from > 1 ) ? "s " : " " );
-   return;
 }
 
 /*
@@ -2500,5 +2499,4 @@ void do_journal( CHAR_DATA * ch, const char *argument )
    send_to_char( "\r\n", ch );
    send_to_char( "Where command is one of:\r\n", ch );
    send_to_char( "write read size\r\n", ch );
-   return;
 }

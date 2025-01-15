@@ -111,7 +111,6 @@ void save_liquids( void )
    }
    fprintf( fp, "%s", "#END\n" );
    FCLOSE( fp );
-   return;
 }
 
 /* read the liquids from a file descriptor and then distribute them accordingly to the struct -Nopey */
@@ -242,7 +241,6 @@ void load_liquids( void )
       }
    }
    FCLOSE( fp );
-   return;
 }
 
 /* save the mixtures to the mixture table -Nopey */
@@ -269,7 +267,6 @@ void save_mixtures( void )
    }
    fprintf( fp, "%s", "#END\n" );
    FCLOSE( fp );
-   return;
 }
 
 /* read the mixtures into the structure -Nopey */
@@ -388,7 +385,6 @@ void load_mixtures( void )
       }
    }
    FCLOSE( fp );
-   return;
 }
 
 /* figure out a vnum for the next liquid  -Nopey */
@@ -481,11 +477,10 @@ void free_liquiddata( void )
       STRFREE( liq->shortdesc );
       DISPOSE( liq );
    }
-   return;
 }
 
 /* Function to display liquid list. - Tarl 9 Jan 03 */
-void do_showliquid( CHAR_DATA* ch, const char* argument)
+void do_showliquid( CHAR_DATA* ch, const char* argument )
 {
    LIQ_TABLE *liq = NULL;
    int i;
@@ -517,22 +512,23 @@ void do_showliquid( CHAR_DATA* ch, const char* argument)
       send_to_char( "Invaild liquid-vnum.\r\nUse 'showliquid' to gain a vaild liquidvnum.\r\n", ch );
       return;
    }
+
    send_to_pager( "&G[&gVnum&G] [&gName&G]\r\n", ch );
    send_to_pager( "-------------------------\r\n", ch );
+
    for( i = 0; i <= top_liquid; i++ )
    {
       if( !liquid_table[i] )
          continue;
       pager_printf( ch, "  %-7d %s\r\n", liquid_table[i]->vnum, liquid_table[i]->name );
    }
+
    send_to_pager( "\r\nUse 'showliquid [vnum]' to view individual liquids.\r\n", ch );
    send_to_pager( "Use 'showmixture' to view the mixturetable.\r\n", ch );
-   return;
-
 }
 
 /* olc function for liquids   -Nopey */
-void do_setliquid( CHAR_DATA* ch, const char* argument)
+void do_setliquid( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -793,11 +789,10 @@ void displaymixture( CHAR_DATA * ch, MIX_TABLE * mix )
          pager_printf( ch, "&winto one part &G%s&w (%d)&D\r\n", ingred1->name, mix->data[1] );
       }
    }
-   return;
 }
 
 /* Function for showmixture - Tarl 9 Jan 03 */
-void do_showmixture( CHAR_DATA* ch, const char* argument)
+void do_showmixture( CHAR_DATA* ch, const char* argument )
 {
    MIX_TABLE *mix = NULL;
 
@@ -831,11 +826,10 @@ void do_showmixture( CHAR_DATA* ch, const char* argument)
 
    send_to_pager( "\r\n&gUse 'showmixture [name]' to view individual mixtures.\r\n", ch );
    send_to_pager( "&gUse 'showliquid' to view the liquidtable.\r\n&d", ch );
-   return;
 }
 
 /* olc funciton for mixtures  -Nopey */
-void do_setmixture( CHAR_DATA* ch, const char* argument)
+void do_setmixture( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    LIQ_TABLE *liq = NULL;
@@ -1154,7 +1148,7 @@ LIQ_TABLE *liqobj_can_mix( OBJ_DATA * iObj, OBJ_DATA * oLiq )
 }
 
 /* the actual -mix- funciton  -Nopey */
-void do_mix( CHAR_DATA* ch, const char* argument)
+void do_mix( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *iObj, *tObj = NULL;
@@ -1233,11 +1227,10 @@ void do_mix( CHAR_DATA* ch, const char* argument)
       return;
    }
    send_to_char( "&cYou mix them together.&g\r\n", ch );
-   return;
 }
 
 /* modified do_drink function -Nopey */
-void do_drink( CHAR_DATA* ch, const char* argument)
+void do_drink( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1629,11 +1622,10 @@ void do_drink( CHAR_DATA* ch, const char* argument)
       WAIT_STATE( ch, PULSE_PER_SECOND / 3 );
    else
       WAIT_STATE( ch, PULSE_PER_SECOND );
-   return;
 }
 
 /* standard liquid functions           -Nopey */
-void do_fill( CHAR_DATA* ch, const char* argument)
+void do_fill( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2104,7 +2096,7 @@ void do_fill( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_empty( CHAR_DATA* ch, const char* argument)
+void do_empty( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
    char arg1[MAX_INPUT_LENGTH], arg2[MAX_INPUT_LENGTH];

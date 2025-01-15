@@ -48,8 +48,8 @@ void add_roster( CLAN_DATA * clan, const char *name, int Class, int level, int k
    roster->kills = kills;
    roster->deaths = deaths;
    roster->joined = current_time;
+
    LINK( roster, clan->first_member, clan->last_member, next, prev );
-   return;
 }
 
 void remove_roster( CLAN_DATA * clan, const char *name )
@@ -92,7 +92,6 @@ void update_roster( CHAR_DATA * ch )
     */
    add_roster( ch->pcdata->clan, ch->name, ch->Class, ch->level, ch->pcdata->mkills, ch->pcdata->mdeaths );
    save_clan( ch->pcdata->clan );
-   return;
 }
 
 /* For use during clan removal and memory cleanup */
@@ -110,7 +109,7 @@ void remove_all_rosters( CLAN_DATA * clan )
    }
 }
 
-void do_roster( CHAR_DATA* ch, const char* argument)
+void do_roster( CHAR_DATA* ch, const char* argument )
 {
    CLAN_DATA *clan;
    ROSTER_DATA *roster;
@@ -169,7 +168,6 @@ void do_roster( CHAR_DATA* ch, const char* argument)
       return;
    }
    do_roster( ch, "" );
-   return;
 }
 
 void fwrite_memberlist( FILE * fp, CLAN_DATA * clan )
@@ -187,7 +185,6 @@ void fwrite_memberlist( FILE * fp, CLAN_DATA * clan )
       fprintf( fp, "Deaths    %d\n", roster->deaths );
       fprintf( fp, "%s", "End\n\n" );
    }
-   return;
 }
 
 void fread_memberlist( CLAN_DATA * clan, FILE * fp )
@@ -281,8 +278,6 @@ void free_one_clan( CLAN_DATA * clan )
    STRFREE( clan->tworank );
    STRFREE( clan->badge );
    DISPOSE( clan );
-
-   return;
 }
 
 void free_clans( void )
@@ -294,7 +289,6 @@ void free_clans( void )
       clan_next = clan->next;
       free_one_clan( clan );
    }
-   return;
 }
 
 void free_one_council( COUNCIL_DATA * council )
@@ -307,7 +301,6 @@ void free_one_council( COUNCIL_DATA * council )
    STRFREE( council->name );
    STRFREE( council->powers );
    DISPOSE( council );
-   return;
 }
 
 void free_councils( void )
@@ -319,7 +312,6 @@ void free_councils( void )
       council_next = council->next;
       free_one_council( council );
    }
-   return;
 }
 
 /*
@@ -460,7 +452,6 @@ void save_clan( CLAN_DATA * clan )
 
       FCLOSE( fp );
    }
-   return;
 }
 
 /*
@@ -515,7 +506,6 @@ void save_council( COUNCIL_DATA * council )
       fprintf( fp, "#END\n" );
       FCLOSE( fp );
    }
-   return;
 }
 
 void sort_vaults( VAULT_DATA *pVault )
@@ -543,7 +533,6 @@ void sort_vaults( VAULT_DATA *pVault )
 
    if( !vault )
       LINK( pVault, first_vault, last_vault, next, prev );
-   return;
 }                                                                                                                                               
 
 void save_vault_list( )
@@ -609,7 +598,6 @@ void load_vaults( )
    FCLOSE( fpList );
 
    log_string(" Done vaults " );
-   return;
 }                                                                                                                                               
 
 bool fread_storage( int rnum, const char *filename )
@@ -1162,7 +1150,6 @@ void load_clans(  )
    }
    FCLOSE( fpList );
    log_string( " Done clans " );
-   return;
 }
 
 /*
@@ -1200,7 +1187,6 @@ void load_councils(  )
    }
    FCLOSE( fpList );
    log_string( " Done councils " );
-   return;
 }
 
 /*
@@ -1246,10 +1232,9 @@ void save_storeroom( CHAR_DATA *ch, int vnum )
       FCLOSE( fp );
       return;
    }
-   return;
 }
 
-void do_make( CHAR_DATA* ch, const char* argument)
+void do_make( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_INDEX_DATA *pObjIndex;
@@ -1318,10 +1303,9 @@ void do_make( CHAR_DATA* ch, const char* argument)
       obj = obj_to_room( obj, ch->in_room );
    act( AT_MAGIC, "$n makes $p!", ch, obj, NULL, TO_ROOM );
    act( AT_MAGIC, "You make $p!", ch, obj, NULL, TO_CHAR );
-   return;
 }
 
-void do_induct( CHAR_DATA* ch, const char* argument)
+void do_induct( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1469,10 +1453,9 @@ void do_induct( CHAR_DATA* ch, const char* argument)
    add_roster( clan, victim->name, victim->Class, victim->level, victim->pcdata->mkills, victim->pcdata->mdeaths );
    save_char_obj( victim );
    save_clan( clan );
-   return;
 }
 
-void do_council_induct( CHAR_DATA* ch, const char* argument)
+void do_council_induct( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1528,7 +1511,6 @@ void do_council_induct( CHAR_DATA* ch, const char* argument)
    act( AT_MAGIC, "$n inducts you into $t", ch, council->name, victim, TO_VICT );
    save_char_obj( victim );
    save_council( council );
-   return;
 }
 
 /* Can the character outcast the victim? */
@@ -1555,7 +1537,7 @@ bool can_outcast( CLAN_DATA * clan, CHAR_DATA * ch, CHAR_DATA * victim )
    return TRUE;
 }
 
-void do_outcast( CHAR_DATA* ch, const char* argument)
+void do_outcast( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1661,23 +1643,28 @@ void do_outcast( CHAR_DATA* ch, const char* argument)
       victim->speaking = LANG_COMMON;
    REMOVE_BIT( victim->speaks, LANG_CLAN );
    --clan->members;
+
    if( clan->members < 0 )
       clan->members = 0;
+
    if( !str_cmp( victim->name, ch->pcdata->clan->number1 ) )
    {
       STRFREE( ch->pcdata->clan->number1 );
       ch->pcdata->clan->number1 = STRALLOC( "" );
    }
+
    if( !str_cmp( victim->name, ch->pcdata->clan->number2 ) )
    {
       STRFREE( ch->pcdata->clan->number2 );
       ch->pcdata->clan->number2 = STRALLOC( "" );
    }
+
    if( !str_cmp( victim->name, ch->pcdata->clan->deity ) )
    {
       STRFREE( ch->pcdata->clan->deity );
       ch->pcdata->clan->deity = STRALLOC( "" );
    }
+
    victim->pcdata->clan = NULL;
    STRFREE( victim->pcdata->clan_name );
    victim->pcdata->clan_name = STRALLOC( "" );
@@ -1695,10 +1682,9 @@ void do_outcast( CHAR_DATA* ch, const char* argument)
    remove_roster( clan, victim->name );
    save_char_obj( victim );
    save_clan( clan );
-   return;
 }
 
-void do_council_outcast( CHAR_DATA* ch, const char* argument)
+void do_council_outcast( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -1769,7 +1755,6 @@ void do_council_outcast( CHAR_DATA* ch, const char* argument)
    act( AT_MAGIC, "$n outcasts you from $t", ch, council->name, victim, TO_VICT );
    save_char_obj( victim );
    save_council( council );
-   return;
 }
 
 void do_setvault( CHAR_DATA *ch, const char *argument )
@@ -1851,11 +1836,9 @@ void do_setvault( CHAR_DATA *ch, const char *argument )
       send_to_char( "  setvault save - saves the vault list.\r\n", ch );
    send_to_char( "    Remember, rooms set as storage on clans or councils will need to be.\r\n", ch );
    send_to_char( "    removed in both clan/council file and the vault list.\r\n", ch );
-
-   return;
 }                               
 
-void do_setclan( CHAR_DATA* ch, const char* argument)
+void do_setclan( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2240,7 +2223,6 @@ void do_setclan( CHAR_DATA* ch, const char* argument)
    }
 
    do_setclan( ch, "" );
-   return;
 }
 
 void do_setcouncil( CHAR_DATA* ch, const char* argument)
@@ -2425,13 +2407,12 @@ void do_setcouncil( CHAR_DATA* ch, const char* argument)
    }
 
    do_setcouncil( ch, "" );
-   return;
 }
 
 /*
  * Added multiple levels on pkills and pdeaths. -- Shaddai
  */
-void do_showclan( CHAR_DATA* ch, const char* argument)
+void do_showclan( CHAR_DATA* ch, const char* argument )
 {
    CLAN_DATA *clan;
 
@@ -2487,10 +2468,9 @@ void do_showclan( CHAR_DATA* ch, const char* argument)
    ch_printf_color( ch, "&wGuard1   : &W%-5d    &wGuard2 : &W%-5d\r\n", clan->guard1, clan->guard2 );
    ch_printf_color( ch, "&wObj1( &W%d &w)  Obj2( &W%d &w)  Obj3( &W%d &w)  Obj4( &W%d &w)  Obj5( &W%d &w)\r\n",
                     clan->clanobj1, clan->clanobj2, clan->clanobj3, clan->clanobj4, clan->clanobj5 );
-   return;
 }
 
-void do_showcouncil( CHAR_DATA* ch, const char* argument)
+void do_showcouncil( CHAR_DATA* ch, const char* argument )
 {
    COUNCIL_DATA *council;
 
@@ -2522,10 +2502,9 @@ void do_showcouncil( CHAR_DATA* ch, const char* argument)
    ch_printf_color( ch, "&wBoard:     &W%-5d\r\n&wMeeting:   &W%-5d\r\n&wPowers:    &W%s\r\n", council->board, council->meeting, council->powers );
    ch_printf_color( ch, "&wStoreroom: &W%-5d\r\n", council->storeroom );
    ch_printf_color( ch, "&wDescription:\r\n&W%s\r\n", council->description );
-   return;
 }
 
-void do_makeclan( CHAR_DATA* ch, const char* argument)
+void do_makeclan( CHAR_DATA* ch, const char* argument )
 {
    CLAN_DATA *clan;
 
@@ -2567,7 +2546,7 @@ void do_makeclan( CHAR_DATA* ch, const char* argument)
    clan->badge = STRALLOC( "" );
 }
 
-void do_makecouncil( CHAR_DATA* ch, const char* argument)
+void do_makecouncil( CHAR_DATA* ch, const char* argument )
 {
    char filename[256];
    COUNCIL_DATA *council;
@@ -2594,7 +2573,7 @@ void do_makecouncil( CHAR_DATA* ch, const char* argument)
 /*
  * Added multiple level pkill and pdeath support. --Shaddai
  */
-void do_clans( CHAR_DATA* ch, const char* argument)
+void do_clans( CHAR_DATA* ch, const char* argument )
 {
    CLAN_DATA *clan;
    int count = 0;
@@ -2633,6 +2612,7 @@ void do_clans( CHAR_DATA* ch, const char* argument)
       send_to_char( "No such clan.\r\n", ch );
       return;
    }
+
    set_char_color( AT_BLOOD, ch );
    ch_printf( ch, "\r\n%s, '%s'\r\n\r\n", clan->name, clan->motto );
    set_char_color( AT_GREY, ch );
@@ -2644,6 +2624,7 @@ void do_clans( CHAR_DATA* ch, const char* argument)
    set_char_color( AT_GREY, ch );
    ch_printf( ch, "Clan Leader:  %s\r\nNumber One :  %s\r\nNumber Two :  %s\r\nClan Deity :  %s\r\n",
               clan->leader, clan->number1, clan->number2, clan->deity );
+
    if( !str_cmp( ch->name, clan->deity )
        || !str_cmp( ch->name, clan->leader )
        || !str_cmp( ch->name, clan->number1 ) || !str_cmp( ch->name, clan->number2 ) || get_trust( ch ) >= LEVEL_GREATER )
@@ -2651,10 +2632,9 @@ void do_clans( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Abbrev     :  %s\n\r", clan->abbrev ? clan->abbrev : "" );
    set_char_color( AT_BLOOD, ch );
    ch_printf( ch, "\r\nDescription:  %s\r\n", clan->description );
-   return;
 }
 
-void do_orders( CHAR_DATA* ch, const char* argument)
+void do_orders( CHAR_DATA* ch, const char* argument )
 {
    CLAN_DATA *order;
    int count = 0;
@@ -2696,6 +2676,7 @@ void do_orders( CHAR_DATA* ch, const char* argument)
    set_char_color( AT_GREEN, ch );
    ch_printf( ch, "Deity      :  %s\r\nLeader     :  %s\r\nNumber One :  %s\r\nNumber Two :  %s\r\n",
               order->deity, order->leader, order->number1, order->number2 );
+
    if( !str_cmp( ch->name, order->deity )
        || !str_cmp( ch->name, order->leader )
        || !str_cmp( ch->name, order->number1 ) || !str_cmp( ch->name, order->number2 ) || get_trust( ch ) >= LEVEL_GREATER )
@@ -2703,10 +2684,9 @@ void do_orders( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Abbrev     :  %s\n\r", order->abbrev ? order->abbrev : "" );
    set_char_color( AT_DGREEN, ch );
    ch_printf( ch, "\r\nDescription:\r\n%s\r\n", order->description );
-   return;
 }
 
-void do_councils( CHAR_DATA* ch, const char* argument)
+void do_councils( CHAR_DATA* ch, const char* argument )
 {
    COUNCIL_DATA *council;
 
@@ -2716,6 +2696,7 @@ void do_councils( CHAR_DATA* ch, const char* argument)
       send_to_char( "There are no councils currently formed.\r\n", ch );
       return;
    }
+
    if( argument[0] == '\0' )
    {
       send_to_char_color( "\r\n&cTitle                    Head\r\n", ch );
@@ -2729,12 +2710,14 @@ void do_councils( CHAR_DATA* ch, const char* argument)
       send_to_char_color( "&cUse 'councils <name of council>' for more detailed information.\r\n", ch );
       return;
    }
+
    council = get_council( argument );
    if( !council )
    {
       send_to_char_color( "&cNo such council exists...\r\n", ch );
       return;
    }
+
    ch_printf_color( ch, "&c\r\n%s\r\n", council->name );
    if( council->head2 == NULL )
       ch_printf_color( ch, "&cHead:     &w%s\r\n&cMembers:  &w%d\r\n", council->head, council->members );
@@ -2742,10 +2725,9 @@ void do_councils( CHAR_DATA* ch, const char* argument)
       ch_printf_color( ch, "&cCo-Heads:     &w%s &cand &w%s\r\n&cMembers:  &w%d\r\n",
                        council->head, council->head2, council->members );
    ch_printf_color( ch, "&cDescription:\r\n&w%s\r\n", council->description );
-   return;
 }
 
-void do_guilds( CHAR_DATA* ch, const char* argument)
+void do_guilds( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    CLAN_DATA *guild;
@@ -2784,11 +2766,13 @@ void do_guilds( CHAR_DATA* ch, const char* argument)
       send_to_char( "No such Guild.\r\n", ch );
       return;
    }
+
    set_char_color( AT_HUNGRY, ch );
    ch_printf( ch, "\r\n%s\r\n", guild->name );
    set_char_color( AT_YELLOW, ch );
    ch_printf( ch, "Leader:    %s\r\nNumber 1:  %s\r\nNumber 2:  %s\r\nMotto:     %s\r\n",
               guild->leader, guild->number1, guild->number2, guild->motto );
+
    if( !str_cmp( ch->name, guild->deity )
        || !str_cmp( ch->name, guild->leader )
        || !str_cmp( ch->name, guild->number1 ) || !str_cmp( ch->name, guild->number2 ) || get_trust( ch ) >= LEVEL_GREATER )
@@ -2796,7 +2780,6 @@ void do_guilds( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Abbrev:    %s\n\r", guild->abbrev ? guild->abbrev : "" );
    set_char_color( AT_HUNGRY, ch );
    ch_printf( ch, "Guild Description:\r\n%s\r\n", guild->description );
-   return;
 }
 
 void do_defeats( CHAR_DATA * ch, const char *argument )
@@ -2837,7 +2820,7 @@ void do_defeats( CHAR_DATA * ch, const char *argument )
    }
 }
 
-void do_victories( CHAR_DATA* ch, const char* argument)
+void do_victories( CHAR_DATA* ch, const char* argument )
 {
    char filename[256];
 
@@ -2874,7 +2857,7 @@ void do_victories( CHAR_DATA* ch, const char* argument)
    }
 }
 
-void do_shove( CHAR_DATA* ch, const char* argument)
+void do_shove( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -3284,5 +3267,4 @@ below 15 */
       return;
    }
    send_to_char( "You cannot do that to someone who is standing.\r\n", ch );
-   return;
 }

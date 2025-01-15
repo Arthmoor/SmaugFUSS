@@ -26,14 +26,13 @@
  */
 const char *tiny_affect_loc_name( int location );
 
-void do_gold( CHAR_DATA* ch, const char* argument)
+void do_gold( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_GOLD, ch );
    ch_printf( ch, "You have %s gold pieces.\r\n", num_punct( ch->gold ) );
-   return;
 }
 
-void do_worth( CHAR_DATA* ch, const char* argument)
+void do_worth( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
@@ -133,7 +132,6 @@ void do_worth( CHAR_DATA* ch, const char* argument)
       pager_printf( ch, "|            |Hitroll: %-8d |Damroll: %-11d |                     |\r\n", GET_HITROLL( ch ),
                     GET_DAMROLL( ch ) );
    send_to_pager( " ----------------------------------------------------------------------------\r\n", ch );
-   return;
 }
 
 /*
@@ -601,7 +599,6 @@ void do_score( CHAR_DATA* ch, const char* argument )
       }
    }
    send_to_pager( "\r\n", ch );
-   return;
 }
 
 /*
@@ -790,7 +787,7 @@ const char *get_race( CHAR_DATA * ch )
 /*								-Thoric
  * Display your current exp, level, and surrounding level exp requirements
  */
-void do_level( CHAR_DATA* ch, const char* argument)
+void do_level( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char buf2[MAX_STRING_LENGTH];
@@ -813,7 +810,7 @@ void do_level( CHAR_DATA* ch, const char* argument)
 }
 
 /* 1997, Blodkai */
-void do_remains( CHAR_DATA* ch, const char* argument)
+void do_remains( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    OBJ_DATA *obj;
@@ -852,11 +849,10 @@ void do_remains( CHAR_DATA* ch, const char* argument)
       send_to_pager( "\r\n", ch );
       ch->pcdata->favor -= ch->level * 2;
    }
-   return;
 }
 
 /* Affects-at-a-glance, Blodkai */
-void do_affected( CHAR_DATA* ch, const char* argument)
+void do_affected( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    AFFECT_DATA *paf;
@@ -918,10 +914,9 @@ void do_affected( CHAR_DATA* ch, const char* argument)
             ch_printf( ch, "%-18s\r\n", skill->name );
          }
    }
-   return;
 }
 
-void do_inventory( CHAR_DATA* ch, const char* argument)
+void do_inventory( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -942,10 +937,9 @@ void do_inventory( CHAR_DATA* ch, const char* argument)
       send_to_char( "&RYou are carrying:\r\n", ch );
 
    show_list_to_char( victim->first_carrying, ch, TRUE, TRUE );
-   return;
 }
 
-void do_equipment( CHAR_DATA* ch, const char* argument)
+void do_equipment( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim = ch;
    OBJ_DATA *obj;
@@ -1019,7 +1013,7 @@ void set_title( CHAR_DATA * ch, const char *title )
    ch->pcdata->title = STRALLOC( buf );
 }
 
-void do_title( CHAR_DATA* ch, const char* argument)
+void do_title( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
       return;
@@ -1047,7 +1041,7 @@ void do_title( CHAR_DATA* ch, const char* argument)
    send_to_char( "Ok.\r\n", ch );
 }
 
-void do_homepage( CHAR_DATA* ch, const char* argument)
+void do_homepage( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
 
@@ -1094,7 +1088,7 @@ void do_homepage( CHAR_DATA* ch, const char* argument)
 /*
  * Set your personal description				-Thoric
  */
-void do_description( CHAR_DATA* ch, const char* argument)
+void do_description( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
    {
@@ -1139,7 +1133,7 @@ void do_description( CHAR_DATA* ch, const char* argument)
 }
 
 /* Ripped off do_description for whois bio's -- Scryn*/
-void do_bio( CHAR_DATA* ch, const char* argument)
+void do_bio( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
    {
@@ -1188,7 +1182,7 @@ void do_bio( CHAR_DATA* ch, const char* argument)
  * New stat and statreport command coded by Morphina
  * Bug fixes by Shaddai
  */
-void do_statreport( CHAR_DATA* ch, const char* argument)
+void do_statreport( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
 
@@ -1230,10 +1224,9 @@ void do_statreport( CHAR_DATA* ch, const char* argument)
              get_curr_str( ch ), get_curr_wis( ch ), get_curr_int( ch ),
              get_curr_dex( ch ), get_curr_con( ch ), get_curr_cha( ch ), get_curr_lck( ch ) );
    act( AT_REPORT, buf, ch, NULL, NULL, TO_ROOM );
-   return;
 }
 
-void do_stat( CHAR_DATA* ch, const char* argument)
+void do_stat( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) )
    {
@@ -1255,10 +1248,9 @@ void do_stat( CHAR_DATA* ch, const char* argument)
    ch_printf( ch, "Your current stats: %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
               get_curr_str( ch ), get_curr_wis( ch ), get_curr_int( ch ),
               get_curr_dex( ch ), get_curr_con( ch ), get_curr_cha( ch ), get_curr_lck( ch ) );
-   return;
 }
 
-void do_report( CHAR_DATA* ch, const char* argument)
+void do_report( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_INPUT_LENGTH];
 
@@ -1270,7 +1262,6 @@ void do_report( CHAR_DATA* ch, const char* argument)
       send_to_char( "You can't do that in your current state of mind!\r\n", ch );
       return;
    }
-
 
    if( IS_VAMPIRE( ch ) )
       ch_printf( ch,
@@ -1291,11 +1282,9 @@ void do_report( CHAR_DATA* ch, const char* argument)
                 ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp );
 
    act( AT_REPORT, buf, ch, NULL, NULL, TO_ROOM );
-
-   return;
 }
 
-void do_fprompt( CHAR_DATA* ch, const char* argument)
+void do_fprompt( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -1338,10 +1327,9 @@ void do_fprompt( CHAR_DATA* ch, const char* argument)
       ch->pcdata->fprompt = STRALLOC( ch->pcdata->prompt );
    else
       ch->pcdata->fprompt = STRALLOC( argument );
-   return;
 }
 
-void do_prompt( CHAR_DATA* ch, const char* argument)
+void do_prompt( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -1382,7 +1370,6 @@ void do_prompt( CHAR_DATA* ch, const char* argument)
       ch->pcdata->prompt = STRALLOC( ch->pcdata->fprompt );
    else
       ch->pcdata->prompt = STRALLOC( argument );
-   return;
 }
 
 void do_compass( CHAR_DATA *ch, const char *argument )

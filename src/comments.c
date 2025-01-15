@@ -63,11 +63,9 @@ void comment_remove( CHAR_DATA * victim, NOTE_DATA * pnote )
     * Rewrite entire list.
     */
    save_char_obj( victim );
-
-   return;
 }
 
-void do_comment( CHAR_DATA* ch, const char* argument)
+void do_comment( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char arg1[MAX_INPUT_LENGTH];
@@ -407,7 +405,6 @@ void do_comment( CHAR_DATA* ch, const char* argument)
    }
 
    send_to_char( "Huh?  Type 'help comment' for usage (i hope!).\r\n", ch );
-   return;
 }
 
 void fwrite_comments( CHAR_DATA * ch, FILE * fp )
@@ -432,7 +429,6 @@ void fwrite_comments( CHAR_DATA * ch, FILE * fp )
       fprintf( fp, "subject %s~\n", pnote->subject );
       fprintf( fp, "text\n%s~\n", pnote->text );
    }
-   return;
 }
 
 void fread_comment( CHAR_DATA * ch, FILE * fp )

@@ -123,7 +123,6 @@ void save_residence( ROOM_INDEX_DATA * location )
    }
 
    bug( "%s: Location doesn't have an area.", __func__ );
-   return;
 }
 
 bool in_same_house( CHAR_DATA * ch, CHAR_DATA * vch )
@@ -924,7 +923,6 @@ void do_house( CHAR_DATA * ch, const char *argument )
    }
 
    do_house( ch, "" );
-   return;
 }
 
 void do_gohome( CHAR_DATA * ch, const char *argument )
@@ -999,7 +997,6 @@ void do_gohome( CHAR_DATA * ch, const char *argument )
    act( AT_GREY, buf, ch, NULL, ch, TO_ROOM );
 
    do_look( ch, "" );
-   return;
 }
 
 void do_residence( CHAR_DATA * ch, const char *argument )
@@ -1036,7 +1033,6 @@ void do_residence( CHAR_DATA * ch, const char *argument )
       z++;
    }
    send_to_char_color( "&G-------------------------------------------------------------------------------\r\n", ch );
-   return;
 }
 
 void do_accessories( CHAR_DATA * ch, const char *argument )
@@ -1384,7 +1380,6 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
    }
 
    do_accessories( ch, "" );
-   return;
 }
 
 void save_homebuy(  )
@@ -1796,7 +1791,6 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
    }
 
    do_homebuy( ch, "syntax" );
-   return;
 }
 
 void do_sellhouse( CHAR_DATA * ch, const char *argument )
@@ -1853,7 +1847,6 @@ void do_sellhouse( CHAR_DATA * ch, const char *argument )
    send_to_char( "You have successfully placed your residence on auction for the given starting bid.\r\n"
                  "Profit from the sale should occur when your house has been bought on auction.\r\n"
                  "Loss of your residence should also occur at that time.\r\n", ch );
-   return;
 }
 
 int fread_house( FILE * fp )
@@ -2041,7 +2034,6 @@ void load_homedata(  )
    }
 
    FCLOSE( fpList );
-   return;
 }
 
 void save_house_by_vnum( int vnum )
@@ -2054,8 +2046,6 @@ void save_house_by_vnum( int vnum )
          for( i = 0; i < MAX_HOUSE_ROOMS; i++ )
             if( tmphome->vnum[i] == vnum )
                fwrite_house( tmphome );
-
-   return;
 }
 
 void save_accessories(  )
@@ -2411,8 +2401,6 @@ void logoff( CHAR_DATA * ch )
    for( x = 0; x < MAX_WEAR; x++ )
       for( y = 0; y < MAX_LAYERS; y++ )
          save_equipment[x][y] = NULL;
-
-   return;
 }
 
 void homebuy_update(  )
@@ -2534,5 +2522,4 @@ void homebuy_update(  )
       logoff( bidder );
       logoff( seller );
    }
-   return;
 }

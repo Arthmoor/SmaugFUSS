@@ -395,6 +395,7 @@ void boot_db( bool fCopyOver )
    sysdata.dayspermonth = 31;
    sysdata.monthsperyear = 17;
    sysdata.save_flags = SV_DEATH | SV_PASSCHG | SV_AUTO | SV_PUT | SV_DROP | SV_GIVE | SV_AUCTION | SV_ZAPDROP | SV_IDLE;
+
    if( !load_systemdata( &sysdata ) )
    {
       log_string( "Not found.  Creating new configuration." );
@@ -713,11 +714,13 @@ void boot_db( bool fCopyOver )
    fBootDb = FALSE;
    log_string( "Initializing economy" );
    initialize_economy(  );
+
    if( fCopyOver )
    {
       log_string( "Loading world state..." );
       load_world(  );
    }
+
    log_string( "Resetting areas" );
    area_update(  );
 
@@ -1376,7 +1379,6 @@ void load_mobiles( AREA_DATA * tarea, FILE * fp )
          top_mob_index++;
       }
    }
-   return;
 }
 
 /*
@@ -1612,8 +1614,6 @@ void load_objects( AREA_DATA * tarea, FILE * fp )
          top_obj_index++;
       }
    }
-
-   return;
 }
 
 /*
@@ -1806,7 +1806,6 @@ void load_resets( AREA_DATA * tarea, FILE * fp )
       for( roomlist = tarea->first_room; roomlist; roomlist = roomlist->next_aroom )
          renumber_put_resets( roomlist );
    }
-   return;
 }
 
 void load_smaugwiz_reset( ROOM_INDEX_DATA * room, FILE * fp )
@@ -2010,7 +2009,6 @@ void load_room_reset( ROOM_INDEX_DATA * room, FILE * fp )
 
    if( !not01 )
       renumber_put_resets( room );
-   return;
 }
 
 /*
@@ -2225,7 +2223,6 @@ void load_rooms( AREA_DATA * tarea, FILE * fp )
          top_room++;
       }
    }
-   return;
 }
 
 /*
@@ -2268,7 +2265,6 @@ void load_shops( FILE * fp )
       last_shop = pShop;
       top_shop++;
    }
-   return;
 }
 
 /*
@@ -2309,7 +2305,6 @@ void load_repairs( FILE * fp )
       last_repair = rShop;
       top_repair++;
    }
-   return;
 }
 
 /*
@@ -2389,7 +2384,6 @@ void load_ranges( AREA_DATA * tarea, FILE * fp )
       tarea->low_hard_range = x3;
       tarea->hi_hard_range = x4;
    }
-   return;
 }
 
 /*
@@ -2501,7 +2495,6 @@ void fix_exits( void )
          }
       }
    }
-   return;
 }
 
 /*
@@ -2659,7 +2652,6 @@ void area_update( void )
             pArea->age = 15 - 3;
       }
    }
-   return;
 }
 
 /*
@@ -2945,7 +2937,6 @@ OBJ_DATA *create_object( OBJ_INDEX_DATA * pObjIndex, int level )
    return obj;
 }
 
-
 /*
  * Clear a new character.
  */
@@ -3015,7 +3006,6 @@ void clear_char( CHAR_DATA * ch )
    ch->mod_cha = 0;
    ch->mod_con = 0;
    ch->mod_lck = 0;
-   return;
 }
 
 /*
@@ -3631,7 +3621,6 @@ void fread_to_eol( FILE * fp )
    while( c == '\n' || c == '\r' );
 
    ungetc( c, fp );
-   return;
 }
 
 /*
@@ -3756,7 +3745,7 @@ char *fread_word( FILE * fp )
    return NULL;
 }
 
-void do_memory( CHAR_DATA* ch, const char* argument)
+void do_memory( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    int hash;
@@ -3812,7 +3801,6 @@ void do_memory( CHAR_DATA* ch, const char* argument)
       send_to_char( "Hash strings not enabled.\r\n", ch );
 #endif
    }
-   return;
 }
 
 /*
@@ -3896,7 +3884,6 @@ void init_mm(  )
    {
       piState[iState] = ( piState[iState - 1] + piState[iState - 2] ) & ( ( 1 << 30 ) - 1 );
    }
-   return;
 }
 
 int number_mm( void )
@@ -3959,23 +3946,21 @@ void smash_tilde( char *str )
    for( ; *str != '\0'; str++ )
       if( *str == '~' )
          *str = '-';
-
-   return;
 }
 
 const char* smash_tilde( const char *str )
 {
-    static char buf[MAX_STRING_LENGTH];
-    mudstrlcpy( buf, str, MAX_STRING_LENGTH );
-    smash_tilde( buf );
-    return buf;
+   static char buf[MAX_STRING_LENGTH];
+   mudstrlcpy( buf, str, MAX_STRING_LENGTH );
+   smash_tilde( buf );
+   return buf;
 }
 
 char* smash_tilde_copy( const char *str )
 {
-    char* result = strdup(str);
-    smash_tilde(result);
-    return result;
+   char* result = strdup(str);
+   smash_tilde(result);
+   return result;
 }
 
 /*
@@ -3987,8 +3972,6 @@ void hide_tilde( char *str )
    for( ; *str != '\0'; str++ )
       if( *str == '~' )
          *str = HIDDEN_TILDE;
-
-   return;
 }
 
 const char *show_tilde( const char *str )
@@ -4233,7 +4216,6 @@ void append_file( CHAR_DATA * ch, const char *file, const char *str )
       fprintf( fp, "[%5d] %s: %s\n", ch->in_room ? ch->in_room->vnum : 0, ch->name, str );
       FCLOSE( fp );
    }
-   return;
 }
 
 /*
@@ -4451,7 +4433,6 @@ void log_string_plus( const char *str, short log_type, short level )
       case LOG_ALL:
          break;
    }
-   return;
 }
 
 void log_printf_plus( short log_type, short level, const char *fmt, ... )
@@ -4550,7 +4531,6 @@ void add_to_wizlist( char *name, int level )
    wiz->next = NULL;
    last_wiz->next = wiz;
    last_wiz = wiz;
-   return;
 }
 
 /*
@@ -4607,6 +4587,7 @@ void make_wizlist(  )
 /*  towizfile( " Masters of the Realms of Despair!" );*/
    buf[0] = '\0';
    ilevel = 65535;
+
    for( wiz = first_wiz; wiz; wiz = wiz->next )
    {
       if( wiz->level < ilevel )
@@ -4616,6 +4597,7 @@ void make_wizlist(  )
             towizfile( buf );
             buf[0] = '\0';
          }
+
          towizfile( "" );
          ilevel = wiz->level;
          switch ( ilevel )
@@ -4859,7 +4841,6 @@ void mobprog_file_read( MOB_INDEX_DATA * mob, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 /* This procedure is responsible for reading any in_file MUDprograms.
@@ -4909,7 +4890,6 @@ void mprog_read_programs( FILE * fp, MOB_INDEX_DATA * mob )
             break;
       }
    }
-   return;
 }
 
 /*************************************************************/
@@ -4973,7 +4953,6 @@ void objprog_file_read( OBJ_INDEX_DATA * obj, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 /* This procedure is responsible for reading any in_file OBJprograms.
@@ -5023,7 +5002,6 @@ void oprog_read_programs( FILE * fp, OBJ_INDEX_DATA * obj )
             break;
       }
    }
-   return;
 }
 
 /*************************************************************/
@@ -5087,7 +5065,6 @@ void roomprog_file_read( ROOM_INDEX_DATA * room, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 /* This procedure is responsible for reading any in_file ROOMprograms.
@@ -5137,7 +5114,6 @@ void rprog_read_programs( FILE * fp, ROOM_INDEX_DATA * room )
             break;
       }
    }
-   return;
 }
 
 /*************************************************************/
@@ -5266,7 +5242,6 @@ void delete_room( ROOM_INDEX_DATA * room )
    }
    DISPOSE( room );
    --top_room;
-   return;
 }
 
 /* See comment on delete_room. */
@@ -5332,7 +5307,6 @@ void delete_obj( OBJ_INDEX_DATA * obj )
    }
    DISPOSE( obj );
    --top_obj_index;
-   return;
 }
 
 /* See comment on delete_room. */
@@ -5408,7 +5382,6 @@ void delete_mob( MOB_INDEX_DATA * mob )
    }
    DISPOSE( mob );
    --top_mob_index;
-   return;
 }
 
 /*
@@ -5465,6 +5438,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
       cObjIndex = get_obj_index( cvnum );
    else
       cObjIndex = NULL;
+
    CREATE( pObjIndex, OBJ_INDEX_DATA, 1 );
    pObjIndex->vnum = vnum;
    pObjIndex->name = STRALLOC( name );
@@ -5472,6 +5446,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
    pObjIndex->last_affect = NULL;
    pObjIndex->first_extradesc = NULL;
    pObjIndex->last_extradesc = NULL;
+
    if( !cObjIndex )
    {
       snprintf( buf, MAX_STRING_LENGTH, "A newly created %s", name );
@@ -5518,6 +5493,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
       pObjIndex->weight = cObjIndex->weight;
       pObjIndex->cost = cObjIndex->cost;
       pObjIndex->level = cObjIndex->level;
+
       for( ced = cObjIndex->first_extradesc; ced; ced = ced->next )
       {
          CREATE( ed, EXTRA_DESCR_DATA, 1 );
@@ -5526,6 +5502,7 @@ OBJ_INDEX_DATA *make_object( int vnum, int cvnum, const char *name )
          LINK( ed, pObjIndex->first_extradesc, pObjIndex->last_extradesc, next, prev );
          top_ed++;
       }
+
       for( cpaf = cObjIndex->first_affect; cpaf; cpaf = cpaf->next )
       {
          CREATE( paf, AFFECT_DATA, 1 );
@@ -5561,11 +5538,13 @@ MOB_INDEX_DATA *make_mobile( int vnum, int cvnum, const char *name )
       cMobIndex = get_mob_index( cvnum );
    else
       cMobIndex = NULL;
+
    CREATE( pMobIndex, MOB_INDEX_DATA, 1 );
    pMobIndex->vnum = vnum;
    pMobIndex->count = 0;
    pMobIndex->killed = 0;
    pMobIndex->player_name = STRALLOC( name );
+
    if( !cMobIndex )
    {
       snprintf( buf, MAX_STRING_LENGTH, "A newly created %s", name );
@@ -5691,6 +5670,7 @@ EXIT_DATA *make_exit( ROOM_INDEX_DATA * pRoomIndex, ROOM_INDEX_DATA * to_room, s
    pexit->to_room = to_room;
    pexit->distance = 1;
    pexit->key = -1;
+
    if( to_room )
    {
       pexit->vnum = to_room->vnum;
@@ -5701,6 +5681,7 @@ EXIT_DATA *make_exit( ROOM_INDEX_DATA * pRoomIndex, ROOM_INDEX_DATA * to_room, s
          pexit->rexit = texit;
       }
    }
+
    broke = FALSE;
    for( texit = pRoomIndex->first_exit; texit; texit = texit->next )
       if( door < texit->vdir )
@@ -5708,6 +5689,7 @@ EXIT_DATA *make_exit( ROOM_INDEX_DATA * pRoomIndex, ROOM_INDEX_DATA * to_room, s
          broke = TRUE;
          break;
       }
+
    if( !pRoomIndex->first_exit )
       pRoomIndex->first_exit = pexit;
    else
@@ -6008,7 +5990,6 @@ void fread_fuss_exit( FILE * fp, ROOM_INDEX_DATA * pRoomIndex )
    bug( "%s: Reached fallout point! Exit data invalid.", __func__ );
    if( pexit )
       extract_exit( pRoomIndex, pexit );
-   return;
 }
 
 void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
@@ -6122,7 +6103,6 @@ void rprog_file_read( ROOM_INDEX_DATA * prog_target, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 void fread_fuss_roomprog( FILE * fp, MPROG_DATA * mprg, ROOM_INDEX_DATA * prog_target )
@@ -6531,7 +6511,6 @@ void oprog_file_read( OBJ_INDEX_DATA * prog_target, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 void fread_fuss_objprog( FILE * fp, MPROG_DATA * mprg, OBJ_INDEX_DATA * prog_target )
@@ -6995,7 +6974,6 @@ void mprog_file_read( MOB_INDEX_DATA * prog_target, const char *f )
       }
    }
    FCLOSE( progfile );
-   return;
 }
 
 void fread_fuss_mobprog( FILE * fp, MPROG_DATA * mprg, MOB_INDEX_DATA * prog_target )
@@ -8027,8 +8005,10 @@ void load_reserved( void )
          FCLOSE( fp );
          return;
       }
+
       CREATE( res, RESERVE_DATA, 1 );
       res->name = fread_string_nohash( fp );
+
       if( *res->name == '$' )
          break;
       sort_reserved( res );
@@ -8194,8 +8174,6 @@ void sort_reserved( RESERVE_DATA * pRes )
    {
       LINK( pRes, first_reserved, last_reserved, next, prev );
    }
-
-   return;
 }
 
 /*
@@ -8223,7 +8201,6 @@ void sort_area_by_name( AREA_DATA * pArea )
    {
       LINK( pArea, first_area_name, last_area_name, next_sort_name, prev_sort_name );
    }
-   return;
 }
 
 /*
@@ -8315,6 +8292,7 @@ void show_vnums( CHAR_DATA * ch, int low, int high, bool proto, bool shownl, con
       first_sort = first_bsort;
    else
       first_sort = first_asort;
+
    for( pArea = first_sort; pArea; pArea = pArea->next_sort )
    {
       if( IS_SET( pArea->status, AREA_DELETED ) )
@@ -8336,13 +8314,12 @@ void show_vnums( CHAR_DATA * ch, int low, int high, bool proto, bool shownl, con
       count++;
    }
    pager_printf( ch, "Areas listed: %d  Loaded: %d\r\n", count, loaded );
-   return;
 }
 
 /*
  * Shows prototype vnums ranges, and if loaded
  */
-void do_vnums( CHAR_DATA* ch, const char* argument)
+void do_vnums( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8364,7 +8341,7 @@ void do_vnums( CHAR_DATA* ch, const char* argument)
 /*
  * Shows installed areas, sorted.  Mark unloaded areas with an X
  */
-void do_zones( CHAR_DATA* ch, const char* argument)
+void do_zones( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8386,7 +8363,7 @@ void do_zones( CHAR_DATA* ch, const char* argument)
 /*
  * Show prototype areas, sorted.  Only show loaded areas
  */
-void do_newzones( CHAR_DATA* ch, const char* argument)
+void do_newzones( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -8749,7 +8726,7 @@ void load_watchlist( void )
 
 /* Check to make sure range of vnums is free - Scryn 2/27/96 */
 
-void do_check_vnums( CHAR_DATA* ch, const char* argument)
+void do_check_vnums( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    AREA_DATA *pArea;
@@ -8891,6 +8868,7 @@ void do_check_vnums( CHAR_DATA* ch, const char* argument)
             ch_printf( ch, "Objects: %5d - %-5d\r\n", pArea->low_o_vnum, pArea->hi_o_vnum );
       }
    }
+
    for( pArea = first_bsort; pArea; pArea = pArea->next_sort )
    {
       area_conflict = FALSE;
@@ -8992,8 +8970,6 @@ void load_projects( void ) /* Copied load_boards structure for simplicity */
    {
       FCLOSE( fp );
    }
-
-   return;
 }
 
 PROJECT_DATA *read_project( FILE * fp )
@@ -9374,8 +9350,6 @@ void add_loginmsg( const char *name, short type, const char *argument )
 
    LINK( lmsg, first_lmsg, last_lmsg, next, prev );
    save_loginmsg(  );
-
-   return;
 }
 
 const char *const login_msg[] = {

@@ -1877,7 +1877,6 @@ void drunk_randoms( CHAR_DATA * ch )
    }
 
    ch->position = position;
-   return;
 }
 
 /*
@@ -1959,7 +1958,6 @@ void hallucinations( CHAR_DATA * ch )
       }
       send_to_char( t, ch );
    }
-   return;
 }
 
 void tele_update( void )

@@ -663,6 +663,7 @@ void caught_alarm( int signum )
    bug( "%s: ALARM CLOCK!  In section %s", __func__, alarm_section );
    mudstrlcpy( buf, "Alas, the hideous malevalent entity known only as 'Lag' rises once more!\r\n", MAX_STRING_LENGTH );
    echo_to_all( AT_IMMORT, buf, ECHOTAR_ALL );
+
    if( newdesc )
    {
       FD_CLR( newdesc, &in_set );
@@ -726,6 +727,7 @@ void accept_new( int ctrl )
    FD_SET( ctrl, &in_set );
    maxdesc = ctrl;
    newdesc = 0;
+
    for( d = first_descriptor; d; d = d->next )
    {
       maxdesc = UMAX( maxdesc, d->descriptor );
@@ -972,7 +974,6 @@ void game_loop( void )
       save_morphs(  );
 
    fflush( stderr ); /* make sure strerr is flushed */
-   return;
 }
 
 void new_descriptor( int new_desc )
@@ -995,6 +996,7 @@ void new_descriptor( int new_desc )
       set_alarm( 0 );
       return;
    }
+
    set_alarm( 20 );
    alarm_section = "new_descriptor::accept";
    if( ( desc = accept( new_desc, ( struct sockaddr * )&sock, &size ) ) < 0 )
@@ -1004,6 +1006,7 @@ void new_descriptor( int new_desc )
       set_alarm( 0 );
       return;
    }
+
    if( check_bad_desc( new_desc ) )
    {
       set_alarm( 0 );
@@ -1117,7 +1120,6 @@ void new_descriptor( int new_desc )
       save_sysdata( sysdata );
    }
    set_alarm( 0 );
-   return;
 }
 
 void free_desc( DESCRIPTOR_DATA * d )
@@ -1130,7 +1132,6 @@ void free_desc( DESCRIPTOR_DATA * d )
       DISPOSE( d->pagebuf );
    DISPOSE( d->mccp );
    DISPOSE( d );
-   return;
 }
 
 void close_socket( DESCRIPTOR_DATA * dclose, bool force )
@@ -1146,6 +1147,7 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
       kill( dclose->ipid, SIGKILL );
       waitpid( dclose->ipid, &status, 0 );
    }
+
    if( dclose->ifd != -1 )
       close( dclose->ifd );
 
@@ -1284,7 +1286,6 @@ void close_socket( DESCRIPTOR_DATA * dclose, bool force )
 
    free_desc( dclose );
    --num_descriptors;
-   return;
 }
 
 bool read_from_descriptor( DESCRIPTOR_DATA * d )
@@ -1455,7 +1456,6 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
       i++;
    for( j = 0; ( d->inbuf[j] = d->inbuf[i + j] ) != '\0'; j++ )
       ;
-   return;
 }
 
 /*
@@ -1639,22 +1639,21 @@ void write_to_buffer( DESCRIPTOR_DATA * d, const char *txt, size_t length )
    strncpy( d->outbuf + d->outtop, txt, length );
    d->outtop += length;
    d->outbuf[d->outtop] = '\0';
-   return;
 }
 
 void buffer_printf( DESCRIPTOR_DATA * d, const char *fmt, ... )
 {
-    char buf[MAX_STRING_LENGTH * 2];
+   char buf[MAX_STRING_LENGTH * 2];
 
-    va_list args;
+   va_list args;
 
-    va_start( args, fmt );
-    vsprintf( buf, fmt, args );
-    va_end( args );
+   va_start( args, fmt );
+   vsprintf( buf, fmt, args );
+   va_end( args );
 
-    write_to_buffer( d, buf, strlen( buf ) );
+   write_to_buffer( d, buf, strlen( buf ) );
 }
-   
+
 /*
 * This is the MCCP version. Use write_to_descriptor_old to send non-compressed text.
 * Updated to run with the block checks by Orion... if it doesn't work, blame
@@ -1763,15 +1762,15 @@ bool write_to_descriptor( DESCRIPTOR_DATA * d, const char *txt, int length )
 
 void descriptor_printf( DESCRIPTOR_DATA * d, const char *fmt, ... )
 {
-    char buf[MAX_STRING_LENGTH * 2];
+   char buf[MAX_STRING_LENGTH * 2];
 
-    va_list args;
+   va_list args;
 
-    va_start( args, fmt );
+   va_start( args, fmt );
     vsprintf( buf, fmt, args );
-    va_end( args );
+   va_end( args );
 
-    write_to_descriptor( d, buf, strlen( buf ) );
+   write_to_descriptor( d, buf, strlen( buf ) );
 }
 
 /*
@@ -2734,7 +2733,6 @@ void nanny( DESCRIPTOR_DATA * d, char *argument )
          nanny_delete_char( d, argument );
          break;
    }
-   return;
 }
 
 bool is_reserved_name( const char *name )
@@ -2938,7 +2936,6 @@ void stop_idling( CHAR_DATA * ch )
    mprog_void_trigger( ch );
 
    act( AT_ACTION, "$n has returned from the void.", ch, NULL, NULL, TO_ROOM );
-   return;
 }
 
 /*
@@ -3407,10 +3404,9 @@ void act( short AType, const char *format, CHAR_DATA * ch, const void *arg1, con
       }
    }
    MOBtrigger = TRUE;
-   return;
 }
 
-void do_name( CHAR_DATA* ch, const char* argument)
+void do_name( CHAR_DATA* ch, const char* argument )
 {
    char ucase_argument[MAX_STRING_LENGTH];
    char fname[1024];
@@ -3466,7 +3462,6 @@ void do_name( CHAR_DATA* ch, const char* argument)
    ch->pcdata->filename = STRALLOC( ucase_argument );
    send_to_char( "Your name has been changed.  Please apply again.\r\n", ch );
    ch->pcdata->auth_state = 1;
-   return;
 }
 
 /* Alternate Self delete command provided by Waldemar Thiel (Swiv) */
@@ -3474,7 +3469,6 @@ void do_name( CHAR_DATA* ch, const char* argument)
 void do_delet( CHAR_DATA *ch, const char *argument )
 {
    send_to_char( "If you want to DELETE, spell it out.\r\n", ch );
-   return;
 }
 
 void do_delete( CHAR_DATA *ch, const char *argument )
@@ -3507,7 +3501,6 @@ void do_delete( CHAR_DATA *ch, const char *argument )
    send_to_char( "[DELETE] Password: ", ch );
    write_to_buffer( ch->desc, (const char *)echo_off_str, 0 );
    ch->desc->connected = CON_DELETE;
-   return;
 }
 
 char *default_fprompt( CHAR_DATA * ch )
@@ -3901,7 +3894,6 @@ void display_prompt( DESCRIPTOR_DATA * d )
    }
    *pbuf = '\0';
    send_to_char( buf, ch );
-   return;
 }
 
 void set_pager_input( DESCRIPTOR_DATA * d, char *argument )
@@ -3909,7 +3901,6 @@ void set_pager_input( DESCRIPTOR_DATA * d, char *argument )
    while( isspace( *argument ) )
       argument++;
    d->pagecmd = *argument;
-   return;
 }
 
 bool pager_output( DESCRIPTOR_DATA * d )

@@ -1440,6 +1440,7 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
    ToDropW = WWeight = WPos ? get_obj_weight( WPos ) : 0;
    DWeight = MWeight = 0;
    DPos = get_eq_char( ch, WEAR_DUAL_WIELD );
+
    if( DPos && ( DWeight = get_obj_weight( DPos ) ) > ToDropW )
    {
       ToDrop = DPos;
@@ -1470,7 +1471,6 @@ void affect_modify( CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd )
          depth--;
       }
    }
-   return;
 }
 
 /*
@@ -1508,7 +1508,6 @@ void affect_to_char( CHAR_DATA * ch, AFFECT_DATA * paf )
     */
    if( ch->in_room )
       room_affect( ch->in_room, paf_new, TRUE );
-   return;
 }
 
 /*
@@ -1533,7 +1532,6 @@ void affect_remove( CHAR_DATA * ch, AFFECT_DATA * paf )
 
    UNLINK( paf, ch->first_affect, ch->last_affect, next, prev );
    DISPOSE( paf );
-   return;
 }
 
 /*
@@ -1550,8 +1548,6 @@ void affect_strip( CHAR_DATA * ch, int sn )
       if( paf->type == sn )
          affect_remove( ch, paf );
    }
-
-   return;
 }
 
 /*
@@ -1591,7 +1587,6 @@ void affect_join( CHAR_DATA * ch, AFFECT_DATA * paf )
       }
    }
    affect_to_char( ch, paf );
-   return;
 }
 
 /*
@@ -1742,8 +1737,6 @@ void update_aris( CHAR_DATA * ch )
     */
    if( hiding )
       xSET_BIT( ch->affected_by, AFF_HIDE );
-
-   return;
 }
 
 /*
@@ -1800,8 +1793,6 @@ void char_from_room( CHAR_DATA * ch )
 
    if( !IS_NPC( ch ) && get_timer( ch, TIMER_SHOVEDRAG ) > 0 )
       remove_timer( ch, TIMER_SHOVEDRAG );
-
-   return;
 }
 
 /*
@@ -1893,7 +1884,6 @@ void char_to_room( CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex )
    }
    if( !ch->was_in_room )
       ch->was_in_room = ch->in_room;
-   return;
 }
 
 void free_teleports( void )
@@ -2047,7 +2037,6 @@ void obj_from_char( OBJ_DATA * obj )
    obj->carried_by = NULL;
    ch->carry_number -= get_obj_number( obj );
    ch->carry_weight -= get_obj_weight( obj );
-   return;
 }
 
 /*
@@ -2106,8 +2095,6 @@ int apply_ac( OBJ_DATA * obj, int iWear )
 
    return 0;
 }
-
-
 
 /*
  * Find a piece of eq on a character.
@@ -2186,8 +2173,6 @@ void equip_char( CHAR_DATA * ch, OBJ_DATA * obj, int iWear )
    if( loading_char != ch
        && obj->item_type == ITEM_LIGHT && ( obj->value[2] != 0 || IS_SET( obj->value[3], PIPE_LIT ) ) && ch->in_room )
       ++ch->in_room->light;
-
-   return;
 }
 
 /*
@@ -2234,8 +2219,6 @@ void unequip_char( CHAR_DATA * ch, OBJ_DATA * obj )
    if( obj->item_type == ITEM_LIGHT
        && ( obj->value[2] != 0 || IS_SET( obj->value[3], PIPE_LIT ) ) && ch->in_room && ch->in_room->light > 0 )
       --ch->in_room->light;
-
-   return;
 }
 
 /*
@@ -2277,9 +2260,9 @@ void obj_from_room( OBJ_DATA * obj )
    obj->carried_by = NULL;
    obj->in_obj = NULL;
    obj->in_room = NULL;
+
    if( obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC && falling < 1 )
       write_corpses( NULL, obj->short_descr + 14, obj );
-   return;
 }
 
 /*
@@ -2401,8 +2384,6 @@ void obj_from_obj( OBJ_DATA * obj )
       for( ; obj_from; obj_from = obj_from->in_obj )
          if( obj_from->carried_by )
             obj_from->carried_by->carry_weight -= get_obj_weight( obj );
-
-   return;
 }
 
 /*
@@ -2511,7 +2492,6 @@ void extract_obj( OBJ_DATA * obj )
       if( global_objcode == rNONE )
          global_objcode = rOBJ_EXTRACTED;
    }
-   return;
 }
 
 /*
@@ -2696,7 +2676,6 @@ void extract_char( CHAR_DATA * ch, bool fPull )
          ch->desc = NULL;
       }
    }
-   return;
 }
 
 /*
@@ -2750,9 +2729,6 @@ CHAR_DATA *get_char_room( CHAR_DATA * ch, const char *argument )
    return NULL;
 }
 
-
-
-
 /*
  * Find a char in the world.
  */
@@ -2788,8 +2764,6 @@ CHAR_DATA *get_char_world( CHAR_DATA * ch, const char *argument )
       }
 
    count = 0;
-
-
 
    /*
     * check the world for an exact match 
@@ -2909,7 +2883,6 @@ OBJ_DATA *get_obj_list_rev( CHAR_DATA * ch, const char *argument, OBJ_DATA * lis
 /*
  * Find an obj in player's inventory or wearing via a vnum -Shaddai
  */
-
 OBJ_DATA *get_obj_vnum( CHAR_DATA * ch, int vnum )
 {
    OBJ_DATA *obj;
@@ -2960,8 +2933,6 @@ OBJ_DATA *get_obj_carry( CHAR_DATA * ch, const char *argument )
    return NULL;
 }
 
-
-
 /*
  * Find an obj in player's equipment.
  */
@@ -3002,8 +2973,6 @@ OBJ_DATA *get_obj_wear( CHAR_DATA * ch, const char *argument )
    return NULL;
 }
 
-
-
 /*
  * Find an obj in the room or in inventory.
  */
@@ -3023,8 +2992,6 @@ OBJ_DATA *get_obj_here( CHAR_DATA * ch, const char *argument )
 
    return NULL;
 }
-
-
 
 /*
  * Find an obj in the world.
@@ -3073,7 +3040,6 @@ OBJ_DATA *get_obj_world( CHAR_DATA * ch, const char *argument )
 
    return NULL;
 }
-
 
 /*
  * How mental state could affect finding an object		-Thoric
@@ -3189,7 +3155,6 @@ bool ms_find_obj( CHAR_DATA * ch )
    send_to_char( t, ch );
    return TRUE;
 }
-
 
 /*
  * Generic get obj function that supports optional containers.	-Thoric
@@ -4599,7 +4564,6 @@ void free_obj( OBJ_DATA * obj )
    STRFREE( obj->action_desc );
    STRFREE( obj->owner );
    DISPOSE( obj );
-   return;
 }
 
 /*
@@ -4744,7 +4708,6 @@ void extract_timer( CHAR_DATA * ch, TIMER * timer )
 
    UNLINK( timer, ch->first_timer, ch->last_timer, next, prev );
    DISPOSE( timer );
-   return;
 }
 
 void remove_timer( CHAR_DATA * ch, short type )

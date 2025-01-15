@@ -97,8 +97,6 @@ void free_skill( SKILLTYPE * skill )
    skill->spell_fun = NULL;
    skill->skill_fun = NULL;
    DISPOSE( skill );
-
-   return;
 }
 
 void free_skills( void )
@@ -119,7 +117,6 @@ void free_skills( void )
       skill = herb_table[hash];
       free_skill( skill );
    }
-   return;
 }
 
 /*
@@ -128,9 +125,7 @@ void free_skills( void )
 void skill_notfound( CHAR_DATA * ch, const char *argument )
 {
    send_to_char( "Huh?\r\n", ch );
-   return;
 }
-
 
 int get_ssave( const char *name )
 {
@@ -766,7 +761,7 @@ bool check_skill( CHAR_DATA * ch, char *command, char *argument )
    return TRUE;
 }
 
-void do_skin( CHAR_DATA* ch, const char* argument)
+void do_skin( CHAR_DATA* ch, const char* argument )
 {
    OBJ_INDEX_DATA *korps;
    OBJ_DATA *corpse;
@@ -854,14 +849,13 @@ void do_skin( CHAR_DATA* ch, const char* argument)
    separate_obj( corpse );
    xSET_BIT( corpse->extra_flags, ITEM_SKINNED );
    obj_to_char( skin, ch );
-   return;
 }
 
 /*
  * Lookup a skills information
  * High god command
  */
-void do_slookup( CHAR_DATA* ch, const char* argument)
+void do_slookup( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -1070,14 +1064,13 @@ void do_slookup( CHAR_DATA* ch, const char* argument)
       }
       send_to_char( "\r\n", ch );
    }
-   return;
 }
 
 /*
  * Set a skill's attributes or what skills a player has.
  * High god command, with support for creating skills/spells/herbs/etc
  */
-void do_sset( CHAR_DATA* ch, const char* argument)
+void do_sset( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2065,10 +2058,9 @@ void do_grapple( CHAR_DATA * ch, const char *argument )
       set_fighting( ch, victim );
    if( !victim->fighting && ch->in_room == victim->in_room )
       set_fighting( victim, ch );
-   return;
 }
 
-void do_gouge( CHAR_DATA* ch, const char* argument)
+void do_gouge( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    AFFECT_DATA af;
@@ -2156,11 +2148,9 @@ void do_gouge( CHAR_DATA* ch, const char* argument)
       global_retcode = damage( ch, victim, 0, gsn_gouge );
       learn_from_failure( ch, gsn_gouge );
    }
-
-   return;
 }
 
-void do_detrap( CHAR_DATA* ch, const char* argument)
+void do_detrap( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2290,10 +2280,9 @@ void do_detrap( CHAR_DATA* ch, const char* argument)
 
    send_to_char( "You successfully remove a trap.\r\n", ch );
    learn_from_success( ch, gsn_detrap );
-   return;
 }
 
-void do_dig( CHAR_DATA* ch, const char* argument)
+void do_dig( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2463,11 +2452,9 @@ void do_dig( CHAR_DATA* ch, const char* argument)
    learn_from_success( ch, gsn_dig );
    if( obj->item_type == ITEM_CORPSE_PC || obj->item_type == ITEM_CORPSE_NPC )
       adjust_favor( ch, 14, 1 );
-
-   return;
 }
 
-void do_search( CHAR_DATA* ch, const char* argument)
+void do_search( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2589,10 +2576,9 @@ void do_search( CHAR_DATA* ch, const char* argument)
 
    send_to_char( "You find nothing.\r\n", ch );
    learn_from_failure( ch, gsn_search );
-   return;
 }
 
-void do_steal( CHAR_DATA* ch, const char* argument)
+void do_steal( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg1[MAX_INPUT_LENGTH];
@@ -2781,7 +2767,6 @@ void do_steal( CHAR_DATA* ch, const char* argument)
    send_to_char( "Ok.\r\n", ch );
    learn_from_success( ch, gsn_steal );
    adjust_favor( ch, 9, 1 );
-   return;
 }
 
 void do_pounce( CHAR_DATA * ch, const char *argument )
@@ -2865,10 +2850,9 @@ void do_pounce( CHAR_DATA * ch, const char *argument )
       global_retcode = damage( ch, victim, 0, gsn_pounce );
       check_illegal_pk( ch, victim );
    }
-   return;
 }
 
-void do_backstab( CHAR_DATA* ch, const char* argument)
+void do_backstab( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2958,10 +2942,9 @@ void do_backstab( CHAR_DATA* ch, const char* argument)
       global_retcode = damage( ch, victim, 0, gsn_backstab );
       check_illegal_pk( ch, victim );
    }
-   return;
 }
 
-void do_rescue( CHAR_DATA* ch, const char* argument)
+void do_rescue( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3060,7 +3043,6 @@ void do_rescue( CHAR_DATA* ch, const char* argument)
 
    set_fighting( ch, fch );
    set_fighting( fch, ch );
-   return;
 }
 
 void do_meditate( CHAR_DATA * ch, const char *argument )
@@ -3167,7 +3149,6 @@ void do_meditate( CHAR_DATA * ch, const char *argument )
       send_to_char_color( "&BYou complete your meditations.\r\n", ch );
       ch->substate = SUB_NONE;
    }
-   return;
 }
 
 void do_trance( CHAR_DATA * ch, const char *argument )
@@ -3274,10 +3255,9 @@ void do_trance( CHAR_DATA * ch, const char *argument )
       send_to_char_color( "&BYou complete your trance.\r\n", ch );
       ch->substate = SUB_NONE;
    }
-   return;
 }
 
-void do_kick( CHAR_DATA* ch, const char* argument)
+void do_kick( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3310,10 +3290,9 @@ void do_kick( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_kick );
       global_retcode = damage( ch, victim, 0, gsn_kick );
    }
-   return;
 }
 
-void do_punch( CHAR_DATA* ch, const char* argument)
+void do_punch( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3346,10 +3325,9 @@ void do_punch( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_punch );
       global_retcode = damage( ch, victim, 0, gsn_punch );
    }
-   return;
 }
 
-void do_bite( CHAR_DATA* ch, const char* argument)
+void do_bite( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3382,10 +3360,9 @@ void do_bite( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_bite );
       global_retcode = damage( ch, victim, 0, gsn_bite );
    }
-   return;
 }
 
-void do_claw( CHAR_DATA* ch, const char* argument)
+void do_claw( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3412,10 +3389,9 @@ void do_claw( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_claw );
       global_retcode = damage( ch, victim, 0, gsn_claw );
    }
-   return;
 }
 
-void do_sting( CHAR_DATA* ch, const char* argument)
+void do_sting( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3448,10 +3424,9 @@ void do_sting( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_sting );
       global_retcode = damage( ch, victim, 0, gsn_sting );
    }
-   return;
 }
 
-void do_tail( CHAR_DATA* ch, const char* argument)
+void do_tail( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -3484,10 +3459,9 @@ void do_tail( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_tail );
       global_retcode = damage( ch, victim, 0, gsn_tail );
    }
-   return;
 }
 
-void do_bash( CHAR_DATA* ch, const char* argument)
+void do_bash( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    int schance;
@@ -3532,10 +3506,9 @@ void do_bash( CHAR_DATA* ch, const char* argument)
       learn_from_failure( ch, gsn_bash );
       global_retcode = damage( ch, victim, 0, gsn_bash );
    }
-   return;
 }
 
-void do_stun( CHAR_DATA* ch, const char* argument)
+void do_stun( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    AFFECT_DATA af;
@@ -3618,10 +3591,9 @@ void do_stun( CHAR_DATA* ch, const char* argument)
       act( AT_SKILL, "You try to stun $N, but $E dodges out of the way.", ch, NULL, victim, TO_CHAR );
       act( AT_SKILL, "$n charges screaming at $N, but keeps going right on past.", ch, NULL, victim, TO_NOTVICT );
    }
-   return;
 }
 
-void do_bloodlet( CHAR_DATA* ch, const char* argument)
+void do_bloodlet( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
 
@@ -3659,10 +3631,9 @@ void do_bloodlet( CHAR_DATA* ch, const char* argument)
       act( AT_BLOOD, "$n slices open $s skin, but no blood is spilled...", ch, NULL, NULL, TO_ROOM );
       learn_from_failure( ch, gsn_bloodlet );
    }
-   return;
 }
 
-void do_feed( CHAR_DATA* ch, const char* argument)
+void do_feed( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    short dam;
@@ -3733,7 +3704,6 @@ void do_feed( CHAR_DATA* ch, const char* argument)
          learn_from_failure( ch, gsn_feed );
       }
    }
-   return;
 }
 
 /*
@@ -3805,8 +3775,6 @@ void disarm( CHAR_DATA * ch, CHAR_DATA * victim )
    }
    else
       obj_to_room( obj, victim->in_room );
-
-   return;
 }
 
 void do_disarm( CHAR_DATA* ch, const char* argument )
@@ -3856,7 +3824,6 @@ void do_disarm( CHAR_DATA* ch, const char* argument )
       send_to_char( "You failed.\r\n", ch );
       learn_from_failure( ch, gsn_disarm );
    }
-   return;
 }
 
 /*
@@ -3893,7 +3860,6 @@ void trip( CHAR_DATA * ch, CHAR_DATA * victim )
       WAIT_STATE( victim, 2 * PULSE_VIOLENCE );
       victim->position = POS_RESTING;
    }
-   return;
 }
 
 /* Shargate, May 2002 */
@@ -3951,11 +3917,10 @@ void do_cleave( CHAR_DATA * ch, const char *argument )
       learn_from_failure( ch, gsn_cleave );
       global_retcode = damage( ch, victim, 0, gsn_cleave );
    }
-   return;
 }
 
 /* Converted to function well as a skill for vampires -- Blodkai */
-void do_mistwalk( CHAR_DATA* ch, const char* argument)
+void do_mistwalk( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -4025,10 +3990,9 @@ void do_mistwalk( CHAR_DATA* ch, const char* argument)
    char_to_room( ch, victim->in_room );
    act( AT_DGREEN, "A cloud of glowing mist engulfs you, then withdraws to unveil $n!", ch, NULL, NULL, TO_ROOM );
    do_look( ch, "auto" );
-   return;
 }
 
-void do_broach( CHAR_DATA* ch, const char* argument)
+void do_broach( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    EXIT_DATA *pexit;
@@ -4079,10 +4043,9 @@ void do_broach( CHAR_DATA* ch, const char* argument)
       return;
    }
    send_to_char( "Your attempt fails.\r\n", ch );
-   return;
 }
 
-void do_pick( CHAR_DATA* ch, const char* argument)
+void do_pick( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *gch;
@@ -4234,10 +4197,9 @@ void do_pick( CHAR_DATA* ch, const char* argument)
    }
 
    ch_printf( ch, "You see no %s here.\r\n", arg );
-   return;
 }
 
-void do_sneak( CHAR_DATA* ch, const char* argument)
+void do_sneak( CHAR_DATA* ch, const char* argument )
 {
    AFFECT_DATA af;
 
@@ -4268,11 +4230,9 @@ void do_sneak( CHAR_DATA* ch, const char* argument)
    }
    else
       learn_from_failure( ch, gsn_sneak );
-
-   return;
 }
 
-void do_hide( CHAR_DATA* ch, const char* argument)
+void do_hide( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch ) && IS_AFFECTED( ch, AFF_CHARM ) )
    {
@@ -4298,13 +4258,12 @@ void do_hide( CHAR_DATA* ch, const char* argument)
    }
    else
       learn_from_failure( ch, gsn_hide );
-   return;
 }
 
 /*
  * Contributed by Alander.
  */
-void do_visible( CHAR_DATA* ch, const char* argument)
+void do_visible( CHAR_DATA* ch, const char* argument )
 {
    affect_strip( ch, gsn_invis );
    affect_strip( ch, gsn_mass_invis );
@@ -4313,10 +4272,9 @@ void do_visible( CHAR_DATA* ch, const char* argument)
    xREMOVE_BIT( ch->affected_by, AFF_INVISIBLE );
    xREMOVE_BIT( ch->affected_by, AFF_SNEAK );
    send_to_char( "Ok.\r\n", ch );
-   return;
 }
 
-void do_recall( CHAR_DATA* ch, const char* argument)
+void do_recall( CHAR_DATA* ch, const char* argument )
 {
    ROOM_INDEX_DATA *location;
    CHAR_DATA *opponent;
@@ -4392,11 +4350,9 @@ void do_recall( CHAR_DATA* ch, const char* argument)
    }
    act( AT_ACTION, "$n appears in the room.", ch, NULL, NULL, TO_ROOM );
    do_look( ch, "auto" );
-
-   return;
 }
 
-void do_aid( CHAR_DATA* ch, const char* argument)
+void do_aid( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -4469,10 +4425,9 @@ void do_aid( CHAR_DATA* ch, const char* argument)
 
    update_pos( victim );
    act( AT_SKILL, "$n aids you!", ch, NULL, victim, TO_VICT );
-   return;
 }
 
-void do_mount( CHAR_DATA* ch, const char* argument)
+void do_mount( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -4536,10 +4491,9 @@ void do_mount( CHAR_DATA* ch, const char* argument)
       act( AT_SKILL, "$n tries to mount you.", ch, NULL, victim, TO_VICT );
       learn_from_failure( ch, gsn_mount );
    }
-   return;
 }
 
-void do_dismount( CHAR_DATA* ch, const char* argument)
+void do_dismount( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
 
@@ -4571,12 +4525,9 @@ void do_dismount( CHAR_DATA* ch, const char* argument)
       ch->position = POS_SITTING;
       global_retcode = damage( ch, ch, 1, TYPE_UNDEFINED );
    }
-   return;
 }
 
-
 /**************************************************************************/
-
 
 /*
  * Check for parry.
@@ -4626,8 +4577,6 @@ bool check_parry( CHAR_DATA * ch, CHAR_DATA * victim )
    learn_from_success( victim, gsn_parry );
    return TRUE;
 }
-
-
 
 /*
  * Check for dodge.
@@ -4698,7 +4647,7 @@ bool check_tumble( CHAR_DATA * ch, CHAR_DATA * victim )
    return TRUE;
 }
 
-void do_poison_weapon( CHAR_DATA* ch, const char* argument)
+void do_poison_weapon( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
    OBJ_DATA *pobj;
@@ -4839,10 +4788,9 @@ void do_poison_weapon( CHAR_DATA* ch, const char* argument)
    extract_obj( pobj );
    extract_obj( wobj );
    learn_from_success( ch, gsn_poison_weapon );
-   return;
 }
 
-void do_scribe( CHAR_DATA* ch, const char* argument)
+void do_scribe( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *scroll;
    int sn;
@@ -4953,7 +4901,7 @@ void do_scribe( CHAR_DATA* ch, const char* argument)
    ch->mana -= mana;
 }
 
-void do_brew( CHAR_DATA* ch, const char* argument)
+void do_brew( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *potion;
    OBJ_DATA *fire;
@@ -5114,7 +5062,7 @@ bool check_grip( CHAR_DATA * ch, CHAR_DATA * victim )
    return TRUE;
 }
 
-void do_circle( CHAR_DATA* ch, const char* argument)
+void do_circle( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -5198,11 +5146,10 @@ void do_circle( CHAR_DATA* ch, const char* argument)
       WAIT_STATE( ch, 2 * PULSE_VIOLENCE );
       global_retcode = damage( ch, victim, 0, gsn_circle );
    }
-   return;
 }
 
 /* Berserk and HitAll. -- Altrag */
-void do_berserk( CHAR_DATA* ch, const char* argument)
+void do_berserk( CHAR_DATA* ch, const char* argument )
 {
    short percent;
    AFFECT_DATA af;
@@ -5299,10 +5246,7 @@ void do_hitall( CHAR_DATA* ch, const char* argument )
       learn_from_success( ch, gsn_hitall );
    else
       learn_from_failure( ch, gsn_hitall );
-   return;
 }
-
-
 
 bool check_illegal_psteal( CHAR_DATA * ch, CHAR_DATA * victim )
 {
@@ -5329,7 +5273,7 @@ bool check_illegal_psteal( CHAR_DATA * ch, CHAR_DATA * victim )
    return FALSE;
 }
 
-void do_scan( CHAR_DATA* ch, const char* argument)
+void do_scan( CHAR_DATA* ch, const char* argument )
 {
    ROOM_INDEX_DATA *was_in_room;
    EXIT_DATA *pexit;
@@ -5460,10 +5404,7 @@ void do_scan( CHAR_DATA* ch, const char* argument)
    char_from_room( ch );
    char_to_room( ch, was_in_room );
    learn_from_success( ch, gsn_scan );
-
-   return;
 }
-
 
 /*
  * Basically the same guts as do_scan() from above (please keep them in
@@ -5580,7 +5521,6 @@ OBJ_DATA *find_projectile( CHAR_DATA * ch, int type )
 
    return NULL;
 }
-
 
 ch_ret spell_attack( int, int, CHAR_DATA *, void * );
 
@@ -6059,7 +5999,7 @@ ch_ret ranged_attack( CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, O
  * Support code (see projectile_hit(), quiver support, other changes to
  * fight.c, etc by Thoric.
  */
-void do_fire( CHAR_DATA* ch, const char* argument)
+void do_fire( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *arrow;
    OBJ_DATA *bow;
@@ -6131,8 +6071,6 @@ void do_fire( CHAR_DATA* ch, const char* argument)
     * handle the ranged attack 
     */
    ranged_attack( ch, argument, bow, arrow, TYPE_HIT + arrow->value[3], max_dist );
-
-   return;
 }
 
 /*
@@ -6240,7 +6178,7 @@ void do_throw( CHAR_DATA* ch, const char* argument)
     }
 }*/
 
-void do_slice( CHAR_DATA* ch, const char* argument)
+void do_slice( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *corpse;
    OBJ_DATA *obj;
@@ -6328,12 +6266,12 @@ void do_slice( CHAR_DATA* ch, const char* argument)
    obj_to_char( slice, ch );
    corpse->value[3] -= 25;
    learn_from_success( ch, gsn_slice );
-   return;
 }
 
 /*------------------------------------------------------------ 
  *  Fighting Styles - haus
- */ void do_style( CHAR_DATA * ch, const char *argument )
+ */
+void do_style( CHAR_DATA * ch, const char *argument )
 {
    char arg[MAX_INPUT_LENGTH];
 /*  char buf[MAX_INPUT_LENGTH];
@@ -6520,8 +6458,6 @@ void do_slice( CHAR_DATA* ch, const char* argument)
    }
 
    send_to_char( "Adopt which fighting style?\r\n", ch );
-
-   return;
 }
 
 /*  New check to see if you can use skills to support morphs --Shaddai */
@@ -6547,7 +6483,7 @@ bool can_use_skill( CHAR_DATA * ch, int percent, int gsn )
 /*
  * Cook was coded by Blackmane and heavily modified by Shaddai
  */
-void do_cook( CHAR_DATA* ch, const char* argument)
+void do_cook( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *food, *fire;
    char arg[MAX_INPUT_LENGTH];

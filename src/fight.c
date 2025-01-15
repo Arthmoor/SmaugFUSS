@@ -169,7 +169,6 @@ void stop_hunting( CHAR_DATA * ch )
       DISPOSE( ch->hunting );
       ch->hunting = NULL;
    }
-   return;
 }
 
 void stop_hating( CHAR_DATA * ch )
@@ -180,7 +179,6 @@ void stop_hating( CHAR_DATA * ch )
       DISPOSE( ch->hating );
       ch->hating = NULL;
    }
-   return;
 }
 
 void stop_fearing( CHAR_DATA * ch )
@@ -191,7 +189,6 @@ void stop_fearing( CHAR_DATA * ch )
       DISPOSE( ch->fearing );
       ch->fearing = NULL;
    }
-   return;
 }
 
 void start_hunting( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -202,7 +199,6 @@ void start_hunting( CHAR_DATA * ch, CHAR_DATA * victim )
    CREATE( ch->hunting, HHF_DATA, 1 );
    ch->hunting->name = QUICKLINK( victim->name );
    ch->hunting->who = victim;
-   return;
 }
 
 void start_hating( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -213,7 +209,6 @@ void start_hating( CHAR_DATA * ch, CHAR_DATA * victim )
    CREATE( ch->hating, HHF_DATA, 1 );
    ch->hating->name = QUICKLINK( victim->name );
    ch->hating->who = victim;
-   return;
 }
 
 void start_fearing( CHAR_DATA * ch, CHAR_DATA * victim )
@@ -224,7 +219,6 @@ void start_fearing( CHAR_DATA * ch, CHAR_DATA * victim )
    CREATE( ch->fearing, HHF_DATA, 1 );
    ch->fearing->name = QUICKLINK( victim->name );
    ch->fearing->who = victim;
-   return;
 }
 
 void strip_grapple( CHAR_DATA * ch )
@@ -254,7 +248,6 @@ void strip_grapple( CHAR_DATA * ch )
             remove_timer( who_fighting( ch ), TIMER_ASUPRESSED );
       }
    }
-   return;
 }
 
 /*
@@ -805,7 +798,6 @@ void violence_update( void )
       trv_dispose( &lcr );
    }
    trworld_dispose( &lcw );
-   return;
 }
 
 /*
@@ -1741,16 +1733,19 @@ ch_ret projectile_hit( CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * wield, OBJ
       }
       dam = 0;
    }
+
    if( ( retcode = damage( ch, victim, dam, dt ) ) != rNONE )
    {
       extract_obj( projectile );
       return retcode;
    }
+
    if( char_died( ch ) )
    {
       extract_obj( projectile );
       return rCHAR_DIED;
    }
+
    if( char_died( victim ) )
    {
       extract_obj( projectile );
@@ -2952,7 +2947,6 @@ void check_killer( CHAR_DATA * ch, CHAR_DATA * victim )
    if( xIS_SET( ch->act, PLR_ATTACKER ) )
       xREMOVE_BIT( ch->act, PLR_ATTACKER );
    save_char_obj( ch );
-   return;
 }
 
 /*
@@ -3021,7 +3015,6 @@ void check_attacker( CHAR_DATA * ch, CHAR_DATA * victim )
 
    xSET_BIT( ch->act, PLR_ATTACKER );
    save_char_obj( ch );
-   return;
 }
 
 /*
@@ -3072,7 +3065,6 @@ void update_pos( CHAR_DATA * victim )
       xREMOVE_BIT( victim->mount->act, ACT_MOUNTED );
       victim->mount = NULL;
    }
-   return;
 }
 
 /*
@@ -3137,7 +3129,6 @@ void set_fighting( CHAR_DATA * ch, CHAR_DATA * victim )
       send_to_char( "You are disturbed!\r\n", victim->switched );
       do_return( victim->switched, "" );
    }
-   return;
 }
 
 CHAR_DATA *who_fighting( CHAR_DATA * ch )
@@ -3183,7 +3174,6 @@ void free_fight( CHAR_DATA * ch )
       send_to_char( skill_table[gsn_berserk]->msg_off, ch );
       send_to_char( "\r\n", ch );
    }
-   return;
 }
 
 /*
@@ -3208,7 +3198,6 @@ void stop_fighting( CHAR_DATA * ch, bool fBoth )
          update_pos( fch );
       }
    }
-   return;
 }
 
 /* Vnums for the various bodyparts */
@@ -3615,7 +3604,6 @@ void group_gain( CHAR_DATA * ch, CHAR_DATA * victim )
          }
       }
    }
-   return;
 }
 
 int align_compute( CHAR_DATA * gch, CHAR_DATA * victim )
@@ -3915,7 +3903,7 @@ void dam_message( CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt )
 }
 #endif
 
-void do_kill( CHAR_DATA* ch, const char* argument)
+void do_kill( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -3989,16 +3977,14 @@ void do_kill( CHAR_DATA* ch, const char* argument)
    WAIT_STATE( ch, 1 * PULSE_VIOLENCE );
    check_attacker( ch, victim );
    multi_hit( ch, victim, TYPE_UNDEFINED );
-   return;
 }
 
-void do_murde( CHAR_DATA* ch, const char* argument)
+void do_murde( CHAR_DATA* ch, const char* argument )
 {
    send_to_char( "If you want to MURDER, spell it out.\r\n", ch );
-   return;
 }
 
-void do_murder( CHAR_DATA* ch, const char* argument)
+void do_murder( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -4072,7 +4058,6 @@ void do_murder( CHAR_DATA* ch, const char* argument)
    check_illegal_pk( ch, victim );
    check_attacker( ch, victim );
    multi_hit( ch, victim, TYPE_UNDEFINED );
-   return;
 }
 
 /*
@@ -4250,16 +4235,14 @@ void do_flee( CHAR_DATA* ch, const char* argument )
          }
       }
    }
-   return;
 }
 
-void do_sla( CHAR_DATA* ch, const char* argument)
+void do_sla( CHAR_DATA* ch, const char* argument )
 {
    send_to_char( "If you want to SLAY, spell it out.\r\n", ch );
-   return;
 }
 
-void do_slay( CHAR_DATA* ch, const char* argument)
+void do_slay( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *victim;
    char arg[MAX_INPUT_LENGTH];
@@ -4357,5 +4340,4 @@ void do_slay( CHAR_DATA* ch, const char* argument)
 
    set_cur_char( victim );
    raw_kill( ch, victim );
-   return;
 }

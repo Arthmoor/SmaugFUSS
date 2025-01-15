@@ -234,7 +234,6 @@ void get_obj( CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container )
    if( char_died( ch ) || obj_extracted( obj ) )
       return;
    oprog_get_trigger( ch, obj );
-   return;
 }
 
 void do_connect( CHAR_DATA *ch, const char *argument )
@@ -292,7 +291,7 @@ void do_connect( CHAR_DATA *ch, const char *argument )
    }
 }
 
-void do_get( CHAR_DATA* ch, const char* argument)
+void do_get( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -657,10 +656,9 @@ void do_get( CHAR_DATA* ch, const char* argument)
             save_char_obj( ch );
       }
    }
-   return;
 }
 
-void do_put( CHAR_DATA* ch, const char* argument)
+void do_put( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -943,10 +941,9 @@ void do_put( CHAR_DATA* ch, const char* argument)
                save_storeroom( ch, vault->vnum );
       }
    }
-   return;
 }
 
-void do_drop( CHAR_DATA* ch, const char* argument)
+void do_drop( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -1167,10 +1164,9 @@ void do_drop( CHAR_DATA* ch, const char* argument)
 
    if( IS_SET( sysdata.save_flags, SV_DROP ) )
       save_char_obj( ch ); /* duping protector */
-   return;
 }
 
-void do_give( CHAR_DATA* ch, const char* argument)
+void do_give( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -1304,7 +1300,6 @@ void do_give( CHAR_DATA* ch, const char* argument)
       save_char_obj( ch );
    if( IS_SET( sysdata.save_flags, SV_RECEIVE ) && !char_died( victim ) )
       save_char_obj( victim );
-   return;
 }
 
 /*
@@ -2123,7 +2118,7 @@ void wear_obj( CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit )
    }
 }
 
-void do_wear( CHAR_DATA* ch, const char* argument)
+void do_wear( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -2173,13 +2168,9 @@ void do_wear( CHAR_DATA* ch, const char* argument)
          wear_bit = -1;
       wear_obj( ch, obj, TRUE, wear_bit );
    }
-
-   return;
 }
 
-
-
-void do_remove( CHAR_DATA* ch, const char* argument)
+void do_remove( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj, *obj_next;
@@ -2219,11 +2210,9 @@ void do_remove( CHAR_DATA* ch, const char* argument)
    }
 
    remove_obj( ch, obj->wear_loc, TRUE );
-   return;
 }
 
-
-void do_bury( CHAR_DATA* ch, const char* argument)
+void do_bury( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -2301,10 +2290,9 @@ void do_bury( CHAR_DATA* ch, const char* argument)
    act( AT_ACTION, "$n solemnly buries $p...", ch, obj, NULL, TO_ROOM );
    xSET_BIT( obj->extra_flags, ITEM_BURIED );
    WAIT_STATE( ch, URANGE( 10, move / 2, 100 ) );
-   return;
 }
 
-void do_sacrifice( CHAR_DATA* ch, const char* argument)
+void do_sacrifice( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char buf[MAX_STRING_LENGTH];
@@ -2403,7 +2391,6 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument)
 
    if( xIS_SET( ch->in_room->room_flags, ROOM_HOUSE ) )
       save_house_by_vnum( ch->in_room->vnum ); /* Prevent House Object Duplication */
-   return;
 }
 
 void do_brandish( CHAR_DATA* ch, const char* argument )
@@ -2584,7 +2571,7 @@ void do_zap( CHAR_DATA* ch, const char* argument )
 }
 
 /* put an item on auction, or see the stats on the current item or bet */
-void do_auction( CHAR_DATA* ch, const char* argument)
+void do_auction( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
    char arg1[MAX_INPUT_LENGTH];
@@ -3189,7 +3176,7 @@ OBJ_DATA *recursive_note_find( OBJ_DATA * obj, const char *argument )
    return recursive_note_find( obj->next_content, argument );
 }
 
-void do_findnote( CHAR_DATA* ch, const char* argument)
+void do_findnote( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
 
@@ -3218,7 +3205,6 @@ void do_findnote( CHAR_DATA* ch, const char* argument)
    }
    else
       send_to_char( "Note not found.\r\n", ch );
-   return;
 }
 
 const char *get_chance_verb( OBJ_DATA * obj )
@@ -3240,7 +3226,7 @@ const char *get_ed_number( OBJ_DATA * obj, int number )
    return NULL;
 }
 
-void do_rolldie( CHAR_DATA* ch, const char* argument)
+void do_rolldie( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *die;
 
@@ -3352,7 +3338,5 @@ void do_rolldie( CHAR_DATA* ch, const char* argument)
 
    if( face_seen_table )
       free( face_seen_table );
-   return;
 }
-
 /*dice chance deal throw*/

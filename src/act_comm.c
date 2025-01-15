@@ -162,6 +162,7 @@ char *translate( int percent, const char *in, const char *name )
          pbuf2++;
       }
    }
+
    *pbuf2 = '\0';
    for( pbuf = buf2, pbuf2 = buf; *pbuf; )
    {
@@ -693,7 +694,6 @@ void talk_channel( CHAR_DATA * ch, const char *argument, int channel, const char
          vch->position = position;
       }
    }
-   return;
 }
 
 void to_channel( const char *argument, int channel, const char *verb, short level )
@@ -730,10 +730,9 @@ void to_channel( const char *argument, int channel, const char *verb, short leve
          send_to_char_color( buf, vch );
       }
    }
-   return;
 }
 
-void do_chat( CHAR_DATA* ch, const char* argument)
+void do_chat( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -741,10 +740,9 @@ void do_chat( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_CHAT, "chat" );
-   return;
 }
 
-void do_clantalk( CHAR_DATA* ch, const char* argument)
+void do_clantalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -761,7 +759,7 @@ void do_clantalk( CHAR_DATA* ch, const char* argument)
    talk_channel( ch, argument, CHANNEL_CLAN, "clantalk" );
 }
 
-void do_newbiechat( CHAR_DATA* ch, const char* argument)
+void do_newbiechat( CHAR_DATA* ch, const char* argument )
 {
    if( IS_NPC( ch )
        || ( !NOT_AUTHED( ch ) && !IS_IMMORTAL( ch )
@@ -773,12 +771,12 @@ void do_newbiechat( CHAR_DATA* ch, const char* argument)
    talk_channel( ch, argument, CHANNEL_NEWBIE, "newbiechat" );
 }
 
-void do_ot( CHAR_DATA* ch, const char* argument)
+void do_ot( CHAR_DATA* ch, const char* argument )
 {
    do_ordertalk( ch, argument );
 }
 
-void do_ordertalk( CHAR_DATA* ch, const char* argument)
+void do_ordertalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -794,7 +792,7 @@ void do_ordertalk( CHAR_DATA* ch, const char* argument)
    talk_channel( ch, argument, CHANNEL_ORDER, "ordertalk" );
 }
 
-void do_counciltalk( CHAR_DATA* ch, const char* argument)
+void do_counciltalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -808,10 +806,9 @@ void do_counciltalk( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_COUNCIL, "counciltalk" );
-   return;
 }
 
-void do_guildtalk( CHAR_DATA* ch, const char* argument)
+void do_guildtalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -825,10 +822,9 @@ void do_guildtalk( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_GUILD, "guildtalk" );
-   return;
 }
 
-void do_music( CHAR_DATA* ch, const char* argument)
+void do_music( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -836,11 +832,9 @@ void do_music( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_MUSIC, "music" );
-   return;
 }
 
-
-void do_quest( CHAR_DATA* ch, const char* argument)
+void do_quest( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -848,10 +842,9 @@ void do_quest( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_QUEST, "quest" );
-   return;
 }
 
-void do_ask( CHAR_DATA* ch, const char* argument)
+void do_ask( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -859,10 +852,9 @@ void do_ask( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_ASK, "ask" );
-   return;
 }
 
-void do_answer( CHAR_DATA* ch, const char* argument)
+void do_answer( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -870,10 +862,9 @@ void do_answer( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_ASK, "answer" );
-   return;
 }
 
-void do_shout( CHAR_DATA* ch, const char* argument)
+void do_shout( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -882,10 +873,9 @@ void do_shout( CHAR_DATA* ch, const char* argument)
    }
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_SHOUT, "shout" );
    WAIT_STATE( ch, 12 );
-   return;
 }
 
-void do_yell( CHAR_DATA* ch, const char* argument)
+void do_yell( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -893,10 +883,9 @@ void do_yell( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_YELL, "yell" );
-   return;
 }
 
-void do_immtalk( CHAR_DATA* ch, const char* argument)
+void do_immtalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -905,10 +894,9 @@ void do_immtalk( CHAR_DATA* ch, const char* argument)
    }
 
    talk_channel( ch, argument, CHANNEL_IMMTALK, "immtalk" );
-   return;
 }
 
-void do_muse( CHAR_DATA* ch, const char* argument)
+void do_muse( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -916,7 +904,6 @@ void do_muse( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_HIGHGOD, "muse" );
-   return;
 }
 
 void do_retiredtalk( CHAR_DATA * ch, const char *argument )
@@ -934,10 +921,9 @@ void do_retiredtalk( CHAR_DATA * ch, const char *argument )
    }
 
    talk_channel( ch, argument, CHANNEL_RETIRED, "retired" );
-   return;
 }
 
-void do_think( CHAR_DATA* ch, const char* argument)
+void do_think( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -945,10 +931,9 @@ void do_think( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_HIGH, "think" );
-   return;
 }
 
-void do_avtalk( CHAR_DATA* ch, const char* argument)
+void do_avtalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -957,7 +942,6 @@ void do_avtalk( CHAR_DATA* ch, const char* argument)
    }
 
    talk_channel( ch, drunk_speech( argument, ch ), CHANNEL_AVTALK, "avtalk" );
-   return;
 }
 
 /*
@@ -1157,10 +1141,9 @@ void do_say_to( CHAR_DATA *ch, const char *argument )
       return;
 
    rprog_speech_trigger( argument, ch );
-   return;
 }
 
-void do_say( CHAR_DATA* ch, const char* argument)
+void do_say( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH], lastchar;
    CHAR_DATA *vch;
@@ -1286,10 +1269,9 @@ void do_say( CHAR_DATA* ch, const char* argument)
       return;
 
    rprog_speech_trigger( argument, ch );
-   return;
 }
 
-void do_whisper( CHAR_DATA* ch, const char* argument)
+void do_whisper( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char buf[MAX_INPUT_LENGTH];
@@ -1442,7 +1424,6 @@ void do_whisper( CHAR_DATA* ch, const char* argument)
    }
 
    mprog_tell_trigger( argument, ch );
-   return;
 }
 
 void do_beckon( CHAR_DATA *ch, const char *argument )
@@ -1504,10 +1485,9 @@ void do_beckon( CHAR_DATA *ch, const char *argument )
    set_char_color( AT_ACTION, victim );
    ch_printf( ch, "You beckon to %s...\r\n", PERS( victim, ch ) );
    ch_printf( victim, "%s beckons you...\r\n\a", capitalize( PERS( ch, victim ) ) );
-   return;
 }
 
-void do_tell( CHAR_DATA* ch, const char* argument)
+void do_tell( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char buf[MAX_INPUT_LENGTH];
@@ -1723,10 +1703,9 @@ void do_tell( CHAR_DATA* ch, const char* argument)
    }
 
    mprog_tell_trigger( argument, ch );
-   return;
 }
 
-void do_reply( CHAR_DATA* ch, const char* argument)
+void do_reply( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    CHAR_DATA *victim;
@@ -1896,10 +1875,9 @@ void do_reply( CHAR_DATA* ch, const char* argument)
    }
 
    mprog_tell_trigger( argument, ch );
-   return;
 }
 
-void do_retell( CHAR_DATA* ch, const char* argument)
+void do_retell( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2095,10 +2073,9 @@ void do_retell( CHAR_DATA* ch, const char* argument)
    }
 
    mprog_tell_trigger( argument, ch );
-   return;
 }
 
-void do_repeat( CHAR_DATA* ch, const char* argument)
+void do_repeat( CHAR_DATA* ch, const char* argument )
 {
    int tindex;
 
@@ -2131,10 +2108,9 @@ void do_repeat( CHAR_DATA* ch, const char* argument)
    {
       send_to_char( "No one like that has sent you a tell.\r\n", ch );
    }
-   return;
 }
 
-void do_emote( CHAR_DATA* ch, const char* argument)
+void do_emote( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    const char *plast;
@@ -2218,7 +2194,6 @@ void do_emote( CHAR_DATA* ch, const char* argument)
       snprintf( buf, MAX_STRING_LENGTH, "%s %s (emote)", IS_NPC( ch ) ? ch->short_descr : ch->name, argument );
       append_to_file( LOG_FILE, buf );
    }
-   return;
 }
 
 void do_bug( CHAR_DATA *ch, const char *argument )
@@ -2289,15 +2264,14 @@ void do_bug( CHAR_DATA *ch, const char *argument )
    }
 }
 
-void do_ide( CHAR_DATA* ch, const char* argument)
+void do_ide( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_PLAIN, ch );
    send_to_char( "\r\nIf you want to send an idea, type 'idea <message>'.\r\n", ch );
    send_to_char( "If you want to identify an object, use the identify spell.\r\n", ch );
-   return;
 }
 
-void do_idea( CHAR_DATA* ch, const char* argument)
+void do_idea( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_PLAIN, ch );
    if( argument[0] == '\0' )
@@ -2307,10 +2281,9 @@ void do_idea( CHAR_DATA* ch, const char* argument)
    }
    append_file( ch, IDEA_FILE, argument );
    send_to_char( "Thanks, your idea has been recorded.\r\n", ch );
-   return;
 }
 
-void do_typo( CHAR_DATA* ch, const char* argument)
+void do_typo( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_PLAIN, ch );
    if( argument[0] == '\0' )
@@ -2340,24 +2313,21 @@ void do_typo( CHAR_DATA* ch, const char* argument)
       append_file( ch, TYPO_FILE, argument );
       send_to_char( "Thanks, your typo notice has been recorded.\r\n", ch );
    }
-   return;
 }
 
-void do_rent( CHAR_DATA* ch, const char* argument)
+void do_rent( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_WHITE, ch );
    send_to_char( "There is no rent here.  Just save and quit.\r\n", ch );
-   return;
 }
 
-void do_qui( CHAR_DATA* ch, const char* argument)
+void do_qui( CHAR_DATA* ch, const char* argument )
 {
    set_char_color( AT_RED, ch );
    send_to_char( "If you want to QUIT, you have to spell it out.\r\n", ch );
-   return;
 }
 
-void do_quit( CHAR_DATA* ch, const char* argument)
+void do_quit( CHAR_DATA* ch, const char* argument )
 {
    char log_buf[MAX_STRING_LENGTH];
    int x, y;
@@ -2451,7 +2421,6 @@ void do_quit( CHAR_DATA* ch, const char* argument)
          save_equipment[x][y] = NULL;
 
    log_string_plus( log_buf, LOG_COMM, level );
-   return;
 }
 
 void send_rip_screen( CHAR_DATA * ch )
@@ -2586,7 +2555,6 @@ void do_save( CHAR_DATA* ch, const char* argument )
    save_char_obj( ch );
    saving_char = NULL;
    send_to_char( "Saved...\r\n", ch );
-   return;
 }
 
 /*
@@ -2605,7 +2573,7 @@ bool circle_follow( CHAR_DATA * ch, CHAR_DATA * victim )
    return FALSE;
 }
 
-void do_dismiss( CHAR_DATA* ch, const char* argument)
+void do_dismiss( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2637,8 +2605,6 @@ void do_dismiss( CHAR_DATA* ch, const char* argument)
    {
       send_to_char( "You cannot dismiss them.\r\n", ch );
    }
-
-   return;
 }
 
 void do_lead( CHAR_DATA * ch, const char *argument )
@@ -2701,10 +2667,9 @@ void do_lead( CHAR_DATA * ch, const char *argument )
       stop_follower( victim );
    ch_printf( victim, "%s beckons to you...\r\n", ch->name );
    add_follower( victim, ch );
-   return;
 }
 
-void do_follow( CHAR_DATA* ch, const char* argument)
+void do_follow( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    CHAR_DATA *victim;
@@ -2773,7 +2738,6 @@ void do_follow( CHAR_DATA* ch, const char* argument)
       stop_follower( ch );
 
    add_follower( ch, victim );
-   return;
 }
 
 void add_follower( CHAR_DATA * ch, CHAR_DATA * master )
@@ -2797,8 +2761,6 @@ void add_follower( CHAR_DATA * ch, CHAR_DATA * master )
       act( AT_ACTION, "$n now follows you.", ch, NULL, master, TO_VICT );
 
    act( AT_ACTION, "You now follow $N.", ch, NULL, master, TO_CHAR );
-
-   return;
 }
 
 void stop_follower( CHAR_DATA * ch )
@@ -2827,7 +2789,6 @@ void stop_follower( CHAR_DATA * ch )
 
    ch->master = NULL;
    ch->leader = NULL;
-   return;
 }
 
 void die_follower( CHAR_DATA * ch )
@@ -2848,7 +2809,7 @@ void die_follower( CHAR_DATA * ch )
    }
 }
 
-void do_order( CHAR_DATA* ch, const char* argument)
+void do_order( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    char argbuf[MAX_INPUT_LENGTH];
@@ -2938,7 +2899,7 @@ void do_order( CHAR_DATA* ch, const char* argument)
 }
 
 /* Overhauled 2/97 -- Blodkai */
-void do_group( CHAR_DATA* ch, const char* argument)
+void do_group( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -3148,13 +3109,12 @@ void do_group( CHAR_DATA* ch, const char* argument)
    act( AT_ACTION, "$N joins $n's group.", ch, NULL, victim, TO_NOTVICT );
    act( AT_ACTION, "You join $n's group.", ch, NULL, victim, TO_VICT );
    act( AT_ACTION, "$N joins your group.", ch, NULL, victim, TO_CHAR );
-   return;
 }
 
 /*
  * 'Split' originally by Gnort, God of Chaos.
  */
-void do_split( CHAR_DATA* ch, const char* argument)
+void do_split( CHAR_DATA* ch, const char* argument )
 {
    char buf[MAX_STRING_LENGTH];
    char arg[MAX_INPUT_LENGTH];
@@ -3233,10 +3193,9 @@ void do_split( CHAR_DATA* ch, const char* argument)
          gch->gold += share;
       }
    }
-   return;
 }
 
-void do_gtell( CHAR_DATA* ch, const char* argument)
+void do_gtell( CHAR_DATA* ch, const char* argument )
 {
    CHAR_DATA *gch;
 #ifndef SCRAMBLE
@@ -3296,7 +3255,6 @@ void do_gtell( CHAR_DATA* ch, const char* argument)
 #endif
       }
    }
-   return;
 }
 
 /*
@@ -3462,7 +3420,7 @@ int countlangs( int languages )
    return numlangs;
 }
 
-void do_speak( CHAR_DATA* ch, const char* argument)
+void do_speak( CHAR_DATA* ch, const char* argument )
 {
    int langs;
    char arg[MAX_INPUT_LENGTH];
@@ -3491,7 +3449,7 @@ void do_speak( CHAR_DATA* ch, const char* argument)
    send_to_char( "You do not know that language.\r\n", ch );
 }
 
-void do_languages( CHAR_DATA* ch, const char* argument)
+void do_languages( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    int lang;
@@ -3584,6 +3542,7 @@ void do_languages( CHAR_DATA* ch, const char* argument)
          act( AT_PLAIN, "You now speak perfect $t.", ch, lang_names[lang], NULL, TO_CHAR );
       return;
    }
+
    for( lang = 0; lang_array[lang] != LANG_UNKNOWN; lang++ )
       if( knows_language( ch, lang_array[lang], ch ) )
       {
@@ -3595,10 +3554,9 @@ void do_languages( CHAR_DATA* ch, const char* argument)
          send_to_char( "\r\n", ch );
       }
    send_to_char( "\r\n", ch );
-   return;
 }
 
-void do_traffic( CHAR_DATA* ch, const char* argument)
+void do_traffic( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -3606,10 +3564,9 @@ void do_traffic( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_TRAFFIC, "openly traffic" );
-   return;
 }
 
-void do_wartalk( CHAR_DATA* ch, const char* argument)
+void do_wartalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -3617,10 +3574,9 @@ void do_wartalk( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_WARTALK, "war" );
-   return;
 }
 
-void do_racetalk( CHAR_DATA* ch, const char* argument)
+void do_racetalk( CHAR_DATA* ch, const char* argument )
 {
    if( NOT_AUTHED( ch ) )
    {
@@ -3628,5 +3584,4 @@ void do_racetalk( CHAR_DATA* ch, const char* argument)
       return;
    }
    talk_channel( ch, argument, CHANNEL_RACETALK, "racetalk" );
-   return;
 }

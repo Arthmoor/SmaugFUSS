@@ -59,6 +59,7 @@ void save_mobile( FILE * fp, CHAR_DATA * mob )
 
    if( !IS_NPC( mob ) || !fp )
       return;
+
    fprintf( fp, "%s", "#MOBILE\n" );
    fprintf( fp, "Vnum	%d\n", mob->pIndexData->vnum );
    fprintf( fp, "Level   %d\n", mob->level );
@@ -181,7 +182,6 @@ void save_world( void )
       fprintf( mobfp, "%s", "#END\n" );
       FCLOSE( mobfp );
    }
-   return;
 }
 
 CHAR_DATA *load_mobile( FILE * fp )
@@ -498,8 +498,6 @@ void read_obj_file( char *dirname, char *filename )
    }
    else
       log_string( "Cannot open obj file" );
-
-   return;
 }
 
 void load_obj_files( void )
@@ -527,7 +525,6 @@ void load_obj_files( void )
       dentry = readdir( dp );
    }
    closedir( dp );
-   return;
 }
 
 void load_world( void )
@@ -573,7 +570,6 @@ void load_world( void )
     * Once loaded, the data needs to be purged in the event it causes a crash so that it won't try to reload 
     */
    unlink( file1 );
-   return;
 }
 
 /*  Warm reboot stuff, gotta make sure to thank Erwin for this :) */
@@ -836,5 +832,4 @@ void hotboot_recover( void )
    if( maxp > sysdata.maxplayers )
       sysdata.maxplayers = maxp;
    log_string( "Hotboot recovery complete." );
-   return;
 }

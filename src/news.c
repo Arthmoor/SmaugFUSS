@@ -49,7 +49,7 @@ int top_news_type;
 const char *news_command_table[NEWS_MAX_TYPES];
 
 /* olc editnews command */
-void do_editnews( CHAR_DATA* ch, const char* argument)
+void do_editnews( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
 
@@ -480,7 +480,6 @@ void renumber_news( void )
          news->type = type->vnum;
       }
    }
-   return;
 }
 
 /* save the linked list */
@@ -524,7 +523,6 @@ void save_news( void )
   write_html_news( );
  */
    FCLOSE( fp );
-   return;
 }
 
 /* load the linked list from disk */
@@ -593,7 +591,6 @@ void load_news( void )
    }
    FCLOSE( fp );
    renumber_news(  );
-   return;
 }
 
 /* added for new indexing - 5/5/02 - Nopey */
@@ -609,7 +606,6 @@ void link_news_to_type( NEWS * news )
       return;
    }
    LINK( news, type->first_news, type->last_news, next, prev );
-   return;
 }
 
 void fread_news( NEWS * news, FILE * fp )
@@ -757,7 +753,6 @@ void write_html_news( void )
    }
    snarf_news( fp );
    FCLOSE( fp );
-   return;
 }
 
 /*
@@ -793,7 +788,6 @@ void snarf_news( FILE * fp )
    fprintf( fp,
             "\n<center><font size='2' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>Extended News v2.5 written by: <a href='mailto:noplex@crimsonblade.org'>Noplex</a>; <a href='http://www.crimsonblade.org/snippets/' target='new'>Get your copy here!</a></font></center>\r\n" );
    fprintf( fp, "<pre><center>Page last written: %s</center></pre>", ctime( &current_time ) );
-   return;
 }
 #endif
 

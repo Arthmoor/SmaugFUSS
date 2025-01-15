@@ -155,7 +155,7 @@ bool compressEnd( DESCRIPTOR_DATA * d )
    return TRUE;
 }
 
-void do_compress( CHAR_DATA* ch, const char* argument)
+void do_compress( CHAR_DATA* ch, const char* argument )
 {
    if( !ch->desc )
    {

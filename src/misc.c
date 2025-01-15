@@ -73,6 +73,7 @@ void do_eat( CHAR_DATA* ch, const char* argument )
          act( AT_PLAIN, "You take $p from $P.", ch, obj, obj->in_obj, TO_CHAR );
       act( AT_PLAIN, "$n takes $p from $P.", ch, obj, obj->in_obj, TO_ROOM );
    }
+
    if( ch->fighting && number_percent(  ) > ( get_curr_dex( ch ) * 2 + 47 ) )
    {
       snprintf( buf, MAX_STRING_LENGTH, "%s",
@@ -185,10 +186,9 @@ void do_eat( CHAR_DATA* ch, const char* argument )
    if( obj->serial == cur_obj )
       global_objcode = rOBJ_EATEN;
    extract_obj( obj );
-   return;
 }
 
-void do_quaff( CHAR_DATA* ch, const char* argument)
+void do_quaff( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *obj;
    ch_ret retcode;
@@ -311,10 +311,9 @@ void do_quaff( CHAR_DATA* ch, const char* argument)
    if( cur_obj == obj->serial )
       global_objcode = rOBJ_QUAFFED;
    extract_obj( obj );
-   return;
 }
 
-void do_recite( CHAR_DATA* ch, const char* argument)
+void do_recite( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -392,7 +391,6 @@ void do_recite( CHAR_DATA* ch, const char* argument)
    if( scroll->serial == cur_obj )
       global_objcode = rOBJ_USED;
    extract_obj( scroll );
-   return;
 }
 
 /*
@@ -734,6 +732,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
          bug( "%s: door: no direction flag set.", __func__ );
          return;
       }
+
       pexit = get_exit( room, edir );
       if( !pexit )
       {
@@ -757,6 +756,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
          act( AT_PLAIN, "A passage opens!", ch, NULL, NULL, TO_ROOM );
          return;
       }
+
       if( IS_SET( obj->value[0], TRIG_UNLOCK ) && IS_SET( pexit->exit_info, EX_LOCKED ) )
       {
          REMOVE_BIT( pexit->exit_info, EX_LOCKED );
@@ -766,6 +766,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
             REMOVE_BIT( pexit_rev->exit_info, EX_LOCKED );
          return;
       }
+
       if( IS_SET( obj->value[0], TRIG_LOCK ) && !IS_SET( pexit->exit_info, EX_LOCKED ) )
       {
          SET_BIT( pexit->exit_info, EX_LOCKED );
@@ -775,6 +776,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
             SET_BIT( pexit_rev->exit_info, EX_LOCKED );
          return;
       }
+
       if( IS_SET( obj->value[0], TRIG_OPEN ) && IS_SET( pexit->exit_info, EX_CLOSED ) )
       {
          REMOVE_BIT( pexit->exit_info, EX_CLOSED );
@@ -792,6 +794,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
          check_room_for_traps( ch, trap_door[edir] );
          return;
       }
+
       if( IS_SET( obj->value[0], TRIG_CLOSE ) && !IS_SET( pexit->exit_info, EX_CLOSED ) )
       {
          SET_BIT( pexit->exit_info, EX_CLOSED );
@@ -812,7 +815,7 @@ void pullorpush( CHAR_DATA * ch, OBJ_DATA * obj, bool pull )
    }
 }
 
-void do_pull( CHAR_DATA* ch, const char* argument)
+void do_pull( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -836,7 +839,7 @@ void do_pull( CHAR_DATA* ch, const char* argument)
    pullorpush( ch, obj, TRUE );
 }
 
-void do_push( CHAR_DATA* ch, const char* argument)
+void do_push( CHAR_DATA* ch, const char* argument )
 {
    char arg[MAX_INPUT_LENGTH];
    OBJ_DATA *obj;
@@ -860,7 +863,7 @@ void do_push( CHAR_DATA* ch, const char* argument)
    pullorpush( ch, obj, FALSE );
 }
 
-void do_rap( CHAR_DATA* ch, const char* argument)
+void do_rap( CHAR_DATA* ch, const char* argument )
 {
    EXIT_DATA *pexit;
    char arg[MAX_INPUT_LENGTH];
@@ -907,11 +910,10 @@ void do_rap( CHAR_DATA* ch, const char* argument)
       act( AT_ACTION, "You make knocking motions through the air.", ch, NULL, NULL, TO_CHAR );
       act( AT_ACTION, "$n makes knocking motions through the air.", ch, NULL, NULL, TO_ROOM );
    }
-   return;
 }
 
 /* pipe commands (light, tamp, smoke) by Thoric */
-void do_tamp( CHAR_DATA* ch, const char* argument)
+void do_tamp( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *opipe;
    char arg[MAX_INPUT_LENGTH];
@@ -946,7 +948,7 @@ void do_tamp( CHAR_DATA* ch, const char* argument)
    send_to_char( "It doesn't need tamping.\r\n", ch );
 }
 
-void do_smoke( CHAR_DATA* ch, const char* argument)
+void do_smoke( CHAR_DATA* ch, const char* argument )
 {
    OBJ_DATA *opipe;
    char arg[MAX_INPUT_LENGTH];
@@ -966,18 +968,21 @@ void do_smoke( CHAR_DATA* ch, const char* argument)
       send_to_char( "You aren't carrying that.\r\n", ch );
       return;
    }
+
    if( opipe->item_type != ITEM_PIPE )
    {
       act( AT_ACTION, "You try to smoke $p... but it doesn't seem to work.", ch, opipe, NULL, TO_CHAR );
       act( AT_ACTION, "$n tries to smoke $p... (I wonder what $e's been putting in $s pipe?)", ch, opipe, NULL, TO_ROOM );
       return;
    }
+
    if( !IS_SET( opipe->value[3], PIPE_LIT ) )
    {
       act( AT_ACTION, "You try to smoke $p, but it's not lit.", ch, opipe, NULL, TO_CHAR );
       act( AT_ACTION, "$n tries to smoke $p, but it's not lit.", ch, opipe, NULL, TO_ROOM );
       return;
    }
+
    if( opipe->value[1] > 0 )
    {
       if( !oprog_use_trigger( ch, opipe, NULL, NULL ) )
@@ -1137,14 +1142,13 @@ void do_light( CHAR_DATA *ch, const char *argument )
             send_to_char( "You can't light that.\r\n", ch );
          break;
    }
-   return;
 }
 
 /*
  * Apply a salve/ointment					-Thoric
  * Support for applying to others.  Pkill concerns dealt with elsewhere.
  */
-void do_apply( CHAR_DATA* ch, const char* argument)
+void do_apply( CHAR_DATA* ch, const char* argument )
 {
    char arg1[MAX_INPUT_LENGTH];
    char arg2[MAX_INPUT_LENGTH];
@@ -1160,13 +1164,16 @@ void do_apply( CHAR_DATA* ch, const char* argument)
       send_to_char( "Apply what?\r\n", ch );
       return;
    }
+
    if( ch->fighting )
    {
       send_to_char( "You're too busy fighting ...\r\n", ch );
       return;
    }
+
    if( ms_find_obj( ch ) )
       return;
+
    if( ( salve = get_obj_carry( ch, arg1 ) ) == NULL )
    {
       send_to_char( "You do not have that.\r\n", ch );
@@ -1267,7 +1274,6 @@ void do_apply( CHAR_DATA* ch, const char* argument)
 
    if( !obj_extracted( salve ) && salve->value[1] <= 0 )
       extract_obj( salve );
-   return;
 }
 
 /* generate an action description message */
@@ -1275,7 +1281,6 @@ void actiondesc( CHAR_DATA * ch, OBJ_DATA * obj )
 {
    char charbuf[MAX_STRING_LENGTH];
    char roombuf[MAX_STRING_LENGTH];
-/*   char buf[MAX_STRING_LENGTH]; */
    const char *srcptr = obj->action_desc;
    char *charptr = charbuf;
    char *roomptr = roombuf;
@@ -1387,13 +1392,11 @@ void actiondesc( CHAR_DATA * ch, OBJ_DATA * obj )
       default:
          return;
    }
-   return;
 }
 
 /*
  * Extended Bitvector Routines					-Thoric
  */
-
 /* check to see if the extended bitvector is completely empty */
 bool ext_is_empty( EXT_BV * bits )
 {

@@ -33,11 +33,11 @@
 /* PaB: Seasons */
 /* Notes: Each season will be arbitrarily set at 1/4 of the year.
  */
-#define SEASON_SPRING		0
-#define SEASON_SUMMER		1
-#define SEASON_FALL		    2
-#define SEASON_WINTER		3
-#define SEASON_MAX         	4
+#define SEASON_SPRING   0
+#define SEASON_SUMMER   1
+#define SEASON_FALL     2
+#define SEASON_WINTER   3
+#define SEASON_MAX      4
 
 /* Hunger/Thirst modifiers */
 #define WINTER_HUNGER 1

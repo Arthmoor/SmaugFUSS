@@ -219,15 +219,13 @@ void write_watch_files( CHAR_DATA * ch, CMDTYPE * cmd, char *logline )
             FCLOSE( fp );
          }
    }
-
-   return;
 }
 
-void interpret( CHAR_DATA * ch, const char* argument)
+void interpret( CHAR_DATA * ch, const char* argument )
 {
-    char* temp = strdup(argument);
-    interpret(ch, temp);
-    free(temp);
+   char* temp = strdup( argument );
+   interpret( ch, temp );
+   free( temp );
 }
 
 /*
@@ -924,12 +922,14 @@ void do_timecmd( CHAR_DATA* ch, const char* argument )
    send_to_char( "Timing\r\n", ch );
    if( timing )
       return;
+
    one_argument( argument, arg );
    if( !*arg )
    {
       send_to_char( "No command to time.\r\n", ch );
       return;
    }
+
    if( !str_cmp( arg, "update" ) )
    {
       if( timechar )
@@ -941,6 +941,7 @@ void do_timecmd( CHAR_DATA* ch, const char* argument )
       }
       return;
    }
+
    set_char_color( AT_PLAIN, ch );
    send_to_char( "Starting timer.\r\n", ch );
    timing = TRUE;
@@ -952,7 +953,6 @@ void do_timecmd( CHAR_DATA* ch, const char* argument )
    send_to_char( "Timing complete.\r\n", ch );
    subtract_times( &etime, &sttime );
    ch_printf( ch, "Timing took %ld.%06ld seconds.\r\n", etime.tv_sec, etime.tv_usec );
-   return;
 }
 
 void start_timer( struct timeval *sttime )
@@ -963,7 +963,6 @@ void start_timer( struct timeval *sttime )
       return;
    }
    gettimeofday( sttime, NULL );
-   return;
 }
 
 time_t end_timer( struct timeval * sttime )
@@ -1001,7 +1000,6 @@ void send_timer( struct timerset *vtime, CHAR_DATA * ch )
    ch_printf( ch, "Time (in secs): min %ld.%06ld; avg: %ld.%06ld; max %ld.%06ld"
               "\r\n", vtime->min_time.tv_sec, vtime->min_time.tv_usec, ntime.tv_sec,
               ntime.tv_usec, vtime->max_time.tv_sec, vtime->max_time.tv_usec );
-   return;
 }
 
 void update_userec( struct timeval *time_used, struct timerset *userec )
@@ -1024,7 +1022,6 @@ void update_userec( struct timeval *time_used, struct timerset *userec )
       userec->total_time.tv_sec++;
       userec->total_time.tv_usec -= 1000000;
    }
-   return;
 }
 
 /*

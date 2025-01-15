@@ -192,7 +192,6 @@ void map_stats( CHAR_DATA * ch, int *rooms, int *rows, int *cols )
    *cols = ( rightmost - leftmost );
    *rows = row;   /* [sic.] */
    *rooms = n;
-   return;
 }
 
 void do_mapout( CHAR_DATA* ch, const char* argument )
