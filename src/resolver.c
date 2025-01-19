@@ -56,7 +56,7 @@ char *resolve_address( int address )
     
    if( ( from = gethostbyaddr( (char*)&address, sizeof(address), AF_INET ) ) != NULL )
    {
-      strncpy( addr_str, strcmp( from->h_name, "localhost" ) ? from->h_name : "local-host", 256 );
+      strlcpy( addr_str, strcmp( from->h_name, "localhost" ) ? from->h_name : "local-host", 256 );
    }
    else
    {
@@ -76,7 +76,7 @@ int main( int argc, char *argv[] )
    if( argc != 2 )
    {
       printf( "unknown.host\r\n" );
-    	exit( 0 );
+      exit( 0 );
    }
     
    ip = atoi( argv[1] );

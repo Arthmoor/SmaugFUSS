@@ -319,8 +319,8 @@ void do_watch( CHAR_DATA* ch, const char* argument )
 
       CREATE( pinsert, WATCH_DATA, 1 );   /* create new watch */
       pinsert->imm_level = get_trust( ch );
-      pinsert->imm_name = str_dup( strlower( ch->name ) );
-      pinsert->target_name = str_dup( strlower( arg2 ) );
+      pinsert->imm_name = strdup( strlower( ch->name ) );
+      pinsert->target_name = strdup( strlower( arg2 ) );
       pinsert->player_site = NULL;
 
       /*
@@ -372,8 +372,8 @@ void do_watch( CHAR_DATA* ch, const char* argument )
       }
       CREATE( pinsert, WATCH_DATA, 1 );   /* create new watch */
       pinsert->imm_level = get_trust( ch );
-      pinsert->imm_name = str_dup( strlower( ch->name ) );
-      pinsert->player_site = str_dup( strlower( arg2 ) );
+      pinsert->imm_name = strdup( strlower( ch->name ) );
+      pinsert->player_site = strdup( strlower( arg2 ) );
       pinsert->target_name = NULL;
 
       for( vic = first_char; vic; vic = vic->next )
@@ -435,9 +435,9 @@ void do_watch( CHAR_DATA* ch, const char* argument )
 
       CREATE( pinsert, WATCH_DATA, 1 );
       pinsert->imm_level = get_trust( ch );
-      pinsert->imm_name = str_dup( strlower( ch->name ) );
+      pinsert->imm_name = strdup( strlower( ch->name ) );
       pinsert->player_site = NULL;
-      pinsert->target_name = str_dup( arg2 );
+      pinsert->target_name = strdup( arg2 );
 
       for( pw = first_watch; pw; pw = pw->next )
       {
@@ -714,7 +714,7 @@ void do_bamfin( CHAR_DATA* ch, const char* argument )
 {
    if( !IS_NPC( ch ) )
    {
-      char* newbamf = str_dup(argument);
+      char* newbamf = strdup(argument);
       smash_tilde(newbamf);
       DISPOSE( ch->pcdata->bamfin );
       ch->pcdata->bamfin = newbamf;
@@ -726,7 +726,7 @@ void do_bamfout( CHAR_DATA* ch, const char* argument )
 {
    if( !IS_NPC( ch ) )
    {
-      char* newbamf = str_dup(argument);
+      char* newbamf = strdup(argument);
       smash_tilde(newbamf);
       DISPOSE( ch->pcdata->bamfout );
       ch->pcdata->bamfout = newbamf;
@@ -751,10 +751,10 @@ void do_rank( CHAR_DATA* ch, const char* argument )
    DISPOSE( ch->pcdata->rank );
 
    if( !str_cmp( argument, "none" ) )
-      ch->pcdata->rank = str_dup( "" );
+      ch->pcdata->rank = strdup( "" );
    else
    {
-      char* newrank = str_dup(argument);
+      char* newrank = strdup(argument);
       smash_tilde( newrank );
       ch->pcdata->rank = newrank;
    }
@@ -3768,7 +3768,7 @@ void do_advance( CHAR_DATA* ch, const char* argument )
       {
          if( victim->pcdata->bestowments )
             DISPOSE( victim->pcdata->bestowments );
-         victim->pcdata->bestowments = str_dup( "" );
+         victim->pcdata->bestowments = strdup( "" );
          xREMOVE_BIT( victim->act, PLR_HOLYLIGHT );
          if( !IS_RETIRED( victim ) )
          {
@@ -3818,7 +3818,7 @@ void do_advance( CHAR_DATA* ch, const char* argument )
        * Rank fix added by Narn. 
        */
       DISPOSE( victim->pcdata->rank );
-      victim->pcdata->rank = str_dup( "" );
+      victim->pcdata->rank = strdup( "" );
       /*
        * Stuff added to make sure character's wizinvis level doesn't stay
        * higher than actual level, take wizinvis away from advance < 50 
@@ -5611,7 +5611,7 @@ void do_mortalize( CHAR_DATA * ch, const char *argument )
       victim->move = victim->max_move;
       advance_level( victim );
       DISPOSE( victim->pcdata->rank );
-      victim->pcdata->rank = str_dup( "" );
+      victim->pcdata->rank = strdup( "" );
       if( xIS_SET( victim->act, PLR_WIZINVIS ) )
          victim->pcdata->wizinvis = victim->trust;
       if( xIS_SET( victim->act, PLR_WIZINVIS ) && ( victim->level <= LEVEL_AVATAR ) )
@@ -5977,7 +5977,7 @@ void do_bestowarea( CHAR_DATA* ch, const char* argument )
    }
 
    if( !victim->pcdata->bestowments )
-      victim->pcdata->bestowments = str_dup( "" );
+      victim->pcdata->bestowments = strdup( "" );
 
    if( !*argument || !str_cmp( argument, "list" ) )
    {
@@ -5991,7 +5991,7 @@ void do_bestowarea( CHAR_DATA* ch, const char* argument )
       remove_area_names( victim->pcdata->bestowments, buf );
       smash_tilde( buf );
       DISPOSE( victim->pcdata->bestowments );
-      victim->pcdata->bestowments = str_dup( buf );
+      victim->pcdata->bestowments = strdup( buf );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -6008,7 +6008,7 @@ void do_bestowarea( CHAR_DATA* ch, const char* argument )
 
    snprintf( buf, MAX_STRING_LENGTH, "%s %s", victim->pcdata->bestowments, argument );
    DISPOSE( victim->pcdata->bestowments );
-   victim->pcdata->bestowments = str_dup( buf );
+   victim->pcdata->bestowments = strdup( buf );
    set_char_color( AT_IMMORT, victim );
    ch_printf( victim, "%s has bestowed on you the area: %s\r\n", ch->name, argument );
    send_to_char( "Done.\r\n", ch );
@@ -6050,7 +6050,7 @@ void do_bestow( CHAR_DATA* ch, const char* argument )
    }
 
    if( !victim->pcdata->bestowments )
-      victim->pcdata->bestowments = str_dup( "" );
+      victim->pcdata->bestowments = strdup( "" );
 
    if( argument[0] == '\0' || !str_cmp( argument, "show list" ) )
    {
@@ -6061,7 +6061,7 @@ void do_bestow( CHAR_DATA* ch, const char* argument )
    if( !str_cmp( argument, "none" ) )
    {
       DISPOSE( victim->pcdata->bestowments );
-      victim->pcdata->bestowments = str_dup( "" );
+      victim->pcdata->bestowments = strdup( "" );
       ch_printf( ch, "Bestowments removed from %s.\r\n", victim->name );
       ch_printf( victim, "%s has removed your bestowed commands.\r\n", ch->name );
       check_switch( victim, FALSE );
@@ -6140,7 +6140,7 @@ void do_bestow( CHAR_DATA* ch, const char* argument )
    snprintf( buf, MAX_STRING_LENGTH, "%s %s", victim->pcdata->bestowments, arg_buf );
    DISPOSE( victim->pcdata->bestowments );
    smash_tilde( buf );
-   victim->pcdata->bestowments = str_dup( buf );
+   victim->pcdata->bestowments = strdup( buf );
    set_char_color( AT_IMMORT, victim );
    ch_printf( victim, "%s has bestowed on you the command(s): %s\r\n", ch->name, arg_buf );
    send_to_char( "Done.\r\n", ch );
@@ -6943,7 +6943,7 @@ void do_cset( CHAR_DATA* ch, const char* argument )
    {
       if( sysdata.mud_name )
          DISPOSE( sysdata.mud_name );
-      sysdata.mud_name = str_dup( argument );
+      sysdata.mud_name = strdup( argument );
       send_to_char( "MUD name set.\r\n", ch );
       return;
    }
@@ -6952,7 +6952,7 @@ void do_cset( CHAR_DATA* ch, const char* argument )
    {
       if( sysdata.port_name )
          DISPOSE( sysdata.port_name );
-      sysdata.port_name = str_dup( argument );
+      sysdata.port_name = strdup( argument );
       send_to_char( "Port name set.\r\n", ch );
       return;
    }
@@ -6961,7 +6961,7 @@ void do_cset( CHAR_DATA* ch, const char* argument )
    {
       if( sysdata.admin_email )
          DISPOSE( sysdata.admin_email );
-      sysdata.admin_email = str_dup( argument );
+      sysdata.admin_email = strdup( argument );
       send_to_char( "Admin email set.\r\n", ch );
       return;
    }
@@ -7734,9 +7734,9 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
          return;
       }
       CREATE( social, SOCIALTYPE, 1 );
-      social->name = str_dup( arg1 );
+      social->name = strdup( arg1 );
       snprintf( buf, MAX_STRING_LENGTH, "You %s.", arg1 );
-      social->char_no_arg = str_dup( arg2 );
+      social->char_no_arg = strdup( arg2 );
       add_social( social );
       send_to_char( "Social added.\r\n", ch );
       return;
@@ -7779,7 +7779,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       }
       if( social->char_no_arg )
          DISPOSE( social->char_no_arg );
-      social->char_no_arg = str_dup( argument );
+      social->char_no_arg = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7789,7 +7789,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->others_no_arg )
          DISPOSE( social->others_no_arg );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->others_no_arg = str_dup( argument );
+         social->others_no_arg = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7799,7 +7799,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->char_found )
          DISPOSE( social->char_found );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->char_found = str_dup( argument );
+         social->char_found = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7809,7 +7809,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->others_found )
          DISPOSE( social->others_found );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->others_found = str_dup( argument );
+         social->others_found = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7819,7 +7819,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->vict_found )
          DISPOSE( social->vict_found );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->vict_found = str_dup( argument );
+         social->vict_found = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7829,7 +7829,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->char_auto )
          DISPOSE( social->char_auto );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->char_auto = str_dup( argument );
+         social->char_auto = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7839,7 +7839,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
       if( social->others_auto )
          DISPOSE( social->others_auto );
       if( argument[0] != '\0' && str_cmp( argument, "clear" ) )
-         social->others_auto = str_dup( argument );
+         social->others_auto = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7869,7 +7869,7 @@ void do_sedit( CHAR_DATA* ch, const char* argument )
          relocate = FALSE;
       if( social->name )
          DISPOSE( social->name );
-      social->name = str_dup( arg1 );
+      social->name = strdup( arg1 );
       if( relocate )
          add_social( social );
       send_to_char( "Done.\r\n", ch );
@@ -8046,7 +8046,7 @@ void do_cedit( CHAR_DATA* ch, const char* argument )
       }
       CREATE( command, CMDTYPE, 1 );
       command->lag_count = 0; /* FB */
-      command->name = str_dup( arg1 );
+      command->name = strdup( arg1 );
       command->level = get_trust( ch );
       if( *argument )
          one_argument( argument, arg2 );
@@ -8057,7 +8057,7 @@ void do_cedit( CHAR_DATA* ch, const char* argument )
             bug( "%s: Output buffer error!", __func__ );
       }
       command->do_fun = skill_function( arg2 );
-      command->fun_name = str_dup( arg2 );
+      command->fun_name = strdup( arg2 );
       add_command( command );
       send_to_char( "Command added.\r\n", ch );
       if( command->do_fun == skill_notfound )
@@ -8201,7 +8201,7 @@ void do_cedit( CHAR_DATA* ch, const char* argument )
       }
       command->do_fun = fun;
       DISPOSE( command->fun_name );
-      command->fun_name = str_dup( argument );
+      command->fun_name = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -8301,7 +8301,7 @@ void do_cedit( CHAR_DATA* ch, const char* argument )
          relocate = FALSE;
       if( command->name )
          DISPOSE( command->name );
-      command->name = str_dup( arg1 );
+      command->name = strdup( arg1 );
       if( relocate )
          add_command( command );
       send_to_char( "Done.\r\n", ch );
@@ -8431,10 +8431,10 @@ bool create_new_class( int rcindex, const char *argument )
    {
       if( title_table[rcindex][i][0] )
          DISPOSE( title_table[rcindex][i][0] );
-      title_table[rcindex][i][0] = str_dup( "Not set." );
+      title_table[rcindex][i][0] = strdup( "Not set." );
       if( title_table[rcindex][i][1] )
          DISPOSE( title_table[rcindex][i][1] );
-      title_table[rcindex][i][1] = str_dup( "Not set." );
+      title_table[rcindex][i][1] = strdup( "Not set." );
    }
    return TRUE;
 }
@@ -8819,7 +8819,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument )
          return;
       }
       DISPOSE( title_table[cl][x][0] );
-      title_table[cl][x][0] = str_dup( argument );
+      title_table[cl][x][0] = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       write_class_file( cl );
       return;
@@ -8846,7 +8846,7 @@ void do_setclass( CHAR_DATA* ch, const char* argument )
       /*
        * Bug fix below -Shaddai
        */
-      title_table[cl][x][1] = str_dup( argument );
+      title_table[cl][x][1] = strdup( argument );
       send_to_char( "Done\r\n", ch );
       write_class_file( cl );
       return;
@@ -8865,7 +8865,7 @@ bool create_new_race( int rcindex, char *argument )
       return FALSE;
 
    for( i = 0; i < MAX_WHERE_NAME; i++ )
-      race_table[rcindex]->where_name[i] = str_dup( where_name[i] );
+      race_table[rcindex]->where_name[i] = strdup( where_name[i] );
 
    if( argument[0] != '\0' )
       argument[0] = UPPER( argument[0] );
@@ -9813,7 +9813,7 @@ void do_reserve( CHAR_DATA* ch, const char* argument )
    }
 
    CREATE( res, RESERVE_DATA, 1 );
-   res->name = str_dup( arg );
+   res->name = strdup( arg );
    sort_reserved( res );
    save_reserved(  );
    send_to_char( "Name reserved.\r\n", ch );
@@ -10092,7 +10092,7 @@ void do_project( CHAR_DATA* ch, const char* argument )
 
       CREATE( new_project, PROJECT_DATA, 1 );
       LINK( new_project, first_project, last_project, next, prev );
-      new_project->name = str_dup( argument );
+      new_project->name = strdup( argument );
       new_project->coder = NULL;
       new_project->owner = STRALLOC( "None" );
       new_project->taken = FALSE;
@@ -10255,7 +10255,7 @@ void do_project( CHAR_DATA* ch, const char* argument )
          ch_printf( ch, "This project already has a coder.\r\n" );
          return;
       }
-      pproject->coder = str_dup( ch->name );
+      pproject->coder = strdup( ch->name );
       write_projects(  );
       ch_printf( ch, "Ok.\r\n" );
       return;
@@ -10520,7 +10520,7 @@ void do_ipcompare( CHAR_DATA* ch, const char* argument )
          {
             IPCOMPARE_DATA *temp;
             CREATE( temp, IPCOMPARE_DATA, 1 );
-            temp->host = str_dup( d->host );
+            temp->host = strdup( d->host );
             LINK( temp, first_ip, last_ip, next, prev );
             count++;
          }
@@ -10561,13 +10561,13 @@ void do_ipcompare( CHAR_DATA* ch, const char* argument )
              || d->character == NULL || !CAN_PKILL( d->character ) || !can_see( ch, d->character ) )
             continue;
          CREATE( temp, IPCOMPARE_DATA, 1 );
-         temp->host = str_dup( d->host );
+         temp->host = strdup( d->host );
          temp->descriptor = d->descriptor;
          temp->connected = d->connected;
          temp->idle = d->idle;
          temp->port = d->port;
-         temp->name = ( d->original ? str_dup( d->original->name ) :
-                        d->character ? str_dup( d->character->name ) : str_dup( "(none)" ) );
+         temp->name = ( d->original ? strdup( d->original->name ) :
+                        d->character ? strdup( d->character->name ) : strdup( "(none)" ) );
          temp->count = 0;
          temp->printed = FALSE;
          LINK( temp, first_ip, last_ip, next, prev );

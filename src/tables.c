@@ -471,7 +471,7 @@ bool load_race_file( const char *fname )
 
    CREATE( race, struct race_type, 1 );
    for( i = 0; i < MAX_WHERE_NAME; ++i )
-      race->where_name[i] = str_dup( where_name[i] );
+      race->where_name[i] = strdup( where_name[i] );
 
    for( ;; )
    {
@@ -715,7 +715,7 @@ void remap_slot_numbers(  )
             {
                snprintf( tmp, 32, "%d", slot_lookup( atoi( aff->modifier ) ) );
                DISPOSE( aff->modifier );
-               aff->modifier = str_dup( tmp );
+               aff->modifier = strdup( tmp );
             }
       }
    }
@@ -1049,9 +1049,9 @@ SKILLTYPE *fread_skill( FILE * fp )
                SMAUG_AFF *aff;
 
                CREATE( aff, SMAUG_AFF, 1 );
-               aff->duration = str_dup( fread_word( fp ) );
+               aff->duration = strdup( fread_word( fp ) );
                aff->location = fread_number( fp );
-               aff->modifier = str_dup( fread_word( fp ) );
+               aff->modifier = strdup( fread_word( fp ) );
                aff->bitvector = fread_number( fp );
 
                if( !got_info )
@@ -1096,13 +1096,13 @@ SKILLTYPE *fread_skill( FILE * fp )
                {
                   skill->skill_fun = dofun;
                   skill->spell_fun = NULL;
-                  skill->skill_fun_name = str_dup( w );
+                  skill->skill_fun_name = strdup( w );
                }
                else if( str_prefix( "do_", w ) && ( spellfun = spell_function( w ) ) != spell_notfound )
                {
                   skill->spell_fun = spellfun;
                   skill->skill_fun = NULL;
-                  skill->spell_fun_name = str_dup( w );
+                  skill->spell_fun_name = strdup( w );
                }
                else
                {
@@ -1556,7 +1556,7 @@ void fread_command( FILE * fp )
             break;
 
          case 'C':
-            KEY( "Code", command->fun_name, str_dup( fread_word( fp ) ) );
+            KEY( "Code", command->fun_name, strdup( fread_word( fp ) ) );
             break;
 
          case 'E':
@@ -1774,9 +1774,9 @@ void fread_cnv( FILE * fp, LCNV_DATA ** first_cnv, LCNV_DATA ** last_cnv )
       ungetc( letter, fp );
       CREATE( cnv, LCNV_DATA, 1 );
 
-      cnv->old = str_dup( fread_word( fp ) );
+      cnv->old = strdup( fread_word( fp ) );
       cnv->olen = strlen( cnv->old );
-      cnv->lnew = str_dup( fread_word( fp ) );
+      cnv->lnew = strdup( fread_word( fp ) );
       cnv->nlen = strlen( cnv->lnew );
       fread_to_eol( fp );
       LINK( cnv, *first_cnv, *last_cnv, next, prev );

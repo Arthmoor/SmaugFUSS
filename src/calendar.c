@@ -729,7 +729,7 @@ void fread_day( HOLIDAY_DATA * day, FILE * fp )
             if( !str_cmp( word, "End" ) )
             {
                if( !day->announce )
-                  day->announce = str_dup( "Today is a holiday, but who the hell knows which one." );
+                  day->announce = strdup( "Today is a holiday, but who the hell knows which one." );
                return;
             }
             break;
@@ -894,10 +894,10 @@ void do_setholiday( CHAR_DATA* ch, const char* argument )
       }
 
       CREATE( newday, HOLIDAY_DATA, 1 );
-      newday->name = str_dup( arg1 );
+      newday->name = strdup( arg1 );
       newday->day = time_info.day;
       newday->month = time_info.month;
-      newday->announce = str_dup( "Today is the holiday of when some moron forgot to set the announcement for this one!" );
+      newday->announce = strdup( "Today is the holiday of when some moron forgot to set the announcement for this one!" );
       LINK( newday, first_holiday, last_holiday, next, prev );
       send_to_char( "Holiday created.\r\n", ch );
       return;
@@ -967,7 +967,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument )
 
       /* Set the announcement */
       DISPOSE( day->announce );
-      day->announce = str_dup( arg3 );
+      day->announce = strdup( arg3 );
       send_to_char( "Announcement changed.\r\n", ch );
       return;
    }
@@ -983,7 +983,7 @@ void do_setholiday( CHAR_DATA* ch, const char* argument )
 
       /* Release the good...err... name */
       DISPOSE( day->name );
-      day->name = str_dup( arg3 );
+      day->name = strdup( arg3 );
       send_to_char( "Name changed.\r\n", ch );
       return;
    }

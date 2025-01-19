@@ -954,13 +954,13 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
       ch->pcdata->deity_name = STRALLOC( "" );
       ch->pcdata->deity = NULL;
       ch->pcdata->pet = NULL;
-      ch->pcdata->pwd = str_dup( "" );
-      ch->pcdata->bamfin = str_dup( "" );
-      ch->pcdata->bamfout = str_dup( "" );
-      ch->pcdata->rank = str_dup( "" );
-      ch->pcdata->bestowments = str_dup( "" );
+      ch->pcdata->pwd = strdup( "" );
+      ch->pcdata->bamfin = strdup( "" );
+      ch->pcdata->bamfout = strdup( "" );
+      ch->pcdata->rank = strdup( "" );
+      ch->pcdata->bestowments = strdup( "" );
       ch->pcdata->title = STRALLOC( "" );
-      ch->pcdata->homepage = str_dup( "" );
+      ch->pcdata->homepage = strdup( "" );
       ch->pcdata->bio = STRALLOC( "" );
       ch->pcdata->authed_by = STRALLOC( "" );
       ch->pcdata->prompt = STRALLOC( "" );
@@ -1766,21 +1766,21 @@ void fread_char( CHAR_DATA * ch, FILE * fp, bool preload, bool copyover )
                if( !ch->description )
                   ch->description = STRALLOC( "" );
                if( !ch->pcdata->pwd )
-                  ch->pcdata->pwd = str_dup( "" );
+                  ch->pcdata->pwd = strdup( "" );
                if( !ch->pcdata->bamfin )
-                  ch->pcdata->bamfin = str_dup( "" );
+                  ch->pcdata->bamfin = strdup( "" );
                if( !ch->pcdata->bamfout )
-                  ch->pcdata->bamfout = str_dup( "" );
+                  ch->pcdata->bamfout = strdup( "" );
                if( !ch->pcdata->bio )
                   ch->pcdata->bio = STRALLOC( "" );
                if( !ch->pcdata->rank )
-                  ch->pcdata->rank = str_dup( "" );
+                  ch->pcdata->rank = strdup( "" );
                if( !ch->pcdata->bestowments )
-                  ch->pcdata->bestowments = str_dup( "" );
+                  ch->pcdata->bestowments = strdup( "" );
                if( !ch->pcdata->title )
                   ch->pcdata->title = STRALLOC( "" );
                if( !ch->pcdata->homepage )
-                  ch->pcdata->homepage = str_dup( "" );
+                  ch->pcdata->homepage = strdup( "" );
                if( !ch->pcdata->authed_by )
                   ch->pcdata->authed_by = STRALLOC( "" );
                if( !ch->pcdata->prompt )

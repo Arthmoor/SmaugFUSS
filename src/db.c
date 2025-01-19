@@ -400,9 +400,9 @@ void boot_db( bool fCopyOver )
    {
       log_string( "Not found.  Creating new configuration." );
       sysdata.alltimemax = 0;
-      sysdata.mud_name = str_dup( "(Name not set)" );
-      sysdata.port_name = str_dup( "mud" );
-      sysdata.admin_email = str_dup( "(not set)" );
+      sysdata.mud_name = strdup( "(Name not set)" );
+      sysdata.port_name = strdup( "mud" );
+      sysdata.admin_email = strdup( "(not set)" );
       update_timers(  );
       update_calendar(  );
       save_sysdata( sysdata );
@@ -796,7 +796,7 @@ AREA_DATA *load_area( FILE * fp, int aversion )
    pArea->name = fread_string_nohash( fp );
    pArea->author = STRALLOC( "unknown" );
    pArea->credits = STRALLOC( "" );
-   pArea->filename = str_dup( strArea );
+   pArea->filename = strdup( strArea );
    pArea->age = 15;
    pArea->nplayer = 0;
    pArea->low_r_vnum = 0;
@@ -3317,24 +3317,6 @@ int fread_number( FILE * fp )
    return number;
 }
 
-/*
- * custom str_dup using create					-Thoric
- */
-char *str_dup( char const *str )
-{
-   static char *ret;
-   int len;
-
-   if( !str )
-      return NULL;
-
-   len = strlen( str ) + 1;
-
-   CREATE( ret, char, len );
-   strlcpy( ret, str, MAX_STRING_LENGTH );
-   return ret;
-}
-
 bool is_valid_filename( CHAR_DATA * ch, const char *direct, const char *filename )
 {
    char newfilename[256];
@@ -3521,7 +3503,7 @@ const char *fread_string( FILE * fp )
 }
 
 /*
- * Read a string from file fp using str_dup (ie: no string hashing)
+ * Read a string from file fp using strdup (ie: no string hashing)
  */
 char *fread_string_nohash( FILE * fp )
 {
@@ -3545,14 +3527,14 @@ char *fread_string_nohash( FILE * fp )
          bug( "%s: EOF encountered on read.\r\n", __func__ );
          if( fBootDb )
             exit( 1 );
-         return str_dup( "" );
+         return strdup( "" );
       }
       c = getc( fp );
    }
    while( isspace( c ) );
 
    if( ( *plast++ = c ) == '~' )
-      return str_dup( "" );
+      return strdup( "" );
 
    for( ;; )
    {
@@ -3560,7 +3542,7 @@ char *fread_string_nohash( FILE * fp )
       {
          bug( "%s: string too long", __func__ );
          *plast = '\0';
-         return str_dup( buf );
+         return strdup( buf );
       }
       switch ( *plast = getc( fp ) )
       {
@@ -3574,7 +3556,7 @@ char *fread_string_nohash( FILE * fp )
             if( fBootDb )
                exit( 1 );
             *plast = '\0';
-            return str_dup( buf );
+            return strdup( buf );
             break;
 
          case '\n':
@@ -3589,7 +3571,7 @@ char *fread_string_nohash( FILE * fp )
 
          case '~':
             *plast = '\0';
-            return str_dup( buf );
+            return strdup( buf );
       }
    }
 }
@@ -4498,7 +4480,7 @@ void add_to_wizlist( char *name, int level )
 #endif
 
    CREATE( wiz, WIZENT, 1 );
-   wiz->name = str_dup( name );
+   wiz->name = strdup( name );
    wiz->level = level;
 
    if( !first_wiz )
@@ -7780,7 +7762,7 @@ AREA_DATA *create_area( void )
    pArea->name = NULL;
    pArea->author = NULL;
    pArea->credits = NULL;
-   pArea->filename = str_dup( strArea );
+   pArea->filename = strdup( strArea );
    pArea->age = 15;
    pArea->reset_frequency = 15;
    pArea->nplayer = 0;
@@ -8109,12 +8091,12 @@ void load_buildlist( void )
             CREATE( pArea, AREA_DATA, 1 );
             snprintf( buf, MAX_STRING_LENGTH, "%s.are", dentry->d_name );
             pArea->author = STRALLOC( dentry->d_name );
-            pArea->filename = str_dup( buf );
+            pArea->filename = strdup( buf );
 #if !defined(READ_AREA)
             pArea->name = fread_string_nohash( fp );
 #else
             snprintf( buf, MAX_STRING_LENGTH, "{PROTO} %s's area in progress", dentry->d_name );
-            pArea->name = str_dup( buf );
+            pArea->name = strdup( buf );
 #endif
             FCLOSE( fp );
 
@@ -8521,13 +8503,13 @@ void fread_sysdata( SYSTEM_DATA * sys, FILE * fp )
             if( !str_cmp( word, "End" ) )
             {
                if( !sys->time_of_max )
-                  sys->time_of_max = str_dup( "(not recorded)" );
+                  sys->time_of_max = strdup( "(not recorded)" );
                if( !sys->mud_name )
-                  sys->mud_name = str_dup( "(Name Not Set)" );
+                  sys->mud_name = strdup( "(Name Not Set)" );
                if( !sys->port_name )
-                  sys->port_name = str_dup( "mud" );
+                  sys->port_name = strdup( "mud" );
                if( !sys->admin_email )
-                  sys->admin_email = str_dup( "(not set)" );
+                  sys->admin_email = strdup( "(not set)" );
                return;
             }
             break;
@@ -9029,7 +9011,7 @@ PROJECT_DATA *read_project( FILE * fp )
                if( !project->description )
                   project->description = STRALLOC( "" );
                if( !project->name )
-                  project->name = str_dup( "" );
+                  project->name = strdup( "" );
                if( !project->owner )
                   project->owner = STRALLOC( "None" );
                if( !project->date )

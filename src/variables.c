@@ -29,7 +29,7 @@ VARIABLE_DATA *make_variable( char type, int vnum, char *tag )
    var->type = type;
    var->flags = 0;
    var->vnum = vnum;
-   var->tag = str_dup( tag );
+   var->tag = strdup( tag );
    var->c_time = current_time;
    var->m_time = current_time;
    var->r_time = 0;
@@ -257,7 +257,7 @@ void do_mptag( CHAR_DATA* ch, const char* argument )
    if( error )
    {
       vd = make_variable( vtSTR, vnum, arg2 );
-      vd->data = str_dup( argument );
+      vd->data = strdup( argument );
    }
    else
    {

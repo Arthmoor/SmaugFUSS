@@ -748,21 +748,21 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
       argument = one_argument( argument, arg3 );
       DISPOSE( morph->hit );
       if( str_cmp( arg3, "0" ) )
-         morph->hit = str_dup( arg3 );
+         morph->hit = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "mana" ) )
    {
       argument = one_argument( argument, arg3 );
       DISPOSE( morph->mana );
       if( str_cmp( arg3, "0" ) )
-         morph->mana = str_dup( arg3 );
+         morph->mana = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "move" ) )
    {
       argument = one_argument( argument, arg3 );
       DISPOSE( morph->move );
       if( str_cmp( arg3, "0" ) )
-         morph->move = str_dup( arg3 );
+         morph->move = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "ac" ) )
    {
@@ -778,14 +778,14 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
       argument = one_argument( argument, arg3 );
       DISPOSE( morph->hitroll );
       if( str_cmp( arg3, "0" ) )
-         morph->hitroll = str_dup( arg3 );
+         morph->hitroll = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "damroll" ) )
    {
       argument = one_argument( argument, arg3 );
       DISPOSE( morph->damroll );
       if( str_cmp( arg3, "0" ) )
-         morph->damroll = str_dup( arg3 );
+         morph->damroll = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "dodge" ) )
    {
@@ -1017,46 +1017,46 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
    else if( !str_cmp( arg2, "short" ) )
    {
       DISPOSE( morph->short_desc );
-      morph->short_desc = str_dup( arg3 );
+      morph->short_desc = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "morphother" ) )
    {
       DISPOSE( morph->morph_other );
-      morph->morph_other = str_dup( arg3 );
+      morph->morph_other = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "morphself" ) )
    {
       DISPOSE( morph->morph_self );
-      morph->morph_self = str_dup( arg3 );
+      morph->morph_self = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "unmorphother" ) )
    {
       DISPOSE( morph->unmorph_other );
-      morph->unmorph_other = str_dup( arg3 );
+      morph->unmorph_other = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "unmorphself" ) )
    {
       DISPOSE( morph->unmorph_self );
-      morph->unmorph_self = str_dup( arg3 );
+      morph->unmorph_self = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "keyword" ) )
    {
       DISPOSE( morph->key_words );
-      morph->key_words = str_dup( arg3 );
+      morph->key_words = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "long" ) )
    {
       DISPOSE( morph->long_desc );
       strlcpy( buf, arg3, MAX_STRING_LENGTH );
       strlcat( buf, "\r\n", MAX_STRING_LENGTH );
-      morph->long_desc = str_dup( buf );
+      morph->long_desc = strdup( buf );
    }
    else if( !str_cmp( arg2, "description" ) || !str_cmp( arg2, "desc" ) )
    {
       if( arg3[0] )
       {
          DISPOSE( morph->description );
-         morph->description = str_dup( arg3 );
+         morph->description = strdup( arg3 );
       }
       CHECK_SUBRESTRICTED( ch );
       if( ch->substate == SUB_REPEATCMD )
@@ -1071,14 +1071,14 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
    else if( !str_cmp( arg2, "name" ) )
    {
       DISPOSE( morph->name );
-      morph->name = str_dup( arg3 );
+      morph->name = strdup( arg3 );
    }
    else if( !str_cmp( arg2, "help" ) )
    {
       if( arg3[0] )
       {
          DISPOSE( morph->help );
-         morph->help = str_dup( arg3 );
+         morph->help = strdup( arg3 );
       }
       CHECK_SUBRESTRICTED( ch );
       if( ch->substate == SUB_REPEATCMD )
@@ -1102,7 +1102,7 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
       else
          snprintf( buf, MAX_STRING_LENGTH, "%s %s", morph->skills, arg3 );
       DISPOSE( morph->skills );
-      morph->skills = str_dup( buf );
+      morph->skills = strdup( buf );
    }
    else if( !str_cmp( arg2, "noskills" ) )
    {
@@ -1116,7 +1116,7 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
       else
          snprintf( buf, MAX_STRING_LENGTH, "%s %s", morph->no_skills, arg3 );
       DISPOSE( morph->no_skills );
-      morph->no_skills = str_dup( buf );
+      morph->no_skills = strdup( buf );
    }
    else if( !str_cmp( arg2, "class" ) )
    {
@@ -1746,7 +1746,7 @@ MORPH_DATA *fread_morph( FILE * fp )
    CREATE( morph, MORPH_DATA, 1 );
    morph_defaults( morph );
    DISPOSE( morph->name );
-   morph->name = str_dup( word );
+   morph->name = strdup( word );
 
    for( ;; )
    {
@@ -1980,23 +1980,23 @@ void load_morphs( void )
  */
 void copy_morph( MORPH_DATA * morph, MORPH_DATA * temp )
 {
-   morph->damroll = str_dup( temp->damroll );
-   morph->description = str_dup( temp->description );
-   morph->help = str_dup( temp->help );
-   morph->hit = str_dup( temp->hit );
-   morph->hitroll = str_dup( temp->hitroll );
-   morph->key_words = str_dup( temp->key_words );
-   morph->long_desc = str_dup( temp->long_desc );
-   morph->mana = str_dup( temp->mana );
-   morph->morph_other = str_dup( temp->morph_other );
-   morph->morph_self = str_dup( temp->morph_self );
-   morph->move = str_dup( temp->move );
-   morph->name = str_dup( temp->name );
-   morph->short_desc = str_dup( temp->short_desc );
-   morph->skills = str_dup( temp->skills );
-   morph->no_skills = str_dup( temp->no_skills );
-   morph->unmorph_other = str_dup( temp->unmorph_other );
-   morph->unmorph_self = str_dup( temp->unmorph_self );
+   morph->damroll = strdup( temp->damroll );
+   morph->description = strdup( temp->description );
+   morph->help = strdup( temp->help );
+   morph->hit = strdup( temp->hit );
+   morph->hitroll = strdup( temp->hitroll );
+   morph->key_words = strdup( temp->key_words );
+   morph->long_desc = strdup( temp->long_desc );
+   morph->mana = strdup( temp->mana );
+   morph->morph_other = strdup( temp->morph_other );
+   morph->morph_self = strdup( temp->morph_self );
+   morph->move = strdup( temp->move );
+   morph->name = strdup( temp->name );
+   morph->short_desc = strdup( temp->short_desc );
+   morph->skills = strdup( temp->skills );
+   morph->no_skills = strdup( temp->no_skills );
+   morph->unmorph_other = strdup( temp->unmorph_other );
+   morph->unmorph_self = strdup( temp->unmorph_self );
    morph->affected_by = temp->affected_by;
    morph->Class = temp->Class;
    morph->sex = temp->sex;
@@ -2087,10 +2087,10 @@ void do_morphcreate( CHAR_DATA* ch, const char* argument )
    if( argument && argument[0] != '\0' && !str_cmp( argument, "copy" ) && temp )
       copy_morph( morph, temp );
    else
-      morph->name = str_dup( arg1 );
+      morph->name = strdup( arg1 );
 
    if( !morph->short_desc || morph->short_desc[0] == '\0' )
-      morph->short_desc = str_dup( arg1 );
+      morph->short_desc = strdup( arg1 );
 
    morph->vnum = morph_vnum;
    morph_vnum++;

@@ -18,6 +18,7 @@
 /*Put together by Rennard for Realms of Despair.  Brap on...*/
 
 #include <stdio.h>
+#include <string.h>
 #include "mud.h"
 
 DEITY_DATA *first_deity;
@@ -486,7 +487,7 @@ void do_setdeity( CHAR_DATA* ch, const char* argument )
       if( !remove( filename ) )
          send_to_char( "Old deity file deleted.\r\n", ch );
       DISPOSE( deity->filename );
-      deity->filename = str_dup( argument );
+      deity->filename = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       save_deity( deity );
       write_deity_list(  );
@@ -983,7 +984,7 @@ void do_makedeity( CHAR_DATA* ch, const char* argument )
    CREATE( deity, DEITY_DATA, 1 );
    LINK( deity, first_deity, last_deity, next, prev );
    deity->name = STRALLOC( argument );
-   deity->filename = str_dup( strlower( argument ) );
+   deity->filename = strdup( strlower( argument ) );
    write_deity_list(  );
    save_deity( deity );
    ch_printf( ch, "%s deity has been created\r\n", argument );

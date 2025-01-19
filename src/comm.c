@@ -1114,7 +1114,7 @@ void new_descriptor( int new_desc )
       if( sysdata.time_of_max )
          DISPOSE( sysdata.time_of_max );
       snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
-      sysdata.time_of_max = str_dup( buf );
+      sysdata.time_of_max = strdup( buf );
       sysdata.alltimemax = sysdata.maxplayers;
       snprintf( log_buf, MAX_STRING_LENGTH, "Broke all-time maximum player record: %d", sysdata.alltimemax );
       log_string_plus( log_buf, LOG_COMM, sysdata.log_level );
@@ -2161,7 +2161,7 @@ void nanny_get_new_password( DESCRIPTOR_DATA * d, char *argument )
    }
    pwdnew = sha256_crypt( argument );  /* SHA-256 Encryption */
    DISPOSE( ch->pcdata->pwd );
-   ch->pcdata->pwd = str_dup( pwdnew );
+   ch->pcdata->pwd = strdup( pwdnew );
    write_to_buffer( d, "\r\nPlease retype the password to confirm: ", 0 );
    d->connected = CON_CONFIRM_NEW_PASSWORD;
 }
@@ -2831,7 +2831,7 @@ short check_reconnect( DESCRIPTOR_DATA * d, const char *name, bool fConn )
          if( fConn == FALSE )
          {
             DISPOSE( d->character->pcdata->pwd );
-            d->character->pcdata->pwd = str_dup( ch->pcdata->pwd );
+            d->character->pcdata->pwd = strdup( ch->pcdata->pwd );
          }
          else
          {

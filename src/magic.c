@@ -1401,7 +1401,7 @@ void do_cast( CHAR_DATA* ch, const char* argument )
          one_argument( target_name, arg2 );
          if( ranged_target_name )
             DISPOSE( ranged_target_name );
-         ranged_target_name = str_dup( target_name );
+         ranged_target_name = strdup( target_name );
 
          if( arg1[0] == '\0' )
          {
@@ -1599,7 +1599,7 @@ void do_cast( CHAR_DATA* ch, const char* argument )
          act( AT_MAGIC, "You begin to chant...", ch, NULL, NULL, TO_CHAR );
          act( AT_MAGIC, "$n begins to chant...", ch, NULL, NULL, TO_ROOM );
          snprintf( staticbuf, MAX_STRING_LENGTH, "%s %s", arg2, target_name );
-         ch->alloc_ptr = str_dup( staticbuf );
+         ch->alloc_ptr = strdup( staticbuf );
          ch->tempnum = sn;
          return;
       case SUB_TIMER_DO_ABORT:

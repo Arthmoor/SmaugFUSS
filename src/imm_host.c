@@ -287,8 +287,8 @@ void do_add_imm_host( CHAR_DATA* ch, const char* argument )
          }
       }
       CREATE( host, IMMORTAL_HOST, 1 );
-      host->name = str_dup( arg1 );
-      host->host = str_dup( name );
+      host->name = strdup( arg1 );
+      host->host = strdup( name );
       host->prefix = prefix;
       host->suffix = suffix;
       LINK( host, immortal_host_start, immortal_host_end, next, prev );

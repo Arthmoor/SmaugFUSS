@@ -42,6 +42,11 @@
 #define CODENAME "SmaugFUSS"
 #define CODEVERSION "1.9.8"
 
+// Backward compatibility for snippets and such.
+#define mudstrlcpy strlcpy
+#define mudstrlcat strlcat
+#define str_dup strdup
+
 typedef int ch_ret;
 typedef int obj_ret;
 
@@ -2235,7 +2240,7 @@ struct char_data
    DO_FUN *last_cmd;
    DO_FUN *prev_cmd; /* mapping */
    void *dest_buf;   /* This one is to assign to differen things */
-   const char *alloc_ptr;  /* Must str_dup and free this one */
+   const char *alloc_ptr;  /* Must strdup and free this one */
    void *spare_ptr;
    int tempnum;
    EDITOR_DATA *editor;
@@ -3166,7 +3171,7 @@ do                                               \
    {                                             \
       if( !in_hash_table( (point) ) )            \
       {                                          \
-         log_printf( "%s: &RSTRFREE called on str_dup pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
+         log_printf( "%s: &RSTRFREE called on strdup pointer: %s, line %d\n", __func__, __FILE__, __LINE__ ); \
          log_string( "Attempting to correct." ); \
          free( (void*) (point) );                \
       }                                          \
@@ -4522,7 +4527,6 @@ void add_loginmsg( const char *name, short type, const char *argument );
 void check_loginmsg( CHAR_DATA * ch );
 void show_file( CHAR_DATA * ch, const char *filename );
 void show_file_vnum( CHAR_DATA *ch, const char *filename, int lo, int hi );
-char *str_dup( char const *str );
 void boot_db( bool fCopyOver );
 void area_update( void );
 void add_char( CHAR_DATA * ch );

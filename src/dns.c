@@ -93,7 +93,7 @@ char *in_dns_cache( char *ip )
    {
       if( !str_cmp( ip, cache->ip ) )
       {
-         strncpy( dnsbuf, cache->name, MAX_STRING_LENGTH );
+         strlcpy( dnsbuf, cache->name, MAX_STRING_LENGTH );
          break;
       }
    }

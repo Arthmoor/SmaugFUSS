@@ -1111,7 +1111,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
                ++i;
                continue;
             }
-            name = str_dup( obj->short_descr );
+            name = strdup( obj->short_descr );
          }
          else
          {
@@ -1122,7 +1122,7 @@ void do_accessories( CHAR_DATA * ch, const char *argument )
                ++i;
                continue;
             }
-            name = str_dup( mob->short_descr );
+            name = strdup( mob->short_descr );
          }
 
          if( !IS_IMMORTAL( ch ) )

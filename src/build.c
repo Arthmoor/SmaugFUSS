@@ -884,13 +884,13 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
    if( !ch )
    {
       bug( "%s: null ch", __func__ );
-      return str_dup( "" );
+      return strdup( "" );
    }
 
    if( !ch->editor )
    {
       bug( "%s: null editor", __func__ );
-      return str_dup( "" );
+      return strdup( "" );
    }
 
    buf[0] = '\0';
@@ -905,7 +905,7 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
       smash_tilde( tmp );
       strlcat( buf, tmp, MAX_STRING_LENGTH );
    }
-   return str_dup( buf );
+   return strdup( buf );
 }
 
 const char *copy_buffer( CHAR_DATA * ch )
@@ -1735,7 +1735,7 @@ void do_mset( CHAR_DATA* ch, const char* argument )
       pwdnew = sha256_crypt( arg3 );   /* SHA-256 Encryption */
 
       DISPOSE( victim->pcdata->pwd );
-      victim->pcdata->pwd = str_dup( pwdnew );
+      victim->pcdata->pwd = strdup( pwdnew );
       if( IS_SET( sysdata.save_flags, SV_PASSCHG ) )
          save_char_obj( victim );
       send_to_char( "Ok.\r\n", ch );
@@ -1758,9 +1758,9 @@ void do_mset( CHAR_DATA* ch, const char* argument )
       smash_tilde( argument );
       DISPOSE( victim->pcdata->rank );
       if( !argument || argument[0] == '\0' || !str_cmp( argument, "none" ) )
-         victim->pcdata->rank = str_dup( "" );
+         victim->pcdata->rank = strdup( "" );
       else
-         victim->pcdata->rank = str_dup( argument );
+         victim->pcdata->rank = strdup( argument );
       send_to_char( "Ok.\r\n", ch );
       return;
    }
@@ -6022,8 +6022,8 @@ void assign_area( CHAR_DATA * ch )
          LINK( tarea, first_build, last_build, next, prev );
          tarea->first_room = tarea->last_room = NULL;
          snprintf( buf, MAX_STRING_LENGTH, "{PROTO} %s's area in progress", ch->name );
-         tarea->name = str_dup( buf );
-         tarea->filename = str_dup( taf );
+         tarea->name = strdup( buf );
+         tarea->filename = strdup( taf );
          snprintf( buf2, MAX_STRING_LENGTH, "%s", ch->name );
          tarea->author = STRALLOC( buf2 );
          tarea->age = 0;
@@ -6954,7 +6954,7 @@ void do_installarea( CHAR_DATA* ch, const char* argument )
          if( argument && argument[0] != '\0' )
          {
             DISPOSE( tarea->name );
-            tarea->name = str_dup( argument );
+            tarea->name = strdup( argument );
          }
 
          /*
@@ -7202,7 +7202,7 @@ void do_aset( CHAR_DATA* ch, const char* argument )
          }
       }
       DISPOSE( tarea->name );
-      tarea->name = str_dup( argument );
+      tarea->name = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }
@@ -7222,7 +7222,7 @@ void do_aset( CHAR_DATA* ch, const char* argument )
 
       strlcpy( filename, tarea->filename, 256 );
       DISPOSE( tarea->filename );
-      tarea->filename = str_dup( argument );
+      tarea->filename = strdup( argument );
       rename( filename, tarea->filename );
       write_area_list(  );
       send_to_char( "Done.\r\n", ch );
@@ -7448,7 +7448,7 @@ void do_aset( CHAR_DATA* ch, const char* argument )
       if( tarea->resetmsg )
          DISPOSE( tarea->resetmsg );
       if( str_cmp( argument, "clear" ) && argument && argument[0] != '\0' )
-         tarea->resetmsg = str_dup( argument );
+         tarea->resetmsg = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       return;
    }  /* Rennard */

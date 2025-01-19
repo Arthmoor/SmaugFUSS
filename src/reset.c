@@ -74,13 +74,13 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
          mob = get_mob_index( pReset->arg1 );
          room = get_room_index( pReset->arg3 );
          if( mob )
-            strncpy( mobname, mob->player_name, MAX_INPUT_LENGTH );
+            strlcpy( mobname, mob->player_name, MAX_INPUT_LENGTH );
          else
-            strncpy( mobname, "Mobile: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( mobname, "Mobile: *BAD VNUM*", MAX_INPUT_LENGTH );
          if( room )
-            strncpy( roomname, room->name, MAX_INPUT_LENGTH );
+            strlcpy( roomname, room->name, MAX_INPUT_LENGTH );
          else
-            strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
          snprintf( buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d] %s\r\n", *num, mobname, pReset->arg1,
                    roomname, pReset->arg3, pReset->arg2, pReset->sreset ? "[Not Reset]" : "[Reset]" );
 
@@ -91,11 +91,11 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             {
                case 'E':
                   if( !mob )
-                     strncpy( mobname, "* ERROR: NO MOBILE! *", MAX_INPUT_LENGTH );
+                     strlcpy( mobname, "* ERROR: NO MOBILE! *", MAX_INPUT_LENGTH );
                   if( !( obj = get_obj_index( tReset->arg1 ) ) )
-                     strncpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
+                     strlcpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
                   else
-                     strncpy( objname, obj->name, MAX_INPUT_LENGTH );
+                     strlcpy( objname, obj->name, MAX_INPUT_LENGTH );
                   snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ),
                             "%2d) (equip) %s (%d) -> %s (%s) [%d]\r\n", *num, objname, tReset->arg1, mobname,
                             wear_locs[tReset->arg3], tReset->arg2 );
@@ -103,11 +103,11 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
 
                case 'G':
                   if( !mob )
-                     strncpy( mobname, "* ERROR: NO MOBILE! *", MAX_INPUT_LENGTH );
+                     strlcpy( mobname, "* ERROR: NO MOBILE! *", MAX_INPUT_LENGTH );
                   if( !( obj = get_obj_index( tReset->arg1 ) ) )
-                     strncpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
+                     strlcpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
                   else
-                     strncpy( objname, obj->name, MAX_INPUT_LENGTH );
+                     strlcpy( objname, obj->name, MAX_INPUT_LENGTH );
                   snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (carry) %s (%d) -> %s [%d]\r\n",
                             *num, objname, tReset->arg1, mobname, tReset->arg2 );
                   break;
@@ -122,15 +122,15 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
                   {
                      case 'P':
                         if( !( obj2 = get_obj_index( gReset->arg1 ) ) )
-                           strncpy( objname, "Object1: *BAD VNUM*", MAX_INPUT_LENGTH );
+                           strlcpy( objname, "Object1: *BAD VNUM*", MAX_INPUT_LENGTH );
                         else
-                           strncpy( objname, obj2->name, MAX_INPUT_LENGTH );
+                           strlcpy( objname, obj2->name, MAX_INPUT_LENGTH );
                         if( gReset->arg3 > 0 && ( obj = get_obj_index( gReset->arg3 ) ) == NULL )
-                           strncpy( roomname, "Object2: *BAD VNUM*", MAX_INPUT_LENGTH );
+                           strlcpy( roomname, "Object2: *BAD VNUM*", MAX_INPUT_LENGTH );
                         else if( !obj )
-                           strncpy( roomname, "Object2: *NULL obj*", MAX_INPUT_LENGTH );
+                           strlcpy( roomname, "Object2: *NULL obj*", MAX_INPUT_LENGTH );
                         else
-                           strncpy( roomname, obj->name, MAX_INPUT_LENGTH );
+                           strlcpy( roomname, obj->name, MAX_INPUT_LENGTH );
                         snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ),
                                   "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n", *num, objname, gReset->arg1, roomname,
                                   obj ? obj->vnum : gReset->arg3, gReset->arg2 );
@@ -143,15 +143,15 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
 
       case 'O':
          if( !( obj = get_obj_index( pReset->arg1 ) ) )
-            strncpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( objname, "Object: *BAD VNUM*", MAX_INPUT_LENGTH );
          else
-            strncpy( objname, obj->name, MAX_INPUT_LENGTH );
+            strlcpy( objname, obj->name, MAX_INPUT_LENGTH );
 
          room = get_room_index( pReset->arg3 );
          if( !room )
-            strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
          else
-            strncpy( roomname, room->name, MAX_INPUT_LENGTH );
+            strlcpy( roomname, room->name, MAX_INPUT_LENGTH );
          snprintf( buf, MAX_STRING_LENGTH, "%2d) (object) %s (%d) -> %s Room: %d [%d]\r\n",
                    *num, objname, pReset->arg1, roomname, pReset->arg3, pReset->arg2 );
 
@@ -162,15 +162,15 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
             {
                case 'P':
                   if( !( obj2 = get_obj_index( tReset->arg1 ) ) )
-                     strncpy( objname, "Object1: *BAD VNUM*", MAX_INPUT_LENGTH );
+                     strlcpy( objname, "Object1: *BAD VNUM*", MAX_INPUT_LENGTH );
                   else
-                     strncpy( objname, obj2->name, MAX_INPUT_LENGTH );
+                     strlcpy( objname, obj2->name, MAX_INPUT_LENGTH );
                   if( tReset->arg3 > 0 && ( obj = get_obj_index( tReset->arg3 ) ) == NULL )
-                     strncpy( roomname, "Object2: *BAD VNUM*", MAX_INPUT_LENGTH );
+                     strlcpy( roomname, "Object2: *BAD VNUM*", MAX_INPUT_LENGTH );
                   else if( !obj )
-                     strncpy( roomname, "Object2: *NULL obj*", MAX_INPUT_LENGTH );
+                     strlcpy( roomname, "Object2: *NULL obj*", MAX_INPUT_LENGTH );
                   else
-                     strncpy( roomname, obj->name, MAX_INPUT_LENGTH );
+                     strlcpy( roomname, obj->name, MAX_INPUT_LENGTH );
                   snprintf( buf + strlen( buf ), MAX_STRING_LENGTH - strlen( buf ), "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n",
                             *num, objname, tReset->arg1, roomname, obj ? obj->vnum : tReset->arg3, tReset->arg2 );
                   break;
@@ -194,12 +194,12 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
 
          if( !( room = get_room_index( pReset->arg1 ) ) )
          {
-            strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
             snprintf( objname, MAX_INPUT_LENGTH, "%s (no exit)", dir_name[pReset->arg2] );
          }
          else
          {
-            strncpy( roomname, room->name, MAX_INPUT_LENGTH );
+            strlcpy( roomname, room->name, MAX_INPUT_LENGTH );
             snprintf( objname, MAX_INPUT_LENGTH, "%s%s", dir_name[pReset->arg2],
                       get_exit( room, pReset->arg2 ) ? "" : " (NO EXIT!)" );
          }
@@ -207,16 +207,16 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
          switch ( pReset->arg3 )
          {
             default:
-               strncpy( mobname, "(* ERROR *)", MAX_INPUT_LENGTH );
+               strlcpy( mobname, "(* ERROR *)", MAX_INPUT_LENGTH );
                break;
             case 0:
-               strncpy( mobname, "Open", MAX_INPUT_LENGTH );
+               strlcpy( mobname, "Open", MAX_INPUT_LENGTH );
                break;
             case 1:
-               strncpy( mobname, "Close", MAX_INPUT_LENGTH );
+               strlcpy( mobname, "Close", MAX_INPUT_LENGTH );
                break;
             case 2:
-               strncpy( mobname, "Close and lock", MAX_INPUT_LENGTH );
+               strlcpy( mobname, "Close and lock", MAX_INPUT_LENGTH );
                break;
          }
          snprintf( buf, MAX_STRING_LENGTH, "%2d) %s [%d] the %s [%d] door %s (%d)\r\n",
@@ -225,18 +225,18 @@ char *sprint_reset( RESET_DATA * pReset, short *num )
 
       case 'R':
          if( !( room = get_room_index( pReset->arg1 ) ) )
-            strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
          else
-            strncpy( roomname, room->name, MAX_INPUT_LENGTH );
+            strlcpy( roomname, room->name, MAX_INPUT_LENGTH );
          snprintf( buf, MAX_STRING_LENGTH, "%2d) Randomize exits 0 to %d -> %s (%d)\r\n", *num, pReset->arg2, roomname,
                    pReset->arg1 );
          break;
 
       case 'T':
          if( !( room = get_room_index( pReset->arg3 ) ) )
-            strncpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
+            strlcpy( roomname, "Room: *BAD VNUM*", MAX_INPUT_LENGTH );
          else
-            strncpy( roomname, room->name, MAX_INPUT_LENGTH );
+            strlcpy( roomname, room->name, MAX_INPUT_LENGTH );
          snprintf( buf, MAX_STRING_LENGTH, "%2d) Trap: %d %d %d %d (%s) -> %s (%d)\r\n",
                    *num, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3, flag_string( pReset->extra, trap_flags ),
                    roomname, room ? room->vnum : 0 );

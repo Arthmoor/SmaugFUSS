@@ -16,6 +16,7 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 #include "mud.h"
 
@@ -2137,7 +2138,7 @@ void do_setclan( CHAR_DATA* ch, const char* argument )
          send_to_char( "Old clan file deleted.\r\n", ch );
 
       DISPOSE( clan->filename );
-      clan->filename = str_dup( argument );
+      clan->filename = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       save_clan( clan );
       write_clan_list(  );
@@ -2366,7 +2367,7 @@ void do_setcouncil( CHAR_DATA* ch, const char* argument)
          send_to_char( "Old council file deleted.\r\n", ch );
 
       DISPOSE( council->filename );
-      council->filename = str_dup( argument );
+      council->filename = strdup( argument );
       send_to_char( "Done.\r\n", ch );
       save_council( council );
       write_council_list(  );
@@ -2533,7 +2534,7 @@ void do_makeclan( CHAR_DATA* ch, const char* argument )
     * Let's refix this, STRALLOC shouldn't be used for the 'filename'
     * member without changing load_clan() and do_setclan() to employ hashstrings too... 
     */
-   clan->filename = str_dup( "" );
+   clan->filename = strdup( "" );
    clan->motto = STRALLOC( "" );
    clan->description = STRALLOC( "" );
    clan->deity = STRALLOC( "" );

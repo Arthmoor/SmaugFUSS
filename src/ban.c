@@ -151,11 +151,11 @@ void fread_ban( FILE * fp, int type )
             char *temp;
             const char *temp2;
 
-            temp = str_dup( pban->name );
+            temp = strdup( pban->name );
             temp[i] = '\0';
             temp2 = &pban->name[i + 1];
             DISPOSE( pban->name );
-            pban->name = str_dup( temp2 );
+            pban->name = strdup( temp2 );
             DISPOSE( temp );
             break;
          }
@@ -833,7 +833,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                         if( temp->level == BAN_WARN )
                            temp->warn = TRUE;
                         snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
-                        temp->ban_time = str_dup( buf );
+                        temp->ban_time = strdup( buf );
                         if( btime > 0 )
                         {
                            temp->duration = btime;
@@ -848,17 +848,17 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                         }
                         if( temp->ban_by )
                            DISPOSE( temp->ban_by );
-                        temp->ban_by = str_dup( ch->name );
+                        temp->ban_by = strdup( ch->name );
                         send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
                }
                CREATE( pban, BAN_DATA, 1 );
-               pban->name = str_dup( class_table[value]->who_name );
+               pban->name = strdup( class_table[value]->who_name );
                pban->flag = value;
                pban->level = level;
-               pban->ban_by = str_dup( ch->name );
+               pban->ban_by = strdup( ch->name );
                LINK( pban, first_ban_class, last_ban_class, next, prev );
                break;
 
@@ -892,7 +892,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                         if( temp->level == BAN_WARN )
                            temp->warn = TRUE;
                         snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
-                        temp->ban_time = str_dup( buf );
+                        temp->ban_time = strdup( buf );
                         if( btime > 0 )
                         {
                            temp->duration = btime;
@@ -907,17 +907,17 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                         }
                         if( temp->ban_by )
                            DISPOSE( temp->ban_by );
-                        temp->ban_by = str_dup( ch->name );
+                        temp->ban_by = strdup( ch->name );
                         send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
                }
                CREATE( pban, BAN_DATA, 1 );
-               pban->name = str_dup( race_table[value]->race_name );
+               pban->name = strdup( race_table[value]->race_name );
                pban->flag = value;
                pban->level = level;
-               pban->ban_by = str_dup( ch->name );
+               pban->ban_by = strdup( ch->name );
                LINK( pban, first_ban_race, last_ban_race, next, prev );
                break;
 
@@ -932,9 +932,9 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                   if( arg[x] == '@' )
                   {
                      user_name = TRUE;
-                     temp_host = str_dup( &arg[x + 1] );
+                     temp_host = strdup( &arg[x + 1] );
                      arg[x] = '\0';
-                     temp_user = str_dup( arg );
+                     temp_user = strdup( arg );
                      break;
                   }
                }
@@ -993,7 +993,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                            temp->warn = TRUE;
                         temp->level = level;
                         snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
-                        temp->ban_time = str_dup( buf );
+                        temp->ban_time = strdup( buf );
                         if( btime > 0 )
                         {
                            temp->duration = btime;
@@ -1013,17 +1013,17 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                            DISPOSE( temp_host );
                            DISPOSE( temp_user );
                         }
-                        temp->ban_by = str_dup( ch->name );
+                        temp->ban_by = strdup( ch->name );
                         send_to_char( "Updated entry.\r\n", ch );
                         return 1;
                      }
                   }
                }
                CREATE( pban, BAN_DATA, 1 );
-               pban->ban_by = str_dup( ch->name );
+               pban->ban_by = strdup( ch->name );
                pban->suffix = suffix;
                pban->prefix = prefix;
-               pban->name = str_dup( name );
+               pban->name = strdup( name );
                pban->level = level;
                LINK( pban, first_ban, last_ban, next, prev );
                if( user_name )
@@ -1038,7 +1038,7 @@ int add_ban( CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int 
                return 0;
          }
          snprintf( buf, MAX_STRING_LENGTH, "%24.24s", ctime( &current_time ) );
-         pban->ban_time = str_dup( buf );
+         pban->ban_time = strdup( buf );
          if( btime > 0 )
          {
             pban->duration = btime;

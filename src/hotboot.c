@@ -703,7 +703,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument )
     */
    snprintf( buf, 100, "%d", port );
    snprintf( buf2, 100, "%d", control );
-   strncpy( buf3, "-1", 100 );
+   strlcpy( buf3, "-1", 100 );
 
    set_alarm( 0 );
    dlclose( sysdata.dlHandle );

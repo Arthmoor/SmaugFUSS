@@ -538,7 +538,7 @@ void show_list_to_char( OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShow
          break;
       if( tmp > 0 && number_bits( 1 ) == 0 )
       {
-         prgpstrShow[nShow] = str_dup( hallucinated_object( ms, fShort ) );
+         prgpstrShow[nShow] = strdup( hallucinated_object( ms, fShort ) );
          prgnShow[nShow] = 1;
          pitShow[nShow] = number_range( ITEM_LIGHT, ITEM_BOOK );
          nShow++;
@@ -573,7 +573,7 @@ void show_list_to_char( OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShow
           */
          if( !fCombine )
          {
-            prgpstrShow[nShow] = str_dup( pstrShow );
+            prgpstrShow[nShow] = strdup( pstrShow );
             prgnShow[nShow] = obj->count;
             nShow++;
          }
@@ -584,7 +584,7 @@ void show_list_to_char( OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShow
       int x;
       for( x = 0; x < tmp; x++ )
       {
-         prgpstrShow[nShow] = str_dup( hallucinated_object( ms, fShort ) );
+         prgpstrShow[nShow] = strdup( hallucinated_object( ms, fShort ) );
          prgnShow[nShow] = 1;
          pitShow[nShow] = number_range( ITEM_LIGHT, ITEM_BOOK );
          nShow++;
@@ -2210,7 +2210,7 @@ void do_help( CHAR_DATA* ch, const char* argument )
       if( value > 0 )
          pager_printf( ch, "Checking for suggested helps that are level %d.\r\n", value );
       send_to_pager( "Suggested Help Files:\r\n", ch );
-      strncpy( lastmatch, " ", MAX_STRING_LENGTH );
+      strlcpy( lastmatch, " ", MAX_STRING_LENGTH );
       for( pHelp = first_help; pHelp; pHelp = pHelp->next )
       {
          matched = 0;
@@ -2244,7 +2244,7 @@ void do_help( CHAR_DATA* ch, const char* argument )
                   found = 0;
                   send_to_pager( "\r\n", ch );
                }
-               strncpy( lastmatch, oneword, MAX_STRING_LENGTH );
+               strlcpy( lastmatch, oneword, MAX_STRING_LENGTH );
                totalmatched++;
                break;
             }
@@ -3128,7 +3128,7 @@ void do_who( CHAR_DATA* ch, const char* argument )
        * First make the structure. 
        */
       CREATE( cur_who, WHO_DATA, 1 );
-      cur_who->text = str_dup( buf );
+      cur_who->text = strdup( buf );
       if( wch->level > LEVEL_AVATAR && IS_IMMORTAL( wch ) )
          cur_who->type = WT_IMM;
       else if( fGroup )
@@ -3868,7 +3868,7 @@ void do_password( CHAR_DATA* ch, const char* argument )
    pwdnew = sha256_crypt( arg2 );   /* SHA-256 Encryption */
 
    DISPOSE( ch->pcdata->pwd );
-   ch->pcdata->pwd = str_dup( pwdnew );
+   ch->pcdata->pwd = strdup( pwdnew );
    if( IS_SET( sysdata.save_flags, SV_PASSCHG ) )
       save_char_obj( ch );
    if( ch->desc && ch->desc->host[0] != '\0' )
