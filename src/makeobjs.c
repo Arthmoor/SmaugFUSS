@@ -16,6 +16,7 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 #include "mud.h"
 
 /*
@@ -253,13 +254,13 @@ void make_puddle( CHAR_DATA * ch, OBJ_DATA * cont )
    liq = get_liq_vnum( obj->value[2] );
 
    if( obj->value[1] > 15 )
-      mudstrlcpy( buf, "large", 20 );
+      strlcpy( buf, "large", 20 );
    else if( obj->value[1] > 10 )
-      mudstrlcpy( buf, "rather large", 20 );
+      strlcpy( buf, "rather large", 20 );
    else if( obj->value[1] > 5 )
-      mudstrlcpy( buf, "rather small", 20 );
+      strlcpy( buf, "rather small", 20 );
    else
-      mudstrlcpy( buf, "small", 20 );
+      strlcpy( buf, "small", 20 );
    snprintf( buf2, 70, "There is a %s puddle of %s.", buf, ( liq == NULL ? "water" : liq->name ) );
    obj->description = STRALLOC( buf2 );
 }

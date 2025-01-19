@@ -278,6 +278,8 @@ void cleanup_memory( void )
    {
       for( loopa = 0; loopa < MAX_WHERE_NAME; loopa++ )
          DISPOSE( race_table[hash]->where_name[loopa] );
+
+      STRFREE( race_table[hash]->race_name );
       DISPOSE( race_table[hash] );
    }
 
@@ -428,7 +430,7 @@ int main( int argc, char **argv )
    gettimeofday( &now_time, NULL );
    current_time = ( time_t ) now_time.tv_sec;
    boot_time = time( 0 );  /*  <-- I think this is what you wanted */
-   mudstrlcpy( str_boot_time, ctime( &current_time ), MAX_INPUT_LENGTH );
+   strlcpy( str_boot_time, ctime( &current_time ), MAX_INPUT_LENGTH );
 
    /*
     * Init boot time.
@@ -661,7 +663,7 @@ void caught_alarm( int signum )
    char buf[MAX_STRING_LENGTH];
 
    bug( "%s: ALARM CLOCK!  In section %s", __func__, alarm_section );
-   mudstrlcpy( buf, "Alas, the hideous malevalent entity known only as 'Lag' rises once more!\r\n", MAX_STRING_LENGTH );
+   strlcpy( buf, "Alas, the hideous malevalent entity known only as 'Lag' rises once more!\r\n", MAX_STRING_LENGTH );
    echo_to_all( AT_IMMORT, buf, ECHOTAR_ALL );
 
    if( newdesc )
@@ -858,7 +860,7 @@ void game_loop( void )
                d->fcommand = TRUE;
                stop_idling( d->character );
 
-               mudstrlcpy( cmdline, d->incomm, MAX_INPUT_LENGTH );
+               strlcpy( cmdline, d->incomm, MAX_INPUT_LENGTH );
                d->incomm[0] = '\0';
 
                if( d->character )
@@ -1050,11 +1052,11 @@ void new_descriptor( int new_desc )
 
    CREATE( dnew->outbuf, char, dnew->outsize );
 
-   mudstrlcpy( log_buf, inet_ntoa( sock.sin_addr ), MAX_STRING_LENGTH );
+   strlcpy( log_buf, inet_ntoa( sock.sin_addr ), MAX_STRING_LENGTH );
    dnew->host = STRALLOC( log_buf );
    if( !sysdata.NO_NAME_RESOLVING )
    {
-      mudstrlcpy( buf, in_dns_cache( log_buf ), MAX_STRING_LENGTH );
+      strlcpy( buf, in_dns_cache( log_buf ), MAX_STRING_LENGTH );
 
       if( buf[0] == '\0' )
          resolve_dns( dnew, sock.sin_addr.s_addr );
@@ -1436,7 +1438,7 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
 /*		log_printf( "%s input spamming!", d->host );
 */
             write_to_descriptor( d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0 );
-            mudstrlcpy( d->incomm, "quit", MAX_INPUT_LENGTH );
+            strlcpy( d->incomm, "quit", MAX_INPUT_LENGTH );
          }
       }
    }
@@ -1445,9 +1447,9 @@ void read_from_buffer( DESCRIPTOR_DATA * d )
     * Do '!' substitution.
     */
    if( d->incomm[0] == '!' )
-      mudstrlcpy( d->incomm, d->inlast, MAX_INPUT_LENGTH );
+      strlcpy( d->incomm, d->inlast, MAX_INPUT_LENGTH );
    else
-      mudstrlcpy( d->inlast, d->incomm, MAX_INPUT_LENGTH );
+      strlcpy( d->inlast, d->incomm, MAX_INPUT_LENGTH );
 
    /*
     * Shift the input buffer.
@@ -2078,7 +2080,7 @@ void nanny_get_old_password( DESCRIPTOR_DATA * d, char *argument )
    if( chk == TRUE )
       return;
 
-   mudstrlcpy( buf, ch->pcdata->filename, MAX_STRING_LENGTH );
+   strlcpy( buf, ch->pcdata->filename, MAX_STRING_LENGTH );
    d->character->desc = NULL;
    free_char( d->character );
    d->character = NULL;
@@ -2221,17 +2223,17 @@ void nanny_get_new_sex( DESCRIPTOR_DATA * d, char *argument )
          {
             if( strlen( buf ) + strlen( class_table[iClass]->who_name ) > 77 )
             {
-               mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+               strlcat( buf, "\r\n", MAX_STRING_LENGTH );
                write_to_buffer( d, buf, 0 );
                buf[0] = '\0';
             }
             else
-               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+               strlcat( buf, " ", MAX_STRING_LENGTH );
          }
-         mudstrlcat( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
+         strlcat( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
       }
    }
-   mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
+   strlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
    write_to_buffer( d, buf, 0 );
    d->connected = CON_GET_NEW_CLASS;
 }
@@ -2307,17 +2309,17 @@ void nanny_get_new_class( DESCRIPTOR_DATA * d, const char *argument )
          {
             if( strlen( buf ) + strlen( race_table[iRace]->race_name ) > 77 )
             {
-               mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+               strlcat( buf, "\r\n", MAX_STRING_LENGTH );
                write_to_buffer( d, buf, 0 );
                buf[0] = '\0';
             }
             else
-               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+               strlcat( buf, " ", MAX_STRING_LENGTH );
          }
-         mudstrlcat( buf, race_table[iRace]->race_name, MAX_STRING_LENGTH );
+         strlcat( buf, race_table[iRace]->race_name, MAX_STRING_LENGTH );
       }
    }
-   mudstrlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
+   strlcat( buf, "]\r\n: ", MAX_STRING_LENGTH );
    write_to_buffer( d, buf, 0 );
    d->connected = CON_GET_NEW_RACE;
 }
@@ -3194,7 +3196,7 @@ char *act_string( const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void
       while( ( *point = *i ) != '\0' )
          ++point, ++i;
    }
-   mudstrlcpy( point, "\r\n", MSL );
+   strlcpy( point, "\r\n", MSL );
 
    if( !DONT_UPPER )
    {
@@ -3419,7 +3421,7 @@ void do_name( CHAR_DATA* ch, const char* argument )
       return;
    }
 
-   mudstrlcpy( ucase_argument, argument, MAX_STRING_LENGTH );
+   strlcpy( ucase_argument, argument, MAX_STRING_LENGTH );
    ucase_argument[0] = UPPER( argument[0] );
 
    if( !check_parse_name( ucase_argument, TRUE ) )
@@ -3507,14 +3509,14 @@ char *default_fprompt( CHAR_DATA * ch )
 {
    static char buf[60];
 
-   mudstrlcpy( buf, "&w<&Y%hhp ", 60 );
+   strlcpy( buf, "&w<&Y%hhp ", 60 );
    if( IS_VAMPIRE( ch ) )
-      mudstrlcat( buf, "&R%bbp", 60 );
+      strlcat( buf, "&R%bbp", 60 );
    else
-      mudstrlcat( buf, "&C%mm", 60 );
-   mudstrlcat( buf, " &G%vmv&w> ", 60 );
+      strlcat( buf, "&C%mm", 60 );
+   strlcat( buf, " &G%vmv&w> ", 60 );
    if( IS_NPC( ch ) || IS_IMMORTAL( ch ) )
-      mudstrlcat( buf, "%i%R", 60 );
+      strlcat( buf, "%i%R", 60 );
    return buf;
 }
 
@@ -3522,14 +3524,14 @@ char *default_prompt( CHAR_DATA * ch )
 {
    static char buf[60];
 
-   mudstrlcpy( buf, "&w<&Y%hhp ", 60 );
+   strlcpy( buf, "&w<&Y%hhp ", 60 );
    if( IS_VAMPIRE( ch ) )
-      mudstrlcat( buf, "&R%bbp", 60 );
+      strlcat( buf, "&R%bbp", 60 );
    else
-      mudstrlcat( buf, "&C%mm", 60 );
-   mudstrlcat( buf, " &G%vmv&w> ", 60 );
+      strlcat( buf, "&C%mm", 60 );
+   strlcat( buf, " &G%vmv&w> ", 60 );
    if( IS_NPC( ch ) || IS_IMMORTAL( ch ) )
-      mudstrlcat( buf, "%i%R", 60 );
+      strlcat( buf, "%i%R", 60 );
    return buf;
 }
 
@@ -3581,7 +3583,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
    if( ansi )
    {
-      mudstrlcpy( pbuf, ANSI_RESET, MAX_STRING_LENGTH );
+      strlcpy( pbuf, ANSI_RESET, MAX_STRING_LENGTH );
       d->prevcolor = 0x08;
       pbuf += 4;
    }
@@ -3632,11 +3634,11 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   if( ch->level >= 10 )
                      pstat = ch->alignment;
                   else if( IS_GOOD( ch ) )
-                     mudstrlcpy( pbuf, "good", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "good", MAX_STRING_LENGTH );
                   else if( IS_EVIL( ch ) )
-                     mudstrlcpy( pbuf, "evil", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "evil", MAX_STRING_LENGTH );
                   else
-                     mudstrlcpy( pbuf, "neutral", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "neutral", MAX_STRING_LENGTH );
                   break;
 
                case 'A':
@@ -3646,9 +3648,9 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
                case 'C':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else if( !victim->fighting || ( victim = victim->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else
                   {
                      if( victim->max_hit > 0 )
@@ -3656,33 +3658,33 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      else
                         percent = -1;
                      if( percent >= 100 )
-                        mudstrlcpy( pbuf, "perfect health", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "perfect health", MAX_STRING_LENGTH );
                      else if( percent >= 90 )
-                        mudstrlcpy( pbuf, "slightly scratched", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "slightly scratched", MAX_STRING_LENGTH );
                      else if( percent >= 80 )
-                        mudstrlcpy( pbuf, "few bruises", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "few bruises", MAX_STRING_LENGTH );
                      else if( percent >= 70 )
-                        mudstrlcpy( pbuf, "some cuts", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "some cuts", MAX_STRING_LENGTH );
                      else if( percent >= 60 )
-                        mudstrlcpy( pbuf, "several wounds", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "several wounds", MAX_STRING_LENGTH );
                      else if( percent >= 50 )
-                        mudstrlcpy( pbuf, "nasty wounds", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "nasty wounds", MAX_STRING_LENGTH );
                      else if( percent >= 40 )
-                        mudstrlcpy( pbuf, "bleeding freely", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "bleeding freely", MAX_STRING_LENGTH );
                      else if( percent >= 30 )
-                        mudstrlcpy( pbuf, "covered in blood", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "covered in blood", MAX_STRING_LENGTH );
                      else if( percent >= 20 )
-                        mudstrlcpy( pbuf, "leaking guts", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "leaking guts", MAX_STRING_LENGTH );
                      else if( percent >= 10 )
-                        mudstrlcpy( pbuf, "almost dead", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "almost dead", MAX_STRING_LENGTH );
                      else
-                        mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
 
                case 'c':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else
                   {
                      if( victim->max_hit > 0 )
@@ -3690,27 +3692,27 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      else
                         percent = -1;
                      if( percent >= 100 )
-                        mudstrlcpy( pbuf, "perfect health", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "perfect health", MAX_STRING_LENGTH );
                      else if( percent >= 90 )
-                        mudstrlcpy( pbuf, "slightly scratched", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "slightly scratched", MAX_STRING_LENGTH );
                      else if( percent >= 80 )
-                        mudstrlcpy( pbuf, "few bruises", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "few bruises", MAX_STRING_LENGTH );
                      else if( percent >= 70 )
-                        mudstrlcpy( pbuf, "some cuts", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "some cuts", MAX_STRING_LENGTH );
                      else if( percent >= 60 )
-                        mudstrlcpy( pbuf, "several wounds", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "several wounds", MAX_STRING_LENGTH );
                      else if( percent >= 50 )
-                        mudstrlcpy( pbuf, "nasty wounds", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "nasty wounds", MAX_STRING_LENGTH );
                      else if( percent >= 40 )
-                        mudstrlcpy( pbuf, "bleeding freely", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "bleeding freely", MAX_STRING_LENGTH );
                      else if( percent >= 30 )
-                        mudstrlcpy( pbuf, "covered in blood", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "covered in blood", MAX_STRING_LENGTH );
                      else if( percent >= 20 )
-                        mudstrlcpy( pbuf, "leaking guts", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "leaking guts", MAX_STRING_LENGTH );
                      else if( percent >= 10 )
-                        mudstrlcpy( pbuf, "almost dead", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "almost dead", MAX_STRING_LENGTH );
                      else
-                        mudstrlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "DYING", MAX_STRING_LENGTH );
                   }
                   break;
 
@@ -3738,47 +3740,47 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
                case 'N':  /* Tank */
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else if( !victim->fighting || ( victim = victim->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else
                   {
                      if( ch == victim )
-                        mudstrlcpy( pbuf, "You", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "You", MAX_STRING_LENGTH );
                      else if( IS_NPC( victim ) )
-                        mudstrlcpy( pbuf, victim->short_descr, MAX_STRING_LENGTH );
+                        strlcpy( pbuf, victim->short_descr, MAX_STRING_LENGTH );
                      else
-                        mudstrlcpy( pbuf, victim->name, MAX_STRING_LENGTH );
+                        strlcpy( pbuf, victim->name, MAX_STRING_LENGTH );
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
 
                case 'n':
                   if( !ch->fighting || ( victim = ch->fighting->who ) == NULL )
-                     mudstrlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "N/A", MAX_STRING_LENGTH );
                   else
                   {
                      if( ch == victim )
-                        mudstrlcpy( pbuf, "You", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "You", MAX_STRING_LENGTH );
                      else if( IS_NPC( victim ) )
-                        mudstrlcpy( pbuf, victim->short_descr, MAX_STRING_LENGTH );
+                        strlcpy( pbuf, victim->short_descr, MAX_STRING_LENGTH );
                      else
-                        mudstrlcpy( pbuf, victim->name, MAX_STRING_LENGTH );
+                        strlcpy( pbuf, victim->name, MAX_STRING_LENGTH );
                      pbuf[0] = UPPER( pbuf[0] );
                   }
                   break;
 
                case 'T':
                   if( time_info.hour < 5 )
-                     mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "night", MAX_STRING_LENGTH );
                   else if( time_info.hour < 6 )
-                     mudstrlcpy( pbuf, "dawn", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "dawn", MAX_STRING_LENGTH );
                   else if( time_info.hour < 19 )
-                     mudstrlcpy( pbuf, "day", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "day", MAX_STRING_LENGTH );
                   else if( time_info.hour < 21 )
-                     mudstrlcpy( pbuf, "dusk", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "dusk", MAX_STRING_LENGTH );
                   else
-                     mudstrlcpy( pbuf, "night", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "night", MAX_STRING_LENGTH );
                   break;
 
                case 'b':
@@ -3834,7 +3836,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                   if( IS_IMMORTAL(ch) )
                   {
                      if( IS_SET( ch->pcdata->flags, PCFLAG_DND ) )
-                        mudstrlcpy( pbuf, "DND", MAX_STRING_LENGTH );
+                        strlcpy( pbuf, "DND", MAX_STRING_LENGTH );
                   }
                   break;
 
@@ -3856,20 +3858,20 @@ void display_prompt( DESCRIPTOR_DATA * d )
 
                case 'o':  /* display name of object on auction */
                   if( auction->item )
-                     mudstrlcpy( pbuf, auction->item->name, MAX_STRING_LENGTH );
+                     strlcpy( pbuf, auction->item->name, MAX_STRING_LENGTH );
                   break;
 
                case 'S':
                   if( ch->style == STYLE_BERSERK )
-                     mudstrlcpy( pbuf, "B", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "B", MAX_STRING_LENGTH );
                   else if( ch->style == STYLE_AGGRESSIVE )
-                     mudstrlcpy( pbuf, "A", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "A", MAX_STRING_LENGTH );
                   else if( ch->style == STYLE_DEFENSIVE )
-                     mudstrlcpy( pbuf, "D", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "D", MAX_STRING_LENGTH );
                   else if( ch->style == STYLE_EVASIVE )
-                     mudstrlcpy( pbuf, "E", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "E", MAX_STRING_LENGTH );
                   else
-                     mudstrlcpy( pbuf, "S", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "S", MAX_STRING_LENGTH );
                   break;
 
                case 'i':
@@ -3878,7 +3880,7 @@ void display_prompt( DESCRIPTOR_DATA * d )
                      snprintf( pbuf, MAX_STRING_LENGTH, "(Invis %d) ",
                                ( IS_NPC( ch ) ? ch->mobinvis : ch->pcdata->wizinvis ) );
                   else if( IS_AFFECTED( ch, AFF_INVISIBLE ) )
-                     mudstrlcpy( pbuf, "(Invis) ", MAX_STRING_LENGTH );
+                     strlcpy( pbuf, "(Invis) ", MAX_STRING_LENGTH );
                   break;
 
                case 'I':

@@ -880,7 +880,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
        * Cheat so that bug will show line #'s -- Altrag 
        */
       fpArea = fp;
-      mudstrlcpy( strArea, strsave, MAX_INPUT_LENGTH );
+      strlcpy( strArea, strsave, MAX_INPUT_LENGTH );
       for( ;; )
       {
          char letter;
@@ -937,7 +937,7 @@ bool load_char_obj( DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover
       }
       FCLOSE( fp );
       fpArea = NULL;
-      mudstrlcpy( strArea, "$", MAX_INPUT_LENGTH );
+      strlcpy( strArea, "$", MAX_INPUT_LENGTH );
    }
 
    if( !found )
@@ -2364,7 +2364,7 @@ void do_last( CHAR_DATA* ch, const char* argument )
       send_to_char( "Usage: last <playername>\r\n", ch );
       return;
    }
-   mudstrlcpy( name, capitalize( arg ), MAX_INPUT_LENGTH );
+   strlcpy( name, capitalize( arg ), MAX_INPUT_LENGTH );
    snprintf( buf, MAX_STRING_LENGTH, "%s%c/%s", PLAYER_DIR, tolower( arg[0] ), name );
    if( stat( buf, &fst ) != -1 && check_parse_name( capitalize( name ), FALSE ) )
       ch_printf( ch, "%s was last on: %s\r", name, ctime( &fst.st_mtime ) );

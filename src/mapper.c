@@ -134,7 +134,7 @@ char *get_exits( CHAR_DATA * ch )
 
    set_char_color( AT_EXITS, ch );
 
-   mudstrlcpy( buf, "[Exits:", MAX_STRING_LENGTH );
+   strlcpy( buf, "[Exits:", MAX_STRING_LENGTH );
 
    for( pexit = ch->in_room->first_exit; pexit; pexit = pexit->next )
    {
@@ -146,24 +146,24 @@ char *get_exits( CHAR_DATA * ch )
          if( pexit->to_room )
          {
             found = TRUE;
-            mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+            strlcat( buf, " ", MAX_STRING_LENGTH );
 
-            mudstrlcat( buf, capitalize( dir_name[pexit->vdir] ), MAX_STRING_LENGTH );
+            strlcat( buf, capitalize( dir_name[pexit->vdir] ), MAX_STRING_LENGTH );
 
             /*
              * New code added to display closed, or otherwise invisible exits to immortals 
              * Installed by Samson 1-25-98 
              */
             if( IS_SET( pexit->exit_info, EX_CLOSED ) )
-               mudstrlcat( buf, "->(Closed)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Closed)", MAX_STRING_LENGTH );
             if( IS_SET( pexit->exit_info, EX_DIG ) )
-               mudstrlcat( buf, "->(Dig)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Dig)", MAX_STRING_LENGTH );
             if( IS_SET( pexit->exit_info, EX_WINDOW ) )
-               mudstrlcat( buf, "->(Window)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Window)", MAX_STRING_LENGTH );
             if( IS_SET( pexit->exit_info, EX_HIDDEN ) )
-               mudstrlcat( buf, "->(Hidden)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Hidden)", MAX_STRING_LENGTH );
             if( xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
-               mudstrlcat( buf, "->(Deathtrap)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Deathtrap)", MAX_STRING_LENGTH );
          }
       }
       else
@@ -174,23 +174,23 @@ char *get_exits( CHAR_DATA * ch )
              && !IS_SET( pexit->exit_info, EX_HIDDEN ) )
          {
             found = TRUE;
-            mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+            strlcat( buf, " ", MAX_STRING_LENGTH );
 
-            mudstrlcat( buf, capitalize( dir_name[pexit->vdir] ), MAX_STRING_LENGTH );
+            strlcat( buf, capitalize( dir_name[pexit->vdir] ), MAX_STRING_LENGTH );
 
             if( IS_SET( pexit->exit_info, EX_CLOSED ) )
-               mudstrlcat( buf, "->(Closed)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Closed)", MAX_STRING_LENGTH );
             if( IS_AFFECTED( ch, AFF_DETECTTRAPS ) && xIS_SET( pexit->to_room->room_flags, ROOM_DEATH ) )
-               mudstrlcat( buf, "->(Deathtrap)", MAX_STRING_LENGTH );
+               strlcat( buf, "->(Deathtrap)", MAX_STRING_LENGTH );
          }
       }
    }
 
    if( !found )
-      mudstrlcat( buf, " none]", MAX_STRING_LENGTH );
+      strlcat( buf, " none]", MAX_STRING_LENGTH );
    else
-      mudstrlcat( buf, "]", MAX_STRING_LENGTH );
-   mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+      strlcat( buf, "]", MAX_STRING_LENGTH );
+   strlcat( buf, "\r\n", MAX_STRING_LENGTH );
    return buf;
 }
 
@@ -429,7 +429,7 @@ void reformat_desc( char *desc )
    /*
     * Copy to desc 
     */
-   mudstrlcpy( desc, buf, MAX_STRING_LENGTH );
+   strlcpy( desc, buf, MAX_STRING_LENGTH );
 }
 
 int get_line( char *desc, size_t max_len )
@@ -532,36 +532,36 @@ void show_map( CHAR_DATA * ch, char *text )
    if( xIS_SET( ch->act, PLR_AUTOEXIT ) )
       snprintf( buf, MAX_STRING_LENGTH * 2, "%s%s", color_str( AT_EXITS, ch ), get_exits( ch ) );
    else
-      mudstrlcpy( buf, "", MAX_STRING_LENGTH * 2 );
+      strlcpy( buf, "", MAX_STRING_LENGTH * 2 );
 
    /*
     * Top of map frame 
     */
-   mudstrlcat( buf, "&z+-----------+&w ", MAX_STRING_LENGTH * 2 );
+   strlcat( buf, "&z+-----------+&w ", MAX_STRING_LENGTH * 2 );
    if( !alldesc )
    {
       pos = get_line( p, 63 );
       if( pos > 0 )
       {
-         mudstrlcat( buf, color_str( AT_RMDESC, ch ), MAX_STRING_LENGTH * 2 );
+         strlcat( buf, color_str( AT_RMDESC, ch ), MAX_STRING_LENGTH * 2 );
          strncat( buf, p, pos );
          p += pos;
       }
       else
       {
-         mudstrlcat( buf, color_str( AT_RMDESC, ch ), MAX_STRING_LENGTH * 2 );
-         mudstrlcat( buf, p, MAX_STRING_LENGTH * 2 );
+         strlcat( buf, color_str( AT_RMDESC, ch ), MAX_STRING_LENGTH * 2 );
+         strlcat( buf, p, MAX_STRING_LENGTH * 2 );
          alldesc = TRUE;
       }
    }
-   mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
+   strlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
 
    /*
     * Write out the main map area with text 
     */
    for( y = 0; y <= MAPY; ++y )
    {
-      mudstrlcat( buf, "&z|&D", MAX_STRING_LENGTH * 2 );
+      strlcat( buf, "&z|&D", MAX_STRING_LENGTH * 2 );
 
       for( x = 0; x <= MAPX; ++x )
       {
@@ -611,7 +611,7 @@ void show_map( CHAR_DATA * ch, char *text )
                break;
          }
       }
-      mudstrlcat( buf, "&z|&D ", MAX_STRING_LENGTH * 2 );
+      strlcat( buf, "&z|&D ", MAX_STRING_LENGTH * 2 );
 
       /*
        * Add the text, if necessary 
@@ -621,54 +621,54 @@ void show_map( CHAR_DATA * ch, char *text )
          pos = get_line( p, 63 );
          char col[10], c[2];
 
-         mudstrlcpy( c, whatColor( text, p ), 2 );
+         strlcpy( c, whatColor( text, p ), 2 );
          if( c[0] == '\0' )
-            mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
+            strlcpy( col, color_str( AT_RMDESC, ch ), 10 );
          else
             snprintf( col, 10, "%s", c );
 
          if( pos > 0 )
          {
-            mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
+            strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, p, ( strlen( buf ) + pos ) );
             p += pos;
          }
          else
          {
-            mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, p, MAX_STRING_LENGTH * 2 );
             alldesc = TRUE;
          }
       }
-      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
+      strlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
    }
 
    /*
     * Finish off map area 
     */
-   mudstrlcat( buf, "&z+-----------+&D ", MAX_STRING_LENGTH * 2 );
+   strlcat( buf, "&z+-----------+&D ", MAX_STRING_LENGTH * 2 );
    if( !alldesc )
    {
       char col[10], c[2];
       pos = get_line( p, 63 );
 
-      mudstrlcpy( c, whatColor( text, p ), 2 );
+      strlcpy( c, whatColor( text, p ), 2 );
       if( c[0] == '\0' )
-         mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
+         strlcpy( col, color_str( AT_RMDESC, ch ), 10 );
       else
          snprintf( col, 10, "%s", c );
 
       if( pos > 0 )
       {
-         mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-         mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
+         strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+         strlcat( buf, p, ( strlen( buf ) + pos ) );
          p += pos;
-         mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
+         strlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
       }
       else
       {
-         mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-         mudstrlcat( buf, p, MAX_STRING_LENGTH * 2 );
+         strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+         strlcat( buf, p, MAX_STRING_LENGTH * 2 );
          alldesc = TRUE;
       }
    }
@@ -687,29 +687,29 @@ void show_map( CHAR_DATA * ch, char *text )
           */
          pos = get_line( p, 78 );
 
-         mudstrlcpy( c, whatColor( text, p ), 2 );
+         strlcpy( c, whatColor( text, p ), 2 );
          if( c[0] == '\0' )
-            mudstrlcpy( col, color_str( AT_RMDESC, ch ), 10 );
+            strlcpy( col, color_str( AT_RMDESC, ch ), 10 );
          else
             snprintf( col, 10, "%s", c );
 
          if( pos > 0 )
          {
-            mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, ( strlen( buf ) + pos ) );
+            strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, p, ( strlen( buf ) + pos ) );
             p += pos;
-            mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
+            strlcat( buf, "\r\n", MAX_STRING_LENGTH * 2 );
          }
          else
          {
-            mudstrlcat( buf, col, MAX_STRING_LENGTH * 2 );
-            mudstrlcat( buf, p, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, col, MAX_STRING_LENGTH * 2 );
+            strlcat( buf, p, MAX_STRING_LENGTH * 2 );
             alldesc = TRUE;
          }
       }
       while( !alldesc );
    }
-   mudstrlcat( buf, "&D\r\n", MAX_STRING_LENGTH * 2 );
+   strlcat( buf, "&D\r\n", MAX_STRING_LENGTH * 2 );
    send_to_char( buf, ch );
 }
 
@@ -719,7 +719,7 @@ void draw_room_map( CHAR_DATA * ch, const char *desc )
    int x, y;
    static char buf[MAX_STRING_LENGTH];
 
-   mudstrlcpy( buf, desc, MAX_STRING_LENGTH );
+   strlcpy( buf, desc, MAX_STRING_LENGTH );
    /*
     * Remove undesirable characters 
     */

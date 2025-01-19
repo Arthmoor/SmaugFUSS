@@ -337,7 +337,7 @@ void interpret( CHAR_DATA * ch, char *argument )
        * Special parsing so ' can be a command,
        *   also no spaces needed after punctuation.
        */
-      mudstrlcpy( logline, argument, MAX_INPUT_LENGTH );
+      strlcpy( logline, argument, MAX_INPUT_LENGTH );
       if( !isalpha( argument[0] ) && !isdigit( argument[0] ) )
       {
          command[0] = argument[0];
@@ -385,7 +385,7 @@ void interpret( CHAR_DATA * ch, char *argument )
    snprintf( lastplayercmd, ( MAX_INPUT_LENGTH * 2 ), "%s used %s", ch->name, logline );
 
    if( found && cmd->log == LOG_NEVER )
-      mudstrlcpy( logline, "XXXXXXXX XXXXXXXX XXXXXXXX", MAX_INPUT_LENGTH );
+      strlcpy( logline, "XXXXXXXX XXXXXXXX XXXXXXXX", MAX_INPUT_LENGTH );
 
    loglvl = found ? cmd->log : LOG_NORMAL;
 
@@ -816,12 +816,12 @@ int number_argument( const char *argument, char *arg )
 
          free(numPortion);
 
-         mudstrlcpy( arg, pdot + 1, MAX_INPUT_LENGTH );
+         strlcpy( arg, pdot + 1, MAX_INPUT_LENGTH );
          return number;
       }
    }
 
-   mudstrlcpy( arg, argument, MAX_INPUT_LENGTH );
+   strlcpy( arg, argument, MAX_INPUT_LENGTH );
    return 1;
 }
 

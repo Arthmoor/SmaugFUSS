@@ -931,14 +931,14 @@ void do_slookup( CHAR_DATA* ch, const char* argument )
       {
          int x;
 
-         mudstrlcpy( buf, "Flags:", MAX_STRING_LENGTH );
+         strlcpy( buf, "Flags:", MAX_STRING_LENGTH );
          for( x = 0; x < 32; ++x )
             if( SPELL_FLAG( skill, 1 << x ) )
             {
-               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
-               mudstrlcat( buf, spell_flag[x], MAX_STRING_LENGTH );
+               strlcat( buf, " ", MAX_STRING_LENGTH );
+               strlcat( buf, spell_flag[x], MAX_STRING_LENGTH );
             }
-         mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+         strlcat( buf, "\r\n", MAX_STRING_LENGTH );
          send_to_char( buf, ch );
       }
       ch_printf( ch, "Saves: %s  SaveEffect: %s\r\n",
@@ -973,29 +973,29 @@ void do_slookup( CHAR_DATA* ch, const char* argument )
          snprintf( buf, MAX_STRING_LENGTH, "Affect %d", ++cnt );
          if( aff->location )
          {
-            mudstrlcat( buf, " modifies ", MAX_STRING_LENGTH );
-            mudstrlcat( buf, a_types[aff->location % REVERSE_APPLY], MAX_STRING_LENGTH );
-            mudstrlcat( buf, " by '", MAX_STRING_LENGTH );
-            mudstrlcat( buf, aff->modifier, MAX_STRING_LENGTH );
+            strlcat( buf, " modifies ", MAX_STRING_LENGTH );
+            strlcat( buf, a_types[aff->location % REVERSE_APPLY], MAX_STRING_LENGTH );
+            strlcat( buf, " by '", MAX_STRING_LENGTH );
+            strlcat( buf, aff->modifier, MAX_STRING_LENGTH );
             if( aff->bitvector != -1 )
-               mudstrlcat( buf, "' and", MAX_STRING_LENGTH );
+               strlcat( buf, "' and", MAX_STRING_LENGTH );
             else
-               mudstrlcat( buf, "'", MAX_STRING_LENGTH );
+               strlcat( buf, "'", MAX_STRING_LENGTH );
          }
          if( aff->bitvector != -1 )
          {
-            mudstrlcat( buf, " applies ", MAX_STRING_LENGTH );
-            mudstrlcat( buf, a_flags[aff->bitvector], MAX_STRING_LENGTH );
+            strlcat( buf, " applies ", MAX_STRING_LENGTH );
+            strlcat( buf, a_flags[aff->bitvector], MAX_STRING_LENGTH );
          }
          if( aff->duration[0] != '\0' && aff->duration[0] != '0' )
          {
-            mudstrlcat( buf, " for '", MAX_STRING_LENGTH );
-            mudstrlcat( buf, aff->duration, MAX_STRING_LENGTH );
-            mudstrlcat( buf, "' rounds", MAX_STRING_LENGTH );
+            strlcat( buf, " for '", MAX_STRING_LENGTH );
+            strlcat( buf, aff->duration, MAX_STRING_LENGTH );
+            strlcat( buf, "' rounds", MAX_STRING_LENGTH );
          }
          if( aff->location >= REVERSE_APPLY )
-            mudstrlcat( buf, " (affects caster only)", MAX_STRING_LENGTH );
-         mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+            strlcat( buf, " (affects caster only)", MAX_STRING_LENGTH );
+         strlcat( buf, "\r\n", MAX_STRING_LENGTH );
          send_to_char( buf, ch );
 
          if( !aff->next )
@@ -1035,13 +1035,13 @@ void do_slookup( CHAR_DATA* ch, const char* argument )
             send_to_char( "--------------------------[CLASS USE]--------------------------\r\n", ch );
             for( iClass = 0; iClass < MAX_PC_CLASS; iClass++ )
             {
-               mudstrlcpy( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
+               strlcpy( buf, class_table[iClass]->who_name, MAX_STRING_LENGTH );
                snprintf( buf + 3, MAX_STRING_LENGTH - 3, ") lvl: %3d max: %2d%%", skill->skill_level[iClass],
                          skill->skill_adept[iClass] );
                if( iClass % 3 == 2 )
-                  mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+                  strlcat( buf, "\r\n", MAX_STRING_LENGTH );
                else
-                  mudstrlcat( buf, "  ", MAX_STRING_LENGTH );
+                  strlcat( buf, "  ", MAX_STRING_LENGTH );
                send_to_char( buf, ch );
             }
          }
@@ -1055,9 +1055,9 @@ void do_slookup( CHAR_DATA* ch, const char* argument )
                if( !strcmp( race_table[iRace]->race_name, "unused" ) )
                   snprintf( buf, MAX_STRING_LENGTH, "                           " );
                if( ( iRace > 0 ) && ( iRace % 2 == 1 ) )
-                  mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+                  strlcat( buf, "\r\n", MAX_STRING_LENGTH );
                else
-                  mudstrlcat( buf, "  ", MAX_STRING_LENGTH );
+                  strlcat( buf, "  ", MAX_STRING_LENGTH );
                send_to_char( buf, ch );
             }
          }
@@ -2225,7 +2225,7 @@ void do_detrap( CHAR_DATA* ch, const char* argument )
             bug( "%s: ch->alloc_ptr NULL!", __func__ );
             return;
          }
-         mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
+         strlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
          DISPOSE( ch->alloc_ptr );
          ch->alloc_ptr = NULL;
          ch->substate = SUB_NONE;
@@ -2358,7 +2358,7 @@ void do_dig( CHAR_DATA* ch, const char* argument )
             bug( "%s: alloc_ptr NULL", __func__ );
             return;
          }
-         mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
+         strlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
          DISPOSE( ch->alloc_ptr );
          break;
 
@@ -2508,7 +2508,7 @@ void do_search( CHAR_DATA* ch, const char* argument )
             bug( "%s: alloc_ptr NULL", __func__ );
             return;
          }
-         mudstrlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
+         strlcpy( arg, ch->alloc_ptr, MAX_INPUT_LENGTH );
          DISPOSE( ch->alloc_ptr );
          break;
       case SUB_TIMER_DO_ABORT:

@@ -264,12 +264,12 @@ const char *flag_string( int bitvector, const char *const flagarray[] )
    for( x = 0; x < 32; ++x )
       if( IS_SET( bitvector, 1 << x ) )
       {
-         mudstrlcat( buf, flagarray[x], MAX_STRING_LENGTH );
+         strlcat( buf, flagarray[x], MAX_STRING_LENGTH );
          /*
           * don't catenate a blank if the last char is blank  --Gorog 
           */
          if( buf[0] != '\0' && ' ' != buf[strlen( buf ) - 1] )
-            mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+            strlcat( buf, " ", MAX_STRING_LENGTH );
       }
    if( ( x = strlen( buf ) ) > 0 )
       buf[--x] = '\0';
@@ -286,8 +286,8 @@ const char *ext_flag_string( EXT_BV * bitvector, const char *const flagarray[] )
    for( x = 0; x < MAX_BITS; ++x )
       if( xIS_SET( *bitvector, x ) )
       {
-         mudstrlcat( buf, flagarray[x], MAX_STRING_LENGTH );
-         mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         strlcat( buf, flagarray[x], MAX_STRING_LENGTH );
+         strlcat( buf, " ", MAX_STRING_LENGTH );
       }
    if( ( x = strlen( buf ) ) > 0 )
       buf[--x] = '\0';
@@ -896,14 +896,14 @@ char *copy_buffer_nohash( CHAR_DATA * ch )
    buf[0] = '\0';
    for( x = 0; x < ch->editor->numlines; x++ )
    {
-      mudstrlcpy( tmp, ch->editor->line[x], 100 );
+      strlcpy( tmp, ch->editor->line[x], 100 );
       len = strlen( tmp );
       if( tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
-         mudstrlcat( tmp, "\n", 100 );
+         strlcat( tmp, "\n", 100 );
       smash_tilde( tmp );
-      mudstrlcat( buf, tmp, MAX_STRING_LENGTH );
+      strlcat( buf, tmp, MAX_STRING_LENGTH );
    }
    return str_dup( buf );
 }
@@ -929,14 +929,14 @@ const char *copy_buffer( CHAR_DATA * ch )
    buf[0] = '\0';
    for( x = 0; x < ch->editor->numlines; x++ )
    {
-      mudstrlcpy( tmp, ch->editor->line[x], 100 );
+      strlcpy( tmp, ch->editor->line[x], 100 );
       len = strlen( tmp );
       if( len > 0 && tmp[len - 1] == '~' )
          tmp[len - 1] = '\0';
       else
-         mudstrlcat( tmp, "\n", 100 );
+         strlcat( tmp, "\n", 100 );
       smash_tilde( tmp );
-      mudstrlcat( buf, tmp, MAX_STRING_LENGTH );
+      strlcat( buf, tmp, MAX_STRING_LENGTH );
    }
    return STRALLOC( buf );
 }
@@ -1182,16 +1182,16 @@ void do_mset( CHAR_DATA* ch, const char* argument )
    if( victim )
    {
       lockvictim = TRUE;
-      mudstrlcpy( arg1, victim->name, MAX_INPUT_LENGTH );
+      strlcpy( arg1, victim->name, MAX_INPUT_LENGTH );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
    else
    {
       lockvictim = FALSE;
       argument = one_argument( argument, arg1 );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
 
    if( !str_cmp( arg1, "on" ) )
@@ -2223,8 +2223,8 @@ void do_mset( CHAR_DATA* ch, const char* argument )
    if( !str_cmp( arg2, "long" ) )
    {
       STRFREE( victim->long_descr );
-      mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+      strlcpy( buf, arg3, MAX_STRING_LENGTH );
+      strlcat( buf, "\r\n", MAX_STRING_LENGTH );
       victim->long_descr = STRALLOC( buf );
       if( IS_NPC( victim ) && xIS_SET( victim->act, ACT_PROTOTYPE ) )
       {
@@ -3230,16 +3230,16 @@ void do_oset( CHAR_DATA* ch, const char* argument )
    if( obj )
    {
       lockobj = TRUE;
-      mudstrlcpy( arg1, obj->name, MAX_INPUT_LENGTH );
+      strlcpy( arg1, obj->name, MAX_INPUT_LENGTH );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
    else
    {
       lockobj = FALSE;
       argument = one_argument( argument, arg1 );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
 
    if( !str_cmp( arg1, "on" ) )
@@ -5115,11 +5115,11 @@ void do_redit( CHAR_DATA* ch, const char* argument )
          {
             if( IS_SET( xit->exit_info, 1 << value ) )
             {
-               mudstrlcat( buf, ex_flags[value], MAX_STRING_LENGTH );
-               mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+               strlcat( buf, ex_flags[value], MAX_STRING_LENGTH );
+               strlcat( buf, " ", MAX_STRING_LENGTH );
             }
          }
-         mudstrlcat( buf, "]\r\n", MAX_STRING_LENGTH );
+         strlcat( buf, "]\r\n", MAX_STRING_LENGTH );
          send_to_char( buf, ch );
          return;
       }
@@ -5763,7 +5763,7 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
                lineln = snprintf( buf, MAX_INPUT_LENGTH, "%s%s", word2, wptr + wordln );
                if( lineln + wptr - edit->line[x] > 79 )
                   buf[lineln] = '\0';
-               mudstrlcpy( wptr, buf, MAX_STRING_LENGTH );
+               strlcpy( wptr, buf, MAX_STRING_LENGTH );
                lwptr = wptr + word2ln;
             }
          }
@@ -5848,13 +5848,14 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
             else
             {
                for( x = ++edit->numlines; x > line; x-- )
-                  mudstrlcpy( edit->line[x], edit->line[x - 1], MAX_STRING_LENGTH );
-               mudstrlcpy( edit->line[line], "", MAX_STRING_LENGTH );
+                  strlcpy( edit->line[x], edit->line[x - 1], 81 );
+               strlcpy( edit->line[line], "", 81 );
                send_to_char( "Line inserted.\r\n> ", ch );
             }
          }
          return;
       }
+
       if( !str_cmp( cmd + 1, "d" ) )
       {
          if( edit->numlines == 0 )
@@ -5880,8 +5881,8 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
                   return;
                }
                for( x = line; x < ( edit->numlines - 1 ); x++ )
-                  mudstrlcpy( edit->line[x], edit->line[x + 1], MAX_STRING_LENGTH );
-               mudstrlcpy( edit->line[edit->numlines--], "", MAX_STRING_LENGTH );
+                  strlcpy( edit->line[x], edit->line[x + 1], 81 );
+               strlcpy( edit->line[edit->numlines--], "", 81 );
                if( edit->on_line > edit->numlines )
                   edit->on_line = edit->numlines;
                send_to_char( "Line deleted.\r\n> ", ch );
@@ -5968,8 +5969,8 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
          send_to_char( "(Long line trimmed)\r\n> ", ch );
       }
       else
-         mudstrlcpy( buf, argument, MAX_INPUT_LENGTH );
-      mudstrlcpy( edit->line[edit->on_line++], buf, MAX_STRING_LENGTH );
+         strlcpy( buf, argument, 80 );
+      strlcpy( edit->line[edit->on_line++], buf, 81 );
       if( edit->on_line > edit->numlines )
          edit->numlines++;
       if( edit->numlines >= max_buf_lines )
@@ -6073,7 +6074,7 @@ void do_aassign( CHAR_DATA* ch, const char* argument )
       return;
    }
 
-   mudstrlcpy( buf, argument, MAX_STRING_LENGTH );
+   strlcpy( buf, argument, MAX_STRING_LENGTH );
    tarea = NULL;
 
 /*	if ( get_trust(ch) >= sysdata.level_modify_proto )   */
@@ -7219,7 +7220,7 @@ void do_aset( CHAR_DATA* ch, const char* argument )
       if( !is_valid_filename( ch, "", argument ) )
          return;
 
-      mudstrlcpy( filename, tarea->filename, 256 );
+      strlcpy( filename, tarea->filename, 256 );
       DISPOSE( tarea->filename );
       tarea->filename = str_dup( argument );
       rename( filename, tarea->filename );

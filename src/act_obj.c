@@ -1225,9 +1225,9 @@ void do_give( CHAR_DATA* ch, const char* argument )
 
       ch->gold -= amount;
       victim->gold += amount;
-      mudstrlcpy( buf, "$n gives you ", MAX_STRING_LENGTH );
-      mudstrlcat( buf, arg1, MAX_STRING_LENGTH );
-      mudstrlcat( buf, ( amount > 1 ) ? " coins." : " coin.", MAX_STRING_LENGTH );
+      strlcpy( buf, "$n gives you ", MAX_INPUT_LENGTH );
+      strlcat( buf, arg1, MAX_INPUT_LENGTH );
+      strlcat( buf, ( amount > 1 ) ? " coins." : " coin.", MAX_INPUT_LENGTH );
 
       set_char_color( AT_GOLD, victim );
       act( AT_ACTION, buf, ch, NULL, victim, TO_VICT );
@@ -2345,19 +2345,19 @@ void do_sacrifice( CHAR_DATA* ch, const char* argument )
    }
    if( !IS_NPC( ch ) && ch->pcdata->deity && ch->pcdata->deity->name[0] != '\0' )
    {
-      mudstrlcpy( name, ch->pcdata->deity->name, 50 );
+      strlcpy( name, ch->pcdata->deity->name, 50 );
    }
    else if( !IS_NPC( ch ) && IS_GUILDED( ch ) && sysdata.guild_overseer[0] != '\0' )
    {
-      mudstrlcpy( name, sysdata.guild_overseer, 50 );
+      strlcpy( name, sysdata.guild_overseer, 50 );
    }
    else if( !IS_NPC( ch ) && ch->pcdata->clan && ch->pcdata->clan->deity[0] != '\0' )
    {
-      mudstrlcpy( name, ch->pcdata->clan->deity, 50 );
+      strlcpy( name, ch->pcdata->clan->deity, 50 );
    }
    else
    {
-      mudstrlcpy( name, "Thoric", 50 );
+      strlcpy( name, "Thoric", 50 );
    }
    ch->gold += 1;
    if( obj->item_type == ITEM_CORPSE_NPC || obj->item_type == ITEM_CORPSE_PC )
@@ -2897,7 +2897,7 @@ void do_auction( CHAR_DATA* ch, const char* argument )
    if( arg2[0] == '\0' )
    {
       auction->starting = 0;
-      mudstrlcpy( arg2, "0", MAX_INPUT_LENGTH );
+      strlcpy( arg2, "0", MAX_INPUT_LENGTH );
    }
 
    if( !is_number( arg2 ) )
@@ -3301,9 +3301,9 @@ void do_rolldie( CHAR_DATA* ch, const char* argument )
       rollsum += current_roll;
 
       if( roll_count > 1 )
-         mudstrlcat( roll_string, ", ", MAX_INPUT_LENGTH );
+         strlcat( roll_string, ", ", MAX_INPUT_LENGTH );
       if( numrolls > 1 && roll_count == numrolls )
-         mudstrlcat( roll_string, "and ", MAX_INPUT_LENGTH );
+         strlcat( roll_string, "and ", MAX_INPUT_LENGTH );
 
       if( die->value[1] == 1 )
       {
@@ -3319,16 +3319,16 @@ void do_rolldie( CHAR_DATA* ch, const char* argument )
       }
       else
          snprintf( current_roll_string, MAX_STRING_LENGTH, "%d", current_roll );
-      mudstrlcat( roll_string, current_roll_string, MAX_INPUT_LENGTH );
+      strlcat( roll_string, current_roll_string, MAX_INPUT_LENGTH );
    }
 
    if( numrolls > 1 && die->value[2] == 1 )
    {
       snprintf( total_string, MAX_INPUT_LENGTH, ", for a total of %d", rollsum );
-      mudstrlcat( roll_string, total_string, MAX_INPUT_LENGTH );
+      strlcat( roll_string, total_string, MAX_INPUT_LENGTH );
    }
 
-   mudstrlcat( roll_string, ".\r\n", MAX_INPUT_LENGTH );
+   strlcat( roll_string, ".\r\n", MAX_INPUT_LENGTH );
 
    snprintf( output_string, MAX_STRING_LENGTH, "You %s%s", verb, roll_string );
    act( AT_GREEN, output_string, ch, NULL, NULL, TO_CHAR );

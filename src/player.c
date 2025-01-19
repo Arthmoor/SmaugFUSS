@@ -1004,10 +1004,10 @@ void set_title( CHAR_DATA * ch, const char *title )
    if( isalpha( title[0] ) || isdigit( title[0] ) )
    {
       buf[0] = ' ';
-      mudstrlcpy( buf + 1, title, MAX_STRING_LENGTH - 1 );
+      strlcpy( buf + 1, title, MAX_STRING_LENGTH - 1 );
    }
    else
-      mudstrlcpy( buf, title, MAX_STRING_LENGTH );
+      strlcpy( buf, title, MAX_STRING_LENGTH );
 
    STRFREE( ch->pcdata->title );
    ch->pcdata->title = STRALLOC( buf );
@@ -1034,7 +1034,7 @@ void do_title( CHAR_DATA* ch, const char* argument )
    }
 
    char title[50];
-   mudstrlcpy(title, argument, 50);
+   strlcpy(title, argument, 50);
 
    smash_tilde( title );
    set_title( ch, title );
@@ -1072,7 +1072,7 @@ void do_homepage( CHAR_DATA* ch, const char* argument )
    }
 
    if( strstr( argument, "://" ) )
-      mudstrlcpy( buf, argument, MAX_STRING_LENGTH );
+      strlcpy( buf, argument, MAX_STRING_LENGTH );
    else
       snprintf( buf, MAX_STRING_LENGTH, "http://%s", argument );
    if( strlen( buf ) > 70 )
@@ -1315,7 +1315,7 @@ void do_fprompt( CHAR_DATA* ch, const char* argument )
       STRFREE( ch->pcdata->fprompt );
 
    char prompt[128];
-   mudstrlcpy(prompt, argument, 128);
+   strlcpy(prompt, argument, 128);
 
    /*
     * Can add a list of pre-set prompts here if wanted.. perhaps
@@ -1358,7 +1358,7 @@ void do_prompt( CHAR_DATA* ch, const char* argument )
       STRFREE( ch->pcdata->prompt );
 
    char prompt[128];
-   mudstrlcpy(prompt, argument, 128);
+   strlcpy(prompt, argument, 128);
 
    /*
     * Can add a list of pre-set prompts here if wanted.. perhaps
@@ -1413,39 +1413,39 @@ void do_favor( CHAR_DATA * ch, const char *argument )
       return;
    }
    else if( ch->pcdata->favor > 2250 )
-      mudstrlcpy( buf, "loved", MAX_STRING_LENGTH );
+      strlcpy( buf, "loved", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 2000 )
-      mudstrlcpy( buf, "cherished", MAX_STRING_LENGTH );
+      strlcpy( buf, "cherished", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 1750 )
-      mudstrlcpy( buf, "honored", MAX_STRING_LENGTH );
+      strlcpy( buf, "honored", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 1500 )
-      mudstrlcpy( buf, "praised", MAX_STRING_LENGTH );
+      strlcpy( buf, "praised", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 1250 )
-      mudstrlcpy( buf, "favored", MAX_STRING_LENGTH );
+      strlcpy( buf, "favored", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 1000 )
-      mudstrlcpy( buf, "respected", MAX_STRING_LENGTH );
+      strlcpy( buf, "respected", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 750 )
-      mudstrlcpy( buf, "liked", MAX_STRING_LENGTH );
+      strlcpy( buf, "liked", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > 250 )
-      mudstrlcpy( buf, "tolerated", MAX_STRING_LENGTH );
+      strlcpy( buf, "tolerated", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -250 )
-      mudstrlcpy( buf, "ignored", MAX_STRING_LENGTH );
+      strlcpy( buf, "ignored", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -750 )
-      mudstrlcpy( buf, "shunned", MAX_STRING_LENGTH );
+      strlcpy( buf, "shunned", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -1000 )
-      mudstrlcpy( buf, "disliked", MAX_STRING_LENGTH );
+      strlcpy( buf, "disliked", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -1250 )
-      mudstrlcpy( buf, "dishonored", MAX_STRING_LENGTH );
+      strlcpy( buf, "dishonored", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -1500 )
-      mudstrlcpy( buf, "disowned", MAX_STRING_LENGTH );
+      strlcpy( buf, "disowned", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -1750 )
-      mudstrlcpy( buf, "abandoned", MAX_STRING_LENGTH );
+      strlcpy( buf, "abandoned", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -2000 )
-      mudstrlcpy( buf, "despised", MAX_STRING_LENGTH );
+      strlcpy( buf, "despised", MAX_STRING_LENGTH );
    else if( ch->pcdata->favor > -2250 )
-      mudstrlcpy( buf, "hated", MAX_STRING_LENGTH );
+      strlcpy( buf, "hated", MAX_STRING_LENGTH );
    else
-      mudstrlcpy( buf, "damned", MAX_STRING_LENGTH );
+      strlcpy( buf, "damned", MAX_STRING_LENGTH );
 
    ch_printf( ch, "%s considers you to be %s.\r\n", ch->pcdata->deity->name, buf );
 }

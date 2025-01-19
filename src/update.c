@@ -16,6 +16,7 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/time.h>
 #include "mud.h"
 #include "hint.h"
@@ -1993,7 +1994,7 @@ void auth_update( void )
    char log_buf[MAX_STRING_LENGTH];
    bool found_hit = FALSE; /* was at least one found? */
 
-   mudstrlcpy( log_buf, "Pending authorizations:\r\n", MAX_STRING_LENGTH );
+   strlcpy( log_buf, "Pending authorizations:\r\n", MAX_STRING_LENGTH );
    for( d = first_descriptor; d; d = d->next )
    {
       if( ( victim = d->character ) && IS_WAITING_FOR_AUTH( victim ) )
@@ -2001,7 +2002,7 @@ void auth_update( void )
          found_hit = TRUE;
          snprintf( buf, MAX_INPUT_LENGTH, " %s@%s new %s %s\r\n", victim->name,
                    victim->desc->host, race_table[victim->race]->race_name, class_table[victim->Class]->who_name );
-         mudstrlcat( log_buf, buf, MAX_STRING_LENGTH );
+         strlcat( log_buf, buf, MAX_STRING_LENGTH );
       }
    }
    if( found_hit )

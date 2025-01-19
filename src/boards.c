@@ -143,6 +143,7 @@ void free_board( BOARD_DATA * board )
    DISPOSE( board->post_group );
    DISPOSE( board->extra_readers );
    DISPOSE( board->extra_removers );
+   DISPOSE( board->extra_ballots );
    DISPOSE( board->note_file );
    DISPOSE( board->otakemessg );
    DISPOSE( board->ocopymessg );
@@ -367,7 +368,7 @@ void do_noteroom( CHAR_DATA* ch, const char* argument )
    char arg[MAX_STRING_LENGTH];
    char arg_passed[MAX_STRING_LENGTH];
 
-   mudstrlcpy( arg_passed, argument, MAX_STRING_LENGTH );
+   strlcpy( arg_passed, argument, MAX_STRING_LENGTH );
 
    switch ( ch->substate )
    {
@@ -411,7 +412,7 @@ void do_mailroom( CHAR_DATA* ch, const char* argument )
    char arg[MAX_STRING_LENGTH];
    char arg_passed[MAX_STRING_LENGTH];
 
-   mudstrlcpy( arg_passed, argument, MAX_STRING_LENGTH );
+   strlcpy( arg_passed, argument, MAX_STRING_LENGTH );
 
    switch ( ch->substate )
    {
@@ -1479,14 +1480,14 @@ void do_note( CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL )
                ed = SetOExtra( paper, "note" );
                STRFREE( ed->description );
                snprintf( notebuf, MAX_STRING_LENGTH, "%s", "From: " );
-               mudstrlcat( notebuf, pnote->sender, MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, "\r\nTo: ", MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, pnote->to_list, MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, "\r\nSubject: ", MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, pnote->subject, MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, "\r\n\r\n", MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, pnote->text, MAX_STRING_LENGTH );
-               mudstrlcat( notebuf, "\r\n", MAX_STRING_LENGTH );
+               strlcat( notebuf, pnote->sender, MAX_STRING_LENGTH );
+               strlcat( notebuf, "\r\nTo: ", MAX_STRING_LENGTH );
+               strlcat( notebuf, pnote->to_list, MAX_STRING_LENGTH );
+               strlcat( notebuf, "\r\nSubject: ", MAX_STRING_LENGTH );
+               strlcat( notebuf, pnote->subject, MAX_STRING_LENGTH );
+               strlcat( notebuf, "\r\n\r\n", MAX_STRING_LENGTH );
+               strlcat( notebuf, pnote->text, MAX_STRING_LENGTH );
+               strlcat( notebuf, "\r\n", MAX_STRING_LENGTH );
                ed->description = STRALLOC( notebuf );
                paper->value[0] = 2;
                paper->value[1] = 2;
@@ -2405,8 +2406,8 @@ void do_journal( CHAR_DATA * ch, const char *argument )
       }
 
       /* Making the edits turn out to be "page1" etc - just so people can't/don't type "look 1" */
-      mudstrlcpy( buf, "page", MAX_STRING_LENGTH );
-      mudstrlcat( buf, arg2, MAX_STRING_LENGTH );
+      strlcpy( buf, "page", MAX_STRING_LENGTH );
+      strlcat( buf, arg2, MAX_STRING_LENGTH );
 
       ed = SetOExtra( journal, buf );
       ch->substate = SUB_JOURNAL_WRITE;
@@ -2466,8 +2467,8 @@ void do_journal( CHAR_DATA * ch, const char *argument )
          anum = atoi( arg2 );
       }
 
-      mudstrlcpy( buf, "page", MAX_STRING_LENGTH );
-      mudstrlcat( buf, arg2, MAX_STRING_LENGTH );
+      strlcpy( buf, "page", MAX_STRING_LENGTH );
+      strlcat( buf, arg2, MAX_STRING_LENGTH );
 
       if( ( journal = get_eq_char( ch, WEAR_HOLD ) ) == NULL || journal->item_type != ITEM_JOURNAL )
       {

@@ -156,8 +156,8 @@ char *class_string( int bitvector )
    for( x = 0; x < MAX_PC_CLASS; x++ )
       if( IS_SET( bitvector, 1 << x ) )
       {
-         mudstrlcat( buf, class_table[x]->who_name, MAX_STRING_LENGTH );
-         mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         strlcat( buf, class_table[x]->who_name, MAX_STRING_LENGTH );
+         strlcat( buf, " ", MAX_STRING_LENGTH );
       }
    if( ( x = strlen( buf ) ) > 0 )
       buf[--x] = '\0';
@@ -174,8 +174,8 @@ char *race_string( int bitvector )
    for( x = 0; x < MAX_PC_RACE; x++ )
       if( IS_SET( bitvector, 1 << x ) )
       {
-         mudstrlcat( buf, race_table[x]->race_name, MAX_STRING_LENGTH );
-         mudstrlcat( buf, " ", MAX_STRING_LENGTH );
+         strlcat( buf, race_table[x]->race_name, MAX_STRING_LENGTH );
+         strlcat( buf, " ", MAX_STRING_LENGTH );
       }
    if( ( x = strlen( buf ) ) > 0 )
       buf[--x] = '\0';
@@ -420,8 +420,8 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
       }
       if( !str_cmp( argument, "stat" ) )
       {
-         mudstrlcpy( buf, morph->name, MAX_STRING_LENGTH );
-         mudstrlcat( buf, " help", MAX_STRING_LENGTH );
+         strlcpy( buf, morph->name, MAX_STRING_LENGTH );
+         strlcat( buf, " help", MAX_STRING_LENGTH );
          do_morphstat( ch, buf );
          return;
       }
@@ -437,15 +437,15 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
 
    if( morph )
    {
-      mudstrlcpy( arg1, morph->name, MAX_INPUT_LENGTH );
+      strlcpy( arg1, morph->name, MAX_INPUT_LENGTH );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
    else
    {
       argument = one_argument( argument, arg1 );
       argument = one_argument( argument, arg2 );
-      mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+      strlcpy( arg3, argument, MAX_INPUT_LENGTH );
    }
 
    if( !str_cmp( arg1, "on" ) )
@@ -1047,8 +1047,8 @@ void do_morphset( CHAR_DATA* ch, const char* argument )
    else if( !str_cmp( arg2, "long" ) )
    {
       DISPOSE( morph->long_desc );
-      mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+      strlcpy( buf, arg3, MAX_STRING_LENGTH );
+      strlcat( buf, "\r\n", MAX_STRING_LENGTH );
       morph->long_desc = str_dup( buf );
    }
    else if( !str_cmp( arg2, "description" ) || !str_cmp( arg2, "desc" ) )

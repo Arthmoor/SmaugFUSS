@@ -64,35 +64,35 @@ static char *print_big_board( CHAR_DATA * ch, GAME_BOARD_DATA * board )
    char s1[16], s2[16];
    int x, y;
 
-   mudstrlcpy( s1, "&Y&W", 16 );
-   mudstrlcpy( s2, "&z&z", 16 );
+   strlcpy( s1, "&Y&W", 16 );
+   strlcpy( s2, "&z&z", 16 );
 
    snprintf( retbuf, MAX_STRING_LENGTH * 2, WHITE_FOREGROUND "\n\r&g     1      2      3      4      5      6      7      8\n\r" );
 
    for( x = 0; x < 8; x++ )
    {
-      mudstrlcat( retbuf, "  ", MAX_STRING_LENGTH * 2 );
+      strlcat( retbuf, "  ", MAX_STRING_LENGTH * 2 );
       for( y = 0; y < 8; y++ )
       {
          snprintf( buf, MAX_STRING_LENGTH, "%s%s",
                   x % 2 == 0 ? ( y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND ) :
                   ( y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND ), big_pieces[board->board[x][y]][0] );
          snprintf( buf2, MAX_STRING_LENGTH, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
-         mudstrlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
+         strlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
       }
-      mudstrlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
+      strlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
 
       snprintf( buf, MAX_STRING_LENGTH, WHITE_FOREGROUND "&g%c ", 'A' + x );
-      mudstrlcat( retbuf, buf, MAX_STRING_LENGTH * 2 );
+      strlcat( retbuf, buf, MAX_STRING_LENGTH * 2 );
       for( y = 0; y < 8; y++ )
       {
          snprintf( buf, MAX_STRING_LENGTH, "%s%s",
                   x % 2 == 0 ? ( y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND ) :
                   ( y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND ), big_pieces[board->board[x][y]][1] );
          snprintf( buf2, MAX_STRING_LENGTH, buf, IS_WHITE( board->board[x][y] ) ? s1 : s2 );
-         mudstrlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
+         strlcat( retbuf, buf2, MAX_STRING_LENGTH * 2 );
       }
-      mudstrlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
+      strlcat( retbuf, BLACK_BACKGROUND "\n\r", MAX_STRING_LENGTH * 2 );
    }
 
    return ( retbuf );
@@ -999,13 +999,13 @@ void do_chess( CHAR_DATA* ch, const char* argument )
       {
          opp = get_char_world( ch, ch->pcdata->game_board->player2 );
          if( !opp )
-            mudstrlcpy( opp_name, ch->pcdata->game_board->player2, MAX_INPUT_LENGTH );
+            strlcpy( opp_name, ch->pcdata->game_board->player2, MAX_INPUT_LENGTH );
       }
       else
       {
          opp = get_char_world( ch, ch->pcdata->game_board->player1 );
          if( !opp )
-            mudstrlcpy( opp_name, ch->pcdata->game_board->player1, MAX_INPUT_LENGTH );
+            strlcpy( opp_name, ch->pcdata->game_board->player1, MAX_INPUT_LENGTH );
       }
 
 #define SEND_TO_OPP(arg,opp) \

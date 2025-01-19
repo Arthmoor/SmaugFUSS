@@ -44,6 +44,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include "mud.h"
 
 #ifndef NULLSTR
@@ -2073,13 +2074,13 @@ void do_fill( CHAR_DATA* ch, const char* argument )
             LIQ_TABLE *liq = get_liq_vnum( source->value[2] );
 
             if( source->value[1] > 15 )
-               mudstrlcpy( buf, "large", 20 );
+               strlcpy( buf, "large", 20 );
             else if( source->value[1] > 10 )
-               mudstrlcpy( buf, "rather large", 20 );
+               strlcpy( buf, "rather large", 20 );
             else if( source->value[1] > 5 )
-               mudstrlcpy( buf, "rather small", 20 );
+               strlcpy( buf, "rather small", 20 );
             else
-               mudstrlcpy( buf, "small", 20 );
+               strlcpy( buf, "small", 20 );
             snprintf( buf2, 70, "There is a %s puddle of %s.", buf, ( liq == NULL ? "water" : liq->name ) );
             source->description = STRALLOC( buf2 );
          }

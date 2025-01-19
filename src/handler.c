@@ -3672,73 +3672,73 @@ const char *affect_bit_name( EXT_BV * vector )
 
    buf[0] = '\0';
    if( xIS_SET( *vector, AFF_BLIND ) )
-      mudstrlcat( buf, " blind", 512 );
+      strlcat( buf, " blind", 512 );
    if( xIS_SET( *vector, AFF_INVISIBLE ) )
-      mudstrlcat( buf, " invisible", 512 );
+      strlcat( buf, " invisible", 512 );
    if( xIS_SET( *vector, AFF_DETECT_EVIL ) )
-      mudstrlcat( buf, " detect_evil", 512 );
+      strlcat( buf, " detect_evil", 512 );
    if( xIS_SET( *vector, AFF_DETECT_INVIS ) )
-      mudstrlcat( buf, " detect_invis", 512 );
+      strlcat( buf, " detect_invis", 512 );
    if( xIS_SET( *vector, AFF_DETECT_MAGIC ) )
-      mudstrlcat( buf, " detect_magic", 512 );
+      strlcat( buf, " detect_magic", 512 );
    if( xIS_SET( *vector, AFF_DETECT_HIDDEN ) )
-      mudstrlcat( buf, " detect_hidden", 512 );
+      strlcat( buf, " detect_hidden", 512 );
    if( xIS_SET( *vector, AFF_HOLD ) )
-      mudstrlcat( buf, " hold", 512 );
+      strlcat( buf, " hold", 512 );
    if( xIS_SET( *vector, AFF_SANCTUARY ) )
-      mudstrlcat( buf, " sanctuary", 512 );
+      strlcat( buf, " sanctuary", 512 );
    if( xIS_SET( *vector, AFF_FAERIE_FIRE ) )
-      mudstrlcat( buf, " faerie_fire", 512 );
+      strlcat( buf, " faerie_fire", 512 );
    if( xIS_SET( *vector, AFF_INFRARED ) )
-      mudstrlcat( buf, " infrared", 512 );
+      strlcat( buf, " infrared", 512 );
    if( xIS_SET( *vector, AFF_CURSE ) )
-      mudstrlcat( buf, " curse", 512 );
+      strlcat( buf, " curse", 512 );
    if( xIS_SET( *vector, AFF_FLAMING ) )
-      mudstrlcat( buf, " flaming", 512 );
+      strlcat( buf, " flaming", 512 );
    if( xIS_SET( *vector, AFF_POISON ) )
-      mudstrlcat( buf, " poison", 512 );
+      strlcat( buf, " poison", 512 );
    if( xIS_SET( *vector, AFF_PROTECT ) )
-      mudstrlcat( buf, " protect", 512 );
+      strlcat( buf, " protect", 512 );
    if( xIS_SET( *vector, AFF_PARALYSIS ) )
-      mudstrlcat( buf, " paralysis", 512 );
+      strlcat( buf, " paralysis", 512 );
    if( xIS_SET( *vector, AFF_SLEEP ) )
-      mudstrlcat( buf, " sleep", 512 );
+      strlcat( buf, " sleep", 512 );
    if( xIS_SET( *vector, AFF_SNEAK ) )
-      mudstrlcat( buf, " sneak", 512 );
+      strlcat( buf, " sneak", 512 );
    if( xIS_SET( *vector, AFF_HIDE ) )
-      mudstrlcat( buf, " hide", 512 );
+      strlcat( buf, " hide", 512 );
    if( xIS_SET( *vector, AFF_CHARM ) )
-      mudstrlcat( buf, " charm", 512 );
+      strlcat( buf, " charm", 512 );
    if( xIS_SET( *vector, AFF_POSSESS ) )
-      mudstrlcat( buf, " possess", 512 );
+      strlcat( buf, " possess", 512 );
    if( xIS_SET( *vector, AFF_FLYING ) )
-      mudstrlcat( buf, " flying", 512 );
+      strlcat( buf, " flying", 512 );
    if( xIS_SET( *vector, AFF_PASS_DOOR ) )
-      mudstrlcat( buf, " pass_door", 512 );
+      strlcat( buf, " pass_door", 512 );
    if( xIS_SET( *vector, AFF_FLOATING ) )
-      mudstrlcat( buf, " floating", 512 );
+      strlcat( buf, " floating", 512 );
    if( xIS_SET( *vector, AFF_TRUESIGHT ) )
-      mudstrlcat( buf, " true_sight", 512 );
+      strlcat( buf, " true_sight", 512 );
    if( xIS_SET( *vector, AFF_DETECTTRAPS ) )
-      mudstrlcat( buf, " detect_traps", 512 );
+      strlcat( buf, " detect_traps", 512 );
    if( xIS_SET( *vector, AFF_SCRYING ) )
-      mudstrlcat( buf, " scrying", 512 );
+      strlcat( buf, " scrying", 512 );
    if( xIS_SET( *vector, AFF_FIRESHIELD ) )
-      mudstrlcat( buf, " fireshield", 512 );
+      strlcat( buf, " fireshield", 512 );
    if( xIS_SET( *vector, AFF_ACIDMIST ) )
-      mudstrlcat( buf, " acidmist", 512 );
+      strlcat( buf, " acidmist", 512 );
    if( xIS_SET( *vector, AFF_VENOMSHIELD ) )
-      mudstrlcat( buf, " venomshield", 512 );
+      strlcat( buf, " venomshield", 512 );
    if( xIS_SET( *vector, AFF_SHOCKSHIELD ) )
-      mudstrlcat( buf, " shockshield", 512 );
+      strlcat( buf, " shockshield", 512 );
    if( xIS_SET( *vector, AFF_ICESHIELD ) )
-      mudstrlcat( buf, " iceshield", 512 );
+      strlcat( buf, " iceshield", 512 );
    if( xIS_SET( *vector, AFF_BERSERK ) )
-      mudstrlcat( buf, " berserk", 512 );
+      strlcat( buf, " berserk", 512 );
    if( xIS_SET( *vector, AFF_AQUA_BREATH ) )
-      mudstrlcat( buf, " aqua_breath", 512 );
+      strlcat( buf, " aqua_breath", 512 );
    if( xIS_SET( *vector, AFF_GRAPPLE ) )
-      mudstrlcat( buf, " grapple", 512 );
+      strlcat( buf, " grapple", 512 );
    return ( buf[0] != '\0' ) ? buf + 1 : ( char * )"none";
 }
 
@@ -3751,65 +3751,65 @@ const char *extra_bit_name( EXT_BV * extra_flags )
 
    buf[0] = '\0';
    if( xIS_SET( *extra_flags, ITEM_GLOW ) )
-      mudstrlcat( buf, " glow", 512 );
+      strlcat( buf, " glow", 512 );
    if( xIS_SET( *extra_flags, ITEM_HUM ) )
-      mudstrlcat( buf, " hum", 512 );
+      strlcat( buf, " hum", 512 );
    if( xIS_SET( *extra_flags, ITEM_DARK ) )
-      mudstrlcat( buf, " dark", 512 );
+      strlcat( buf, " dark", 512 );
    if( xIS_SET( *extra_flags, ITEM_LOYAL ) )
-      mudstrlcat( buf, " loyal", 512 );
+      strlcat( buf, " loyal", 512 );
    if( xIS_SET( *extra_flags, ITEM_EVIL ) )
-      mudstrlcat( buf, " evil", 512 );
+      strlcat( buf, " evil", 512 );
    if( xIS_SET( *extra_flags, ITEM_INVIS ) )
-      mudstrlcat( buf, " invis", 512 );
+      strlcat( buf, " invis", 512 );
    if( xIS_SET( *extra_flags, ITEM_MAGIC ) )
-      mudstrlcat( buf, " magic", 512 );
+      strlcat( buf, " magic", 512 );
    if( xIS_SET( *extra_flags, ITEM_NODROP ) )
-      mudstrlcat( buf, " nodrop", 512 );
+      strlcat( buf, " nodrop", 512 );
    if( xIS_SET( *extra_flags, ITEM_BLESS ) )
-      mudstrlcat( buf, " bless", 512 );
+      strlcat( buf, " bless", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_GOOD ) )
-      mudstrlcat( buf, " anti-good", 512 );
+      strlcat( buf, " anti-good", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_EVIL ) )
-      mudstrlcat( buf, " anti-evil", 512 );
+      strlcat( buf, " anti-evil", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_NEUTRAL ) )
-      mudstrlcat( buf, " anti-neutral", 512 );
+      strlcat( buf, " anti-neutral", 512 );
    if( xIS_SET( *extra_flags, ITEM_NOREMOVE ) )
-      mudstrlcat( buf, " noremove", 512 );
+      strlcat( buf, " noremove", 512 );
    if( xIS_SET( *extra_flags, ITEM_INVENTORY ) )
-      mudstrlcat( buf, " inventory", 512 );
+      strlcat( buf, " inventory", 512 );
    if( xIS_SET( *extra_flags, ITEM_DEATHROT ) )
-      mudstrlcat( buf, " deathrot", 512 );
+      strlcat( buf, " deathrot", 512 );
    if( xIS_SET( *extra_flags, ITEM_GROUNDROT ) )
-      mudstrlcat( buf, " groundrot", 512 );
+      strlcat( buf, " groundrot", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_MAGE ) )
-      mudstrlcat( buf, " anti-mage", 512 );
+      strlcat( buf, " anti-mage", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_THIEF ) )
-      mudstrlcat( buf, " anti-thief", 512 );
+      strlcat( buf, " anti-thief", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_WARRIOR ) )
-      mudstrlcat( buf, " anti-warrior", 512 );
+      strlcat( buf, " anti-warrior", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_CLERIC ) )
-      mudstrlcat( buf, " anti-cleric", 512 );
+      strlcat( buf, " anti-cleric", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_DRUID ) )
-      mudstrlcat( buf, " anti-druid", 512 );
+      strlcat( buf, " anti-druid", 512 );
    if( xIS_SET( *extra_flags, ITEM_ANTI_VAMPIRE ) )
-      mudstrlcat( buf, " anti-vampire", 512 );
+      strlcat( buf, " anti-vampire", 512 );
    if( xIS_SET( *extra_flags, ITEM_ORGANIC ) )
-      mudstrlcat( buf, " organic", 512 );
+      strlcat( buf, " organic", 512 );
    if( xIS_SET( *extra_flags, ITEM_METAL ) )
-      mudstrlcat( buf, " metal", 512 );
+      strlcat( buf, " metal", 512 );
    if( xIS_SET( *extra_flags, ITEM_DONATION ) )
-      mudstrlcat( buf, " donation", 512 );
+      strlcat( buf, " donation", 512 );
    if( xIS_SET( *extra_flags, ITEM_CLANOBJECT ) )
-      mudstrlcat( buf, " clan", 512 );
+      strlcat( buf, " clan", 512 );
    if( xIS_SET( *extra_flags, ITEM_CLANCORPSE ) )
-      mudstrlcat( buf, " clanbody", 512 );
+      strlcat( buf, " clanbody", 512 );
    if( xIS_SET( *extra_flags, ITEM_PERMANENT ) )
-      mudstrlcat( buf, " permanent", 512 );
+      strlcat( buf, " permanent", 512 );
    if( xIS_SET( *extra_flags, ITEM_PERSONAL ) )
-      mudstrlcat( buf, " personal", 512 );
+      strlcat( buf, " personal", 512 );
    if( xIS_SET( *extra_flags, ITEM_PROTOTYPE ) )
-      mudstrlcat( buf, " prototype", 512 );
+      strlcat( buf, " prototype", 512 );
    return ( buf[0] != '\0' ) ? buf + 1 : ( char * )"none";
 }
 
@@ -3822,7 +3822,7 @@ const char *magic_bit_name( int magic_flags )
 
    buf[0] = '\0';
    if( magic_flags & ITEM_RETURNING )
-      mudstrlcat( buf, " returning", 512 );
+      strlcat( buf, " returning", 512 );
    return ( buf[0] != '\0' ) ? buf + 1 : ( char * )"none";
 }
 
@@ -4443,10 +4443,10 @@ void showaffect( CHAR_DATA * ch, AFFECT_DATA * paf )
             for( x = 0; x < 32; x++ )
                if( IS_SET( paf->modifier, 1 << x ) )
                {
-                  mudstrlcat( buf, " ", MAX_STRING_LENGTH );
-                  mudstrlcat( buf, a_flags[x], MAX_STRING_LENGTH );
+                  strlcat( buf, " ", MAX_STRING_LENGTH );
+                  strlcat( buf, a_flags[x], MAX_STRING_LENGTH );
                }
-            mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+            strlcat( buf, "\r\n", MAX_STRING_LENGTH );
             break;
          case APPLY_WEAPONSPELL:
          case APPLY_WEARSPELL:
@@ -4461,10 +4461,10 @@ void showaffect( CHAR_DATA * ch, AFFECT_DATA * paf )
             for( x = 0; x < 32; x++ )
                if( IS_SET( paf->modifier, 1 << x ) )
                {
-                  mudstrlcat( buf, " ", MAX_STRING_LENGTH );
-                  mudstrlcat( buf, ris_flags[x], MAX_STRING_LENGTH );
+                  strlcat( buf, " ", MAX_STRING_LENGTH );
+                  strlcat( buf, ris_flags[x], MAX_STRING_LENGTH );
                }
-            mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+            strlcat( buf, "\r\n", MAX_STRING_LENGTH );
             break;
       }
       send_to_char( buf, ch );

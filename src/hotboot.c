@@ -652,7 +652,7 @@ void do_hotboot( CHAR_DATA* ch, const char* argument )
    if( ch && ch->desc )
       write_to_descriptor( ch->desc, "\033[0m", 0 );
 
-   mudstrlcpy( buf, "\r\nThe flow of time is halted momentarily as the world is reshaped!\r\n", 100 );
+   strlcpy( buf, "\r\nThe flow of time is halted momentarily as the world is reshaped!\r\n", 100 );
    /*
     * For each playing descriptor, save its state 
     */

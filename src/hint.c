@@ -16,6 +16,7 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include "mud.h"
 #include "hint.h"
@@ -77,7 +78,7 @@ const char *get_hint( int level )
                ++count;
             if( count == which )
             {
-               mudstrlcpy( buf, hintData->text, MAX_STRING_LENGTH );
+               strlcpy( buf, hintData->text, MAX_STRING_LENGTH );
                return buf;
             }
          }
@@ -88,7 +89,7 @@ const char *get_hint( int level )
          {
             if( level >= hintData->low && level <= hintData->high )
             {
-               mudstrlcpy( buf, hintData->text, MAX_STRING_LENGTH );
+               strlcpy( buf, hintData->text, MAX_STRING_LENGTH );
                return buf;
             }
          }

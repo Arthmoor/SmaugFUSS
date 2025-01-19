@@ -113,7 +113,7 @@ char *translate( int percent, const char *in, const char *name )
 
    if( percent > 99 || !str_cmp( name, "common" ) )
    {
-      mudstrlcpy( log_buf, in, MAX_STRING_LENGTH );
+      strlcpy( log_buf, in, MAX_STRING_LENGTH );
       return log_buf;
    }
 
@@ -123,7 +123,7 @@ char *translate( int percent, const char *in, const char *name )
    if( !( lng = get_lang( name ) ) )
       if( !( lng = get_lang( "default" ) ) )
       {
-         mudstrlcpy( log_buf, in, MAX_STRING_LENGTH );
+         strlcpy( log_buf, in, MAX_STRING_LENGTH );
          return log_buf;
       }
 
@@ -141,7 +141,7 @@ char *translate( int percent, const char *in, const char *name )
             }
             else
             {
-               mudstrlcpy( pbuf2, cnv->lnew, 256 );
+               strlcpy( pbuf2, cnv->lnew, 256 );
                pbuf2 += cnv->nlen;
             }
             pbuf += cnv->olen;
@@ -169,7 +169,7 @@ char *translate( int percent, const char *in, const char *name )
       for( cnv = lng->first_cnv; cnv; cnv = cnv->next )
          if( !str_prefix( cnv->old, pbuf ) )
          {
-            mudstrlcpy( pbuf2, cnv->lnew, 256 );
+            strlcpy( pbuf2, cnv->lnew, 256 );
             pbuf += cnv->olen;
             pbuf2 += cnv->nlen;
             break;
@@ -192,7 +192,7 @@ const char *drunk_speech( const char *argument, CHAR_DATA * ch )
 
    if( IS_NPC( ch ) || !ch->pcdata )
    {
-      mudstrlcpy( buf, argument, MAX_INPUT_LENGTH * 2 );
+      strlcpy( buf, argument, MAX_INPUT_LENGTH * 2 );
       return buf;
    }
 
@@ -200,7 +200,7 @@ const char *drunk_speech( const char *argument, CHAR_DATA * ch )
 
    if( drunk <= 0 )
    {
-      mudstrlcpy( buf, argument, MAX_INPUT_LENGTH * 2 );
+      strlcpy( buf, argument, MAX_INPUT_LENGTH * 2 );
       return buf;
    }
 
@@ -668,7 +668,7 @@ void talk_channel( CHAR_DATA * ch, const char *argument, int channel, const char
             sbuf = scramble( argument, number_range( 1, 10 ) );
 
          MOBtrigger = FALSE;
-         mudstrlcat( lbuf, buf, MAX_STRING_LENGTH );
+         strlcat( lbuf, buf, MAX_INPUT_LENGTH + 4 );
          if( channel == CHANNEL_IMMTALK || channel == CHANNEL_AVTALK )
             act( AT_IMMORT, lbuf, ch, sbuf, vch, TO_VICT );
          else if( channel == CHANNEL_WARTALK )
@@ -2145,9 +2145,9 @@ void do_emote( CHAR_DATA* ch, const char* argument )
    for( plast = argument; *plast != '\0'; plast++ )
       ;
 
-   mudstrlcpy( buf, argument, MAX_STRING_LENGTH );
+   strlcpy( buf, argument, MAX_STRING_LENGTH );
    if( isalpha( plast[-1] ) )
-      mudstrlcat( buf, ".", MAX_STRING_LENGTH );
+      strlcat( buf, ".", MAX_STRING_LENGTH );
    for( vch = ch->in_room->first_person; vch; vch = vch->next_in_room )
    {
       char *sbuf = buf;
@@ -2820,7 +2820,7 @@ void do_order( CHAR_DATA* ch, const char* argument )
    bool found;
    bool fAll;
 
-   mudstrlcpy( argbuf, argument, MAX_INPUT_LENGTH );
+   strlcpy( argbuf, argument, MAX_INPUT_LENGTH );
    argument = one_argument( argument, arg );
 
    if( arg[0] == '\0' || argument[0] == '\0' )

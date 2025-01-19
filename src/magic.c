@@ -376,10 +376,10 @@ int dispel_casting( AFFECT_DATA * paf, CHAR_DATA * ch, CHAR_DATA * victim, int a
    set_char_color( AT_HITME, victim );
 
    if( !can_see( ch, victim ) )
-      mudstrlcpy( buf, "Someone", MAX_STRING_LENGTH );
+      strlcpy( buf, "Someone", MAX_STRING_LENGTH );
    else
    {
-      mudstrlcpy( buf, ( IS_NPC( victim ) ? victim->short_descr : victim->name ), MAX_STRING_LENGTH );
+      strlcpy( buf, ( IS_NPC( victim ) ? victim->short_descr : victim->name ), MAX_STRING_LENGTH );
       buf[0] = toupper( buf[0] );
    }
 
@@ -629,7 +629,7 @@ void say_spell( CHAR_DATA * ch, int sn )
       {
          if( !str_prefix( syl_table[iSyl].old, pName ) )
          {
-            mudstrlcat( buf, syl_table[iSyl].cnew, MAX_INPUT_LENGTH );
+            strlcat( buf, syl_table[iSyl].cnew, MAX_INPUT_LENGTH );
             break;
          }
       }
@@ -864,7 +864,7 @@ int dice_parse( CHAR_DATA * ch, int level, const char *texp )
 {
    char buf[MAX_INPUT_LENGTH];
 
-   mudstrlcpy( buf, texp, MAX_INPUT_LENGTH );
+   strlcpy( buf, texp, MAX_INPUT_LENGTH );
    return rd_parse( ch, level, buf );
 }
 
@@ -1641,7 +1641,7 @@ void do_cast( CHAR_DATA* ch, const char* argument )
          }
          mana = IS_NPC( ch ) ? 0 : UMAX( skill->min_mana, 100 / ( 2 + ch->level - skill->skill_level[ch->Class] ) );
          blood = UMAX( 1, ( mana + 4 ) / 8 );
-         mudstrlcpy( staticbuf, ch->alloc_ptr, MAX_INPUT_LENGTH );
+         strlcpy( staticbuf, ch->alloc_ptr, MAX_INPUT_LENGTH );
          target_name = one_argument( staticbuf, arg2 );
          DISPOSE( ch->alloc_ptr );
          ch->substate = SUB_NONE;

@@ -287,7 +287,7 @@ bool set_house( CHAR_DATA * ch, int vnum, bool apartment )
    STRFREE( key->short_descr );
    key->short_descr = STRALLOC( buf );
    STRFREE( key->description );
-   mudstrlcpy( buf, "A small golden key is here.", MAX_STRING_LENGTH );
+   strlcpy( buf, "A small golden key is here.", MAX_STRING_LENGTH );
    key->description = STRALLOC( buf );
    SET_BIT( key->wear_flags, ITEM_TAKE );
    SET_BIT( key->wear_flags, ITEM_HOLD );
@@ -1529,11 +1529,11 @@ void do_homebuy( CHAR_DATA * ch, const char *argument )
             continue;
          }
 
-         mudstrlcpy( area, location->area->name, MAX_INPUT_LENGTH );
+         strlcpy( area, location->area->name, MAX_INPUT_LENGTH );
          if( homeb->apartment )
             snprintf( name, MAX_INPUT_LENGTH, "(A) %s", location->name );
          else
-            mudstrlcpy( name, location->name, MAX_INPUT_LENGTH );
+            strlcpy( name, location->name, MAX_INPUT_LENGTH );
 
          bidinc = homeb->incpercent * ( homeb->bid / 100 );
          days = homeb->endtime / 48;
@@ -2318,7 +2318,7 @@ CHAR_DATA *load_player( const char *pname )
    char name[256];
    int oldvnum = 0;
 
-   mudstrlcpy( name, pname, 256 );
+   strlcpy( name, pname, 256 );
    snprintf( filename, 256, "%s%c/%s", PLAYER_DIR, LOWER( name[0] ), capitalize( name ) );
 
    for( onlinechar = first_char; onlinechar; onlinechar = onlinechar->next )

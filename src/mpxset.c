@@ -43,7 +43,7 @@ void do_mpmset( CHAR_DATA* ch, const char* argument )
 
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
-   mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+   strlcpy( arg3, argument, MAX_INPUT_LENGTH );
 
    if( !*arg1 )
    {
@@ -583,8 +583,8 @@ void do_mpmset( CHAR_DATA* ch, const char* argument )
    if( !str_cmp( arg2, "long" ) )
    {
       STRFREE( victim->long_descr );
-      mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
-      mudstrlcat( buf, "\r\n", MAX_STRING_LENGTH );
+      strlcpy( buf, arg3, MAX_STRING_LENGTH );
+      strlcat( buf, "\r\n", MAX_STRING_LENGTH );
       victim->long_descr = STRALLOC( buf );
       return;
    }
@@ -1019,7 +1019,7 @@ void do_mposet( CHAR_DATA* ch, const char* argument )
 
    argument = one_argument( argument, arg1 );
    argument = one_argument( argument, arg2 );
-   mudstrlcpy( arg3, argument, MAX_INPUT_LENGTH );
+   strlcpy( arg3, argument, MAX_INPUT_LENGTH );
 
    if( !*arg1 )
    {
@@ -1196,7 +1196,7 @@ void do_mposet( CHAR_DATA* ch, const char* argument )
    if( !str_cmp( arg2, "long" ) )
    {
       STRFREE( obj->description );
-      mudstrlcpy( buf, arg3, MAX_STRING_LENGTH );
+      strlcpy( buf, arg3, MAX_STRING_LENGTH );
       obj->description = STRALLOC( buf );
       return;
    }
