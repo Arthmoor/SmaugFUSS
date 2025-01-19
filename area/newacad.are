@@ -18,11 +18,11 @@ Keywords   wolf arena~
 Short      the dread wolf~
 Long       A dread wolf is hunting here
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea prototype~
 Stats1     0 4 0 35 500 0
 Stats2     44 0 1
@@ -42,11 +42,11 @@ Keywords   slug arena~
 Short      a slimy slug~
 Long       A slimy slug is here scrounging up a meal
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea~
 Stats1     0 4 0 45 500 0
 Stats2     44 0 1
@@ -69,11 +69,11 @@ Long       A bone naga rears up on its tail, ready to strike at you.
 Desc       Possessing the lower body of a snake and the upper body of a skeleton,
 this creature is something to be careful of.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea~
 Stats1     -200 5 0 88 100 0
 Stats2     55 0 1
@@ -93,11 +93,11 @@ Keywords   crawler arena~
 Short      a carrion crawler~
 Long       A carrion crawler growls at you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   detect_invis detect_magic detect_hidden~
 Stats1     0 5 0 -1 1000 0
@@ -122,11 +122,11 @@ Desc       Not the prettiest creature you have evere seen. This beast's entire l
 half is that of a snake, while the upper part of it's body is that of a
 woman, and she doesn't look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -148,11 +148,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -175,11 +175,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 -92 0 0
 Stats2     11 1 0
@@ -202,11 +202,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -229,11 +229,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -256,11 +256,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -283,11 +283,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -310,11 +310,11 @@ Desc       Not the prettiest creature you have ever seen. This beasts entire low
 half is that of a snake. The upper part of its body is that of a woman.
 She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -336,11 +336,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -375,11 +375,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -414,11 +414,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -453,11 +453,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -492,11 +492,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Affected   detect_invis~
 Stats1     0 1 0 69 100 0
@@ -532,11 +532,11 @@ Long       A young gnoll is here ready to attack you
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 0 100 0
 Stats2     11 1 0
@@ -571,11 +571,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -610,11 +610,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -636,11 +636,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -662,11 +662,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -688,11 +688,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -714,11 +714,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -740,11 +740,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       He looks back at you with his beady little eyes. With a snarl he attacks.
 You are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -767,12 +767,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_guard~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     1000 1 0 90 100 0
 Stats2     11 1 0
@@ -794,11 +794,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -819,11 +819,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -844,11 +844,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -869,11 +869,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -894,11 +894,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -919,11 +919,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -944,11 +944,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen. Actually this minotaur
 looks pretty small compared to the others of its kind that you have seen.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -970,12 +970,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1017,12 +1017,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1064,12 +1064,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1111,12 +1111,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1158,12 +1158,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1205,12 +1205,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -1252,12 +1252,12 @@ Desc       Not the prettiest creature you have evere seen. This beast's entire l
 half is that of a snake, while the upper part of it's body is that of a
 woman, and she doesn't look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     0 50 0 94 100 0
@@ -1299,11 +1299,11 @@ long life and many experiences in these Realms. He is looked on
 with awe and unquestioned respect. That respect is well deserved.
 Do not attempt to kill him, for you shall surely die.
 ~
-Race       human~
-Class      vampire~
+Race       Human~
+Class      Vampire~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel practice~
 Affected   detect_invis detect_hidden sanctuary truesight~
 Stats1     1000 10 0 94 100 0
@@ -1334,12 +1334,12 @@ Desc       This is Toric, a Lord of Healing.  If you grovel before him, you migh
 receive extra assistance.  Groveling before the Lords will not get you
 very far in the game, but honest play, helping others and strategy will.
 ~
-Race       human~
-Class      ranger~
+Race       Human~
+Class      Ranger~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel prototype~
 Affected   detect_invis detect_hidden sanctuary truesight~
 Stats1     1000 25 0 94 100 0
@@ -1427,11 +1427,11 @@ Long       A sage storekeeper is here, selling his wares.
 Desc       This is a friendly shopkeeper. His eyes sparkle with amusement. He seems
 patient with those still learning to use the shop. 
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden infrared truesight~
 Stats1     0 1 0 94 100 0
@@ -1478,11 +1478,11 @@ Long       A dragonsnake is here, venomous saliva dripping from its jaws.
 Desc       This is a small, but vicious dragon. His body is long and serpentine.
 This will be quite a battle, but the prize is well worth the effort.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Stats1     0 4 0 35 1000 0
 Stats2     50 1 0
@@ -1514,10 +1514,10 @@ Desc       He looks back at you with his beady little eyes and a snarl on his fa
 You are pretty sure you can best him in regards to combat.
 ~
 Race       magical~
-Class      mage~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 4 0 25 100 0
 Stats2     44 1 0
@@ -1554,11 +1554,11 @@ Desc       This is a woman of average beauty, her face is wrinkled from both tim
 and laughter.  She enjoys her duties in the Academy, aiding the new
 adventurers to the training area of their chosen class.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 94 100 0
@@ -1682,11 +1682,11 @@ Long       This is a nones long
 Desc       He looks back at you with his beady little eyes and a snarl on his face.
 You are pretty sure you can best him in regards to combat
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -1708,11 +1708,11 @@ Long       This is a nones long
 Desc       He looks back at you with his beady little eyes and a snarl on his face.
 You are pretty sure you can best him in regards to combat
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -1734,11 +1734,11 @@ Long       A marble statue of an ancient mage
 Desc       This is a statue of an wizened old mage. Made of fine marble that is magical
 and contains the spirit of the subject after which it was fashioned.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -1826,11 +1826,11 @@ Long       A marble statue of an ancient cleric
 Desc       This is a statue made of fine marble, depicting a cleric. She is done
 in a lifelike manner, like she was a real person dipped in the marble.
 ~
-Race       human~
-Class      cleric~
+Race       Human~
+Class      Cleric~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -1919,11 +1919,11 @@ Desc       This statue is made from the darkest black marble you have ever seen.
 It depicts a shadowy cloaked thief. You feel his eyes on you, like it is
 a living person and not a statue at all.
 ~
-Race       human~
-Class      thief~
+Race       Human~
+Class      Thief~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -2012,11 +2012,11 @@ Desc       This warrior is carved from the finest of marbles. The artist seems t
 have caught the vitality of his subject, so much so that the statue seems
 alive.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -2105,11 +2105,11 @@ Desc       This is a marble carving of a seductress, only the fangs give away he
 vampiric nature. Her eyes are hypnotic, making you feel like she is 
 looking deep into your soul.
 ~
-Race       human~
-Class      vampire~
+Race       Human~
+Class      Vampire~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -2197,11 +2197,11 @@ Long       A marble statue of an ancient druid.
 Desc       This is a finely carved statue of an old druidess in ceremonial white
 robes. She is made to look so natural, you are sure she is alive.
 ~
-Race       human~
-Class      druid~
+Race       Human~
+Class      Druid~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -2289,11 +2289,11 @@ Long       A marble statue of an ancient ranger.
 Desc       This statue was made with excellent details. This ranger stands proud.
 Then you notice a movement, you are sure it is alive.
 ~
-Race       human~
-Class      ranger~
+Race       Human~
+Class      Ranger~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -2379,10 +2379,10 @@ Short      a tiny pixie~
 Long       A tiny pixie floats about you.
 ~
 Race       magical~
-Class      mage~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden flying truesight~
 Stats1     0 4 0 -100 0 0
@@ -2453,11 +2453,11 @@ Keywords   mob~
 Short      a test mob~
 Long       This is a test mob.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc prototype~
 Stats1     0 1 0 0 0 0
 Stats2     11 1 0
@@ -2478,11 +2478,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle this young gnoll bares his fangs at you
 in an attempt to strike fear into your heart.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2503,11 +2503,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle this young gnoll bares his fangs at you
 in an attempt to strike fear into your heart.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2525,11 +2525,11 @@ Keywords   None~
 Short      this is a none~
 Long       This is a nones long
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     -400 1 0 0 300 0
 Stats2     11 1 0
@@ -2550,11 +2550,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle this young gnoll bares his fangs at you
 in an attempt to strike fear into your heart.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2575,11 +2575,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle this young gnoll bares his fangs at you
 in an attempt to strike fear into your heart.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2601,11 +2601,11 @@ Desc       No fur covers the body of this beast, only a pastey white skin. So th
 is the skin on this beast that you can see the organs working to keep
 this thing alive. Even from a distance you can smell it's fetid breath.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea prototype~
 Stats1     -1000 1 0 90 0 0
 Stats2     11 1 0
@@ -2626,11 +2626,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle, this young gnoll bares his fangs at you.
 He is trying to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2652,11 +2652,11 @@ Long       This is a nones long
 Desc       Eager to test hit prowess in battle this young gnoll bares his fangs at you
 in an attempt to strike fear into your heart.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2678,11 +2678,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2704,11 +2704,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2730,11 +2730,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2756,11 +2756,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2782,11 +2782,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2808,11 +2808,11 @@ Desc       Not the largest of the species you have ever seen. Actually this mino
 looks pretty small compared to the other's of it's kind that you have
 heard about.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2830,11 +2830,11 @@ Keywords   None~
 Short      this is a none~
 Long       This is a nones long
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea wimpy prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2855,11 +2855,11 @@ Long       This is a nones long
 Desc       Wallowing in a pool of it's own slime, this slug turns sightless eyes
 towards you thinking you may make a good meal.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc stayarea wimpy prototype~
 Stats1     0 1 0 94 100 0
 Stats2     11 1 0
@@ -2881,11 +2881,11 @@ Desc       Dragged back from thier eternal rest these nagas were Queen Asp's per
 bodyguards. Known to be fierce fighters in thier past lifetime they now
 possess an "undying" loyalty to thier Queen.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc aggressive prototype~
 Stats1     0 1 0 60 300 0
 Stats2     11 1 0
@@ -2911,11 +2911,11 @@ voice at last breaks the spell. Her voice is like satin, you can hardly
 wait for your lessons to begin. Any reason to hear her speak the tongues
 foreign to your ears.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel scholar~
 Affected   detect_invis detect_hidden sanctuary truesight~
 Stats1     0 5 16 5 50 450
@@ -2977,10 +2977,10 @@ bodyguards.  Known to be fierce fighters in their past lifetime, they now
 possess an "undying" loyalty to their Queen.
 ~
 Race       spirit~
-Class      mage~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc aggressive~
 Stats1     0 7 0 60 300 0
 Stats2     1 1 50
@@ -3019,11 +3019,11 @@ shock horror. From the waist down Asp has the form of a snake! Skilled with
 a sword and possession of a keen intellect are but a few of the traits that
 have allowed her to rise in power among her people.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     female~
+Gender     Female~
 Actflags   npc sentinel aggressive~
 Stats1     0 7 0 80 500 0
 Stats2     60 1 0
@@ -3045,12 +3045,12 @@ Desc       Don't let appearances fool you, this young one possesses great magica
 skill beyond his years. He one days hopes to fill the position of his
 master Scarab in his role as Archmage of the Realm's.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_undead~
-Gender     male~
+Gender     Male~
 Actflags   npc~
 Affected   detect_invis shockshield~
 Stats1     0 50 0 -200 0 0
@@ -3076,11 +3076,11 @@ You can barely take your eyes from her, she is hypnotizing.  She smiles at
 you, knowing you are appreciating her beauty.  You bet she is as deadly as
 she is beautiful to gain the position of headmistress of this Academy.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_hidden sanctuary truesight~
 Stats1     0 1 0 0 0 0
@@ -3215,11 +3215,11 @@ Long       A marble statue of an ancient Augurer stands here.
 Desc       This Augurer is carved from the finest of marbles.  The artist seems to have
 caught the vitality of his subject, so much so that the statue seems alive.
 ~
-Race       human~
-Class      augurer~
+Race       Human~
+Class      Augurer~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc sentinel prototype~
 Affected   detect_invis detect_hidden sanctuary infrared~
 Stats1     1000 50 0 35 100 0
@@ -3308,12 +3308,12 @@ Desc       You can't really make out any physical details of the guardian. The f
 of the spectre is constantly shifting in and out of existence, what you
 can see of it is more like a transparent mist.
 ~
-Race       elf~
-Class      mage~
+Race       Elf~
+Class      Mage~
 Position   standing~
 DefPos     standing~
 Specfun    spec_cast_adept~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel~
 Affected   detect_invis detect_magic detect_hidden sanctuary~
 Stats1     1000 50 0 0 0 0
@@ -3355,11 +3355,11 @@ Desc       Not the prettiest creature you have ever seen, this beast's entire
 lower half is that of a snake, while the upper part is that of a
 woman.  She does not look happy to see you.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     9 1 0
@@ -3381,11 +3381,11 @@ Long       A minotaur is here snorting at your intrusion.
 Desc       Not the largest of the species you have ever seen.  Actually, this minotaur
 looks rather small compared to others of its kind you have encountered.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel stayarea~
 Stats1     0 1 0 94 100 0
 Stats2     8 1 0
@@ -3406,11 +3406,11 @@ Long       A young gnoll is here ready to attack you.
 Desc       Eager to test his prowess in battle, this young gnoll bares his fangs at you
 as he tries to strike fear in your heart.
 ~
-Race       human~
-Class      mage~
+Race       Human~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     9 1 9
@@ -3445,11 +3445,11 @@ Long       A kobold with a sickly grin on its face is here.
 Desc       It looks back at you with beady little eyes.  With a snarl he attacks, but
 you are sure you can beat in combat.
 ~
-Race       halfling~
-Class      mage~
+Race       Halfling~
+Class      Mage~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc sentinel aggressive~
 Stats1     0 1 0 94 100 0
 Stats2     8 1 0
@@ -3474,10 +3474,10 @@ ponders your intrusion.  You have interrupted his food collecting, perhaps
 you will now be his next meal.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc scavenger aggressive stayarea~
 Affected   infrared sneak~
 Stats1     0 7 11 25 340 2000
@@ -3504,10 +3504,10 @@ ponders your intrusion.  You have interrupted his food collecting, perhaps
 you will now be his next meal.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc scavenger aggressive stayarea~
 Affected   infrared sneak~
 Stats1     0 7 11 25 340 2000
@@ -3534,10 +3534,10 @@ ponders your intrusion.  You have interrupted his food collecting, perhaps
 you will now be his next meal.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc scavenger aggressive stayarea~
 Affected   infrared sneak~
 Stats1     0 7 11 25 340 2000
@@ -3564,10 +3564,10 @@ ponders your intrusion.  You have interrupted his food collecting, perhaps
 you will now be his next meal.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc scavenger aggressive stayarea~
 Affected   infrared sneak~
 Stats1     0 7 11 25 340 2000
@@ -3593,10 +3593,10 @@ the nerve to walk across your feet as if you existance means nothing to
 it. You watch in awe as those one hundred legs move in rhythm.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 8 11 25 1000 2000
@@ -3622,10 +3622,10 @@ the nerve to walk across your feet as if you existance means nothing to
 it. You watch in awe as those one hundred legs move in rhythm.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 8 11 25 1000 2000
@@ -3651,10 +3651,10 @@ the nerve to walk across your feet as if you existance means nothing to
 it. You watch in awe as those one hundred legs move in rhythm.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 8 11 25 1000 2000
@@ -3680,10 +3680,10 @@ the nerve to walk across your feet as if you existance means nothing to
 it. You watch in awe as those one hundred legs move in rhythm.
 ~
 Race       insect~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 8 11 25 1000 2000
@@ -3709,10 +3709,10 @@ His grey fur is matted from blood and dirt, and his eyes seem to
 watch your every movement.
 ~
 Race       rodent~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 6 11 25 500 2000
@@ -3739,10 +3739,10 @@ His grey fur is matted from blood and dirt, and his eyes seem to
 watch your every movement.
 ~
 Race       rodent~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 6 11 25 500 2000
@@ -3769,10 +3769,10 @@ His grey fur is matted from blood and dirt, and his eyes seem to
 watch your every movement.
 ~
 Race       rodent~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 6 11 25 500 2000
@@ -3799,10 +3799,10 @@ His grey fur is matted from blood and dirt, and his eyes seem to
 watch your every movement.
 ~
 Race       rodent~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared truesight~
 Stats1     0 6 11 25 500 2000
@@ -3829,10 +3829,10 @@ are slow.  You can see his small, beady eyes, but doubt that he
 can really see you.
 ~
 Race       mammal~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared~
 Stats1     0 6 11 25 500 2000
@@ -3858,10 +3858,10 @@ are slow.  You can see his small, beady eyes, but doubt that he
 can really see you.
 ~
 Race       mammal~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared~
 Stats1     0 6 11 25 500 2000
@@ -3887,10 +3887,10 @@ are slow.  You can see his small, beady eyes, but doubt that he
 can really see you.
 ~
 Race       mammal~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared~
 Stats1     0 6 11 25 500 2000
@@ -3916,10 +3916,10 @@ are slow.  You can see his small, beady eyes, but doubt that he
 can really see you.
 ~
 Race       mammal~
-Class      warrior~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     male~
+Gender     Male~
 Actflags   npc stayarea~
 Affected   infrared~
 Stats1     0 6 11 25 500 2000
@@ -3940,11 +3940,11 @@ Keywords   hvak1 advancer~
 Short      Hungrily, a hollow voice~
 Long       Hvak1 Advancer is here (should always be in 10499)
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc prototype~
 Affected   detect_invis detect_hidden truesight~
 Stats1     0 50 0 0 0 0
@@ -3963,11 +3963,11 @@ Keywords   hvak2 advancer~
 Short      A rasping voice~
 Long       Hvak2 Advancer is here (should always be in 10499)
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc prototype~
 Affected   detect_invis detect_hidden truesight~
 Stats1     0 50 0 0 0 0
@@ -3986,11 +3986,11 @@ Keywords   final mob~
 Short      a newly created final mob~
 Long       Some god abandoned a newly created final mob here.
 ~
-Race       human~
-Class      warrior~
+Race       Human~
+Class      Warrior~
 Position   standing~
 DefPos     standing~
-Gender     neuter~
+Gender     Neuter~
 Actflags   npc prototype~
 Stats1     0 1 0 0 0 0
 Stats2     0 0 0
@@ -4011,7 +4011,7 @@ Long     A charm bracelet from the academy lies here~
 WFlags   take wrist~
 Values   2 2 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 31 0d
+Affect       -1 -1 1 31 0
 #EXDESC
 ExDescKey    bracelet charm~
 ExDesc       This is a bracelet that will bring you luck in your travels. It can
@@ -4037,7 +4037,7 @@ Long     A pair of black combat boots from the Academy lies here~
 WFlags   take feet~
 Values   3 3 0 0 0 0
 Stats    3 0 0 0 0
-Affect       -1 -1 100 14 0d
+Affect       -1 -1 100 14 0
 #EXDESC
 ExDescKey    combat boots~
 ExDesc       This boots are so comfortable and light, you feel you can walk a lot
@@ -4063,7 +4063,7 @@ Long     A braided leather belt from the Academy lies here~
 WFlags   take waist~
 Values   2 2 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 5 0d
+Affect       -1 -1 1 5 0
 #EXDESC
 ExDescKey    belt leather~
 ExDesc       This belt is made of a fine leather, braided for strength. You can get
@@ -4114,7 +4114,7 @@ Long     A wrought iron helmet from the Academy~
 WFlags   take head~
 Values   3 3 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 3 0d
+Affect       -1 -1 1 3 0
 #EXDESC
 ExDescKey    helmet iron~
 ExDesc       This is a helmet made of fine iron, from the Darkhaven Academy.  It will
@@ -4192,8 +4192,8 @@ Flags    magic~
 WFlags   take eyes~
 Values   2 0 0 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 1 4 0d
-Affect       -1 -1 1 3 0d
+Affect       -1 -1 1 4 0
+Affect       -1 -1 1 3 0
 #EXDESC
 ExDescKey    visor completion~
 ExDesc       Congratulations! You have completed the Darkhaven Academy and can now
@@ -4238,7 +4238,7 @@ Long     Lightweight tin sleeves from the academy~
 WFlags   take arms~
 Values   3 3 0 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 1 1 0d
+Affect       -1 -1 1 1 0
 #EXDESC
 ExDescKey    sleeves tin~
 ExDesc       This sleeves will protect your arms until you can find something better.
@@ -4283,7 +4283,7 @@ Flags    glow magic~
 WFlags   take~
 Values   0 0 -1 0 0 0
 Stats    1 0 0 0 0
-Affect       -1 -1 -1 24 0d
+Affect       -1 -1 -1 24 0
 #ENDOBJECT
 
 #OBJECT
@@ -4296,8 +4296,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 1 6 11 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #ENDOBJECT
 
 #OBJECT
@@ -4310,8 +4310,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #EXDESC
 ExDescKey    sword~
 ExDesc       Made of decent quality, this sword should serve you well in your battles
@@ -4342,8 +4342,8 @@ Flags    magic~
 WFlags   take wield~
 Values   12 3 6 7 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #EXDESC
 ExDescKey    mace~
 ExDesc       Made of decent quality this weapon shall servre you well in the battles
@@ -4385,8 +4385,8 @@ Flags    magic antigood antivampire~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    3 0 0 0 0
-Affect       -1 -1 3 19 0d
-Affect       -1 -1 -1 1 0d
+Affect       -1 -1 3 19 0
+Affect       -1 -1 -1 1 0
 #ENDOBJECT
 
 #OBJECT
@@ -4398,7 +4398,7 @@ Long     A pair of kid gloves from the Academy lie here~
 WFlags   take hands~
 Values   3 0 0 0 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 1 2 0d
+Affect       -1 -1 1 2 0
 #MUDPROG
 Progtype  drop_prog~
 Arglist   100~
@@ -4568,9 +4568,9 @@ Flags    metal~
 WFlags   take hold~
 Values   5 5 0 0 0 0
 Stats    1 1234 123 0 0
-Affect       -1 -1 1 3 0d
-Affect       -1 -1 1 5 0d
-Affect       -1 -1 1 4 0d
+Affect       -1 -1 1 3 0
+Affect       -1 -1 1 5 0
+Affect       -1 -1 1 4 0
 #EXDESC
 ExDescKey    sets~
 ExDesc       Regular equipment setup:              Equipment setup during dual wield:
@@ -4653,7 +4653,7 @@ Flags    metal~
 WFlags   take neck~
 Values   0 3 0 0 0 0
 Stats    2 1 0 0 0
-Affect       -1 -1 -3 17 0d
+Affect       -1 -1 -3 17 0
 #ENDOBJECT
 
 #OBJECT
@@ -5114,8 +5114,8 @@ Flags    dark magic~
 WFlags   take wield~
 Values   12 1 6 11 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #EXDESC
 ExDescKey    menacing granitic blade~
 ExDesc       Of rough but usable quality, it should serve you well in your early years.
@@ -5134,8 +5134,8 @@ Flags    hum magic bless metal~
 WFlags   take wield~
 Values   12 0 0 7 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #EXDESC
 ExDescKey    adamantium mace~
 ExDesc       Forged of a gleaming metal, this mace will serve you well in your early years.
@@ -5154,8 +5154,8 @@ Flags    magic metal~
 WFlags   take wield~
 Values   12 0 0 3 0 0
 Stats    2 0 0 0 0
-Affect       -1 -1 2 18 0d
-Affect       -1 -1 1 19 0d
+Affect       -1 -1 2 18 0
+Affect       -1 -1 1 19 0
 #EXDESC
 ExDescKey    broadsword broad sword~
 ExDesc       Made of a heavy iron alloy, it will serve you well in your early years.
@@ -5174,8 +5174,8 @@ Flags    organic buried~
 WFlags   take hold~
 Values   20 -1 -1 -1 0 0
 Stats    3 1200 120 0 0
-Affect       -1 -1 1 5 0d
-Affect       -1 -1 1 4 0d
+Affect       -1 -1 1 5 0
+Affect       -1 -1 1 4 0
 Spells   'cure critical' 'restore mana' 'NONE'
 #ENDOBJECT
 
@@ -5301,6 +5301,16 @@ Desc      Abbigayle's Language Lessons.
 #ENDEXIT
 
 #MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -5310,16 +5320,6 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -7410,8 +7410,8 @@ Flags     isdoor closed~
 
 Reset D 0 10361 4 1
 #MUDPROG
-Progtype  rand_prog~
-Arglist   50~
+Progtype  act_prog~
+Arglist   P from the east.~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -7419,8 +7419,8 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  act_prog~
-Arglist   P from the east.~
+Progtype  rand_prog~
+Arglist   50~
 Comlist   if mobinroom(10344) < 1
 mpmload 10344
 endif
@@ -8177,6 +8177,16 @@ Flags     nomob~
 Reset D 0 10382 0 1
 Reset O 0 10401 1 10382
 #MUDPROG
+Progtype  leave_prog~
+Arglist   100~
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
+endif
+~
+#ENDPROG
+
+#MUDPROG
 Progtype  entry_prog~
 Arglist   100~
 Comlist   if ispc($n)
@@ -8186,16 +8196,6 @@ mpechoat $n _whi I shall return you to Tsythia promptly.
 mptransfer 0.$n 10300
 mpat 10300 mpforce 0.$n look
 endif
-endif
-~
-#ENDPROG
-
-#MUDPROG
-Progtype  leave_prog~
-Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -8647,12 +8647,11 @@ Desc      Entrance to Darkhaven Academy
 
 Reset O 0 10367 1 10398
 #MUDPROG
-Progtype  entry_prog~
+Progtype  leave_prog~
 Arglist   100~
-Comlist   if ispc($n)
-if level($n) == 1
-mpforce $n config -brief
-endif
+Comlist   if isimmort($n)
+else
+  mpforce $n vis
 endif
 ~
 #ENDPROG
@@ -8678,11 +8677,12 @@ endif
 #ENDPROG
 
 #MUDPROG
-Progtype  leave_prog~
+Progtype  entry_prog~
 Arglist   100~
-Comlist   if isimmort($n)
-else
-  mpforce $n vis
+Comlist   if ispc($n)
+if level($n) == 1
+mpforce $n config -brief
+endif
 endif
 ~
 #ENDPROG
