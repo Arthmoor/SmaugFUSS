@@ -43,8 +43,8 @@ struct dns_data
 };
 
 DECLARE_DO_FUN( do_cache );
-void resolve_dns( DESCRIPTOR_DATA * d, long ip );
+void resolve_dns( DESCRIPTOR_DATA * d, const char *ip );
 void process_dns( DESCRIPTOR_DATA * d );
-char *in_dns_cache( char *ip );
+char *in_dns_cache( const char *ip );
 void load_dns( void );
 void check_dns( void );

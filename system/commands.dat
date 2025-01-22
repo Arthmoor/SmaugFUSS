@@ -417,6 +417,14 @@ Flags       5
 End
 
 #COMMAND
+Name        cache~
+Code        do_cache
+Position    100
+Level       63
+Log         0
+End
+
+#COMMAND
 Name        clantalk~
 Code        do_clantalk
 Position    100

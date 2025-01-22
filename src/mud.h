@@ -39,6 +39,8 @@
 #pragma comment( lib, "winmm.lib" ) /* NJG */
 #endif
 
+using namespace std;
+
 #define CODENAME "SmaugFUSS"
 #define CODEVERSION "1.9.8"
 
