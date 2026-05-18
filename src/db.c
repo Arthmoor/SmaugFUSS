@@ -1856,7 +1856,7 @@ void load_smaugwiz_reset( ROOM_INDEX_DATA * room, FILE * fp )
          if( arg4 > 0 )
          {
             if( get_obj_index( arg4 ) == NULL && fBootDb )
-               boot_log( "$s: SmaugWiz - %s (%d) 'P': destination object %d doesn't exist.", __func__,
+               boot_log( "%s: SmaugWiz - %s (%d) 'P': destination object %d doesn't exist.", __func__,
                          room->area->filename, count, arg4 );
          }
          break;
