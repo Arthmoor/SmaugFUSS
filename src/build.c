@@ -5664,7 +5664,8 @@ void edit_buffer( CHAR_DATA * ch, char *argument )
    char cmd[MAX_INPUT_LENGTH];
    char buf[MAX_INPUT_LENGTH];
    const int max_buf_lines = 60;
-   short x, line;
+   int x;
+   short line;
    bool save;
 
    if( ( d = ch->desc ) == NULL )
