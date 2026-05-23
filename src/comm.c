@@ -26,7 +26,6 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <string>
 #include "mud.h"
 #include "mccp.h"
 #include "mssp.h"
@@ -600,35 +599,6 @@ int init_socket( int mudport )
       exit( 1 );
    }
 
-/*
- * SO_DONTLINGER no longer appears to be necessary so I've commented it out.
- * If for some reason you find that the socket won't work correctly without it, uncomment it.
- * Please let us know at smaugmuds.afkmods.com as well, describing what failed to work properly without it.
- * I'm not even sure if the SYSV part is relevant these days as the only information that keeps coming
- * up on Google is 15+ years old. -- Samson 1/22/2025.
- */
-/*
-#if defined(SO_DONTLINGER) && !defined(SYSV)
-   {
-      struct linger ld;
-
-      ld.l_onoff = 1;
-      ld.l_linger = 1000;
-
-#if defined(WIN32)
-      if( setsockopt( fd, SOL_SOCKET, SO_DONTLINGER, ( const char * )&ld, sizeof( ld ) ) < 0 )
-#else
-      if( setsockopt( fd, SOL_SOCKET, SO_DONTLINGER, ( void * )&ld, sizeof( ld ) ) < 0 )
-#endif
-      {
-         perror( "Init_socket: SO_DONTLINGER" );
-         close( fd );
-         exit( 1 );
-      }
-   }
-#endif
-*/
-
 /* 
  * SO_REUSEADDR, however, is still necessary or the socket will only be able to bind to one
  * protocol. The MUD will fail to start, saying the address is already in use when the second
@@ -1035,9 +1005,8 @@ void new_descriptor( int new_desc )
    DESCRIPTOR_DATA *dnew;
    struct sockaddr_in6 sock;
    int desc;
-   char ip[INET6_ADDRSTRLEN];
    char buf[MAX_STRING_LENGTH];
-   string newip;
+   char host_buf[NI_MAXHOST];
 #if defined(WIN32)
    ULONG r;
    int size;
@@ -1090,23 +1059,6 @@ void new_descriptor( int new_desc )
    if( check_bad_desc( new_desc ) )
       return;
 
-   inet_ntop( AF_INET6, &sock.sin6_addr, ip, INET6_ADDRSTRLEN );
-   newip = ip;
-
-   if( newip != "::1" )
-   {
-      string::size_type pos = newip.find_last_of( ":", newip.length() );
-      string::size_type pos2 = newip.find_last_of( ".", newip.length() );
-
-      if( pos2 != string::npos )
-      {
-         if( pos != string::npos )
-         {
-            newip = newip.substr( pos + 1 );
-         }
-      }
-   }
-
    CREATE( dnew, DESCRIPTOR_DATA, 1 );
    dnew->next = NULL;
    dnew->descriptor = desc;
@@ -1118,13 +1070,34 @@ void new_descriptor( int new_desc )
    dnew->port = ntohs( sock.sin6_port );
    dnew->newstate = 0;
    dnew->prevcolor = 0x07;
-   dnew->host = STRALLOC( newip.c_str() );
    dnew->ifd = -1;   /* Descriptor pipes, used for DNS resolution and such */
    dnew->ipid = -1;
    dnew->can_compress = FALSE;
    CREATE( dnew->mccp, MCCP, 1 );
 
    CREATE( dnew->outbuf, char, dnew->outsize );
+
+   if( getnameinfo( ( struct sockaddr * )&sock, size, host_buf, sizeof( host_buf ), NULL, 0, NI_NUMERICHOST ) == 0 )
+   {
+      /*
+       * If using a dual-stack socket, IPv4 addresses often appear as
+       * ::ffff:192.168.1.1. We can strip the prefix if desired,
+       * but getnameinfo provides the clean format by default.
+       */
+      char *final_ip = host_buf;
+
+      // Optional: Strip "::ffff:" prefix if you strictly want IPv4 notation
+      if( strncmp( host_buf, "::ffff:", 7 ) == 0 )
+      {
+         final_ip = host_buf + 7;
+      }
+
+      dnew->host = STRALLOC( final_ip );
+   }
+   else
+   {
+      dnew->host = STRALLOC( "unknown" );
+   }
 
    if( !sysdata.NO_NAME_RESOLVING )
    {
