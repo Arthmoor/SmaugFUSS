@@ -712,8 +712,6 @@ void boot_db( bool fCopyOver )
    log_string( "Fixing exits" );
    fix_exits(  );
    fBootDb = FALSE;
-   log_string( "Initializing economy" );
-   initialize_economy(  );
 
    if( fCopyOver )
    {
@@ -723,6 +721,9 @@ void boot_db( bool fCopyOver )
 
    log_string( "Resetting areas" );
    area_update(  );
+
+   log_string( "Initializing economy" );
+   initialize_economy(  );
 
    log_string( "Loading buildlist" );
    load_buildlist(  );
@@ -2399,7 +2400,7 @@ void load_climate( AREA_DATA * tarea, FILE * fp )
 
 /*
  * With the new Weather System, these are unneeded as the weather is it's own
- * entity seperated from everything else. - Kayle 10-17-07
+ * entity separated from everything else. - Kayle 10-17-07
  */
 void load_neighbor( AREA_DATA * tarea, FILE * fp )
 {
