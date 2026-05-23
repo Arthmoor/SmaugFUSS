@@ -55,12 +55,24 @@ SPELL_FUN *spell_function( const char *name )
    DWORD error;
 #endif
 
+   // Perform the symbol lookup
    funHandle = dlsym( sysdata.dlHandle, name );
-   if( ( error = dlerror(  ) ) )
+
+   // Check the returned error if this came back NULL
+   if( funHandle == NULL )
    {
-      bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
-      return spell_notfound;
+         // Grab the error message and report it.
+         if( ( error = dlerror() ) != NULL )
+         {
+               bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
+               return spell_notfound;
+         }
+
+         // Edge case. Apparently a symbol can be valid but point to a NULL. This catches those.
+         bug( "%s: Symbol %s found as NULL pointer.", __func__, name );
+         return spell_notfound;
    }
+
    return ( SPELL_FUN * ) funHandle;
 }
 
@@ -73,12 +85,24 @@ DO_FUN *skill_function( const char *name )
    DWORD error;
 #endif
 
+   // Perform the symbol lookup
    funHandle = dlsym( sysdata.dlHandle, name );
-   if( ( error = dlerror(  ) ) )
+
+   // Check the returned error if this came back NULL
+   if( funHandle == NULL )
    {
-      bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
+      // Grab the error message and report it.
+      if( ( error = dlerror() ) != NULL )
+      {
+         bug( "%s: Error locating %s in symbol table. %s", __func__, name, error );
+         return skill_notfound;
+      }
+
+      // Edge case. Apparently a symbol can be valid but point to a NULL. This catches those.
+      bug( "%s: Symbol %s found as NULL pointer.", __func__, name );
       return skill_notfound;
    }
+
    return ( DO_FUN * ) funHandle;
 }
 
