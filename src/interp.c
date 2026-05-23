@@ -842,27 +842,26 @@ const char *one_argument( const char *argument, char *arg_first )
    count = 0;
 
    while( isspace( *argument ) )
-      argument++;
+      ++argument;
 
    cEnd = ' ';
    if( *argument == '\'' || *argument == '"' )
       cEnd = *argument++;
 
-   while( *argument != '\0' || ++count >= 255 )
-   {
-      if( *argument == cEnd )
-      {
-         argument++;
-         break;
-      }
-      *arg_first = ( *argument );
-      arg_first++;
-      argument++;
-   }
-   *arg_first = '\0';
+    while( *argument != '\0' && count < 255 )
+    {
+        if( *argument == cEnd )
+        {
+            ++argument;
+            break;
+        }
+        *arg_first++ = *argument++;
+        count++;
+    }
+    *arg_first = '\0';
 
    while( isspace( *argument ) )
-      argument++;
+      ++argument;
 
    return argument;
 }
@@ -892,16 +891,15 @@ const char *one_argument2( const char *argument, char *arg_first )
    if( *argument == '\'' || *argument == '"' )
       cEnd = *argument++;
 
-   while( *argument != '\0' || ++count >= 255 )
+   while( *argument != '\0' && count < 255 )
    {
       if( *argument == cEnd || *argument == '-' )
       {
          argument++;
          break;
       }
-      *arg_first = ( *argument );
-      arg_first++;
-      argument++;
+      *arg_first++ = *argument++;
+      count++;
    }
    *arg_first = '\0';
 
