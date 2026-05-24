@@ -42,7 +42,7 @@
 using namespace std;
 
 #define CODENAME "SmaugFUSS"
-#define CODEVERSION "1.9.8"
+#define CODEVERSION "1.9.9"
 
 // Backward compatibility for snippets and such.
 #define mudstrlcpy strlcpy
