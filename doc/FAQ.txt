@@ -88,10 +88,8 @@ in unix, which the Windows port has no equivalent of).
     C:\dist\backup
     C:\dist\building
     C:\dist\corpses
-    C:\dist\deleted
     C:\dist\gods
     C:\dist\log
-    C:\dist\new
     C:\dist\player
     C:\dist\player\a
     C:\dist\player\b
