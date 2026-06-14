@@ -51,6 +51,8 @@
 struct mssp_info
 {
    char *hostname;
+   char *ip;
+   char *ipv6;
    char *contact;
    char *icon;
    char *language;
@@ -58,41 +60,26 @@ struct mssp_info
    char *website;
    char *family;
    char *genre;
+   char *subgenre;
    char *gamePlay;
    char *gameSystem;
    char *intermud;
    char *status;
-   char *subgenre;
-   char *equipmentSystem;
-   char *multiplaying;
-   char *playerKilling;
-   char *questSystem;
-   char *roleplaying;
-   char *trainingSystem;
-   char *worldOriginality;
+   unsigned short ssl;
+   short crawldelay;
    short created;
    short minAge;
-   short worlds;
    bool ansi;
    bool mccp;
    bool mcp;
    bool msp;
-   bool ssl;
    bool mxp;
-   bool pueblo;
    bool vt100;
    bool xterm256;
    bool pay2play;
    bool pay4perks;
    bool hiringBuilders;
    bool hiringCoders;
-   bool adultMaterial;
-   bool multiclassing;
-   bool newbieFriendly;
-   bool playerCities;
-   bool playerClans;
-   bool playerCrafting;
-   bool playerGuilds;
 };    
 
 #define MSSP_FILE SYSTEM_DIR "mssp.dat"
@@ -111,11 +98,4 @@ bool load_mssp_data( void );
 void send_mssp_data( DESCRIPTOR_DATA * d );
 void free_mssp_info( void );
 
-//GNUC_FORMAT macro was contrived by Elanthis
-#ifdef __GNUC__
-#  define GNUC_FORMAT(fmt,args) __attribute__ ((format (printf, fmt, args)))
-#else
-#  define GNUC_FORMAT(fmt,args)
-#endif
-
-void mssp_reply( DESCRIPTOR_DATA * d, const char *var, const char *fmt, ... ) GNUC_FORMAT( 3, 4 );
+void mssp_reply( DESCRIPTOR_DATA * d, const char *var, const char *fmt, ... ) __attribute__ ( ( format( printf, 3, 4 ) ) );
