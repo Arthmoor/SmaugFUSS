@@ -6419,6 +6419,7 @@ void close_area( AREA_DATA * pArea )
    DISPOSE( pArea->filename );
    DISPOSE( pArea->resetmsg );
    STRFREE( pArea->author );
+   STRFREE( pArea->credits ); // Bugfix: Samson 6/19/2026
    if( IS_SET( pArea->flags, AFLAG_PROTOTYPE ) )
    {
       UNLINK( pArea, first_build, last_build, next, prev );
