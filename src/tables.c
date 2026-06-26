@@ -832,12 +832,17 @@ void fwrite_skill( FILE * fpout, SKILLTYPE * skill )
    for( aff = skill->first_affect; aff; aff = aff->next )
    {
       fprintf( fpout, "Affect       '%s' %d ", aff->duration, aff->location );
-      modifier = atoi( aff->modifier );
-      if( ( aff->location == APPLY_WEAPONSPELL
+      if( is_number( aff->modifier ) ) // Bugfix: Validate it being numeric before being passed to atoi(). - Samson 6/26/2026.
+      {
+         modifier = atoi( aff->modifier );
+         if( ( aff->location == APPLY_WEAPONSPELL
             || aff->location == APPLY_WEARSPELL
             || aff->location == APPLY_REMOVESPELL
             || aff->location == APPLY_STRIPSN || aff->location == APPLY_RECURRINGSPELL ) && IS_VALID_SN( modifier ) )
-         fprintf( fpout, "'%d' ", skill_table[modifier]->slot );
+            fprintf( fpout, "'%d' ", skill_table[modifier]->slot );
+         else
+            fprintf( fpout, "'%s' ", aff->modifier );
+      }
       else
          fprintf( fpout, "'%s' ", aff->modifier );
       fprintf( fpout, "%d\n", aff->bitvector );
