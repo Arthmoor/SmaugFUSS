@@ -889,7 +889,8 @@ void game_loop( void )
                   set_cur_char( d->character );
 
                if( d->pagepoint )
-                  set_pager_input( d, cmdline );
+                  if( cmdline[0] != '\0' )
+                     set_pager_input( d, cmdline );
                else
                   switch ( d->connected )
                   {
